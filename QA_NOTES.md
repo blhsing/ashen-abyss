@@ -1,95 +1,95 @@
-# QA notes — 燼淵 Ashen Abyss (running list; newest state at the bottom of each section)
+# QA 筆記 — 燼淵 Ashen Abyss（持續更新的清單；每一節的最新狀態在該節最下方）
 
-Format: bug → cause → fix → verified?
+格式：錯誤 → 原因 → 修正 → 是否已驗證？
 
-## Harness (added by QA; all optional, old switches unchanged)
-| switch | what it does |
+## 測試框架（由 QA 新增；全部為選用，舊開關不變）
+| 開關 | 作用 |
 |---|---|
-| `--speed=N` | game time scale N (0.05–20); hit-stop is skipped. The bot thinks in game time, so a ×4 run plays the same game faster |
-| `--suite=skills[:classes[:levels[:area]]]` | every skill of each class at each level (default 1,12,25,50): 3 casts on target dummies, per-skill line with casts / fired / hits / damage / resource / pips / cooldown / minions / form / buffs + expiry |
-| `--suite=systems` | items (all rarity × class × kind), loot rolls, equip, salvage → codex, masterwork, temper, enchant, imprint, sockets / gems, stash, vendors, gamble, junk, skill points / upgrades / respec / spec, paragon, world tiers |
-| `--suite=objects[:area]` | loot of every rarity on the ground + pickup, gold / materials / globes, chests q0-3, all shrines, altar, breakables |
-| `--suite=save` | 8 slots round trip, slot list, .bak fallback, corrupt / hand-edited saves, hardcore death, normal death + respawn, save → menu → load, settings (user's real slots are set aside and restored) |
-| `--focus` | bot does what the place is for: dungeon objective → boss → portal; overworld stronghold → events |
-| `--campaign` | bot follows the main quest (talk, travel, stronghold, story dungeon, boss) through all acts |
-| `--allskills` | bot rotates every unlocked skill through the bar |
-| `--hardcore`, `--slot=N` | `--new` character is hardcore / lives in slot N |
-| `--die-at=s` | lethal blow at harness time s (death panel, respawn, hardcore marking) |
-| `--prtsc-at=s`, `--f12-at=s` | PrtSc (through the low-level hook when the window has focus) / F12 screenshot paths |
-| `--ui-tour[=ids]` | opens every panel in turn, one screenshot each (`<shot>_<panel>.png`) |
-| `--paragon=N` | paragon level N at level 50, auto-allocated |
-| `--tour=a,b,c` | after the starting area, visit these in turn (implies `--focus`); one result line per area; quits at the end |
-| `--bossrush` | in dungeons, open the boss door without doing the objective and fight the boss |
-| `--seed=N` | fixed world seed (same overworlds between runs that are compared) |
-| `--perf-off=hud,ui,anim,world` | measurement only: switch parts off to see their cost in the perf line |
-| `--suite=dps[:classes[:levels]]` | the bot's rotation on one dummy (30 s) and on six (20 s): damage per second vs `Balance.ExpectedDps`, per-skill shares |
-| `--suite=anims` / `anims:static` / `anims:shots-town\|shots-heroes\|shots-monsters` | the animation audit (see below), its 10-second static part, close-up pictures |
-| `--suite=anims:monsters` | only the live monster part of the audit (all 36 monster and minion types) |
-| `--slot=90..99`, `--load=90..99` | private harness save slots, never listed by the menu: chain one campaign over several short runs |
-Bot summary now ends with per-skill cast / hit / damage counts, time-to-kill per monster tier, damage taken per minute and level-up times.
-`--quit-at` and `--shot-at` count from the moment the first area is on screen (loading excluded — about 6 s headless, 18 s windowed).
-Wrappers: `Y:\tools\qa\qarun2.ps1 -GameArgs "<args>" -Timeout n -LockWait n [-Headless]` queues on the run lock for at most LockWait seconds and then
-calls run.ps1 in-process (one bounded foreground command); the older `qarun.sh` / `qawait.sh` probe the lock and were starved when it is contended.
+| `--speed=N` | 遊戲時間倍率 N（0.05–20）；略過打擊停頓。機器人以遊戲時間思考，所以 ×4 的執行是用更快的速度玩同一場遊戲 |
+| `--suite=skills[:classes[:levels[:area]]]` | 每個職業的每個技能，在每個等級（預設 1,12,25,50）下：對木樁施放 3 次，每個技能一行，列出施放 / 發動 / 命中 / 傷害 / 資源 / 點數 / 冷卻 / 召喚物 / 形態 / 增益效果 + 到期 |
+| `--suite=systems` | 物品（所有稀有度 × 職業 × 種類）、戰利品擲骰、裝備、拆解 → 威能典籍、精鑄、淬火、附魔、銘刻、鑲孔 / 寶石、倉庫、商人、賭運、垃圾、技能點 / 升級 / 洗點 / 專精、燼紋、世界階級 |
+| `--suite=objects[:area]` | 地上各種稀有度的戰利品 + 拾取、金幣 / 材料 / 血球、寶箱 q0-3、所有神龕、祭壇、可破壞物 |
+| `--suite=save` | 8 個存檔欄位的往返讀寫、存檔欄位清單、.bak 備援、損毀 / 手動編輯過的存檔、專家模式死亡、一般死亡 + 復活、存檔 → 選單 → 讀檔、設定（使用者真實的存檔欄位會先移到一旁，結束後還原） |
+| `--focus` | 機器人做這個地方該做的事：地城目標 → 首領 → 傳送門；野外地圖據點 → 事件 |
+| `--campaign` | 機器人跟著主線任務走（對話、移動、據點、主線地城、首領），跑完所有章節 |
+| `--allskills` | 機器人把所有已解鎖技能輪流放上技能列使用 |
+| `--hardcore`, `--slot=N` | `--new` 建立的角色是專家模式 / 存在第 N 個欄位 |
+| `--die-at=s` | 在測試框架時間 s 時給予致命一擊（死亡面板、復活、專家模式標記） |
+| `--prtsc-at=s`, `--f12-at=s` | PrtSc（視窗取得焦點時經由低階鍵盤掛勾）/ F12 截圖路徑 |
+| `--ui-tour[=ids]` | 依序開啟每個面板，各截一張圖（`<shot>_<panel>.png`） |
+| `--paragon=N` | 在等級 50 時給予燼紋等級 N，並自動配點 |
+| `--tour=a,b,c` | 離開起始區域後依序造訪這些區域（隱含 `--focus`）；每個區域一行結果；結束時離開遊戲 |
+| `--bossrush` | 在地城中不完成目標就打開首領之門並挑戰首領 |
+| `--seed=N` | 固定世界種子（要互相比較的多次執行之間使用相同的野外地圖） |
+| `--perf-off=hud,ui,anim,world` | 僅供量測：關閉部分功能，以便在效能行中看出它們的成本 |
+| `--suite=dps[:classes[:levels]]` | 機器人的技能循環打一個木樁（30 s）與六個木樁（20 s）：每秒傷害對比 `Balance.ExpectedDps`，以及各技能占比 |
+| `--suite=anims` / `anims:static` / `anims:shots-town\|shots-heroes\|shots-monsters` | 動畫稽核（見下文）、其 10 秒的靜態部分、特寫畫面 |
+| `--suite=anims:monsters` | 只跑稽核中的即時怪物部分（全部 36 種怪物與召喚物類型） |
+| `--slot=90..99`, `--load=90..99` | 測試框架專用的私人存檔欄位，選單永遠不會列出：用來把一次主線流程串接成數次短執行 |
+機器人摘要現在的最後會列出各技能的施放 / 命中 / 傷害次數、各怪物階級的擊殺時間、每分鐘承受傷害，以及各次升級的時間。
+`--quit-at` 與 `--shot-at` 從第一個區域出現在畫面上的那一刻起算（不含載入時間——無視窗模式約 6 s，視窗模式約 18 s）。
+包裝腳本：`Y:\tools\qa\qarun2.ps1 -GameArgs "<args>" -Timeout n -LockWait n [-Headless]` 會在執行鎖上排隊最多 LockWait 秒，然後
+在同一行程中呼叫 run.ps1（一個有時間上限的前景命令）；較舊的 `qarun.sh` / `qawait.sh` 則是探測鎖的狀態，在鎖被搶用時會一直搶不到。
 
-## Bugs
+## 錯誤
 
-### Verified by suites (2026-11-14 night, headless, all logs in %APPDATA%\AshenAbyss\logs)
-- `--suite=systems`: 186 checks, 0 failures (items 1280 generated OK, loot odds per quality, equip rules, salvage → codex, masterwork 12 ranks / 3 boosts,
-  temper rare 1 / legendary 2 + charges, enchant, imprint, sockets 2 on chest / none on boots, gem combine, stash limits, merchant / jeweler stock,
-  gamble all 8 kinds, junk selling, bag limit, per class: 8 skills / 6 categories / 3 specs, respec, ranks, upgrade A↔B swap, key passive swap,
-  spec refused below 15, auto build; paragon allocate / refund / board attach / glyph upgrade / paragon XP; world tiers 0-3 scale monsters).
-- `--suite=skills` all 8 classes × levels 1, 12, 25, 50 (at 50: base, A, B and each of the 3 specs; 512 skill tests): every skill fires, its damage
-  carries its own id, generators generate, spenders pay, pips are gained / spent, cooldowns start, summons spawn and their hits count as minion hits,
-  wildsoul forms switch, channels tick while held, dashes / leaps / blinks move the hero, buffs appear and expire. 0 real failures
-  (sb_veil's 3 s buff and fb_spin B's refund were test artefacts; the suite now accounts for both).
+### 已由測試套件驗證（2026-11-14 夜間，無視窗模式，所有紀錄檔都在 %APPDATA%\AshenAbyss\logs）
+- `--suite=systems`：186 項檢查，0 項失敗（產生 1280 件物品皆正常、各品質的掉落機率、裝備規則、拆解 → 威能典籍、精鑄 12 階 / 3 次加成、
+  淬火稀有 1 / 傳奇 2 + 次數、附魔、銘刻、胸甲 2 個鑲孔 / 靴子沒有、寶石合成、倉庫上限、行商 / 寶石匠貨架、
+  全部 8 種賭運、販賣垃圾、背包上限，各職業：8 個技能 / 6 種類別 / 3 種專精、洗點、技能階級、升級 A↔B 互換、關鍵被動互換、
+  15 級以下拒絕專精、自動配置；燼紋配點 / 退點 / 燼紋盤接續 / 燼符升級 / 燼紋經驗；世界階級 0-3 調整怪物強度）。
+- `--suite=skills` 全部 8 個職業 × 等級 1、12、25、50（在 50 級時：基礎、A、B 以及 3 種專精各一；共 512 項技能測試）：每個技能都會發動，傷害
+  帶有它自己的 id，生成技會產生資源，消耗技會支付資源，點數會獲得 / 消耗，冷卻會開始，召喚物會生成且其命中算作召喚物命中，
+  荒靈行者的形態會切換，引導技在按住時持續觸發，衝刺 / 跳躍 / 閃現會移動英雄，增益效果會出現並到期。0 個真正的失敗
+  （sb_veil 的 3 s 增益與 fb_spin B 的返還是測試本身造成的假象；套件現在兩者都已考慮進去）。
 
-## Bugs
-1. **Unhandled exceptions could escape `_Process`** (Player, Monster, Projectile, GroundZone had no guard; an exception in one elite affix or boss
-   script would repeat every frame in the engine log, outside the game log) → wrapped each in try/catch with a throttled `Log.Error`; a broken
-   projectile / zone frees itself, a broken monster drops its wind-up, the hero drops the action in progress. Verified: compiles, runs clean.
-2. **Max-life changes did not carry the hero's life** (`Player.OnHeroChanged` computed the gain after overwriting MaxLife, so it was always 0: a
-   +life buff or item left the hero "wounded", and unequipping clamped) → life now keeps its fraction when MaxLife changes. Verified in suites.
-3. **Every monster of a region animated all the time** (380 AnimationPlayers and CharModel._Process calls per frame even 200 m away, plus a
-   `_PhysicsProcess` per monster) → monsters asleep (> 46 m) switch their AnimationPlayer off; CharModel only processes during a hit flash or the ash
-   dissolve; Monster physics callback only while a leap is in flight.
-4. **Skeletons "rose from the ground" at level load, unseen** → they now lie in the ash until their pack notices the hero (or they are hit), then rise.
-5. Loading-screen labels ignored the text-size setting → sizes go through `UiTheme.Fs` and are refreshed by `ApplySettings` (lead's note).
-6. **Mini-boss experience multiplied twice** (tier ×8 for "Elite" and ×14 for the mini-boss flag = 112× a normal kill — more than a region boss; a
-   level-16 side-dungeon boss gave 12 096 XP, 1.5 levels) → the mini-boss factor replaces the tier factor (`Balance.MiniBossXp = 24`). Verified in logs.
-7. **Thorns out of scale** (affix pool 6-620 at max power ≈ 2.4× the weapon's average damage per enemy melee hit; in a level 10-17 run "(other)" =
-   thorns dealt 40 % of all damage and one-shot normal monsters) → pool 4-200. Paragon / gem thorns values left as they are.
-8. Test-only: `--god` used to add 60 % damage reduction and 30 %/s regeneration, hiding real damage intake → now it only refuses death, counts the
-   save (`god-saves=` in the bot's balance line) and refills life, so "taken per minute" is honest.
+## 錯誤
+1. **未處理的例外可能逃出 `_Process`**（Player、Monster、Projectile、GroundZone 沒有防護；某個菁英詞綴或首領
+   腳本中的一個例外，會在遊戲紀錄之外的引擎紀錄裡每幀重複出現）→ 每個都用 try/catch 包起來並加上節流的 `Log.Error`；壞掉的
+   投射物 / 區域會自行釋放，壞掉的怪物會放棄蓄力動作，英雄會放棄進行中的動作。已驗證：可編譯，執行乾淨。
+2. **最大生命值變動時沒有帶上英雄目前的生命值**（`Player.OnHeroChanged` 在覆寫 MaxLife 之後才計算增量，所以永遠是 0：
+   +生命的增益或物品會讓英雄處於「受傷」狀態，卸下裝備時則會被截斷）→ 現在 MaxLife 變動時生命值會維持原本的比例。已在測試套件中驗證。
+3. **區域內每一隻怪物都一直在播動畫**（每幀有 380 個 AnimationPlayer 與 CharModel._Process 呼叫，即使在 200 m 外也一樣，另外每隻
+   怪物還有一個 `_PhysicsProcess`）→ 沉睡中（> 46 m）的怪物會關閉自己的 AnimationPlayer；CharModel 只在受擊閃光或灰燼
+   溶解期間處理；Monster 的物理回呼只在跳躍飛行途中啟用。
+4. **骷髏在關卡載入時就「從地底爬起」，沒人看見** → 現在它們會躺在灰燼中，直到所屬的怪物群察覺英雄（或被擊中）才爬起來。
+5. 載入畫面的標籤無視文字大小設定 → 大小改經由 `UiTheme.Fs` 計算，並由 `ApplySettings` 重新整理（主程的註記）。
+6. **頭目的經驗值被乘了兩次**（「Elite」階級 ×8，頭目旗標再 ×14 = 一般擊殺的 112 倍——比區域首領還多；一隻
+   16 級支線地城首領給了 12 096 XP，相當於 1.5 個等級）→ 頭目倍率取代階級倍率（`Balance.MiniBossXp = 24`）。已在紀錄檔中驗證。
+7. **荊棘傷害失衡**（詞綴範圍 6-620，在最大威力時約等於武器平均傷害的 2.4 倍，每次被敵人近戰命中就觸發一次；在一次 10-17 級的執行中，「(other)」=
+   荊棘造成了全部傷害的 40 %，並且能一擊殺死一般怪物）→ 範圍改為 4-200。燼紋 / 寶石的荊棘數值維持不變。
+8. 僅限測試：`--god` 以前會加上 60 % 傷害減免與每秒 30 % 回復，掩蓋了真實的受傷量 → 現在只會拒絕死亡、計算
+   救回次數（機器人平衡數據行中的 `god-saves=`）並補滿生命，因此「每分鐘承受傷害」是真實數字。
 
-### Verified by runs
-- `--suite=objects` 18/18: loot of every rarity (legendary / unique beams spawn), pickup, gold magnet, materials, globes, chests q0-3, six shrines,
-  altar (+1 attributes once, remembered), no errors. (wastes overworld has no breakables: they only exist in dungeons.)
-- `--suite=save` 32/32: 8 slots × 8 classes byte-exact round trip, slot list, .bak fallback, both files damaged → "corrupt" and refused, hand-edited
-  JSON repaired, delete, hardcore death written at once + refused afterwards + list shows dead, normal death → death panel → respawn at checkpoint
-  with full life, save → menu → load restores level / gold / gear / deaths / area, settings round trip. The user's real slots and settings are set
-  aside and restored (also after an interrupted run).
-- Tour `wastes → wastes_d1 (SlayElites) → wastes_d2 (DestroyIdols) → wastes_boss`: door seals / opens on the objective, mini-bosses engage and die,
-  story boss runs phases 1→2→3 with adds and dies, reward chest + exit portal appear, 0 errors.
-- `--focus` in wastes overworld: stronghold liberated (beacon → waypoint, quest step, save), all three world events (brazier, ritual, cursed chest)
-  start and complete, side quests start on first visit.
-- `--campaign --god --level=30 --gear --speed=6`: the whole main quest in one 7-minute run (40 min game time): talk → region → stronghold → story
-  dungeon objective → boss → report, acts 1-7, three keys in any order, gating never dead-ends, rewards (+1 skill point per act, potion cap +1 twice),
-  7 bosses, 0 errors.
-9. **Cast at a target that was freed before the contact frame threw** (`ObjectDisposedException` in `SkillExec.Fire` → `Actor.Pos2`; happens when
-   a target despawns between wind-up and contact: boss-fight reset, area change, harness clearing the field) → `Fire`, `BeginCast`, `TryCast` and the
-   walk-into-reach order drop targets that are no longer valid.
-10. **"Per second" zones dealt double** (sb_blight, the wildsoul storm zone, pb_rain: listed as X % per second, ticked X % every 0.5 s — the per-tick
-    share computed in `ZoneSpec.Coef` was never applied for the Zone kind) → `SkillExec` multiplies by it.
-11. **Zones of one skill stacked without limit on a target** (sb_blight has no cooldown: the bot kept 4-5 pools under one enemy = 78 % of a
-    soulbinder's damage, 9-12× the monster curve's assumption) → an enemy takes one tick per interval from zones of the same skill
-    (`Actor.ZoneTicks`). Different skills still stack.
-12. **Multi-projectile casts shot-gunned** (hu_pierce "三叉" = 3 × 65 % all landing on one target at close range; hu_mark's +2 projectiles likewise)
-    → projectiles of one volley share a hit list: one hit per enemy per cast, the extra ones pass through to hit others.
+### 已由實際執行驗證
+- `--suite=objects` 18/18：各種稀有度的戰利品（傳奇 / 獨特光柱會出現）、拾取、金幣吸取、材料、血球、寶箱 q0-3、六種神龕、
+  祭壇（+1 屬性僅一次，且會被記住），沒有錯誤。（wastes 野外地圖沒有可破壞物：它們只存在於地城中。）
+- `--suite=save` 32/32：8 個存檔欄位 × 8 個職業逐位元組一致的往返讀寫、存檔欄位清單、.bak 備援、兩個檔案都損毀 →「corrupt」並拒絕讀取、手動編輯的
+  JSON 會被修復、刪除、專家模式死亡立即寫入 + 之後拒絕讀取 + 清單顯示已死亡、一般死亡 → 死亡面板 → 在檢查點復活
+  且生命全滿、存檔 → 選單 → 讀檔會還原等級 / 金幣 / 裝備 / 死亡次數 / 區域、設定往返讀寫。使用者真實的存檔欄位與設定會先移到
+  一旁並在結束後還原（執行中斷時也一樣）。
+- 巡迴 `wastes → wastes_d1 (SlayElites) → wastes_d2 (DestroyIdols) → wastes_boss`：門會依目標封閉 / 開啟，頭目會交戰並死亡，
+  主線首領依序進入第 1→2→3 階段並召喚援軍後死亡，獎勵寶箱 + 出口傳送門出現，0 個錯誤。
+- 在 wastes 野外地圖執行 `--focus`：據點已解放（烽火 → 燼塔路標、任務步驟、存檔），全部三種世界事件（火盆、儀式、受詛咒的寶箱）
+  都會開始並完成，支線任務在首次造訪時開始。
+- `--campaign --god --level=30 --gear --speed=6`：一次 7 分鐘的執行（遊戲時間 40 分鐘）跑完整條主線：對話 → 區域 → 據點 → 主線
+  地城目標 → 首領 → 回報，第 1-7 章，三把鑰匙可依任意順序取得，章節門檻從未造成死路，獎勵（每章 +1 技能點，藥水上限 +1 兩次），
+  7 個首領，0 個錯誤。
+9. **對一個在命中影格前就已被釋放的目標施法時會拋出例外**（`SkillExec.Fire` → `Actor.Pos2` 中的 `ObjectDisposedException`；發生在
+   目標於蓄力與命中之間消失時：首領戰重置、切換區域、測試框架清場）→ `Fire`、`BeginCast`、`TryCast` 以及
+   走進攻擊範圍的指令會捨棄已失效的目標。
+10. **「每秒」型區域造成雙倍傷害**（sb_blight、荒靈行者的風暴區域、pb_rain：標示為每秒 X %，實際卻每 0.5 s 觸發 X %——
+    `ZoneSpec.Coef` 中算好的每次觸發占比從未套用在 Zone 類型上）→ `SkillExec` 會乘上這個占比。
+11. **同一技能的多個區域可以在同一目標上無限疊加**（sb_blight 沒有冷卻：機器人在一個敵人腳下維持 4-5 灘毒池 = 喚魂師
+    78 % 的傷害，是怪物曲線假設值的 9-12 倍）→ 同一技能的區域，對一個敵人在每個間隔內只觸發一次
+    （`Actor.ZoneTicks`）。不同技能仍可疊加。
+12. **多重投射物的施放變成霰彈槍**（hu_pierce「三叉」= 3 × 65 % 在近距離全部打在同一個目標上；hu_mark 的 +2 投射物也一樣）
+    → 同一輪齊射的投射物共用命中清單：每次施放對每個敵人只命中一次，多出來的會穿過去打其他敵人。
 
-## Balance (measured with `--suite=dps`: the bot's rotation, auto build, nine rares of the level, 30 s on one dummy / 20 s on six)
-Single-target damage per second ÷ `Balance.ExpectedDps` (what monster life is derived from), per class, after bugs 7 and 10-12 were fixed:
+## 平衡（以 `--suite=dps` 量測：機器人的技能循環、自動配置、九件符合等級的稀有裝備，對一個木樁 30 s / 對六個木樁 20 s）
+單體每秒傷害 ÷ `Balance.ExpectedDps`（怪物生命值以此推算），依職業列出，為修正錯誤 7 與 10-12 之後的結果：
 
-| level | emberblade | astromancer | hunter | soulbinder | wildsoul | forgebody | lampknight | pactbinder | median |
+| 等級 | 燼刃衛 | 星術師 | 影獵手 | 喚魂師 | 荒靈行者 | 鍛身者 | 誓燈騎士 | 縛淵術士 | 中位數 |
 |---|---|---|---|---|---|---|---|---|---|
 | 5  | 0.84 | 1.08 | 1.45 | 1.50 | 1.43 | 1.03 | 1.15 | 1.81 | 1.43 |
 | 15 | 0.96 | 1.31 | 1.76 | 1.71 | 1.21 | 1.02 | 1.82 | 1.02 | 1.31 |
@@ -97,216 +97,215 @@ Single-target damage per second ÷ `Balance.ExpectedDps` (what monster life is d
 | 35 | 1.96 | 1.11 | 1.22 | 4.64 | 2.01 | 1.46 | 1.57 | 1.30 | 1.57 |
 | 50 | 2.58 | 1.28 | 2.05 | 4.98 | 2.04 | 1.93 | 1.30 | 1.44 | 2.04 |
 
-(before the fixes soulbinder was 7.5× / 8.4× / 11.9× at 25 / 35 / 50 and hunter 3.4-4.8×.)
-Changes:
-- `Balance.ExpectedDps` × (1.3 + 0.014·level): monster life now follows the measured median (normal ≈ 2.2 s single-target, elite ≈ 12 s).
-- Soulbinder minions: sb_raise 50 % → 30 %, sb_colossus 260 % → 160 % (minions were 79 % of a level-50 soulbinder's damage).
-- Experience curve: `XpToNext = 300 + 520·L^1.15` (×(0.35 + 0.13·L) below level 5). The old curve gave a bot one level every 37-42 s at level 10-12.
-- Mini-boss XP 112× → 24× a normal kill; thorns affix 6-620 → 4-200.
-Incoming damage (same suite): a normal monster's hit lands for 2-8 % of the hero's life (15-65 hits to die, astromancer / pactbinder the frailest).
+（修正之前，喚魂師在 25 / 35 / 50 級時分別是 7.5× / 8.4× / 11.9×，影獵手則是 3.4-4.8×。）
+變更：
+- `Balance.ExpectedDps` × (1.3 + 0.014·level)：怪物生命值現在跟隨量測到的中位數（一般怪單體約 2.2 s，菁英約 12 s）。
+- 喚魂師召喚物：sb_raise 50 % → 30 %，sb_colossus 260 % → 160 %（召喚物占 50 級喚魂師傷害的 79 %）。
+- 經驗曲線：`XpToNext = 300 + 520·L^1.15`（5 級以下再 ×(0.35 + 0.13·L)）。舊曲線讓機器人在 10-12 級時每 37-42 s 就升一級。
+- 頭目經驗值 112× → 一般擊殺的 24×；荊棘詞綴 6-620 → 4-200。
+承受傷害（同一套件）：一般怪物的一擊會打掉英雄生命的 2-8 %（15-65 擊致死，星術師 / 縛淵術士最脆弱）。
 
-### Balance, second pass (boss runs with `--bossrush`, honest `--god`)
-- With monster life at 1.3 + 0.014·L: emberblade lv30-32 bosses 74 s / 71 s, normal 1.1 s; lv48-50 bosses 120 s / 55 s, normal 2.1 s (in range);
-  but lv12-16 emberblade bosses 190-250 s, normal 4.8 s, 12 "deaths" in 18 minutes; astromancer lv12-15 bosses 118-222 s, normal 4.5 s (too slow:
-  early heroes are close to the first estimate, and the levelling emberblade bot kept its level-10 bar — whirl, no rupture).
-- Final curve: `ExpectedDps` × clamp(0.8 + 0.024·L, 0.8, 2.0) — 0.9× at level 5, 1.1× at 12, 1.4× at 25, 1.5× at 30, 2× at 50.
-- Bot: a spinning channel is only started with 3+ enemies around (or a nearly full resource bar), so builders can afford their core skill.
-- Still uneven (data, not touched): soulbinder remains the strongest single-target class at 35+ (minions inherit every bonus), astromancer and
-  lampknight the weakest single-target at 50 (1.3× vs 2.0× median; both have very high area damage), emberblade / forgebody are slow before level 15.
+### 平衡，第二輪（以 `--bossrush` 跑首領，搭配誠實的 `--god`）
+- 怪物生命值為 1.3 + 0.014·L 時：燼刃衛 30-32 級首領 74 s / 71 s，一般怪 1.1 s；48-50 級首領 120 s / 55 s，一般怪 2.1 s（在範圍內）；
+  但 12-16 級燼刃衛的首領 190-250 s，一般怪 4.8 s，18 分鐘內 12 次「死亡」；星術師 12-15 級首領 118-222 s，一般怪 4.5 s（太慢：
+  早期英雄接近最初的估計值，而且練等中的燼刃衛機器人一直沿用 10 級時的技能列——旋斬，沒有撕裂）。
+- 最終曲線：`ExpectedDps` × clamp(0.8 + 0.024·L, 0.8, 2.0)——5 級 0.9×、12 級 1.1×、25 級 1.4×、30 級 1.5×、50 級 2×。
+- 機器人：只有周圍有 3 個以上敵人（或資源條接近全滿）時才會開始旋轉引導技，讓生成技有餘裕支撐核心技能。
+- 仍不平均（屬於資料問題，未更動）：喚魂師在 35 級以上仍是單體最強的職業（召喚物繼承所有加成），星術師與
+  誓燈騎士在 50 級時單體最弱（1.3× 對比 2.0× 中位數；兩者的範圍傷害都非常高），燼刃衛 / 鍛身者在 15 級前很慢。
 
-## Animation audit (2026-11-15; after the user-reported "hero has no walk animation" bug, fixed by the lead in CharModel)
-My first pass never looked at a moving character on screen and the bot checked no animation state at all, so that bug went through. Now:
-- `AnimCheck` (Actor.cs), always on: seconds the hero / monsters moved under their own power while no locomotion clip was advancing on their
-  model, or with a leg pose that did not change, seconds the hero stood still in a run clip, models built without a skeleton or animation player.
-  `Game.Quit` writes the line to every log (`[anim] anim-check: …`), as an ERR when not clean, so run.ps1 shows it.
-- `--suite=anims` (TestSuite.Anims.cs): library inventory; every clip named in code, SkillDb, MonsterDb and the boss move lists exists and loops
-  when it is held; every character model (heroes, forms, NPCs, monsters, bosses — 40 ids) is rigged, the probe clips reach ≥ 90 % of its bones and
-  move it off the bind pose; stride table and strike table re-measured from the clips; town people animate; per class: idle clip, run clip + legs
-  moving + speed ÷ stride + facing, stop → idle, roll, every skill shows its clip and returns to idle, stun reaction, death stays down, respawn;
-  per monster type: buried ones lie still then rise, walk / run clip, speed ÷ stride, facing, attack clip, death clip. `--suite=anims:static` is
-  the 10-second part; `--suite=anims:shots-town|shots-heroes|shots-monsters` takes close-up pictures.
-Found and fixed:
-13. **Effects came out of the middle of the body**: the rig's bones are `hand_r`, `foot_l`, `Head`…; all code asked for `DEF-hand.R`, which never
-    existed, so `CharModel.BonePos` always returned its fallback (projectile origins, chain beams, monster missiles) → `BoneIndex` resolves both
-    spellings through an alias table and warns once per unknown bone; callers now say `hand_r`.
-14. **`Sword_Idle` did not loop** (idle stance of emberblade, wildsoul and the bosses' brace: it played 1.7 s, froze, and was restarted with a pop)
-    → marked looping when the library is built.
-15. **Locomotion speed was guessed** (jog ÷ 5.2 for the hero, ÷ 4.6 or ÷ 2.2 for monsters regardless of model scale; measured strides are walk
-    0.94, zombie walk 0.94, jog 5.36, sprint 8.0 m/s at scale 1) → `CharModel.Stride` + `Locomote(speed, clips…)`: picks the gait whose feet match
-    the ground best (rate clamped to 0.5–2.4), scaled by model size. Big slow monsters and bosses now walk briskly instead of jogging on a
-    treadmill; the bloated husk walks (speed 2.9 → 2.3).
-16. **Ranged monsters kited backward while still turned to the hero** (a forward run played in reverse; forward·motion −0.3…−0.7) → they turn and run.
-17. **Crowds shoved walkers backward / idle monsters slid** (separation push up to several m/s) → capped at 55 % of the walker's pace, 1.1 m/s when
-    standing; a walker held up by the crowd or a wall idles instead of running on the spot (hero too).
-18. **Blows did not land on their swings** (26 skill / monster attacks more than 0.25 s off: e.g. every third basic sword attack used the 2 s
-    `Sword_Regular_C` and was cut before its swing; javelins appeared 0.3 s after the arm had finished; rotspawn's hook ended before its blow)
-    → `CharModel.Strike` (measured fastest-hand time per clip) + `PlayAttack`: a clip that strikes late starts inside its wind-up, one that
-    strikes early has the wind-up stretched; bosses use the same table in `PlayWind`. rotspawn / frostbound attack clips replaced; fb_spin slowed.
-19. **A hero could stick on a big prop** (`LineWalk` only looked at cell types, so a straight click-to-move ran into trees and stalls) → big props
-    (r ≥ 0.85) block the straight line and the A* path goes round them, with a squeeze-through fallback.
-20. **A monster started its attack swing a second time while recovering** (`CharModel.Pause(false)` called `Play()` whenever nothing was playing,
-    and Monster calls it every frame: every finished one-shot clip restarted) → un-pausing only resumes what `Pause(true)` froze.
-21. **Ranged monsters stood still for ever when they had to walk round something** (`MoveToward` compared its stop distance — 80 % of the weapon
-    range — with the distance to the next *waypoint* instead of the goal; also stopped inside range with no line of fire) → compares with the goal;
-    without a line of fire the stop distance is 0.
-22. Ranged monsters pivot before they run when kiting (30 % pace until turned), instead of gliding backward for a quarter second.
-Audit status after these: hero checks pass for all 8 classes; 36 monster types pass except test artefacts; `anim-check` clean in every run.
-Looked at with my own eyes (Y:\shots\qa\anim\): a_npc*.png (elder holds the lantern pose, smith folds his arms, all turn to the hero),
-h_hero_*_idle|run|attack.png (run strides face the direction of travel; the blow's flash coincides with the swing; shots now leave the hand),
-m_mon*_walk|fight.png (skeletons clawing out of the ground, husks loping, robed cultists walking).
-23. **Vampiric mini-bosses could not be killed** (the affix healed 5 % of max life per bite; on a ×16-life mini-boss that is more than a hero of
-    its level deals between two bites — frost_d1 and crypt_d1 timed out with the boss going 59k → 67k → 57k for four minutes) → the heal is 18 % of
-    an ordinary monster's life of that level (never more than 5 % of its own).
-24. **Walking straight at a round prop stopped the walker dead** (radial push-out only; props and path points both sit on cell centres, so
-    head-on is the usual case — the campaign bot wedged beside the ember altar by a boss door) → `NavGrid.ResolveCircle` adds a tangential slide
-    on head-on contact.
-25. **Dead end: an object could wall off a one-cell passage** (the ember altar is put in the "most enclosed" cell near the boss door — in a
-    corridor dungeon that is the corridor itself; radius 0.75 + hero > half a cell, so the opened door could not be reached: sanctum_d2 timed
-    out, the campaign bot needed two teleports in sands_boss) → `Level.KeepsConnected(pos)` (does blocking this cell cut the level?); `WorldObjects.Block`
-    leaves an object walk-through when it would, and the altar's nook search avoids such cells.
-26. **Elite bruisers had 19× a normal monster's life** (tier ×5.5 on top of the def's own ×3.4: 60 s per marked elite at level 50, abyss_d2 ran out
-    of time) → for champions, elites and named leaders the tier factor is divided by √(def life factor).
-27. First levels: packs capped at 4 (level ≤ 2), 6 (≤ 4), 9 (≤ 8); elite ×3.5→5.5 and named-leader ×8→16 life grow over levels 1-10; story-boss life
-    ×0.6→1.0 over levels 1-10; monster hit 5 + 3.3·L (was 8 + 3.2·L), hero base life 130 + 24·L (was 90). A level-1 hunter bot died 8 times before
-    level 4 and 15 times by the first boss with the old numbers.
+## 動畫稽核（2026-11-15；起因是使用者回報「英雄沒有走路動畫」的錯誤，已由主程在 CharModel 中修正）
+我第一輪測試從沒在畫面上看過移動中的角色，機器人也完全沒有檢查動畫狀態，所以那個錯誤才會漏掉。現在：
+- `AnimCheck`（Actor.cs），永遠開啟：統計英雄 / 怪物自行移動、但其模型上沒有任何移動動畫片段在推進的秒數，
+  或腿部姿勢沒有變化的秒數、英雄站著不動卻播著跑步片段的秒數，以及沒有骨架或動畫播放器就建立的模型。
+  `Game.Quit` 會把這一行寫進每一份紀錄檔（`[anim] anim-check: …`），不乾淨時寫成 ERR，因此 run.ps1 會顯示它。
+- `--suite=anims`（TestSuite.Anims.cs）：動畫庫清點；程式碼、SkillDb、MonsterDb 以及首領招式清單中提到的每個片段都存在，且需要持續時
+  會循環；每個角色模型（英雄、形態、NPC、怪物、首領——共 40 個 id）都有骨架綁定，探測片段能帶動至少 90 % 的骨骼，並讓模型
+  離開綁定姿勢；從片段重新量測步幅表與出手時間表；城鎮居民會動；各職業：待機片段、跑步片段 + 腿部
+  擺動 + 速度 ÷ 步幅 + 面向、停下 → 待機、翻滾、每個技能都會播放其片段並回到待機、暈眩反應、死亡後保持倒地、復活；
+  各怪物類型：埋在地下的會靜躺然後爬起、走 / 跑片段、速度 ÷ 步幅、面向、攻擊片段、死亡片段。`--suite=anims:static` 是
+  其中 10 秒的部分；`--suite=anims:shots-town|shots-heroes|shots-monsters` 會拍特寫畫面。
+發現並修正：
+13. **特效從身體正中央冒出來**：骨架的骨骼名稱是 `hand_r`、`foot_l`、`Head`…；所有程式碼要的卻是 `DEF-hand.R`，這根骨骼從來
+    不存在，所以 `CharModel.BonePos` 一直回傳後備值（投射物起點、連鎖光束、怪物飛彈）→ `BoneIndex` 透過別名表解析兩種
+    寫法，對每個未知骨骼只警告一次；呼叫端現在改用 `hand_r`。
+14. **`Sword_Idle` 不會循環**（燼刃衛、荒靈行者的待機姿勢，以及首領的架式：播放 1.7 s 後定格，再突兀地重新開始）
+    → 建立動畫庫時將其標記為循環。
+15. **移動速度是用猜的**（英雄是 jog ÷ 5.2，怪物不論模型縮放都是 ÷ 4.6 或 ÷ 2.2；量測到的步幅在縮放 1 時為 walk
+    0.94、zombie walk 0.94、jog 5.36、sprint 8.0 m/s）→ `CharModel.Stride` + `Locomote(speed, clips…)`：挑選腳步與地面最貼合的
+    步態（播放速率限制在 0.5–2.4），並依模型大小縮放。體型大、速度慢的怪物與首領現在會快步走，而不是像在跑步機上
+    慢跑；腫脹飢骸改為走路（速度 2.9 → 2.3）。
+16. **遠程怪物風箏後退時仍面向英雄**（向前跑的動畫倒著播；forward·motion −0.3…−0.7）→ 改為轉身再跑。
+17. **人群把行走者往後推 / 待機的怪物會滑動**（分離推力最高可達每秒數公尺）→ 上限為行走者步速的 55 %，站立時
+    1.1 m/s；被人群或牆壁卡住的行走者改為待機，而不是原地跑步（英雄也一樣）。
+18. **攻擊沒有落在揮擊的時間點上**（26 個技能 / 怪物攻擊誤差超過 0.25 s：例如每第三下劍的基本攻擊用的是 2 s 的
+    `Sword_Regular_C`，在揮出之前就被切掉；標槍在手臂已經揮完 0.3 s 後才出現；腐泥巨怪的鉤擊在打中之前就結束了）
+    → `CharModel.Strike`（每個片段量測到的最快出手時間）+ `PlayAttack`：出手較晚的片段從蓄力中途開始播放，出手
+    較早的片段則拉長蓄力；首領在 `PlayWind` 中使用同一張表。rotspawn / frostbound 的攻擊片段已替換；fb_spin 放慢。
+19. **英雄可能卡在大型場景物件上**（`LineWalk` 只看格子類型，所以點擊移動走直線時會撞上樹木而停住）→ 大型場景物件
+    （r ≥ 0.85）會阻擋直線，A* 路徑會繞過它們，另有擠過去的後備方案。
+20. **怪物在硬直恢復時會再揮一次攻擊**（只要沒有東西在播放，`CharModel.Pause(false)` 就會呼叫 `Play()`，
+    而 Monster 每幀都會呼叫它：每個播完的單次片段都會重新開始）→ 解除暫停只會恢復被 `Pause(true)` 凍結的動畫。
+21. **遠程怪物需要繞過障礙物時會永遠站著不動**（`MoveToward` 拿停止距離——武器射程的 80 %——去和到下一個
+    *路徑點* 的距離比較，而不是和到目標的距離比較；另外還會在沒有射擊線的情況下停在射程內）→ 改為和目標比較；
+    沒有射擊線時停止距離為 0。
+22. 遠程怪物在風箏時會先轉身再跑（轉完之前以 30 % 步速移動），而不是倒退滑行四分之一秒。
+修正後的稽核狀態：英雄檢查在全部 8 個職業皆通過；36 種怪物類型除了測試假象之外全部通過；每次執行的 `anim-check` 都乾淨。
+親眼看過（Y:\shots\qa\anim\）：a_npc*.png（長老維持提燈姿勢，鐵匠雙手抱胸，全都會轉向英雄），
+h_hero_*_idle|run|attack.png（跑步的步伐朝向移動方向；攻擊的閃光與揮擊同時出現；射擊現在是從手部發出），
+m_mon*_walk|fight.png（骷髏從地底爬出、飢骸大步奔跑、穿長袍的教徒在行走）。
+23. **吸血頭目殺不死**（該詞綴每咬一口就回復最大生命的 5 %；對生命 ×16 的頭目來說，這比同等級英雄在兩口之間
+    能造成的傷害還多——frost_d1 與 crypt_d1 逾時，首領的生命在四分鐘內 59k → 67k → 57k 來回）→ 回復量改為該等級一般
+    怪物生命的 18 %（且絕不超過自身的 5 %）。
+24. **正面走向圓形場景物件會讓行走者完全停住**（只有徑向推出；場景物件與路徑點都位於格子中心，所以
+    正面碰撞是常態——主線機器人卡在首領之門旁的燼火祭壇邊）→ `NavGrid.ResolveCircle` 在正面接觸時加上切向滑動。
+25. **死路：物件可能把單格寬的通道堵死**（燼火祭壇會放在首領之門附近「最封閉」的格子——在走廊式地城裡
+    那就是走廊本身；半徑 0.75 + 英雄 > 半格，所以打開的門走不到：sanctum_d2
+    逾時，主線機器人在 sands_boss 需要傳送兩次）→ `Level.KeepsConnected(pos)`（擋住這一格會不會把關卡切斷？）；`WorldObjects.Block`
+    在會切斷時讓物件可穿越，祭壇的角落搜尋也會避開這類格子。
+26. **菁英重裝打手的生命是一般怪物的 19 倍**（在怪物定義本身的 ×3.4 之上再乘階級 ×5.5：50 級時每隻被標記的菁英要打 60 s，abyss_d2 時間
+    用完）→ 對精銳、菁英與具名領袖，階級倍率會除以 √(定義的生命倍率)。
+27. 前幾個等級：怪物群數量上限為 4（等級 ≤ 2）、6（≤ 4）、9（≤ 8）；菁英生命 ×3.5→5.5 與具名領袖生命 ×8→16 在 1-10 級間逐步成長；主線首領
+    生命在 1-10 級間 ×0.6→1.0；怪物一擊 5 + 3.3·L（原本是 8 + 3.2·L），英雄基礎生命 130 + 24·L（原本是 90）。以舊數值，1 級影獵手機器人在
+    4 級之前死了 8 次，到第一個首領時已死 15 次。
 
-Side-dungeon tours (`--tour`, level 30 forgebody / level 45 wildsoul, god mode counting deaths): frost_d2, crypt_d2 (CollectEmbers), mire_d1,
-sanctum_d1 (FreePrisoners), mire_d2, sands_d1, abyss_d1 (DestroyIdols), sands_d2 (SlayElites) all completed: objective → door → named boss → chest
-→ portal. frost_d1 / crypt_d1 failed on bug 23, sanctum_d2 on bug 25, abyss_d2 on bug 26 (re-run after the fixes: see below).
+支線地城巡迴（`--tour`，30 級鍛身者 / 45 級荒靈行者，上帝模式並計算死亡次數）：frost_d2、crypt_d2 (CollectEmbers)、mire_d1、
+sanctum_d1 (FreePrisoners)、mire_d2、sands_d1、abyss_d1 (DestroyIdols)、sands_d2 (SlayElites) 全部完成：目標 → 門 → 具名首領 → 寶箱
+→ 傳送門。frost_d1 / crypt_d1 因錯誤 23 失敗，sanctum_d2 因錯誤 25，abyss_d2 因錯誤 26（修正後重跑：見下文）。
 
-## Progress log (so work survives an interruption)
-- 2026-11-15 09:50 paused; resumed 15:50. From now on every test run is a foreground command (`Y:\tools\qa\qarun.sh` waits for the run lock only
-  while the run still fits in its deadline; no detached queues).
-- Results that existed at the pause: campaign regression acts 1-5 with the new balance (bosses 62-81 s, normal 2.3 s, renown tiers 1-2 granted in
-  four regions, 0 errors, anim-check clean); windowed 5-minute soak in mire (60 fps steady, nodes 4867 → 3668, memory 278 → 269 MB, PrtSc flag
-  path and F12 key path each wrote a PNG under Pictures\AshenAbyss); `--suite=systems` 187/187 incl. the new town-services check
-  (elder → dialogue, smith / merchant / occultist / jeweler / stash → vendor, waypoint → map, tier statue → tier, rift stone → rift);
-  re-run of frost_d1 and crypt_d1 after bug 23: both completed.
-- Found from that partial batch and fixed right after the resume:
-28. Bug 25's fix was incomplete: the connectivity test ran while the boss door was sealed, so the stub of corridor in front of the door looked
-    like a harmless dead end and the altar could still plug it (sanctum_d2 again) → sealed door cells count as passable in `KeepsConnected`.
-29. Bug 26's fix did nothing for named leaders (the mini-boss branch reset the multiplier after the division) → order corrected.
-30. `AnimCheck` false positive (0.9 s "frozen legs" in the windowed soak): a hero who stops and starts restarts the run clip, so equal samples do
-    not mean a frozen pose → the probe is reset whenever movement was interrupted.
-- Still to run after the resume: full `--suite=anims`; dungeon 5-minute soak; rift:1 and rift:12; the four dungeons of bugs 23/25/26 once more;
-  natural level-1 campaign with the gentler first levels; campaign chunk + `--load=0` continuation to the ending; objects / save suites windowed
-  (loot-beam and death-panel pictures); ui-tour; skills regression.
-- 16:00-16:10 (foreground runs): `--suite=anims` full: 121 pass / 3 fail — the 3 were one unreachable spawn spot in that random world (the test
-  now picks spots it can path from); `--suite=anims:monsters` on two worlds: 50/50 (all 36 monster and minion types rise / walk / attack / die
-  with the right clips, speed ÷ stride 1.0, reactions: flinch, stun, freeze-hold, thaw, death, crumble). sanctum_d2 after bug 28: completed in
-  252 s game time, 0 unstuck, named knight 54k life killed in 58 s (was 87k), anim-check clean.
-- Tools: `Y:\tools\qa\qawait.sh [s]` waits in the foreground for the shared run lock; `qarun.sh` never outlives QA_DEADLINE. This environment
-  moves any command past ~180 s to the background, so each run is kept under ~110 s of game (`--speed` covers the game time).
-- Private harness save slots 90-99 (`--slot=97`, `--load=97`): never listed by the menu; used to chain a campaign over several short runs.
-- 16:10-16:30 (foreground runs):
-  - abyss_d2 after bug 29: completed (SlayElites → door → named boss → chest → portal).
-  - `--area=rift:1` (level 50, tier 3): progress bar → guardian (mire_bloated, 120 863 life, 105.8 s) → `[rift] tier 1 finished success=True
-    timeLeft=319s best=1`; paragon levels 1-3 from rift XP, glyphs woke, +3 tempering attempts.
-  - Lead's hand-over items: (1) `Loot.FloatText` pixel size 0.0085 → 0.0039 (same on-screen size as damage numbers); (2) `Level.DungeonPhase`
-    { None, Objective, Boss, Cleared } + `Level.Phase`, `BossPending`, `Cleared` (`ObjectiveDone` keeps its old meaning; TestBot uses the new
-    ones; Hud.cs:475 and MapUi.cs:1482 still read `ObjectiveDone` — for their owners); (4) the UI / gfx test switches are in `Game.KnownSwitches`.
-  - (3) Town people: new numeric check in `--suite=anims` — every NPC's pose signature changes over 0.6 s, also with the quest log open and the
-    game paused: 8/8 animate (elder Idle_Lantern_Loop, smith and one villager Idle_FoldArms_Loop, merchant and jeweler Idle_Talking_Loop,
-    occultist and two villagers Idle_Loop). The T-pose in the UI reviewer's 08:52 screenshots predates the lead's `_Loop` alias fix in CharModel.
-    hero_forgebody: `hero_forgebody.glb` was written 08:39 but Godot imported it at 09:08 (date of its `.import`); the class-selection
-    screenshot was taken 08:52, so `ResourceLoader.Exists` was false and the stand-in was shown. Name mapping is right (MainMenu.cs:2296
-    `CharModel.Create("hero_" + Names.ClassKey(c))`). **Still without `.import` (need one Godot import pass, by the lead):**
-    `hero_lampknight.glb`, `npc_elder.glb` → they still show stand-ins.
-  - `--suite=anims` full, 3× speed: 123 pass / 2 fail, both the same thing →
-31. **A leaping monster dropped into its idle pose for the last tenth of its flight** (`NinjaJump_Start` is 0.97 s, played at 1.5× = 0.65 s,
-    the leap takes 0.75 s) → the leap switches to `NinjaJump_Idle_Loop` at 80 % of the flight (Monster.TrySpecial, Leaper).
-- 16:30-16:36 (foreground runs):
-  - `--suite=anims:monsters` after bug 31: 50/50.
-  - `--area=rift:12` (level 50, nine rares, tier 3, paragon 120, 6× speed): `[rift] tier 12: … mul=3.90` → `tier 12 timed out at progress 44%`
-    (normal TTK 56 s, 58 god-saves): the time-out path works; tier 12 is out of reach for a hero in plain rares, as a ladder should be.
-  - Dungeon soak, crypt_d2, soulbinder with minions, 300 s of game at 3× (headless): 145 fps flat, nodes 1574 → 733 as the dungeon empties,
-    memory 1031 → 1039 MB (headless keeps textures in RAM; windowed runs show ~240-290 MB), 0 errors, cleared at 280 s game time, 0 deaths,
-    0 unstuck; leaving through the exit into the still-locked crypt was refused by quest gating (correct), bot went back to town.
-  - `--quit-at` counts play time (loading excluded): leave ≥ 14 s between `--quit-at` and the run time-out or the final summary is cut off.
-  - Ten models have no `.import` at 16:35 (artists are writing them now): boss_bishop, boss_gravedigger, boss_mire_mother, boss_rimelord,
-    boss_sand_tyrant, hero_lampknight, mon_brass_sentinel, npc_elder, npc_merchant, npc_smith → stand-ins until Godot imports them; re-run
-    `--suite=anims:static` (30 s) after the import to check their rigs.
-- 16:36-17:00 (foreground runs): natural play from level 1 (no gift gear, bot wears what drops, 6× speed):
-  - hunter, no god mode: 1 death before level 4 (was 8), level 4 after 153 s; then 5 deaths at the first story boss (the bot neither dodges
-    telegraphs nor clears the packs it drags into the arena); boss fight needs ~110 s at 18 dps.
-  - emberblade with honest god mode on private slot 97, chained over two runs with `--load=97` (load continuity works: quest state, level,
-    area, waypoints carried over): levels 2-7 at 45 / 97 / 122 / 213 / 287 / 468 s; boss 1 at level 4 in 46.6 s; frost stronghold leader
-    (frost_knight lv8, 3676 life) 140.8 s; boss 2 (rimelord lv9, 7564 life) 158.8 s; normal TTK 5.9 s; 8 god-saves in ten minutes of frost.
-    → a hero in found gear does ~0.55× `Balance.ExpectedDps` at levels 4-10 (the dps suite's nine rares do 0.84-1.8×).
-32. Balance: `ExpectedDps` last factor `clamp(0.8 + 0.024·L)` → `clamp(0.56 + 0.032·L, 0.56, 2)`: monster life −28 % at level 1, −22 % at 5, −15 % at 10,
-    −6 % at 20, equal at 30, +4 % at 40, equal from 45. Story-boss young factor on life 0.6→1 became 0.8→1 (the curve now does that job), and
-    story-boss damage ×0.75→1 over levels 1-10.
-- 17:00-17:20 (foreground runs): **natural campaign from level 1 to the ending, chained over 11 runs through private slot 97**
-  (`--new=emberblade --slot=97 --bot --campaign --god --speed=6`, then `--load=97 …` ten times; every load restored level, area, quests, renown,
-  waypoints; 0 errors in all 11 logs, anim-check clean in all):
-  | act | boss (level, life) | fight | hero level | normal TTK | god-saves in that run |
+## 進度紀錄（讓工作在中斷後仍能延續）
+- 2026-11-15 09:50 暫停；15:50 恢復。從現在起，每次測試執行都是前景命令（`Y:\tools\qa\qarun.sh` 只在執行仍能
+  在期限內完成時才等待執行鎖；不使用脫離的佇列）。
+- 暫停時已有的結果：以新平衡跑的主線回歸測試第 1-5 章（首領 62-81 s，一般怪 2.3 s，在
+  四個區域獲得名望階級 1-2，0 個錯誤，anim-check 乾淨）；在 mire 的 5 分鐘視窗模式長跑測試（穩定 60 fps，節點 4867 → 3668，記憶體 278 → 269 MB，PrtSc 旗標
+  路徑與 F12 按鍵路徑各在 Pictures\AshenAbyss 下寫出一張 PNG）；`--suite=systems` 187/187，含新的城鎮服務檢查
+  （長老 → 對話，鐵匠 / 行商 / 祕術師 / 寶石匠 / 倉庫 → 商人面板，燼塔路標 → 地圖，界階石像 → 世界階級，裂隙石 → 裂隙）；
+  錯誤 23 修正後重跑 frost_d1 與 crypt_d1：兩者皆完成。
+- 從那批部分結果中發現、並在恢復後立即修正的：
+28. 錯誤 25 的修正不完整：連通性測試是在首領之門封閉時執行的，所以門前那一小段走廊看起來
+    像是無害的死巷，祭壇仍可能把它堵住（sanctum_d2 又發生）→ 在 `KeepsConnected` 中，封閉的門格視為可通行。
+29. 錯誤 26 的修正對具名領袖完全沒作用（頭目分支在除法之後又把倍率重設了）→ 順序已更正。
+30. `AnimCheck` 誤報（視窗模式長跑測試中出現 0.9 s 的「腿部凍結」）：英雄停下又起步時會重新開始跑步片段，所以取樣相同並
+    不代表姿勢凍結 → 只要移動被中斷，探測就會重設。
+- 恢復後仍待執行：完整的 `--suite=anims`；地城 5 分鐘長跑測試；rift:1 與 rift:12；錯誤 23/25/26 的四座地城再跑一次；
+  以較溫和的前期等級從 1 級自然跑主線；主線片段 + `--load=0` 接續到結局；以視窗模式跑 objects / save 套件
+  （戰利品光柱與死亡面板的畫面）；ui-tour；技能回歸測試。
+- 16:00-16:10（前景執行）：完整 `--suite=anims`：121 通過 / 3 失敗——這 3 個都是那個隨機世界中一個無法抵達的生成點（測試
+  現在會挑選它能找到路徑的點）；`--suite=anims:monsters` 在兩個世界上：50/50（全部 36 種怪物與召喚物類型的爬起 / 行走 / 攻擊 / 死亡
+  都用了正確的片段，速度 ÷ 步幅 1.0，反應：退縮、暈眩、冰凍定格、解凍、死亡、碎裂）。錯誤 28 修正後的 sanctum_d2：在遊戲時間
+  252 s 內完成，0 次脫困，生命 54k 的具名騎士在 58 s 內被擊殺（原本是 87k），anim-check 乾淨。
+- 工具：`Y:\tools\qa\qawait.sh [s]` 會在前景等待共用的執行鎖；`qarun.sh` 絕不會超過 QA_DEADLINE。這個環境
+  會把超過約 180 s 的命令移到背景，所以每次執行都控制在遊戲時間約 110 s 以內（遊戲時間由 `--speed` 補足）。
+- 測試框架專用的私人存檔欄位 90-99（`--slot=97`、`--load=97`）：選單永遠不會列出；用來把一次主線流程串接成數次短執行。
+- 16:10-16:30（前景執行）：
+  - 錯誤 29 修正後的 abyss_d2：完成（SlayElites → 門 → 具名首領 → 寶箱 → 傳送門）。
+  - `--area=rift:1`（50 級，階級 3）：進度條 → 裂隙守衛（mire_bloated，生命 120 863，105.8 s）→ `[rift] tier 1 finished success=True
+    timeLeft=319s best=1`；裂隙經驗帶來燼紋等級 1-3，燼符甦醒，+3 次淬鍊機會。
+  - 主程交辦事項：(1) `Loot.FloatText` 像素大小 0.0085 → 0.0039（與傷害數字在畫面上的大小相同）；(2) `Level.DungeonPhase`
+    { None, Objective, Boss, Cleared } + `Level.Phase`、`BossPending`、`Cleared`（`ObjectiveDone` 保留原本的意義；TestBot 使用新的
+    欄位；Hud.cs:475 與 MapUi.cs:1482 仍讀取 `ObjectiveDone`——交給它們的擁有者）；(4) UI / 圖形測試開關都在 `Game.KnownSwitches` 中。
+  - (3) 城鎮居民：`--suite=anims` 新增數值檢查——每個 NPC 的姿勢特徵值在 0.6 s 內都會改變，開著任務日誌且
+    遊戲暫停時也一樣：8/8 會動（長老 Idle_Lantern_Loop，鐵匠與一位村民 Idle_FoldArms_Loop，行商與寶石匠 Idle_Talking_Loop，
+    祕術師與兩位村民 Idle_Loop）。UI 審查者 08:52 截圖中的 T 字姿勢，早於主程在 CharModel 中修正 `_Loop` 別名的時間。
+    hero_forgebody：`hero_forgebody.glb` 在 08:39 寫入，但 Godot 在 09:08 才匯入（依其 `.import` 的日期）；職業選擇
+    畫面的截圖是在 08:52 拍的，所以 `ResourceLoader.Exists` 為 false，顯示的是替代模型。名稱對應是正確的（MainMenu.cs:2296
+    `CharModel.Create("hero_" + Names.ClassKey(c))`）。**仍然沒有 `.import`（需要主程跑一次 Godot 匯入）：**
+    `hero_lampknight.glb`、`npc_elder.glb` → 它們仍顯示替代模型。
+  - 完整 `--suite=anims`，3 倍速：123 通過 / 2 失敗，兩者是同一件事 →
+31. **跳躍的怪物在飛行的最後十分之一切回待機姿勢**（`NinjaJump_Start` 長 0.97 s，以 1.5× 播放 = 0.65 s，
+    而跳躍需要 0.75 s）→ 跳躍在飛行到 80 % 時切換為 `NinjaJump_Idle_Loop`（Monster.TrySpecial，Leaper）。
+- 16:30-16:36（前景執行）：
+  - 錯誤 31 修正後的 `--suite=anims:monsters`：50/50。
+  - `--area=rift:12`（50 級，九件稀有裝備，階級 3，燼紋 120，6 倍速）：`[rift] tier 12: … mul=3.90` → `tier 12 timed out at progress 44%`
+    （一般怪 TTK 56 s，58 次 god-saves）：逾時流程正常運作；穿一般稀有裝備的英雄打不到第 12 層，這正是天梯該有的樣子。
+  - 地城長跑測試，crypt_d2，帶召喚物的喚魂師，3 倍速跑 300 s 遊戲時間（無視窗模式）：穩定 145 fps，隨著地城清空節點 1574 → 733，
+    記憶體 1031 → 1039 MB（無視窗模式會把材質留在 RAM 中；視窗模式約 240-290 MB），0 個錯誤，遊戲時間 280 s 清空，0 次死亡，
+    0 次脫困；從出口離開進入仍上鎖的 crypt 時被任務門檻拒絕（正確），機器人回到城鎮。
+  - `--quit-at` 計算的是遊玩時間（不含載入）：`--quit-at` 與執行逾時之間至少要留 14 s，否則最後的摘要會被截斷。
+  - 16:35 時有十個模型沒有 `.import`（美術正在製作中）：boss_bishop、boss_gravedigger、boss_mire_mother、boss_rimelord、
+    boss_sand_tyrant、hero_lampknight、mon_brass_sentinel、npc_elder、npc_merchant、npc_smith → 在 Godot 匯入之前都是替代模型；匯入後重跑
+    `--suite=anims:static`（30 s）檢查它們的骨架綁定。
+- 16:36-17:00（前景執行）：從 1 級自然遊玩（沒有贈送裝備，機器人穿掉落的裝備，6 倍速）：
+  - 影獵手，無上帝模式：4 級前死亡 1 次（原本是 8 次），153 s 時達到 4 級；之後在第一個主線首領死了 5 次（機器人既不閃避
+    預警標示，也不清理它拖進競技場的怪物群）；首領戰以 18 dps 需要約 110 s。
+  - 燼刃衛，在私人欄位 97 上使用誠實的上帝模式，以 `--load=97` 串接兩次執行（讀檔延續正常：任務狀態、等級、
+    區域、燼塔路標都有延續）：2-7 級分別在 45 / 97 / 122 / 213 / 287 / 468 s；首領 1 在 4 級時 46.6 s；frost 據點領袖
+    （frost_knight lv8，生命 3676）140.8 s；首領 2（rimelord lv9，生命 7564）158.8 s；一般怪 TTK 5.9 s；在 frost 的十分鐘內 8 次 god-saves。
+    → 穿掉落裝備的英雄在 4-10 級時約為 0.55× `Balance.ExpectedDps`（dps 套件的九件稀有裝備則是 0.84-1.8×）。
+32. 平衡：`ExpectedDps` 最後一個係數 `clamp(0.8 + 0.024·L)` → `clamp(0.56 + 0.032·L, 0.56, 2)`：怪物生命在 1 級 −28 %、5 級 −22 %、10 級 −15 %、
+    20 級 −6 %、30 級持平、40 級 +4 %、45 級起持平。主線首領生命的低等級係數 0.6→1 改為 0.8→1（現在由曲線負責這件事），且
+    主線首領傷害在 1-10 級間 ×0.75→1。
+- 17:00-17:20（前景執行）：**從 1 級自然跑主線直到結局，透過私人欄位 97 串接 11 次執行**
+  （`--new=emberblade --slot=97 --bot --campaign --god --speed=6`，接著 `--load=97 …` 十次；每次讀檔都還原了等級、區域、任務、名望、
+  燼塔路標；全部 11 份紀錄檔 0 個錯誤，anim-check 全部乾淨）：
+  | 章節 | 首領（等級，生命） | 戰鬥 | 英雄等級 | 一般怪 TTK | 該次執行的 god-saves |
   |---|---|---|---|---|---|
-  | 1 wastes | gravedigger (4, 1 968) | 46.6 s | 4 | - | (summary cut) |
-  | 2 frost | rimelord (9, 7 564) | 158.8 s | 9-10 | 5.9 s | 8 — before balance change 32 |
-  | 3 crypt | bishop (13, 12 667) | 65.5 s | 13-14 | - | (summary cut) |
-  | 4 mire | mire mother (19, 28 231) | 71.3 s | 19 | 1.6-2.7 s | 0 + 3 |
-  | 5 sands | sand tyrant (27, 67 201) | 94.0 s | 25-26 | 3.4 s | 2 + 0 |
-  | 6 sanctum | grand hush (34, 123 755) | 114.9 s | 32-33 | 3.1-4.0 s | 0 + 0 |
-  | 7 abyss | Osaros (41, 237 953) | 65.6 s | 39-40 | 3.1-6.8 s | 2 + 2 |
-  Ending: `[quest] ending narration joined to the epilogue`, `main_abyss complete`, world tier 2 unlocked, level 42 after ~73 min of game time.
-  Stronghold leaders took 50-140 s (frost_knight 140.8, knight 50.3, rotspawn 89.0, brass_sentinel 67.3, knight 86.5, brute 126.7).
-  The story-only hero falls behind the regions: level 5 → frost (8), 21 → sands (26), 27 → sanctum (33), 34 → abyss (40).
-33. Balance after that chain: named leaders ×16 → ×13 a normal monster's life (before the bruiser correction); catch-up experience for prey
-    above the hero's level +4 %/level (max +30 %) → +10 %/level (max +80 %); Osaros life factor 70 → 95 (the last boss was the shortest fight
-    after the first: 65.6 s here, 55 s in the level-50 rare-gear run).
-- Audio note for its owner: `[audio] voice 'ending_01' has no recording, using a timed stand-in` (WRN) during the ending.
-- 17:20-17:35 (foreground runs): natural hunter from level 1 again (no god mode), twice:
-  - after balance change 32: 0 deaths before the boss, normal TTK 2.8 s, elite 10.8 s, level 4 at 123 s — but three deaths at the first boss, each
-    47-67 s in: `hu_shot` hit for 3.4 and `hu_pierce` for 20.9, i.e. the hero still held the starter weapon (power 10) at level 4 and did 17 dps.
-  - next run (a weapon dropped by chance): boss 1 killed at the first attempt in 47.7 s; level 7 after 371 s; 1 death in wastes, 2 in frost
-    (level 7 against level-8 packs); normal TTK 3.0 s, champion 8.9 s.
-34. **A hero could reach the first boss with the starter weapon** (weapon damage is the base of every skill; a level-4 weapon is 2.4× the starter) →
-    weapon pity in `Loot.RollDrops`: when the held weapon's power is under 6 × level, the next story boss or named leader — and every second
-    elite — drops a weapon for the class at the hero's level, magic or better (`[loot] weapon pity: …`).
-- 17:35-17:50 (foreground runs; new wrapper `Y:\tools\qa\qarun2.ps1 -GameArgs … -Timeout n -LockWait n [-Headless]`: it queues on the run lock like
-  every other caller, but only for LockWait seconds, then calls run.ps1 in-process — the probe-and-sleep of qarun.sh was starved by blocking waiters):
-  - `--suite=objects` windowed: 18/18; loot picture `Y:\shots\qa\objects_loot.png` (labels and beams for common / magic / rare / legendary and a
-    gem all read well; four toasts + the area title cover the hero in the middle of the screen), `Y:\shots\qa\objects.png`.
-  - `--suite=save` windowed: 32/32, user saves put back; `Y:\shots\qa\save_death.png` (one second after death: title and flavour line, no button
-    yet, the HUD's area title still shines faintly through the black).
-  - `--ui-tour` windowed (astromancer 30): all 17 panels open, 0 errors, 0 warnings; pictures in `Y:\shots\qa\ui\tour_*.png`.
-    Rift panel correctly locked before the ending ("終結寂主之後，深淵裂隙才會開啟").
-35. **Town map: service markers floated on black fog** (`tour_map.png`: 29 % explored, elder / smith / merchant / tier statue / rift stone labels
-    over unexplored ground) → the town is revealed completely on arrival (Level.BuildNow / Reveal).
-- Seen in other engineers' windowed logs (for the rendering owner): video memory climbs with every theme visited and does not come back —
-  town 2.1 GB → after one dungeon 3.1 GB, still 3.1 GB back in town (game_20261115_174722.log); the 1440p quality-3 tours reach 4.2 GB after
-  five regions and run at 10-36 fps (game_20261115_161603.log, 161825.log).
-- 17:52 lead's notes on the finished models, done at once:
-  - elder stays on `Idle_Lantern_Loop` always (nothing in the code switches a named NPC's clip; documented at `NpcDefs`); occultist
-    `Idle_Loop` → `Idle_FoldArms_Loop`; smith already `Idle_FoldArms_Loop`; merchant `Idle_Talking_Loop`.
-  - lampknight: idle is `Idle_Shield_Loop`; lk_bash `Shield_OneShot`, lk_aegis `Sword_Block`, lk_charge `Shield_Dash` already; the two buffs that
-    used the two-handed `Idle_Rail_Call` now use shield-friendly clips: lk_aura → `Sword_Block`, lk_dawn → `Shield_OneShot`.
-    (lk_strike keeps the sword swings, lk_smite `Spell_Simple_Shoot`, lk_lance `OverhandThrow`: right-hand clips.)
-  - new audit check: elder / smith / occultist / merchant play their clip before, during and after a talk.
-  - `--suite=anims` full run on the re-imported models (17:55): **126 pass / 0 fail, 0 errors, 0 warnings; 40 character models rigged,
-    0 stand-ins left**; NPCs animate behind a panel 8/8.
-- 18:07 regression after all of today's changes: `--suite=systems` 187/187, 0 errors, 0 warnings.
-- 18:00-18:10 the shared build was broken four times by half-finished UI edits (MapUi.cs, DialogueUi.cs, QuestLogUi.cs, VendorUi.cs/ItemUi) and the
-  run lock is contended (waits of 30-110 s): the windowed close-ups of the final NPC / lampknight models are still to be taken.
-- 18:10 natural hunter from level 1 after all changes (no god mode, 6×, headless): `[loot] weapon pity: the hero's weapon has power 10 at level 3,
-  husk_bloated drops one`; boss 1 killed at the first attempt in 48.7 s (hero at 24 % life); levels 2-7 at 45 / 103 / 122 / 198 / 212 / 264 s;
-  deaths: 1 in wastes (level 2), 1 in frost (level 7); normal TTK 2.7 s, champion 8.3 s; 1.9 life bars lost per minute; anim-check clean; 0 errors.
-- 18:17 `--suite=anims:shots-town` windowed with the final models, looked at: `Y:\shots\qa\anim_npc0_elder.png` (lantern hangs from the right
-  hand, Idle_Lantern_Loop), `anim_npc1_smith.png` (arms folded, hammer on the shoulder), `anim_npc3_occultist.png` (hooded, arms folded) — as the
-  lead specified. Log: every NPC `playing=True`, off-rest 1.5-7.6.
-- 18:28 `--suite=anims:shots-hero-lampknight` (new: one class, idle / run / attack and every bar skill in mid-cast), looked at:
-  `Y:\shots\qa\anim_hero_lampknight_idle.png` (final model, shield on the left arm held in front, Idle_Shield_Loop),
-  `…_lk_aura.png` (guard pose, Sword_Block), `…_lk_bash.png`, `…_lk_aegis.png`, `…_lk_charge.png`, `…_lk_dawn.png` (Shield_OneShot; the cast
-  burst whites out the whole close-up frame — for the effects owner).
-- 18:34 regression `--suite=skills:lampknight,hunter:1,25`: 18/18. Whole project compiles (0 errors) at 18:36. Private slots 96/97 deleted.
+  | 1 wastes 灰燼荒原 | 掘墓者・葛魯姆（4，1 968） | 46.6 s | 4 | - | （摘要被截斷） |
+  | 2 frost 霜脊隘口 | 霜骸領主・赫爾蒙（9，7 564） | 158.8 s | 9-10 | 5.9 s | 8 —— 平衡變更 32 之前 |
+  | 3 crypt 沉眠墓窟 | 腐骨主教・瑪爾薩（13，12 667） | 65.5 s | 13-14 | - | （摘要被截斷） |
+  | 4 mire 瘴泣沼澤 | 沼母・艾絲珂（19，28 231） | 71.3 s | 19 | 1.6-2.7 s | 0 + 3 |
+  | 5 sands 鏽砂廢都 | 鏽砂暴君・伊薩克（27，67 201） | 94.0 s | 25-26 | 3.4 s | 2 + 0 |
+  | 6 sanctum 寂滅聖城 | 寂滅大導師・賽倫（34，123 755） | 114.9 s | 32-33 | 3.1-4.0 s | 0 + 0 |
+  | 7 abyss 燼淵 | 寂主・奧薩洛斯（41，237 953） | 65.6 s | 39-40 | 3.1-6.8 s | 2 + 2 |
+  結局：`[quest] ending narration joined to the epilogue`、`main_abyss complete`，世界階級 2 解鎖，遊戲時間約 73 分鐘後達到 42 級。
+  據點領袖花了 50-140 s（frost_knight 140.8、knight 50.3、rotspawn 89.0、brass_sentinel 67.3、knight 86.5、brute 126.7）。
+  只跑主線的英雄等級會落後於區域：5 級 → frost（8）、21 級 → sands（26）、27 級 → sanctum（33）、34 級 → abyss（40）。
+33. 那次串接之後的平衡：具名領袖生命 ×16 → 一般怪物的 ×13（在重裝打手修正之前）；擊殺等級高於英雄的獵物時，追趕經驗
+    每級 +4 %（最多 +30 %）→ 每級 +10 %（最多 +80 %）；奧薩洛斯（Osaros）生命倍率 70 → 95（最終首領是除了第一場之外
+    最短的戰鬥：這裡 65.6 s，在 50 級稀有裝備的執行中 55 s）。
+- 給音訊擁有者的註記：結局期間出現 `[audio] voice 'ending_01' has no recording, using a timed stand-in`（WRN）。
+- 17:20-17:35（前景執行）：再次從 1 級自然跑影獵手（無上帝模式），兩次：
+  - 平衡變更 32 之後：首領之前 0 次死亡，一般怪 TTK 2.8 s，菁英 10.8 s，123 s 時達到 4 級——但在第一個首領死了三次，每次都在
+    開打 47-67 s 時：`hu_shot` 一擊 3.4、`hu_pierce` 一擊 20.9，也就是說英雄在 4 級時仍拿著初始武器（威力 10），只有 17 dps。
+  - 下一次執行（碰巧掉了一把武器）：首領 1 第一次挑戰就在 47.7 s 內擊殺；371 s 後達到 7 級；在 wastes 死亡 1 次，在 frost 死亡 2 次
+    （7 級對上 8 級的怪物群）；一般怪 TTK 3.0 s，精銳 8.9 s。
+34. **英雄可能拿著初始武器打到第一個首領**（武器傷害是所有技能的基礎；4 級武器是初始武器的 2.4 倍）→
+    在 `Loot.RollDrops` 中加入武器保底：當手上武器的威力低於 6 × 等級時，下一個主線首領或具名領袖——以及每第二隻
+    菁英——會掉落一把符合英雄職業與等級、魔法品質以上的武器（`[loot] weapon pity: …`）。
+- 17:35-17:50（前景執行；新的包裝腳本 `Y:\tools\qa\qarun2.ps1 -GameArgs … -Timeout n -LockWait n [-Headless]`：它和其他
+  呼叫者一樣在執行鎖上排隊，但最多只等 LockWait 秒，然後在同一行程中呼叫 run.ps1——qarun.sh 的「探測後休眠」被阻塞式等待者搶得永遠輪不到）：
+  - 視窗模式 `--suite=objects`：18/18；戰利品畫面 `Y:\shots\qa\objects_loot.png`（普通 / 魔法 / 稀有 / 傳奇物品與一顆
+    寶石的標籤與光柱都很清楚；四則浮動通知 + 區域標題擋住了畫面中央的英雄）、`Y:\shots\qa\objects.png`。
+  - 視窗模式 `--suite=save`：32/32，使用者存檔已放回；`Y:\shots\qa\save_death.png`（死亡一秒後：標題與風味文字，按鈕
+    還沒出現，HUD 的區域標題仍隱約透過黑幕發亮）。
+  - 視窗模式 `--ui-tour`（30 級星術師）：全部 17 個面板都能開啟，0 個錯誤，0 個警告；畫面在 `Y:\shots\qa\ui\tour_*.png`。
+    裂隙面板在結局之前正確上鎖（「終結寂主之後，深淵裂隙才會開啟」）。
+35. **城鎮地圖：服務標記浮在黑色迷霧上**（`tour_map.png`：探索度 29 %，長老 / 鐵匠 / 行商 / 界階石像 / 裂隙石的標籤
+    位於未探索的地面上）→ 城鎮在抵達時就完全揭露（Level.BuildNow / Reveal）。
+- 在其他工程師的視窗模式紀錄檔中看到的（給算繪擁有者）：每造訪一個主題，顯示卡記憶體就上升一次且不會回落——
+  城鎮 2.1 GB → 跑完一座地城後 3.1 GB，回到城鎮仍是 3.1 GB（game_20261115_174722.log）；1440p 品質 3 的巡迴在跑完
+  五個區域後達到 4.2 GB，且只有 10-36 fps（game_20261115_161603.log、161825.log）。
+- 17:52 主程針對完成模型的註記，立即處理：
+  - 長老永遠停在 `Idle_Lantern_Loop`（程式碼中沒有任何東西會切換具名 NPC 的片段；已在 `NpcDefs` 註明）；祕術師
+    `Idle_Loop` → `Idle_FoldArms_Loop`；鐵匠原本就是 `Idle_FoldArms_Loop`；行商 `Idle_Talking_Loop`。
+  - 誓燈騎士：待機為 `Idle_Shield_Loop`；lk_bash `Shield_OneShot`、lk_aegis `Sword_Block`、lk_charge `Shield_Dash` 原本就是；原本
+    使用雙手 `Idle_Rail_Call` 的兩個增益技能，現在改用適合持盾的片段：lk_aura → `Sword_Block`，lk_dawn → `Shield_OneShot`。
+    （lk_strike 保留劍的揮擊，lk_smite `Spell_Simple_Shoot`，lk_lance `OverhandThrow`：都是右手片段。）
+  - 新的稽核檢查：長老 / 鐵匠 / 祕術師 / 行商在對話之前、之中與之後都會播放自己的片段。
+  - 以重新匯入的模型跑完整 `--suite=anims`（17:55）：**126 通過 / 0 失敗，0 個錯誤，0 個警告；40 個角色模型都有骨架綁定，
+    0 個替代模型**；NPC 在面板後方仍會動 8/8。
+- 18:07 套用今天所有變更後的回歸測試：`--suite=systems` 187/187，0 個錯誤，0 個警告。
+- 18:00-18:10 共用的建置被做到一半的 UI 修改弄壞了四次（MapUi.cs、DialogueUi.cs、QuestLogUi.cs、VendorUi.cs/ItemUi），而且
+  執行鎖搶得很兇（等待 30-110 s）：最終版 NPC / 誓燈騎士模型的視窗模式特寫仍待拍攝。
+- 18:10 所有變更後從 1 級自然跑影獵手（無上帝模式，6 倍速，無視窗模式）：`[loot] weapon pity: the hero's weapon has power 10 at level 3,
+  husk_bloated drops one`；首領 1 第一次挑戰就在 48.7 s 內擊殺（英雄剩 24 % 生命）；2-7 級分別在 45 / 103 / 122 / 198 / 212 / 264 s；
+  死亡：wastes 1 次（2 級），frost 1 次（7 級）；一般怪 TTK 2.7 s，精銳 8.3 s；每分鐘損失 1.9 條生命；anim-check 乾淨；0 個錯誤。
+- 18:17 以最終模型在視窗模式跑 `--suite=anims:shots-town`，已親眼確認：`Y:\shots\qa\anim_npc0_elder.png`（提燈掛在右
+  手上，Idle_Lantern_Loop）、`anim_npc1_smith.png`（雙手抱胸，鐵鎚扛在肩上）、`anim_npc3_occultist.png`（戴兜帽，雙手抱胸）——與
+  主程的規格一致。紀錄：每個 NPC 都是 `playing=True`，偏離靜止姿勢 1.5-7.6。
+- 18:28 `--suite=anims:shots-hero-lampknight`（新功能：單一職業，待機 / 跑步 / 攻擊以及技能列上每個技能的施放中途），已親眼確認：
+  `Y:\shots\qa\anim_hero_lampknight_idle.png`（最終模型，盾牌在左臂上舉在身前，Idle_Shield_Loop）、
+  `…_lk_aura.png`（防禦姿勢，Sword_Block）、`…_lk_bash.png`、`…_lk_aegis.png`、`…_lk_charge.png`、`…_lk_dawn.png`（Shield_OneShot；施放
+  時的爆發光讓整個特寫畫面一片白——交給特效擁有者）。
+- 18:34 回歸測試 `--suite=skills:lampknight,hunter:1,25`：18/18。18:36 整個專案編譯成功（0 個錯誤）。私人欄位 96/97 已刪除。
 
-## State at hand-over (2026-11-15 18:40)
-Verified today on the final code: anims 126/0 (40 models, 0 stand-ins), systems 187/0, objects 18/0, save 32/0, skills (lampknight, hunter) 18/0,
-ui-tour 17 panels, natural campaign level 1 → ending over 11 chained runs (0 errors), rift:1 success and rift:12 time-out, dungeon soak, all 14 side
-dungeons, natural hunter start (first boss at the first attempt).
-Not re-run after balance changes 32-34: the full 512-test skills suite (last full pass before them), the dps tables above (monster life below
-level 30 is now 6-28 % lower, so the ratios there read higher: level-5 median ≈ 1.8×, level 15 ≈ 1.5×), a windowed five-minute soak.
-Not tested at all: real keyboard / mouse / pad input (the bot drives the public API; PrtSc and F12 go through a simulated hook call and a synthetic
-key event), sound by ear (every run is muted), world tiers 2-3 beyond the tier switch and one tier-3 rift, rift tiers above 12, a hardcore campaign.
-New since 17:50: 29 more monster models are on disk without `.import` (mon_ash_cast … mon_wraith_mourner); no MonsterDef uses them yet. When they
-get defs, `--suite=anims:static` (30 s) checks rigs and clips and `--suite=anims:monsters` the live behaviour.
+## 交接時的狀態（2026-11-15 18:40）
+今天已在最終程式碼上驗證：anims 126/0（40 個模型，0 個替代模型）、systems 187/0、objects 18/0、save 32/0、skills（誓燈騎士、影獵手）18/0、
+ui-tour 17 個面板、從 1 級到結局串接 11 次執行的自然主線（0 個錯誤）、rift:1 成功與 rift:12 逾時、地城長跑測試、全部 14 座支線
+地城、自然的影獵手開局（第一次挑戰就擊敗第一個首領）。
+平衡變更 32-34 之後尚未重跑：完整的 512 項技能測試套件（最後一次完整通過是在那些變更之前）、上方的 dps 表格（30 級以下的
+怪物生命現在低了 6-28 %，所以那裡的比值會更高：5 級中位數約 1.8×，15 級約 1.5×）、5 分鐘的視窗模式長跑測試。
+完全未測試：真實的鍵盤 / 滑鼠 / 手把輸入（機器人是透過公開 API 操作；PrtSc 與 F12 走的是模擬的掛勾呼叫與合成的
+按鍵事件）、用耳朵聽音效（每次執行都是靜音）、世界階級 2-3 除了切換階級與一次階級 3 裂隙之外的部分、12 層以上的裂隙、專家模式主線。
+17:50 之後新增：另有 29 個怪物模型已在磁碟上但沒有 `.import`（mon_ash_cast … mon_wraith_mourner）；目前還沒有任何 MonsterDef 使用它們。等它們
+有了定義之後，用 `--suite=anims:static`（30 s）檢查骨架綁定與片段，用 `--suite=anims:monsters` 檢查即時行為。
