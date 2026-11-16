@@ -92,3 +92,4 @@ tools/voice_tw/RUNNING.txt
 tools/repo/
 release_out/
 *.ico
+*.bmp
