@@ -1,83 +1,66 @@
 # 燼淵 Ashen Abyss
 
-An original dark-fantasy action RPG in Traditional Chinese (zh-TW), built with Godot 4.7 (.NET / C#).
-The Sun-Forge that warmed the world has gone out; the hero carries the last embers through seven regions to the abyss
-beneath it.
+一款原創的黑暗奇幻動作角色扮演遊戲，全程使用繁體中文，以 Godot 4.7（.NET／C#）製作。
+溫暖世界的日爐已然熄滅；英雄帶著最後的餘燼，穿越七大區域，直抵其下的深淵。
 
-**Version 0.1.0 is a playable prototype.** The campaign can be played from the first region to the ending, but many
-parts are still in production (see *Status* below).
+**0.1.0 版是可遊玩的原型。** 從第一個區域到結局的主線劇情皆可完整遊玩，但仍有許多部分正在製作中（見下方〈0.1.0 版現況〉）。
 
-## Playing the prototype (Windows 10/11, 64-bit)
+## 遊玩原型（Windows 10／11，64 位元）
 
-1. Download every part of the game build from the
-   [0.1.0 release](../../releases/tag/v0.1.0): `AshenAbyss-0.1.0-win64.7z.001`, `.002`, … (GitHub limits a release
-   file to 2 GB, so the build is split).
-2. Put all parts in one folder and open the `.001` file with [7-Zip](https://www.7-zip.org/) (it joins the parts).
-3. Extract, then run `AshenAbyss.exe`. The game starts in fullscreen; it keeps only one copy running at a time.
+1. 從 [0.1.0 版發行頁](../../releases/tag/v0.1.0)下載遊戲本體的所有分割檔：`AshenAbyss-0.1.0-win64.7z.001`、`.002`……（GitHub 限制每個發行檔案不得超過 2 GB，因此遊戲以分割壓縮檔提供）。
+2. 將所有分割檔放在同一個資料夾，用 [7-Zip](https://www.7-zip.org/) 開啟 `.001` 檔（它會自動接合各分割檔）。
+3. 解壓縮後執行 `AshenAbyss.exe`。遊戲以全螢幕啟動，同一時間只會執行一份。
 
-**Graphics:** a GPU with Vulkan 1.3 (NVIDIA GeForce GTX 10 series or newer, AMD Radeon RX 5000 / Radeon 680M or newer,
-Intel Arc / Iris Xe) and an up-to-date driver. If Vulkan cannot start, the game falls back to Direct3D 12 by itself.
-On laptops with two GPUs the game asks Windows for the high-performance one. 8 GB of system memory and 4 GB of video
-memory or more are recommended; 設定 → 畫質 lowers the cost on smaller GPUs.
+**顯示卡需求：** 支援 Vulkan 1.3 的顯示卡（NVIDIA GeForce GTX 10 系列或更新、AMD Radeon RX 5000／Radeon 680M 或更新、Intel Arc／Iris Xe），並安裝最新驅動程式。若 Vulkan 無法啟動，遊戲會自動改用 Direct3D 12。具備雙顯示卡的筆電上，遊戲會要求 Windows 使用高效能顯示卡。建議 8 GB 以上系統記憶體及 4 GB 以上顯示記憶體；顯示卡較弱時可在「設定 → 畫質」降低負擔。
 
-**Where things are kept**
+**檔案存放位置**
 
-| What | Where |
+| 項目 | 位置 |
 |---|---|
-| saves (8 slots) and settings | `%APPDATA%\AshenAbyss\saves`, `%APPDATA%\AshenAbyss\settings.json` |
-| logs (for bug reports) | `%APPDATA%\AshenAbyss\logs` |
-| screenshots (PrtSc or F12) | `Pictures\AshenAbyss` |
+| 存檔（8 個欄位）與設定 | `%APPDATA%\AshenAbyss\saves`、`%APPDATA%\AshenAbyss\settings.json` |
+| 紀錄檔（回報問題時請附上） | `%APPDATA%\AshenAbyss\logs` |
+| 截圖（PrtSc 或 F12） | `圖片\AshenAbyss` |
 
-## Controls
+## 操作方式
 
-| Input | Action |
+| 按鍵 | 功能 |
 |---|---|
-| Left mouse | move / attack / talk / pick up |
-| Right mouse, 1–4 | skills (assign them in the skill page) |
-| Space | evade |
-| Q | potion |
-| I or C | inventory and character |
-| K / P | skills / paragon (燼紋) |
-| M or Tab / J | map / quest log |
-| Alt (hold) | show all loot labels |
-| Esc | close a panel / pause menu |
-| PrtSc or F12 / F11 | screenshot / fullscreen on-off |
-| Shift + left click (bag) | mark as junk · Ctrl + left click (bag): drop on the ground |
+| 滑鼠左鍵 | 移動／攻擊／交談／拾取 |
+| 滑鼠右鍵、1–4 | 技能（在技能頁面中配置） |
+| 空白鍵 | 閃避 |
+| Q | 藥水 |
+| I 或 C | 行囊與角色 |
+| K／P | 技能／燼紋 |
+| M 或 Tab／J | 地圖／任務日誌 |
+| 按住 Alt | 顯示所有掉落物名稱 |
+| Esc | 關閉面板／暫停選單 |
+| PrtSc 或 F12／F11 | 截圖／切換全螢幕 |
+| Shift＋左鍵（行囊） | 標記為廢品 · Ctrl＋左鍵（行囊）：丟在地上 |
 
-Alt-Tab pauses the game.
+切換到其他視窗（Alt-Tab）時遊戲會自動暫停。
 
-## Building from source
+## 從原始碼建置
 
-The repository holds the code, data, shaders, scenes, tools and documents. Binary assets (models, textures, audio,
-fonts, icons) are not in the repository; they are attached to each release.
+本儲存庫包含程式碼、資料、著色器、場景、工具與文件。二進位素材（模型、材質、音訊、字型、圖示）不放在儲存庫中，而是附在每個發行版本裡。
 
-1. Install the [Godot 4.7.2 .NET](https://godotengine.org/) editor and the .NET 10 SDK.
-2. Clone this repository.
-3. Download `AshenAbyss-0.1.0-assets.7z.001`, `.002`, … from the release and extract them into the repository root
-   (they fill `game/assets/…`; the matching `.import` files are already in the repository).
-4. Open `game/project.godot` in the editor (the first import takes several minutes), or run
-   `tools\import.ps1` and then `tools\run.ps1`.
-5. `tools\install.ps1` exports a release build and installs it with a Start-menu shortcut.
+1. 安裝 [Godot 4.7.2 .NET](https://godotengine.org/) 編輯器與 .NET 10 SDK。
+2. 複製（clone）本儲存庫。
+3. 從發行頁下載 `AshenAbyss-0.1.0-assets.7z.001`（及之後的分割檔，如有），解壓縮到儲存庫根目錄（會填入 `game/assets/…`；對應的 `.import` 檔已在儲存庫中）。
+4. 用編輯器開啟 `game/project.godot`（第一次匯入需要數分鐘），或執行 `tools\import.ps1` 後再執行 `tools\run.ps1`。
+5. `tools\install.ps1` 會匯出發行版本，並安裝到本機、建立開始功能表捷徑。
 
-The scripts in `tools\` expect the project at a short path: they map it to the drive `Y:` with `subst` (Windows
-path-length limits). `ARCHITECTURE.md` describes the code, the test switches and the tool scripts.
+`tools\` 中的腳本需要專案位於較短的路徑：它們會以 `subst` 將專案對應為 `Y:` 磁碟機（避開 Windows 的路徑長度限制）。程式架構、測試參數與工具腳本的說明請見 `ARCHITECTURE.md`（英文）。
 
-## Status of 0.1.0
+## 0.1.0 版現況
 
-Done: 8 classes, 7 regions and a town, 14 side dungeons, the story campaign with 7 region bosses, items with affixes,
-legendary powers, sockets and crafting, skill trees, paragon boards, world tiers, the rift, 8 save slots, raster icons,
-dark lighting, generated music (15 of 19 tracks) and voice (25 of 188 lines).
+已完成：8 種職業、7 大區域與一座城鎮、14 座支線地城、含 7 位區域首領的主線劇情、帶詞綴的裝備、傳奇威能、鑲嵌與工藝、技能樹、燼紋盤、世界階級、深淵裂隙、8 個存檔欄位、點陣圖示、黑暗光影、AI 生成音樂（19 首中的 15 首）與台灣口音配音（188 句中的 25 句）。
 
-In production: the full bestiary (about 17 of 129 monster types appear in play today), named elites and the
-stronghold, world and pinnacle bosses, non-humanoid creatures, the remaining music and voice, the ornate UI frame
-pass. Known issues are listed in `QA_NOTES.md`.
+製作中：完整怪物圖鑑（目前遊戲中約出現 129 種怪物中的 17 種）、具名菁英與要塞、世界及巔峰首領、非人形生物、其餘的音樂與配音，以及華麗介面邊框。已知問題列於 `QA_NOTES.md`（英文）。
 
-## Credits and licences
+## 致謝與授權
 
-Third-party assets and tools, with their licences, are listed in [`credits/`](credits/) (CC0 textures and models,
-SIL OFL fonts, CC BY 3.0 icons with attribution, MIT / Apache-2.0 generative models). The music and voices were
-generated locally with open models; no voice in the game imitates a real person.
+第三方素材與工具及其授權條款列於 [`credits/`](credits/)（CC0 材質與模型、SIL OFL 字型、附署名的 CC BY 3.0 圖示、MIT／Apache-2.0 生成模型）。音樂與配音皆以開放模型在本機生成；遊戲中沒有任何聲音模仿真實人物。
 
-No licence has been chosen yet for the game's own code and content; until one is added, all rights are reserved.
+本遊戲自有的程式碼與內容尚未選定授權條款；在加入授權之前，保留一切權利。
 
-This is an independent project. It is not affiliated with or endorsed by any other game or publisher.
+本作品為獨立專案，與其他任何遊戲或發行商均無關聯，亦未獲其背書。
