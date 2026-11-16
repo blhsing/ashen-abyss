@@ -91,3 +91,4 @@ tools/music_ai/RUNNING.txt
 tools/voice_tw/RUNNING.txt
 tools/repo/
 release_out/
+*.ico

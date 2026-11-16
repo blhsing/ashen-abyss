@@ -218,6 +218,22 @@ if (Test-Path -LiteralPath $iconsSrc) {
 }
 else { Warn "no icon folder at $iconsSrc; the game will draw placeholder icons" }
 
+# ---------------------------------------------------------------- application icon
+# The Sun-Forge crest (game/assets/icons/AshenAbyss.ico, built by tools/appicon/make_icon.py) goes into the executable
+# (rcedit, if present) and next to it, where the Start-menu shortcut points.
+$appIco = Join-Path $Project 'assets\icons\AshenAbyss.ico'
+if (Test-Path -LiteralPath $appIco) {
+    Copy-Item -LiteralPath $appIco -Destination (Join-Path $Staging 'AshenAbyss.ico') -Force
+    $rcedit = Join-Path $env:LOCALAPPDATA 'AshenAbyssTools\rcedit\rcedit-x64.exe'
+    if (Test-Path -LiteralPath $rcedit) {
+        & $rcedit $stagedExe --set-icon $appIco
+        if ($LASTEXITCODE -eq 0) { Say 'icon set in the executable'; $done.Add('set the crest icon in AshenAbyss.exe') }
+        else { Warn "rcedit could not set the icon (exit $LASTEXITCODE); the shortcut still uses AshenAbyss.ico" }
+    }
+    else { Warn "rcedit not found at $rcedit; only the shortcut gets the icon" }
+}
+else { Warn "no application icon at $appIco" }
+
 # ---------------------------------------------------------------- install
 
 $running = @(Get-Process -Name ([System.IO.Path]::GetFileNameWithoutExtension($ExeName)) -ErrorAction SilentlyContinue)
@@ -248,7 +264,8 @@ else {
         $sc = $shell.CreateShortcut($tmp)
         $sc.TargetPath = $installedExe
         $sc.WorkingDirectory = $InstallDir
-        $sc.IconLocation = "$installedExe,0"
+        $ico = Join-Path $InstallDir 'AshenAbyss.ico'
+        $sc.IconLocation = if (Test-Path -LiteralPath $ico) { "$ico,0" } else { "$installedExe,0" }
         $sc.Description = 'Ashen Abyss'
         $sc.WindowStyle = 1
         $sc.Save()
