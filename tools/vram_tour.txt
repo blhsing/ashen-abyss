@@ -1,2 +1,7 @@
 == trim off  errors=0 warnings=0
 wastes=2846MB  frost=3518MB  crypt=3706MB  mire=4146MB  sands=4546MB  sanctum=4666MB  
+== trim on  errors=0 warnings=0
+wastes=2692MB  frost=3375MB  crypt=3467MB  mire=3920MB  sands=3401MB  sanctum=2873MB  
+    0.041 INF [boot] args=[] userargs=[--win --mute --new=hunter --slot=95 --level=20 --gear --god --gfx-tour=wastes,frost,crypt,mire,sands,sanctum --gfx-trim -
+    0.046 INF [boot] switches: --win --mute --new=hunter --slot=95 --level=20 --gear --god --gfx-tour=wastes,frost,crypt,mire,sands,sanctum --gfx-trim --quit-at
+done
