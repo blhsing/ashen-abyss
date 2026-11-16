@@ -4,7 +4,7 @@ config_version=5
 [application]
 
 config/name="燼淵 Ashen Abyss"
-config/version="1.0.0"
+config/version="0.1.0"
 run/main_scene="res://scenes/Main.tscn"
 config/features=PackedStringArray("4.7", "C#", "Forward Plus")
 config/use_custom_user_dir=true
