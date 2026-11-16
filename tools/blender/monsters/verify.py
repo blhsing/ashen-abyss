@@ -11,6 +11,9 @@ import bpy, numpy as np
 import monlib as M
 
 PREFIX = ('skin_', 'cloth_', 'leather_', 'metal_', 'bone_', 'rock_', 'emis_', 'spectral_')
+# per-creature limits that differ from the defaults (triangles, file size in MB, materials). boss_osaros v2 is the final boss: he
+# appears alone and in close-up on the title screen, so the lead gave him 45k triangles, ~12 MB and three atlases (11 materials).
+LIMITS = {'boss_osaros': dict(tris=45000, mb=12.6, mats=12)}
 
 
 def read_glb(path):
@@ -58,8 +61,9 @@ def check(path, ref_sig, ref_order, ref_bones):
     errs = []; warn = []
     js, binchunk = read_glb(path)
     size = os.path.getsize(path)
-    if size > 10 * 1024 * 1024:
-        errs.append("file larger than 10 MB: %d" % size)
+    lim = LIMITS.get(cid, {})
+    if size > lim.get('mb', 10) * 1024 * 1024:
+        errs.append("file larger than %s MB: %d" % (lim.get('mb', 10), size))
     if js.get('animations'):
         errs.append("contains animations")
     if len(js.get('skins', [])) != 1:
@@ -92,8 +96,8 @@ def check(path, ref_sig, ref_order, ref_bones):
     for m in mats:
         if not m.startswith(PREFIX):
             errs.append("material prefix: " + m)
-    if len(mats) > 5:
-        errs.append("more than 5 materials: %s" % mats)
+    if len(mats) > lim.get('mats', 5):
+        errs.append("more than %d materials: %s" % (lim.get('mats', 5), mats))
     emis = [m for m in js.get('materials', []) if m['name'].startswith('emis_')]
     for m in emis:
         ef = m.get('emissiveFactor', [0, 0, 0])
@@ -179,7 +183,7 @@ def check(path, ref_sig, ref_order, ref_bones):
                 warn.append("%s bound to %s" % (o.name, sorted(gs)))
             else:
                 mobj[o.name]['bone'] = list(gs)[0]
-    budget = 40000 if cid.startswith('boss_') else 15000
+    budget = lim.get('tris', 40000 if cid.startswith('boss_') else 15000)
     if tris > budget:
         errs.append("triangles %d > %d" % (tris, budget))
     if mn[2] < -0.01 or mn[2] > 0.03:

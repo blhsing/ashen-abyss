@@ -1,0 +1,17 @@
+# The inventory portrait at the three text sizes, switched live (標準 → 大 → 特大 → 標準).
+wait 4.0
+give set
+wait 0.5
+open inventory
+wait 1.8
+shot s0_standard
+scale 1
+wait 1.5
+shot s1_large
+scale 2
+wait 1.5
+shot s2_xlarge
+dump s2_xlarge
+scale 0
+wait 1.5
+shot s3_back_to_standard

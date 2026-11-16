@@ -12,6 +12,10 @@
 param([string[]]$A)
 if (-not $A -or $A.Count -eq 0) { $A = $args }
 if (-not $A -or $A.Count -eq 0) { Write-Output "run_blender.ps1: no arguments"; exit 2 }
+# Never open Blender's window on the user's desktop: background mode is forced (a caller once passed an image path
+# without -b, which opened the full Blender UI). Arguments after "--" belong to the script and are left alone.
+$dd = [Array]::IndexOf($A, '--'); $head = if ($dd -ge 0) { $A[0..([Math]::Max(0, $dd - 1))] } else { $A }
+if (-not ($head -contains '-b' -or $head -contains '--background')) { $A = @('-b') + $A; Write-Output "run_blender.ps1: added -b (background mode)" }
 
 $bl = "C:\Program Files\Blender Foundation\Blender 5.2\blender.exe"
 $threads = 12

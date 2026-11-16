@@ -1,0 +1,63 @@
+# The inventory at 介面文字大小 = 特大 (run with --textscale=2): five classes, two shots a second apart each, a drag, a tooltip.
+wait 4.0
+give set
+wait 0.4
+open inventory
+wait 1.8
+shot x2_emberblade_a
+wait 1.0
+shot x2_emberblade_b
+dump x2_inventory
+drag 1200,245,1300,245
+wait 0.7
+shot x2_emberblade_dragged
+hover 1013,172
+wait 0.9
+shot x2_emberblade_tooltip
+unhover
+close inventory
+wait 0.4
+newgame astromancer 20 town
+wait 2.5
+give set
+wait 0.4
+open inventory
+wait 1.8
+shot x2_astromancer_a
+wait 1.0
+shot x2_astromancer_b
+close inventory
+wait 0.4
+newgame lampknight 20 town
+wait 2.5
+give set
+wait 0.4
+open inventory
+wait 1.8
+shot x2_lampknight_a
+wait 1.0
+shot x2_lampknight_b
+close inventory
+wait 0.4
+newgame wildsoul 20 town
+wait 2.5
+give set
+wait 0.4
+open inventory
+wait 1.8
+shot x2_wildsoul_a
+wait 1.0
+shot x2_wildsoul_b
+close inventory
+wait 0.4
+newgame forgebody 20 town
+wait 2.5
+give set
+wait 0.4
+open inventory
+wait 1.8
+shot x2_forgebody_a
+wait 1.0
+shot x2_forgebody_b
+close inventory
+wait 0.4

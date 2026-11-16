@@ -38,11 +38,11 @@
 
 <table>
 <tr>
-<td width="50%" valign="top"><img src="https://raw.githubusercontent.com/blhsing/ashen-abyss/media/screenshots/11-title.jpg" alt="標題畫面：燼淵 Ashen Abyss——日爐已死，唯餘燼火，與持燼之人" width="100%"><br><sub>標題畫面：燼淵 Ashen Abyss——日爐已死，唯餘燼火，與持燼之人</sub></td>
+<td width="50%" valign="top"><img src="https://raw.githubusercontent.com/blhsing/ashen-abyss/media/screenshots/11-title.jpg" alt="標題畫面：寂主・奧薩洛斯自陰影中低頭怒視" width="100%"><br><sub>標題畫面：寂主・奧薩洛斯自陰影中低頭怒視</sub></td>
 <td width="50%" valign="top"><img src="https://raw.githubusercontent.com/blhsing/ashen-abyss/media/screenshots/12-class-select.jpg" alt="擇定持燼者：八種職業之一的縛淵術士，附招牌技能與職業專精" width="100%"><br><sub>擇定持燼者：八種職業之一的縛淵術士，附招牌技能與職業專精</sub></td>
 </tr>
 <tr>
-<td width="50%" valign="top"><img src="https://raw.githubusercontent.com/blhsing/ashen-abyss/media/screenshots/13-inventory-tooltip.jpg" alt="行囊：傳奇咒典「寒觸之淵語之書」與身上裝備的比較卡" width="100%"><br><sub>行囊：傳奇咒典「寒觸之淵語之書」與身上裝備的比較卡</sub></td>
+<td width="50%" valign="top"><img src="https://raw.githubusercontent.com/blhsing/ashen-abyss/media/screenshots/13-inventory-tooltip.jpg" alt="行囊：即時 3D 角色預覽（誓燈騎士，可拖曳旋轉）與裝備欄位" width="100%"><br><sub>行囊：即時 3D 角色預覽（誓燈騎士，可拖曳旋轉）與裝備欄位</sub></td>
 <td width="50%" valign="top"><img src="https://raw.githubusercontent.com/blhsing/ashen-abyss/media/screenshots/14-skill-tree.jpg" alt="技能樹：縛淵術士的締約召喚與技能配置列" width="100%"><br><sub>技能樹：縛淵術士的締約召喚與技能配置列</sub></td>
 </tr>
 <tr>

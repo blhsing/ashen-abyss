@@ -1,0 +1,13 @@
+# Quick look at the inventory portrait: two shots a second apart, then a drag.
+wait 4.0
+give set
+wait 0.5
+open inventory
+wait 1.8
+shot look_a
+wait 1.0
+shot look_b
+drag 1200,255,1300,255
+wait 0.7
+shot look_dragged
+wait 4.5

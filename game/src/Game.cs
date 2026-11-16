@@ -79,6 +79,7 @@ public partial class Game : Node
         "speed", "suite", "focus", "campaign", "allskills", "hardcore", "slot", "die-at", "prtsc-at", "f12-at", "ui-tour", "paragon", "tour", "seed", "perf-off", "bossrush", "blur-at", "focus-at",
         // switches read by the UI and rendering test layers (listed so they are accepted without the "--" separator too)
         "textscale", "menu", "uido", "uiclick", "uikeys", "hover", "uidir", "gfx-tour",
+        "portrait-stats", "portrait-off", "portrait-scale", "portrait-model",       // inventory hero portrait (HeroPortrait3D)
     };
     private bool _forceWindow, _windowPlaced, _quitting;
     private bool? _cfgFullscreen;

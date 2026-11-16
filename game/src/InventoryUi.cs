@@ -726,7 +726,7 @@ public static class ItemUi
 }
 
 /// <summary>
-/// Panel "inventory": character sheet on the left, paper doll and bag on the right.
+/// Panel "inventory": character sheet on the left, paper doll (worn gear around a live portrait of the hero) and bag on the right.
 /// Left click equips or swaps, right click on worn gear unequips, Shift+left click marks junk, right click on a gem
 /// then a click on gear with a free socket sets the gem. New items carry an ember dot until hovered.
 /// </summary>
@@ -737,10 +737,18 @@ public partial class InventoryUi : UiPanel
     // Design sizes at text scale 1.0. SheetW is a minimum width that grows with the text scale (UiTheme.MinSize);
     // RightW is the width of the bag's well and of the column it stands in, the cells keep their size, and the paper
     // doll (at least DollW × DollH) spreads over the width of its panel. The frame is at least FrameW × FrameH and
-    // grows with its content: about 1196 × 950 at 標準 and 1316 × 1008 at the largest text size, which leaves the
-    // crest its 34 px above the frame on a 1080-line screen.
-    private const int FrameW = 1196, FrameH = 900, SheetW = 400, RightW = 696, DollW = 676, DollH = 338, DollCell = 68, BagCell = 64, DollTagW = 100;
-    private const float DollEdge = 10f, DollPad = 10f, NicheW = 236f, NicheTop = 4f, NicheH = 252f, FigureLift = 8f;
+    // grows with its content: about 1196 × 1003 at 標準 and 大 (the doll takes the height the smaller text leaves,
+    // see DollGrow) and 1316 × 1000 at the largest text size, which leaves the crest its 34 px above the frame on a
+    // 1080-line screen.
+    // The niche holds the live portrait (HeroPortrait3D): NicheW × NicheH between the slot captions, which are
+    // DollTagW wide (two glyphs are 52 px at the largest text size).
+    private const int FrameW = 1196, FrameH = 900, SheetW = 400, RightW = 696, DollW = 676, DollH = 338, DollCell = 68, BagCell = 64, DollTagW = 60;
+    private const float DollEdge = 10f, DollPad = 10f, NicheW = 372f, NicheTop = 4f, NicheH = 252f, NicheRim = 3f;
+    // The frame is as tall as the screen allows at the largest text size. At the smaller ones the text rows leave
+    // height over, and the doll takes it: the niche (and the hero in it) grows by this much at 標準, half of it at 大,
+    // nothing at 特大; the side cells spread over the taller doll and the weapon cell stays under the niche.
+    private const float DollGrowMax = 48f;
+    private static float DollGrow => MathF.Round(DollGrowMax * Mathf.Clamp((1.3f - UiTheme.TextScale) / 0.3f, 0f, 1f));
     private const float SmithRange = 9f;
     private const string IdleHint = "左鍵：裝備　右鍵：卸下裝備／選取寶石　Shift＋左鍵：標記廢品";
     private static readonly string[] SheetTabs = { "總覽", "攻勢", "守禦", "巧用" };
@@ -754,15 +762,6 @@ public partial class InventoryUi : UiPanel
         (EquipSlot.Weapon, 0, 262),
     };
 
-    // silhouette, in figure coordinates (centred on x = 300; DrawSilhouette moves it to the middle of the doll)
-    private static readonly Vector2[] Torso = { new(246, 82), new(354, 82), new(338, 170), new(262, 170) };
-    private static readonly Vector2[] ArmL = { new(246, 82), new(226, 92), new(212, 178), new(230, 182) };
-    private static readonly Vector2[] ArmR = { new(354, 82), new(374, 92), new(388, 178), new(370, 182) };
-    private static readonly Vector2[] Hips = { new(262, 170), new(338, 170), new(342, 190), new(258, 190) };
-    private static readonly Vector2[] LegL = { new(258, 190), new(298, 190), new(294, 254), new(266, 254) };
-    private static readonly Vector2[] LegR = { new(302, 190), new(342, 190), new(334, 254), new(306, 254) };
-    private static readonly Vector2[][] Body = { ArmL, ArmR, Torso, Hips, LegL, LegR };
-
     private readonly SlotBoard _board = new();
     private bool _built, _open, _dirty;
     private Hero _hero;
@@ -771,7 +770,8 @@ public partial class InventoryUi : UiPanel
     private HBoxContainer _tabBox, _moneyBox;
     private VBoxContainer _rows;
     private ScrollContainer _sheetScroll;
-    private Control _doll, _bagBox;
+    private Control _doll, _cells, _nicheRim, _bagBox;
+    private HeroPortrait3D _portrait;           // the hero, alive, in the niche between the two columns of cells
     private Button _junkBtn;
     private int _tab;
     private Item _gemPick;
@@ -799,6 +799,7 @@ public partial class InventoryUi : UiPanel
         base._ExitTree();
         _open = false;
         Hook(null);
+        _portrait?.Unload();
         _board.Dispose();
     }
 
@@ -824,6 +825,7 @@ public partial class InventoryUi : UiPanel
         _gemPick = null;
         _board.Clear();
         Hook(null);
+        _portrait?.Unload();        // nothing is rendered and no model is kept while the panel is away
     }
 
     public override void Refresh() => _dirty = true;
@@ -934,16 +936,27 @@ public partial class InventoryUi : UiPanel
         // paper doll, purse, bag. The column is as wide as the bag's well at every text size (the purse row and
         // the two-line hint fit in it at the largest one; should a purse ever need more, the column and both boxes
         // widen with it). The doll stands in a sub-panel as wide as the column — its side cells keep to the panel's
-        // edges, the figure in its niche and the weapon to the middle — and the bag lies in a well of the same width.
+        // edges, the hero's live portrait in its niche and the weapon to the middle — and the bag lies in a well of the
+        // same width. Bottom to top inside the doll: the niche's field, the portrait, the niche's rim, the cells.
         var right = new VBoxContainer { CustomMinimumSize = new Vector2(RightW, 0) };
         right.AddThemeConstantOverride("separation", 8);
         var dollFrame = new PanelContainer { MouseFilter = MouseFilterEnum.Ignore };
         dollFrame.AddThemeStyleboxOverride("panel", UiTheme.Art
             ? UiTheme.ArtBox("panel", DollPad, DollPad, "soot", 3f)
             : new StyleBoxEmpty { ContentMarginLeft = DollPad, ContentMarginRight = DollPad, ContentMarginTop = DollPad, ContentMarginBottom = DollPad });
-        _doll = new Control { CustomMinimumSize = new Vector2(DollW, DollH), MouseFilter = MouseFilterEnum.Ignore };
-        _doll.Draw += DrawSilhouette;
+        _doll = new Control { MouseFilter = MouseFilterEnum.Ignore };
+        _doll.Draw += DrawNiche;
         dollFrame.AddChild(_doll);
+        _portrait = new HeroPortrait3D();
+        _doll.AddChild(_portrait);
+        LayoutDoll();
+        _nicheRim = new Control { Name = "NicheRim", MouseFilter = MouseFilterEnum.Ignore };
+        _nicheRim.Draw += DrawNicheRim;
+        _doll.AddChild(_nicheRim);
+        _nicheRim.SetAnchorsAndOffsetsPreset(LayoutPreset.FullRect);
+        _cells = new Control { Name = "Cells", MouseFilter = MouseFilterEnum.Ignore };
+        _doll.AddChild(_cells);
+        _cells.SetAnchorsAndOffsetsPreset(LayoutPreset.FullRect);
         right.AddChild(dollFrame);
         _moneyBox = new HBoxContainer { Alignment = BoxContainer.AlignmentMode.Center };
         right.AddChild(_moneyBox);
@@ -987,6 +1000,7 @@ public partial class InventoryUi : UiPanel
         _who.Text = $"{(string.IsNullOrEmpty(d.Name) ? "持燼者" : d.Name)}　等級 {d.Level} {Names.Class(h.Class)}";
         BuildSheet(h);
         BuildDoll(h);
+        _portrait?.SetHero(h);      // model, weapon in hand and scale follow the hero; a no-op when nothing visible changed
         ItemUi.Clear(_moneyBox);
         _moneyBox.AddChild(ItemUi.Money(_board, d));
         ItemUi.Clear(_bagBox);
@@ -1040,11 +1054,33 @@ public partial class InventoryUi : UiPanel
 
     // ───────────────────────── paper doll ─────────────────────────
 
+    /// <summary>Height of the doll and place of the portrait for the text size in force (see <see cref="DollGrow"/>).</summary>
+    private void LayoutDoll()
+    {
+        if (_doll == null || _portrait == null) return;
+        float grow = DollGrow;
+        _doll.CustomMinimumSize = new Vector2(DollW, DollH + grow);
+        Pin(_portrait, 0.5f, -NicheW * 0.5f + NicheRim, NicheTop + NicheRim, NicheW - 2f * NicheRim, NicheH + grow - 2f * NicheRim);
+        _doll.QueueRedraw();
+        _nicheRim?.QueueRedraw();
+    }
+
+    public override void OnTextScale()
+    {
+        base.OnTextScale();
+        if (!_built) return;
+        LayoutDoll();
+        _dirty = true;
+    }
+
     private void BuildDoll(Hero h)
     {
-        ItemUi.Clear(_doll);
-        foreach (var (slot, col, y) in DollLayout)
+        ItemUi.Clear(_cells);
+        float grow = DollGrow;
+        foreach (var (slot, col, y0) in DollLayout)
         {
+            // the side columns spread over the height of the doll; the weapon keeps its place under the niche
+            float y = col == 0 ? y0 + grow : y0 + MathF.Round(grow * (y0 - 8f) / 246f);
             var kind = ItemUi.KindOf(slot);
             var it = h.D.Equip[(int)slot];
             Control node;
@@ -1065,23 +1101,24 @@ public partial class InventoryUi : UiPanel
                 _board.Add(new SlotView { Node = node, Text = what + "\n" + ItemUi.Dim("尚未裝備"), Compare = false, Glow = false });
             }
             // pinned to the doll's left edge, right edge or middle, so the layout follows the width of the panel
-            _doll.AddChild(node);
+            _cells.AddChild(node);
             float ax = col < 0 ? 0f : col > 0 ? 1f : 0.5f;
             float x = col < 0 ? DollEdge : col > 0 ? -(DollEdge + DollCell) : -DollCell * 0.5f;
             Pin(node, ax, x, y, DollCell, DollCell);
 
-            // slot name beside the cell, toward the silhouette: a box as tall as the cell with the text centred in
+            // slot name beside the cell, toward the figure: a box as tall as the cell with the text centred in
             // it, so the caption sits level with the cell at every text size (two glyphs are 52 px wide at the largest)
             var tag = UiTheme.Label(Names.Kind(kind), UiTheme.FsCaption, UiTheme.Dim);
             tag.MouseFilter = MouseFilterEnum.Ignore;
             tag.ClipText = true;
-            _doll.AddChild(tag);
+            _cells.AddChild(tag);
             bool rightSide = col > 0;
             tag.HorizontalAlignment = rightSide ? HorizontalAlignment.Right : HorizontalAlignment.Left;
             tag.VerticalAlignment = VerticalAlignment.Center;
             Pin(tag, ax, rightSide ? x - 8 - DollTagW : x + DollCell + 8, y, DollTagW, DollCell);
         }
         _doll.QueueRedraw();
+        _nicheRim.QueueRedraw();
     }
 
     /// <summary>Places a child of the doll: <paramref name="ax"/> 0 measures x from the doll's left edge, 1 from its right edge, 0.5 from its middle.</summary>
@@ -1091,39 +1128,23 @@ public partial class InventoryUi : UiPanel
         c.OffsetLeft = x; c.OffsetRight = x + w; c.OffsetTop = y; c.OffsetBottom = y + h;
     }
 
-    private void DrawSilhouette()
+    /// <summary>The recess the hero stands in, between the two columns of cells (design px, in the doll's coordinates).</summary>
+    private Rect2 NicheRect => new(MathF.Round(_doll.Size.X * 0.5f) - NicheW * 0.5f, NicheTop, NicheW, NicheH + DollGrow);
+
+    /// <summary>Under the portrait: the darkest field of the interface (what shows while no model is on the stage).</summary>
+    private void DrawNiche()
     {
-        float cx = MathF.Round(_doll.Size.X * 0.5f);
-        float lift = 0f, glow = 118f;
-        if (_niche != null)
-        {
-            // the recess the figure stands in: the darkest field inside a sunken rim, between the two columns of cells
-            var recess = new Rect2(cx - NicheW * 0.5f, NicheTop, NicheW, NicheH);
-            if (_nicheField != null) UiArt.Tile(_doll, _nicheField, recess.Grow(-2f));
-            UiArt.Nine(_doll, _niche, recess);
-            lift = FigureLift; glow = 106f;
-        }
-        _doll.DrawSetTransform(new Vector2(cx - 300f, -lift));
-        var fill = new Color(0.115f, 0.11f, 0.105f, 0.94f);
-        var rim = new Color(0.5f, 0.34f, 0.2f, 0.55f);
-        var ember = _hero != null ? Names.ClassColor(_hero.Class) : Palette.Ember;
-        var heart = new Vector2(300, 124);
-        _doll.DrawCircle(heart, glow, new Color(ember, 0.035f));
-        _doll.DrawCircle(heart, 78f, new Color(ember, 0.05f));
-        foreach (var poly in Body)
-        {
-            _doll.DrawColoredPolygon(poly, fill);
-            for (int i = 0; i < poly.Length; i++) _doll.DrawLine(poly[i], poly[(i + 1) % poly.Length], rim, 1.5f, true);
-        }
-        _doll.DrawRect(new Rect2(290, 64, 20, 20), fill);
-        var head = new Vector2(300, 46);
-        _doll.DrawCircle(head, 25f, fill);
-        _doll.DrawArc(head, 25f, 0f, Mathf.Tau, 40, rim, 1.5f, true);
-        // the ember every bearer carries in the chest
-        _doll.DrawCircle(heart, 22f, new Color(ember, 0.1f));
-        _doll.DrawCircle(heart, 11f, new Color(ember, 0.32f));
-        _doll.DrawCircle(heart, 5f, new Color(ember.Lightened(0.4f), 0.85f));
-        _doll.DrawSetTransform(Vector2.Zero);
+        var recess = NicheRect;
+        if (_nicheField != null) UiArt.Tile(_doll, _nicheField, recess.Grow(-2f));
+        else _doll.DrawRect(recess, new Color(0.03f, 0.03f, 0.035f, 0.94f));
+    }
+
+    /// <summary>Over the portrait: the sunken rim of the recess, so the picture sits inside the frame art.</summary>
+    private void DrawNicheRim()
+    {
+        var recess = NicheRect;
+        if (_niche != null) UiArt.Nine(_nicheRim, _niche, recess);
+        else _nicheRim.DrawRect(recess, new Color(0.5f, 0.34f, 0.2f, 0.55f), false, 1.5f);
     }
 
     private string WornHint(Item it) => _gemPick != null ? SocketHint(it) : ItemUi.Dim("右鍵：卸下");

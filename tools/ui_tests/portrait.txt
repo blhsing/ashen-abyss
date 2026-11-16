@@ -1,0 +1,45 @@
+# Inventory portrait check (1600x900 window, 介面文字大小 標準): animation, drag, tooltip, weapon swap, pause on top.
+wait 4.0
+give set
+wait 0.5
+open inventory
+wait 1.8
+shot p1_idle_a
+wait 1.0
+shot p2_idle_b
+# drag on the portrait: the hero turns
+drag 1200,255,1300,255
+wait 0.7
+shot p3_dragged
+# a slot's tooltip beside the portrait still works (helm, top left) while the figure is still turned
+hover 1013,162
+wait 0.9
+shot p4_tooltip_helm
+unhover
+wait 3.8
+shot p5_eased_back
+# equip the legendary weapon from the bag (row 1, col 10), then the common one (row 1, col 1)
+click 1516,532
+wait 1.2
+shot p6_weapon_legendary
+click 1005,532
+wait 1.2
+shot p7_weapon_common
+# take the weapon off (right click on the weapon cell under the portrait) and put the rare one back (row 1, col 7)
+rclick 1260,413
+wait 1.0
+shot p8_weapon_off
+click 1345,532
+wait 1.0
+shot p9_weapon_rare
+# the pause menu on top of the open inventory: the game is paused, the hero still breathes
+open pause
+wait 1.2
+shot p10_paused_a
+wait 1.0
+shot p11_paused_b
+close pause
+wait 0.5
+close inventory
+wait 0.6
+shot p12_closed

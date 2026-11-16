@@ -1,0 +1,88 @@
+# Every class in one run: the inventory portrait, two shots a second apart (pictures named <class>_a / _b).
+wait 4.0
+give set
+wait 0.4
+open inventory
+wait 1.8
+shot emberblade_a
+wait 1.0
+shot emberblade_b
+close inventory
+wait 0.4
+newgame astromancer 20 town
+wait 2.5
+give set
+wait 0.4
+open inventory
+wait 1.8
+shot astromancer_a
+wait 1.0
+shot astromancer_b
+close inventory
+wait 0.4
+newgame hunter 20 town
+wait 2.5
+give set
+wait 0.4
+open inventory
+wait 1.8
+shot hunter_a
+wait 1.0
+shot hunter_b
+close inventory
+wait 0.4
+newgame soulbinder 20 town
+wait 2.5
+give set
+wait 0.4
+open inventory
+wait 1.8
+shot soulbinder_a
+wait 1.0
+shot soulbinder_b
+close inventory
+wait 0.4
+newgame wildsoul 20 town
+wait 2.5
+give set
+wait 0.4
+open inventory
+wait 1.8
+shot wildsoul_a
+wait 1.0
+shot wildsoul_b
+close inventory
+wait 0.4
+newgame forgebody 20 town
+wait 2.5
+give set
+wait 0.4
+open inventory
+wait 1.8
+shot forgebody_a
+wait 1.0
+shot forgebody_b
+close inventory
+wait 0.4
+newgame lampknight 20 town
+wait 2.5
+give set
+wait 0.4
+open inventory
+wait 1.8
+shot lampknight_a
+wait 1.0
+shot lampknight_b
+close inventory
+wait 0.4
+newgame pactbinder 20 town
+wait 2.5
+give set
+wait 0.4
+open inventory
+wait 1.8
+shot pactbinder_a
+wait 1.0
+shot pactbinder_b
+close inventory
+wait 0.4

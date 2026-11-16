@@ -1,0 +1,16 @@
+# Frame rate with the inventory closed, open, closed, open again (the game logs [perf] every 5 s; --portrait-stats adds
+# the viewport's own cost and the longest frame; run once more with --portrait-off for the same numbers without a portrait).
+wait 4.0
+give set
+log PERF closed-1 begins
+wait 12.0
+log PERF open-1 begins
+open inventory
+wait 13.0
+log PERF closed-2 begins
+close inventory
+wait 11.0
+log PERF open-2 begins
+open inventory
+wait 9.0
+log PERF end

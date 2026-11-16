@@ -6,9 +6,10 @@ using System.Linq;
 namespace AshenAbyss;
 
 /// <summary>
-/// The title screen. A dark stage of our own — a great brazier among standing stones, embers, falling ash and fog —
-/// is rendered into a SubViewport behind the interface; the same stage shows the chosen hero during character
-/// creation. Screens: title, class choice, name / hardcore / slot, load, settings and credits.
+/// The title screen. Behind the title, load, settings and credits screens: a close-up of the final boss lurking in
+/// the dark (MainMenu.Lair.cs). During character creation a stage of our own — a great brazier among standing stones,
+/// embers, falling ash and fog — shows the chosen hero; both are rendered into SubViewports behind the interface and
+/// cross-fade. Screens: title, class choice, name / hardcore / slot, load, settings and credits.
 /// Game adds this control while in the Menu state; it starts and loads games through <see cref="Game"/>.
 /// Text: every font size here is a DESIGN size (px at 1080p, never below 20) that passes through
 /// <see cref="UiTheme.Fs"/> exactly once — MenuKit's widgets take the finished size, so their call sites say
@@ -197,7 +198,6 @@ public partial class MainMenu : Control
         if (vis != _wasVisible)
         {
             _wasVisible = vis;
-            if (_vp != null) _vp.RenderTargetUpdateMode = vis ? SubViewport.UpdateMode.Always : SubViewport.UpdateMode.Disabled;
             if (_crackle != null) { if (vis) { if (!_crackle.Playing) _crackle.Play(); } else _crackle.Stop(); }
             if (vis)
             {
@@ -209,6 +209,7 @@ public partial class MainMenu : Control
                 FadeIn(1.2f);
             }
         }
+        GateBackdrops(vis);
         if (!vis) return;
 
         dt = Mathf.Min(dt, 0.1f);
@@ -218,6 +219,8 @@ public partial class MainMenu : Control
         TuneBackdrop(false);
         UpdateCamera(dt);
         UpdateStage(dt);
+        UpdateLair(dt);
+        MeasureTitleFps(dt);
 
         if (!Mathf.IsEqualApprox(_dimNow, _dimTarget) && _dim != null)
         {
@@ -1884,6 +1887,7 @@ public partial class MainMenu : Control
         };
         _vpRect.SetAnchorsAndOffsetsPreset(LayoutPreset.FullRect);
         AddChild(_vpRect);
+        Log.Guard("menu", BuildLair);       // the title's own backdrop, drawn over the stage until creation fades it out
 
         TuneBackdrop(true);
         UpdateCamera(0f);
@@ -2325,6 +2329,7 @@ public partial class MainMenu : Control
         }
         if (_fireLight != null) _fireLight.OmniShadowMode = q >= 2 ? OmniLight3D.ShadowMode.Cube : OmniLight3D.ShadowMode.DualParaboloid;
         if (_camAttr != null) _camAttr.DofBlurFarEnabled = q >= 2;
+        TuneLair(size, scale, q);
         Log.Info("menu", $"backdrop {size.X}x{size.Y} render scale {scale:0.00} quality {q}");
     }
 

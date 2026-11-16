@@ -132,12 +132,10 @@ public partial class Player : Actor
         UpdateWeaponTier();
     }
 
-    private void UpdateWeaponTier()
-    {
-        var w = Hero.Weapon;
-        int tier = w == null ? 1 : w.Rarity >= Rarity.Legendary ? 3 : w.Rarity >= Rarity.Rare || w.Power >= 250 ? 2 : 1;
-        Model?.SetWeaponTier(tier);
-    }
+    private void UpdateWeaponTier() => Model?.SetWeaponTier(WeaponTierOf(Hero.Weapon));
+
+    /// <summary>Which weapon mesh (wpn_1/2/3) a weapon shows on the model: legendary 3, rare or power 250+ 2, else (and bare hands) 1.</summary>
+    public static int WeaponTierOf(Item w) => w == null ? 1 : w.Rarity >= Rarity.Legendary ? 3 : w.Rarity >= Rarity.Rare || w.Power >= 250 ? 2 : 1;
 
     private void OnLevelUp(int lvl)
     {
@@ -384,7 +382,10 @@ public partial class Player : Actor
     /// <summary>Test harness: evade on the next frame, as if Space had been pressed.</summary>
     public void QueueEvade() => _pressEvade = true;
 
-    private string IdleAnim => Form != 0 ? "Zombie_Idle_Loop" : Hero.Class switch
+    private string IdleAnim => IdleAnimOf(Hero.Class, Form);
+
+    /// <summary>The idle clip a class stands in; a shape-shifted form (form != 0) idles like a beast.</summary>
+    public static string IdleAnimOf(ClassId c, int form = 0) => form != 0 ? "Zombie_Idle_Loop" : c switch
     {
         ClassId.Emberblade or ClassId.Wildsoul => "Sword_Idle", ClassId.Lampknight => "Idle_Shield_Loop",
         ClassId.Hunter => "Pistol_Idle_Loop", _ => "Idle_Loop"

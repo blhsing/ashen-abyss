@@ -1,0 +1,6 @@
+wait 3.0
+shot 11-title
+wait 6.0
+shot title-b
+wait 6.0
+shot title-c
