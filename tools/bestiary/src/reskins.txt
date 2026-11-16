@@ -1,0 +1,30 @@
+# Regional elemental reskins of global families (MonsterDef.Variant: same model, material/tint swap, element and status swap).
+# Row: id | base | region letter | zh | element | status | state (existing / new) | look
+frost_skeleton | skeleton | F | 霜骸兵 | frost | chill 0.2 | new | Rime-crusted bone, an icicle fringe under the cap brim, the sword sheathed in ice; ice-blue eye-lights.
+frost_thrower | skeleton_thrower | F | 霜骸擲矛手 | frost | chill 0.25 | existing | Hood and shawl stiff with frost; the javelins are icicles.
+frost_scrap | bone_scrap | F | 霜雜骨 | frost | chill 0.15 | new | Joints fused with ice so it runs with a stiff skitter; frost-blue bindings.
+frost_pallbearer | bone_pallbearer | F | 冰棺骸 | frost | chill 0.3; knockback | new | The coffin lid is sheathed in a pane of clear ice with a face frozen inside it.
+frost_knight | knight | F | 冰封騎士 | frost | chill 0.5 | existing | Plate glazed in ice, ember seams replaced by ice-blue seams, a cape frozen mid-flap.
+frost_snuffer | cult_snuffer | F | 霜袍捻燈人 | shadow | weaken 0.25 for 4 s; chill 0.2; resource drain | new | Fur-lined grey robe; the snuffer cone is rimed and trails cold fog instead of smoke.
+ice_wraith | wraith | F | 霜魂 | frost | chill 0.3 | existing | Shroud stiffened into icicles, paler blue soul-lights.
+frost_mourner | wraith_mourner | F | 雪泣魂 | frost | chill 0.4; fear 0.8 s (20% chance) | new | The hair-veil is a curtain of hanging frost; fingertips leave rime on the floor.
+mire_husk | husk | M | 沼屍 | poison | poison 0.2 over 3 s | existing | Skin green-black and slick, duckweed and leeches on the shoulders.
+mire_bloated | husk_bloated | M | 脹氣沼屍 | poison | poison 0.5 over 4 s (burst) | existing | Belly translucent with marsh gas, a brighter yellow-green.
+mire_chained | husk_chained | M | 拖錨沼屍 | poison | pull; slow 0.3 for 2 s; poison 0.2 over 3 s | new | Drags a small boat anchor on a mooring rope instead of a tether post.
+mire_wailer | husk_wailer | M | 霧號沼屍 | poison | fear 1 s (wail, 4 m) | new | A fog-horn of bark is tied over its mouth; mud to the chest. Calls mire husks.
+mire_skeleton | skeleton | M | 沼骸兵 | poison | poison 0.2 over 3 s | new | Bog-stained brown bone hung with weed, the sword green with corrosion.
+mire_thrower | skeleton_thrower | M | 沼骸擲矛手 | poison | poison 0.25 over 3 s | existing | Shawl of rotted net; fishing spears instead of javelins.
+mire_wraith | wraith | M | 溺魂 | poison | slow 0.3 for 2 s | new | The shroud hangs wet and heavy and drips; soul-lights the yellow-green of marsh gas.
+mire_mourner | wraith_mourner | M | 溺泣魂 | poison | slow 0.3 for 2 s; fear 0.8 s (20% chance) | new | Weed instead of hair; water runs from the sleeves.
+mire_stump | char_stump | M | 沉木樁 | poison | slow 0.2 for 2 s | new | Waterlogged black bog-oak with bracket fungus on the cut top. Not flammable.
+mire_walker | char_walker | M | 沉木人 | poison | slow 0.3 for 2 s; poison 0.2 over 3 s | new | Bog-oak trunk hung with moss curtains; the split glows fungus green. Not flammable.
+mire_hangtree | char_hangtree | M | 沉木弔枝 | poison | pull; root 1 s; knockback | new | The bough is hung with eel-traps and drowned nets instead of nooses. Not flammable.
+mire_root | char_root | M | 沼根 | poison | root 1.2 s; poison 0.2 over 3 s | new | A slick mangrove root with air-roots fringing it. Not flammable.
+sand_husk | husk | S | 乾屍 | physical | - | existing | Sun-dried, leather-brown, wrapped in scraps of bleached linen.
+sand_bloated | husk_bloated | S | 鼓砂乾屍 | physical | weaken 0.3 for 4 s (bursts into blinding sand) | new | A dried skin stretched tight over a belly full of sand that hisses from the splits.
+sand_skeleton | skeleton | S | 砂骸兵 | physical | bleed 0.2 over 3 s | new | Sand-polished bone, a brass cap and a brass sickle-sword.
+sand_thrower | skeleton_thrower | S | 砂骸擲矛手 | physical | - | existing | Bleached shawl; brass-tipped javelins.
+sand_cultist | cultist | S | 砂語教徒 | lightning | - | new | Sand-coloured robe, a brass mask, the dagger wired to a small storm-jar at the belt.
+sand_caster | cult_caster | S | 砂語祭司 | lightning | - | existing | Ochre robes; the candle-ring on the staff replaced by copper rods.
+sand_snuffer | cult_snuffer | S | 砂語捻燈人 | lightning | weaken 0.25 for 4 s; resource drain | new | Brass snuffer cone that crackles; a dust-veil over the sealed scalp.
+ember_knight | knight | A | 燼騎士 | fire | burn 0.4 over 3 s | existing | Plate heat-blued and glowing at the seams, the cape burnt to a fringe.

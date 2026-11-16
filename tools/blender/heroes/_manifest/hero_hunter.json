@@ -1,0 +1,145 @@
+{
+ "id": "hero_hunter",
+ "file": "hero_hunter.glb",
+ "meshes": [
+  {
+   "name": "body_cloth",
+   "triangles": 12944,
+   "materials": [
+    "cloth_hero_hunter"
+   ]
+  },
+  {
+   "name": "body_emis",
+   "triangles": 416,
+   "materials": [
+    "emis_hero_hunter"
+   ]
+  },
+  {
+   "name": "body_hair",
+   "triangles": 1480,
+   "materials": [
+    "hair_hero_hunter"
+   ]
+  },
+  {
+   "name": "body_leather",
+   "triangles": 9776,
+   "materials": [
+    "leather_hero_hunter"
+   ]
+  },
+  {
+   "name": "body_metal",
+   "triangles": 810,
+   "materials": [
+    "metal_hero_hunter"
+   ]
+  },
+  {
+   "name": "body_skin",
+   "triangles": 1544,
+   "materials": [
+    "skin_hero_hunter"
+   ]
+  },
+  {
+   "name": "wpn_1",
+   "triangles": 368,
+   "materials": [
+    "cloth_hero_hunter",
+    "leather_hero_hunter",
+    "metal_hero_hunter"
+   ]
+  },
+  {
+   "name": "wpn_1_off",
+   "triangles": 132,
+   "materials": [
+    "leather_hero_hunter",
+    "metal_hero_hunter"
+   ]
+  },
+  {
+   "name": "wpn_2",
+   "triangles": 648,
+   "materials": [
+    "leather_hero_hunter",
+    "metal_hero_hunter"
+   ]
+  },
+  {
+   "name": "wpn_2_off",
+   "triangles": 262,
+   "materials": [
+    "leather_hero_hunter",
+    "metal_hero_hunter"
+   ]
+  },
+  {
+   "name": "wpn_3",
+   "triangles": 1008,
+   "materials": [
+    "leather_hero_hunter",
+    "metal_hero_hunter",
+    "emis_hero_hunter"
+   ]
+  },
+  {
+   "name": "wpn_3_off",
+   "triangles": 296,
+   "materials": [
+    "leather_hero_hunter",
+    "metal_hero_hunter",
+    "emis_hero_hunter"
+   ]
+  }
+ ],
+ "materials": [
+  "cloth_hero_hunter",
+  "emis_hero_hunter",
+  "hair_hero_hunter",
+  "leather_hero_hunter",
+  "metal_hero_hunter",
+  "skin_hero_hunter"
+ ],
+ "triangles": 29684,
+ "notes": "Pose-tested: Pistol_Aim_Neutral, Pistol_Shoot, Pistol_Idle_Loop, Sword_Regular_Combo, Sword_Dash, Jog_Fwd_Loop. wpn_N = hand crossbow skinned 100% to hand_r (barrel level in the Pistol_Aim clips); wpn_N_off = dagger skinned 100% to hand_l in a reverse grip (blade leaves the little-finger side, so it hangs below the supporting hand in the two-handed Pistol clips). Hair material holds the eyebrows only (the hood hides the scalp).",
+ "triangles_body": 26970,
+ "height_m": 1.9,
+ "bbox_blender_zup": {
+  "min": [
+   -0.986,
+   -0.216,
+   -0.004
+  ],
+  "max": [
+   0.986,
+   0.253,
+   1.9
+  ]
+ },
+ "bbox_gltf_yup": {
+  "min": [
+   -0.986,
+   -0.004,
+   -0.253
+  ],
+  "max": [
+   0.986,
+   1.9,
+   0.216
+  ]
+ },
+ "bbox_note": "rest pose (T-pose, arms out), body_* meshes only (weapons excluded)",
+ "size_bytes": 9528288,
+ "textures": {
+  "cloth": 2048,
+  "leather": 2048,
+  "metal": 512,
+  "skin": 512,
+  "hair": 512
+ },
+ "fast_preview_build": false
+}

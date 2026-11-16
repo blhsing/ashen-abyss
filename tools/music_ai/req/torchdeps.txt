@@ -1,0 +1,2 @@
+# packages that depend on torch: installed only AFTER AMD's torch wheel is in the venv, so pip keeps it
+accelerate>=1.12.0

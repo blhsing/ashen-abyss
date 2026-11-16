@@ -1,0 +1,151 @@
+﻿00:01.406  bpy.rna          | WARNING current value '0' matches no enum in 'EnumProperty', 'export_format', 'default'
+00:01.406  bpy.rna          | WARNING current value '0' matches no enum in 'EnumProperty', 'export_format', 'default'
+00:01.406  cycles           | WARNING CUEW initialization failed: Error opening the library
+HIP Library Path: C:\Windows\SYSTEM32\amdhip64_7.dll
+BlenderMCP addon registered
+BlenderMCP addon unregistered
+ENGINES ['BLENDER_EEVEE']
+EEVEE id ok BLENDER_EEVEE
+EXPORT PROPS
+   filepath STRING  
+   check_existing BOOLEAN True 
+   export_import_convert_lighting_mode ENUM SPEC ['SPEC', 'COMPAT', 'RAW']
+   gltf_export_id STRING  
+   export_use_gltfpack BOOLEAN False 
+   export_gltfpack_tc BOOLEAN True 
+   export_gltfpack_tq INT 8 
+   export_gltfpack_si FLOAT 1.0 
+   export_gltfpack_sa BOOLEAN False 
+   export_gltfpack_slb BOOLEAN False 
+   export_gltfpack_vp INT 14 
+   export_gltfpack_vt INT 12 
+   export_gltfpack_vn INT 8 
+   export_gltfpack_vc INT 8 
+   export_gltfpack_vpi ENUM Integer ['Integer', 'Normalized', 'Floating-point']
+   export_gltfpack_noq BOOLEAN True 
+   export_gltfpack_kn BOOLEAN False 
+   export_format ENUM  []
+   ui_tab ENUM GENERAL ['GENERAL', 'MESHES', 'OBJECTS', 'ANIMATION']
+   export_copyright STRING  
+   export_image_format ENUM AUTO ['AUTO', 'JPEG', 'WEBP', 'NONE']
+   export_image_add_webp BOOLEAN False 
+   export_image_webp_fallback BOOLEAN False 
+   export_texture_dir STRING  
+   export_jpeg_quality INT 75 
+   export_image_quality INT 75 
+   export_keep_originals BOOLEAN False 
+   export_texcoords BOOLEAN True 
+   export_normals BOOLEAN True 
+   export_gn_mesh BOOLEAN False 
+   export_meshopt_compression_enable BOOLEAN False 
+   export_meshopt_extension ENUM EXT_meshopt_compression ['EXT_meshopt_compression', 'KHR_meshopt_compression']
+   export_draco_mesh_compression_enable BOOLEAN False 
+   export_draco_mesh_compression_level INT 6 
+   export_draco_position_quantization INT 14 
+   export_draco_normal_quantization INT 10 
+   export_draco_texcoord_quantization INT 12 
+   export_draco_color_quantization INT 10 
+   export_draco_generic_quantization INT 12 
+   export_tangents BOOLEAN False 
+   export_materials ENUM EXPORT ['EXPORT', 'PLACEHOLDER', 'VIEWPORT', 'NONE']
+   export_unused_images BOOLEAN False 
+   export_unused_textures BOOLEAN False 
+   export_vertex_color ENUM MATERIAL ['MATERIAL', 'ACTIVE', 'NAME', 'NONE']
+   export_vertex_color_name STRING Color 
+   export_all_vertex_colors BOOLEAN True 
+   export_active_vertex_color_when_no_material BOOLEAN True 
+   export_attributes BOOLEAN False 
+   use_mesh_edges BOOLEAN False 
+   use_mesh_vertices BOOLEAN False 
+   export_cameras BOOLEAN False 
+   use_selection BOOLEAN False 
+   use_visible BOOLEAN False 
+   use_renderable BOOLEAN False 
+   use_active_collection_with_nested BOOLEAN True 
+   use_active_collection BOOLEAN False 
+   use_active_scene BOOLEAN False 
+   collection STRING  
+   at_collection_center BOOLEAN False 
+   export_extras BOOLEAN False 
+   export_yup BOOLEAN True 
+   export_apply BOOLEAN False 
+   export_shared_accessors BOOLEAN False 
+   export_animations BOOLEAN True 
+   export_frame_range BOOLEAN False 
+   export_frame_step INT 1 
+   export_force_sampling BOOLEAN True 
+   export_sampling_interpolation_fallback ENUM LINEAR ['LINEAR', 'STEP']
+   export_pointer_animation BOOLEAN False 
+   export_animation_mode ENUM ACTIONS ['ACTIONS', 'ACTIVE_ACTIONS', 'BROADCAST', 'NLA_TRACKS', 'SCENE']
+   export_nla_strips_merged_animation_name STRING Animation 
+   export_def_bones BOOLEAN False 
+   export_hierarchy_flatten_bones BOOLEAN False 
+   export_hierarchy_flatten_objs BOOLEAN False 
+   export_armature_object_remove BOOLEAN False 
+   export_leaf_bone BOOLEAN False 
+   export_optimize_animation_size BOOLEAN True 
+   export_optimize_animation_keep_anim_armature BOOLEAN True 
+   export_optimize_animation_keep_anim_object BOOLEAN False 
+   export_optimize_disable_viewport BOOLEAN False 
+   export_negative_frame ENUM SLIDE ['SLIDE', 'CROP']
+   export_anim_slide_to_zero BOOLEAN False 
+   export_bake_animation BOOLEAN False 
+   export_merge_animation ENUM ACTION ['NLA_TRACK', 'ACTION', 'NONE']
+   export_anim_single_armature BOOLEAN True 
+   export_reset_pose_bones BOOLEAN True 
+   export_current_frame BOOLEAN False 
+   export_rest_position_armature BOOLEAN True 
+   export_anim_scene_split_object BOOLEAN True 
+   export_skins BOOLEAN True 
+   export_influence_nb INT 4 
+   export_all_influences BOOLEAN False 
+   export_morph BOOLEAN True 
+   export_morph_normal BOOLEAN True 
+   export_morph_tangent BOOLEAN False 
+   export_morph_animation BOOLEAN True 
+   export_morph_reset_sk_data BOOLEAN True 
+   export_lights BOOLEAN False 
+   export_try_sparse_sk BOOLEAN True 
+   export_try_omit_sparse_sk BOOLEAN False 
+   export_gpu_instances BOOLEAN False 
+   export_action_filter BOOLEAN False 
+   export_convert_animation_pointer BOOLEAN False 
+   export_nla_strips BOOLEAN True 
+   export_original_specular BOOLEAN False 
+   will_save_settings BOOLEAN False 
+   export_hierarchy_full_collections BOOLEAN False 
+   export_extra_animations BOOLEAN False 
+   export_loglevel INT -1 
+   filter_glob STRING *.glb 
+IMPORT PROPS
+   filepath STRING  
+   export_import_convert_lighting_mode ENUM SPEC ['SPEC', 'COMPAT', 'RAW']
+   filter_glob STRING *.glb;*.gltf 
+   directory STRING  
+   files COLLECTION None 
+   loglevel INT 0 
+   import_pack_images BOOLEAN True 
+   merge_vertices BOOLEAN False 
+   import_shading ENUM NORMALS ['NORMALS', 'FLAT', 'SMOOTH']
+   bone_heuristic ENUM BLENDER ['BLENDER', 'TEMPERANCE', 'FORTUNE']
+   disable_bone_shape BOOLEAN False 
+   bone_shape_scale_factor FLOAT 1.0 
+   guess_original_bind_pose BOOLEAN True 
+   import_webp_texture BOOLEAN False 
+   import_unused_materials BOOLEAN False 
+   import_select_created_objects BOOLEAN True 
+   import_scene_extras BOOLEAN True 
+   import_scene_as_collection BOOLEAN True 
+   import_merge_material_slots BOOLEAN True 
+   import_point_as_pointcloud BOOLEAN False 
+BAKE types ['NONE', 'EMIT', 'DIRECT', 'INDIRECT', 'COLOR', 'DIFFUSE', 'GLOSSY', 'TRANSMISSION']
+cycles addon <bpy_struct, Addon("cycles") at 0x000002CED1BE6BD8>
+  devtype HIP [('AMD RYZEN AI MAX+ 395', 'CPU'), ('AMD Radeon(TM) 8060S Graphics', 'HIP')]
+  devtype OPTIX [('AMD RYZEN AI MAX+ 395', 'CPU'), ('AMD Radeon(TM) 8060S Graphics', 'HIP')]
+  devtype CUDA [('AMD RYZEN AI MAX+ 395', 'CPU'), ('AMD Radeon(TM) 8060S Graphics', 'HIP')]
+  devtype ONEAPI [('AMD RYZEN AI MAX+ 395', 'CPU'), ('AMD Radeon(TM) 8060S Graphics', 'HIP')]
+  devtype METAL ERR bpy_struct: item.attr = val: enum "METAL" not found in ('NONE', 'CUDA', 'OPTIX', 'HIP', 'ONEAPI')
+CPUS 32
+Blender 5.2.3 LTS (hash e13b728c6880 built 2026-10-22 01:37:16)
+
+Blender quit

@@ -1,0 +1,73 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v10.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v10.0": {
+      "AudioTool/1.0.0": {
+        "dependencies": {
+          "MeltySynth": "2.4.1",
+          "NVorbis": "0.10.5",
+          "OggVorbisEncoder": "1.2.2"
+        },
+        "runtime": {
+          "AudioTool.dll": {}
+        }
+      },
+      "MeltySynth/2.4.1": {
+        "runtime": {
+          "lib/netstandard2.1/MeltySynth.dll": {
+            "assemblyVersion": "2.4.1.0",
+            "fileVersion": "2.4.1.0"
+          }
+        }
+      },
+      "NVorbis/0.10.5": {
+        "runtime": {
+          "lib/netstandard2.0/NVorbis.dll": {
+            "assemblyVersion": "0.10.5.0",
+            "fileVersion": "0.10.5.0"
+          }
+        }
+      },
+      "OggVorbisEncoder/1.2.2": {
+        "runtime": {
+          "lib/net7.0/OggVorbisEncoder.dll": {
+            "assemblyVersion": "1.2.2.0",
+            "fileVersion": "1.2.2.0"
+          }
+        }
+      }
+    }
+  },
+  "libraries": {
+    "AudioTool/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "MeltySynth/2.4.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-5Rzqh2H8bSZ+bna5hMbsQwEdqdaCEIkBaWzCSyKa5VV5oDZ9Zfi53dkGrUqdkQGT45Ltmv1WSzFlgmI9cD1I1w==",
+      "path": "meltysynth/2.4.1",
+      "hashPath": "meltysynth.2.4.1.nupkg.sha512"
+    },
+    "NVorbis/0.10.5": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-o+IptCG4Avze39HrGeztC+xIp6fOOwGVAwkoa1J++4Ji1WmZ+KIKlFl5wsgxsXqBkmdpfs/vFSUproiLKYa2bw==",
+      "path": "nvorbis/0.10.5",
+      "hashPath": "nvorbis.0.10.5.nupkg.sha512"
+    },
+    "OggVorbisEncoder/1.2.2": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-MZMa5URyED82nJUfGCbulS/1/Np+zhE2mt3h9TuAPOurVN3rYHEaVc7cKd7IK1vROB4UMdTgSoPCW3EJCNmHJw==",
+      "path": "oggvorbisencoder/1.2.2",
+      "hashPath": "oggvorbisencoder.1.2.2.nupkg.sha512"
+    }
+  }
+}

@@ -1,0 +1,119 @@
+{
+ "id": "hero_astromancer",
+ "file": "hero_astromancer.glb",
+ "meshes": [
+  {
+   "name": "body_cloth",
+   "triangles": 6158,
+   "materials": [
+    "cloth_hero_astromancer"
+   ]
+  },
+  {
+   "name": "body_emis",
+   "triangles": 272,
+   "materials": [
+    "emis_hero_astromancer"
+   ]
+  },
+  {
+   "name": "body_hair",
+   "triangles": 4386,
+   "materials": [
+    "hair_hero_astromancer"
+   ]
+  },
+  {
+   "name": "body_leather",
+   "triangles": 1864,
+   "materials": [
+    "leather_hero_astromancer"
+   ]
+  },
+  {
+   "name": "body_metal",
+   "triangles": 2860,
+   "materials": [
+    "metal_hero_astromancer"
+   ]
+  },
+  {
+   "name": "body_skin",
+   "triangles": 8392,
+   "materials": [
+    "skin_hero_astromancer"
+   ]
+  },
+  {
+   "name": "wpn_1",
+   "triangles": 392,
+   "materials": [
+    "leather_hero_astromancer",
+    "metal_hero_astromancer"
+   ]
+  },
+  {
+   "name": "wpn_2",
+   "triangles": 1064,
+   "materials": [
+    "leather_hero_astromancer",
+    "metal_hero_astromancer"
+   ]
+  },
+  {
+   "name": "wpn_3",
+   "triangles": 776,
+   "materials": [
+    "leather_hero_astromancer",
+    "metal_hero_astromancer",
+    "emis_hero_astromancer"
+   ]
+  }
+ ],
+ "materials": [
+  "cloth_hero_astromancer",
+  "emis_hero_astromancer",
+  "hair_hero_astromancer",
+  "leather_hero_astromancer",
+  "metal_hero_astromancer",
+  "skin_hero_astromancer"
+ ],
+ "triangles": 26164,
+ "notes": "Pose-tested: Spell_Simple_Idle_Loop, Spell_Simple_Shoot, Idle_Loop, Jog_Fwd_Loop, Roll. Staves wpn_1..3 are skinned 100% to hand_r (the UAL spell clips cast with the LEFT hand; the right hand carries the staff, which is open in those clips).",
+ "triangles_body": 23932,
+ "height_m": 1.797,
+ "bbox_blender_zup": {
+  "min": [
+   -0.983,
+   -0.203,
+   -0.004
+  ],
+  "max": [
+   0.983,
+   0.308,
+   1.797
+  ]
+ },
+ "bbox_gltf_yup": {
+  "min": [
+   -0.983,
+   -0.004,
+   -0.308
+  ],
+  "max": [
+   0.983,
+   1.797,
+   0.203
+  ]
+ },
+ "bbox_note": "rest pose (T-pose, arms out), body_* meshes only (weapons excluded)",
+ "size_bytes": 10076268,
+ "textures": {
+  "cloth": 2048,
+  "leather": 1024,
+  "metal": 1024,
+  "skin": 2048,
+  "hair": 1024
+ },
+ "fast_preview_build": false
+}

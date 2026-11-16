@@ -1,0 +1,146 @@
+{
+ "id": "hero_pactbinder",
+ "file": "hero_pactbinder.glb",
+ "meshes": [
+  {
+   "name": "body_cloth",
+   "triangles": 2844,
+   "materials": [
+    "cloth_hero_pactbinder"
+   ]
+  },
+  {
+   "name": "body_emis",
+   "triangles": 488,
+   "materials": [
+    "emis_hero_pactbinder"
+   ]
+  },
+  {
+   "name": "body_hair",
+   "triangles": 2285,
+   "materials": [
+    "hair_hero_pactbinder"
+   ]
+  },
+  {
+   "name": "body_leather",
+   "triangles": 11270,
+   "materials": [
+    "leather_hero_pactbinder"
+   ]
+  },
+  {
+   "name": "body_metal",
+   "triangles": 4594,
+   "materials": [
+    "metal_hero_pactbinder"
+   ]
+  },
+  {
+   "name": "body_skin",
+   "triangles": 4708,
+   "materials": [
+    "skin_hero_pactbinder"
+   ]
+  },
+  {
+   "name": "wpn_1",
+   "triangles": 133,
+   "materials": [
+    "leather_hero_pactbinder",
+    "metal_hero_pactbinder"
+   ]
+  },
+  {
+   "name": "wpn_1_off",
+   "triangles": 972,
+   "materials": [
+    "cloth_hero_pactbinder",
+    "leather_hero_pactbinder",
+    "metal_hero_pactbinder"
+   ]
+  },
+  {
+   "name": "wpn_2",
+   "triangles": 416,
+   "materials": [
+    "metal_hero_pactbinder"
+   ]
+  },
+  {
+   "name": "wpn_2_off",
+   "triangles": 1888,
+   "materials": [
+    "cloth_hero_pactbinder",
+    "leather_hero_pactbinder",
+    "metal_hero_pactbinder"
+   ]
+  },
+  {
+   "name": "wpn_3",
+   "triangles": 730,
+   "materials": [
+    "leather_hero_pactbinder",
+    "metal_hero_pactbinder",
+    "emis_hero_pactbinder"
+   ]
+  },
+  {
+   "name": "wpn_3_off",
+   "triangles": 2924,
+   "materials": [
+    "cloth_hero_pactbinder",
+    "leather_hero_pactbinder",
+    "metal_hero_pactbinder",
+    "emis_hero_pactbinder"
+   ]
+  }
+ ],
+ "materials": [
+  "cloth_hero_pactbinder",
+  "emis_hero_pactbinder",
+  "hair_hero_pactbinder",
+  "leather_hero_pactbinder",
+  "metal_hero_pactbinder",
+  "skin_hero_pactbinder"
+ ],
+ "triangles": 33252,
+ "notes": "Pose-tested: Spell_Simple_Shoot, Spell_Simple_Idle_Loop, Interact, Idle_Loop, Jog_Fwd_Loop. wpn_N = wand, skinned 100% to hand_r; wpn_N_off = chained grimoire, skinned 100% to hand_l and carried by an iron bail on its spine (hangs below the fist in idle, is thrust forward with the casting hand in the Spell_Simple clips). The coat hem is long on the left and weighted to pelvis / thighs only.",
+ "triangles_body": 26189,
+ "height_m": 1.903,
+ "bbox_blender_zup": {
+  "min": [
+   -0.985,
+   -0.203,
+   -0.004
+  ],
+  "max": [
+   0.984,
+   0.269,
+   1.903
+  ]
+ },
+ "bbox_gltf_yup": {
+  "min": [
+   -0.985,
+   -0.004,
+   -0.269
+  ],
+  "max": [
+   0.984,
+   1.903,
+   0.203
+  ]
+ },
+ "bbox_note": "rest pose (T-pose, arms out), body_* meshes only (weapons excluded)",
+ "size_bytes": 9236324,
+ "textures": {
+  "cloth": 1024,
+  "leather": 2048,
+  "metal": 1024,
+  "skin": 1024,
+  "hair": 512
+ },
+ "fast_preview_build": false
+}

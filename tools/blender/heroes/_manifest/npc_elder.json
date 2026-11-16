@@ -1,0 +1,94 @@
+{
+ "id": "npc_elder",
+ "file": "npc_elder.glb",
+ "meshes": [
+  {
+   "name": "body_cloth",
+   "triangles": 7147,
+   "materials": [
+    "cloth_npc_elder"
+   ]
+  },
+  {
+   "name": "body_emis",
+   "triangles": 36,
+   "materials": [
+    "emis_npc_elder"
+   ]
+  },
+  {
+   "name": "body_hair",
+   "triangles": 2954,
+   "materials": [
+    "hair_npc_elder"
+   ]
+  },
+  {
+   "name": "body_leather",
+   "triangles": 1698,
+   "materials": [
+    "leather_npc_elder"
+   ]
+  },
+  {
+   "name": "body_metal",
+   "triangles": 748,
+   "materials": [
+    "metal_npc_elder"
+   ]
+  },
+  {
+   "name": "body_skin",
+   "triangles": 5730,
+   "materials": [
+    "skin_npc_elder"
+   ]
+  }
+ ],
+ "materials": [
+  "cloth_npc_elder",
+  "emis_npc_elder",
+  "hair_npc_elder",
+  "leather_npc_elder",
+  "metal_npc_elder",
+  "skin_npc_elder"
+ ],
+ "triangles": 18313,
+ "notes": "Pose-tested: Idle_Lantern_Loop, Idle_Talking_Loop, Walk_Loop, Idle_Loop. The lantern is part of body_metal / body_emis, skinned 100% to hand_r; it hangs plumb in Idle_Lantern_Loop (right fist raised palm-down) and swings with the hand in other clips.",
+ "triangles_body": 18313,
+ "height_m": 1.796,
+ "bbox_blender_zup": {
+  "min": [
+   -0.981,
+   -0.198,
+   -0.004
+  ],
+  "max": [
+   0.981,
+   0.28,
+   1.796
+  ]
+ },
+ "bbox_gltf_yup": {
+  "min": [
+   -0.981,
+   -0.004,
+   -0.28
+  ],
+  "max": [
+   0.981,
+   1.796,
+   0.198
+  ]
+ },
+ "bbox_note": "rest pose (T-pose, arms out), body_* meshes only (weapons excluded)",
+ "size_bytes": 7014808,
+ "textures": {
+  "cloth": 2048,
+  "leather": 512,
+  "metal": 512,
+  "skin": 1024,
+  "hair": 1024
+ },
+ "fast_preview_build": false
+}

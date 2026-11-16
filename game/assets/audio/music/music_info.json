@@ -1,0 +1,138 @@
+{
+  "combat_mode": "crossfade",
+  "tracks": {
+    "menu_theme": {
+      "seconds": 176.0,
+      "bpm": 60,
+      "loop": true,
+      "seed": 7103,
+      "model": "ACE-Step 1.5 XL turbo (acestep-v15-xl-turbo-diffusers)"
+    },
+    "town": {
+      "seconds": 135.0,
+      "bpm": 76,
+      "loop": true,
+      "seed": 7112,
+      "model": "ACE-Step 1.5 XL turbo (acestep-v15-xl-turbo-diffusers)"
+    },
+    "intro_bed": {
+      "seconds": 65.3,
+      "bpm": 60,
+      "loop": false,
+      "seed": 7120,
+      "model": "ACE-Step 1.5 XL turbo (acestep-v15-xl-turbo-diffusers)"
+    },
+    "boss": {
+      "seconds": 115.84,
+      "bpm": 116.0,
+      "loop": true,
+      "seed": 7133,
+      "model": "ACE-Step 1.5 XL turbo (acestep-v15-xl-turbo-diffusers)"
+    },
+    "boss_final": {
+      "seconds": 151.997,
+      "bpm": 120.0,
+      "loop": true,
+      "seed": 7141,
+      "model": "ACE-Step 1.5 XL turbo (acestep-v15-xl-turbo-diffusers)"
+    },
+    "wastes_base": {
+      "seconds": 135.5,
+      "bpm": 56,
+      "loop": true,
+      "seed": 7154,
+      "model": "ACE-Step 1.5 XL turbo (acestep-v15-xl-turbo-diffusers)"
+    },
+    "wastes_combat": {
+      "seconds": 111.423,
+      "bpm": 112.2,
+      "loop": true,
+      "seed": 7163,
+      "model": "ACE-Step 1.5 XL turbo (acestep-v15-xl-turbo-diffusers)"
+    },
+    "frost_base": {
+      "seconds": 122.5,
+      "bpm": 54,
+      "loop": true,
+      "seed": 7172,
+      "model": "ACE-Step 1.5 XL turbo (acestep-v15-xl-turbo-diffusers)"
+    },
+    "frost_combat": {
+      "seconds": 113.33,
+      "bpm": 108.0,
+      "loop": true,
+      "seed": 7183,
+      "model": "ACE-Step 1.5 XL turbo (acestep-v15-xl-turbo-diffusers)"
+    },
+    "crypt_base": {
+      "seconds": 128.0,
+      "bpm": 52,
+      "loop": true,
+      "seed": 7192,
+      "model": "ACE-Step 1.5 XL turbo (acestep-v15-xl-turbo-diffusers)"
+    },
+    "crypt_combat": {
+      "seconds": 128.0,
+      "bpm": 104.7,
+      "loop": true,
+      "seed": 7201,
+      "model": "ACE-Step 1.5 XL turbo (acestep-v15-xl-turbo-diffusers)"
+    },
+    "mire_base": {
+      "seconds": 120.0,
+      "bpm": 50,
+      "loop": true,
+      "seed": 7210,
+      "model": "ACE-Step 1.5 XL turbo (acestep-v15-xl-turbo-diffusers)"
+    },
+    "mire_combat": {
+      "seconds": 115.203,
+      "bpm": 100.6,
+      "loop": true,
+      "seed": 7221,
+      "model": "ACE-Step 1.5 XL turbo (acestep-v15-xl-turbo-diffusers)"
+    },
+    "sands_base": {
+      "seconds": 132.38,
+      "bpm": 58,
+      "loop": true,
+      "seed": 7231,
+      "model": "ACE-Step 1.5 XL turbo (acestep-v15-xl-turbo-diffusers)"
+    },
+    "sands_combat": {
+      "seconds": 120.0,
+      "bpm": 104,
+      "loop": true,
+      "seed": null,
+      "model": "procedural (own synthesis + MuseScore_General SoundFont)"
+    },
+    "sanctum_base": {
+      "seconds": 124.0,
+      "bpm": 55,
+      "loop": true,
+      "seed": 7251,
+      "model": "ACE-Step 1.5 XL turbo (acestep-v15-xl-turbo-diffusers)"
+    },
+    "sanctum_combat": {
+      "seconds": 120.0,
+      "bpm": 64,
+      "loop": true,
+      "seed": null,
+      "model": "procedural (own synthesis + MuseScore_General SoundFont)"
+    },
+    "abyss_base": {
+      "seconds": 120.0,
+      "bpm": 96,
+      "loop": true,
+      "seed": null,
+      "model": "procedural (own synthesis + MuseScore_General SoundFont)"
+    },
+    "abyss_combat": {
+      "seconds": 120.0,
+      "bpm": 96,
+      "loop": true,
+      "seed": null,
+      "model": "procedural (own synthesis + MuseScore_General SoundFont)"
+    }
+  }
+}

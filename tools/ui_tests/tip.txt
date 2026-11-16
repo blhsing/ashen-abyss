@@ -1,0 +1,23 @@
+wait 4.0
+give set
+wait 1.0
+open inventory
+wait 1.0
+hover 1005,512
+wait 0.9
+shot tip_bag_col1
+hover 1233,512
+wait 0.9
+shot tip_bag_col5
+hover 1518,569
+wait 0.9
+shot tip_bag_col10
+hover 1013,180
+wait 0.9
+shot tip_worn_helm
+unhover
+open skills
+wait 1.0
+hover 1080,140
+wait 0.9
+shot tip_skilltree

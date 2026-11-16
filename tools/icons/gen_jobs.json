@@ -1,0 +1,623 @@
+[
+ {
+  "id": "emberblade_a",
+  "grid": 3,
+  "extra": "Accent colour of the magical effects in this sheet: ember orange fire. ",
+  "cells": [
+   "skill/eb_slash",
+   "skill/eb_cleave",
+   "skill/eb_whirl",
+   "skill/eb_roar",
+   "skill/eb_leap",
+   "skill/eb_ironhide",
+   "skill/eb_rupture",
+   "skill/eb_wrath",
+   "keypassive/kp_eb_edge"
+  ],
+  "subjects": [
+   "a heavy steel greatsword cutting diagonally, leaving one thin crescent trail of orange embers",
+   "a greatsword driven point-down into cracked stone, a wave of flame bursting forward along the crack",
+   "a greatsword spinning in a full circle, drawn as a ring of blurred steel and swirling ash",
+   "a visored steel helmet seen from the front, shouting, rings of orange shock-wave bursting outward",
+   "an armoured plate boot slamming down on stone, slabs shattering and dust flying up",
+   "a greatsword held upright in front of a dome-shaped translucent amber barrier",
+   "a greatsword whose whole blade burns with roaring ember fire, caught mid downward swing",
+   "a clenched plate-gauntlet fist engulfed in a pillar of fire and rising embers",
+   "the tip of a sword blade glowing white-hot like metal fresh from a forge, heat shimmer"
+  ]
+ },
+ {
+  "id": "emberblade_b",
+  "grid": 3,
+  "extra": "Accent colour of the magical effects in this sheet: ember orange fire. ",
+  "cells": [
+   "passive/eb_p1",
+   "passive/eb_p2",
+   "passive/eb_p3",
+   "passive/eb_p4",
+   "keypassive/kp_eb_stand",
+   "spec/eb_heavy",
+   "spec/eb_swift",
+   "spec/eb_guard",
+   "crestgen/emberblade"
+  ],
+  "subjects": [
+   "two crossed two-handed swords of polished steel",
+   "a thick layered steel breastplate with heavy rivets, front view",
+   "a single drop of blood glowing like a hot ember, tiny sparks around it",
+   "a battered war banner on a spear, tattered dark cloth lit by orange firelight",
+   "a dented steel tower shield planted in the ground, cracked but standing firm",
+   "one very broad, massive two-handed sword resting point-down, thick blade",
+   "a slender light sword drawn as three fast overlapping slashes of bright steel",
+   "a sword held level across a round steel shield in a guarding stance",
+   "a round medallion of dark forged iron with a raised rim, embossed with an upright greatsword over a flame, a faint ember-orange glow in the recesses"
+  ]
+ },
+ {
+  "id": "astromancer_a",
+  "grid": 3,
+  "extra": "Accent colour of the magical effects in this sheet: star blue, with orange fire, pale blue frost and violet-white lightning where named. ",
+  "cells": [
+   "skill/as_spark",
+   "skill/as_fireball",
+   "skill/as_frostlance",
+   "skill/as_chain",
+   "skill/as_blink",
+   "skill/as_frostnova",
+   "skill/as_meteor",
+   "skill/as_cataclysm",
+   "keypassive/kp_as_overload"
+  ],
+  "subjects": [
+   "a small crackling spark of blue-white lightning shaped like a four-pointed star",
+   "a blazing fireball with a molten core and a trailing tail of flame",
+   "a long sharp lance of clear blue ice with frost mist streaming off it, flying point-first",
+   "a forked chain of violet-white lightning jumping between three small floating iron orbs",
+   "a robed figure dissolving into streaks of blue starlight while stepping through a vertical slit of light",
+   "a ring of jagged ice spikes bursting outward from an empty centre, seen at an angle from above",
+   "one burning rock meteor plunging diagonally with a long fire trail",
+   "many small burning meteors raining out of a torn glowing rift in a dark sky",
+   "a cracked crystal orb overflowing with wild blue lightning"
+  ]
+ },
+ {
+  "id": "astromancer_b",
+  "grid": 3,
+  "extra": "Accent colour of the magical effects in this sheet: star blue. ",
+  "cells": [
+   "passive/as_p1",
+   "passive/as_p2",
+   "passive/as_p3",
+   "passive/as_p4",
+   "keypassive/kp_as_mastery",
+   "spec/as_fire",
+   "spec/as_frost",
+   "spec/as_storm",
+   "crestgen/astromancer"
+  ],
+  "subjects": [
+   "a crystal shattering into sharp fragments from one precise strike",
+   "a hooded robe wrapped by three thin orbiting ribbons, one of fire, one of ice, one of lightning",
+   "a deep blue glass vial brimming with glowing liquid starlight",
+   "the head of a wooden staff sending a pin-point beam of light into a small ring target",
+   "a flame and an ice crystal intertwined in a spiral, half orange and half pale blue",
+   "a small burning star, a sphere of fire with a flaring corona",
+   "a small frozen star, a sphere of ice with long frost spikes",
+   "a small storm star, a dark sphere wrapped in arcs of lightning",
+   "a round medallion of dark forged iron with a raised rim, embossed with a staff crowned by a four-pointed star, a faint star-blue glow in the recesses"
+  ]
+ },
+ {
+  "id": "hunter_b",
+  "grid": 3,
+  "extra": "Accent colour of the magical effects in this sheet: dark teal. ",
+  "cells": [
+   "passive/hu_p1",
+   "passive/hu_p2",
+   "passive/hu_p3",
+   "passive/hu_p4",
+   "keypassive/kp_hu_skirmish",
+   "spec/hu_combo",
+   "spec/hu_ambush",
+   "spec/hu_venom",
+   "crestgen/hunter"
+  ],
+  "subjects": [
+   "a steel crossbow bolt embedded exactly in the centre of a worn round wooden target",
+   "a pair of soft dark leather boots with small teal feathers tied at the ankle, mid stride",
+   "a dagger edge being honed on a whetstone, sparks flying",
+   "a leather waterskin and a coil of rope tied with a teal ribbon",
+   "a dark hooded cloak whirling aside as a blade passes harmlessly through its trailing edge",
+   "three steel daggers fanned out like a hand of cards",
+   "a deep dark hood with only two glinting teal eyes visible in its shadow",
+   "a coiled viper with open jaws dripping bright green venom",
+   "a round medallion of dark forged iron with a raised rim, embossed with a hand crossbow crossed with a dagger, a faint teal glow in the recesses"
+  ]
+ },
+ {
+  "id": "soulbinder_a",
+  "grid": 3,
+  "extra": "Accent colour of the magical effects in this sheet: pale green with violet. ",
+  "cells": [
+   "skill/sb_bolt",
+   "skill/sb_raise",
+   "skill/sb_spear",
+   "skill/sb_blight",
+   "skill/sb_explode",
+   "skill/sb_veil",
+   "skill/sb_curse",
+   "skill/sb_colossus",
+   "keypassive/kp_sb_chorus"
+  ],
+  "subjects": [
+   "a bolt of pale green-violet soul energy shaped like a wailing wisp, flying forward",
+   "a skeletal hand and forearm rising out of grave soil, fingers spread, pale green glow",
+   "a sharp spear made of one long splintered bone, flying point-first",
+   "a bubbling pool of dark violet rot with withering black vapour rising",
+   "a ghostly wisp bursting apart in a violet-green explosion with bone shards",
+   "a translucent hooded ghost figure of pale mist, its body fading into trailing smoke",
+   "a withered grey hand marked with a glowing violet curse sigil of thorny lines",
+   "the torso and skull of a towering giant skeleton built of fused bones, hollow eyes glowing green, seen from below",
+   "five small pale green soul wisps circling together in a ring"
+  ]
+ },
+ {
+  "id": "soulbinder_b",
+  "grid": 3,
+  "extra": "Accent colour of the magical effects in this sheet: pale green with violet. ",
+  "cells": [
+   "passive/sb_p1",
+   "passive/sb_p2",
+   "passive/sb_p3",
+   "passive/sb_p4",
+   "keypassive/kp_sb_alone",
+   "spec/sb_legion",
+   "spec/sb_offering",
+   "spec/sb_blood",
+   "crestgen/soulbinder"
+  ],
+  "subjects": [
+   "a skeleton hand gripping the hilt of a rusted sword",
+   "a ribcage wrapped protectively in pale violet mist with a faint light inside",
+   "a cracked skull with violet smoke pouring from its eye sockets",
+   "a small iron lantern holding a captured green soul flame",
+   "one lone pale violet soul flame standing in darkness, casting a long thin shadow",
+   "three skeleton warrior skulls in rusted helmets side by side, the front one larger",
+   "a ritual bone dagger lying across a shallow stone bowl of violet flame",
+   "a heart wrapped in thin thorny bone ribs, glowing deep red",
+   "a round medallion of dark forged iron with a raised rim, embossed with a scythe blade curving round a skull, a faint pale green glow in the recesses"
+  ]
+ },
+ {
+  "id": "wildsoul_a",
+  "grid": 3,
+  "extra": "Accent colour of the magical effects in this sheet: moss green spirit light. ",
+  "cells": [
+   "skill/ws_strike",
+   "skill/ws_maul",
+   "skill/ws_rend",
+   "skill/ws_bark",
+   "skill/ws_pounce",
+   "skill/ws_quake",
+   "skill/ws_storm",
+   "skill/ws_primal",
+   "keypassive/kp_ws_feral"
+  ],
+  "subjects": [
+   "a heavy wooden totem war-club carved with a beast face, bound with leather and bone, mid swing",
+   "a huge spectral bear paw with long claws swiping, moss-green spirit glow",
+   "a snarling spectral wolf head with bared fangs, lunging, green spirit glow",
+   "a forearm and fist covered in thick gnarled tree-bark armour with small green shoots",
+   "a spirit wolf in full leap, body stretched out, trailing green mist",
+   "a deep jagged crack splitting rocky ground, stones thrown upward",
+   "a dark storm cloud with three lightning bolts striking down",
+   "a massive roaring bear head, ancient and scarred, crowned with antler-like branches, glowing green eyes",
+   "three deep claw slashes glowing green across a slab of dark wood"
+  ]
+ },
+ {
+  "id": "wildsoul_b",
+  "grid": 3,
+  "extra": "Accent colour of the magical effects in this sheet: moss green spirit light. ",
+  "cells": [
+   "passive/ws_p1",
+   "passive/ws_p2",
+   "passive/ws_p3",
+   "passive/ws_p4",
+   "keypassive/kp_ws_elder",
+   "spec/ws_bear",
+   "spec/ws_wolf",
+   "spec/ws_raven",
+   "crestgen/wildsoul"
+  ],
+  "subjects": [
+   "a necklace of beast fangs and claws on a leather cord",
+   "a thick brown fur pelt draped over a shoulder guard of bone",
+   "an oak leaf struck by a tiny lightning bolt, its edges smouldering",
+   "a small green sapling sprouting from grey ash, glowing softly",
+   "an ancient gnarled tree stump with a carved face and glowing green marks in the bark",
+   "a calm bear head in profile made of green spirit light",
+   "a howling wolf head in profile made of green spirit light",
+   "a raven with spread wings, dark feathers edged with green spirit light",
+   "a round medallion of dark forged iron with a raised rim, embossed with a bear paw print over a carved totem club, a faint moss-green glow in the recesses"
+  ]
+ },
+ {
+  "id": "forgebody_a",
+  "grid": 3,
+  "extra": "Accent colour of the magical effects in this sheet: forge-ember orange. ",
+  "cells": [
+   "skill/fb_jab",
+   "skill/fb_palm",
+   "skill/fb_spin",
+   "skill/fb_guard",
+   "skill/fb_dash",
+   "skill/fb_break",
+   "skill/fb_wave",
+   "skill/fb_asura",
+   "keypassive/kp_fb_flow"
+  ],
+  "subjects": [
+   "a cloth-wrapped fist punching forward with two motion echoes behind it",
+   "an open palm thrust forward releasing a rippling shock-wave of force and dust",
+   "a spinning kick drawn as a leg sweeping a full circle of fire",
+   "a muscular torso whose skin has turned to dark forged iron, arms crossed in guard",
+   "a bare foot stepping on glowing embers, leaving a streak of burning footprints",
+   "a steel-plated gauntlet fist striking upward through shattering clouds",
+   "a rolling crescent-shaped wave of orange flame energy flying forward",
+   "the silhouette of a meditating figure with a blazing furnace sun burning in its chest",
+   "two fists circling each other in a continuous loop of ember trails"
+  ]
+ },
+ {
+  "id": "forgebody_b",
+  "grid": 3,
+  "extra": "Accent colour of the magical effects in this sheet: forge-ember orange. ",
+  "cells": [
+   "passive/fb_p1",
+   "passive/fb_p2",
+   "passive/fb_p3",
+   "passive/fb_p4",
+   "keypassive/kp_fb_vajra",
+   "spec/fb_fire",
+   "spec/fb_iron",
+   "spec/fb_wind",
+   "crestgen/forgebody"
+  ],
+  "subjects": [
+   "a pair of scuffed, dented iron knuckle-dusters",
+   "a bare shoulder and upper arm with bronze-coloured hardened skin",
+   "the mouth of a small blacksmith's furnace glowing with white-orange coals",
+   "a swirling breath of glowing vapour spiralling upward from an open hand",
+   "a seated meditating monk figure made of gleaming gold-bronze metal",
+   "a forearm with glowing molten veins running under the skin to a burning fist",
+   "a heavy blacksmith's anvil of dark worn iron",
+   "a spinning whirlwind of dust and loose cloth wrappings",
+   "a round medallion of dark forged iron with a raised rim, embossed with a clenched fist in front of a furnace sun, a faint forge-orange glow in the recesses"
+  ]
+ },
+ {
+  "id": "lampknight_a",
+  "grid": 3,
+  "extra": "Accent colour of the magical effects in this sheet: warm gold light. ",
+  "cells": [
+   "skill/lk_strike",
+   "skill/lk_bash",
+   "skill/lk_smite",
+   "skill/lk_aegis",
+   "skill/lk_charge",
+   "skill/lk_aura",
+   "skill/lk_lance",
+   "skill/lk_dawn",
+   "keypassive/kp_lk_retort"
+  ],
+  "subjects": [
+   "a knightly one-handed longsword with a golden crossguard, a small flare of warm light on its edge",
+   "a steel heater shield slamming forward, a burst of sparks at its boss",
+   "a column of golden-white light striking down from above onto cracked ground",
+   "a steel shield with a small lit lantern set in its centre, surrounded by a dome of warm golden light",
+   "a shield seen from the side charging forward with long horizontal speed streaks",
+   "an iron lantern with a steady flame, a ring of golden light spreading on the ground around it",
+   "a spear of solid golden light flying diagonally, bright tip",
+   "a radiant rising sun disc behind an upright sword planted in the ground",
+   "a polished shield reflecting a beam of golden light back at an angle"
+  ]
+ },
+ {
+  "id": "lampknight_b",
+  "grid": 3,
+  "extra": "Accent colour of the magical effects in this sheet: warm gold light. ",
+  "cells": [
+   "passive/lk_p1",
+   "passive/lk_p2",
+   "passive/lk_p3",
+   "passive/lk_p4",
+   "keypassive/kp_lk_weight",
+   "spec/lk_ward",
+   "spec/lk_judge",
+   "spec/lk_guide",
+   "crestgen/lampknight"
+  ],
+  "subjects": [
+   "the riveted boss of a round steel shield, close view, battle-worn",
+   "two armoured gauntlet hands cupped around a small candle flame",
+   "a sword blade catching golden holy flame along one edge",
+   "a wax-sealed rolled oath scroll tied with a golden cord",
+   "a brass balance scale, one pan holding a small flame, the other a heavy iron weight",
+   "a large tower shield with spread golden wings behind it",
+   "a heavy iron war hammer wreathed in golden fire",
+   "a tall lantern on a carrying pole held high, casting warm rays",
+   "a round medallion of dark forged iron with a raised rim, embossed with a lantern above a sword and shield, a faint warm golden glow in the recesses"
+  ]
+ },
+ {
+  "id": "pactbinder_a",
+  "grid": 3,
+  "extra": "Accent colour of the magical effects in this sheet: dark ember red with violet. ",
+  "cells": [
+   "skill/pb_hexbolt",
+   "skill/pb_bind",
+   "skill/pb_lash",
+   "skill/pb_chains",
+   "skill/pb_ward",
+   "skill/pb_step",
+   "skill/pb_rain",
+   "skill/pb_gate",
+   "keypassive/kp_pb_blood"
+  ],
+  "subjects": [
+   "a bolt of dark red-violet cursed flame with a ringed core, flying forward",
+   "a horned fiend skull of black basalt with glowing lava cracks, rising from a summoning circle of embers",
+   "a whip made of glowing red-hot chain links cracking in an S curve",
+   "two heavy dark iron chains crossing in an X, links glowing violet",
+   "a blood-red wax seal talisman on a parchment strip inside a thin crimson barrier shell",
+   "a jagged vertical tear in space edged with violet fire, darkness inside",
+   "streaks of dark red abyssal fire raining down onto a burning circle on the ground",
+   "a massive stone gate standing open, lava light and red smoke pouring out between its doors",
+   "a hand pressing a bleeding palm onto the page of an open book, red glow"
+  ]
+ },
+ {
+  "id": "pactbinder_b",
+  "grid": 3,
+  "extra": "Accent colour of the magical effects in this sheet: dark ember red with violet. ",
+  "cells": [
+   "passive/pb_p1",
+   "passive/pb_p2",
+   "passive/pb_p3",
+   "passive/pb_p4",
+   "keypassive/kp_pb_full",
+   "spec/pb_brute",
+   "spec/pb_imps",
+   "spec/pb_wraith",
+   "crestgen/pactbinder"
+  ],
+  "subjects": [
+   "an open leather-bound grimoire with abstract glowing red marks on its pages, no readable letters",
+   "a charred amulet shaped like a small horned mask on a chain",
+   "a flame that is half bright red and half deep violet-black, burning in an iron dish",
+   "an iron collar with red-hot spikes and a broken chain",
+   "five small glowing red sigil stones arranged in a ring, all lit",
+   "the head and shoulders of a hulking lava brute, basalt skin with molten cracks, heavy jaw",
+   "three small grinning horned imps clustered together, ember-red skin",
+   "a hooded spectre of cold blue mist bound in iron shackles",
+   "a round medallion of dark forged iron with a raised rim, embossed with an open grimoire under a horned sigil, a faint ember-red glow in the recesses"
+  ]
+ },
+ {
+  "id": "status_a",
+  "grid": 3,
+  "extra": "Accent colour of the magical effects in this sheet: the colour natural to each effect. ",
+  "cells": [
+   "status/stun",
+   "status/freeze",
+   "status/root",
+   "status/fear",
+   "status/burn",
+   "status/poison",
+   "status/bleed",
+   "status/rot",
+   "status/chill"
+  ],
+  "subjects": [
+   "a dented steel helmet with three small sparks orbiting above it",
+   "a clenched hand frozen solid inside a block of clear blue ice",
+   "a leather boot held fast by thorny roots growing out of the ground",
+   "one pale terrified eye wide open, surrounded by darkness and violet tendrils",
+   "a single fierce orange flame, tall and flickering",
+   "a drop of bright green venom with sickly green fumes",
+   "three red claw cuts with drops of blood",
+   "a decaying skull half crumbled into violet dust",
+   "one large intricate snowflake of pale blue ice"
+  ]
+ },
+ {
+  "id": "status_b",
+  "grid": 3,
+  "extra": "Accent colour of the magical effects in this sheet: the colour natural to each effect. ",
+  "cells": [
+   "status/slow",
+   "status/vulnerable",
+   "status/weaken",
+   "status/stealth",
+   "buff/immune",
+   "buff/deathless",
+   "buff/unstoppable",
+   "buff/freecast",
+   "buff/lifesteal"
+  ],
+  "subjects": [
+   "an iron shackle with a heavy ball and chain",
+   "a cracked, split steel breastplate with a glowing pink-violet fracture",
+   "a broken sword with a snapped blade, dull grey",
+   "a hooded cloak fading into transparent mist, half invisible, pale blue-grey",
+   "a standing figure's silhouette inside a perfect sphere of white spectral light",
+   "a heart of glowing ember wearing a small golden crown",
+   "a flexed armoured arm bursting an iron shackle apart",
+   "a swirl of blue-violet arcane energy spiralling into a bright centre",
+   "a red heart with a stream of blood flowing into it"
+  ]
+ },
+ {
+  "id": "stat_a",
+  "grid": 3,
+  "extra": "Accent colour of the magical effects in this sheet: the colour natural to each subject. ",
+  "cells": [
+   "stat/dmg",
+   "stat/core",
+   "stat/basic",
+   "stat/dot",
+   "stat/overpower",
+   "stat/minion",
+   "stat/frost",
+   "stat/lightning",
+   "stat/shadow"
+  ],
+  "subjects": [
+   "two crossed steel longswords with leather-wrapped hilts",
+   "one raised sword blade flashing with a bright glint of power",
+   "a clenched leather-wrapped fist, front view",
+   "a heap of glowing orange embers slowly burning",
+   "a massive iron warhammer head smashing down with a shock-wave ring",
+   "a skeletal hand raised in command with three small soul wisps above it",
+   "a jagged shard of pale blue ice with frost breath",
+   "one bright forked lightning bolt, blue-white",
+   "a dark crescent moon dripping violet-black shadow"
+  ]
+ },
+ {
+  "id": "stat_b",
+  "grid": 3,
+  "extra": "Accent colour of the magical effects in this sheet: the colour natural to each subject. ",
+  "cells": [
+   "stat/attackspeed",
+   "stat/movespeed",
+   "stat/dodge",
+   "stat/dr",
+   "stat/armor",
+   "stat/barrier",
+   "stat/resall",
+   "stat/resfire",
+   "stat/thorns"
+  ],
+  "subjects": [
+   "three fast parallel sword slashes, streaks of steel light",
+   "a leather boot with small ember-orange wings at the ankle",
+   "a cloaked figure leaning sharply aside as an arrow passes by",
+   "a sturdy round shield of wood and iron, front view",
+   "a steel cuirass with shoulder straps, front view",
+   "a translucent hexagonal shell of blue-white energy around a small glowing core",
+   "a shield divided into quarters glowing faintly red, blue, yellow and green",
+   "an iron shield with flames licking harmlessly round its edge",
+   "a round shield covered in long sharp iron spikes"
+  ]
+ },
+ {
+  "id": "stat_c",
+  "grid": 3,
+  "extra": "Accent colour of the magical effects in this sheet: the colour natural to each subject. ",
+  "cells": [
+   "stat/critchance",
+   "stat/critdmg",
+   "stat/life",
+   "stat/lifeonkill",
+   "stat/healing",
+   "stat/cdr",
+   "stat/resource",
+   "stat/maxresource",
+   "stat/generic"
+  ],
+  "subjects": [
+   "an arrow striking the exact centre of a round target, splinters flying",
+   "a sword point piercing through a cracked stone orb, shards bursting out the far side",
+   "a glowing red heart of ember-lit glass",
+   "a red heart with a single bright drop falling from it",
+   "an open hand cupping a warm golden-green healing light",
+   "an antique brass hourglass with glowing sand",
+   "a spiral of flowing blue-white energy forming a ring",
+   "a round-bottomed glass flask filled with glowing blue liquid",
+   "an upward-pointing arrowhead of pale golden light"
+  ]
+ },
+ {
+  "id": "affix_a",
+  "grid": 3,
+  "extra": "Accent colour of the magical effects in this sheet: the colour natural to each subject. ",
+  "cells": [
+   "affix/molten",
+   "affix/frozen",
+   "affix/shocking",
+   "affix/plagued",
+   "affix/shadow",
+   "affix/waller",
+   "affix/vortex",
+   "affix/chilling",
+   "affix/shielded"
+  ],
+  "subjects": [
+   "a lump of lava rock dripping orange magma",
+   "a cluster of sharp ice crystals with a cold blue glow, about to burst",
+   "a dark iron orb crackling with lightning arcs in all directions",
+   "a puddle of bubbling yellow-green corrosive slime with fumes",
+   "a slowly drifting orb of violet-black shadow with a trailing tail",
+   "a short wall of rough stone blocks rising out of the ground",
+   "a swirling blue-grey vortex pulling dust and stones inward",
+   "a curling breath of freezing mist full of tiny ice crystals",
+   "a horned monster skull inside a golden dome-shaped energy shield"
+  ]
+ },
+ {
+  "id": "affix_b",
+  "grid": 3,
+  "extra": "Accent colour of the magical effects in this sheet: the colour natural to each subject. ",
+  "cells": [
+   "affix/armored",
+   "affix/vampiric",
+   "affix/hasted",
+   "affix/summoner",
+   "affix/teleporter",
+   "affix/enraged",
+   "affix/splitting",
+   "shrine/damage",
+   "shrine/guard"
+  ],
+  "subjects": [
+   "a horned monster skull wearing thick riveted grey iron plates",
+   "a pair of long fangs dripping dark red blood",
+   "a clawed monster foot sprinting with pale green speed streaks",
+   "skeletal hands rising from the ground toward a green glowing sigil",
+   "a monster's clawed hand reaching out of a small violet portal",
+   "a snarling horned beast face with burning red eyes and steaming breath",
+   "a creature's skull splitting down the middle into two halves with a pink-violet glow",
+   "a small weathered stone shrine idol holding a red-orange flame in its hands",
+   "a small weathered stone shrine idol holding an iron shield, steel-blue glow"
+  ]
+ },
+ {
+  "id": "misc_a",
+  "grid": 3,
+  "extra": "Accent colour of the magical effects in this sheet: the colour natural to each subject. ",
+  "cells": [
+   "shrine/haste",
+   "shrine/fortune",
+   "shrine/flow",
+   "shrine/wrath",
+   "hud/evade",
+   "stat/burning",
+   "stat/luck",
+   "stat/xp",
+   "hud/townportal"
+  ],
+  "subjects": [
+   "a small weathered stone shrine idol with wings of wind, pale green glow",
+   "a small weathered stone shrine idol holding a bowl of gold coins, golden glow",
+   "a small weathered stone shrine idol pouring an endless stream of blue water from a jar",
+   "a small weathered stone shrine idol struck by a violet-white lightning bolt",
+   "a hooded figure rolling low to one side, leaving a blurred trail",
+   "a sword whose edge leaves a trail of small flames",
+   "a four-leafed sprig of gold lying on a few gold coins, golden glint",
+   "an open old book with a small bright flame of light rising from its pages, no readable letters",
+   "a free-standing ring of ember-orange fire, a doorway of flame with a warm village light inside"
+  ]
+ }
+]

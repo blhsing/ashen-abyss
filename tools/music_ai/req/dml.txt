@@ -1,0 +1,12 @@
+# DirectML test environment (see install_dml.ps1). torch-directml pins torch 2.4.1 / torchvision 0.19.1.
+torch-directml==0.2.5.dev240914
+torch==2.4.1
+torchvision==0.19.1
+numpy<2.3
+diffusers==0.39.0
+transformers>=4.55.5,<4.58.0
+accelerate>=1.12.0
+safetensors
+sentencepiece
+soundfile>=0.13.1
+scipy

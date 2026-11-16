@@ -1,0 +1,137 @@
+    // ── raster art (res://assets/ui, see UiArt): every frame below prefers it and falls back to the flat boxes ──
+
+    /// <summary>True when the raster interface art is installed: frames, buttons and slots are drawn from it.</summary>
+    public static bool Art => UiArt.Ready;
+
+    /// <summary>A shared art-backed style box, built once per key.</summary>
+    public static UiNine ArtBox(string key, Func<UiNine> make)
+    {
+        if (!ArtBoxes.TryGetValue(key, out var b)) ArtBoxes[key] = b = make();
+        return b;
+    }
+
+    /// <summary>A shared art-backed style box for one frame piece with content margins (design px).</summary>
+    public static UiNine ArtBox(string frame, float padX, float padY, string field = null, float fieldInset = 0f)
+    {
+        return ArtBox($"{frame}|{field}|{padX}|{padY}|{fieldInset}", () => new UiNine(frame, field, fieldInset, padX, padY));
+    }
+
+    /// <summary>
+    /// A box with a border. With the raster art a square-cornered box becomes a bevelled line frame tinted with the
+    /// border colour over the flat background; round boxes (radius above 5: dots, pills) stay flat.
+    /// </summary>
+    public static StyleBox Box(Color bg, Color border, int borderPx = 2, int radius = 4)
+    {
+        if (Art && radius <= 5 && borderPx > 0 && border.A > 0.02f && UiArt.Has("boxline"))
+        {
+            var n = new UiNine("boxline") { Back = bg, BackInset = 1f, FrameMod = border };
+            n.ContentMarginLeft = n.ContentMarginRight = n.ContentMarginTop = n.ContentMarginBottom = borderPx;
+            return n;
+        }
+        return Flat(bg, border, borderPx, radius);
+    }
+
+    private static StyleBoxFlat FrameFlat
+    {
+        get
+        {
+            if (_frameBox != null) return _frameBox;
+            var s = Flat(Panel, Border, 1, 3, 14f, 12f);
+            s.ShadowColor = new Color(0f, 0f, 0f, 0.5f);
+            s.ShadowSize = 10;
+            s.ShadowOffset = new Vector2(0f, 3f);
+            return _frameBox = s;
+        }
+    }
+
+    private static StyleBoxFlat HeavyFlat
+    {
+        get
+        {
+            if (_heavyBox != null) return _heavyBox;
+            var s = Flat(Panel, Gold.Darkened(0.32f), 2, 4, 24f, 20f);
+            s.BorderWidthTop = 3;
+            s.ShadowColor = new Color(0f, 0f, 0f, 0.62f);
+            s.ShadowSize = 26;
+            s.ShadowOffset = new Vector2(0f, 6f);
+            return _heavyBox = s;
+        }
+    }
+
+    private static StyleBoxFlat TipFlat
+    {
+        get
+        {
+            if (_tipBox != null) return _tipBox;
+            var s = Flat(new Color(0.03f, 0.028f, 0.033f, 0.97f), Border.Lightened(0.08f), 1, 3, 14f, 11f);
+            s.ShadowColor = new Color(0f, 0f, 0f, 0.6f);
+            s.ShadowSize = 12;
+            s.ShadowOffset = new Vector2(0f, 4f);
+            return _tipBox = s;
+        }
+    }
+
+    /// <summary>Content margins of the heavy window frame (design px): the moulding is 17 px, the rest is air.</summary>
+    public const float WinPadX = 32f, WinPadY = 28f;
+
+    /// <summary>
+    /// The window: heavy forged moulding with cast corners and the Sun-Forge crest on a slate field. Boxes below
+    /// 620 x 400 (dialogs, small cards) get the compact moulding and the small crest by themselves.
+    /// </summary>
+    public static StyleBox WindowBox => !Art ? HeavyFlat : ArtBox("window", () =>
+        new UiNine("window", "slate", 5f, WinPadX, WinPadY)
+        {
+            Top = UiArt.P("crest"), TopMinWidth = 620f,
+            Small = UiArt.P("modal"), SmallTop = UiArt.P("crest_small"), SmallBelow = new Vector2(620f, 400f),
+        });
+
+    /// <summary>The window moulding without the crest: full-screen panels whose top edge meets the screen edge.</summary>
+    public static StyleBox WindowPlainBox => !Art ? HeavyFlat : ArtBox("window_plain", () =>
+        new UiNine("window", "slate", 5f, WinPadX, WinPadY) { Small = UiArt.P("modal"), SmallBelow = new Vector2(620f, 400f) });
+
+    /// <summary>The sub-panel: thin moulding with capped corners over a darker field (cards inside windows).</summary>
+    public static StyleBox PanelBox => !Art ? FrameFlat : ArtBox("panel", () => new UiNine("panel", "soot", 3f, 18f, 16f));
+
+    /// <summary>An inset well for lists and grids: a recessed rim over the darkest field.</summary>
+    public static StyleBox WellBox => !Art ? Flat(Inset, Border, 1, 3, 8f, 8f) : ArtBox("well", () => new UiNine("well", "well", 2f, 10f, 10f));
+
+    /// <summary>The box tooltips and floating cards sit in (the rarity band is drawn by the card itself, see <see cref="DrawTipBand"/>).</summary>
+    public static StyleBox TipBox => !Art ? TipFlat : ArtBox("tooltip", () =>
+        new UiNine("tooltip", "soot", 3f).Margins(18f, 30f, 18f, 15f));
+
+    /// <summary>The comparison card: the same frame, held back a little.</summary>
+    public static StyleBox TipBoxDim
+    {
+        get
+        {
+            if (Art) return ArtBox("tooltip_dim", () => new UiNine("tooltip", "soot", 3f) { FrameMod = new Color(0.78f, 0.76f, 0.74f), FieldMod = new Color(0.86f, 0.86f, 0.88f) }.Margins(18f, 30f, 18f, 15f));
+            var dimmer = (StyleBoxFlat)TipFlat.Duplicate();
+            dimmer.BorderColor = Border.Darkened(0.25f);
+            dimmer.BgColor = new Color(0.026f, 0.025f, 0.03f, 0.97f);
+            return dimmer;
+        }
+    }
+
+    private static UiArt.Piece _tipBand;
+
+    /// <summary>
+    /// The tinted band of a tooltip card (rarity, element or gold at a glance): an enamel strip in the trough under
+    /// the card's top moulding. Call from the card's draw callback.
+    /// </summary>
+    public static void DrawTipBand(Control card, Color c)
+    {
+        if (!Art)
+        {
+            card.DrawRect(new Rect2(1f, 1f, card.Size.X - 2f, 3f), new Color(c, 0.9f));
+            card.DrawRect(new Rect2(1f, 4f, card.Size.X - 2f, 1f), new Color(0f, 0f, 0f, 0.5f));
+            return;
+        }
+        _tipBand ??= UiArt.P("tooltip_band");
+        if (_tipBand == null) return;
+        // the trough starts 9 px under the card's top edge and runs between the side mouldings
+        UiArt.Nine(card.GetCanvasItem(), _tipBand, new Rect2(11f, 9f, card.Size.X - 22f, _tipBand.BoxSize.Y), new Color(c.R, c.G, c.B, 1f));
+    }
+
+    /// <summary>A quiet dark plate with a hairline for toasts, prompts and small notices over the 3D scene.</summary>
+    public static StyleBox PlaqueBox => !Art ? Flat(new Color(0.03f, 0.028f, 0.033f, 0.9f), Border, 1, 3, 14f, 8f) : ArtBox("plaque", 18f, 8f);
+

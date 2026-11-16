@@ -1,0 +1,9 @@
+# "common" venv: downloads, Kokoro reference clips + baseline, ASR check, DSP post-processing, packaging.
+numpy
+scipy
+soundfile
+sherpa-onnx
+huggingface_hub
+opencc-python-reimplemented
+pyloudnorm
+pypinyin

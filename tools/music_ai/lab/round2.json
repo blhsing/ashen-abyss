@@ -1,0 +1,30 @@
+{
+ "describe": "relentless low string ostinato with choir stabs and big pounding drums, aggressive dark orchestral battle music",
+ "bpm": 116,
+ "key": "G minor",
+ "ts": 4,
+ "pulse": true,
+ "variants": {
+  "G": {
+   "caption": "dark orchestral, ominous, menacing, grim, tense, minor key, relentless low strings ostinato, staccato cellos, double basses, heavy taiko drums, timpani, wordless choir, dissonant, battle, film score, symphony orchestra, instrumental"
+  },
+  "H": {
+   "caption": "dark fantasy soundtrack, sinister, brooding, ominous, low register, minor key, relentless low strings ostinato, staccato cellos, double basses, war drums, taiko, timpani, male choir, dissonant, tense, driving, orchestral, instrumental"
+  },
+  "I": {
+   "caption": "dark orchestral battle music, grim, menacing, ominous, apocalyptic, minor key, pounding taiko drums and timpani, relentless staccato low strings ostinato, cellos and double basses, wordless choir chanting, dissonant, heavy, driving, film score, instrumental"
+  },
+  "W1": {
+   "bpm": 56,
+   "key": "E minor",
+   "describe": "a lonely slow solo viola over breathy airy textures and wind, cold, sparse and desolate ambient music",
+   "caption": "dark ambient, film score, solo viola, lonely, slow, sparse, cold, desolate, bleak, mournful, breathy flute textures, wind, low drone, minor key, long reverb, minimal, instrumental"
+  },
+  "W2": {
+   "bpm": 56,
+   "key": "E minor",
+   "describe": "a lonely slow solo viola over breathy airy textures and wind, cold, sparse and desolate ambient music",
+   "caption": "A cold, sparse dark ambient film score. A lonely solo viola plays slow, mournful phrases over breathy airy textures, wind and a faint low drone. Desolate, bleak, minimal, minor key, long reverb, instrumental."
+  }
+ }
+}

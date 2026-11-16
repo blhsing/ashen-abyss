@@ -1,0 +1,98 @@
+{
+ "id": "hero_emberblade",
+ "ok": true,
+ "problems": [],
+ "triangles": 27003,
+ "size_bytes": 9282496,
+ "meshes": [
+  "body_cloth",
+  "body_emis",
+  "body_leather",
+  "body_metal",
+  "wpn_1",
+  "wpn_2",
+  "wpn_3"
+ ],
+ "materials": [
+  "cloth_hero_emberblade",
+  "emis_hero_emberblade",
+  "leather_hero_emberblade",
+  "metal_hero_emberblade"
+ ],
+ "images": [
+  {
+   "name": "cloth_n",
+   "mime": "image/jpeg",
+   "w": 2048,
+   "h": 2048,
+   "bytes": 1421927
+  },
+  {
+   "name": "cloth_orm",
+   "mime": "image/jpeg",
+   "w": 2048,
+   "h": 2048,
+   "bytes": 1182948
+  },
+  {
+   "name": "cloth_c",
+   "mime": "image/jpeg",
+   "w": 2048,
+   "h": 2048,
+   "bytes": 725167
+  },
+  {
+   "name": "emis_g",
+   "mime": "image/png",
+   "w": 64,
+   "h": 4,
+   "bytes": 328
+  },
+  {
+   "name": "leather_n",
+   "mime": "image/jpeg",
+   "w": 512,
+   "h": 512,
+   "bytes": 112921
+  },
+  {
+   "name": "leather_orm",
+   "mime": "image/jpeg",
+   "w": 512,
+   "h": 512,
+   "bytes": 72849
+  },
+  {
+   "name": "leather_c",
+   "mime": "image/jpeg",
+   "w": 512,
+   "h": 512,
+   "bytes": 35391
+  },
+  {
+   "name": "metal_n",
+   "mime": "image/jpeg",
+   "w": 2048,
+   "h": 2048,
+   "bytes": 1220855
+  },
+  {
+   "name": "metal_orm",
+   "mime": "image/jpeg",
+   "w": 2048,
+   "h": 2048,
+   "bytes": 1565128
+  },
+  {
+   "name": "metal_c",
+   "mime": "image/jpeg",
+   "w": 2048,
+   "h": 2048,
+   "bytes": 1110371
+  }
+ ],
+ "bones": 65,
+ "extensions": [
+  "KHR_materials_emissive_strength"
+ ]
+}

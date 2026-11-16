@@ -1,0 +1,93 @@
+# 燼淵 Ashen Abyss — what stays out of the repository.
+# Binary assets (models, textures, audio, fonts, renders) are published as archives attached to each GitHub release,
+# not in the repository. Their Godot .import files (text) ARE committed, so the asset archive drops straight in.
+
+# ---- generated / local -------------------------------------------------------------------------------------------
+game/.godot/
+game/.mono/
+game/bin/
+game/obj/
+game/build/
+build/
+*.user
+*.suo
+.vs/
+.vscode/
+__pycache__/
+*.pyc
+
+# ---- working folders that are not part of the project's source ----------------------------------------------------
+shots/
+assets_src/
+music_backup/
+music_samples/
+voice_samples/
+tools/voice/
+tools/gfx_tmp/
+tools/roster/doctool/
+tools/blender/**/out/
+tools/blender/**/renders/
+tools/blender/**/_work/
+tools/blender/icons/scratch/
+STATUS.md
+
+# test-run captures and logs
+tools/*_out.txt
+tools/*_err.txt
+tools/*.log
+tools/test_idols.txt
+tools/repro_err.txt
+tools/keepawake.flag
+*.log
+
+# ---- binary assets (release archives only) -------------------------------------------------------------------------
+*.glb
+*.gltf
+*.bin
+*.blend
+*.blend1
+*.fbx
+*.obj
+*.png
+*.jpg
+*.jpeg
+*.webp
+*.exr
+*.hdr
+*.tga
+*.dds
+*.ktx
+*.ctex
+*.ogg
+*.wav
+*.mp3
+*.flac
+*.sf2
+*.ttf
+*.otf
+*.woff
+*.woff2
+*.svg
+*.zip
+*.7z
+*.7z.*
+*.pck
+*.exe
+*.dll
+*.pdb
+*.npz
+*.pt
+*.safetensors
+*.onnx
+
+# more local logs and caches
+tools/*_log.txt
+*.cache
+tools/**/import_log*.txt
+tools/audio/obj/
+tools/real_probe*.ps1
+tools/music_ai/jobs_*.txt
+tools/music_ai/RUNNING.txt
+tools/voice_tw/RUNNING.txt
+tools/repo/
+release_out/

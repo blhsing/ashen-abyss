@@ -1,0 +1,144 @@
+{
+ "id": "hero_lampknight",
+ "file": "hero_lampknight.glb",
+ "meshes": [
+  {
+   "name": "body_cloth",
+   "triangles": 3758,
+   "materials": [
+    "cloth_hero_lampknight"
+   ]
+  },
+  {
+   "name": "body_emis",
+   "triangles": 36,
+   "materials": [
+    "emis_hero_lampknight"
+   ]
+  },
+  {
+   "name": "body_hair",
+   "triangles": 740,
+   "materials": [
+    "hair_hero_lampknight"
+   ]
+  },
+  {
+   "name": "body_leather",
+   "triangles": 2820,
+   "materials": [
+    "leather_hero_lampknight"
+   ]
+  },
+  {
+   "name": "body_metal",
+   "triangles": 17730,
+   "materials": [
+    "metal_hero_lampknight"
+   ]
+  },
+  {
+   "name": "body_skin",
+   "triangles": 2556,
+   "materials": [
+    "skin_hero_lampknight"
+   ]
+  },
+  {
+   "name": "wpn_1",
+   "triangles": 170,
+   "materials": [
+    "leather_hero_lampknight",
+    "metal_hero_lampknight"
+   ]
+  },
+  {
+   "name": "wpn_1_off",
+   "triangles": 1136,
+   "materials": [
+    "leather_hero_lampknight",
+    "metal_hero_lampknight"
+   ]
+  },
+  {
+   "name": "wpn_2",
+   "triangles": 466,
+   "materials": [
+    "leather_hero_lampknight",
+    "metal_hero_lampknight"
+   ]
+  },
+  {
+   "name": "wpn_2_off",
+   "triangles": 1404,
+   "materials": [
+    "leather_hero_lampknight",
+    "metal_hero_lampknight"
+   ]
+  },
+  {
+   "name": "wpn_3",
+   "triangles": 600,
+   "materials": [
+    "leather_hero_lampknight",
+    "metal_hero_lampknight",
+    "emis_hero_lampknight"
+   ]
+  },
+  {
+   "name": "wpn_3_off",
+   "triangles": 1714,
+   "materials": [
+    "leather_hero_lampknight",
+    "metal_hero_lampknight",
+    "emis_hero_lampknight"
+   ]
+  }
+ ],
+ "materials": [
+  "cloth_hero_lampknight",
+  "emis_hero_lampknight",
+  "hair_hero_lampknight",
+  "leather_hero_lampknight",
+  "metal_hero_lampknight",
+  "skin_hero_lampknight"
+ ],
+ "triangles": 33130,
+ "notes": "Pose-tested: Idle_Shield_Loop, Sword_Block, Shield_Dash, Shield_OneShot, Sword_Regular_A, Jog_Fwd_Loop. wpn_N = arming sword skinned 100% to hand_r (UAL sword fist grip); wpn_N_off = shield skinned 100% to hand_l: the board lies along the left forearm (elbow to knuckles), face = back of the hand, top = thumb side, so it stands upright and faces forward in the shield clips. The beacon lantern on the back crook is rigid to spine_03 (emis_ flame).",
+ "triangles_body": 27640,
+ "height_m": 1.996,
+ "bbox_blender_zup": {
+  "min": [
+   -0.986,
+   -0.221,
+   -0.004
+  ],
+  "max": [
+   0.986,
+   0.268,
+   1.996
+  ]
+ },
+ "bbox_gltf_yup": {
+  "min": [
+   -0.986,
+   -0.004,
+   -0.268
+  ],
+  "max": [
+   0.986,
+   1.996,
+   0.221
+  ]
+ },
+ "bbox_note": "rest pose (T-pose, arms out), body_* meshes only (weapons excluded)",
+ "size_bytes": 8740784,
+ "textures": {
+  "cloth": 1024,
+  "leather": 1024,
+  "metal": 2048,
+  "skin": 512,
+  "hair": 512
+ },
+ "fast_preview_build": false
+}

@@ -1,0 +1,115 @@
+{
+ "id": "hero_soulbinder",
+ "file": "hero_soulbinder.glb",
+ "meshes": [
+  {
+   "name": "body_bone",
+   "triangles": 3968,
+   "materials": [
+    "bone_hero_soulbinder"
+   ]
+  },
+  {
+   "name": "body_cloth",
+   "triangles": 11746,
+   "materials": [
+    "cloth_hero_soulbinder"
+   ]
+  },
+  {
+   "name": "body_emis",
+   "triangles": 144,
+   "materials": [
+    "emis_hero_soulbinder"
+   ]
+  },
+  {
+   "name": "body_leather",
+   "triangles": 2980,
+   "materials": [
+    "leather_hero_soulbinder"
+   ]
+  },
+  {
+   "name": "body_skin",
+   "triangles": 6962,
+   "materials": [
+    "skin_hero_soulbinder"
+   ]
+  },
+  {
+   "name": "wpn_1",
+   "triangles": 488,
+   "materials": [
+    "leather_hero_soulbinder",
+    "metal_hero_soulbinder",
+    "bone_hero_soulbinder"
+   ]
+  },
+  {
+   "name": "wpn_2",
+   "triangles": 590,
+   "materials": [
+    "leather_hero_soulbinder",
+    "metal_hero_soulbinder",
+    "bone_hero_soulbinder"
+   ]
+  },
+  {
+   "name": "wpn_3",
+   "triangles": 1084,
+   "materials": [
+    "leather_hero_soulbinder",
+    "metal_hero_soulbinder",
+    "bone_hero_soulbinder",
+    "emis_hero_soulbinder"
+   ]
+  }
+ ],
+ "materials": [
+  "bone_hero_soulbinder",
+  "cloth_hero_soulbinder",
+  "emis_hero_soulbinder",
+  "leather_hero_soulbinder",
+  "skin_hero_soulbinder",
+  "metal_hero_soulbinder"
+ ],
+ "triangles": 27962,
+ "notes": "Pose-tested: Spell_Simple_Shoot, OverhandThrow, Sword_Idle, Idle_Loop, Jog_Fwd_Loop. Scythe staves wpn_1..3 are skinned 100% to hand_r, blade hooking forward (weapon +X = knuckle side). No hair material: the face is a bone visor under a cowl (eyes / brows removed).",
+ "triangles_body": 25800,
+ "height_m": 2.129,
+ "bbox_blender_zup": {
+  "min": [
+   -0.981,
+   -0.221,
+   -0.004
+  ],
+  "max": [
+   0.981,
+   0.312,
+   2.129
+  ]
+ },
+ "bbox_gltf_yup": {
+  "min": [
+   -0.981,
+   -0.004,
+   -0.312
+  ],
+  "max": [
+   0.981,
+   2.129,
+   0.221
+  ]
+ },
+ "bbox_note": "rest pose (T-pose, arms out), body_* meshes only (weapons excluded)",
+ "size_bytes": 8471956,
+ "textures": {
+  "cloth": 2048,
+  "leather": 1024,
+  "metal": 512,
+  "bone": 1024,
+  "skin": 1024
+ },
+ "fast_preview_build": false
+}

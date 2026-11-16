@@ -1,0 +1,86 @@
+{
+ "id": "npc_villager_m",
+ "file": "npc_villager_m.glb",
+ "meshes": [
+  {
+   "name": "body_cloth",
+   "triangles": 4078,
+   "materials": [
+    "cloth_npc_villager_m"
+   ]
+  },
+  {
+   "name": "body_hair",
+   "triangles": 3319,
+   "materials": [
+    "hair_npc_villager_m"
+   ]
+  },
+  {
+   "name": "body_leather",
+   "triangles": 2490,
+   "materials": [
+    "leather_npc_villager_m"
+   ]
+  },
+  {
+   "name": "body_metal",
+   "triangles": 44,
+   "materials": [
+    "metal_npc_villager_m"
+   ]
+  },
+  {
+   "name": "body_skin",
+   "triangles": 8202,
+   "materials": [
+    "skin_npc_villager_m"
+   ]
+  }
+ ],
+ "materials": [
+  "cloth_npc_villager_m",
+  "hair_npc_villager_m",
+  "leather_npc_villager_m",
+  "metal_npc_villager_m",
+  "skin_npc_villager_m"
+ ],
+ "triangles": 18133,
+ "notes": "Pose-tested: Idle_Loop, Idle_Talking_Loop, Walk_Loop, Interact.",
+ "triangles_body": 18133,
+ "height_m": 1.809,
+ "bbox_blender_zup": {
+  "min": [
+   -0.981,
+   -0.199,
+   -0.004
+  ],
+  "max": [
+   0.981,
+   0.204,
+   1.809
+  ]
+ },
+ "bbox_gltf_yup": {
+  "min": [
+   -0.981,
+   -0.004,
+   -0.204
+  ],
+  "max": [
+   0.981,
+   1.809,
+   0.199
+  ]
+ },
+ "bbox_note": "rest pose (T-pose, arms out), body_* meshes only (weapons excluded)",
+ "size_bytes": 8139488,
+ "textures": {
+  "cloth": 2048,
+  "leather": 1024,
+  "metal": 256,
+  "skin": 2048,
+  "hair": 512
+ },
+ "fast_preview_build": false
+}

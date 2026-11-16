@@ -1,0 +1,118 @@
+{
+ "id": "npc_occultist",
+ "ok": true,
+ "problems": [],
+ "triangles": 17764,
+ "size_bytes": 5287408,
+ "meshes": [
+  "body_bone",
+  "body_cloth",
+  "body_emis",
+  "body_leather",
+  "body_metal"
+ ],
+ "materials": [
+  "bone_npc_occultist",
+  "cloth_npc_occultist",
+  "emis_npc_occultist",
+  "leather_npc_occultist",
+  "metal_npc_occultist"
+ ],
+ "images": [
+  {
+   "name": "bone_n",
+   "mime": "image/jpeg",
+   "w": 256,
+   "h": 256,
+   "bytes": 25046
+  },
+  {
+   "name": "bone_orm",
+   "mime": "image/jpeg",
+   "w": 256,
+   "h": 256,
+   "bytes": 32828
+  },
+  {
+   "name": "bone_c",
+   "mime": "image/jpeg",
+   "w": 256,
+   "h": 256,
+   "bytes": 27582
+  },
+  {
+   "name": "cloth_n",
+   "mime": "image/jpeg",
+   "w": 2048,
+   "h": 2048,
+   "bytes": 1446111
+  },
+  {
+   "name": "cloth_orm",
+   "mime": "image/jpeg",
+   "w": 2048,
+   "h": 2048,
+   "bytes": 1436611
+  },
+  {
+   "name": "cloth_c",
+   "mime": "image/jpeg",
+   "w": 2048,
+   "h": 2048,
+   "bytes": 842780
+  },
+  {
+   "name": "emis_g",
+   "mime": "image/png",
+   "w": 64,
+   "h": 4,
+   "bytes": 331
+  },
+  {
+   "name": "leather_n",
+   "mime": "image/jpeg",
+   "w": 512,
+   "h": 512,
+   "bytes": 115056
+  },
+  {
+   "name": "leather_orm",
+   "mime": "image/jpeg",
+   "w": 512,
+   "h": 512,
+   "bytes": 97896
+  },
+  {
+   "name": "leather_c",
+   "mime": "image/jpeg",
+   "w": 512,
+   "h": 512,
+   "bytes": 46231
+  },
+  {
+   "name": "metal_n",
+   "mime": "image/jpeg",
+   "w": 256,
+   "h": 256,
+   "bytes": 8120
+  },
+  {
+   "name": "metal_orm",
+   "mime": "image/jpeg",
+   "w": 256,
+   "h": 256,
+   "bytes": 18009
+  },
+  {
+   "name": "metal_c",
+   "mime": "image/jpeg",
+   "w": 256,
+   "h": 256,
+   "bytes": 15180
+  }
+ ],
+ "bones": 65,
+ "extensions": [
+  "KHR_materials_emissive_strength"
+ ]
+}

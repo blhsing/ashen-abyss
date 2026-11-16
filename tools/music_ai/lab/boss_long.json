@@ -1,0 +1,20 @@
+{
+ "describe": "relentless low string ostinato with choir stabs and big pounding drums, aggressive dark orchestral battle music",
+ "bpm": 116,
+ "key": "G minor",
+ "ts": 4,
+ "pulse": true,
+ "variants": {
+  "C": {
+   "caption": "epic orchestral, cinematic, film score, battle, dark, ominous, intense, driving, low strings ostinato, staccato strings, cellos, double basses, taiko drums, timpani, wordless choir, minor key, symphony orchestra, instrumental"
+  },
+  "D": {
+   "caption": "Epic orchestral cinematic music for a dark fantasy battle, instrumental. A relentless staccato ostinato in cellos and double basses, sharp string stabs, a powerful wordless choir, thunderous taiko drums and timpani. Dark, ominous, intense and driving. Symphony orchestra recorded in a concert hall.",
+   "lyrics": "[Intro - low strings ostinato]\n\n[Theme - full orchestra and choir]\n\n[Build - taiko drums]\n\n[Climax - choir and full orchestra]\n\n[Theme - full orchestra]"
+  },
+  "F": {
+   "caption": "epic orchestral, cinematic, film score, battle, dark, ominous, intense, driving, low strings ostinato, staccato strings, cellos, double basses, taiko drums, timpani, wordless choir, minor key, symphony orchestra, instrumental",
+   "lyrics": "[Intro - low strings ostinato]\n\n[Theme - full orchestra and choir]\n\n[Build - taiko drums]\n\n[Climax - choir and full orchestra]\n\n[Theme - full orchestra]"
+  }
+ }
+}

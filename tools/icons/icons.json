@@ -1,0 +1,3549 @@
+[
+ {
+  "id": "eb_slash",
+  "category": "skill",
+  "depicts": "a heavy steel greatsword cutting diagonally, leaving one thin crescent trail of orange embers",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "emberblade_a",
+  "used": "action bar, skill tree, buff row, class screen (Icons.ForSkill)",
+  "done": true
+ },
+ {
+  "id": "eb_cleave",
+  "category": "skill",
+  "depicts": "a greatsword driven point-down into cracked stone, a wave of flame bursting forward along the crack",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "emberblade_a",
+  "used": "action bar, skill tree, buff row, class screen (Icons.ForSkill)",
+  "done": true
+ },
+ {
+  "id": "eb_whirl",
+  "category": "skill",
+  "depicts": "a greatsword spinning in a full circle, drawn as a ring of blurred steel and swirling ash",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "emberblade_a",
+  "used": "action bar, skill tree, buff row, class screen (Icons.ForSkill)",
+  "done": true
+ },
+ {
+  "id": "eb_roar",
+  "category": "skill",
+  "depicts": "a visored steel helmet seen from the front, shouting, rings of orange shock-wave bursting outward",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "emberblade_a",
+  "used": "action bar, skill tree, buff row, class screen (Icons.ForSkill)",
+  "done": true
+ },
+ {
+  "id": "eb_leap",
+  "category": "skill",
+  "depicts": "an armoured plate boot slamming down on stone, slabs shattering and dust flying up",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "emberblade_a",
+  "used": "action bar, skill tree, buff row, class screen (Icons.ForSkill)",
+  "done": true
+ },
+ {
+  "id": "eb_ironhide",
+  "category": "skill",
+  "depicts": "a greatsword held upright in front of a dome-shaped translucent amber barrier",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "emberblade_a",
+  "used": "action bar, skill tree, buff row, class screen (Icons.ForSkill)",
+  "done": true
+ },
+ {
+  "id": "eb_rupture",
+  "category": "skill",
+  "depicts": "a greatsword whose whole blade burns with roaring ember fire, caught mid downward swing",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "emberblade_a",
+  "used": "action bar, skill tree, buff row, class screen (Icons.ForSkill)",
+  "done": true
+ },
+ {
+  "id": "eb_wrath",
+  "category": "skill",
+  "depicts": "a clenched plate-gauntlet fist engulfed in a pillar of fire and rising embers",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "emberblade_a",
+  "used": "action bar, skill tree, buff row, class screen (Icons.ForSkill)",
+  "done": true
+ },
+ {
+  "id": "kp_eb_edge",
+  "category": "keypassive",
+  "depicts": "the tip of a sword blade glowing white-hot like metal fresh from a forge, heat shimmer",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "emberblade_a",
+  "used": "skill tree key passives (Icons.ForPassive)",
+  "done": true
+ },
+ {
+  "id": "eb_p1",
+  "category": "passive",
+  "depicts": "two crossed two-handed swords of polished steel",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "emberblade_b",
+  "used": "skill tree passive nodes (Icons.ForPassive)",
+  "done": true
+ },
+ {
+  "id": "eb_p2",
+  "category": "passive",
+  "depicts": "a thick layered steel breastplate with heavy rivets, front view",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "emberblade_b",
+  "used": "skill tree passive nodes (Icons.ForPassive)",
+  "done": true
+ },
+ {
+  "id": "eb_p3",
+  "category": "passive",
+  "depicts": "a single drop of blood glowing like a hot ember, tiny sparks around it",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "emberblade_b",
+  "used": "skill tree passive nodes (Icons.ForPassive)",
+  "done": true
+ },
+ {
+  "id": "eb_p4",
+  "category": "passive",
+  "depicts": "a battered war banner on a spear, tattered dark cloth lit by orange firelight",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "emberblade_b",
+  "used": "skill tree passive nodes (Icons.ForPassive)",
+  "done": true
+ },
+ {
+  "id": "kp_eb_stand",
+  "category": "keypassive",
+  "depicts": "a dented steel tower shield planted in the ground, cracked but standing firm",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "emberblade_b",
+  "used": "skill tree key passives (Icons.ForPassive)",
+  "done": true
+ },
+ {
+  "id": "eb_heavy",
+  "category": "spec",
+  "depicts": "one very broad, massive two-handed sword resting point-down, thick blade",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "emberblade_b",
+  "used": "skill tree specialisations (Icons.ForSpec)",
+  "done": true
+ },
+ {
+  "id": "eb_swift",
+  "category": "spec",
+  "depicts": "a slender light sword drawn as three fast overlapping slashes of bright steel",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "emberblade_b",
+  "used": "skill tree specialisations (Icons.ForSpec)",
+  "done": true
+ },
+ {
+  "id": "eb_guard",
+  "category": "spec",
+  "depicts": "a sword held level across a round steel shield in a guarding stance",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "emberblade_b",
+  "used": "skill tree specialisations (Icons.ForSpec)",
+  "done": true
+ },
+ {
+  "id": "as_spark",
+  "category": "skill",
+  "depicts": "a small crackling spark of blue-white lightning shaped like a four-pointed star",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "astromancer_a",
+  "used": "action bar, skill tree, buff row, class screen (Icons.ForSkill)",
+  "done": true
+ },
+ {
+  "id": "as_fireball",
+  "category": "skill",
+  "depicts": "a blazing fireball with a molten core and a trailing tail of flame",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "astromancer_a",
+  "used": "action bar, skill tree, buff row, class screen (Icons.ForSkill)",
+  "done": true
+ },
+ {
+  "id": "as_frostlance",
+  "category": "skill",
+  "depicts": "a long sharp lance of clear blue ice with frost mist streaming off it, flying point-first",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "astromancer_a",
+  "used": "action bar, skill tree, buff row, class screen (Icons.ForSkill)",
+  "done": true
+ },
+ {
+  "id": "as_chain",
+  "category": "skill",
+  "depicts": "a forked chain of violet-white lightning jumping between three small floating iron orbs",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "astromancer_a",
+  "used": "action bar, skill tree, buff row, class screen (Icons.ForSkill)",
+  "done": true
+ },
+ {
+  "id": "as_blink",
+  "category": "skill",
+  "depicts": "a robed figure dissolving into streaks of blue starlight while stepping through a vertical slit of light",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "astromancer_a",
+  "used": "action bar, skill tree, buff row, class screen (Icons.ForSkill)",
+  "done": true
+ },
+ {
+  "id": "as_frostnova",
+  "category": "skill",
+  "depicts": "a ring of jagged ice spikes bursting outward from an empty centre, seen at an angle from above",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "astromancer_a",
+  "used": "action bar, skill tree, buff row, class screen (Icons.ForSkill)",
+  "done": true
+ },
+ {
+  "id": "as_meteor",
+  "category": "skill",
+  "depicts": "one burning rock meteor plunging diagonally with a long fire trail",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "astromancer_a",
+  "used": "action bar, skill tree, buff row, class screen (Icons.ForSkill)",
+  "done": true
+ },
+ {
+  "id": "as_cataclysm",
+  "category": "skill",
+  "depicts": "many small burning meteors raining out of a torn glowing rift in a dark sky",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "astromancer_a",
+  "used": "action bar, skill tree, buff row, class screen (Icons.ForSkill)",
+  "done": true
+ },
+ {
+  "id": "kp_as_overload",
+  "category": "keypassive",
+  "depicts": "a cracked crystal orb overflowing with wild blue lightning",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "astromancer_a",
+  "used": "skill tree key passives (Icons.ForPassive)",
+  "done": true
+ },
+ {
+  "id": "as_p1",
+  "category": "passive",
+  "depicts": "a crystal shattering into sharp fragments from one precise strike",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "astromancer_b",
+  "used": "skill tree passive nodes (Icons.ForPassive)",
+  "done": true
+ },
+ {
+  "id": "as_p2",
+  "category": "passive",
+  "depicts": "a hooded robe wrapped by three thin orbiting ribbons, one of fire, one of ice, one of lightning",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "astromancer_b",
+  "used": "skill tree passive nodes (Icons.ForPassive)",
+  "done": true
+ },
+ {
+  "id": "as_p3",
+  "category": "passive",
+  "depicts": "a deep blue glass vial brimming with glowing liquid starlight",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "astromancer_b",
+  "used": "skill tree passive nodes (Icons.ForPassive)",
+  "done": true
+ },
+ {
+  "id": "as_p4",
+  "category": "passive",
+  "depicts": "the head of a wooden staff sending a pin-point beam of light into a small ring target",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "astromancer_b",
+  "used": "skill tree passive nodes (Icons.ForPassive)",
+  "done": true
+ },
+ {
+  "id": "kp_as_mastery",
+  "category": "keypassive",
+  "depicts": "a flame and an ice crystal intertwined in a spiral, half orange and half pale blue",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "astromancer_b",
+  "used": "skill tree key passives (Icons.ForPassive)",
+  "done": true
+ },
+ {
+  "id": "as_fire",
+  "category": "spec",
+  "depicts": "a small burning star, a sphere of fire with a flaring corona",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "astromancer_b",
+  "used": "skill tree specialisations (Icons.ForSpec)",
+  "done": true
+ },
+ {
+  "id": "as_frost",
+  "category": "spec",
+  "depicts": "a small frozen star, a sphere of ice with long frost spikes",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "astromancer_b",
+  "used": "skill tree specialisations (Icons.ForSpec)",
+  "done": true
+ },
+ {
+  "id": "as_storm",
+  "category": "spec",
+  "depicts": "a small storm star, a dark sphere wrapped in arcs of lightning",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "astromancer_b",
+  "used": "skill tree specialisations (Icons.ForSpec)",
+  "done": true
+ },
+ {
+  "id": "hu_p1",
+  "category": "passive",
+  "depicts": "a steel crossbow bolt embedded exactly in the centre of a worn round wooden target",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "hunter_b",
+  "used": "skill tree passive nodes (Icons.ForPassive)",
+  "done": true
+ },
+ {
+  "id": "hu_p2",
+  "category": "passive",
+  "depicts": "a pair of soft dark leather boots with small teal feathers tied at the ankle, mid stride",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "hunter_b",
+  "used": "skill tree passive nodes (Icons.ForPassive)",
+  "done": true
+ },
+ {
+  "id": "hu_p3",
+  "category": "passive",
+  "depicts": "a dagger edge being honed on a whetstone, sparks flying",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "hunter_b",
+  "used": "skill tree passive nodes (Icons.ForPassive)",
+  "done": true
+ },
+ {
+  "id": "hu_p4",
+  "category": "passive",
+  "depicts": "a leather waterskin and a coil of rope tied with a teal ribbon",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "hunter_b",
+  "used": "skill tree passive nodes (Icons.ForPassive)",
+  "done": true
+ },
+ {
+  "id": "kp_hu_skirmish",
+  "category": "keypassive",
+  "depicts": "a dark hooded cloak whirling aside as a blade passes harmlessly through its trailing edge",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "hunter_b",
+  "used": "skill tree key passives (Icons.ForPassive)",
+  "done": true
+ },
+ {
+  "id": "hu_combo",
+  "category": "spec",
+  "depicts": "three steel daggers fanned out like a hand of cards",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "hunter_b",
+  "used": "skill tree specialisations (Icons.ForSpec)",
+  "done": true
+ },
+ {
+  "id": "hu_ambush",
+  "category": "spec",
+  "depicts": "a deep dark hood with only two glinting teal eyes visible in its shadow",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "hunter_b",
+  "used": "skill tree specialisations (Icons.ForSpec)",
+  "done": true
+ },
+ {
+  "id": "hu_venom",
+  "category": "spec",
+  "depicts": "a coiled viper with open jaws dripping bright green venom",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "hunter_b",
+  "used": "skill tree specialisations (Icons.ForSpec)",
+  "done": true
+ },
+ {
+  "id": "sb_bolt",
+  "category": "skill",
+  "depicts": "a bolt of pale green-violet soul energy shaped like a wailing wisp, flying forward",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "soulbinder_a",
+  "used": "action bar, skill tree, buff row, class screen (Icons.ForSkill)",
+  "done": true
+ },
+ {
+  "id": "sb_raise",
+  "category": "skill",
+  "depicts": "a skeletal hand and forearm rising out of grave soil, fingers spread, pale green glow",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "soulbinder_a",
+  "used": "action bar, skill tree, buff row, class screen (Icons.ForSkill)",
+  "done": true
+ },
+ {
+  "id": "sb_spear",
+  "category": "skill",
+  "depicts": "a sharp spear made of one long splintered bone, flying point-first",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "soulbinder_a",
+  "used": "action bar, skill tree, buff row, class screen (Icons.ForSkill)",
+  "done": true
+ },
+ {
+  "id": "sb_blight",
+  "category": "skill",
+  "depicts": "a bubbling pool of dark violet rot with withering black vapour rising",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "soulbinder_a",
+  "used": "action bar, skill tree, buff row, class screen (Icons.ForSkill)",
+  "done": true
+ },
+ {
+  "id": "sb_explode",
+  "category": "skill",
+  "depicts": "a ghostly wisp bursting apart in a violet-green explosion with bone shards",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "soulbinder_a",
+  "used": "action bar, skill tree, buff row, class screen (Icons.ForSkill)",
+  "done": true
+ },
+ {
+  "id": "sb_veil",
+  "category": "skill",
+  "depicts": "a translucent hooded ghost figure of pale mist, its body fading into trailing smoke",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "soulbinder_a",
+  "used": "action bar, skill tree, buff row, class screen (Icons.ForSkill)",
+  "done": true
+ },
+ {
+  "id": "sb_curse",
+  "category": "skill",
+  "depicts": "a withered grey hand marked with a glowing violet curse sigil of thorny lines",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "soulbinder_a",
+  "used": "action bar, skill tree, buff row, class screen (Icons.ForSkill)",
+  "done": true
+ },
+ {
+  "id": "sb_colossus",
+  "category": "skill",
+  "depicts": "the torso and skull of a towering giant skeleton built of fused bones, hollow eyes glowing green, seen from below",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "soulbinder_a",
+  "used": "action bar, skill tree, buff row, class screen (Icons.ForSkill)",
+  "done": true
+ },
+ {
+  "id": "kp_sb_chorus",
+  "category": "keypassive",
+  "depicts": "five small pale green soul wisps circling together in a ring",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "soulbinder_a",
+  "used": "skill tree key passives (Icons.ForPassive)",
+  "done": true
+ },
+ {
+  "id": "sb_p1",
+  "category": "passive",
+  "depicts": "a skeleton hand gripping the hilt of a rusted sword",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "soulbinder_b",
+  "used": "skill tree passive nodes (Icons.ForPassive)",
+  "done": true
+ },
+ {
+  "id": "sb_p2",
+  "category": "passive",
+  "depicts": "a ribcage wrapped protectively in pale violet mist with a faint light inside",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "soulbinder_b",
+  "used": "skill tree passive nodes (Icons.ForPassive)",
+  "done": true
+ },
+ {
+  "id": "sb_p3",
+  "category": "passive",
+  "depicts": "a cracked skull with violet smoke pouring from its eye sockets",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "soulbinder_b",
+  "used": "skill tree passive nodes (Icons.ForPassive)",
+  "done": true
+ },
+ {
+  "id": "sb_p4",
+  "category": "passive",
+  "depicts": "a small iron lantern holding a captured green soul flame",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "soulbinder_b",
+  "used": "skill tree passive nodes (Icons.ForPassive)",
+  "done": true
+ },
+ {
+  "id": "kp_sb_alone",
+  "category": "keypassive",
+  "depicts": "one lone pale violet soul flame standing in darkness, casting a long thin shadow",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "soulbinder_b",
+  "used": "skill tree key passives (Icons.ForPassive)",
+  "done": true
+ },
+ {
+  "id": "sb_legion",
+  "category": "spec",
+  "depicts": "three skeleton warrior skulls in rusted helmets side by side, the front one larger",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "soulbinder_b",
+  "used": "skill tree specialisations (Icons.ForSpec)",
+  "done": true
+ },
+ {
+  "id": "sb_offering",
+  "category": "spec",
+  "depicts": "a ritual bone dagger lying across a shallow stone bowl of violet flame",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "soulbinder_b",
+  "used": "skill tree specialisations (Icons.ForSpec)",
+  "done": true
+ },
+ {
+  "id": "sb_blood",
+  "category": "spec",
+  "depicts": "a heart wrapped in thin thorny bone ribs, glowing deep red",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "soulbinder_b",
+  "used": "skill tree specialisations (Icons.ForSpec)",
+  "done": true
+ },
+ {
+  "id": "ws_strike",
+  "category": "skill",
+  "depicts": "a heavy wooden totem war-club carved with a beast face, bound with leather and bone, mid swing",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "wildsoul_a",
+  "used": "action bar, skill tree, buff row, class screen (Icons.ForSkill)",
+  "done": true
+ },
+ {
+  "id": "ws_maul",
+  "category": "skill",
+  "depicts": "a huge spectral bear paw with long claws swiping, moss-green spirit glow",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "wildsoul_a",
+  "used": "action bar, skill tree, buff row, class screen (Icons.ForSkill)",
+  "done": true
+ },
+ {
+  "id": "ws_rend",
+  "category": "skill",
+  "depicts": "a snarling spectral wolf head with bared fangs, lunging, green spirit glow",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "wildsoul_a",
+  "used": "action bar, skill tree, buff row, class screen (Icons.ForSkill)",
+  "done": true
+ },
+ {
+  "id": "ws_bark",
+  "category": "skill",
+  "depicts": "a forearm and fist covered in thick gnarled tree-bark armour with small green shoots",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "wildsoul_a",
+  "used": "action bar, skill tree, buff row, class screen (Icons.ForSkill)",
+  "done": true
+ },
+ {
+  "id": "ws_pounce",
+  "category": "skill",
+  "depicts": "a spirit wolf in full leap, body stretched out, trailing green mist",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "wildsoul_a",
+  "used": "action bar, skill tree, buff row, class screen (Icons.ForSkill)",
+  "done": true
+ },
+ {
+  "id": "ws_quake",
+  "category": "skill",
+  "depicts": "a deep jagged crack splitting rocky ground, stones thrown upward",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "wildsoul_a",
+  "used": "action bar, skill tree, buff row, class screen (Icons.ForSkill)",
+  "done": true
+ },
+ {
+  "id": "ws_storm",
+  "category": "skill",
+  "depicts": "a dark storm cloud with three lightning bolts striking down",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "wildsoul_a",
+  "used": "action bar, skill tree, buff row, class screen (Icons.ForSkill)",
+  "done": true
+ },
+ {
+  "id": "ws_primal",
+  "category": "skill",
+  "depicts": "a massive roaring bear head, ancient and scarred, crowned with antler-like branches, glowing green eyes",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "wildsoul_a",
+  "used": "action bar, skill tree, buff row, class screen (Icons.ForSkill)",
+  "done": true
+ },
+ {
+  "id": "kp_ws_feral",
+  "category": "keypassive",
+  "depicts": "three deep claw slashes glowing green across a slab of dark wood",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "wildsoul_a",
+  "used": "skill tree key passives (Icons.ForPassive)",
+  "done": true
+ },
+ {
+  "id": "ws_p1",
+  "category": "passive",
+  "depicts": "a necklace of beast fangs and claws on a leather cord",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "wildsoul_b",
+  "used": "skill tree passive nodes (Icons.ForPassive)",
+  "done": true
+ },
+ {
+  "id": "ws_p2",
+  "category": "passive",
+  "depicts": "a thick brown fur pelt draped over a shoulder guard of bone",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "wildsoul_b",
+  "used": "skill tree passive nodes (Icons.ForPassive)",
+  "done": true
+ },
+ {
+  "id": "ws_p3",
+  "category": "passive",
+  "depicts": "an oak leaf struck by a tiny lightning bolt, its edges smouldering",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "wildsoul_b",
+  "used": "skill tree passive nodes (Icons.ForPassive)",
+  "done": true
+ },
+ {
+  "id": "ws_p4",
+  "category": "passive",
+  "depicts": "a small green sapling sprouting from grey ash, glowing softly",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "wildsoul_b",
+  "used": "skill tree passive nodes (Icons.ForPassive)",
+  "done": true
+ },
+ {
+  "id": "kp_ws_elder",
+  "category": "keypassive",
+  "depicts": "an ancient gnarled tree stump with a carved face and glowing green marks in the bark",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "wildsoul_b",
+  "used": "skill tree key passives (Icons.ForPassive)",
+  "done": true
+ },
+ {
+  "id": "ws_bear",
+  "category": "spec",
+  "depicts": "a calm bear head in profile made of green spirit light",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "wildsoul_b",
+  "used": "skill tree specialisations (Icons.ForSpec)",
+  "done": true
+ },
+ {
+  "id": "ws_wolf",
+  "category": "spec",
+  "depicts": "a howling wolf head in profile made of green spirit light",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "wildsoul_b",
+  "used": "skill tree specialisations (Icons.ForSpec)",
+  "done": true
+ },
+ {
+  "id": "ws_raven",
+  "category": "spec",
+  "depicts": "a raven with spread wings, dark feathers edged with green spirit light",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "wildsoul_b",
+  "used": "skill tree specialisations (Icons.ForSpec)",
+  "done": true
+ },
+ {
+  "id": "fb_jab",
+  "category": "skill",
+  "depicts": "a cloth-wrapped fist punching forward with two motion echoes behind it",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "forgebody_a",
+  "used": "action bar, skill tree, buff row, class screen (Icons.ForSkill)",
+  "done": true
+ },
+ {
+  "id": "fb_palm",
+  "category": "skill",
+  "depicts": "an open palm thrust forward releasing a rippling shock-wave of force and dust",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "forgebody_a",
+  "used": "action bar, skill tree, buff row, class screen (Icons.ForSkill)",
+  "done": true
+ },
+ {
+  "id": "fb_spin",
+  "category": "skill",
+  "depicts": "a spinning kick drawn as a leg sweeping a full circle of fire",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "forgebody_a",
+  "used": "action bar, skill tree, buff row, class screen (Icons.ForSkill)",
+  "done": true
+ },
+ {
+  "id": "fb_guard",
+  "category": "skill",
+  "depicts": "a muscular torso whose skin has turned to dark forged iron, arms crossed in guard",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "forgebody_a",
+  "used": "action bar, skill tree, buff row, class screen (Icons.ForSkill)",
+  "done": true
+ },
+ {
+  "id": "fb_dash",
+  "category": "skill",
+  "depicts": "a bare foot stepping on glowing embers, leaving a streak of burning footprints",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "forgebody_a",
+  "used": "action bar, skill tree, buff row, class screen (Icons.ForSkill)",
+  "done": true
+ },
+ {
+  "id": "fb_break",
+  "category": "skill",
+  "depicts": "a steel-plated gauntlet fist striking upward through shattering clouds",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "forgebody_a",
+  "used": "action bar, skill tree, buff row, class screen (Icons.ForSkill)",
+  "done": true
+ },
+ {
+  "id": "fb_wave",
+  "category": "skill",
+  "depicts": "a rolling crescent-shaped wave of orange flame energy flying forward",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "forgebody_a",
+  "used": "action bar, skill tree, buff row, class screen (Icons.ForSkill)",
+  "done": true
+ },
+ {
+  "id": "fb_asura",
+  "category": "skill",
+  "depicts": "the silhouette of a meditating figure with a blazing furnace sun burning in its chest",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "forgebody_a",
+  "used": "action bar, skill tree, buff row, class screen (Icons.ForSkill)",
+  "done": true
+ },
+ {
+  "id": "kp_fb_flow",
+  "category": "keypassive",
+  "depicts": "two fists circling each other in a continuous loop of ember trails",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "forgebody_a",
+  "used": "skill tree key passives (Icons.ForPassive)",
+  "done": true
+ },
+ {
+  "id": "fb_p1",
+  "category": "passive",
+  "depicts": "a pair of scuffed, dented iron knuckle-dusters",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "forgebody_b",
+  "used": "skill tree passive nodes (Icons.ForPassive)",
+  "done": true
+ },
+ {
+  "id": "fb_p2",
+  "category": "passive",
+  "depicts": "a bare shoulder and upper arm with bronze-coloured hardened skin",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "forgebody_b",
+  "used": "skill tree passive nodes (Icons.ForPassive)",
+  "done": true
+ },
+ {
+  "id": "fb_p3",
+  "category": "passive",
+  "depicts": "the mouth of a small blacksmith's furnace glowing with white-orange coals",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "forgebody_b",
+  "used": "skill tree passive nodes (Icons.ForPassive)",
+  "done": true
+ },
+ {
+  "id": "fb_p4",
+  "category": "passive",
+  "depicts": "a swirling breath of glowing vapour spiralling upward from an open hand",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "forgebody_b",
+  "used": "skill tree passive nodes (Icons.ForPassive)",
+  "done": true
+ },
+ {
+  "id": "kp_fb_vajra",
+  "category": "keypassive",
+  "depicts": "a seated meditating monk figure made of gleaming gold-bronze metal",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "forgebody_b",
+  "used": "skill tree key passives (Icons.ForPassive)",
+  "done": true
+ },
+ {
+  "id": "fb_fire",
+  "category": "spec",
+  "depicts": "a forearm with glowing molten veins running under the skin to a burning fist",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "forgebody_b",
+  "used": "skill tree specialisations (Icons.ForSpec)",
+  "done": true
+ },
+ {
+  "id": "fb_iron",
+  "category": "spec",
+  "depicts": "a heavy blacksmith's anvil of dark worn iron",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "forgebody_b",
+  "used": "skill tree specialisations (Icons.ForSpec)",
+  "done": true
+ },
+ {
+  "id": "fb_wind",
+  "category": "spec",
+  "depicts": "a spinning whirlwind of dust and loose cloth wrappings",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "forgebody_b",
+  "used": "skill tree specialisations (Icons.ForSpec)",
+  "done": true
+ },
+ {
+  "id": "lk_strike",
+  "category": "skill",
+  "depicts": "a knightly one-handed longsword with a golden crossguard, a small flare of warm light on its edge",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "lampknight_a",
+  "used": "action bar, skill tree, buff row, class screen (Icons.ForSkill)",
+  "done": true
+ },
+ {
+  "id": "lk_bash",
+  "category": "skill",
+  "depicts": "a steel heater shield slamming forward, a burst of sparks at its boss",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "lampknight_a",
+  "used": "action bar, skill tree, buff row, class screen (Icons.ForSkill)",
+  "done": true
+ },
+ {
+  "id": "lk_smite",
+  "category": "skill",
+  "depicts": "a column of golden-white light striking down from above onto cracked ground",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "lampknight_a",
+  "used": "action bar, skill tree, buff row, class screen (Icons.ForSkill)",
+  "done": true
+ },
+ {
+  "id": "lk_aegis",
+  "category": "skill",
+  "depicts": "a steel shield with a small lit lantern set in its centre, surrounded by a dome of warm golden light",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "lampknight_a",
+  "used": "action bar, skill tree, buff row, class screen (Icons.ForSkill)",
+  "done": true
+ },
+ {
+  "id": "lk_charge",
+  "category": "skill",
+  "depicts": "a shield seen from the side charging forward with long horizontal speed streaks",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "lampknight_a",
+  "used": "action bar, skill tree, buff row, class screen (Icons.ForSkill)",
+  "done": true
+ },
+ {
+  "id": "lk_aura",
+  "category": "skill",
+  "depicts": "an iron lantern with a steady flame, a ring of golden light spreading on the ground around it",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "lampknight_a",
+  "used": "action bar, skill tree, buff row, class screen (Icons.ForSkill)",
+  "done": true
+ },
+ {
+  "id": "lk_lance",
+  "category": "skill",
+  "depicts": "a spear of solid golden light flying diagonally, bright tip",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "lampknight_a",
+  "used": "action bar, skill tree, buff row, class screen (Icons.ForSkill)",
+  "done": true
+ },
+ {
+  "id": "lk_dawn",
+  "category": "skill",
+  "depicts": "a radiant rising sun disc behind an upright sword planted in the ground",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "lampknight_a",
+  "used": "action bar, skill tree, buff row, class screen (Icons.ForSkill)",
+  "done": true
+ },
+ {
+  "id": "kp_lk_retort",
+  "category": "keypassive",
+  "depicts": "a polished shield reflecting a beam of golden light back at an angle",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "lampknight_a",
+  "used": "skill tree key passives (Icons.ForPassive)",
+  "done": true
+ },
+ {
+  "id": "lk_p1",
+  "category": "passive",
+  "depicts": "the riveted boss of a round steel shield, close view, battle-worn",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "lampknight_b",
+  "used": "skill tree passive nodes (Icons.ForPassive)",
+  "done": true
+ },
+ {
+  "id": "lk_p2",
+  "category": "passive",
+  "depicts": "two armoured gauntlet hands cupped around a small candle flame",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "lampknight_b",
+  "used": "skill tree passive nodes (Icons.ForPassive)",
+  "done": true
+ },
+ {
+  "id": "lk_p3",
+  "category": "passive",
+  "depicts": "a sword blade catching golden holy flame along one edge",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "lampknight_b",
+  "used": "skill tree passive nodes (Icons.ForPassive)",
+  "done": true
+ },
+ {
+  "id": "lk_p4",
+  "category": "passive",
+  "depicts": "a wax-sealed rolled oath scroll tied with a golden cord",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "lampknight_b",
+  "used": "skill tree passive nodes (Icons.ForPassive)",
+  "done": true
+ },
+ {
+  "id": "kp_lk_weight",
+  "category": "keypassive",
+  "depicts": "a brass balance scale, one pan holding a small flame, the other a heavy iron weight",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "lampknight_b",
+  "used": "skill tree key passives (Icons.ForPassive)",
+  "done": true
+ },
+ {
+  "id": "lk_ward",
+  "category": "spec",
+  "depicts": "a large tower shield with spread golden wings behind it",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "lampknight_b",
+  "used": "skill tree specialisations (Icons.ForSpec)",
+  "done": true
+ },
+ {
+  "id": "lk_judge",
+  "category": "spec",
+  "depicts": "a heavy iron war hammer wreathed in golden fire",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "lampknight_b",
+  "used": "skill tree specialisations (Icons.ForSpec)",
+  "done": true
+ },
+ {
+  "id": "lk_guide",
+  "category": "spec",
+  "depicts": "a tall lantern on a carrying pole held high, casting warm rays",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "lampknight_b",
+  "used": "skill tree specialisations (Icons.ForSpec)",
+  "done": true
+ },
+ {
+  "id": "pb_hexbolt",
+  "category": "skill",
+  "depicts": "a bolt of dark red-violet cursed flame with a ringed core, flying forward",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "pactbinder_a",
+  "used": "action bar, skill tree, buff row, class screen (Icons.ForSkill)",
+  "done": true
+ },
+ {
+  "id": "pb_bind",
+  "category": "skill",
+  "depicts": "a horned fiend skull of black basalt with glowing lava cracks, rising from a summoning circle of embers",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "pactbinder_a",
+  "used": "action bar, skill tree, buff row, class screen (Icons.ForSkill)",
+  "done": true
+ },
+ {
+  "id": "pb_lash",
+  "category": "skill",
+  "depicts": "a whip made of glowing red-hot chain links cracking in an S curve",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "pactbinder_a",
+  "used": "action bar, skill tree, buff row, class screen (Icons.ForSkill)",
+  "done": true
+ },
+ {
+  "id": "pb_chains",
+  "category": "skill",
+  "depicts": "two heavy dark iron chains crossing in an X, links glowing violet",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "pactbinder_a",
+  "used": "action bar, skill tree, buff row, class screen (Icons.ForSkill)",
+  "done": true
+ },
+ {
+  "id": "pb_ward",
+  "category": "skill",
+  "depicts": "a blood-red wax seal talisman on a parchment strip inside a thin crimson barrier shell",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "pactbinder_a",
+  "used": "action bar, skill tree, buff row, class screen (Icons.ForSkill)",
+  "done": true
+ },
+ {
+  "id": "pb_step",
+  "category": "skill",
+  "depicts": "a jagged vertical tear in space edged with violet fire, darkness inside",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "pactbinder_a",
+  "used": "action bar, skill tree, buff row, class screen (Icons.ForSkill)",
+  "done": true
+ },
+ {
+  "id": "pb_rain",
+  "category": "skill",
+  "depicts": "streaks of dark red abyssal fire raining down onto a burning circle on the ground",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "pactbinder_a",
+  "used": "action bar, skill tree, buff row, class screen (Icons.ForSkill)",
+  "done": true
+ },
+ {
+  "id": "pb_gate",
+  "category": "skill",
+  "depicts": "a massive stone gate standing open, lava light and red smoke pouring out between its doors",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "pactbinder_a",
+  "used": "action bar, skill tree, buff row, class screen (Icons.ForSkill)",
+  "done": true
+ },
+ {
+  "id": "kp_pb_blood",
+  "category": "keypassive",
+  "depicts": "a hand pressing a bleeding palm onto the page of an open book, red glow",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "pactbinder_a",
+  "used": "skill tree key passives (Icons.ForPassive)",
+  "done": true
+ },
+ {
+  "id": "pb_p1",
+  "category": "passive",
+  "depicts": "an open leather-bound grimoire with abstract glowing red marks on its pages, no readable letters",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "pactbinder_b",
+  "used": "skill tree passive nodes (Icons.ForPassive)",
+  "done": true
+ },
+ {
+  "id": "pb_p2",
+  "category": "passive",
+  "depicts": "a charred amulet shaped like a small horned mask on a chain",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "pactbinder_b",
+  "used": "skill tree passive nodes (Icons.ForPassive)",
+  "done": true
+ },
+ {
+  "id": "pb_p3",
+  "category": "passive",
+  "depicts": "a flame that is half bright red and half deep violet-black, burning in an iron dish",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "pactbinder_b",
+  "used": "skill tree passive nodes (Icons.ForPassive)",
+  "done": true
+ },
+ {
+  "id": "pb_p4",
+  "category": "passive",
+  "depicts": "an iron collar with red-hot spikes and a broken chain",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "pactbinder_b",
+  "used": "skill tree passive nodes (Icons.ForPassive)",
+  "done": true
+ },
+ {
+  "id": "kp_pb_full",
+  "category": "keypassive",
+  "depicts": "five small glowing red sigil stones arranged in a ring, all lit",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "pactbinder_b",
+  "used": "skill tree key passives (Icons.ForPassive)",
+  "done": true
+ },
+ {
+  "id": "pb_brute",
+  "category": "spec",
+  "depicts": "the head and shoulders of a hulking lava brute, basalt skin with molten cracks, heavy jaw",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "pactbinder_b",
+  "used": "skill tree specialisations (Icons.ForSpec)",
+  "done": true
+ },
+ {
+  "id": "pb_imps",
+  "category": "spec",
+  "depicts": "three small grinning horned imps clustered together, ember-red skin",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "pactbinder_b",
+  "used": "skill tree specialisations (Icons.ForSpec)",
+  "done": true
+ },
+ {
+  "id": "pb_wraith",
+  "category": "spec",
+  "depicts": "a hooded spectre of cold blue mist bound in iron shackles",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "pactbinder_b",
+  "used": "skill tree specialisations (Icons.ForSpec)",
+  "done": true
+ },
+ {
+  "id": "stun",
+  "category": "status",
+  "depicts": "a dented steel helmet with three small sparks orbiting above it",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "status_a",
+  "used": "buff row afflictions (HudBuffs)",
+  "done": true
+ },
+ {
+  "id": "freeze",
+  "category": "status",
+  "depicts": "a clenched hand frozen solid inside a block of clear blue ice",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "status_a",
+  "used": "buff row afflictions (HudBuffs)",
+  "done": true
+ },
+ {
+  "id": "root",
+  "category": "status",
+  "depicts": "a leather boot held fast by thorny roots growing out of the ground",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "status_a",
+  "used": "buff row afflictions (HudBuffs)",
+  "done": true
+ },
+ {
+  "id": "fear",
+  "category": "status",
+  "depicts": "one pale terrified eye wide open, surrounded by darkness and violet tendrils",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "status_a",
+  "used": "buff row afflictions (HudBuffs)",
+  "done": true
+ },
+ {
+  "id": "burn",
+  "category": "status",
+  "depicts": "a single fierce orange flame, tall and flickering",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "status_a",
+  "used": "buff row afflictions (HudBuffs)",
+  "done": true
+ },
+ {
+  "id": "poison",
+  "category": "status",
+  "depicts": "a drop of bright green venom with sickly green fumes",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "status_a",
+  "used": "buff row afflictions (HudBuffs)",
+  "done": true
+ },
+ {
+  "id": "bleed",
+  "category": "status",
+  "depicts": "three red claw cuts with drops of blood",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "status_a",
+  "used": "buff row afflictions (HudBuffs)",
+  "done": true
+ },
+ {
+  "id": "rot",
+  "category": "status",
+  "depicts": "a decaying skull half crumbled into violet dust",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "status_a",
+  "used": "buff row afflictions (HudBuffs)",
+  "done": true
+ },
+ {
+  "id": "chill",
+  "category": "status",
+  "depicts": "one large intricate snowflake of pale blue ice",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "status_a",
+  "used": "buff row afflictions (HudBuffs)",
+  "done": true
+ },
+ {
+  "id": "slow",
+  "category": "status",
+  "depicts": "an iron shackle with a heavy ball and chain",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "status_b",
+  "used": "buff row afflictions (HudBuffs)",
+  "done": true
+ },
+ {
+  "id": "vulnerable",
+  "category": "status",
+  "depicts": "a cracked, split steel breastplate with a glowing pink-violet fracture",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "status_b",
+  "used": "buff row afflictions (HudBuffs)",
+  "done": true
+ },
+ {
+  "id": "weaken",
+  "category": "status",
+  "depicts": "a broken sword with a snapped blade, dull grey",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "status_b",
+  "used": "buff row afflictions (HudBuffs)",
+  "done": true
+ },
+ {
+  "id": "stealth",
+  "category": "status",
+  "depicts": "a hooded cloak fading into transparent mist, half invisible, pale blue-grey",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "status_b",
+  "used": "buff row afflictions (HudBuffs)",
+  "done": true
+ },
+ {
+  "id": "immune",
+  "category": "buff",
+  "depicts": "a standing figure's silhouette inside a perfect sphere of white spectral light",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "status_b",
+  "used": "buff row flag buffs (HudBuffs)",
+  "done": true
+ },
+ {
+  "id": "deathless",
+  "category": "buff",
+  "depicts": "a heart of glowing ember wearing a small golden crown",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "status_b",
+  "used": "buff row flag buffs (HudBuffs)",
+  "done": true
+ },
+ {
+  "id": "unstoppable",
+  "category": "buff",
+  "depicts": "a flexed armoured arm bursting an iron shackle apart",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "status_b",
+  "used": "buff row flag buffs (HudBuffs)",
+  "done": true
+ },
+ {
+  "id": "freecast",
+  "category": "buff",
+  "depicts": "a swirl of blue-violet arcane energy spiralling into a bright centre",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "status_b",
+  "used": "buff row flag buffs (HudBuffs)",
+  "done": true
+ },
+ {
+  "id": "lifesteal",
+  "category": "buff",
+  "depicts": "a red heart with a stream of blood flowing into it",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "status_b",
+  "used": "buff row flag buffs (HudBuffs)",
+  "done": true
+ },
+ {
+  "id": "dmg",
+  "category": "stat",
+  "depicts": "two crossed steel longswords with leather-wrapped hilts",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "stat_a",
+  "used": "generic buffs, passive nodes by stat, skill category fallbacks",
+  "done": true
+ },
+ {
+  "id": "core",
+  "category": "stat",
+  "depicts": "one raised sword blade flashing with a bright glint of power",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "stat_a",
+  "used": "generic buffs, passive nodes by stat, skill category fallbacks",
+  "done": true
+ },
+ {
+  "id": "basic",
+  "category": "stat",
+  "depicts": "a clenched leather-wrapped fist, front view",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "stat_a",
+  "used": "generic buffs, passive nodes by stat, skill category fallbacks",
+  "done": true
+ },
+ {
+  "id": "dot",
+  "category": "stat",
+  "depicts": "a heap of glowing orange embers slowly burning",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "stat_a",
+  "used": "generic buffs, passive nodes by stat, skill category fallbacks",
+  "done": true
+ },
+ {
+  "id": "overpower",
+  "category": "stat",
+  "depicts": "a massive iron warhammer head smashing down with a shock-wave ring",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "stat_a",
+  "used": "generic buffs, passive nodes by stat, skill category fallbacks",
+  "done": true
+ },
+ {
+  "id": "minion",
+  "category": "stat",
+  "depicts": "a skeletal hand raised in command with three small soul wisps above it",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "stat_a",
+  "used": "generic buffs, passive nodes by stat, skill category fallbacks",
+  "done": true
+ },
+ {
+  "id": "frost",
+  "category": "stat",
+  "depicts": "a jagged shard of pale blue ice with frost breath",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "stat_a",
+  "used": "generic buffs, passive nodes by stat, skill category fallbacks",
+  "done": true
+ },
+ {
+  "id": "lightning",
+  "category": "stat",
+  "depicts": "one bright forked lightning bolt, blue-white",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "stat_a",
+  "used": "generic buffs, passive nodes by stat, skill category fallbacks",
+  "done": true
+ },
+ {
+  "id": "shadow",
+  "category": "stat",
+  "depicts": "a dark crescent moon dripping violet-black shadow",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "stat_a",
+  "used": "generic buffs, passive nodes by stat, skill category fallbacks",
+  "done": true
+ },
+ {
+  "id": "attackspeed",
+  "category": "stat",
+  "depicts": "three fast parallel sword slashes, streaks of steel light",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "stat_b",
+  "used": "generic buffs, passive nodes by stat, skill category fallbacks",
+  "done": true
+ },
+ {
+  "id": "movespeed",
+  "category": "stat",
+  "depicts": "a leather boot with small ember-orange wings at the ankle",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "stat_b",
+  "used": "generic buffs, passive nodes by stat, skill category fallbacks",
+  "done": true
+ },
+ {
+  "id": "dodge",
+  "category": "stat",
+  "depicts": "a cloaked figure leaning sharply aside as an arrow passes by",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "stat_b",
+  "used": "generic buffs, passive nodes by stat, skill category fallbacks",
+  "done": true
+ },
+ {
+  "id": "dr",
+  "category": "stat",
+  "depicts": "a sturdy round shield of wood and iron, front view",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "stat_b",
+  "used": "generic buffs, passive nodes by stat, skill category fallbacks",
+  "done": true
+ },
+ {
+  "id": "armor",
+  "category": "stat",
+  "depicts": "a steel cuirass with shoulder straps, front view",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "stat_b",
+  "used": "generic buffs, passive nodes by stat, skill category fallbacks",
+  "done": true
+ },
+ {
+  "id": "barrier",
+  "category": "stat",
+  "depicts": "a translucent hexagonal shell of blue-white energy around a small glowing core",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "stat_b",
+  "used": "generic buffs, passive nodes by stat, skill category fallbacks",
+  "done": true
+ },
+ {
+  "id": "resall",
+  "category": "stat",
+  "depicts": "a shield divided into quarters glowing faintly red, blue, yellow and green",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "stat_b",
+  "used": "generic buffs, passive nodes by stat, skill category fallbacks",
+  "done": true
+ },
+ {
+  "id": "resfire",
+  "category": "stat",
+  "depicts": "an iron shield with flames licking harmlessly round its edge",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "stat_b",
+  "used": "generic buffs, passive nodes by stat, skill category fallbacks",
+  "done": true
+ },
+ {
+  "id": "thorns",
+  "category": "stat",
+  "depicts": "a round shield covered in long sharp iron spikes",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "stat_b",
+  "used": "generic buffs, passive nodes by stat, skill category fallbacks",
+  "done": true
+ },
+ {
+  "id": "critchance",
+  "category": "stat",
+  "depicts": "an arrow striking the exact centre of a round target, splinters flying",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "stat_c",
+  "used": "generic buffs, passive nodes by stat, skill category fallbacks",
+  "done": true
+ },
+ {
+  "id": "critdmg",
+  "category": "stat",
+  "depicts": "a sword point piercing through a cracked stone orb, shards bursting out the far side",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "stat_c",
+  "used": "generic buffs, passive nodes by stat, skill category fallbacks",
+  "done": true
+ },
+ {
+  "id": "life",
+  "category": "stat",
+  "depicts": "a glowing red heart of ember-lit glass",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "stat_c",
+  "used": "generic buffs, passive nodes by stat, skill category fallbacks",
+  "done": true
+ },
+ {
+  "id": "lifeonkill",
+  "category": "stat",
+  "depicts": "a red heart with a single bright drop falling from it",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "stat_c",
+  "used": "generic buffs, passive nodes by stat, skill category fallbacks",
+  "done": true
+ },
+ {
+  "id": "healing",
+  "category": "stat",
+  "depicts": "an open hand cupping a warm golden-green healing light",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "stat_c",
+  "used": "generic buffs, passive nodes by stat, skill category fallbacks",
+  "done": true
+ },
+ {
+  "id": "cdr",
+  "category": "stat",
+  "depicts": "an antique brass hourglass with glowing sand",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "stat_c",
+  "used": "generic buffs, passive nodes by stat, skill category fallbacks",
+  "done": true
+ },
+ {
+  "id": "resource",
+  "category": "stat",
+  "depicts": "a spiral of flowing blue-white energy forming a ring",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "stat_c",
+  "used": "generic buffs, passive nodes by stat, skill category fallbacks",
+  "done": true
+ },
+ {
+  "id": "maxresource",
+  "category": "stat",
+  "depicts": "a round-bottomed glass flask filled with glowing blue liquid",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "stat_c",
+  "used": "generic buffs, passive nodes by stat, skill category fallbacks",
+  "done": true
+ },
+ {
+  "id": "generic",
+  "category": "stat",
+  "depicts": "an upward-pointing arrowhead of pale golden light",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "stat_c",
+  "used": "generic buffs, passive nodes by stat, skill category fallbacks",
+  "done": true
+ },
+ {
+  "id": "molten",
+  "category": "affix",
+  "depicts": "a lump of lava rock dripping orange magma",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "affix_a",
+  "used": "elite affixes (nameplates / boss bar; Icons.ForAffix)",
+  "done": true
+ },
+ {
+  "id": "frozen",
+  "category": "affix",
+  "depicts": "a cluster of sharp ice crystals with a cold blue glow, about to burst",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "affix_a",
+  "used": "elite affixes (nameplates / boss bar; Icons.ForAffix)",
+  "done": true
+ },
+ {
+  "id": "shocking",
+  "category": "affix",
+  "depicts": "a dark iron orb crackling with lightning arcs in all directions",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "affix_a",
+  "used": "elite affixes (nameplates / boss bar; Icons.ForAffix)",
+  "done": true
+ },
+ {
+  "id": "plagued",
+  "category": "affix",
+  "depicts": "a puddle of bubbling yellow-green corrosive slime with fumes",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "affix_a",
+  "used": "elite affixes (nameplates / boss bar; Icons.ForAffix)",
+  "done": true
+ },
+ {
+  "id": "shadow",
+  "category": "affix",
+  "depicts": "a slowly drifting orb of violet-black shadow with a trailing tail",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "affix_a",
+  "used": "elite affixes (nameplates / boss bar; Icons.ForAffix)",
+  "done": true
+ },
+ {
+  "id": "waller",
+  "category": "affix",
+  "depicts": "a short wall of rough stone blocks rising out of the ground",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "affix_a",
+  "used": "elite affixes (nameplates / boss bar; Icons.ForAffix)",
+  "done": true
+ },
+ {
+  "id": "vortex",
+  "category": "affix",
+  "depicts": "a swirling blue-grey vortex pulling dust and stones inward",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "affix_a",
+  "used": "elite affixes (nameplates / boss bar; Icons.ForAffix)",
+  "done": true
+ },
+ {
+  "id": "chilling",
+  "category": "affix",
+  "depicts": "a curling breath of freezing mist full of tiny ice crystals",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "affix_a",
+  "used": "elite affixes (nameplates / boss bar; Icons.ForAffix)",
+  "done": true
+ },
+ {
+  "id": "shielded",
+  "category": "affix",
+  "depicts": "a horned monster skull inside a golden dome-shaped energy shield",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "affix_a",
+  "used": "elite affixes (nameplates / boss bar; Icons.ForAffix)",
+  "done": true
+ },
+ {
+  "id": "armored",
+  "category": "affix",
+  "depicts": "a horned monster skull wearing thick riveted grey iron plates",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "affix_b",
+  "used": "elite affixes (nameplates / boss bar; Icons.ForAffix)",
+  "done": true
+ },
+ {
+  "id": "vampiric",
+  "category": "affix",
+  "depicts": "a pair of long fangs dripping dark red blood",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "affix_b",
+  "used": "elite affixes (nameplates / boss bar; Icons.ForAffix)",
+  "done": true
+ },
+ {
+  "id": "hasted",
+  "category": "affix",
+  "depicts": "a clawed monster foot sprinting with pale green speed streaks",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "affix_b",
+  "used": "elite affixes (nameplates / boss bar; Icons.ForAffix)",
+  "done": true
+ },
+ {
+  "id": "summoner",
+  "category": "affix",
+  "depicts": "skeletal hands rising from the ground toward a green glowing sigil",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "affix_b",
+  "used": "elite affixes (nameplates / boss bar; Icons.ForAffix)",
+  "done": true
+ },
+ {
+  "id": "teleporter",
+  "category": "affix",
+  "depicts": "a monster's clawed hand reaching out of a small violet portal",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "affix_b",
+  "used": "elite affixes (nameplates / boss bar; Icons.ForAffix)",
+  "done": true
+ },
+ {
+  "id": "enraged",
+  "category": "affix",
+  "depicts": "a snarling horned beast face with burning red eyes and steaming breath",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "affix_b",
+  "used": "elite affixes (nameplates / boss bar; Icons.ForAffix)",
+  "done": true
+ },
+ {
+  "id": "splitting",
+  "category": "affix",
+  "depicts": "a creature's skull splitting down the middle into two halves with a pink-violet glow",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "affix_b",
+  "used": "elite affixes (nameplates / boss bar; Icons.ForAffix)",
+  "done": true
+ },
+ {
+  "id": "damage",
+  "category": "shrine",
+  "depicts": "a small weathered stone shrine idol holding a red-orange flame in its hands",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "affix_b",
+  "used": "shrine blessings in the buff row (Icons.ForBuff)",
+  "done": true
+ },
+ {
+  "id": "guard",
+  "category": "shrine",
+  "depicts": "a small weathered stone shrine idol holding an iron shield, steel-blue glow",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "affix_b",
+  "used": "shrine blessings in the buff row (Icons.ForBuff)",
+  "done": true
+ },
+ {
+  "id": "haste",
+  "category": "shrine",
+  "depicts": "a small weathered stone shrine idol with wings of wind, pale green glow",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "misc_a",
+  "used": "shrine blessings in the buff row (Icons.ForBuff)",
+  "done": true
+ },
+ {
+  "id": "fortune",
+  "category": "shrine",
+  "depicts": "a small weathered stone shrine idol holding a bowl of gold coins, golden glow",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "misc_a",
+  "used": "shrine blessings in the buff row (Icons.ForBuff)",
+  "done": true
+ },
+ {
+  "id": "flow",
+  "category": "shrine",
+  "depicts": "a small weathered stone shrine idol pouring an endless stream of blue water from a jar",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "misc_a",
+  "used": "shrine blessings in the buff row (Icons.ForBuff)",
+  "done": true
+ },
+ {
+  "id": "wrath",
+  "category": "shrine",
+  "depicts": "a small weathered stone shrine idol struck by a violet-white lightning bolt",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "misc_a",
+  "used": "shrine blessings in the buff row (Icons.ForBuff)",
+  "done": true
+ },
+ {
+  "id": "evade",
+  "category": "hud",
+  "depicts": "a hooded figure rolling low to one side, leaving a blurred trail",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "misc_a",
+  "used": "HUD action bar evade slot, town portal",
+  "done": true
+ },
+ {
+  "id": "burning",
+  "category": "stat",
+  "depicts": "a sword whose edge leaves a trail of small flames",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "misc_a",
+  "used": "generic buffs, passive nodes by stat, skill category fallbacks",
+  "done": true
+ },
+ {
+  "id": "luck",
+  "category": "stat",
+  "depicts": "a four-leafed sprig of gold lying on a few gold coins, golden glint",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "misc_a",
+  "used": "generic buffs, passive nodes by stat, skill category fallbacks",
+  "done": true
+ },
+ {
+  "id": "xp",
+  "category": "stat",
+  "depicts": "an open old book with a small bright flame of light rising from its pages, no readable letters",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "misc_a",
+  "used": "generic buffs, passive nodes by stat, skill category fallbacks",
+  "done": true
+ },
+ {
+  "id": "townportal",
+  "category": "hud",
+  "depicts": "a free-standing ring of ember-orange fire, a doorway of flame with a warm village light inside",
+  "size": 256,
+  "method": "imagegen",
+  "sheet": "misc_a",
+  "used": "HUD action bar evade slot, town portal",
+  "done": true
+ },
+ {
+  "id": "wpn_greatsword_1",
+  "category": "item",
+  "depicts": "see the builder docstring in Y:\tools\blender\\icons\\props_*.py",
+  "size": 256,
+  "method": "blender",
+  "used": "inventory, stash, vendors, loot tooltips, paper doll (Icons.ForItem / ForKind)",
+  "done": true
+ },
+ {
+  "id": "wpn_greatsword_2",
+  "category": "item",
+  "depicts": "see the builder docstring in Y:\tools\blender\\icons\\props_*.py",
+  "size": 256,
+  "method": "blender",
+  "used": "inventory, stash, vendors, loot tooltips, paper doll (Icons.ForItem / ForKind)",
+  "done": true
+ },
+ {
+  "id": "wpn_greatsword_3",
+  "category": "item",
+  "depicts": "see the builder docstring in Y:\tools\blender\\icons\\props_*.py",
+  "size": 256,
+  "method": "blender",
+  "used": "inventory, stash, vendors, loot tooltips, paper doll (Icons.ForItem / ForKind)",
+  "done": true
+ },
+ {
+  "id": "wpn_greatsword_4",
+  "category": "item",
+  "depicts": "see the builder docstring in Y:\tools\blender\\icons\\props_*.py",
+  "size": 256,
+  "method": "blender",
+  "used": "inventory, stash, vendors, loot tooltips, paper doll (Icons.ForItem / ForKind)",
+  "done": true
+ },
+ {
+  "id": "wpn_greatsword_5",
+  "category": "item",
+  "depicts": "see the builder docstring in Y:\tools\blender\\icons\\props_*.py",
+  "size": 256,
+  "method": "blender",
+  "used": "inventory, stash, vendors, loot tooltips, paper doll (Icons.ForItem / ForKind)",
+  "done": true
+ },
+ {
+  "id": "wpn_staff_1",
+  "category": "item",
+  "depicts": "see the builder docstring in Y:\tools\blender\\icons\\props_*.py",
+  "size": 256,
+  "method": "blender",
+  "used": "inventory, stash, vendors, loot tooltips, paper doll (Icons.ForItem / ForKind)",
+  "done": true
+ },
+ {
+  "id": "wpn_staff_2",
+  "category": "item",
+  "depicts": "see the builder docstring in Y:\tools\blender\\icons\\props_*.py",
+  "size": 256,
+  "method": "blender",
+  "used": "inventory, stash, vendors, loot tooltips, paper doll (Icons.ForItem / ForKind)",
+  "done": true
+ },
+ {
+  "id": "wpn_staff_3",
+  "category": "item",
+  "depicts": "see the builder docstring in Y:\tools\blender\\icons\\props_*.py",
+  "size": 256,
+  "method": "blender",
+  "used": "inventory, stash, vendors, loot tooltips, paper doll (Icons.ForItem / ForKind)",
+  "done": true
+ },
+ {
+  "id": "wpn_staff_4",
+  "category": "item",
+  "depicts": "see the builder docstring in Y:\tools\blender\\icons\\props_*.py",
+  "size": 256,
+  "method": "blender",
+  "used": "inventory, stash, vendors, loot tooltips, paper doll (Icons.ForItem / ForKind)",
+  "done": true
+ },
+ {
+  "id": "wpn_staff_5",
+  "category": "item",
+  "depicts": "see the builder docstring in Y:\tools\blender\\icons\\props_*.py",
+  "size": 256,
+  "method": "blender",
+  "used": "inventory, stash, vendors, loot tooltips, paper doll (Icons.ForItem / ForKind)",
+  "done": true
+ },
+ {
+  "id": "wpn_crossbow_1",
+  "category": "item",
+  "depicts": "see the builder docstring in Y:\tools\blender\\icons\\props_*.py",
+  "size": 256,
+  "method": "blender",
+  "used": "inventory, stash, vendors, loot tooltips, paper doll (Icons.ForItem / ForKind)",
+  "done": true
+ },
+ {
+  "id": "wpn_crossbow_2",
+  "category": "item",
+  "depicts": "see the builder docstring in Y:\tools\blender\\icons\\props_*.py",
+  "size": 256,
+  "method": "blender",
+  "used": "inventory, stash, vendors, loot tooltips, paper doll (Icons.ForItem / ForKind)",
+  "done": true
+ },
+ {
+  "id": "wpn_crossbow_3",
+  "category": "item",
+  "depicts": "see the builder docstring in Y:\tools\blender\\icons\\props_*.py",
+  "size": 256,
+  "method": "blender",
+  "used": "inventory, stash, vendors, loot tooltips, paper doll (Icons.ForItem / ForKind)",
+  "done": true
+ },
+ {
+  "id": "wpn_crossbow_4",
+  "category": "item",
+  "depicts": "see the builder docstring in Y:\tools\blender\\icons\\props_*.py",
+  "size": 256,
+  "method": "blender",
+  "used": "inventory, stash, vendors, loot tooltips, paper doll (Icons.ForItem / ForKind)",
+  "done": true
+ },
+ {
+  "id": "wpn_crossbow_5",
+  "category": "item",
+  "depicts": "see the builder docstring in Y:\tools\blender\\icons\\props_*.py",
+  "size": 256,
+  "method": "blender",
+  "used": "inventory, stash, vendors, loot tooltips, paper doll (Icons.ForItem / ForKind)",
+  "done": true
+ },
+ {
+  "id": "wpn_scythe_1",
+  "category": "item",
+  "depicts": "see the builder docstring in Y:\tools\blender\\icons\\props_*.py",
+  "size": 256,
+  "method": "blender",
+  "used": "inventory, stash, vendors, loot tooltips, paper doll (Icons.ForItem / ForKind)",
+  "done": true
+ },
+ {
+  "id": "wpn_scythe_2",
+  "category": "item",
+  "depicts": "see the builder docstring in Y:\tools\blender\\icons\\props_*.py",
+  "size": 256,
+  "method": "blender",
+  "used": "inventory, stash, vendors, loot tooltips, paper doll (Icons.ForItem / ForKind)",
+  "done": true
+ },
+ {
+  "id": "wpn_scythe_3",
+  "category": "item",
+  "depicts": "see the builder docstring in Y:\tools\blender\\icons\\props_*.py",
+  "size": 256,
+  "method": "blender",
+  "used": "inventory, stash, vendors, loot tooltips, paper doll (Icons.ForItem / ForKind)",
+  "done": true
+ },
+ {
+  "id": "wpn_scythe_4",
+  "category": "item",
+  "depicts": "see the builder docstring in Y:\tools\blender\\icons\\props_*.py",
+  "size": 256,
+  "method": "blender",
+  "used": "inventory, stash, vendors, loot tooltips, paper doll (Icons.ForItem / ForKind)",
+  "done": true
+ },
+ {
+  "id": "wpn_scythe_5",
+  "category": "item",
+  "depicts": "see the builder docstring in Y:\tools\blender\\icons\\props_*.py",
+  "size": 256,
+  "method": "blender",
+  "used": "inventory, stash, vendors, loot tooltips, paper doll (Icons.ForItem / ForKind)",
+  "done": true
+ },
+ {
+  "id": "wpn_club_1",
+  "category": "item",
+  "depicts": "see the builder docstring in Y:\tools\blender\\icons\\props_*.py",
+  "size": 256,
+  "method": "blender",
+  "used": "inventory, stash, vendors, loot tooltips, paper doll (Icons.ForItem / ForKind)",
+  "done": true
+ },
+ {
+  "id": "wpn_club_2",
+  "category": "item",
+  "depicts": "see the builder docstring in Y:\tools\blender\\icons\\props_*.py",
+  "size": 256,
+  "method": "blender",
+  "used": "inventory, stash, vendors, loot tooltips, paper doll (Icons.ForItem / ForKind)",
+  "done": true
+ },
+ {
+  "id": "wpn_club_3",
+  "category": "item",
+  "depicts": "see the builder docstring in Y:\tools\blender\\icons\\props_*.py",
+  "size": 256,
+  "method": "blender",
+  "used": "inventory, stash, vendors, loot tooltips, paper doll (Icons.ForItem / ForKind)",
+  "done": true
+ },
+ {
+  "id": "wpn_club_4",
+  "category": "item",
+  "depicts": "see the builder docstring in Y:\tools\blender\\icons\\props_*.py",
+  "size": 256,
+  "method": "blender",
+  "used": "inventory, stash, vendors, loot tooltips, paper doll (Icons.ForItem / ForKind)",
+  "done": true
+ },
+ {
+  "id": "wpn_club_5",
+  "category": "item",
+  "depicts": "see the builder docstring in Y:\tools\blender\\icons\\props_*.py",
+  "size": 256,
+  "method": "blender",
+  "used": "inventory, stash, vendors, loot tooltips, paper doll (Icons.ForItem / ForKind)",
+  "done": true
+ },
+ {
+  "id": "wpn_gauntlet_1",
+  "category": "item",
+  "depicts": "see the builder docstring in Y:\tools\blender\\icons\\props_*.py",
+  "size": 256,
+  "method": "blender",
+  "used": "inventory, stash, vendors, loot tooltips, paper doll (Icons.ForItem / ForKind)",
+  "done": true
+ },
+ {
+  "id": "wpn_gauntlet_2",
+  "category": "item",
+  "depicts": "see the builder docstring in Y:\tools\blender\\icons\\props_*.py",
+  "size": 256,
+  "method": "blender",
+  "used": "inventory, stash, vendors, loot tooltips, paper doll (Icons.ForItem / ForKind)",
+  "done": true
+ },
+ {
+  "id": "wpn_gauntlet_3",
+  "category": "item",
+  "depicts": "see the builder docstring in Y:\tools\blender\\icons\\props_*.py",
+  "size": 256,
+  "method": "blender",
+  "used": "inventory, stash, vendors, loot tooltips, paper doll (Icons.ForItem / ForKind)",
+  "done": true
+ },
+ {
+  "id": "wpn_gauntlet_4",
+  "category": "item",
+  "depicts": "see the builder docstring in Y:\tools\blender\\icons\\props_*.py",
+  "size": 256,
+  "method": "blender",
+  "used": "inventory, stash, vendors, loot tooltips, paper doll (Icons.ForItem / ForKind)",
+  "done": true
+ },
+ {
+  "id": "wpn_gauntlet_5",
+  "category": "item",
+  "depicts": "see the builder docstring in Y:\tools\blender\\icons\\props_*.py",
+  "size": 256,
+  "method": "blender",
+  "used": "inventory, stash, vendors, loot tooltips, paper doll (Icons.ForItem / ForKind)",
+  "done": true
+ },
+ {
+  "id": "wpn_swordshield_1",
+  "category": "item",
+  "depicts": "see the builder docstring in Y:\tools\blender\\icons\\props_*.py",
+  "size": 256,
+  "method": "blender",
+  "used": "inventory, stash, vendors, loot tooltips, paper doll (Icons.ForItem / ForKind)",
+  "done": true
+ },
+ {
+  "id": "wpn_swordshield_2",
+  "category": "item",
+  "depicts": "see the builder docstring in Y:\tools\blender\\icons\\props_*.py",
+  "size": 256,
+  "method": "blender",
+  "used": "inventory, stash, vendors, loot tooltips, paper doll (Icons.ForItem / ForKind)",
+  "done": true
+ },
+ {
+  "id": "wpn_swordshield_3",
+  "category": "item",
+  "depicts": "see the builder docstring in Y:\tools\blender\\icons\\props_*.py",
+  "size": 256,
+  "method": "blender",
+  "used": "inventory, stash, vendors, loot tooltips, paper doll (Icons.ForItem / ForKind)",
+  "done": true
+ },
+ {
+  "id": "wpn_swordshield_4",
+  "category": "item",
+  "depicts": "see the builder docstring in Y:\tools\blender\\icons\\props_*.py",
+  "size": 256,
+  "method": "blender",
+  "used": "inventory, stash, vendors, loot tooltips, paper doll (Icons.ForItem / ForKind)",
+  "done": true
+ },
+ {
+  "id": "wpn_swordshield_5",
+  "category": "item",
+  "depicts": "see the builder docstring in Y:\tools\blender\\icons\\props_*.py",
+  "size": 256,
+  "method": "blender",
+  "used": "inventory, stash, vendors, loot tooltips, paper doll (Icons.ForItem / ForKind)",
+  "done": true
+ },
+ {
+  "id": "wpn_grimoire_1",
+  "category": "item",
+  "depicts": "see the builder docstring in Y:\tools\blender\\icons\\props_*.py",
+  "size": 256,
+  "method": "blender",
+  "used": "inventory, stash, vendors, loot tooltips, paper doll (Icons.ForItem / ForKind)",
+  "done": true
+ },
+ {
+  "id": "wpn_grimoire_2",
+  "category": "item",
+  "depicts": "see the builder docstring in Y:\tools\blender\\icons\\props_*.py",
+  "size": 256,
+  "method": "blender",
+  "used": "inventory, stash, vendors, loot tooltips, paper doll (Icons.ForItem / ForKind)",
+  "done": true
+ },
+ {
+  "id": "wpn_grimoire_3",
+  "category": "item",
+  "depicts": "see the builder docstring in Y:\tools\blender\\icons\\props_*.py",
+  "size": 256,
+  "method": "blender",
+  "used": "inventory, stash, vendors, loot tooltips, paper doll (Icons.ForItem / ForKind)",
+  "done": true
+ },
+ {
+  "id": "wpn_grimoire_4",
+  "category": "item",
+  "depicts": "see the builder docstring in Y:\tools\blender\\icons\\props_*.py",
+  "size": 256,
+  "method": "blender",
+  "used": "inventory, stash, vendors, loot tooltips, paper doll (Icons.ForItem / ForKind)",
+  "done": true
+ },
+ {
+  "id": "wpn_grimoire_5",
+  "category": "item",
+  "depicts": "see the builder docstring in Y:\tools\blender\\icons\\props_*.py",
+  "size": 256,
+  "method": "blender",
+  "used": "inventory, stash, vendors, loot tooltips, paper doll (Icons.ForItem / ForKind)",
+  "done": true
+ },
+ {
+  "id": "helm_1",
+  "category": "item",
+  "depicts": "see the builder docstring in Y:\tools\blender\\icons\\props_*.py",
+  "size": 256,
+  "method": "blender",
+  "used": "inventory, stash, vendors, loot tooltips, paper doll (Icons.ForItem / ForKind)",
+  "done": true
+ },
+ {
+  "id": "helm_2",
+  "category": "item",
+  "depicts": "see the builder docstring in Y:\tools\blender\\icons\\props_*.py",
+  "size": 256,
+  "method": "blender",
+  "used": "inventory, stash, vendors, loot tooltips, paper doll (Icons.ForItem / ForKind)",
+  "done": true
+ },
+ {
+  "id": "helm_3",
+  "category": "item",
+  "depicts": "see the builder docstring in Y:\tools\blender\\icons\\props_*.py",
+  "size": 256,
+  "method": "blender",
+  "used": "inventory, stash, vendors, loot tooltips, paper doll (Icons.ForItem / ForKind)",
+  "done": true
+ },
+ {
+  "id": "helm_4",
+  "category": "item",
+  "depicts": "see the builder docstring in Y:\tools\blender\\icons\\props_*.py",
+  "size": 256,
+  "method": "blender",
+  "used": "inventory, stash, vendors, loot tooltips, paper doll (Icons.ForItem / ForKind)",
+  "done": true
+ },
+ {
+  "id": "helm_5",
+  "category": "item",
+  "depicts": "see the builder docstring in Y:\tools\blender\\icons\\props_*.py",
+  "size": 256,
+  "method": "blender",
+  "used": "inventory, stash, vendors, loot tooltips, paper doll (Icons.ForItem / ForKind)",
+  "done": true
+ },
+ {
+  "id": "chest_1",
+  "category": "item",
+  "depicts": "see the builder docstring in Y:\tools\blender\\icons\\props_*.py",
+  "size": 256,
+  "method": "blender",
+  "used": "inventory, stash, vendors, loot tooltips, paper doll (Icons.ForItem / ForKind)",
+  "done": true
+ },
+ {
+  "id": "chest_2",
+  "category": "item",
+  "depicts": "see the builder docstring in Y:\tools\blender\\icons\\props_*.py",
+  "size": 256,
+  "method": "blender",
+  "used": "inventory, stash, vendors, loot tooltips, paper doll (Icons.ForItem / ForKind)",
+  "done": true
+ },
+ {
+  "id": "chest_3",
+  "category": "item",
+  "depicts": "see the builder docstring in Y:\tools\blender\\icons\\props_*.py",
+  "size": 256,
+  "method": "blender",
+  "used": "inventory, stash, vendors, loot tooltips, paper doll (Icons.ForItem / ForKind)",
+  "done": true
+ },
+ {
+  "id": "chest_4",
+  "category": "item",
+  "depicts": "see the builder docstring in Y:\tools\blender\\icons\\props_*.py",
+  "size": 256,
+  "method": "blender",
+  "used": "inventory, stash, vendors, loot tooltips, paper doll (Icons.ForItem / ForKind)",
+  "done": true
+ },
+ {
+  "id": "chest_5",
+  "category": "item",
+  "depicts": "see the builder docstring in Y:\tools\blender\\icons\\props_*.py",
+  "size": 256,
+  "method": "blender",
+  "used": "inventory, stash, vendors, loot tooltips, paper doll (Icons.ForItem / ForKind)",
+  "done": true
+ },
+ {
+  "id": "gloves_1",
+  "category": "item",
+  "depicts": "see the builder docstring in Y:\tools\blender\\icons\\props_*.py",
+  "size": 256,
+  "method": "blender",
+  "used": "inventory, stash, vendors, loot tooltips, paper doll (Icons.ForItem / ForKind)",
+  "done": true
+ },
+ {
+  "id": "gloves_2",
+  "category": "item",
+  "depicts": "see the builder docstring in Y:\tools\blender\\icons\\props_*.py",
+  "size": 256,
+  "method": "blender",
+  "used": "inventory, stash, vendors, loot tooltips, paper doll (Icons.ForItem / ForKind)",
+  "done": true
+ },
+ {
+  "id": "gloves_3",
+  "category": "item",
+  "depicts": "see the builder docstring in Y:\tools\blender\\icons\\props_*.py",
+  "size": 256,
+  "method": "blender",
+  "used": "inventory, stash, vendors, loot tooltips, paper doll (Icons.ForItem / ForKind)",
+  "done": true
+ },
+ {
+  "id": "gloves_4",
+  "category": "item",
+  "depicts": "see the builder docstring in Y:\tools\blender\\icons\\props_*.py",
+  "size": 256,
+  "method": "blender",
+  "used": "inventory, stash, vendors, loot tooltips, paper doll (Icons.ForItem / ForKind)",
+  "done": true
+ },
+ {
+  "id": "gloves_5",
+  "category": "item",
+  "depicts": "see the builder docstring in Y:\tools\blender\\icons\\props_*.py",
+  "size": 256,
+  "method": "blender",
+  "used": "inventory, stash, vendors, loot tooltips, paper doll (Icons.ForItem / ForKind)",
+  "done": true
+ },
+ {
+  "id": "pants_1",
+  "category": "item",
+  "depicts": "see the builder docstring in Y:\tools\blender\\icons\\props_*.py",
+  "size": 256,
+  "method": "blender",
+  "used": "inventory, stash, vendors, loot tooltips, paper doll (Icons.ForItem / ForKind)",
+  "done": true
+ },
+ {
+  "id": "pants_2",
+  "category": "item",
+  "depicts": "see the builder docstring in Y:\tools\blender\\icons\\props_*.py",
+  "size": 256,
+  "method": "blender",
+  "used": "inventory, stash, vendors, loot tooltips, paper doll (Icons.ForItem / ForKind)",
+  "done": true
+ },
+ {
+  "id": "pants_3",
+  "category": "item",
+  "depicts": "see the builder docstring in Y:\tools\blender\\icons\\props_*.py",
+  "size": 256,
+  "method": "blender",
+  "used": "inventory, stash, vendors, loot tooltips, paper doll (Icons.ForItem / ForKind)",
+  "done": true
+ },
+ {
+  "id": "pants_4",
+  "category": "item",
+  "depicts": "see the builder docstring in Y:\tools\blender\\icons\\props_*.py",
+  "size": 256,
+  "method": "blender",
+  "used": "inventory, stash, vendors, loot tooltips, paper doll (Icons.ForItem / ForKind)",
+  "done": true
+ },
+ {
+  "id": "pants_5",
+  "category": "item",
+  "depicts": "see the builder docstring in Y:\tools\blender\\icons\\props_*.py",
+  "size": 256,
+  "method": "blender",
+  "used": "inventory, stash, vendors, loot tooltips, paper doll (Icons.ForItem / ForKind)",
+  "done": true
+ },
+ {
+  "id": "boots_1",
+  "category": "item",
+  "depicts": "see the builder docstring in Y:\tools\blender\\icons\\props_*.py",
+  "size": 256,
+  "method": "blender",
+  "used": "inventory, stash, vendors, loot tooltips, paper doll (Icons.ForItem / ForKind)",
+  "done": true
+ },
+ {
+  "id": "boots_2",
+  "category": "item",
+  "depicts": "see the builder docstring in Y:\tools\blender\\icons\\props_*.py",
+  "size": 256,
+  "method": "blender",
+  "used": "inventory, stash, vendors, loot tooltips, paper doll (Icons.ForItem / ForKind)",
+  "done": true
+ },
+ {
+  "id": "boots_3",
+  "category": "item",
+  "depicts": "see the builder docstring in Y:\tools\blender\\icons\\props_*.py",
+  "size": 256,
+  "method": "blender",
+  "used": "inventory, stash, vendors, loot tooltips, paper doll (Icons.ForItem / ForKind)",
+  "done": true
+ },
+ {
+  "id": "boots_4",
+  "category": "item",
+  "depicts": "see the builder docstring in Y:\tools\blender\\icons\\props_*.py",
+  "size": 256,
+  "method": "blender",
+  "used": "inventory, stash, vendors, loot tooltips, paper doll (Icons.ForItem / ForKind)",
+  "done": true
+ },
+ {
+  "id": "boots_5",
+  "category": "item",
+  "depicts": "see the builder docstring in Y:\tools\blender\\icons\\props_*.py",
+  "size": 256,
+  "method": "blender",
+  "used": "inventory, stash, vendors, loot tooltips, paper doll (Icons.ForItem / ForKind)",
+  "done": true
+ },
+ {
+  "id": "amulet_1",
+  "category": "item",
+  "depicts": "see the builder docstring in Y:\tools\blender\\icons\\props_*.py",
+  "size": 256,
+  "method": "blender",
+  "used": "inventory, stash, vendors, loot tooltips, paper doll (Icons.ForItem / ForKind)",
+  "done": true
+ },
+ {
+  "id": "amulet_2",
+  "category": "item",
+  "depicts": "see the builder docstring in Y:\tools\blender\\icons\\props_*.py",
+  "size": 256,
+  "method": "blender",
+  "used": "inventory, stash, vendors, loot tooltips, paper doll (Icons.ForItem / ForKind)",
+  "done": true
+ },
+ {
+  "id": "amulet_3",
+  "category": "item",
+  "depicts": "see the builder docstring in Y:\tools\blender\\icons\\props_*.py",
+  "size": 256,
+  "method": "blender",
+  "used": "inventory, stash, vendors, loot tooltips, paper doll (Icons.ForItem / ForKind)",
+  "done": true
+ },
+ {
+  "id": "amulet_4",
+  "category": "item",
+  "depicts": "see the builder docstring in Y:\tools\blender\\icons\\props_*.py",
+  "size": 256,
+  "method": "blender",
+  "used": "inventory, stash, vendors, loot tooltips, paper doll (Icons.ForItem / ForKind)",
+  "done": true
+ },
+ {
+  "id": "amulet_5",
+  "category": "item",
+  "depicts": "see the builder docstring in Y:\tools\blender\\icons\\props_*.py",
+  "size": 256,
+  "method": "blender",
+  "used": "inventory, stash, vendors, loot tooltips, paper doll (Icons.ForItem / ForKind)",
+  "done": true
+ },
+ {
+  "id": "ring_1",
+  "category": "item",
+  "depicts": "see the builder docstring in Y:\tools\blender\\icons\\props_*.py",
+  "size": 256,
+  "method": "blender",
+  "used": "inventory, stash, vendors, loot tooltips, paper doll (Icons.ForItem / ForKind)",
+  "done": true
+ },
+ {
+  "id": "ring_2",
+  "category": "item",
+  "depicts": "see the builder docstring in Y:\tools\blender\\icons\\props_*.py",
+  "size": 256,
+  "method": "blender",
+  "used": "inventory, stash, vendors, loot tooltips, paper doll (Icons.ForItem / ForKind)",
+  "done": true
+ },
+ {
+  "id": "ring_3",
+  "category": "item",
+  "depicts": "see the builder docstring in Y:\tools\blender\\icons\\props_*.py",
+  "size": 256,
+  "method": "blender",
+  "used": "inventory, stash, vendors, loot tooltips, paper doll (Icons.ForItem / ForKind)",
+  "done": true
+ },
+ {
+  "id": "ring_4",
+  "category": "item",
+  "depicts": "see the builder docstring in Y:\tools\blender\\icons\\props_*.py",
+  "size": 256,
+  "method": "blender",
+  "used": "inventory, stash, vendors, loot tooltips, paper doll (Icons.ForItem / ForKind)",
+  "done": true
+ },
+ {
+  "id": "ring_5",
+  "category": "item",
+  "depicts": "see the builder docstring in Y:\tools\blender\\icons\\props_*.py",
+  "size": 256,
+  "method": "blender",
+  "used": "inventory, stash, vendors, loot tooltips, paper doll (Icons.ForItem / ForKind)",
+  "done": true
+ },
+ {
+  "id": "gem_ruby_1",
+  "category": "item",
+  "depicts": "see the builder docstring in Y:\tools\blender\\icons\\props_*.py",
+  "size": 256,
+  "method": "blender",
+  "used": "inventory, stash, vendors, loot tooltips, paper doll (Icons.ForItem / ForKind)",
+  "done": true
+ },
+ {
+  "id": "gem_ruby_2",
+  "category": "item",
+  "depicts": "see the builder docstring in Y:\tools\blender\\icons\\props_*.py",
+  "size": 256,
+  "method": "blender",
+  "used": "inventory, stash, vendors, loot tooltips, paper doll (Icons.ForItem / ForKind)",
+  "done": true
+ },
+ {
+  "id": "gem_ruby_3",
+  "category": "item",
+  "depicts": "see the builder docstring in Y:\tools\blender\\icons\\props_*.py",
+  "size": 256,
+  "method": "blender",
+  "used": "inventory, stash, vendors, loot tooltips, paper doll (Icons.ForItem / ForKind)",
+  "done": true
+ },
+ {
+  "id": "gem_sapphire_1",
+  "category": "item",
+  "depicts": "see the builder docstring in Y:\tools\blender\\icons\\props_*.py",
+  "size": 256,
+  "method": "blender",
+  "used": "inventory, stash, vendors, loot tooltips, paper doll (Icons.ForItem / ForKind)",
+  "done": true
+ },
+ {
+  "id": "gem_sapphire_2",
+  "category": "item",
+  "depicts": "see the builder docstring in Y:\tools\blender\\icons\\props_*.py",
+  "size": 256,
+  "method": "blender",
+  "used": "inventory, stash, vendors, loot tooltips, paper doll (Icons.ForItem / ForKind)",
+  "done": true
+ },
+ {
+  "id": "gem_sapphire_3",
+  "category": "item",
+  "depicts": "see the builder docstring in Y:\tools\blender\\icons\\props_*.py",
+  "size": 256,
+  "method": "blender",
+  "used": "inventory, stash, vendors, loot tooltips, paper doll (Icons.ForItem / ForKind)",
+  "done": true
+ },
+ {
+  "id": "gem_topaz_1",
+  "category": "item",
+  "depicts": "see the builder docstring in Y:\tools\blender\\icons\\props_*.py",
+  "size": 256,
+  "method": "blender",
+  "used": "inventory, stash, vendors, loot tooltips, paper doll (Icons.ForItem / ForKind)",
+  "done": true
+ },
+ {
+  "id": "gem_topaz_2",
+  "category": "item",
+  "depicts": "see the builder docstring in Y:\tools\blender\\icons\\props_*.py",
+  "size": 256,
+  "method": "blender",
+  "used": "inventory, stash, vendors, loot tooltips, paper doll (Icons.ForItem / ForKind)",
+  "done": true
+ },
+ {
+  "id": "gem_topaz_3",
+  "category": "item",
+  "depicts": "see the builder docstring in Y:\tools\blender\\icons\\props_*.py",
+  "size": 256,
+  "method": "blender",
+  "used": "inventory, stash, vendors, loot tooltips, paper doll (Icons.ForItem / ForKind)",
+  "done": true
+ },
+ {
+  "id": "gem_emerald_1",
+  "category": "item",
+  "depicts": "see the builder docstring in Y:\tools\blender\\icons\\props_*.py",
+  "size": 256,
+  "method": "blender",
+  "used": "inventory, stash, vendors, loot tooltips, paper doll (Icons.ForItem / ForKind)",
+  "done": true
+ },
+ {
+  "id": "gem_emerald_2",
+  "category": "item",
+  "depicts": "see the builder docstring in Y:\tools\blender\\icons\\props_*.py",
+  "size": 256,
+  "method": "blender",
+  "used": "inventory, stash, vendors, loot tooltips, paper doll (Icons.ForItem / ForKind)",
+  "done": true
+ },
+ {
+  "id": "gem_emerald_3",
+  "category": "item",
+  "depicts": "see the builder docstring in Y:\tools\blender\\icons\\props_*.py",
+  "size": 256,
+  "method": "blender",
+  "used": "inventory, stash, vendors, loot tooltips, paper doll (Icons.ForItem / ForKind)",
+  "done": true
+ },
+ {
+  "id": "gem_amethyst_1",
+  "category": "item",
+  "depicts": "see the builder docstring in Y:\tools\blender\\icons\\props_*.py",
+  "size": 256,
+  "method": "blender",
+  "used": "inventory, stash, vendors, loot tooltips, paper doll (Icons.ForItem / ForKind)",
+  "done": true
+ },
+ {
+  "id": "gem_amethyst_2",
+  "category": "item",
+  "depicts": "see the builder docstring in Y:\tools\blender\\icons\\props_*.py",
+  "size": 256,
+  "method": "blender",
+  "used": "inventory, stash, vendors, loot tooltips, paper doll (Icons.ForItem / ForKind)",
+  "done": true
+ },
+ {
+  "id": "gem_amethyst_3",
+  "category": "item",
+  "depicts": "see the builder docstring in Y:\tools\blender\\icons\\props_*.py",
+  "size": 256,
+  "method": "blender",
+  "used": "inventory, stash, vendors, loot tooltips, paper doll (Icons.ForItem / ForKind)",
+  "done": true
+ },
+ {
+  "id": "gem_skull_1",
+  "category": "item",
+  "depicts": "see the builder docstring in Y:\tools\blender\\icons\\props_*.py",
+  "size": 256,
+  "method": "blender",
+  "used": "inventory, stash, vendors, loot tooltips, paper doll (Icons.ForItem / ForKind)",
+  "done": true
+ },
+ {
+  "id": "gem_skull_2",
+  "category": "item",
+  "depicts": "see the builder docstring in Y:\tools\blender\\icons\\props_*.py",
+  "size": 256,
+  "method": "blender",
+  "used": "inventory, stash, vendors, loot tooltips, paper doll (Icons.ForItem / ForKind)",
+  "done": true
+ },
+ {
+  "id": "gem_skull_3",
+  "category": "item",
+  "depicts": "see the builder docstring in Y:\tools\blender\\icons\\props_*.py",
+  "size": 256,
+  "method": "blender",
+  "used": "inventory, stash, vendors, loot tooltips, paper doll (Icons.ForItem / ForKind)",
+  "done": true
+ },
+ {
+  "id": "u_regret",
+  "category": "item",
+  "depicts": "see the builder docstring in Y:\tools\blender\\icons\\props_*.py",
+  "size": 256,
+  "method": "blender",
+  "used": "inventory, stash, vendors, loot tooltips, paper doll (Icons.ForItem / ForKind)",
+  "done": true
+ },
+ {
+  "id": "u_stargazer",
+  "category": "item",
+  "depicts": "see the builder docstring in Y:\tools\blender\\icons\\props_*.py",
+  "size": 256,
+  "method": "blender",
+  "used": "inventory, stash, vendors, loot tooltips, paper doll (Icons.ForItem / ForKind)",
+  "done": true
+ },
+ {
+  "id": "u_owlbeak",
+  "category": "item",
+  "depicts": "see the builder docstring in Y:\tools\blender\\icons\\props_*.py",
+  "size": 256,
+  "method": "blender",
+  "used": "inventory, stash, vendors, loot tooltips, paper doll (Icons.ForItem / ForKind)",
+  "done": true
+ },
+ {
+  "id": "u_reaper",
+  "category": "item",
+  "depicts": "see the builder docstring in Y:\tools\blender\\icons\\props_*.py",
+  "size": 256,
+  "method": "blender",
+  "used": "inventory, stash, vendors, loot tooltips, paper doll (Icons.ForItem / ForKind)",
+  "done": true
+ },
+ {
+  "id": "u_snuffer",
+  "category": "item",
+  "depicts": "see the builder docstring in Y:\tools\blender\\icons\\props_*.py",
+  "size": 256,
+  "method": "blender",
+  "used": "inventory, stash, vendors, loot tooltips, paper doll (Icons.ForItem / ForKind)",
+  "done": true
+ },
+ {
+  "id": "u_shovel",
+  "category": "item",
+  "depicts": "see the builder docstring in Y:\tools\blender\\icons\\props_*.py",
+  "size": 256,
+  "method": "blender",
+  "used": "inventory, stash, vendors, loot tooltips, paper doll (Icons.ForItem / ForKind)",
+  "done": true
+ },
+ {
+  "id": "u_candle",
+  "category": "item",
+  "depicts": "see the builder docstring in Y:\tools\blender\\icons\\props_*.py",
+  "size": 256,
+  "method": "blender",
+  "used": "inventory, stash, vendors, loot tooltips, paper doll (Icons.ForItem / ForKind)",
+  "done": true
+ },
+ {
+  "id": "u_emberheart",
+  "category": "item",
+  "depicts": "see the builder docstring in Y:\tools\blender\\icons\\props_*.py",
+  "size": 256,
+  "method": "blender",
+  "used": "inventory, stash, vendors, loot tooltips, paper doll (Icons.ForItem / ForKind)",
+  "done": true
+ },
+ {
+  "id": "potion",
+  "category": "misc",
+  "depicts": "see the builder docstring in Y:\tools\blender\\icons\\props_*.py",
+  "size": 256,
+  "method": "blender",
+  "used": "currency row, HUD potion, menus (Icons.Get)",
+  "done": true
+ },
+ {
+  "id": "gold",
+  "category": "misc",
+  "depicts": "see the builder docstring in Y:\tools\blender\\icons\\props_*.py",
+  "size": 256,
+  "method": "blender",
+  "used": "currency row, HUD potion, menus (Icons.Get)",
+  "done": true
+ },
+ {
+  "id": "scrap",
+  "category": "misc",
+  "depicts": "see the builder docstring in Y:\tools\blender\\icons\\props_*.py",
+  "size": 256,
+  "method": "blender",
+  "used": "currency row, HUD potion, menus (Icons.Get)",
+  "done": true
+ },
+ {
+  "id": "dust",
+  "category": "misc",
+  "depicts": "see the builder docstring in Y:\tools\blender\\icons\\props_*.py",
+  "size": 256,
+  "method": "blender",
+  "used": "currency row, HUD potion, menus (Icons.Get)",
+  "done": true
+ },
+ {
+  "id": "core",
+  "category": "misc",
+  "depicts": "see the builder docstring in Y:\tools\blender\\icons\\props_*.py",
+  "size": 256,
+  "method": "blender",
+  "used": "currency row, HUD potion, menus (Icons.Get)",
+  "done": true
+ },
+ {
+  "id": "stash",
+  "category": "misc",
+  "depicts": "see the builder docstring in Y:\tools\blender\\icons\\props_*.py",
+  "size": 256,
+  "method": "blender",
+  "used": "currency row, HUD potion, menus (Icons.Get)",
+  "done": true
+ },
+ {
+  "id": "chest",
+  "category": "misc",
+  "depicts": "see the builder docstring in Y:\tools\blender\\icons\\props_*.py",
+  "size": 256,
+  "method": "blender",
+  "used": "currency row, HUD potion, menus (Icons.Get)",
+  "done": true
+ },
+ {
+  "id": "key",
+  "category": "misc",
+  "depicts": "see the builder docstring in Y:\tools\blender\\icons\\props_*.py",
+  "size": 256,
+  "method": "blender",
+  "used": "currency row, HUD potion, menus (Icons.Get)",
+  "done": true
+ },
+ {
+  "id": "quest",
+  "category": "misc",
+  "depicts": "see the builder docstring in Y:\tools\blender\\icons\\props_*.py",
+  "size": 256,
+  "method": "blender",
+  "used": "currency row, HUD potion, menus (Icons.Get)",
+  "done": true
+ },
+ {
+  "id": "map",
+  "category": "misc",
+  "depicts": "see the builder docstring in Y:\tools\blender\\icons\\props_*.py",
+  "size": 256,
+  "method": "blender",
+  "used": "currency row, HUD potion, menus (Icons.Get)",
+  "done": true
+ },
+ {
+  "id": "inventory",
+  "category": "misc",
+  "depicts": "see the builder docstring in Y:\tools\blender\\icons\\props_*.py",
+  "size": 256,
+  "method": "blender",
+  "used": "currency row, HUD potion, menus (Icons.Get)",
+  "done": true
+ },
+ {
+  "id": "settings",
+  "category": "misc",
+  "depicts": "see the builder docstring in Y:\tools\blender\\icons\\props_*.py",
+  "size": 256,
+  "method": "blender",
+  "used": "currency row, HUD potion, menus (Icons.Get)",
+  "done": true
+ },
+ {
+  "id": "lock",
+  "category": "misc",
+  "depicts": "see the builder docstring in Y:\tools\blender\\icons\\props_*.py",
+  "size": 256,
+  "method": "blender",
+  "used": "currency row, HUD potion, menus (Icons.Get)",
+  "done": true
+ },
+ {
+  "id": "paragon",
+  "category": "misc",
+  "depicts": "see the builder docstring in Y:\tools\blender\\icons\\props_*.py",
+  "size": 256,
+  "method": "blender",
+  "used": "currency row, HUD potion, menus (Icons.Get)",
+  "done": true
+ },
+ {
+  "id": "quest",
+  "category": "marker",
+  "depicts": "see the builder docstring in Y:\tools\blender\\icons\\props_*.py",
+  "size": 256,
+  "method": "blender",
+  "used": "minimap (HudMinimap), area / world map and legend (MapUi), NPC services",
+  "done": true
+ },
+ {
+  "id": "objective",
+  "category": "marker",
+  "depicts": "see the builder docstring in Y:\tools\blender\\icons\\props_*.py",
+  "size": 256,
+  "method": "blender",
+  "used": "minimap (HudMinimap), area / world map and legend (MapUi), NPC services",
+  "done": true
+ },
+ {
+  "id": "boss",
+  "category": "marker",
+  "depicts": "see the builder docstring in Y:\tools\blender\\icons\\props_*.py",
+  "size": 256,
+  "method": "blender",
+  "used": "minimap (HudMinimap), area / world map and legend (MapUi), NPC services",
+  "done": true
+ },
+ {
+  "id": "elite",
+  "category": "marker",
+  "depicts": "see the builder docstring in Y:\tools\blender\\icons\\props_*.py",
+  "size": 256,
+  "method": "blender",
+  "used": "minimap (HudMinimap), area / world map and legend (MapUi), NPC services",
+  "done": true
+ },
+ {
+  "id": "bossdoor",
+  "category": "marker",
+  "depicts": "see the builder docstring in Y:\tools\blender\\icons\\props_*.py",
+  "size": 256,
+  "method": "blender",
+  "used": "minimap (HudMinimap), area / world map and legend (MapUi), NPC services",
+  "done": true
+ },
+ {
+  "id": "entrance",
+  "category": "marker",
+  "depicts": "see the builder docstring in Y:\tools\blender\\icons\\props_*.py",
+  "size": 256,
+  "method": "blender",
+  "used": "minimap (HudMinimap), area / world map and legend (MapUi), NPC services",
+  "done": true
+ },
+ {
+  "id": "exit",
+  "category": "marker",
+  "depicts": "see the builder docstring in Y:\tools\blender\\icons\\props_*.py",
+  "size": 256,
+  "method": "blender",
+  "used": "minimap (HudMinimap), area / world map and legend (MapUi), NPC services",
+  "done": true
+ },
+ {
+  "id": "stronghold",
+  "category": "marker",
+  "depicts": "see the builder docstring in Y:\tools\blender\\icons\\props_*.py",
+  "size": 256,
+  "method": "blender",
+  "used": "minimap (HudMinimap), area / world map and legend (MapUi), NPC services",
+  "done": true
+ },
+ {
+  "id": "waypoint",
+  "category": "marker",
+  "depicts": "see the builder docstring in Y:\tools\blender\\icons\\props_*.py",
+  "size": 256,
+  "method": "blender",
+  "used": "minimap (HudMinimap), area / world map and legend (MapUi), NPC services",
+  "done": true
+ },
+ {
+  "id": "beacon",
+  "category": "marker",
+  "depicts": "see the builder docstring in Y:\tools\blender\\icons\\props_*.py",
+  "size": 256,
+  "method": "blender",
+  "used": "minimap (HudMinimap), area / world map and legend (MapUi), NPC services",
+  "done": true
+ },
+ {
+  "id": "brazier",
+  "category": "marker",
+  "depicts": "see the builder docstring in Y:\tools\blender\\icons\\props_*.py",
+  "size": 256,
+  "method": "blender",
+  "used": "minimap (HudMinimap), area / world map and legend (MapUi), NPC services",
+  "done": true
+ },
+ {
+  "id": "portal",
+  "category": "marker",
+  "depicts": "see the builder docstring in Y:\tools\blender\\icons\\props_*.py",
+  "size": 256,
+  "method": "blender",
+  "used": "minimap (HudMinimap), area / world map and legend (MapUi), NPC services",
+  "done": true
+ },
+ {
+  "id": "riftstone",
+  "category": "marker",
+  "depicts": "see the builder docstring in Y:\tools\blender\\icons\\props_*.py",
+  "size": 256,
+  "method": "blender",
+  "used": "minimap (HudMinimap), area / world map and legend (MapUi), NPC services",
+  "done": true
+ },
+ {
+  "id": "event",
+  "category": "marker",
+  "depicts": "see the builder docstring in Y:\tools\blender\\icons\\props_*.py",
+  "size": 256,
+  "method": "blender",
+  "used": "minimap (HudMinimap), area / world map and legend (MapUi), NPC services",
+  "done": true
+ },
+ {
+  "id": "altar",
+  "category": "marker",
+  "depicts": "see the builder docstring in Y:\tools\blender\\icons\\props_*.py",
+  "size": 256,
+  "method": "blender",
+  "used": "minimap (HudMinimap), area / world map and legend (MapUi), NPC services",
+  "done": true
+ },
+ {
+  "id": "shrine",
+  "category": "marker",
+  "depicts": "see the builder docstring in Y:\tools\blender\\icons\\props_*.py",
+  "size": 256,
+  "method": "blender",
+  "used": "minimap (HudMinimap), area / world map and legend (MapUi), NPC services",
+  "done": true
+ },
+ {
+  "id": "chest",
+  "category": "marker",
+  "depicts": "see the builder docstring in Y:\tools\blender\\icons\\props_*.py",
+  "size": 256,
+  "method": "blender",
+  "used": "minimap (HudMinimap), area / world map and legend (MapUi), NPC services",
+  "done": true
+ },
+ {
+  "id": "stash",
+  "category": "marker",
+  "depicts": "see the builder docstring in Y:\tools\blender\\icons\\props_*.py",
+  "size": 256,
+  "method": "blender",
+  "used": "minimap (HudMinimap), area / world map and legend (MapUi), NPC services",
+  "done": true
+ },
+ {
+  "id": "idol",
+  "category": "marker",
+  "depicts": "see the builder docstring in Y:\tools\blender\\icons\\props_*.py",
+  "size": 256,
+  "method": "blender",
+  "used": "minimap (HudMinimap), area / world map and legend (MapUi), NPC services",
+  "done": true
+ },
+ {
+  "id": "tierstatue",
+  "category": "marker",
+  "depicts": "see the builder docstring in Y:\tools\blender\\icons\\props_*.py",
+  "size": 256,
+  "method": "blender",
+  "used": "minimap (HudMinimap), area / world map and legend (MapUi), NPC services",
+  "done": true
+ },
+ {
+  "id": "prisoner",
+  "category": "marker",
+  "depicts": "see the builder docstring in Y:\tools\blender\\icons\\props_*.py",
+  "size": 256,
+  "method": "blender",
+  "used": "minimap (HudMinimap), area / world map and legend (MapUi), NPC services",
+  "done": true
+ },
+ {
+  "id": "elder",
+  "category": "marker",
+  "depicts": "see the builder docstring in Y:\tools\blender\\icons\\props_*.py",
+  "size": 256,
+  "method": "blender",
+  "used": "minimap (HudMinimap), area / world map and legend (MapUi), NPC services",
+  "done": true
+ },
+ {
+  "id": "smith",
+  "category": "marker",
+  "depicts": "see the builder docstring in Y:\tools\blender\\icons\\props_*.py",
+  "size": 256,
+  "method": "blender",
+  "used": "minimap (HudMinimap), area / world map and legend (MapUi), NPC services",
+  "done": true
+ },
+ {
+  "id": "merchant",
+  "category": "marker",
+  "depicts": "see the builder docstring in Y:\tools\blender\\icons\\props_*.py",
+  "size": 256,
+  "method": "blender",
+  "used": "minimap (HudMinimap), area / world map and legend (MapUi), NPC services",
+  "done": true
+ },
+ {
+  "id": "occultist",
+  "category": "marker",
+  "depicts": "see the builder docstring in Y:\tools\blender\\icons\\props_*.py",
+  "size": 256,
+  "method": "blender",
+  "used": "minimap (HudMinimap), area / world map and legend (MapUi), NPC services",
+  "done": true
+ },
+ {
+  "id": "jeweler",
+  "category": "marker",
+  "depicts": "see the builder docstring in Y:\tools\blender\\icons\\props_*.py",
+  "size": 256,
+  "method": "blender",
+  "used": "minimap (HudMinimap), area / world map and legend (MapUi), NPC services",
+  "done": true
+ },
+ {
+  "id": "villager",
+  "category": "marker",
+  "depicts": "see the builder docstring in Y:\tools\blender\\icons\\props_*.py",
+  "size": 256,
+  "method": "blender",
+  "used": "minimap (HudMinimap), area / world map and legend (MapUi), NPC services",
+  "done": true
+ },
+ {
+  "id": "npc",
+  "category": "marker",
+  "depicts": "see the builder docstring in Y:\tools\blender\\icons\\props_*.py",
+  "size": 256,
+  "method": "blender",
+  "used": "minimap (HudMinimap), area / world map and legend (MapUi), NPC services",
+  "done": true
+ },
+ {
+  "id": "start",
+  "category": "marker",
+  "depicts": "see the builder docstring in Y:\tools\blender\\icons\\props_*.py",
+  "size": 256,
+  "method": "blender",
+  "used": "minimap (HudMinimap), area / world map and legend (MapUi), NPC services",
+  "done": true
+ },
+ {
+  "id": "hero",
+  "category": "marker",
+  "depicts": "see the builder docstring in Y:\tools\blender\\icons\\props_*.py",
+  "size": 256,
+  "method": "blender",
+  "used": "minimap (HudMinimap), area / world map and legend (MapUi), NPC services",
+  "done": true
+ },
+ {
+  "id": "node_start",
+  "category": "paragon",
+  "depicts": "see the builder docstring in Y:\tools\blender\\icons\\props_*.py",
+  "size": 256,
+  "method": "blender",
+  "used": "paragon boards and glyph list (ParagonUi)",
+  "done": true
+ },
+ {
+  "id": "node_normal",
+  "category": "paragon",
+  "depicts": "see the builder docstring in Y:\tools\blender\\icons\\props_*.py",
+  "size": 256,
+  "method": "blender",
+  "used": "paragon boards and glyph list (ParagonUi)",
+  "done": true
+ },
+ {
+  "id": "node_magic",
+  "category": "paragon",
+  "depicts": "see the builder docstring in Y:\tools\blender\\icons\\props_*.py",
+  "size": 256,
+  "method": "blender",
+  "used": "paragon boards and glyph list (ParagonUi)",
+  "done": true
+ },
+ {
+  "id": "node_rare",
+  "category": "paragon",
+  "depicts": "see the builder docstring in Y:\tools\blender\\icons\\props_*.py",
+  "size": 256,
+  "method": "blender",
+  "used": "paragon boards and glyph list (ParagonUi)",
+  "done": true
+ },
+ {
+  "id": "node_legendary",
+  "category": "paragon",
+  "depicts": "see the builder docstring in Y:\tools\blender\\icons\\props_*.py",
+  "size": 256,
+  "method": "blender",
+  "used": "paragon boards and glyph list (ParagonUi)",
+  "done": true
+ },
+ {
+  "id": "node_socket",
+  "category": "paragon",
+  "depicts": "see the builder docstring in Y:\tools\blender\\icons\\props_*.py",
+  "size": 256,
+  "method": "blender",
+  "used": "paragon boards and glyph list (ParagonUi)",
+  "done": true
+ },
+ {
+  "id": "node_gate",
+  "category": "paragon",
+  "depicts": "see the builder docstring in Y:\tools\blender\\icons\\props_*.py",
+  "size": 256,
+  "method": "blender",
+  "used": "paragon boards and glyph list (ParagonUi)",
+  "done": true
+ },
+ {
+  "id": "g_steel",
+  "category": "paragon",
+  "depicts": "see the builder docstring in Y:\tools\blender\\icons\\props_*.py",
+  "size": 256,
+  "method": "blender",
+  "used": "paragon boards and glyph list (ParagonUi)",
+  "done": true
+ },
+ {
+  "id": "g_kiln",
+  "category": "paragon",
+  "depicts": "see the builder docstring in Y:\tools\blender\\icons\\props_*.py",
+  "size": 256,
+  "method": "blender",
+  "used": "paragon boards and glyph list (ParagonUi)",
+  "done": true
+ },
+ {
+  "id": "g_bastion",
+  "category": "paragon",
+  "depicts": "see the builder docstring in Y:\tools\blender\\icons\\props_*.py",
+  "size": 256,
+  "method": "blender",
+  "used": "paragon boards and glyph list (ParagonUi)",
+  "done": true
+ },
+ {
+  "id": "g_orbit",
+  "category": "paragon",
+  "depicts": "see the builder docstring in Y:\tools\blender\\icons\\props_*.py",
+  "size": 256,
+  "method": "blender",
+  "used": "paragon boards and glyph list (ParagonUi)",
+  "done": true
+ },
+ {
+  "id": "g_tide",
+  "category": "paragon",
+  "depicts": "see the builder docstring in Y:\tools\blender\\icons\\props_*.py",
+  "size": 256,
+  "method": "blender",
+  "used": "paragon boards and glyph list (ParagonUi)",
+  "done": true
+ },
+ {
+  "id": "g_thrall",
+  "category": "paragon",
+  "depicts": "see the builder docstring in Y:\tools\blender\\icons\\props_*.py",
+  "size": 256,
+  "method": "blender",
+  "used": "paragon boards and glyph list (ParagonUi)",
+  "done": true
+ },
+ {
+  "id": "g_eye",
+  "category": "paragon",
+  "depicts": "see the builder docstring in Y:\tools\blender\\icons\\props_*.py",
+  "size": 256,
+  "method": "blender",
+  "used": "paragon boards and glyph list (ParagonUi)",
+  "done": true
+ },
+ {
+  "id": "g_gale",
+  "category": "paragon",
+  "depicts": "see the builder docstring in Y:\tools\blender\\icons\\props_*.py",
+  "size": 256,
+  "method": "blender",
+  "used": "paragon boards and glyph list (ParagonUi)",
+  "done": true
+ },
+ {
+  "id": "g_venom",
+  "category": "paragon",
+  "depicts": "see the builder docstring in Y:\tools\blender\\icons\\props_*.py",
+  "size": 256,
+  "method": "blender",
+  "used": "paragon boards and glyph list (ParagonUi)",
+  "done": true
+ },
+ {
+  "id": "g_vigil",
+  "category": "paragon",
+  "depicts": "see the builder docstring in Y:\tools\blender\\icons\\props_*.py",
+  "size": 256,
+  "method": "blender",
+  "used": "paragon boards and glyph list (ParagonUi)",
+  "done": true
+ },
+ {
+  "id": "g_surge",
+  "category": "paragon",
+  "depicts": "see the builder docstring in Y:\tools\blender\\icons\\props_*.py",
+  "size": 256,
+  "method": "blender",
+  "used": "paragon boards and glyph list (ParagonUi)",
+  "done": true
+ },
+ {
+  "id": "g_reaper",
+  "category": "paragon",
+  "depicts": "see the builder docstring in Y:\tools\blender\\icons\\props_*.py",
+  "size": 256,
+  "method": "blender",
+  "used": "paragon boards and glyph list (ParagonUi)",
+  "done": true
+ },
+ {
+  "id": "emberblade",
+  "category": "crest",
+  "depicts": "see the builder docstring in Y:\tools\blender\\icons\\props_*.py",
+  "size": 512,
+  "method": "blender",
+  "used": "class selection screen, title screen (MainMenu)",
+  "done": true
+ },
+ {
+  "id": "astromancer",
+  "category": "crest",
+  "depicts": "see the builder docstring in Y:\tools\blender\\icons\\props_*.py",
+  "size": 512,
+  "method": "blender",
+  "used": "class selection screen, title screen (MainMenu)",
+  "done": true
+ },
+ {
+  "id": "hunter",
+  "category": "crest",
+  "depicts": "see the builder docstring in Y:\tools\blender\\icons\\props_*.py",
+  "size": 512,
+  "method": "blender",
+  "used": "class selection screen, title screen (MainMenu)",
+  "done": true
+ },
+ {
+  "id": "soulbinder",
+  "category": "crest",
+  "depicts": "see the builder docstring in Y:\tools\blender\\icons\\props_*.py",
+  "size": 512,
+  "method": "blender",
+  "used": "class selection screen, title screen (MainMenu)",
+  "done": true
+ },
+ {
+  "id": "wildsoul",
+  "category": "crest",
+  "depicts": "see the builder docstring in Y:\tools\blender\\icons\\props_*.py",
+  "size": 512,
+  "method": "blender",
+  "used": "class selection screen, title screen (MainMenu)",
+  "done": true
+ },
+ {
+  "id": "forgebody",
+  "category": "crest",
+  "depicts": "see the builder docstring in Y:\tools\blender\\icons\\props_*.py",
+  "size": 512,
+  "method": "blender",
+  "used": "class selection screen, title screen (MainMenu)",
+  "done": true
+ },
+ {
+  "id": "lampknight",
+  "category": "crest",
+  "depicts": "see the builder docstring in Y:\tools\blender\\icons\\props_*.py",
+  "size": 512,
+  "method": "blender",
+  "used": "class selection screen, title screen (MainMenu)",
+  "done": true
+ },
+ {
+  "id": "pactbinder",
+  "category": "crest",
+  "depicts": "see the builder docstring in Y:\tools\blender\\icons\\props_*.py",
+  "size": 512,
+  "method": "blender",
+  "used": "class selection screen, title screen (MainMenu)",
+  "done": true
+ },
+ {
+  "id": "title",
+  "category": "crest",
+  "depicts": "see the builder docstring in Y:\tools\blender\\icons\\props_*.py",
+  "size": 512,
+  "method": "blender",
+  "used": "class selection screen, title screen (MainMenu)",
+  "done": true
+ }
+]

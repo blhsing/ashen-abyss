@@ -1,0 +1,52 @@
+# @region id | zh | letter | act | level | region boss | stronghold | stronghold boss | world boss
+# families: fam[*]=weight ...   (* = signature family of the region; weights are shares of 100 at pack level)
+# dungeon id | zh | families | boss | note
+
+@region wastes | 灰燼荒原 | W | 1 | 1 | boss_gravedigger | 斷燈哨站 | sh_wastes | wb_barrowbearer
+families: husk*=26, sexton*=14, char*=14, bone=16, reaver=12, dusk=10, ash=6, hauler=2
+note: Act 1, so the mix is simple on purpose: a husk rush, things from below (beetles, roots), and the first human enemies. One giant at most per screen.
+dungeon wastes_d1 | 荒棄地窖 | husk, reaver, sexton | db_wastes_d1 | A cellar where a household hid and never came out; Ember-takers now use the upper rooms as a cache, and the beetles have the rest.
+dungeon wastes_d2 | 枯根洞 | char, husk, dusk | db_wastes_d2 | Root cave: charwood from the walls, husks and hounds sheltering in it.
+dungeon wastes_boss | 掘墓者的墓園 | bone, husk, sexton | boss_gravedigger | Matches the boss's own adds (husks and skeletons).
+
+@region frost | 霜脊隘口 | F | 2 | 8 | boss_rimelord | 凍骨關 | sh_frost | wb_firstbearer
+families: frost*=28, coldfire*=14, hauler*=4, bone=14, wraith=10, reaver=12, dusk=12, cult=6
+note: Drilled infantry in the open, elemental attrition near the dead beacons, raiders on the road. The Order is only a small detachment here (snuffers and one knight).
+dungeon frost_d1 | 冰封哨站 | frost, bone, cult | db_frost_d1 | Garrison hall held by the Order; the prisoners relight the braziers.
+dungeon frost_d2 | 霜牙洞窟 | frost, coldfire, dusk | db_frost_d2 | Stalker den: rime-horn stalkers, glass-mites and flickers, hearth-bats on the ceiling.
+dungeon frost_boss | 赫爾蒙的冰廳 | frost, coldfire, wraith | boss_rimelord | Matches the boss's Frostbound musters.
+
+@region crypt | 沉眠墓原 | C | 2 | 8 | boss_bishop | 守陵人營地 | sh_crypt | wb_barrowbearer
+families: bone*=24, shroud*=14, effigy*=10, cult=18, wraith=10, reaver=8, dusk=6, husk=5, sexton=5
+note: The home of the properly dead. Bone and Order packs are the standard; spiders hold the side halls, effigies the royal barrows, tomb-robbing Ember-takers the entrances.
+dungeon crypt_d1 | 無名陵寢 | effigy, bone, wraith | db_crypt_d1 | Royal barrow: stone and what the stone was guarding.
+dungeon crypt_d2 | 骨倉 | bone, shroud, sexton | db_crypt_d2 | Bone store: the Unburnt, the spiders that wrap them and the beetles that clean them.
+dungeon crypt_boss | 腐骨聖所 | cult, bone, wraith | boss_bishop | Matches the boss's adds (skeletons, javelineers, acolytes).
+
+@region mire | 瘴泣沼澤 | M | 2 | 8 | boss_mire_mother | 沉木寨 | sh_mire | wb_firstbearer
+families: mire*=24, lamp*=16, lurk*=12, husk=18, bone=8, dusk=10, wraith=6, char=6
+note: Everything is slow, poisonous and underneath you. Fast pressure comes only from the mire-skinned husks and the warmth-flies.
+dungeon mire_d1 | 溺亡者地窟 | lurk, husk, wraith | db_mire_d1 | Flooded cellar: leeches in the water, the drowned on the islands.
+dungeon mire_d2 | 沼巫巢穴 | mire, lamp | db_mire_d2 | Hag warren lit only by false lamps.
+dungeon mire_boss | 沼母之庭 | mire, lurk, husk | boss_mire_mother | Matches the boss's brood (mire husks).
+
+@region sands | 鏽砂廢都 | S | 5 | 26 | boss_sand_tyrant | 斷柱商站 | sh_sands | wb_daylessdisc
+families: sands*=24, rust*=14, engine*=6, husk=12, bone=10, cult=12, reaver=10, dusk=9, hauler=3
+note: Act 5: disciplined dead, armoured vermin and machine emplacements. Reflect, returning discs and beams punish standing still and blind fire.
+dungeon sands_d1 | 黃銅工坊 | engine, rust, sands | db_sands_d1 | Workshop: engines, the hermits living in their scrap, sentinels on guard.
+dungeon sands_d2 | 沙掩墓道 | sands, husk, bone | db_sands_d2 | Tomb road: the dynasty's dead and the common dead around them.
+dungeon sands_boss | 暴君王座 | sands, engine, cult | boss_sand_tyrant | Matches the boss's adds (revenants, sentinels) plus the Order's envoys.
+
+@region sanctum | 寂滅聖城 | N | 6 | 33 | boss_grand_hush | 燭匠街壘 | sh_sanctum | wb_daylessdisc
+families: cult*=34, wax*=14, bell*=8, effigy=10, wraith=8, hush=8, bone=10, dusk=8
+note: The Order at full strength: every role present. Wax-sealed line the streets as dormant hazards, bells are the heavy pieces, and the first of the Pale Hush leak up through the crypts.
+dungeon sanctum_d1 | 靜默修院 | cult, wax | db_sanctum_d1 | Abbey: the Order and the citizens it sealed.
+dungeon sanctum_d2 | 鐘樓地庫 | bell, bone, effigy | db_sanctum_d2 | Bell-tower vault: bells, marble saints and the old dead beneath them.
+dungeon sanctum_boss | 無聲大聖堂 | cult, bell, hush | boss_grand_hush | Matches the boss's choir and acolytes.
+
+@region abyss | 燼淵 | A | 7 | 40 | boss_osaros | 餘火前哨 | sh_abyss | wb_breathofsilence
+families: fiend*=28, forge*=18, hush*=18, cult=12, ash=10, wraith=6, dusk=5, hauler=3
+note: Fire against silence: fiends and thralls burn the ground, the Hush puts it out and drains the hero. The most varied body-plan mix in the game (all six rigs appear).
+dungeon abyss_d1 | 熔爐遺構 | forge, fiend, hauler | db_abyss_d1 | Forge works: thralls at their posts, fiends in the hearths, a stoker-giant on the floor.
+dungeon abyss_d2 | 黑曜裂谷 | fiend, hush, cult | db_abyss_d2 | Obsidian rift where the Order meets what it prays to.
+dungeon abyss_boss | 日爐之心 | hush, cult, fiend | boss_osaros | The last approach: the Hush, its priests and the fire that still resists them.

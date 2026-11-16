@@ -1,0 +1,144 @@
+{
+ "id": "hero_astromancer",
+ "ok": true,
+ "problems": [],
+ "triangles": 26164,
+ "size_bytes": 10076268,
+ "meshes": [
+  "body_cloth",
+  "body_emis",
+  "body_hair",
+  "body_leather",
+  "body_metal",
+  "body_skin",
+  "wpn_1",
+  "wpn_2",
+  "wpn_3"
+ ],
+ "materials": [
+  "cloth_hero_astromancer",
+  "emis_hero_astromancer",
+  "hair_hero_astromancer",
+  "leather_hero_astromancer",
+  "metal_hero_astromancer",
+  "skin_hero_astromancer"
+ ],
+ "images": [
+  {
+   "name": "cloth_n",
+   "mime": "image/jpeg",
+   "w": 2048,
+   "h": 2048,
+   "bytes": 1484977
+  },
+  {
+   "name": "cloth_orm",
+   "mime": "image/jpeg",
+   "w": 2048,
+   "h": 2048,
+   "bytes": 1204633
+  },
+  {
+   "name": "cloth_c",
+   "mime": "image/jpeg",
+   "w": 2048,
+   "h": 2048,
+   "bytes": 689136
+  },
+  {
+   "name": "emis_g",
+   "mime": "image/png",
+   "w": 64,
+   "h": 4,
+   "bytes": 339
+  },
+  {
+   "name": "hair_n",
+   "mime": "image/jpeg",
+   "w": 1024,
+   "h": 1024,
+   "bytes": 310618
+  },
+  {
+   "name": "hair_orm",
+   "mime": "image/jpeg",
+   "w": 1024,
+   "h": 1024,
+   "bytes": 318718
+  },
+  {
+   "name": "hair_c",
+   "mime": "image/jpeg",
+   "w": 1024,
+   "h": 1024,
+   "bytes": 219743
+  },
+  {
+   "name": "leather_n",
+   "mime": "image/jpeg",
+   "w": 1024,
+   "h": 1024,
+   "bytes": 298878
+  },
+  {
+   "name": "leather_orm",
+   "mime": "image/jpeg",
+   "w": 1024,
+   "h": 1024,
+   "bytes": 289301
+  },
+  {
+   "name": "leather_c",
+   "mime": "image/jpeg",
+   "w": 1024,
+   "h": 1024,
+   "bytes": 155161
+  },
+  {
+   "name": "metal_n",
+   "mime": "image/jpeg",
+   "w": 1024,
+   "h": 1024,
+   "bytes": 290534
+  },
+  {
+   "name": "metal_orm",
+   "mime": "image/jpeg",
+   "w": 1024,
+   "h": 1024,
+   "bytes": 434494
+  },
+  {
+   "name": "metal_c",
+   "mime": "image/jpeg",
+   "w": 1024,
+   "h": 1024,
+   "bytes": 308270
+  },
+  {
+   "name": "skin_n",
+   "mime": "image/jpeg",
+   "w": 2048,
+   "h": 2048,
+   "bytes": 1427389
+  },
+  {
+   "name": "skin_orm",
+   "mime": "image/jpeg",
+   "w": 2048,
+   "h": 2048,
+   "bytes": 658967
+  },
+  {
+   "name": "skin_c",
+   "mime": "image/jpeg",
+   "w": 2048,
+   "h": 2048,
+   "bytes": 361757
+  }
+ ],
+ "bones": 65,
+ "extensions": [
+  "KHR_materials_emissive_strength"
+ ]
+}

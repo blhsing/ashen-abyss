@@ -1,0 +1,95 @@
+{
+ "id": "form_bear",
+ "ok": true,
+ "problems": [],
+ "triangles": 34550,
+ "size_bytes": 7840548,
+ "meshes": [
+  "body_bone",
+  "body_cloth",
+  "body_emis",
+  "body_leather"
+ ],
+ "materials": [
+  "bone_form_bear",
+  "cloth_form_bear",
+  "emis_form_bear",
+  "leather_form_bear"
+ ],
+ "images": [
+  {
+   "name": "bone_n",
+   "mime": "image/jpeg",
+   "w": 256,
+   "h": 256,
+   "bytes": 30910
+  },
+  {
+   "name": "bone_orm",
+   "mime": "image/jpeg",
+   "w": 256,
+   "h": 256,
+   "bytes": 34328
+  },
+  {
+   "name": "bone_c",
+   "mime": "image/jpeg",
+   "w": 256,
+   "h": 256,
+   "bytes": 23271
+  },
+  {
+   "name": "cloth_n",
+   "mime": "image/jpeg",
+   "w": 2048,
+   "h": 2048,
+   "bytes": 729943
+  },
+  {
+   "name": "cloth_orm",
+   "mime": "image/jpeg",
+   "w": 2048,
+   "h": 2048,
+   "bytes": 1135738
+  },
+  {
+   "name": "cloth_c",
+   "mime": "image/jpeg",
+   "w": 2048,
+   "h": 2048,
+   "bytes": 642006
+  },
+  {
+   "name": "emis_g",
+   "mime": "image/png",
+   "w": 64,
+   "h": 4,
+   "bytes": 333
+  },
+  {
+   "name": "leather_n",
+   "mime": "image/jpeg",
+   "w": 256,
+   "h": 256,
+   "bytes": 33547
+  },
+  {
+   "name": "leather_orm",
+   "mime": "image/jpeg",
+   "w": 256,
+   "h": 256,
+   "bytes": 28146
+  },
+  {
+   "name": "leather_c",
+   "mime": "image/jpeg",
+   "w": 256,
+   "h": 256,
+   "bytes": 13981
+  }
+ ],
+ "bones": 65,
+ "extensions": [
+  "KHR_materials_emissive_strength"
+ ]
+}

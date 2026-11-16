@@ -1,0 +1,130 @@
+{
+ "id": "npc_smith",
+ "ok": true,
+ "problems": [],
+ "triangles": 18451,
+ "size_bytes": 8713136,
+ "meshes": [
+  "body_cloth",
+  "body_hair",
+  "body_leather",
+  "body_metal",
+  "body_skin"
+ ],
+ "materials": [
+  "cloth_npc_smith",
+  "hair_npc_smith",
+  "leather_npc_smith",
+  "metal_npc_smith",
+  "skin_npc_smith"
+ ],
+ "images": [
+  {
+   "name": "cloth_n",
+   "mime": "image/jpeg",
+   "w": 1024,
+   "h": 1024,
+   "bytes": 403237
+  },
+  {
+   "name": "cloth_orm",
+   "mime": "image/jpeg",
+   "w": 1024,
+   "h": 1024,
+   "bytes": 416275
+  },
+  {
+   "name": "cloth_c",
+   "mime": "image/jpeg",
+   "w": 1024,
+   "h": 1024,
+   "bytes": 244858
+  },
+  {
+   "name": "hair_n",
+   "mime": "image/jpeg",
+   "w": 512,
+   "h": 512,
+   "bytes": 106338
+  },
+  {
+   "name": "hair_orm",
+   "mime": "image/jpeg",
+   "w": 512,
+   "h": 512,
+   "bytes": 75793
+  },
+  {
+   "name": "hair_c",
+   "mime": "image/jpeg",
+   "w": 512,
+   "h": 512,
+   "bytes": 33663
+  },
+  {
+   "name": "leather_n",
+   "mime": "image/jpeg",
+   "w": 2048,
+   "h": 2048,
+   "bytes": 1715013
+  },
+  {
+   "name": "leather_orm",
+   "mime": "image/jpeg",
+   "w": 2048,
+   "h": 2048,
+   "bytes": 1273755
+  },
+  {
+   "name": "leather_c",
+   "mime": "image/jpeg",
+   "w": 2048,
+   "h": 2048,
+   "bytes": 681212
+  },
+  {
+   "name": "metal_n",
+   "mime": "image/jpeg",
+   "w": 256,
+   "h": 256,
+   "bytes": 23720
+  },
+  {
+   "name": "metal_orm",
+   "mime": "image/jpeg",
+   "w": 256,
+   "h": 256,
+   "bytes": 27052
+  },
+  {
+   "name": "metal_c",
+   "mime": "image/jpeg",
+   "w": 256,
+   "h": 256,
+   "bytes": 16710
+  },
+  {
+   "name": "skin_n",
+   "mime": "image/jpeg",
+   "w": 2048,
+   "h": 2048,
+   "bytes": 1558583
+  },
+  {
+   "name": "skin_orm",
+   "mime": "image/jpeg",
+   "w": 2048,
+   "h": 2048,
+   "bytes": 680174
+  },
+  {
+   "name": "skin_c",
+   "mime": "image/jpeg",
+   "w": 2048,
+   "h": 2048,
+   "bytes": 377022
+  }
+ ],
+ "bones": 65,
+ "extensions": []
+}

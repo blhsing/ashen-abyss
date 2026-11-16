@@ -1,0 +1,20 @@
+# torch-free part of the environment (installed first; see install notes in README.md)
+numpy
+scipy>=1.10.1
+soundfile>=0.13.1
+librosa>=0.10
+pyloudnorm>=0.1.1
+numba>=0.63.1
+transformers>=4.55.5,<4.58.0
+diffusers>=0.37.0
+huggingface_hub
+safetensors
+sentencepiece
+loguru>=0.7.3
+einops>=0.8.1
+tqdm
+toml
+diskcache
+xxhash
+typer-slim>=0.21.1
+pywavelets>=1.9.0

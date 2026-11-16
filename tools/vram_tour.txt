@@ -1,0 +1,2 @@
+== trim off  errors=0 warnings=0
+wastes=2846MB  frost=3518MB  crypt=3706MB  mire=4146MB  sands=4546MB  sanctum=4666MB  

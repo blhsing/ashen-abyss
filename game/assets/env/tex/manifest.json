@@ -1,0 +1,3175 @@
+{
+ "about": "PBR texture sets for Ashen Abyss. Each set: albedo.jpg (sRGB), normal.jpg (OpenGL), arm.jpg (R=AO,G=roughness,B=metallic, linear), height.jpg (linear displacement, mid-grey ~ surface), optional emission.jpg / opacity.jpg. size_m = real-world metres covered by one UV repeat (uv_scale = world_metres / size_m).",
+ "sets": [
+  {
+   "name": "ash_ground",
+   "source": "Poly Haven",
+   "source_id": "moon_02",
+   "resolution": 2048,
+   "source_url": "https://polyhaven.com/a/moon_02",
+   "author": "Greg Zaal, Rico Cilliers, Jenelle van Heerden, Dario Barresi",
+   "licence": "CC0 1.0",
+   "size_m": [
+    3.1,
+    3.1
+   ],
+   "size_source": "source metadata",
+   "avg_color": "#7f786e",
+   "avg_color_rgb": [
+    127,
+    120,
+    110
+   ],
+   "avg_roughness": 0.967,
+   "avg_metallic": 0.003,
+   "zones": [
+    "wastes",
+    "abyss",
+    "sands"
+   ],
+   "use": "fine grey ash/dust ground: base terrain of the wastes, ash drifts in the abyss",
+   "maps": [
+    "albedo",
+    "normal",
+    "arm",
+    "height"
+   ],
+   "arm_source": "source arm map",
+   "normal_convention": "OpenGL (+Y)",
+   "tiles": true,
+   "seam_ratio": 0.91,
+   "path": "res://assets/env/tex/ash_ground/",
+   "bytes": 4821021
+  },
+  {
+   "name": "burnt_soil",
+   "source": "Poly Haven",
+   "source_id": "burned_ground_01",
+   "resolution": 2048,
+   "source_url": "https://polyhaven.com/a/burned_ground_01",
+   "author": "Rob Tuytel",
+   "licence": "CC0 1.0",
+   "normal_fix": "tilt (-0.040, -0.026) removed, renormalised",
+   "size_m": [
+    1.0,
+    1.0
+   ],
+   "size_source": "source metadata",
+   "avg_color": "#716354",
+   "avg_color_rgb": [
+    113,
+    99,
+    84
+   ],
+   "avg_roughness": 0.519,
+   "avg_metallic": 0.008,
+   "zones": [
+    "wastes",
+    "abyss",
+    "mire"
+   ],
+   "use": "charred black soil with ash and debris: burnt clearings, boss arenas, abyss floor",
+   "maps": [
+    "albedo",
+    "normal",
+    "arm",
+    "height"
+   ],
+   "arm_source": "source arm map",
+   "normal_convention": "OpenGL (+Y)",
+   "tiles": true,
+   "seam_ratio": 1.08,
+   "path": "res://assets/env/tex/burnt_soil/",
+   "bytes": 7319498
+  },
+  {
+   "name": "dark_mud",
+   "source": "Poly Haven",
+   "source_id": "brown_mud_03",
+   "resolution": 2048,
+   "source_url": "https://polyhaven.com/a/brown_mud_03",
+   "author": "Rob Tuytel",
+   "licence": "CC0 1.0",
+   "normal_fix": "tilt (-0.042, -0.034) removed, renormalised",
+   "size_m": [
+    1.3,
+    1.3
+   ],
+   "size_source": "source metadata",
+   "avg_color": "#574d3e",
+   "avg_color_rgb": [
+    87,
+    77,
+    62
+   ],
+   "avg_roughness": 0.523,
+   "avg_metallic": 0.012,
+   "zones": [
+    "wastes",
+    "mire"
+   ],
+   "use": "wet dark mud: graveyard ground, bog edges, churned paths",
+   "maps": [
+    "albedo",
+    "normal",
+    "arm",
+    "height"
+   ],
+   "arm_source": "source arm map",
+   "normal_convention": "OpenGL (+Y)",
+   "tiles": true,
+   "seam_ratio": 1.28,
+   "path": "res://assets/env/tex/dark_mud/",
+   "bytes": 6603073
+  },
+  {
+   "name": "forest_soil",
+   "source": "Poly Haven",
+   "source_id": "mud_forest",
+   "resolution": 2048,
+   "source_url": "https://polyhaven.com/a/mud_forest",
+   "author": "eye-candy.xyz",
+   "licence": "CC0 1.0",
+   "normal_fix": "tilt (0.002, -0.017) removed, renormalised",
+   "size_m": [
+    2.35,
+    2.35
+   ],
+   "size_source": "source metadata",
+   "avg_color": "#3b2916",
+   "avg_color_rgb": [
+    59,
+    41,
+    22
+   ],
+   "avg_roughness": 0.918,
+   "avg_metallic": 0.005,
+   "zones": [
+    "wastes",
+    "mire"
+   ],
+   "use": "dark forest soil with scattered leaf bits: default dead-forest floor",
+   "maps": [
+    "albedo",
+    "normal",
+    "arm",
+    "height"
+   ],
+   "arm_source": "source arm map",
+   "normal_convention": "OpenGL (+Y)",
+   "tiles": true,
+   "seam_ratio": 1.02,
+   "path": "res://assets/env/tex/forest_soil/",
+   "bytes": 7798038
+  },
+  {
+   "name": "dead_leaves",
+   "source": "Poly Haven",
+   "source_id": "forest_leaves_03",
+   "resolution": 2048,
+   "source_url": "https://polyhaven.com/a/forest_leaves_03",
+   "author": "Rob Tuytel, Dimitrios Savva",
+   "licence": "CC0 1.0",
+   "size_m": [
+    2.3,
+    2.3
+   ],
+   "size_source": "source metadata",
+   "avg_color": "#4c3d26",
+   "avg_color_rgb": [
+    76,
+    61,
+    38
+   ],
+   "avg_roughness": 0.786,
+   "avg_metallic": 0.005,
+   "zones": [
+    "wastes",
+    "mire"
+   ],
+   "use": "dark dead-leaf litter: patches under trees (blend over forest_soil)",
+   "maps": [
+    "albedo",
+    "normal",
+    "arm",
+    "height"
+   ],
+   "arm_source": "source arm map",
+   "normal_convention": "OpenGL (+Y)",
+   "tiles": true,
+   "seam_ratio": 1.02,
+   "path": "res://assets/env/tex/dead_leaves/",
+   "bytes": 6804766
+  },
+  {
+   "name": "dead_grass",
+   "source": "Poly Haven",
+   "source_id": "withered_grass",
+   "resolution": 1024,
+   "source_url": "https://polyhaven.com/a/withered_grass",
+   "author": "Charlotte Baglioni",
+   "licence": "CC0 1.0",
+   "size_m": [
+    2.0,
+    2.0
+   ],
+   "size_source": "source metadata",
+   "avg_color": "#ae967c",
+   "avg_color_rgb": [
+    174,
+    150,
+    124
+   ],
+   "avg_roughness": 0.808,
+   "avg_metallic": 0.013,
+   "zones": [
+    "wastes",
+    "town"
+   ],
+   "use": "pale withered grass: sparse patches, town outskirts",
+   "maps": [
+    "albedo",
+    "normal",
+    "arm",
+    "height"
+   ],
+   "arm_source": "source arm map",
+   "normal_convention": "OpenGL (+Y)",
+   "tiles": true,
+   "seam_ratio": 0.97,
+   "path": "res://assets/env/tex/dead_grass/",
+   "bytes": 2269177
+  },
+  {
+   "name": "root_ground",
+   "source": "Poly Haven",
+   "source_id": "roots",
+   "resolution": 1024,
+   "source_url": "https://polyhaven.com/a/roots",
+   "author": "Dario Barresi, Dimitrios Savva",
+   "licence": "CC0 1.0",
+   "size_m": [
+    1.67,
+    1.67
+   ],
+   "size_source": "source metadata",
+   "avg_color": "#746045",
+   "avg_color_rgb": [
+    116,
+    96,
+    69
+   ],
+   "avg_roughness": 0.817,
+   "avg_metallic": 0.005,
+   "zones": [
+    "wastes",
+    "mire"
+   ],
+   "use": "dry earth with exposed roots: around big trees and stumps",
+   "maps": [
+    "albedo",
+    "normal",
+    "arm",
+    "height"
+   ],
+   "arm_source": "source arm map",
+   "normal_convention": "OpenGL (+Y)",
+   "tiles": true,
+   "seam_ratio": 1.05,
+   "path": "res://assets/env/tex/root_ground/",
+   "bytes": 1648561
+  },
+  {
+   "name": "gravel_path",
+   "source": "Poly Haven",
+   "source_id": "rocky_trail",
+   "resolution": 2048,
+   "source_url": "https://polyhaven.com/a/rocky_trail",
+   "author": "Amal Kumar",
+   "licence": "CC0 1.0",
+   "size_m": [
+    2.0,
+    2.0
+   ],
+   "size_source": "source metadata",
+   "avg_color": "#95836d",
+   "avg_color_rgb": [
+    149,
+    131,
+    109
+   ],
+   "avg_roughness": 0.649,
+   "avg_metallic": 0.007,
+   "zones": [
+    "wastes",
+    "town",
+    "frost",
+    "sands"
+   ],
+   "use": "stony gravel trail: paths and roads through the wastes",
+   "maps": [
+    "albedo",
+    "normal",
+    "arm",
+    "height"
+   ],
+   "arm_source": "source arm map",
+   "normal_convention": "OpenGL (+Y)",
+   "tiles": true,
+   "seam_ratio": 1.05,
+   "path": "res://assets/env/tex/gravel_path/",
+   "bytes": 7653373
+  },
+  {
+   "name": "cliff_rock",
+   "source": "Poly Haven",
+   "source_id": "rock_face",
+   "resolution": 2048,
+   "source_url": "https://polyhaven.com/a/rock_face",
+   "author": "Greg Zaal, Dario Barresi",
+   "licence": "CC0 1.0",
+   "size_m": [
+    2.38,
+    2.38
+   ],
+   "size_source": "source metadata",
+   "avg_color": "#624632",
+   "avg_color_rgb": [
+    98,
+    70,
+    50
+   ],
+   "avg_roughness": 0.835,
+   "avg_metallic": 0.002,
+   "zones": [
+    "wastes",
+    "sands"
+   ],
+   "use": "weathered brown rock face: cliffs, large outcrops (triplanar)",
+   "maps": [
+    "albedo",
+    "normal",
+    "arm",
+    "height"
+   ],
+   "arm_source": "source arm map",
+   "normal_convention": "OpenGL (+Y)",
+   "tiles": true,
+   "seam_ratio": 0.97,
+   "path": "res://assets/env/tex/cliff_rock/",
+   "bytes": 4192537
+  },
+  {
+   "name": "grey_rock",
+   "source": "Poly Haven",
+   "source_id": "lichen_rock",
+   "resolution": 2048,
+   "source_url": "https://polyhaven.com/a/lichen_rock",
+   "author": "Rico Cilliers",
+   "licence": "CC0 1.0",
+   "normal_fix": "tilt (0.025, 0.042) removed, renormalised",
+   "size_m": [
+    2.0,
+    2.0
+   ],
+   "size_source": "source metadata",
+   "avg_color": "#4c4439",
+   "avg_color_rgb": [
+    76,
+    68,
+    57
+   ],
+   "avg_roughness": 0.801,
+   "avg_metallic": 0.004,
+   "zones": [
+    "wastes",
+    "crypt",
+    "frost",
+    "mire"
+   ],
+   "use": "dark grey lichen-stained rock: boulders, cave walls, cliff variation (triplanar)",
+   "maps": [
+    "albedo",
+    "normal",
+    "arm",
+    "height"
+   ],
+   "arm_source": "source arm map",
+   "normal_convention": "OpenGL (+Y)",
+   "tiles": true,
+   "seam_ratio": 0.99,
+   "path": "res://assets/env/tex/grey_rock/",
+   "bytes": 6421483
+  },
+  {
+   "name": "bark",
+   "source": "Poly Haven",
+   "source_id": "bark_willow_02",
+   "resolution": 1024,
+   "source_url": "https://polyhaven.com/a/bark_willow_02",
+   "author": "Charlotte Baglioni",
+   "licence": "CC0 1.0",
+   "size_m": [
+    2.15,
+    2.15
+   ],
+   "size_source": "source metadata",
+   "avg_color": "#887a6c",
+   "avg_color_rgb": [
+    136,
+    122,
+    108
+   ],
+   "avg_roughness": 0.694,
+   "avg_metallic": 0.007,
+   "zones": [
+    "wastes",
+    "mire",
+    "frost"
+   ],
+   "use": "fissured dry bark: procedural trunks, logs, posts",
+   "maps": [
+    "albedo",
+    "normal",
+    "arm",
+    "height"
+   ],
+   "arm_source": "source arm map",
+   "normal_convention": "OpenGL (+Y)",
+   "tiles": true,
+   "seam_ratio": 1.07,
+   "path": "res://assets/env/tex/bark/",
+   "bytes": 1963065
+  },
+  {
+   "name": "old_planks",
+   "source": "Poly Haven",
+   "source_id": "weathered_planks",
+   "resolution": 2048,
+   "source_url": "https://polyhaven.com/a/weathered_planks",
+   "author": "Dario Barresi, Dimitrios Savva",
+   "licence": "CC0 1.0",
+   "size_m": [
+    2.0,
+    2.0
+   ],
+   "size_source": "source metadata",
+   "avg_color": "#51443b",
+   "avg_color_rgb": [
+    81,
+    68,
+    59
+   ],
+   "avg_roughness": 0.736,
+   "avg_metallic": 0.003,
+   "zones": [
+    "wastes",
+    "town",
+    "mire",
+    "frost"
+   ],
+   "use": "old weathered planks: bridges, fences, floors, palisade",
+   "maps": [
+    "albedo",
+    "normal",
+    "arm",
+    "height"
+   ],
+   "arm_source": "source arm map",
+   "normal_convention": "OpenGL (+Y)",
+   "tiles": true,
+   "seam_ratio": 1.24,
+   "path": "res://assets/env/tex/old_planks/",
+   "bytes": 3211923
+  },
+  {
+   "name": "flagstone",
+   "source": "Poly Haven",
+   "source_id": "large_grey_tiles",
+   "resolution": 2048,
+   "source_url": "https://polyhaven.com/a/large_grey_tiles",
+   "author": "Rob Tuytel",
+   "licence": "CC0 1.0",
+   "size_m": [
+    3.0,
+    3.0
+   ],
+   "size_source": "source metadata",
+   "avg_color": "#878176",
+   "avg_color_rgb": [
+    135,
+    129,
+    118
+   ],
+   "avg_roughness": 0.815,
+   "avg_metallic": 0.008,
+   "zones": [
+    "crypt",
+    "town",
+    "sanctum",
+    "frost"
+   ],
+   "use": "large uneven grey flagstones: main crypt hall floor, town square",
+   "maps": [
+    "albedo",
+    "normal",
+    "arm",
+    "height"
+   ],
+   "arm_source": "source arm map",
+   "normal_convention": "OpenGL (+Y)",
+   "tiles": true,
+   "seam_ratio": 1.2,
+   "path": "res://assets/env/tex/flagstone/",
+   "bytes": 4506962
+  },
+  {
+   "name": "crypt_cobble",
+   "source": "Poly Haven",
+   "source_id": "cobblestone_floor_06",
+   "resolution": 2048,
+   "source_url": "https://polyhaven.com/a/cobblestone_floor_06",
+   "author": "Amal Kumar",
+   "licence": "CC0 1.0",
+   "size_m": [
+    2.0,
+    2.0
+   ],
+   "size_source": "source metadata",
+   "avg_color": "#51473e",
+   "avg_color_rgb": [
+    81,
+    71,
+    62
+   ],
+   "avg_roughness": 0.801,
+   "avg_metallic": 0.002,
+   "zones": [
+    "crypt"
+   ],
+   "use": "dark worn cobble: crypt corridors and side rooms",
+   "maps": [
+    "albedo",
+    "normal",
+    "arm",
+    "height"
+   ],
+   "arm_source": "source arm map",
+   "normal_convention": "OpenGL (+Y)",
+   "tiles": true,
+   "seam_ratio": 0.96,
+   "path": "res://assets/env/tex/crypt_cobble/",
+   "bytes": 4760164
+  },
+  {
+   "name": "cracked_tiles",
+   "source": "Poly Haven",
+   "source_id": "worn_tile_floor",
+   "resolution": 2048,
+   "source_url": "https://polyhaven.com/a/worn_tile_floor",
+   "author": "Dimitrios Savva",
+   "licence": "CC0 1.0",
+   "size_m": [
+    2.0,
+    2.0
+   ],
+   "size_source": "source metadata",
+   "avg_color": "#4d483d",
+   "avg_color_rgb": [
+    77,
+    72,
+    61
+   ],
+   "avg_roughness": 0.58,
+   "avg_metallic": 0.007,
+   "zones": [
+    "crypt",
+    "sanctum"
+   ],
+   "use": "dark cracked square tiles: shrine rooms, boss chamber floor",
+   "maps": [
+    "albedo",
+    "normal",
+    "arm",
+    "height"
+   ],
+   "arm_source": "source arm map",
+   "normal_convention": "OpenGL (+Y)",
+   "tiles": true,
+   "seam_ratio": 1.25,
+   "path": "res://assets/env/tex/cracked_tiles/",
+   "bytes": 4269470
+  },
+  {
+   "name": "slate_floor",
+   "source": "Poly Haven",
+   "source_id": "monastery_stone_floor",
+   "resolution": 2048,
+   "source_url": "https://polyhaven.com/a/monastery_stone_floor",
+   "author": "Amal Kumar",
+   "licence": "CC0 1.0",
+   "size_m": [
+    1.8,
+    1.8
+   ],
+   "size_source": "source metadata",
+   "avg_color": "#685749",
+   "avg_color_rgb": [
+    104,
+    87,
+    73
+   ],
+   "avg_roughness": 0.834,
+   "avg_metallic": 0.003,
+   "zones": [
+    "crypt",
+    "abyss",
+    "frost"
+   ],
+   "use": "irregular dark slate paving: burial chambers, abyss ruins",
+   "maps": [
+    "albedo",
+    "normal",
+    "arm",
+    "height"
+   ],
+   "arm_source": "source arm map",
+   "normal_convention": "OpenGL (+Y)",
+   "tiles": true,
+   "seam_ratio": 1.01,
+   "path": "res://assets/env/tex/slate_floor/",
+   "bytes": 4678734
+  },
+  {
+   "name": "castle_blocks",
+   "source": "Poly Haven",
+   "source_id": "stone_brick_wall_001",
+   "resolution": 2048,
+   "source_url": "https://polyhaven.com/a/stone_brick_wall_001",
+   "author": "Dimitrios Savva, Rico Cilliers",
+   "licence": "CC0 1.0",
+   "normal_fix": "tilt (-0.005, -0.015) removed, renormalised",
+   "size_m": [
+    2.5,
+    2.5
+   ],
+   "size_source": "source metadata",
+   "avg_color": "#4f4332",
+   "avg_color_rgb": [
+    79,
+    67,
+    50
+   ],
+   "avg_roughness": 0.838,
+   "avg_metallic": 0.006,
+   "zones": [
+    "crypt",
+    "town",
+    "frost",
+    "sanctum"
+   ],
+   "use": "rough castle block masonry: main crypt walls, town wall",
+   "maps": [
+    "albedo",
+    "normal",
+    "arm",
+    "height"
+   ],
+   "arm_source": "source arm map",
+   "normal_convention": "OpenGL (+Y)",
+   "tiles": true,
+   "seam_ratio": 1.14,
+   "path": "res://assets/env/tex/castle_blocks/",
+   "bytes": 5367360
+  },
+  {
+   "name": "big_blocks",
+   "source": "Poly Haven",
+   "source_id": "medieval_blocks_03",
+   "resolution": 2048,
+   "source_url": "https://polyhaven.com/a/medieval_blocks_03",
+   "author": "Rob Tuytel",
+   "licence": "CC0 1.0",
+   "size_m": [
+    2.0,
+    2.0
+   ],
+   "size_source": "source metadata",
+   "avg_color": "#796c5a",
+   "avg_color_rgb": [
+    121,
+    108,
+    90
+   ],
+   "avg_roughness": 0.938,
+   "avg_metallic": 0.003,
+   "zones": [
+    "crypt",
+    "sanctum",
+    "frost",
+    "sands"
+   ],
+   "use": "large dressed stone blocks: pillars, plinths, sarcophagus bases, stairs",
+   "maps": [
+    "albedo",
+    "normal",
+    "arm",
+    "height"
+   ],
+   "arm_source": "source arm map",
+   "normal_convention": "OpenGL (+Y)",
+   "tiles": true,
+   "seam_ratio": 0.89,
+   "path": "res://assets/env/tex/big_blocks/",
+   "bytes": 5574832
+  },
+  {
+   "name": "old_brick",
+   "source": "Poly Haven",
+   "source_id": "castle_brick_01",
+   "resolution": 2048,
+   "source_url": "https://polyhaven.com/a/castle_brick_01",
+   "author": "Rob Tuytel",
+   "licence": "CC0 1.0",
+   "normal_fix": "tilt (0.085, 0.102) removed, renormalised",
+   "size_m": [
+    1.5,
+    1.5
+   ],
+   "size_source": "source metadata",
+   "avg_color": "#8c7c65",
+   "avg_color_rgb": [
+    140,
+    124,
+    101
+   ],
+   "avg_roughness": 0.911,
+   "avg_metallic": 0.006,
+   "zones": [
+    "crypt",
+    "sanctum",
+    "mire"
+   ],
+   "use": "old damp mossy brick: vaults, arches, cellar walls",
+   "maps": [
+    "albedo",
+    "normal",
+    "arm",
+    "height"
+   ],
+   "arm_source": "source arm map",
+   "normal_convention": "OpenGL (+Y)",
+   "tiles": true,
+   "seam_ratio": 1.49,
+   "path": "res://assets/env/tex/old_brick/",
+   "bytes": 6937704
+  },
+  {
+   "name": "damp_plaster",
+   "source": "Poly Haven",
+   "source_id": "worn_mossy_plasterwall",
+   "resolution": 2048,
+   "source_url": "https://polyhaven.com/a/worn_mossy_plasterwall",
+   "author": "Amal Kumar",
+   "licence": "CC0 1.0",
+   "size_m": [
+    1.8,
+    1.8
+   ],
+   "size_source": "source metadata",
+   "avg_color": "#888277",
+   "avg_color_rgb": [
+    136,
+    130,
+    119
+   ],
+   "avg_roughness": 0.854,
+   "avg_metallic": 0.004,
+   "zones": [
+    "crypt",
+    "town",
+    "sanctum"
+   ],
+   "use": "stained damp plaster: plastered crypt walls, old house walls",
+   "maps": [
+    "albedo",
+    "normal",
+    "arm",
+    "height"
+   ],
+   "arm_source": "source arm map",
+   "normal_convention": "OpenGL (+Y)",
+   "tiles": true,
+   "seam_ratio": 0.94,
+   "path": "res://assets/env/tex/damp_plaster/",
+   "bytes": 5593479
+  },
+  {
+   "name": "mossy_stone",
+   "source": "Poly Haven",
+   "source_id": "mossy_stone_wall",
+   "resolution": 2048,
+   "source_url": "https://polyhaven.com/a/mossy_stone_wall",
+   "author": "Amal Kumar",
+   "licence": "CC0 1.0",
+   "size_m": [
+    2.0,
+    2.0
+   ],
+   "size_source": "source metadata",
+   "avg_color": "#544a37",
+   "avg_color_rgb": [
+    84,
+    74,
+    55
+   ],
+   "avg_roughness": 0.912,
+   "avg_metallic": 0.003,
+   "zones": [
+    "crypt",
+    "wastes",
+    "mire"
+   ],
+   "use": "mossy stone blocks: wet crypt sections, ruined graveyard walls",
+   "maps": [
+    "albedo",
+    "normal",
+    "arm",
+    "height"
+   ],
+   "arm_source": "source arm map",
+   "normal_convention": "OpenGL (+Y)",
+   "tiles": true,
+   "seam_ratio": 0.88,
+   "path": "res://assets/env/tex/mossy_stone/",
+   "bytes": 6302105
+  },
+  {
+   "name": "dark_planks",
+   "source": "Poly Haven",
+   "source_id": "dark_wooden_planks",
+   "resolution": 1024,
+   "source_url": "https://polyhaven.com/a/dark_wooden_planks",
+   "author": "Amal Kumar",
+   "licence": "CC0 1.0",
+   "size_m": [
+    2.0,
+    2.0
+   ],
+   "size_source": "source metadata",
+   "avg_color": "#544a3f",
+   "avg_color_rgb": [
+    84,
+    74,
+    63
+   ],
+   "avg_roughness": 0.661,
+   "avg_metallic": 0.006,
+   "zones": [
+    "crypt",
+    "town",
+    "sanctum",
+    "mire"
+   ],
+   "use": "dark old planks: doors, coffins, scaffolds, interior floors",
+   "maps": [
+    "albedo",
+    "normal",
+    "arm",
+    "height"
+   ],
+   "arm_source": "source arm map",
+   "normal_convention": "OpenGL (+Y)",
+   "tiles": true,
+   "seam_ratio": 0.94,
+   "path": "res://assets/env/tex/dark_planks/",
+   "bytes": 886746
+  },
+  {
+   "name": "rusty_iron",
+   "source": "Poly Haven",
+   "source_id": "rusty_metal_04",
+   "resolution": 1024,
+   "source_url": "https://polyhaven.com/a/rusty_metal_04",
+   "author": "Amal Kumar",
+   "licence": "CC0 1.0",
+   "size_m": [
+    2.0,
+    2.0
+   ],
+   "size_source": "source metadata",
+   "avg_color": "#5c4d43",
+   "avg_color_rgb": [
+    92,
+    77,
+    67
+   ],
+   "avg_roughness": 0.703,
+   "avg_metallic": 0.212,
+   "zones": [
+    "crypt",
+    "abyss",
+    "town",
+    "frost",
+    "mire",
+    "sands",
+    "sanctum"
+   ],
+   "use": "rusty pitted iron: bars, grates, braziers, chains, hinges",
+   "maps": [
+    "albedo",
+    "normal",
+    "arm",
+    "height"
+   ],
+   "arm_source": "source arm map",
+   "normal_convention": "OpenGL (+Y)",
+   "tiles": true,
+   "seam_ratio": 1.01,
+   "path": "res://assets/env/tex/rusty_iron/",
+   "bytes": 1277187
+  },
+  {
+   "name": "iron_plate",
+   "source": "Poly Haven",
+   "source_id": "metal_plate_02",
+   "resolution": 1024,
+   "source_url": "https://polyhaven.com/a/metal_plate_02",
+   "author": "Rob Tuytel",
+   "licence": "CC0 1.0",
+   "size_m": [
+    2.0,
+    2.0
+   ],
+   "size_source": "source metadata",
+   "avg_color": "#55493e",
+   "avg_color_rgb": [
+    85,
+    73,
+    62
+   ],
+   "avg_roughness": 0.659,
+   "avg_metallic": 0.911,
+   "zones": [
+    "crypt",
+    "abyss",
+    "sanctum",
+    "frost"
+   ],
+   "use": "dark riveted iron plates: gates, heavy doors, forge parts",
+   "maps": [
+    "albedo",
+    "normal",
+    "arm",
+    "height"
+   ],
+   "arm_source": "source arm map",
+   "normal_convention": "OpenGL (+Y)",
+   "tiles": true,
+   "seam_ratio": 1.15,
+   "path": "res://assets/env/tex/iron_plate/",
+   "bytes": 925630
+  },
+  {
+   "name": "worn_marble",
+   "source": "Poly Haven",
+   "source_id": "floor_tiles_02",
+   "resolution": 1024,
+   "source_url": "https://polyhaven.com/a/floor_tiles_02",
+   "author": "Rob Tuytel",
+   "licence": "CC0 1.0",
+   "size_m": [
+    4.0,
+    4.0
+   ],
+   "size_source": "source metadata",
+   "avg_color": "#9f917f",
+   "avg_color_rgb": [
+    159,
+    145,
+    127
+   ],
+   "avg_roughness": 0.382,
+   "avg_metallic": 0.006,
+   "zones": [
+    "crypt",
+    "sanctum",
+    "sands"
+   ],
+   "use": "worn pale marble tiles: sarcophagus lids, altars, shrine insets",
+   "maps": [
+    "albedo",
+    "normal",
+    "arm",
+    "height"
+   ],
+   "arm_source": "source arm map",
+   "normal_convention": "OpenGL (+Y)",
+   "tiles": true,
+   "seam_ratio": 1.08,
+   "path": "res://assets/env/tex/worn_marble/",
+   "bytes": 691039
+  },
+  {
+   "name": "dark_marble",
+   "source": "ambientCG",
+   "source_id": "Marble023",
+   "resolution": 1024,
+   "source_url": "https://ambientcg.com/view?id=Marble023",
+   "author": "Lennart Demes (ambientCG)",
+   "licence": "CC0 1.0",
+   "size_m": [
+    1.5,
+    1.5
+   ],
+   "size_source": "estimate (source has no dimensions)",
+   "avg_color": "#5e6368",
+   "avg_color_rgb": [
+    94,
+    99,
+    104
+   ],
+   "avg_roughness": 0.047,
+   "avg_metallic": 0.0,
+   "zones": [
+    "crypt",
+    "abyss",
+    "sanctum"
+   ],
+   "use": "dark veined marble: sarcophagi, altars, boss dais, Osaros throne",
+   "maps": [
+    "albedo",
+    "normal",
+    "arm",
+    "height"
+   ],
+   "arm_source": "packed from Roughness (AO=1) (metal=0)",
+   "normal_convention": "OpenGL (+Y)",
+   "tiles": true,
+   "seam_ratio": 1.19,
+   "path": "res://assets/env/tex/dark_marble/",
+   "bytes": 911608
+  },
+  {
+   "name": "basalt",
+   "source": "Poly Haven",
+   "source_id": "dark_rock",
+   "resolution": 2048,
+   "source_url": "https://polyhaven.com/a/dark_rock",
+   "author": "Amal Kumar",
+   "licence": "CC0 1.0",
+   "normal_fix": "tilt (0.024, -0.002) removed, renormalised",
+   "size_m": [
+    2.421,
+    2.421
+   ],
+   "size_source": "source metadata",
+   "avg_color": "#221d18",
+   "avg_color_rgb": [
+    34,
+    29,
+    24
+   ],
+   "avg_roughness": 0.797,
+   "avg_metallic": 0.003,
+   "zones": [
+    "abyss"
+   ],
+   "use": "fissured black basalt: abyss cavern walls and floor (triplanar)",
+   "maps": [
+    "albedo",
+    "normal",
+    "arm",
+    "height"
+   ],
+   "arm_source": "source arm map",
+   "normal_convention": "OpenGL (+Y)",
+   "tiles": true,
+   "seam_ratio": 0.88,
+   "path": "res://assets/env/tex/basalt/",
+   "bytes": 4046677
+  },
+  {
+   "name": "basalt_layered",
+   "source": "Poly Haven",
+   "source_id": "dark_rock_02",
+   "resolution": 2048,
+   "source_url": "https://polyhaven.com/a/dark_rock_02",
+   "author": "Amal Kumar",
+   "licence": "CC0 1.0",
+   "normal_fix": "tilt (-0.010, 0.021) removed, renormalised",
+   "size_m": [
+    2.001,
+    2.001
+   ],
+   "size_source": "source metadata",
+   "avg_color": "#3b342c",
+   "avg_color_rgb": [
+    59,
+    52,
+    44
+   ],
+   "avg_roughness": 0.824,
+   "avg_metallic": 0.003,
+   "zones": [
+    "abyss"
+   ],
+   "use": "stratified black rock: abyss cliffs, columns, ledges (triplanar)",
+   "maps": [
+    "albedo",
+    "normal",
+    "arm",
+    "height"
+   ],
+   "arm_source": "source arm map",
+   "normal_convention": "OpenGL (+Y)",
+   "tiles": true,
+   "seam_ratio": 1.0,
+   "path": "res://assets/env/tex/basalt_layered/",
+   "bytes": 4099192
+  },
+  {
+   "name": "scorched_cracked",
+   "source": "Poly Haven",
+   "source_id": "mud_cracked_dry_riverbed_002",
+   "resolution": 2048,
+   "source_url": "https://polyhaven.com/a/mud_cracked_dry_riverbed_002",
+   "author": "Dario Barresi, Dimitrios Savva",
+   "licence": "CC0 1.0",
+   "size_m": [
+    2.0,
+    2.0
+   ],
+   "size_source": "source metadata",
+   "avg_color": "#8f7862",
+   "avg_color_rgb": [
+    143,
+    120,
+    98
+   ],
+   "avg_roughness": 0.783,
+   "avg_metallic": 0.005,
+   "zones": [
+    "abyss",
+    "wastes",
+    "sands"
+   ],
+   "use": "cracked dry ground: tint dark for scorched earth; use height to put lava glow in cracks",
+   "maps": [
+    "albedo",
+    "normal",
+    "arm",
+    "height"
+   ],
+   "arm_source": "source arm map",
+   "normal_convention": "OpenGL (+Y)",
+   "tiles": true,
+   "seam_ratio": 1.03,
+   "path": "res://assets/env/tex/scorched_cracked/",
+   "bytes": 7065525
+  },
+  {
+   "name": "obsidian",
+   "source": "ambientCG",
+   "source_id": "Rock035",
+   "resolution": 2048,
+   "source_url": "https://ambientcg.com/view?id=Rock035",
+   "author": "Lennart Demes (ambientCG)",
+   "licence": "CC0 1.0",
+   "normal_fix": "tilt (0.024, -0.027) removed, renormalised",
+   "size_m": [
+    2.0,
+    2.0
+   ],
+   "size_source": "estimate (source has no dimensions)",
+   "avg_color": "#151f22",
+   "avg_color_rgb": [
+    21,
+    31,
+    34
+   ],
+   "avg_roughness": 0.689,
+   "avg_metallic": 0.0,
+   "zones": [
+    "abyss"
+   ],
+   "use": "dark blue-black glassy rock: obsidian spires and shards (lower roughness in shader for glassier look)",
+   "maps": [
+    "albedo",
+    "normal",
+    "arm",
+    "height"
+   ],
+   "arm_source": "packed from AO+Roughness (metal=0)",
+   "normal_convention": "OpenGL (+Y)",
+   "tiles": true,
+   "seam_ratio": 1.38,
+   "path": "res://assets/env/tex/obsidian/",
+   "bytes": 8525103
+  },
+  {
+   "name": "obsidian_slabs",
+   "source": "Poly Haven",
+   "source_id": "slab_tiles",
+   "resolution": 1024,
+   "source_url": "https://polyhaven.com/a/slab_tiles",
+   "author": "Dario Barresi, Dimitrios Savva",
+   "licence": "CC0 1.0",
+   "size_m": [
+    2.37,
+    2.37
+   ],
+   "size_source": "source metadata",
+   "avg_color": "#403a34",
+   "avg_color_rgb": [
+    64,
+    58,
+    52
+   ],
+   "avg_roughness": 0.33,
+   "avg_metallic": 0.005,
+   "zones": [
+    "abyss"
+   ],
+   "use": "black polished slabs with orange seams: abyss temple floors, boss arena inlay",
+   "maps": [
+    "albedo",
+    "normal",
+    "arm",
+    "height"
+   ],
+   "arm_source": "source arm map",
+   "normal_convention": "OpenGL (+Y)",
+   "tiles": true,
+   "seam_ratio": 0.89,
+   "path": "res://assets/env/tex/obsidian_slabs/",
+   "bytes": 655836
+  },
+  {
+   "name": "lava_molten",
+   "source": "ambientCG",
+   "source_id": "Lava004",
+   "resolution": 2048,
+   "source_url": "https://ambientcg.com/view?id=Lava004",
+   "author": "Lennart Demes (ambientCG)",
+   "licence": "CC0 1.0",
+   "size_m": [
+    2.0,
+    2.0
+   ],
+   "size_source": "estimate (source has no dimensions)",
+   "avg_color": "#b14830",
+   "avg_color_rgb": [
+    177,
+    72,
+    48
+   ],
+   "avg_roughness": 0.555,
+   "avg_metallic": 0.0,
+   "zones": [
+    "abyss"
+   ],
+   "use": "bright molten lava (has emission.jpg): lava rivers and pools, scroll UVs",
+   "maps": [
+    "albedo",
+    "normal",
+    "arm",
+    "height",
+    "emission"
+   ],
+   "arm_source": "packed from Roughness (AO=1) (metal=0)",
+   "normal_convention": "OpenGL (+Y)",
+   "tiles": true,
+   "seam_ratio": 1.27,
+   "path": "res://assets/env/tex/lava_molten/",
+   "bytes": 6536850
+  },
+  {
+   "name": "lava_crust",
+   "source": "ambientCG",
+   "source_id": "Lava001",
+   "resolution": 2048,
+   "source_url": "https://ambientcg.com/view?id=Lava001",
+   "author": "Lennart Demes (ambientCG)",
+   "licence": "CC0 1.0",
+   "size_m": [
+    2.0,
+    2.0
+   ],
+   "size_source": "estimate (source has no dimensions)",
+   "avg_color": "#5a3b3d",
+   "avg_color_rgb": [
+    90,
+    59,
+    61
+   ],
+   "avg_roughness": 0.418,
+   "avg_metallic": 0.0,
+   "zones": [
+    "abyss"
+   ],
+   "use": "cooling black crust with glowing cracks (has emission.jpg): lava banks, slow flows",
+   "maps": [
+    "albedo",
+    "normal",
+    "arm",
+    "height",
+    "emission"
+   ],
+   "arm_source": "packed from Roughness (AO=1) (metal=0)",
+   "normal_convention": "OpenGL (+Y)",
+   "tiles": true,
+   "seam_ratio": 1.46,
+   "path": "res://assets/env/tex/lava_crust/",
+   "bytes": 8193860
+  },
+  {
+   "name": "cobble_street",
+   "source": "Poly Haven",
+   "source_id": "cobblestone_floor_001",
+   "resolution": 2048,
+   "source_url": "https://polyhaven.com/a/cobblestone_floor_001",
+   "author": "Rob Tuytel",
+   "licence": "CC0 1.0",
+   "normal_fix": "gamma 1.37 removed; tilt (0.014, 0.009) removed, renormalised",
+   "size_m": [
+    2.4,
+    2.4
+   ],
+   "size_source": "source metadata",
+   "avg_color": "#7c786d",
+   "avg_color_rgb": [
+    124,
+    120,
+    109
+   ],
+   "avg_roughness": 0.674,
+   "avg_metallic": 0.007,
+   "zones": [
+    "town"
+   ],
+   "use": "medieval muddy cobblestone: town streets and square",
+   "maps": [
+    "albedo",
+    "normal",
+    "arm",
+    "height"
+   ],
+   "arm_source": "source arm map",
+   "normal_convention": "OpenGL (+Y)",
+   "tiles": true,
+   "seam_ratio": 1.36,
+   "path": "res://assets/env/tex/cobble_street/",
+   "bytes": 6413453
+  },
+  {
+   "name": "timber_plaster",
+   "source": "Poly Haven",
+   "source_id": "yellow_plaster_02",
+   "resolution": 2048,
+   "source_url": "https://polyhaven.com/a/yellow_plaster_02",
+   "author": "Rob Tuytel",
+   "licence": "CC0 1.0",
+   "size_m": [
+    2.0,
+    2.0
+   ],
+   "size_source": "source metadata",
+   "avg_color": "#685844",
+   "avg_color_rgb": [
+    104,
+    88,
+    68
+   ],
+   "avg_roughness": 0.881,
+   "avg_metallic": 0.004,
+   "zones": [
+    "town"
+   ],
+   "use": "ochre plaster with timber strips: half-timber house walls",
+   "maps": [
+    "albedo",
+    "normal",
+    "arm",
+    "height"
+   ],
+   "arm_source": "source arm map",
+   "normal_convention": "OpenGL (+Y)",
+   "tiles": true,
+   "seam_ratio": 0.97,
+   "path": "res://assets/env/tex/timber_plaster/",
+   "bytes": 5122259
+  },
+  {
+   "name": "log_wall",
+   "source": "Poly Haven",
+   "source_id": "wood_trunk_wall",
+   "resolution": 1024,
+   "source_url": "https://polyhaven.com/a/wood_trunk_wall",
+   "author": "Amal Kumar",
+   "licence": "CC0 1.0",
+   "size_m": [
+    1.25,
+    1.25
+   ],
+   "size_source": "source metadata",
+   "avg_color": "#4e3f35",
+   "avg_color_rgb": [
+    78,
+    63,
+    53
+   ],
+   "avg_roughness": 0.83,
+   "avg_metallic": 0.003,
+   "zones": [
+    "town",
+    "frost"
+   ],
+   "use": "dark stacked timber: cabin walls, palisade, gate",
+   "maps": [
+    "albedo",
+    "normal",
+    "arm",
+    "height"
+   ],
+   "arm_source": "source arm map",
+   "normal_convention": "OpenGL (+Y)",
+   "tiles": true,
+   "seam_ratio": 2.62,
+   "path": "res://assets/env/tex/log_wall/",
+   "bytes": 843553
+  },
+  {
+   "name": "thatch",
+   "source": "Poly Haven",
+   "source_id": "thatch_roof_angled",
+   "resolution": 1024,
+   "source_url": "https://polyhaven.com/a/thatch_roof_angled",
+   "author": "Rob Tuytel, Dimitrios Savva",
+   "licence": "CC0 1.0",
+   "normal_fix": "tilt (-0.007, 0.064) removed, renormalised",
+   "size_m": [
+    0.54,
+    0.54
+   ],
+   "size_source": "source metadata",
+   "avg_color": "#57534c",
+   "avg_color_rgb": [
+    87,
+    83,
+    76
+   ],
+   "avg_roughness": 0.894,
+   "avg_metallic": 0.006,
+   "zones": [
+    "town",
+    "mire"
+   ],
+   "use": "dark thatch: cottage roofs, stall roofs",
+   "maps": [
+    "albedo",
+    "normal",
+    "arm",
+    "height"
+   ],
+   "arm_source": "source arm map",
+   "normal_convention": "OpenGL (+Y)",
+   "tiles": true,
+   "seam_ratio": 0.93,
+   "path": "res://assets/env/tex/thatch/",
+   "bytes": 1814294
+  },
+  {
+   "name": "roof_tiles",
+   "source": "Poly Haven",
+   "source_id": "roof_07",
+   "resolution": 2048,
+   "source_url": "https://polyhaven.com/a/roof_07",
+   "author": "Rob Tuytel",
+   "licence": "CC0 1.0",
+   "normal_fix": "tilt (-0.068, -0.047) removed, renormalised",
+   "size_m": [
+    2.0,
+    2.0
+   ],
+   "size_source": "source metadata",
+   "avg_color": "#716855",
+   "avg_color_rgb": [
+    113,
+    104,
+    85
+   ],
+   "avg_roughness": 0.717,
+   "avg_metallic": 0.012,
+   "zones": [
+    "town",
+    "sanctum"
+   ],
+   "use": "old mossy clay roof tiles: larger buildings (smithy, hall)",
+   "maps": [
+    "albedo",
+    "normal",
+    "arm",
+    "height"
+   ],
+   "arm_source": "source arm map",
+   "normal_convention": "OpenGL (+Y)",
+   "tiles": true,
+   "seam_ratio": 1.27,
+   "path": "res://assets/env/tex/roof_tiles/",
+   "bytes": 4220815
+  },
+  {
+   "name": "packed_dirt",
+   "source": "Poly Haven",
+   "source_id": "dirt",
+   "resolution": 2048,
+   "source_url": "https://polyhaven.com/a/dirt",
+   "author": "Charlotte Baglioni",
+   "licence": "CC0 1.0",
+   "size_m": [
+    2.0,
+    2.0
+   ],
+   "size_source": "source metadata",
+   "avg_color": "#64533f",
+   "avg_color_rgb": [
+    100,
+    83,
+    63
+   ],
+   "avg_roughness": 0.944,
+   "avg_metallic": 0.003,
+   "zones": [
+    "town",
+    "wastes",
+    "sands",
+    "frost"
+   ],
+   "use": "packed brown dirt: town roads, yards, wastes trails",
+   "maps": [
+    "albedo",
+    "normal",
+    "arm",
+    "height"
+   ],
+   "arm_source": "source arm map",
+   "normal_convention": "OpenGL (+Y)",
+   "tiles": true,
+   "seam_ratio": 1.01,
+   "path": "res://assets/env/tex/packed_dirt/",
+   "bytes": 5419739
+  },
+  {
+   "name": "rough_stone_wall",
+   "source": "Poly Haven",
+   "source_id": "stone_wall_04",
+   "resolution": 2048,
+   "source_url": "https://polyhaven.com/a/stone_wall_04",
+   "author": "Amal Kumar",
+   "licence": "CC0 1.0",
+   "size_m": [
+    1.7,
+    1.7
+   ],
+   "size_source": "source metadata",
+   "avg_color": "#746d66",
+   "avg_color_rgb": [
+    116,
+    109,
+    102
+   ],
+   "avg_roughness": 0.922,
+   "avg_metallic": 0.004,
+   "zones": [
+    "town",
+    "wastes",
+    "frost",
+    "sands"
+   ],
+   "use": "rough-hewn grey stone wall: house bases, town wall, ruins",
+   "maps": [
+    "albedo",
+    "normal",
+    "arm",
+    "height"
+   ],
+   "arm_source": "source arm map",
+   "normal_convention": "OpenGL (+Y)",
+   "tiles": true,
+   "seam_ratio": 1.04,
+   "path": "res://assets/env/tex/rough_stone_wall/",
+   "bytes": 6132453
+  },
+  {
+   "name": "drystone_wall",
+   "source": "Poly Haven",
+   "source_id": "broken_wall",
+   "resolution": 1024,
+   "source_url": "https://polyhaven.com/a/broken_wall",
+   "author": "Rob Tuytel",
+   "licence": "CC0 1.0",
+   "normal_fix": "gamma 2.09 removed; tilt (0.028, 0.053) removed, renormalised",
+   "size_m": [
+    3.0,
+    3.0
+   ],
+   "size_source": "source metadata",
+   "avg_color": "#91887e",
+   "avg_color_rgb": [
+    145,
+    136,
+    126
+   ],
+   "avg_roughness": 0.843,
+   "avg_metallic": 0.006,
+   "zones": [
+    "wastes",
+    "town",
+    "frost",
+    "mire"
+   ],
+   "use": "stacked drystone: field walls, graveyard boundary, ruined chunks",
+   "maps": [
+    "albedo",
+    "normal",
+    "arm",
+    "height"
+   ],
+   "arm_source": "source arm map",
+   "normal_convention": "OpenGL (+Y)",
+   "tiles": true,
+   "seam_ratio": 0.94,
+   "path": "res://assets/env/tex/drystone_wall/",
+   "bytes": 1961953
+  },
+  {
+   "name": "burlap",
+   "source": "Poly Haven",
+   "source_id": "hessian_230",
+   "resolution": 1024,
+   "source_url": "https://polyhaven.com/a/hessian_230",
+   "author": "colormass, Rico Cilliers",
+   "licence": "CC0 1.0",
+   "size_m": [
+    0.269,
+    0.267
+   ],
+   "size_source": "source metadata",
+   "avg_color": "#907b5c",
+   "avg_color_rgb": [
+    144,
+    123,
+    92
+   ],
+   "avg_roughness": 0.584,
+   "avg_metallic": 0.248,
+   "zones": [
+    "town",
+    "crypt",
+    "sands",
+    "frost",
+    "mire"
+   ],
+   "use": "coarse burlap: sacks, wrapped bundles, shrouds",
+   "maps": [
+    "albedo",
+    "normal",
+    "arm",
+    "height"
+   ],
+   "arm_source": "source arm map",
+   "normal_convention": "OpenGL (+Y)",
+   "tiles": true,
+   "seam_ratio": 1.28,
+   "path": "res://assets/env/tex/burlap/",
+   "bytes": 1797229
+  },
+  {
+   "name": "canvas",
+   "source": "ambientCG",
+   "source_id": "Fabric063",
+   "resolution": 1024,
+   "source_url": "https://ambientcg.com/view?id=Fabric063",
+   "author": "Lennart Demes (ambientCG)",
+   "licence": "CC0 1.0",
+   "size_m": [
+    0.4,
+    0.4
+   ],
+   "size_source": "source metadata",
+   "avg_color": "#4a473f",
+   "avg_color_rgb": [
+    74,
+    71,
+    63
+   ],
+   "avg_roughness": 0.826,
+   "avg_metallic": 0.0,
+   "zones": [
+    "town",
+    "wastes",
+    "sands",
+    "frost"
+   ],
+   "use": "coarse drab canvas: tents, awnings, banners (tint per use)",
+   "maps": [
+    "albedo",
+    "normal",
+    "arm",
+    "height"
+   ],
+   "arm_source": "packed from AO+Roughness (metal=0)",
+   "normal_convention": "OpenGL (+Y)",
+   "tiles": true,
+   "seam_ratio": 1.08,
+   "path": "res://assets/env/tex/canvas/",
+   "bytes": 1961838
+  },
+  {
+   "name": "wicker",
+   "source": "ambientCG",
+   "source_id": "Wicker010B",
+   "resolution": 1024,
+   "source_url": "https://ambientcg.com/view?id=Wicker010B",
+   "author": "Lennart Demes (ambientCG)",
+   "licence": "CC0 1.0",
+   "size_m": [
+    0.4,
+    0.4
+   ],
+   "size_source": "estimate (source has no dimensions)",
+   "avg_color": "#706152",
+   "avg_color_rgb": [
+    112,
+    97,
+    82
+   ],
+   "avg_roughness": 0.777,
+   "avg_metallic": 0.0,
+   "zones": [
+    "town",
+    "sands",
+    "mire"
+   ],
+   "use": "old woven wicker: baskets, fences, stall panels",
+   "maps": [
+    "albedo",
+    "normal",
+    "arm",
+    "height",
+    "opacity"
+   ],
+   "arm_source": "packed from AO+Roughness (metal=0)",
+   "normal_convention": "OpenGL (+Y)",
+   "tiles": true,
+   "seam_ratio": 1.08,
+   "path": "res://assets/env/tex/wicker/",
+   "bytes": 1347730
+  },
+  {
+   "name": "rope",
+   "source": "ambientCG",
+   "source_id": "Rope001",
+   "resolution": 1024,
+   "source_url": "https://ambientcg.com/view?id=Rope001",
+   "author": "Lennart Demes (ambientCG)",
+   "licence": "CC0 1.0",
+   "size_m": [
+    0.3,
+    0.3
+   ],
+   "size_source": "estimate (source has no dimensions)",
+   "avg_color": "#7c6d50",
+   "avg_color_rgb": [
+    124,
+    109,
+    80
+   ],
+   "avg_roughness": 0.65,
+   "avg_metallic": 0.0,
+   "zones": [
+    "town",
+    "wastes",
+    "mire",
+    "sands",
+    "frost"
+   ],
+   "use": "twisted beige rope: lashings, well rope, bridge ropes",
+   "maps": [
+    "albedo",
+    "normal",
+    "arm",
+    "height"
+   ],
+   "arm_source": "packed from Roughness+Metalness (AO=1)",
+   "normal_convention": "OpenGL (+Y)",
+   "tiles": true,
+   "seam_ratio": 2.49,
+   "path": "res://assets/env/tex/rope/",
+   "bytes": 1109962
+  },
+  {
+   "name": "barrel_wood",
+   "source": "Poly Haven",
+   "source_id": "wooden_barrel",
+   "resolution": 1024,
+   "source_url": "https://polyhaven.com/a/wooden_barrel",
+   "author": "Dimitrios Savva",
+   "licence": "CC0 1.0",
+   "size_m": [
+    1.29,
+    1.29
+   ],
+   "size_source": "source metadata",
+   "avg_color": "#43352d",
+   "avg_color_rgb": [
+    67,
+    53,
+    45
+   ],
+   "avg_roughness": 0.674,
+   "avg_metallic": 0.011,
+   "zones": [
+    "town",
+    "crypt",
+    "frost",
+    "mire",
+    "sands"
+   ],
+   "use": "dark staves with iron hoops: procedural barrels, tubs, bound doors",
+   "maps": [
+    "albedo",
+    "normal",
+    "arm",
+    "height"
+   ],
+   "arm_source": "source arm map",
+   "normal_convention": "OpenGL (+Y)",
+   "tiles": true,
+   "seam_ratio": 1.66,
+   "path": "res://assets/env/tex/barrel_wood/",
+   "bytes": 1174060
+  },
+  {
+   "name": "rough_beam",
+   "source": "Poly Haven",
+   "source_id": "rough_wood",
+   "resolution": 1024,
+   "source_url": "https://polyhaven.com/a/rough_wood",
+   "author": "Rob Tuytel",
+   "licence": "CC0 1.0",
+   "normal_fix": "tilt (-0.025, -0.026) removed, renormalised",
+   "size_m": [
+    0.5,
+    0.5
+   ],
+   "size_source": "source metadata",
+   "avg_color": "#6d6459",
+   "avg_color_rgb": [
+    109,
+    100,
+    89
+   ],
+   "avg_roughness": 0.51,
+   "avg_metallic": 0.005,
+   "zones": [
+    "town",
+    "wastes",
+    "crypt",
+    "mire",
+    "frost",
+    "sands"
+   ],
+   "use": "rough weathered timber: beams, posts, gallows, supports",
+   "maps": [
+    "albedo",
+    "normal",
+    "arm",
+    "height"
+   ],
+   "arm_source": "source arm map",
+   "normal_convention": "OpenGL (+Y)",
+   "tiles": true,
+   "seam_ratio": 1.24,
+   "path": "res://assets/env/tex/rough_beam/",
+   "bytes": 1348649
+  },
+  {
+   "name": "snow_fresh",
+   "source": "Poly Haven",
+   "source_id": "snow_02",
+   "resolution": 2048,
+   "source_url": "https://polyhaven.com/a/snow_02",
+   "author": "Rob Tuytel",
+   "licence": "CC0 1.0",
+   "normal_fix": "gamma 1.26 removed; tilt (0.004, 0.006) removed, renormalised",
+   "size_m": [
+    2.0,
+    2.0
+   ],
+   "size_source": "source metadata",
+   "avg_color": "#a6a5a7",
+   "avg_color_rgb": [
+    166,
+    165,
+    167
+   ],
+   "avg_roughness": 0.801,
+   "avg_metallic": 0.003,
+   "zones": [
+    "frost"
+   ],
+   "use": "fresh powder snow: base terrain of the pass",
+   "maps": [
+    "albedo",
+    "normal",
+    "arm",
+    "height"
+   ],
+   "arm_source": "source arm map",
+   "normal_convention": "OpenGL (+Y)",
+   "tiles": true,
+   "seam_ratio": 1.25,
+   "path": "res://assets/env/tex/snow_fresh/",
+   "bytes": 6162231
+  },
+  {
+   "name": "snow_trampled",
+   "source": "Poly Haven",
+   "source_id": "snow_01",
+   "resolution": 2048,
+   "source_url": "https://polyhaven.com/a/snow_01",
+   "author": "Rob Tuytel",
+   "licence": "CC0 1.0",
+   "normal_fix": "gamma 1.30 removed; tilt (0.003, 0.023) removed, renormalised",
+   "size_m": [
+    2.0,
+    2.0
+   ],
+   "size_source": "source metadata",
+   "avg_color": "#bab7b6",
+   "avg_color_rgb": [
+    186,
+    183,
+    182
+   ],
+   "avg_roughness": 0.937,
+   "avg_metallic": 0.004,
+   "zones": [
+    "frost"
+   ],
+   "use": "trampled snow with footprints: paths, camps, battle sites",
+   "maps": [
+    "albedo",
+    "normal",
+    "arm",
+    "height"
+   ],
+   "arm_source": "source arm map",
+   "normal_convention": "OpenGL (+Y)",
+   "tiles": true,
+   "seam_ratio": 1.32,
+   "path": "res://assets/env/tex/snow_trampled/",
+   "bytes": 7410585
+  },
+  {
+   "name": "snow_patchy",
+   "source": "ambientCG",
+   "source_id": "Snow015",
+   "resolution": 2048,
+   "source_url": "https://ambientcg.com/view?id=Snow015",
+   "author": "Lennart Demes (ambientCG)",
+   "licence": "CC0 1.0",
+   "size_m": [
+    2.0,
+    2.0
+   ],
+   "size_source": "estimate (source has no dimensions)",
+   "avg_color": "#a8aca6",
+   "avg_color_rgb": [
+    168,
+    172,
+    166
+   ],
+   "avg_roughness": 0.497,
+   "avg_metallic": 0.0,
+   "zones": [
+    "frost"
+   ],
+   "use": "thin snow over grass/rock: thaw patches, snowline transition (blend with mountain_rock)",
+   "maps": [
+    "albedo",
+    "normal",
+    "arm",
+    "height"
+   ],
+   "arm_source": "packed from AO+Roughness (metal=0)",
+   "normal_convention": "OpenGL (+Y)",
+   "tiles": true,
+   "seam_ratio": 1.11,
+   "path": "res://assets/env/tex/snow_patchy/",
+   "bytes": 9736817
+  },
+  {
+   "name": "ice",
+   "source": "ambientCG",
+   "source_id": "Ice003",
+   "resolution": 2048,
+   "source_url": "https://ambientcg.com/view?id=Ice003",
+   "author": "Lennart Demes (ambientCG)",
+   "licence": "CC0 1.0",
+   "size_m": [
+    2.0,
+    2.0
+   ],
+   "size_source": "estimate (source has no dimensions)",
+   "avg_color": "#4f5d5e",
+   "avg_color_rgb": [
+    79,
+    93,
+    94
+   ],
+   "avg_roughness": 0.14,
+   "avg_metallic": 0.0,
+   "zones": [
+    "frost"
+   ],
+   "use": "dark cracked lake ice: frozen lake / river surface (low roughness, add refraction/tint in shader)",
+   "maps": [
+    "albedo",
+    "normal",
+    "arm",
+    "height"
+   ],
+   "arm_source": "packed from Roughness (AO=1) (metal=0)",
+   "normal_convention": "OpenGL (+Y)",
+   "tiles": true,
+   "seam_ratio": 1.12,
+   "path": "res://assets/env/tex/ice/",
+   "bytes": 2597824
+  },
+  {
+   "name": "ice_pale",
+   "source": "ambientCG",
+   "source_id": "Ice004",
+   "resolution": 1024,
+   "source_url": "https://ambientcg.com/view?id=Ice004",
+   "author": "Lennart Demes (ambientCG)",
+   "licence": "CC0 1.0",
+   "size_m": [
+    2.0,
+    2.0
+   ],
+   "size_source": "estimate (source has no dimensions)",
+   "avg_color": "#889795",
+   "avg_color_rgb": [
+    136,
+    151,
+    149
+   ],
+   "avg_roughness": 0.287,
+   "avg_metallic": 0.0,
+   "zones": [
+    "frost"
+   ],
+   "use": "pale fractured glacier ice: ice walls, icicle masses, frozen ruins coating",
+   "maps": [
+    "albedo",
+    "normal",
+    "arm",
+    "height"
+   ],
+   "arm_source": "packed from Roughness (AO=1) (metal=0)",
+   "normal_convention": "OpenGL (+Y)",
+   "tiles": true,
+   "seam_ratio": 0.96,
+   "path": "res://assets/env/tex/ice_pale/",
+   "bytes": 913769
+  },
+  {
+   "name": "mountain_rock",
+   "source": "Poly Haven",
+   "source_id": "rock_01",
+   "resolution": 2048,
+   "source_url": "https://polyhaven.com/a/rock_01",
+   "author": "Rob Tuytel",
+   "licence": "CC0 1.0",
+   "normal_fix": "tilt (-0.068, -0.068) removed, renormalised",
+   "size_m": [
+    1.5,
+    1.5
+   ],
+   "size_source": "source metadata",
+   "avg_color": "#786d60",
+   "avg_color_rgb": [
+    120,
+    109,
+    96
+   ],
+   "avg_roughness": 0.516,
+   "avg_metallic": 0.01,
+   "zones": [
+    "frost",
+    "wastes"
+   ],
+   "use": "smooth grey mountain rock: cliffs and boulders of the pass (blend snow on up-facing normals)",
+   "maps": [
+    "albedo",
+    "normal",
+    "arm",
+    "height"
+   ],
+   "arm_source": "source arm map",
+   "normal_convention": "OpenGL (+Y)",
+   "tiles": true,
+   "seam_ratio": 1.17,
+   "path": "res://assets/env/tex/mountain_rock/",
+   "bytes": 6507183
+  },
+  {
+   "name": "dark_cliff",
+   "source": "Poly Haven",
+   "source_id": "quarry_wall",
+   "resolution": 2048,
+   "source_url": "https://polyhaven.com/a/quarry_wall",
+   "author": "Dimitrios Savva",
+   "licence": "CC0 1.0",
+   "size_m": [
+    1.8,
+    1.8
+   ],
+   "size_source": "source metadata",
+   "avg_color": "#584d3c",
+   "avg_color_rgb": [
+    88,
+    77,
+    60
+   ],
+   "avg_roughness": 0.807,
+   "avg_metallic": 0.005,
+   "zones": [
+    "frost",
+    "abyss"
+   ],
+   "use": "dark jagged quarried rock face: steep cliff walls, frozen ruin foundations",
+   "maps": [
+    "albedo",
+    "normal",
+    "arm",
+    "height"
+   ],
+   "arm_source": "source arm map",
+   "normal_convention": "OpenGL (+Y)",
+   "tiles": true,
+   "seam_ratio": 0.96,
+   "path": "res://assets/env/tex/dark_cliff/",
+   "bytes": 5795982
+  },
+  {
+   "name": "wet_mud",
+   "source": "Poly Haven",
+   "source_id": "brown_mud_02",
+   "resolution": 2048,
+   "source_url": "https://polyhaven.com/a/brown_mud_02",
+   "author": "Rob Tuytel",
+   "licence": "CC0 1.0",
+   "size_m": [
+    1.3,
+    1.3
+   ],
+   "size_source": "source metadata",
+   "avg_color": "#50473a",
+   "avg_color_rgb": [
+    80,
+    71,
+    58
+   ],
+   "avg_roughness": 0.951,
+   "avg_metallic": 0.011,
+   "zones": [
+    "mire",
+    "wastes"
+   ],
+   "use": "wet dark mud with footprints: swamp banks and trails",
+   "maps": [
+    "albedo",
+    "normal",
+    "arm",
+    "height"
+   ],
+   "arm_source": "source arm map",
+   "normal_convention": "OpenGL (+Y)",
+   "tiles": true,
+   "seam_ratio": 1.23,
+   "path": "res://assets/env/tex/wet_mud/",
+   "bytes": 7368614
+  },
+  {
+   "name": "mud_stones",
+   "source": "Poly Haven",
+   "source_id": "brown_mud_rocks_01",
+   "resolution": 1024,
+   "source_url": "https://polyhaven.com/a/brown_mud_rocks_01",
+   "author": "Rob Tuytel",
+   "licence": "CC0 1.0",
+   "normal_fix": "tilt (-0.061, -0.062) removed, renormalised",
+   "size_m": [
+    1.3,
+    1.3
+   ],
+   "size_source": "source metadata",
+   "avg_color": "#5a4f3f",
+   "avg_color_rgb": [
+    90,
+    79,
+    63
+   ],
+   "avg_roughness": 0.546,
+   "avg_metallic": 0.027,
+   "zones": [
+    "mire"
+   ],
+   "use": "mud with gravel and moss flecks: shallow fords, path edges",
+   "maps": [
+    "albedo",
+    "normal",
+    "arm",
+    "height"
+   ],
+   "arm_source": "source arm map",
+   "normal_convention": "OpenGL (+Y)",
+   "tiles": true,
+   "seam_ratio": 0.95,
+   "path": "res://assets/env/tex/mud_stones/",
+   "bytes": 2742481
+  },
+  {
+   "name": "mossy_ground",
+   "source": "Poly Haven",
+   "source_id": "forest_leaves_02",
+   "resolution": 2048,
+   "source_url": "https://polyhaven.com/a/forest_leaves_02",
+   "author": "Rob Tuytel",
+   "licence": "CC0 1.0",
+   "size_m": [
+    3.001,
+    3.001
+   ],
+   "size_source": "source metadata",
+   "avg_color": "#957645",
+   "avg_color_rgb": [
+    149,
+    118,
+    69
+   ],
+   "avg_roughness": 0.933,
+   "avg_metallic": 0.009,
+   "zones": [
+    "mire"
+   ],
+   "use": "moss with twigs and leaves: dry hummocks, islands in the swamp",
+   "maps": [
+    "albedo",
+    "normal",
+    "arm",
+    "height"
+   ],
+   "arm_source": "source arm map",
+   "normal_convention": "OpenGL (+Y)",
+   "tiles": true,
+   "seam_ratio": 1.2,
+   "path": "res://assets/env/tex/mossy_ground/",
+   "bytes": 8053847
+  },
+  {
+   "name": "swamp_floor",
+   "source": "Poly Haven",
+   "source_id": "brown_mud_leaves_01",
+   "resolution": 2048,
+   "source_url": "https://polyhaven.com/a/brown_mud_leaves_01",
+   "author": "Rob Tuytel",
+   "licence": "CC0 1.0",
+   "normal_fix": "tilt (-0.001, -0.026) removed, renormalised",
+   "size_m": [
+    1.3,
+    1.3
+   ],
+   "size_source": "source metadata",
+   "avg_color": "#695a37",
+   "avg_color_rgb": [
+    105,
+    90,
+    55
+   ],
+   "avg_roughness": 0.92,
+   "avg_metallic": 0.006,
+   "zones": [
+    "mire"
+   ],
+   "use": "wet mud with moss and rotting leaves: default swamp floor",
+   "maps": [
+    "albedo",
+    "normal",
+    "arm",
+    "height"
+   ],
+   "arm_source": "source arm map",
+   "normal_convention": "OpenGL (+Y)",
+   "tiles": true,
+   "seam_ratio": 0.96,
+   "path": "res://assets/env/tex/swamp_floor/",
+   "bytes": 8540006
+  },
+  {
+   "name": "moss",
+   "source": "ambientCG",
+   "source_id": "Moss002",
+   "resolution": 1024,
+   "source_url": "https://ambientcg.com/view?id=Moss002",
+   "author": "Lennart Demes (ambientCG)",
+   "licence": "CC0 1.0",
+   "size_m": [
+    1.0,
+    1.0
+   ],
+   "size_source": "estimate (source has no dimensions)",
+   "avg_color": "#4d681b",
+   "avg_color_rgb": [
+    77,
+    104,
+    27
+   ],
+   "avg_roughness": 0.609,
+   "avg_metallic": 0.0,
+   "zones": [
+    "mire",
+    "crypt"
+   ],
+   "use": "thick green moss: blend layer over rocks, logs, ruins",
+   "maps": [
+    "albedo",
+    "normal",
+    "arm",
+    "height"
+   ],
+   "arm_source": "packed from AO+Roughness (metal=0)",
+   "normal_convention": "OpenGL (+Y)",
+   "tiles": true,
+   "seam_ratio": 1.11,
+   "path": "res://assets/env/tex/moss/",
+   "bytes": 2835519
+  },
+  {
+   "name": "mossy_rock",
+   "source": "Poly Haven",
+   "source_id": "mossy_rock",
+   "resolution": 2048,
+   "source_url": "https://polyhaven.com/a/mossy_rock",
+   "author": "Rob Tuytel",
+   "licence": "CC0 1.0",
+   "normal_fix": "tilt (0.043, 0.039) removed, renormalised",
+   "size_m": [
+    3.0,
+    3.0
+   ],
+   "size_source": "source metadata",
+   "avg_color": "#726f5b",
+   "avg_color_rgb": [
+    114,
+    111,
+    91
+   ],
+   "avg_roughness": 0.805,
+   "avg_metallic": 0.008,
+   "zones": [
+    "mire",
+    "wastes"
+   ],
+   "use": "cracked rock with moss and lichen: swamp boulders, ruin stones (triplanar)",
+   "maps": [
+    "albedo",
+    "normal",
+    "arm",
+    "height"
+   ],
+   "arm_source": "source arm map",
+   "normal_convention": "OpenGL (+Y)",
+   "tiles": true,
+   "seam_ratio": 1.08,
+   "path": "res://assets/env/tex/mossy_rock/",
+   "bytes": 6132346
+  },
+  {
+   "name": "mossy_planks",
+   "source": "Poly Haven",
+   "source_id": "moss_wood",
+   "resolution": 2048,
+   "source_url": "https://polyhaven.com/a/moss_wood",
+   "author": "Rob Tuytel",
+   "licence": "CC0 1.0",
+   "normal_fix": "tilt (0.021, 0.019) removed, renormalised",
+   "size_m": [
+    1.0,
+    1.0
+   ],
+   "size_source": "source metadata",
+   "avg_color": "#66732b",
+   "avg_color_rgb": [
+    102,
+    115,
+    43
+   ],
+   "avg_roughness": 0.514,
+   "avg_metallic": 0.006,
+   "zones": [
+    "mire"
+   ],
+   "use": "rotten algae-green planks: boardwalks, jetties, sunken boats",
+   "maps": [
+    "albedo",
+    "normal",
+    "arm",
+    "height"
+   ],
+   "arm_source": "source arm map",
+   "normal_convention": "OpenGL (+Y)",
+   "tiles": true,
+   "seam_ratio": 1.15,
+   "path": "res://assets/env/tex/mossy_planks/",
+   "bytes": 6549541
+  },
+  {
+   "name": "sand_dunes",
+   "source": "ambientCG",
+   "source_id": "Ground097",
+   "resolution": 2048,
+   "source_url": "https://ambientcg.com/view?id=Ground097",
+   "author": "Lennart Demes (ambientCG)",
+   "licence": "CC0 1.0",
+   "size_m": [
+    2.0,
+    2.0
+   ],
+   "size_source": "estimate (source has no dimensions)",
+   "avg_color": "#c2a178",
+   "avg_color_rgb": [
+    194,
+    161,
+    120
+   ],
+   "avg_roughness": 0.652,
+   "avg_metallic": 0.0,
+   "zones": [
+    "sands"
+   ],
+   "use": "wind-rippled dune sand: open dunes",
+   "maps": [
+    "albedo",
+    "normal",
+    "arm",
+    "height"
+   ],
+   "arm_source": "packed from AO+Roughness (metal=0)",
+   "normal_convention": "OpenGL (+Y)",
+   "tiles": true,
+   "seam_ratio": 1.32,
+   "path": "res://assets/env/tex/sand_dunes/",
+   "bytes": 2781206
+  },
+  {
+   "name": "sand_fine",
+   "source": "ambientCG",
+   "source_id": "Ground093C",
+   "resolution": 2048,
+   "source_url": "https://ambientcg.com/view?id=Ground093C",
+   "author": "Lennart Demes (ambientCG)",
+   "licence": "CC0 1.0",
+   "size_m": [
+    2.0,
+    2.0
+   ],
+   "size_source": "estimate (source has no dimensions)",
+   "avg_color": "#cbb893",
+   "avg_color_rgb": [
+    203,
+    184,
+    147
+   ],
+   "avg_roughness": 0.593,
+   "avg_metallic": 0.0,
+   "zones": [
+    "sands"
+   ],
+   "use": "fine soft sand: drifts inside ruins, streets of the buried city",
+   "maps": [
+    "albedo",
+    "normal",
+    "arm",
+    "height"
+   ],
+   "arm_source": "packed from AO+Roughness (metal=0)",
+   "normal_convention": "OpenGL (+Y)",
+   "tiles": true,
+   "seam_ratio": 1.33,
+   "path": "res://assets/env/tex/sand_fine/",
+   "bytes": 3099464
+  },
+  {
+   "name": "cracked_earth",
+   "source": "Poly Haven",
+   "source_id": "mud_cracked_dry_03",
+   "resolution": 2048,
+   "source_url": "https://polyhaven.com/a/mud_cracked_dry_03",
+   "author": "Dario Barresi, Dimitrios Savva",
+   "licence": "CC0 1.0",
+   "size_m": [
+    1.5,
+    1.5
+   ],
+   "size_source": "source metadata",
+   "avg_color": "#d1ab83",
+   "avg_color_rgb": [
+    209,
+    171,
+    131
+   ],
+   "avg_roughness": 0.756,
+   "avg_metallic": 0.004,
+   "zones": [
+    "sands"
+   ],
+   "use": "cracked dry clay: dry riverbeds, salt flats, courtyard floors",
+   "maps": [
+    "albedo",
+    "normal",
+    "arm",
+    "height"
+   ],
+   "arm_source": "source arm map",
+   "normal_convention": "OpenGL (+Y)",
+   "tiles": true,
+   "seam_ratio": 0.96,
+   "path": "res://assets/env/tex/cracked_earth/",
+   "bytes": 6596664
+  },
+  {
+   "name": "sandstone_blocks",
+   "source": "Poly Haven",
+   "source_id": "sandstone_blocks_08",
+   "resolution": 2048,
+   "source_url": "https://polyhaven.com/a/sandstone_blocks_08",
+   "author": "Rob Tuytel",
+   "licence": "CC0 1.0",
+   "normal_fix": "tilt (-0.056, -0.063) removed, renormalised",
+   "size_m": [
+    3.0,
+    3.0
+   ],
+   "size_source": "source metadata",
+   "avg_color": "#a59275",
+   "avg_color_rgb": [
+    165,
+    146,
+    117
+   ],
+   "avg_roughness": 0.506,
+   "avg_metallic": 0.002,
+   "zones": [
+    "sands"
+   ],
+   "use": "dressed pale sandstone blocks: city walls, plinths, columns",
+   "maps": [
+    "albedo",
+    "normal",
+    "arm",
+    "height"
+   ],
+   "arm_source": "source arm map",
+   "normal_convention": "OpenGL (+Y)",
+   "tiles": true,
+   "seam_ratio": 4.71,
+   "path": "res://assets/env/tex/sandstone_blocks/",
+   "bytes": 2212190
+  },
+  {
+   "name": "sandstone_rough",
+   "source": "Poly Haven",
+   "source_id": "yellow_stone_wall",
+   "resolution": 2048,
+   "source_url": "https://polyhaven.com/a/yellow_stone_wall",
+   "author": "Sơn Nguyễn",
+   "licence": "CC0 1.0",
+   "size_m": [
+    2.0,
+    2.0
+   ],
+   "size_source": "source metadata",
+   "avg_color": "#b19979",
+   "avg_color_rgb": [
+    177,
+    153,
+    121
+   ],
+   "avg_roughness": 0.789,
+   "avg_metallic": 0.006,
+   "zones": [
+    "sands"
+   ],
+   "use": "rough weathered yellow stone masonry: ruined houses, outer walls",
+   "maps": [
+    "albedo",
+    "normal",
+    "arm",
+    "height"
+   ],
+   "arm_source": "source arm map",
+   "normal_convention": "OpenGL (+Y)",
+   "tiles": true,
+   "seam_ratio": 1.04,
+   "path": "res://assets/env/tex/sandstone_rough/",
+   "bytes": 5762580
+  },
+  {
+   "name": "sandstone_worn",
+   "source": "Poly Haven",
+   "source_id": "old_sandstone_02",
+   "resolution": 2048,
+   "source_url": "https://polyhaven.com/a/old_sandstone_02",
+   "author": "Dimitrios Savva",
+   "licence": "CC0 1.0",
+   "size_m": [
+    1.53,
+    1.53
+   ],
+   "size_source": "source metadata",
+   "avg_color": "#89693f",
+   "avg_color_rgb": [
+    137,
+    105,
+    63
+   ],
+   "avg_roughness": 0.838,
+   "avg_metallic": 0.004,
+   "zones": [
+    "sands"
+   ],
+   "use": "wind-eroded layered sandstone: worn monuments, natural outcrops, broken statues",
+   "maps": [
+    "albedo",
+    "normal",
+    "arm",
+    "height"
+   ],
+   "arm_source": "source arm map",
+   "normal_convention": "OpenGL (+Y)",
+   "tiles": true,
+   "seam_ratio": 1.01,
+   "path": "res://assets/env/tex/sandstone_worn/",
+   "bytes": 4617486
+  },
+  {
+   "name": "tarnished_bronze",
+   "source": "ambientCG",
+   "source_id": "Metal008",
+   "resolution": 1024,
+   "source_url": "https://ambientcg.com/view?id=Metal008",
+   "author": "Lennart Demes (ambientCG)",
+   "licence": "CC0 1.0",
+   "size_m": [
+    1.0,
+    1.0
+   ],
+   "size_source": "estimate (source has no dimensions)",
+   "avg_color": "#ab8367",
+   "avg_color_rgb": [
+    171,
+    131,
+    103
+   ],
+   "avg_roughness": 0.236,
+   "avg_metallic": 0.998,
+   "zones": [
+    "sands",
+    "sanctum"
+   ],
+   "use": "bronze/brass with patina (metallic): city gates, braziers, statues, machinery",
+   "maps": [
+    "albedo",
+    "normal",
+    "arm",
+    "height"
+   ],
+   "arm_source": "packed from Roughness+Metalness (AO=1)",
+   "normal_convention": "OpenGL (+Y)",
+   "tiles": true,
+   "seam_ratio": 1.01,
+   "path": "res://assets/env/tex/tarnished_bronze/",
+   "bytes": 714061
+  },
+  {
+   "name": "corroded_bronze",
+   "source": "ambientCG",
+   "source_id": "Metal017",
+   "resolution": 1024,
+   "source_url": "https://ambientcg.com/view?id=Metal017",
+   "author": "Lennart Demes (ambientCG)",
+   "licence": "CC0 1.0",
+   "size_m": [
+    1.0,
+    1.0
+   ],
+   "size_source": "estimate (source has no dimensions)",
+   "avg_color": "#8f7c6b",
+   "avg_color_rgb": [
+    143,
+    124,
+    107
+   ],
+   "avg_roughness": 0.316,
+   "avg_metallic": 1.0,
+   "zones": [
+    "sands",
+    "crypt"
+   ],
+   "use": "heavily corroded dark bronze (metallic): buried relics, pipes, rusted plates",
+   "maps": [
+    "albedo",
+    "normal",
+    "arm",
+    "height"
+   ],
+   "arm_source": "packed from Roughness+Metalness (AO=1)",
+   "normal_convention": "OpenGL (+Y)",
+   "tiles": true,
+   "seam_ratio": 1.02,
+   "path": "res://assets/env/tex/corroded_bronze/",
+   "bytes": 1096737
+  },
+  {
+   "name": "mosaic_tiles",
+   "source": "Poly Haven",
+   "source_id": "marble_mosaic_tiles",
+   "resolution": 2048,
+   "source_url": "https://polyhaven.com/a/marble_mosaic_tiles",
+   "author": "Amal Kumar",
+   "licence": "CC0 1.0",
+   "size_m": [
+    2.0,
+    2.0
+   ],
+   "size_source": "source metadata",
+   "avg_color": "#847164",
+   "avg_color_rgb": [
+    132,
+    113,
+    100
+   ],
+   "avg_roughness": 0.727,
+   "avg_metallic": 0.008,
+   "zones": [
+    "sands",
+    "sanctum"
+   ],
+   "use": "old square mosaic floor: palace courts, bath houses",
+   "maps": [
+    "albedo",
+    "normal",
+    "arm",
+    "height"
+   ],
+   "arm_source": "source arm map",
+   "normal_convention": "OpenGL (+Y)",
+   "tiles": true,
+   "seam_ratio": 1.58,
+   "path": "res://assets/env/tex/mosaic_tiles/",
+   "bytes": 5699394
+  },
+  {
+   "name": "terracotta_tiles",
+   "source": "Poly Haven",
+   "source_id": "patterned_terracotta_tiling",
+   "resolution": 1024,
+   "source_url": "https://polyhaven.com/a/patterned_terracotta_tiling",
+   "author": "Amal Kumar",
+   "licence": "CC0 1.0",
+   "size_m": [
+    2.152,
+    2.152
+   ],
+   "size_source": "source metadata",
+   "avg_color": "#633723",
+   "avg_color_rgb": [
+    99,
+    55,
+    35
+   ],
+   "avg_roughness": 0.467,
+   "avg_metallic": 0.002,
+   "zones": [
+    "sands",
+    "town"
+   ],
+   "use": "red terracotta tiles with black insets: house floors, roofs terraces",
+   "maps": [
+    "albedo",
+    "normal",
+    "arm",
+    "height"
+   ],
+   "arm_source": "source arm map",
+   "normal_convention": "OpenGL (+Y)",
+   "tiles": true,
+   "seam_ratio": 2.11,
+   "path": "res://assets/env/tex/terracotta_tiles/",
+   "bytes": 610732
+  },
+  {
+   "name": "marble_checker",
+   "source": "ambientCG",
+   "source_id": "Tiles074",
+   "resolution": 2048,
+   "source_url": "https://ambientcg.com/view?id=Tiles074",
+   "author": "Lennart Demes (ambientCG)",
+   "licence": "CC0 1.0",
+   "size_m": [
+    2.1,
+    2.1
+   ],
+   "size_source": "source metadata",
+   "avg_color": "#716256",
+   "avg_color_rgb": [
+    113,
+    98,
+    86
+   ],
+   "avg_roughness": 0.088,
+   "avg_metallic": 0.0,
+   "zones": [
+    "sanctum"
+   ],
+   "use": "polished black/cream checker marble: cathedral nave floor",
+   "maps": [
+    "albedo",
+    "normal",
+    "arm",
+    "height"
+   ],
+   "arm_source": "packed from Roughness (AO=1) (metal=0)",
+   "normal_convention": "OpenGL (+Y)",
+   "tiles": true,
+   "seam_ratio": 14.72,
+   "path": "res://assets/env/tex/marble_checker/",
+   "bytes": 2205744
+  },
+  {
+   "name": "marble_floor",
+   "source": "Poly Haven",
+   "source_id": "marble_01",
+   "resolution": 2048,
+   "source_url": "https://polyhaven.com/a/marble_01",
+   "author": "Rob Tuytel",
+   "licence": "CC0 1.0",
+   "normal_fix": "tilt (-0.020, -0.024) removed, renormalised",
+   "size_m": [
+    1.5,
+    1.5
+   ],
+   "size_source": "source metadata",
+   "avg_color": "#b29d7a",
+   "avg_color_rgb": [
+    178,
+    157,
+    122
+   ],
+   "avg_roughness": 0.506,
+   "avg_metallic": 0.002,
+   "zones": [
+    "sanctum"
+   ],
+   "use": "polished cream marble slabs: aisles, chapels, steps",
+   "maps": [
+    "albedo",
+    "normal",
+    "arm",
+    "height"
+   ],
+   "arm_source": "source arm map",
+   "normal_convention": "OpenGL (+Y)",
+   "tiles": true,
+   "seam_ratio": 1.23,
+   "path": "res://assets/env/tex/marble_floor/",
+   "bytes": 1636454
+  },
+  {
+   "name": "gothic_stone",
+   "source": "Poly Haven",
+   "source_id": "stone_block_wall",
+   "resolution": 2048,
+   "source_url": "https://polyhaven.com/a/stone_block_wall",
+   "author": "Amal Kumar",
+   "licence": "CC0 1.0",
+   "size_m": [
+    2.1,
+    2.1
+   ],
+   "size_source": "source metadata",
+   "avg_color": "#3f2e1e",
+   "avg_color_rgb": [
+    63,
+    46,
+    30
+   ],
+   "avg_roughness": 0.881,
+   "avg_metallic": 0.002,
+   "zones": [
+    "sanctum",
+    "crypt"
+   ],
+   "use": "dark smooth stone blocks: cathedral walls, piers, buttresses",
+   "maps": [
+    "albedo",
+    "normal",
+    "arm",
+    "height"
+   ],
+   "arm_source": "source arm map",
+   "normal_convention": "OpenGL (+Y)",
+   "tiles": true,
+   "seam_ratio": 0.95,
+   "path": "res://assets/env/tex/gothic_stone/",
+   "bytes": 5104320
+  },
+  {
+   "name": "ornate_tiles",
+   "source": "ambientCG",
+   "source_id": "Tiles131",
+   "resolution": 2048,
+   "source_url": "https://ambientcg.com/view?id=Tiles131",
+   "author": "Lennart Demes (ambientCG)",
+   "licence": "CC0 1.0",
+   "size_m": [
+    1.5,
+    1.5
+   ],
+   "size_source": "source metadata",
+   "avg_color": "#a48459",
+   "avg_color_rgb": [
+    164,
+    132,
+    89
+   ],
+   "avg_roughness": 0.536,
+   "avg_metallic": 0.0,
+   "zones": [
+    "sanctum",
+    "sands"
+   ],
+   "use": "ornate patterned encaustic tiles: chancel floors, shrine borders",
+   "maps": [
+    "albedo",
+    "normal",
+    "arm",
+    "height"
+   ],
+   "arm_source": "packed from AO+Roughness (metal=0)",
+   "normal_convention": "OpenGL (+Y)",
+   "tiles": true,
+   "seam_ratio": 0.63,
+   "path": "res://assets/env/tex/ornate_tiles/",
+   "bytes": 7502807
+  },
+  {
+   "name": "dark_panel_wood",
+   "source": "Poly Haven",
+   "source_id": "dark_paneled_wood",
+   "resolution": 2048,
+   "source_url": "https://polyhaven.com/a/dark_paneled_wood",
+   "author": "Dimitrios Savva",
+   "licence": "CC0 1.0",
+   "size_m": [
+    1.4,
+    1.4
+   ],
+   "size_source": "source metadata",
+   "avg_color": "#2b1612",
+   "avg_color_rgb": [
+    43,
+    22,
+    18
+   ],
+   "avg_roughness": 0.605,
+   "avg_metallic": 0.006,
+   "zones": [
+    "sanctum"
+   ],
+   "use": "dark carved wall panelling: choir stalls, doors, confessionals",
+   "maps": [
+    "albedo",
+    "normal",
+    "arm",
+    "height"
+   ],
+   "arm_source": "source arm map",
+   "normal_convention": "OpenGL (+Y)",
+   "tiles": true,
+   "seam_ratio": 1.34,
+   "path": "res://assets/env/tex/dark_panel_wood/",
+   "bytes": 4604242
+  },
+  {
+   "name": "varnished_wood",
+   "source": "ambientCG",
+   "source_id": "Wood067",
+   "resolution": 1024,
+   "source_url": "https://ambientcg.com/view?id=Wood067",
+   "author": "Lennart Demes (ambientCG)",
+   "licence": "CC0 1.0",
+   "size_m": [
+    0.4,
+    0.4
+   ],
+   "size_source": "source metadata",
+   "avg_color": "#3a210f",
+   "avg_color_rgb": [
+    58,
+    33,
+    15
+   ],
+   "avg_roughness": 0.328,
+   "avg_metallic": 0.0,
+   "zones": [
+    "sanctum",
+    "town"
+   ],
+   "use": "dark varnished wood: pews, lecterns, altar furniture",
+   "maps": [
+    "albedo",
+    "normal",
+    "arm",
+    "height"
+   ],
+   "arm_source": "packed from Roughness (AO=1) (metal=0)",
+   "normal_convention": "OpenGL (+Y)",
+   "tiles": true,
+   "seam_ratio": 1.11,
+   "path": "res://assets/env/tex/varnished_wood/",
+   "bytes": 773479
+  },
+  {
+   "name": "red_velvet",
+   "source": "Poly Haven",
+   "source_id": "velour_velvet",
+   "resolution": 1024,
+   "source_url": "https://polyhaven.com/a/velour_velvet",
+   "author": "colormass, Rico Cilliers",
+   "licence": "CC0 1.0",
+   "size_m": [
+    0.284,
+    0.273
+   ],
+   "size_source": "source metadata",
+   "avg_color": "#ae2d47",
+   "avg_color_rgb": [
+    174,
+    45,
+    71
+   ],
+   "avg_roughness": 0.726,
+   "avg_metallic": 0.061,
+   "zones": [
+    "sanctum"
+   ],
+   "use": "red velvet: drapes, cushions, altar cloths, banners",
+   "maps": [
+    "albedo",
+    "normal",
+    "arm",
+    "height"
+   ],
+   "arm_source": "source arm map",
+   "normal_convention": "OpenGL (+Y)",
+   "tiles": true,
+   "seam_ratio": 1.32,
+   "path": "res://assets/env/tex/red_velvet/",
+   "bytes": 1266019
+  },
+  {
+   "name": "red_carpet",
+   "source": "ambientCG",
+   "source_id": "Carpet015",
+   "resolution": 1024,
+   "source_url": "https://ambientcg.com/view?id=Carpet015",
+   "author": "Lennart Demes (ambientCG)",
+   "licence": "CC0 1.0",
+   "size_m": [
+    0.4,
+    0.4
+   ],
+   "size_source": "source metadata",
+   "avg_color": "#9e5f48",
+   "avg_color_rgb": [
+    158,
+    95,
+    72
+   ],
+   "avg_roughness": 0.693,
+   "avg_metallic": 0.0,
+   "zones": [
+    "sanctum"
+   ],
+   "use": "red woven carpet: aisle runners",
+   "maps": [
+    "albedo",
+    "normal",
+    "arm",
+    "height"
+   ],
+   "arm_source": "packed from AO+Roughness (metal=0)",
+   "normal_convention": "OpenGL (+Y)",
+   "tiles": true,
+   "seam_ratio": 1.1,
+   "path": "res://assets/env/tex/red_carpet/",
+   "bytes": 2216110
+  },
+  {
+   "name": "aged_gold",
+   "source": "ambientCG",
+   "source_id": "Metal048A",
+   "resolution": 1024,
+   "source_url": "https://ambientcg.com/view?id=Metal048A",
+   "author": "Lennart Demes (ambientCG)",
+   "licence": "CC0 1.0",
+   "size_m": [
+    1.0,
+    1.0
+   ],
+   "size_source": "estimate (source has no dimensions)",
+   "avg_color": "#fee39c",
+   "avg_color_rgb": [
+    254,
+    227,
+    156
+   ],
+   "avg_roughness": 0.09,
+   "avg_metallic": 1.0,
+   "zones": [
+    "sanctum",
+    "sands"
+   ],
+   "use": "worn gold/brass (metallic): reliquaries, trims, candle stands",
+   "maps": [
+    "albedo",
+    "normal",
+    "arm",
+    "height"
+   ],
+   "arm_source": "packed from Roughness+Metalness (AO=1)",
+   "normal_convention": "OpenGL (+Y)",
+   "tiles": true,
+   "seam_ratio": 1.17,
+   "path": "res://assets/env/tex/aged_gold/",
+   "bytes": 162432
+  }
+ ]
+}

@@ -1,0 +1,130 @@
+{
+ "id": "npc_merchant",
+ "ok": true,
+ "problems": [],
+ "triangles": 19072,
+ "size_bytes": 7664068,
+ "meshes": [
+  "body_cloth",
+  "body_hair",
+  "body_leather",
+  "body_metal",
+  "body_skin"
+ ],
+ "materials": [
+  "cloth_npc_merchant",
+  "hair_npc_merchant",
+  "leather_npc_merchant",
+  "metal_npc_merchant",
+  "skin_npc_merchant"
+ ],
+ "images": [
+  {
+   "name": "cloth_n",
+   "mime": "image/jpeg",
+   "w": 2048,
+   "h": 2048,
+   "bytes": 1493771
+  },
+  {
+   "name": "cloth_orm",
+   "mime": "image/jpeg",
+   "w": 2048,
+   "h": 2048,
+   "bytes": 1397256
+  },
+  {
+   "name": "cloth_c",
+   "mime": "image/jpeg",
+   "w": 2048,
+   "h": 2048,
+   "bytes": 954031
+  },
+  {
+   "name": "hair_n",
+   "mime": "image/jpeg",
+   "w": 1024,
+   "h": 1024,
+   "bytes": 311752
+  },
+  {
+   "name": "hair_orm",
+   "mime": "image/jpeg",
+   "w": 1024,
+   "h": 1024,
+   "bytes": 305602
+  },
+  {
+   "name": "hair_c",
+   "mime": "image/jpeg",
+   "w": 1024,
+   "h": 1024,
+   "bytes": 172473
+  },
+  {
+   "name": "leather_n",
+   "mime": "image/jpeg",
+   "w": 1024,
+   "h": 1024,
+   "bytes": 432140
+  },
+  {
+   "name": "leather_orm",
+   "mime": "image/jpeg",
+   "w": 1024,
+   "h": 1024,
+   "bytes": 402750
+  },
+  {
+   "name": "leather_c",
+   "mime": "image/jpeg",
+   "w": 1024,
+   "h": 1024,
+   "bytes": 208537
+  },
+  {
+   "name": "metal_n",
+   "mime": "image/jpeg",
+   "w": 256,
+   "h": 256,
+   "bytes": 21490
+  },
+  {
+   "name": "metal_orm",
+   "mime": "image/jpeg",
+   "w": 256,
+   "h": 256,
+   "bytes": 25634
+  },
+  {
+   "name": "metal_c",
+   "mime": "image/jpeg",
+   "w": 256,
+   "h": 256,
+   "bytes": 16788
+  },
+  {
+   "name": "skin_n",
+   "mime": "image/jpeg",
+   "w": 1024,
+   "h": 1024,
+   "bytes": 334646
+  },
+  {
+   "name": "skin_orm",
+   "mime": "image/jpeg",
+   "w": 1024,
+   "h": 1024,
+   "bytes": 207337
+  },
+  {
+   "name": "skin_c",
+   "mime": "image/jpeg",
+   "w": 1024,
+   "h": 1024,
+   "bytes": 139798
+  }
+ ],
+ "bones": 65,
+ "extensions": []
+}

@@ -1,0 +1,1560 @@
+{
+ "rig": "Quaternius Universal Animation Library armature (65 bones, unmodified)",
+ "units": "metres, +Y up (glTF)",
+ "facing": "+Z (glTF) / -Y (Blender), same as the UAL mannequin",
+ "material_prefixes": [
+  "skin_",
+  "cloth_",
+  "leather_",
+  "metal_",
+  "bone_",
+  "rock_",
+  "emis_",
+  "spectral_"
+ ],
+ "creatures": [
+  {
+   "id": "boss_bishop",
+   "file": "boss_bishop.glb",
+   "bytes": 6405756,
+   "triangles": 22382,
+   "materials": [
+    "bone_prelate",
+    "emis_soul",
+    "cloth_vest",
+    "metal_gilt"
+   ],
+   "meshes": {
+    "body_main": {
+     "triangles": 18786,
+     "materials": [
+      "bone_prelate",
+      "emis_soul",
+      "cloth_vest",
+      "metal_gilt"
+     ]
+    },
+    "wpn_crozier": {
+     "triangles": 3596,
+     "materials": [
+      "bone_prelate",
+      "metal_gilt",
+      "emis_soul"
+     ],
+     "bone": "hand_r"
+    }
+   },
+   "height_m": 2.115,
+   "bbox_min": [
+    -1.509,
+    -0.948,
+    0.005
+   ],
+   "bbox_max": [
+    1.004,
+    0.643,
+    2.115
+   ],
+   "textures": [
+    [
+     "boss_bishop_bc",
+     2048,
+     2048
+    ],
+    [
+     "boss_bishop_em",
+     2048,
+     2048
+    ],
+    [
+     "boss_bishop_nrm",
+     2048,
+     2048
+    ],
+    [
+     "boss_bishop_orm",
+     2048,
+     2048
+    ]
+   ],
+   "bones": 65,
+   "notes": "Tall skeletal prelate on the kit_bones skeleton (legs omitted inside the alb): two-horned bone mitre with gilt band, ridge and soul-jewel fused to the skull by creeping bone, open cope with fold geometry, rot holes, gilt orphreys with bosses and ring embroidery, crimson stole with gilt bars and bone fringe, pleated stained alb, cincture hung with bell / skull / medal / bone charms, green soul-fire in the bare ribcage (emis_soul); wpn_crozier: jointed bone shaft, gilt volute with crockets, soul-fire in its eye and hanging charms, tilted 58 deg in the fist."
+  },
+  {
+   "id": "boss_grand_hush",
+   "file": "boss_grand_hush.glb",
+   "bytes": 5541916,
+   "triangles": 22524,
+   "materials": [
+    "cloth_robe",
+    "emis_rune",
+    "metal_bell",
+    "skin_ash",
+    "bone_wax"
+   ],
+   "meshes": {
+    "body_main": {
+     "triangles": 17480,
+     "materials": [
+      "cloth_robe",
+      "emis_rune",
+      "metal_bell",
+      "skin_ash",
+      "bone_wax"
+     ]
+    },
+    "wpn_bell": {
+     "triangles": 5044,
+     "materials": [
+      "metal_bell",
+      "bone_wax"
+     ],
+     "bone": "hand_r"
+    }
+   },
+   "height_m": 2.159,
+   "bbox_min": [
+    -1.248,
+    -0.689,
+    0.0
+   ],
+   "bbox_max": [
+    0.98,
+    0.386,
+    2.159
+   ],
+   "textures": [
+    [
+     "boss_grand_hush_bc",
+     2048,
+     2048
+    ],
+    [
+     "boss_grand_hush_em",
+     2048,
+     2048
+    ],
+    [
+     "boss_grand_hush_nrm",
+     2048,
+     2048
+    ],
+    [
+     "boss_grand_hush_orm",
+     2048,
+     2048
+    ]
+   ],
+   "bones": 65,
+   "notes": "Grand Preceptor: black pleated under-robe to the floor, ash-white over-robe open down the front, white shoulder cape and double sleeves, high standing collar, black cowl with a blank smooth wax mask, an iron circlet of eleven snuffed candles with wax run down cowl / mask / shoulders, two black stole bands set with geometry runes (emis_rune) and bell fringe; wpn_bell: a great dented bronze bell (clapper, raised bands, straps, candle stubs, wax runs) gripped at its crown in the right fist, iron rings and a wax mass binding the forearm."
+  },
+  {
+   "id": "boss_gravedigger",
+   "file": "boss_gravedigger.glb",
+   "bytes": 6519964,
+   "triangles": 29220,
+   "materials": [
+    "leather_gear",
+    "metal_iron",
+    "cloth_coat",
+    "emis_lantern",
+    "rock_grave"
+   ],
+   "meshes": {
+    "body_main": {
+     "triangles": 27814,
+     "materials": [
+      "leather_gear",
+      "metal_iron",
+      "cloth_coat",
+      "emis_lantern",
+      "rock_grave"
+     ]
+    },
+    "wpn_shovel": {
+     "triangles": 1406,
+     "materials": [
+      "leather_gear",
+      "metal_iron",
+      "rock_grave"
+     ],
+     "bone": "hand_r"
+    }
+   },
+   "height_m": 2.174,
+   "bbox_min": [
+    -1.254,
+    -1.567,
+    -0.0
+   ],
+   "bbox_max": [
+    0.985,
+    0.573,
+    2.174
+   ],
+   "textures": [
+    [
+     "boss_gravedigger_bc",
+     2048,
+     2048
+    ],
+    [
+     "boss_gravedigger_em",
+     2048,
+     2048
+    ],
+    [
+     "boss_gravedigger_nrm",
+     2048,
+     2048
+    ],
+    [
+     "boss_gravedigger_orm",
+     2048,
+     2048
+    ]
+   ],
+   "bones": 65,
+   "notes": "Giant hunched sexton: heavy wool coat with modelled pleats, burlap patches and a leather apron sewn on with geometry stitches, hide mantle, burlap sack hood tied with a cord (two dark holes with pin-point lights), gloved hands and boots from the CC0 base body; a chipped headstone chained to the back with rigid-link chains crossing the chest, grave stakes, corpse-light lantern (emis_lantern), key ring and rope coil at the belt, dirt clods; wpn_shovel: enormous dished iron spade with D-grip."
+  },
+  {
+   "id": "boss_mire_mother",
+   "file": "boss_mire_mother.glb",
+   "bytes": 6273568,
+   "triangles": 24766,
+   "materials": [
+    "skin_drowned",
+    "leather_root",
+    "cloth_drown",
+    "emis_lantern"
+   ],
+   "meshes": {
+    "body_main": {
+     "triangles": 24766,
+     "materials": [
+      "skin_drowned",
+      "leather_root",
+      "cloth_drown",
+      "emis_lantern"
+     ]
+    }
+   },
+   "height_m": 2.434,
+   "bbox_min": [
+    -1.233,
+    -0.704,
+    -0.0
+   ],
+   "bbox_max": [
+    1.233,
+    0.961,
+    2.434
+   ],
+   "textures": [
+    [
+     "boss_mire_mother_bc",
+     2048,
+     2048
+    ],
+    [
+     "boss_mire_mother_em",
+     2048,
+     2048
+    ],
+    [
+     "boss_mire_mother_nrm",
+     2048,
+     2048
+    ],
+    [
+     "boss_mire_mother_orm",
+     2048,
+     2048
+    ]
+   ],
+   "bones": 65,
+   "notes": "Towering rooted matriarch: head / shoulders / long thin arms of the CC0 female base body (weights kept, fingers stretched) with bark patches and long root claws, a pinched gown of drowned cloth whose pleats spread into buttress folds with root tubes running down and out over the ground (mostly pelvis-weighted), drowned bodice, root girdle, a veil of moss in tufts covering the eyes and falling down the back, and a crown of arching roots (rigid on Head) hung with glowing fungal lanterns (emis_lantern); more lanterns at waist, shoulders and forearms. No weapon."
+  },
+  {
+   "id": "boss_osaros",
+   "file": "boss_osaros.glb",
+   "bytes": 5519424,
+   "triangles": 18459,
+   "materials": [
+    "cloth_mantle",
+    "metal_void",
+    "emis_crack",
+    "bone_wax",
+    "rock_glass"
+   ],
+   "meshes": {
+    "body_main": {
+     "triangles": 18005,
+     "materials": [
+      "cloth_mantle",
+      "metal_void",
+      "emis_crack",
+      "bone_wax"
+     ]
+    },
+    "wpn_blade": {
+     "triangles": 454,
+     "materials": [
+      "cloth_mantle",
+      "metal_void",
+      "rock_glass"
+     ],
+     "bone": "hand_r"
+    }
+   },
+   "height_m": 2.239,
+   "bbox_min": [
+    -1.126,
+    -1.628,
+    -0.0
+   ],
+   "bbox_max": [
+    0.984,
+    0.558,
+    2.239
+   ],
+   "textures": [
+    [
+     "boss_osaros_bc",
+     2048,
+     2048
+    ],
+    [
+     "boss_osaros_em",
+     2048,
+     2048
+    ],
+    [
+     "boss_osaros_nrm",
+     2048,
+     2048
+    ],
+    [
+     "boss_osaros_orm",
+     2048,
+     2048
+    ]
+   ],
+   "bones": 65,
+   "notes": "Towering regal knight of the Hush, rigid void-black plates (each on one bone) over a dark under-suit: fluted cuirass, plackart, faulds, gorget, triple pauldrons with tall swept spires, spiked couters / poleyns; a faceless elongated helm split by one cold-white crack (emis_crack) that continues down gorget, breastplate and belt, with hairline branches; a crown band of eleven thin spires with snuffed candle stubs and wax between them; tabards; a double ragged mantle to above the ankles on cape weights (spine_03 / spine_02 / spine_01 / pelvis / thighs); wpn_blade: great chipped blade of dull black glass with a horned guard."
+  },
+  {
+   "id": "boss_rimelord",
+   "file": "boss_rimelord.glb",
+   "bytes": 6808056,
+   "triangles": 24474,
+   "materials": [
+    "cloth_fur",
+    "metal_rime",
+    "bone_frost",
+    "emis_core",
+    "rock_ice"
+   ],
+   "meshes": {
+    "body_main": {
+     "triangles": 23240,
+     "materials": [
+      "cloth_fur",
+      "metal_rime",
+      "bone_frost",
+      "emis_core",
+      "rock_ice"
+     ]
+    },
+    "wpn_axe": {
+     "triangles": 1234,
+     "materials": [
+      "cloth_fur",
+      "metal_rime",
+      "rock_ice"
+     ],
+     "bone": "hand_r"
+    }
+   },
+   "height_m": 2.398,
+   "bbox_min": [
+    -1.465,
+    -1.371,
+    -0.0
+   ],
+   "bbox_max": [
+    0.985,
+    0.731,
+    2.398
+   ],
+   "textures": [
+    [
+     "boss_rimelord_bc",
+     2048,
+     2048
+    ],
+    [
+     "boss_rimelord_em",
+     2048,
+     2048
+    ],
+    [
+     "boss_rimelord_nrm",
+     2048,
+     2048
+    ],
+    [
+     "boss_rimelord_orm",
+     2048,
+     2048
+    ]
+   ],
+   "bones": 65,
+   "notes": "Upright frozen warlord: bare kit_bones ribcage / spine (frost_bone) with an emissive ice core and rime veins inside (emis_core), skull with an iron crown-band whose icicles grow into two faceted ice antlers, icicle beard, a very broad fur mantle built from three tiers of V-folded locks with icicle fringe and crystal crusts on the shoulders, rimed black plate on hips / limbs over a dark suit, pleated frozen cape; wpn_axe: bearded war axe with crystals and icicles."
+  },
+  {
+   "id": "boss_sand_tyrant",
+   "file": "boss_sand_tyrant.glb",
+   "bytes": 6448040,
+   "triangles": 18264,
+   "materials": [
+    "metal_brass",
+    "rock_sand",
+    "emis_arc",
+    "cloth_banner"
+   ],
+   "meshes": {
+    "body_main": {
+     "triangles": 17348,
+     "materials": [
+      "metal_brass",
+      "rock_sand",
+      "emis_arc",
+      "cloth_banner"
+     ]
+    },
+    "wpn_glaive": {
+     "triangles": 916,
+     "materials": [
+      "cloth_banner",
+      "metal_brass"
+     ],
+     "bone": "hand_r"
+    }
+   },
+   "height_m": 2.086,
+   "bbox_min": [
+    -1.207,
+    -1.884,
+    -0.0
+   ],
+   "bbox_max": [
+    0.98,
+    0.79,
+    2.086
+   ],
+   "textures": [
+    [
+     "boss_sand_tyrant_bc",
+     2048,
+     2048
+    ],
+    [
+     "boss_sand_tyrant_em",
+     2048,
+     2048
+    ],
+    [
+     "boss_sand_tyrant_nrm",
+     2048,
+     2048
+    ],
+    [
+     "boss_sand_tyrant_orm",
+     2048,
+     2048
+    ]
+   ],
+   "bones": 65,
+   "notes": "Colossal brass king-automaton, every hard part rigid on one bone: riveted hip drum with a royal tabard plate and lame skirt, piston waist, a cuirass torn open at the front (bent edges) over five gears with a violet light behind them (emis_arc), collar, mask-face with brow / nose / a lit and a dead eye and a lit crack running into a crown of eleven blades (two snapped), triple pauldrons with spikes, tubular limbs on dark ball joints, finned vambraces, block fingers, sand drifts in the hollows (rock_sand), a yoke on the back carrying three tattered banners (cape weights) with a sun-disc emblem; wpn_glaive: long haft, curved notched blade with back hook, rings and streamers."
+  },
+  {
+   "id": "mon_brass_sentinel",
+   "file": "mon_brass_sentinel.glb",
+   "bytes": 6003448,
+   "triangles": 14564,
+   "materials": [
+    "metal_brass",
+    "emis_arc",
+    "leather_haft"
+   ],
+   "meshes": {
+    "body_main": {
+     "triangles": 13770,
+     "materials": [
+      "metal_brass",
+      "emis_arc"
+     ]
+    },
+    "wpn_halberd": {
+     "triangles": 794,
+     "materials": [
+      "leather_haft",
+      "metal_brass"
+     ],
+     "bone": "hand_r"
+    }
+   },
+   "height_m": 1.888,
+   "bbox_min": [
+    -1.393,
+    -1.362,
+    -0.0
+   ],
+   "bbox_max": [
+    0.98,
+    0.771,
+    1.888
+   ],
+   "textures": [
+    [
+     "mon_brass_sentinel_bc",
+     2048,
+     2048
+    ],
+    [
+     "mon_brass_sentinel_em",
+     2048,
+     2048
+    ],
+    [
+     "mon_brass_sentinel_nrm",
+     2048,
+     2048
+    ],
+    [
+     "mon_brass_sentinel_orm",
+     2048,
+     2048
+    ]
+   ],
+   "bones": 65,
+   "notes": "Brass construct, every part rigid on one bone: riveted barrel (strap seams + hoops) on spine_03 with a bolted glass port (emis_arc) and a storm-jar rising behind the neck, waist bellows, hip drum with apron and hip skirts, smooth domed head with one vertical lit slot, tubular limbs between dark ball joints with axle discs and bell cuffs, block fingers; wpn_halberd: long haft with a fluted bronze fan blade, back fluke and top spike."
+  },
+  {
+   "id": "mon_brute",
+   "file": "mon_brute.glb",
+   "bytes": 6805236,
+   "triangles": 11764,
+   "materials": [
+    "rock_char",
+    "rock_basalt",
+    "emis_lava",
+    "leather_wrap",
+    "metal_iron"
+   ],
+   "meshes": {
+    "body_main": {
+     "triangles": 10780,
+     "materials": [
+      "rock_char",
+      "rock_basalt",
+      "emis_lava"
+     ]
+    },
+    "wpn_maul": {
+     "triangles": 984,
+     "materials": [
+      "leather_wrap",
+      "metal_iron",
+      "rock_basalt",
+      "emis_lava"
+     ],
+     "bone": "hand_r"
+    }
+   },
+   "height_m": 1.915,
+   "bbox_min": [
+    -1.201,
+    -0.937,
+    -0.0
+   ],
+   "bbox_max": [
+    1.024,
+    0.415,
+    1.915
+   ],
+   "textures": [
+    [
+     "mon_brute_bc",
+     2048,
+     2048
+    ],
+    [
+     "mon_brute_em",
+     2048,
+     2048
+    ],
+    [
+     "mon_brute_nrm",
+     2048,
+     2048
+    ],
+    [
+     "mon_brute_orm",
+     2048,
+     2048
+    ]
+   ],
+   "bones": 65,
+   "notes": "Hulking lava troll on the reshaped CC0 base body (huge shoulders/forearms, small sunken head), rigid flat-shaded basalt slabs fused onto shoulders/back/forearms/shins, emis_lava fissures riding on the skin; wpn_maul (stone head, iron bands) in the right hand."
+  },
+  {
+   "id": "mon_choir",
+   "file": "mon_choir.glb",
+   "bytes": 4624952,
+   "triangles": 12152,
+   "materials": [
+    "skin_wax",
+    "cloth_vestment",
+    "spectral_robe",
+    "metal_bell",
+    "emis_halo"
+   ],
+   "meshes": {
+    "body_main": {
+     "triangles": 12152,
+     "materials": [
+      "skin_wax",
+      "cloth_vestment",
+      "spectral_robe",
+      "metal_bell",
+      "emis_halo"
+     ]
+    }
+   },
+   "height_m": 2.102,
+   "bbox_min": [
+    -0.359,
+    -0.328,
+    0.096
+   ],
+   "bbox_max": [
+    0.359,
+    0.259,
+    2.102
+   ],
+   "textures": [
+    [
+     "mon_choir_bc",
+     2048,
+     2048
+    ],
+    [
+     "mon_choir_em",
+     2048,
+     2048
+    ],
+    [
+     "mon_choir_nrm",
+     2048,
+     2048
+    ],
+    [
+     "mon_choir_orm",
+     2048,
+     2048
+    ]
+   ],
+   "bones": 65,
+   "notes": "Floating support caster: waxen blindfolded head (base body, skinned Head/neck) with a cross-stitched mouth, framed by a tall arched veil (per-column hem, weighted Head -> spine by height); bell-shaped cloth_ vestment weighted by height to spine/pelvis; spectral_ trailing under-robe and wisps on the pelvis; emis_ double halo ring rigid on Head. DESIGN CHOICE: sleeves, praying hands and the brass bell are a static sculpt bound 100% to spine_03 (no mesh follows the arm or leg bones), so the hands stay clasped in every clip and casts read through body lean, bell and VFX rather than an arm gesture. Lowest cloth about 5-15 cm above the ground. No wpn_ object."
+  },
+  {
+   "id": "mon_cult_caster",
+   "file": "mon_cult_caster.glb",
+   "bytes": 4733324,
+   "triangles": 11282,
+   "materials": [
+    "cloth_robe",
+    "emis_sigil",
+    "bone_mask",
+    "skin_ash",
+    "metal_staff"
+   ],
+   "meshes": {
+    "body_main": {
+     "triangles": 8006,
+     "materials": [
+      "cloth_robe",
+      "emis_sigil",
+      "bone_mask",
+      "skin_ash"
+     ]
+    },
+    "wpn_staff": {
+     "triangles": 3276,
+     "materials": [
+      "metal_staff",
+      "bone_mask"
+     ],
+     "bone": "hand_r"
+    }
+   },
+   "height_m": 2.231,
+   "bbox_min": [
+    -1.275,
+    -0.841,
+    -0.0
+   ],
+   "bbox_max": [
+    0.98,
+    0.444,
+    2.231
+   ],
+   "textures": [
+    [
+     "mon_cult_caster_bc",
+     2048,
+     2048
+    ],
+    [
+     "mon_cult_caster_em",
+     2048,
+     2048
+    ],
+    [
+     "mon_cult_caster_nrm",
+     2048,
+     2048
+    ],
+    [
+     "mon_cult_caster_orm",
+     2048,
+     2048
+    ]
+   ],
+   "bones": 65,
+   "notes": "Hushed Order caster: dark gown with pale stole bands (derived from the gown rings), tall bent cowl rigid on Head, blank bone mask, geometry emis_ sigil (the Order's mark) on the chest; wpn_staff with an iron hoop of unlit candle stubs, tilted 58 deg in the fist."
+  },
+  {
+   "id": "mon_cultist",
+   "file": "mon_cultist.glb",
+   "bytes": 4629500,
+   "triangles": 8904,
+   "materials": [
+    "cloth_robe",
+    "bone_mask",
+    "emis_mark",
+    "skin_ash",
+    "metal_dagger"
+   ],
+   "meshes": {
+    "body_main": {
+     "triangles": 8670,
+     "materials": [
+      "cloth_robe",
+      "bone_mask",
+      "emis_mark",
+      "skin_ash"
+     ]
+    },
+    "wpn_dagger": {
+     "triangles": 234,
+     "materials": [
+      "metal_dagger"
+     ],
+     "bone": "hand_r"
+    }
+   },
+   "height_m": 1.822,
+   "bbox_min": [
+    -1.005,
+    -0.254,
+    -0.0
+   ],
+   "bbox_max": [
+    0.98,
+    0.297,
+    1.822
+   ],
+   "textures": [
+    [
+     "mon_cultist_bc",
+     2048,
+     2048
+    ],
+    [
+     "mon_cultist_em",
+     2048,
+     2048
+    ],
+    [
+     "mon_cultist_nrm",
+     2048,
+     2048
+    ],
+    [
+     "mon_cultist_orm",
+     2048,
+     2048
+    ]
+   ],
+   "bones": 65,
+   "notes": "Robe/hood/mantle shells skinned by weight transfer from the base body; blank bone mask with a hairline emis_ mark; wpn_dagger in right hand."
+  },
+  {
+   "id": "mon_fiend",
+   "file": "mon_fiend.glb",
+   "bytes": 6563404,
+   "triangles": 12520,
+   "materials": [
+    "rock_char",
+    "bone_horn",
+    "emis_lava"
+   ],
+   "meshes": {
+    "body_main": {
+     "triangles": 12520,
+     "materials": [
+      "rock_char",
+      "bone_horn",
+      "emis_lava"
+     ]
+    }
+   },
+   "height_m": 1.994,
+   "bbox_min": [
+    -1.054,
+    -0.303,
+    -0.0
+   ],
+   "bbox_max": [
+    1.054,
+    0.74,
+    1.994
+   ],
+   "textures": [
+    [
+     "mon_fiend_bc",
+     2048,
+     2048
+    ],
+    [
+     "mon_fiend_em",
+     2048,
+     2048
+    ],
+    [
+     "mon_fiend_nrm",
+     2048,
+     2048
+    ],
+    [
+     "mon_fiend_orm",
+     2048,
+     2048
+    ]
+   ],
+   "bones": 65,
+   "notes": "Horned ember demon on the reshaped CC0 base body: charred rock skin, lava fissures as emis_lava geometry riding on the skin weights, ridged swept-back horns, clawed oversized hands, faked digitigrade legs (hock/heel spurs), barbed tail rigid on the pelvis. Designed to stay readable at 0.6 scale (imp). No weapon."
+  },
+  {
+   "id": "mon_frostbound",
+   "file": "mon_frostbound.glb",
+   "bytes": 5260876,
+   "triangles": 14225,
+   "materials": [
+    "skin_frost",
+    "emis_frost",
+    "leather_hide",
+    "metal_frost",
+    "rock_ice"
+   ],
+   "meshes": {
+    "body_main": {
+     "triangles": 13835,
+     "materials": [
+      "skin_frost",
+      "emis_frost",
+      "leather_hide",
+      "metal_frost",
+      "rock_ice"
+     ]
+    },
+    "wpn_spear": {
+     "triangles": 390,
+     "materials": [
+      "leather_hide",
+      "metal_frost",
+      "rock_ice",
+      "emis_frost"
+     ],
+     "bone": "hand_r"
+    }
+   },
+   "height_m": 1.96,
+   "bbox_min": [
+    -1.122,
+    -1.491,
+    -0.0
+   ],
+   "bbox_max": [
+    1.033,
+    0.657,
+    1.96
+   ],
+   "textures": [
+    [
+     "mon_frostbound_bc",
+     2048,
+     2048
+    ],
+    [
+     "mon_frostbound_em",
+     2048,
+     2048
+    ],
+    [
+     "mon_frostbound_nrm",
+     2048,
+     2048
+    ],
+    [
+     "mon_frostbound_orm",
+     2048,
+     2048
+    ]
+   ],
+   "bones": 65,
+   "notes": "Frost-bitten corpse sculpted from the CC0 base body (left hand removed: it sits inside the ice), skin-tight hide coat and boots made from the body's own faces, fur mantle skinned by weight transfer. Rigid single-bone parts: spangen cap with nasal, right pauldron, chest disc, bracer, left greave, right tasset, and all ice (flat-shaded chunks and crystals on the left shoulder / back / helm, a block round the left forearm and fist, icicle beard and fringes). Arm icicles point along T-pose +Y so they hang down when the forearm is on guard and trail back when the arm hangs. wpn_spear in the right hand (0.52 m behind the fist, ice blade tip 1.58 m in front); emis_frost on the eyes and the vein of the spear blade."
+  },
+  {
+   "id": "mon_husk",
+   "file": "mon_husk.glb",
+   "bytes": 4443596,
+   "triangles": 12262,
+   "materials": [
+    "skin_husk",
+    "bone_claw",
+    "emis_eye",
+    "cloth_rag"
+   ],
+   "meshes": {
+    "body_main": {
+     "triangles": 12262,
+     "materials": [
+      "skin_husk",
+      "bone_claw",
+      "emis_eye",
+      "cloth_rag"
+     ]
+    }
+   },
+   "height_m": 1.72,
+   "bbox_min": [
+    -1.047,
+    -0.308,
+    -0.0
+   ],
+   "bbox_max": [
+    1.047,
+    0.175,
+    1.72
+   ],
+   "textures": [
+    [
+     "mon_husk_bc",
+     2048,
+     2048
+    ],
+    [
+     "mon_husk_em",
+     2048,
+     2048
+    ],
+    [
+     "mon_husk_nrm",
+     2048,
+     2048
+    ],
+    [
+     "mon_husk_orm",
+     2048,
+     2048
+    ]
+   ],
+   "bones": 65,
+   "notes": "Emaciated husk sculpted from the CC0 base body (weights preserved): sunken belly, geometric ribs/vertebra knobs, hanging jaw, long rigid claws, torn rags. No weapon."
+  },
+  {
+   "id": "mon_husk_bloated",
+   "file": "mon_husk_bloated.glb",
+   "bytes": 5605220,
+   "triangles": 13422,
+   "materials": [
+    "skin_husk",
+    "bone_claw",
+    "emis_pustule",
+    "cloth_rag"
+   ],
+   "meshes": {
+    "body_main": {
+     "triangles": 13422,
+     "materials": [
+      "skin_husk",
+      "bone_claw",
+      "emis_pustule",
+      "cloth_rag"
+     ]
+    }
+   },
+   "height_m": 1.73,
+   "bbox_min": [
+    -1.0,
+    -0.404,
+    -0.0
+   ],
+   "bbox_max": [
+    1.0,
+    0.323,
+    1.73
+   ],
+   "textures": [
+    [
+     "mon_husk_bloated_bc",
+     2048,
+     2048
+    ],
+    [
+     "mon_husk_bloated_em",
+     2048,
+     2048
+    ],
+    [
+     "mon_husk_bloated_nrm",
+     2048,
+     2048
+    ],
+    [
+     "mon_husk_bloated_orm",
+     2048,
+     2048
+    ]
+   ],
+   "bones": 65,
+   "notes": "Bloated husk sculpted from the CC0 base body: huge sagging belly, split skin (gore ribbons), clusters of glowing emis_pustule boils, fat stubby arms, head sunk into the shoulders. No weapon."
+  },
+  {
+   "id": "mon_knight",
+   "file": "mon_knight.glb",
+   "bytes": 5167136,
+   "triangles": 10949,
+   "materials": [
+    "cloth_cape",
+    "metal_plate",
+    "emis_ember",
+    "leather_strap"
+   ],
+   "meshes": {
+    "body_main": {
+     "triangles": 10683,
+     "materials": [
+      "cloth_cape",
+      "metal_plate",
+      "emis_ember",
+      "leather_strap"
+     ]
+    },
+    "wpn_greatsword": {
+     "triangles": 266,
+     "materials": [
+      "leather_strap",
+      "metal_plate",
+      "emis_ember"
+     ],
+     "bone": "hand_r"
+    }
+   },
+   "height_m": 1.946,
+   "bbox_min": [
+    -1.058,
+    -1.223,
+    -0.0
+   ],
+   "bbox_max": [
+    0.983,
+    0.457,
+    1.946
+   ],
+   "textures": [
+    [
+     "mon_knight_bc",
+     2048,
+     2048
+    ],
+    [
+     "mon_knight_em",
+     2048,
+     2048
+    ],
+    [
+     "mon_knight_nrm",
+     2048,
+     2048
+    ],
+    [
+     "mon_knight_orm",
+     2048,
+     2048
+    ]
+   ],
+   "bones": 65,
+   "notes": "Rigid black-plate harness (each plate bound to one bone) over a decimated dark under-suit; skinned gauntlet hands; torn cape; helm with pointed visor, dorsal crest, one whole and one snapped horn; ember seams at visor, waist, neck, elbows, knees and the Hushed mark on the breastplate; wpn_greatsword (1.3 m blade) in the right hand."
+  },
+  {
+   "id": "mon_mire_hag",
+   "file": "mon_mire_hag.glb",
+   "bytes": 5831884,
+   "triangles": 13660,
+   "materials": [
+    "skin_hag",
+    "bone_fish",
+    "emis_fungus",
+    "cloth_reed",
+    "leather_eel"
+   ],
+   "meshes": {
+    "body_main": {
+     "triangles": 11410,
+     "materials": [
+      "skin_hag",
+      "bone_fish",
+      "emis_fungus",
+      "cloth_reed",
+      "leather_eel"
+     ]
+    },
+    "wpn_staff": {
+     "triangles": 2250,
+     "materials": [
+      "leather_eel",
+      "emis_fungus",
+      "bone_fish"
+     ],
+     "bone": "hand_r"
+    }
+   },
+   "height_m": 1.748,
+   "bbox_min": [
+    -1.305,
+    -0.82,
+    -0.0
+   ],
+   "bbox_max": [
+    1.025,
+    0.327,
+    1.748
+   ],
+   "textures": [
+    [
+     "mon_mire_hag_bc",
+     2048,
+     2048
+    ],
+    [
+     "mon_mire_hag_em",
+     2048,
+     2048
+    ],
+    [
+     "mon_mire_hag_nrm",
+     2048,
+     2048
+    ],
+    [
+     "mon_mire_hag_orm",
+     2048,
+     2048
+    ]
+   ],
+   "bones": 65,
+   "notes": "Hunched swamp-witch: head / forearms / long-fingered hands / feet of the CC0 female base body (weights kept), burlap dress with modelled pleats and a ragged mud hem, eel-skin cloak under two tiers of V-folded reed blades, flat woven basket-hat with moss fringe and small lit mushrooms (rigid on Head), hair veil over the face, fish skeletons + bladders at the belt; wpn_staff: crooked root-wood with a forked crown holding a glowing fungus cap (emis_fungus), tilted 58 deg in the fist."
+  },
+  {
+   "id": "mon_rime_stalker",
+   "file": "mon_rime_stalker.glb",
+   "bytes": 6333676,
+   "triangles": 11360,
+   "materials": [
+    "skin_glacier",
+    "rock_ice",
+    "emis_frost"
+   ],
+   "meshes": {
+    "body_main": {
+     "triangles": 11360,
+     "materials": [
+      "skin_glacier",
+      "rock_ice",
+      "emis_frost"
+     ]
+    }
+   },
+   "height_m": 1.783,
+   "bbox_min": [
+    -1.162,
+    -0.552,
+    -0.0
+   ],
+   "bbox_max": [
+    1.162,
+    0.342,
+    1.783
+   ],
+   "textures": [
+    [
+     "mon_rime_stalker_bc",
+     2048,
+     2048
+    ],
+    [
+     "mon_rime_stalker_em",
+     2048,
+     2048
+    ],
+    [
+     "mon_rime_stalker_nrm",
+     2048,
+     2048
+    ],
+    [
+     "mon_rime_stalker_orm",
+     2048,
+     2048
+    ]
+   ],
+   "bones": 65,
+   "notes": "Lean hunched predator sculpted from the CC0 base body (weights preserved; distal finger faces removed). Fingers end in long flat ice blades bound rigidly to the FIRST phalanx (thumb: second), so in a fist they hook palm-wards instead of folding back into the wrist. Crescent ice horns sweeping forward, fangs, four eyes and horn-root rings rigid on Head; dorsal sail of ice needles rigid on the nearest spine bone; emis_frost seam along the spine (rides on the skin weights), eyes and horn rings; elbow / calf spurs; toe claws. No weapon."
+  },
+  {
+   "id": "mon_rotspawn",
+   "file": "mon_rotspawn.glb",
+   "bytes": 5902872,
+   "triangles": 14600,
+   "materials": [
+    "rock_mud",
+    "cloth_moss",
+    "leather_root",
+    "skin_sleeper",
+    "emis_fungus"
+   ],
+   "meshes": {
+    "body_main": {
+     "triangles": 14600,
+     "materials": [
+      "rock_mud",
+      "cloth_moss",
+      "leather_root",
+      "skin_sleeper",
+      "emis_fungus"
+     ]
+    }
+   },
+   "height_m": 1.97,
+   "bbox_min": [
+    -1.104,
+    -0.511,
+    -0.0
+   ],
+   "bbox_max": [
+    1.101,
+    0.653,
+    1.97
+   ],
+   "textures": [
+    [
+     "mon_rotspawn_bc",
+     2048,
+     2048
+    ],
+    [
+     "mon_rotspawn_em",
+     2048,
+     2048
+    ],
+    [
+     "mon_rotspawn_nrm",
+     2048,
+     2048
+    ],
+    [
+     "mon_rotspawn_orm",
+     2048,
+     2048
+    ]
+   ],
+   "bones": 65,
+   "notes": "Peat-mound hulk sculpted from the CC0 base body (weights kept; head melted into a neckless dome, pear-shaped trunk, sack arms with root-knot fists and trailing tendrils), rounded clods heaped on shoulders and hump, moss mats and a slumped peat skirt, roots seated on the surface, the sleeper's pale face (skin_sleeper) low in the chest; a boardwalk plank, a broken wicker eel-trap and glowing bracket fungi / caps (emis_fungus) on the back. No weapon."
+  },
+  {
+   "id": "mon_sand_revenant",
+   "file": "mon_sand_revenant.glb",
+   "bytes": 5762256,
+   "triangles": 14558,
+   "materials": [
+    "skin_dry",
+    "cloth_wrap",
+    "emis_eye",
+    "metal_brass"
+   ],
+   "meshes": {
+    "body_main": {
+     "triangles": 14040,
+     "materials": [
+      "skin_dry",
+      "cloth_wrap",
+      "emis_eye",
+      "metal_brass"
+     ]
+    },
+    "wpn_sabre": {
+     "triangles": 518,
+     "materials": [
+      "cloth_wrap",
+      "metal_brass"
+     ],
+     "bone": "hand_r"
+    }
+   },
+   "height_m": 1.823,
+   "bbox_min": [
+    -0.98,
+    -0.794,
+    0.001
+   ],
+   "bbox_max": [
+    0.98,
+    0.326,
+    1.823
+   ],
+   "textures": [
+    [
+     "mon_sand_revenant_bc",
+     2048,
+     2048
+    ],
+    [
+     "mon_sand_revenant_em",
+     2048,
+     2048
+    ],
+    [
+     "mon_sand_revenant_nrm",
+     2048,
+     2048
+    ],
+    [
+     "mon_sand_revenant_orm",
+     2048,
+     2048
+    ]
+   ],
+   "bones": 65,
+   "notes": "Whip-thin dried body sculpted from the CC0 base body (scales only, no baked posture). The linen is the body's own faces lifted off the skin (weights for free) with torn windows and a bare sword forearm, hands and neck; coiled head-wrap, neck / arm / wrist / ankle rings, breast ring, sash coils and limb bandage spirals are rigid single-bone parts; head-wrap tails, hip tabs and side streamers are skinned by height; the face veil is rigid on Head (rings on their ends ride on the end vertex weights); elbow streamers are rigid on the upper arms and point along T-pose +X so they hang when the arm is down. wpn_sabre: curved brass blade (0.88 m) with three loose rings on the spine and a ring pommel. emis_eye = faint violet eyes in the slit."
+  },
+  {
+   "id": "mon_skeleton",
+   "file": "mon_skeleton.glb",
+   "bytes": 5211312,
+   "triangles": 10996,
+   "materials": [
+    "bone_skel",
+    "emis_eye",
+    "metal_rust",
+    "leather_strap",
+    "cloth_rag"
+   ],
+   "meshes": {
+    "body_main": {
+     "triangles": 10726,
+     "materials": [
+      "bone_skel",
+      "emis_eye",
+      "metal_rust",
+      "leather_strap",
+      "cloth_rag"
+     ]
+    },
+    "wpn_sword": {
+     "triangles": 270,
+     "materials": [
+      "leather_strap",
+      "metal_rust"
+     ],
+     "bone": "hand_r"
+    }
+   },
+   "height_m": 1.836,
+   "bbox_min": [
+    -0.981,
+    -0.72,
+    -0.001
+   ],
+   "bbox_max": [
+    0.981,
+    0.17,
+    1.836
+   ],
+   "textures": [
+    [
+     "mon_skeleton_bc",
+     2048,
+     2048
+    ],
+    [
+     "mon_skeleton_em",
+     2048,
+     2048
+    ],
+    [
+     "mon_skeleton_nrm",
+     2048,
+     2048
+    ],
+    [
+     "mon_skeleton_orm",
+     2048,
+     2048
+    ]
+   ],
+   "bones": 65,
+   "notes": "Articulated rigid-part skeleton (every bone piece bound to one joint); kettle cap, left pauldron, hip rags; wpn_sword in right hand."
+  },
+  {
+   "id": "mon_skeleton_thrower",
+   "file": "mon_skeleton_thrower.glb",
+   "bytes": 5463224,
+   "triangles": 12578,
+   "materials": [
+    "bone_skel",
+    "emis_eye",
+    "cloth_shawl",
+    "leather_strap",
+    "metal_rust"
+   ],
+   "meshes": {
+    "body_main": {
+     "triangles": 12338,
+     "materials": [
+      "bone_skel",
+      "emis_eye",
+      "cloth_shawl",
+      "leather_strap",
+      "metal_rust"
+     ]
+    },
+    "wpn_javelin": {
+     "triangles": 240,
+     "materials": [
+      "leather_strap",
+      "metal_rust"
+     ],
+     "bone": "hand_r"
+    }
+   },
+   "height_m": 2.093,
+   "bbox_min": [
+    -0.981,
+    -0.759,
+    -0.0
+   ],
+   "bbox_max": [
+    0.981,
+    0.613,
+    2.093
+   ],
+   "textures": [
+    [
+     "mon_skeleton_thrower_bc",
+     2048,
+     2048
+    ],
+    [
+     "mon_skeleton_thrower_em",
+     2048,
+     2048
+    ],
+    [
+     "mon_skeleton_thrower_nrm",
+     2048,
+     2048
+    ],
+    [
+     "mon_skeleton_thrower_orm",
+     2048,
+     2048
+    ]
+   ],
+   "bones": 65,
+   "notes": "Light articulated skeleton (thick=1.0) under a torn madder-red shawl draped over shoulders and upper arms (skinned by weight transfer) and a hood pushed back off the brow (rigid on Head); quiver with three spare javelins rigid on spine_03, heads fanning above the left shoulder; wpn_javelin in the right hand along the fist axis (tip = index side). In OverhandThrow the hand opens at about 22% of the clip (frame 9 of 40): hide wpn_javelin from there until ~85% and spawn the projectile."
+  },
+  {
+   "id": "mon_wraith",
+   "file": "mon_wraith.glb",
+   "bytes": 4412612,
+   "triangles": 10556,
+   "materials": [
+    "skin_shade",
+    "emis_soul",
+    "spectral_shroud",
+    "metal_chain"
+   ],
+   "meshes": {
+    "body_main": {
+     "triangles": 10556,
+     "materials": [
+      "skin_shade",
+      "emis_soul",
+      "spectral_shroud",
+      "metal_chain"
+     ]
+    }
+   },
+   "height_m": 1.845,
+   "bbox_min": [
+    -1.102,
+    -0.15,
+    0.172
+   ],
+   "bbox_max": [
+    1.102,
+    0.465,
+    1.845
+   ],
+   "textures": [
+    [
+     "mon_wraith_bc",
+     2048,
+     2048
+    ],
+    [
+     "mon_wraith_em",
+     2048,
+     2048
+    ],
+    [
+     "mon_wraith_nrm",
+     2048,
+     2048
+    ],
+    [
+     "mon_wraith_orm",
+     2048,
+     2048
+    ]
+   ],
+   "bones": 65,
+   "notes": "Legless spectral caster: dark gaunt core (base body without legs/head, thinned arms, fingers stretched 1.45x, rigid claws) under a spectral_ winding-sheet (gown + mantle draped over the T-pose arms + torn sleeves) whose tail and shreds are weighted to pelvis / spine only and swept backwards; hollow cowl rigid on Head with two emis_ soul-lights; rigid-link chain belt, seal with an emis_ Order mark, broken manacles. Floats: lowest shreds end about 7-20 cm above the ground. No weapon."
+  }
+ ]
+}

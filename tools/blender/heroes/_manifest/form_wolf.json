@@ -1,0 +1,76 @@
+{
+ "id": "form_wolf",
+ "file": "form_wolf.glb",
+ "meshes": [
+  {
+   "name": "body_bone",
+   "triangles": 1100,
+   "materials": [
+    "bone_form_wolf"
+   ]
+  },
+  {
+   "name": "body_cloth",
+   "triangles": 26466,
+   "materials": [
+    "cloth_form_wolf"
+   ]
+  },
+  {
+   "name": "body_emis",
+   "triangles": 2836,
+   "materials": [
+    "emis_form_wolf"
+   ]
+  },
+  {
+   "name": "body_leather",
+   "triangles": 174,
+   "materials": [
+    "leather_form_wolf"
+   ]
+  }
+ ],
+ "materials": [
+  "bone_form_wolf",
+  "cloth_form_wolf",
+  "emis_form_wolf",
+  "leather_form_wolf"
+ ],
+ "triangles": 30576,
+ "notes": "Pose-tested: Zombie_Scratch, Sprint_Loop, NinjaJump_Start, Jog_Fwd_Loop, Idle_Loop. Lupine proportions and the digitigrade look (raised heel, hock, long paw) are mesh-only on the unmodified UAL rig; head / ears rigid to Head, tail rigid to pelvis. No skin, no weapons; emis_ = moss-green spirit markings and eyes (same colour as hero_wildsoul and form_bear).",
+ "triangles_body": 30576,
+ "height_m": 1.869,
+ "bbox_blender_zup": {
+  "min": [
+   -1.106,
+   -0.488,
+   0.0
+  ],
+  "max": [
+   1.106,
+   0.627,
+   1.869
+  ]
+ },
+ "bbox_gltf_yup": {
+  "min": [
+   -1.106,
+   0.0,
+   -0.627
+  ],
+  "max": [
+   1.106,
+   1.869,
+   0.488
+  ]
+ },
+ "bbox_note": "rest pose (T-pose, arms out), body_* meshes only (weapons excluded)",
+ "size_bytes": 7352464,
+ "textures": {
+  "cloth": 2048,
+  "leather": 256,
+  "bone": 256
+ },
+ "fast_preview_build": false
+}

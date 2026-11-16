@@ -1,0 +1,85 @@
+{
+ "id": "npc_occultist",
+ "file": "npc_occultist.glb",
+ "meshes": [
+  {
+   "name": "body_bone",
+   "triangles": 1128,
+   "materials": [
+    "bone_npc_occultist"
+   ]
+  },
+  {
+   "name": "body_cloth",
+   "triangles": 13926,
+   "materials": [
+    "cloth_npc_occultist"
+   ]
+  },
+  {
+   "name": "body_emis",
+   "triangles": 312,
+   "materials": [
+    "emis_npc_occultist"
+   ]
+  },
+  {
+   "name": "body_leather",
+   "triangles": 1696,
+   "materials": [
+    "leather_npc_occultist"
+   ]
+  },
+  {
+   "name": "body_metal",
+   "triangles": 702,
+   "materials": [
+    "metal_npc_occultist"
+   ]
+  }
+ ],
+ "materials": [
+  "bone_npc_occultist",
+  "cloth_npc_occultist",
+  "emis_npc_occultist",
+  "leather_npc_occultist",
+  "metal_npc_occultist"
+ ],
+ "triangles": 17764,
+ "notes": "Pose-tested: Idle_Loop, Idle_FoldArms_Loop, Idle_Talking_Loop, Walk_Loop. No skin or hair material: the porcelain mask and charm tablets are bone_, the charm hoop is metal_ and rigid to Head, the crystals / tear line are emis_ (violet).",
+ "triangles_body": 17764,
+ "height_m": 1.948,
+ "bbox_blender_zup": {
+  "min": [
+   -0.986,
+   -0.224,
+   -0.004
+  ],
+  "max": [
+   0.986,
+   0.306,
+   1.948
+  ]
+ },
+ "bbox_gltf_yup": {
+  "min": [
+   -0.986,
+   -0.004,
+   -0.306
+  ],
+  "max": [
+   0.986,
+   1.948,
+   0.224
+  ]
+ },
+ "bbox_note": "rest pose (T-pose, arms out), body_* meshes only (weapons excluded)",
+ "size_bytes": 5287408,
+ "textures": {
+  "cloth": 2048,
+  "leather": 512,
+  "metal": 256,
+  "bone": 256
+ },
+ "fast_preview_build": false
+}

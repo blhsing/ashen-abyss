@@ -1,0 +1,45 @@
+# quick look at the new chrome: title, HUD, inventory, vendor, skills, pause
+wait 3.0
+shot q01_title
+menu settings
+wait 1.0
+shot q02_settings
+menu title
+wait 0.6
+newgame emberblade 20 town
+give set
+gold 250000
+mats 300
+wait 4.5
+shot q10_hud
+hud toast 獲得 128 金幣
+hud title 殘燈鎮|最後的燼火庇護所
+wait 1.2
+shot q11_notices
+open inventory
+wait 1.0
+shot q20_inventory
+hover 1244,506
+wait 0.8
+shot q21_tooltip
+unhover
+open vendor:smith
+wait 1.0
+shot q30_vendor
+open skills
+wait 1.2
+shot q40_skills
+open map
+wait 1.2
+shot q50_map
+open quests
+wait 1.0
+shot q60_quests
+open pause
+wait 0.8
+shot q70_pause
+close
+open paragon
+wait 1.0
+shot q80_paragon
+quit

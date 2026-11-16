@@ -1,0 +1,143 @@
+{
+ "id": "hero_soulbinder",
+ "ok": true,
+ "problems": [],
+ "triangles": 27962,
+ "size_bytes": 8471956,
+ "meshes": [
+  "body_bone",
+  "body_cloth",
+  "body_emis",
+  "body_leather",
+  "body_skin",
+  "wpn_1",
+  "wpn_2",
+  "wpn_3"
+ ],
+ "materials": [
+  "bone_hero_soulbinder",
+  "cloth_hero_soulbinder",
+  "emis_hero_soulbinder",
+  "leather_hero_soulbinder",
+  "skin_hero_soulbinder",
+  "metal_hero_soulbinder"
+ ],
+ "images": [
+  {
+   "name": "bone_n",
+   "mime": "image/jpeg",
+   "w": 1024,
+   "h": 1024,
+   "bytes": 410408
+  },
+  {
+   "name": "bone_orm",
+   "mime": "image/jpeg",
+   "w": 1024,
+   "h": 1024,
+   "bytes": 511673
+  },
+  {
+   "name": "bone_c",
+   "mime": "image/jpeg",
+   "w": 1024,
+   "h": 1024,
+   "bytes": 435956
+  },
+  {
+   "name": "cloth_n",
+   "mime": "image/jpeg",
+   "w": 2048,
+   "h": 2048,
+   "bytes": 1411378
+  },
+  {
+   "name": "cloth_orm",
+   "mime": "image/jpeg",
+   "w": 2048,
+   "h": 2048,
+   "bytes": 1426856
+  },
+  {
+   "name": "cloth_c",
+   "mime": "image/jpeg",
+   "w": 2048,
+   "h": 2048,
+   "bytes": 742952
+  },
+  {
+   "name": "emis_g",
+   "mime": "image/png",
+   "w": 64,
+   "h": 4,
+   "bytes": 331
+  },
+  {
+   "name": "leather_n",
+   "mime": "image/jpeg",
+   "w": 1024,
+   "h": 1024,
+   "bytes": 296189
+  },
+  {
+   "name": "leather_orm",
+   "mime": "image/jpeg",
+   "w": 1024,
+   "h": 1024,
+   "bytes": 342789
+  },
+  {
+   "name": "leather_c",
+   "mime": "image/jpeg",
+   "w": 1024,
+   "h": 1024,
+   "bytes": 170539
+  },
+  {
+   "name": "skin_n",
+   "mime": "image/jpeg",
+   "w": 1024,
+   "h": 1024,
+   "bytes": 392376
+  },
+  {
+   "name": "skin_orm",
+   "mime": "image/jpeg",
+   "w": 1024,
+   "h": 1024,
+   "bytes": 241453
+  },
+  {
+   "name": "skin_c",
+   "mime": "image/jpeg",
+   "w": 1024,
+   "h": 1024,
+   "bytes": 123703
+  },
+  {
+   "name": "metal_n",
+   "mime": "image/jpeg",
+   "w": 512,
+   "h": 512,
+   "bytes": 50293
+  },
+  {
+   "name": "metal_orm",
+   "mime": "image/jpeg",
+   "w": 512,
+   "h": 512,
+   "bytes": 55017
+  },
+  {
+   "name": "metal_c",
+   "mime": "image/jpeg",
+   "w": 512,
+   "h": 512,
+   "bytes": 43795
+  }
+ ],
+ "bones": 65,
+ "extensions": [
+  "KHR_materials_emissive_strength"
+ ]
+}

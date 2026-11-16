@@ -1,0 +1,144 @@
+{
+ "id": "hero_forgebody",
+ "file": "hero_forgebody.glb",
+ "meshes": [
+  {
+   "name": "body_cloth",
+   "triangles": 8136,
+   "materials": [
+    "cloth_hero_forgebody"
+   ]
+  },
+  {
+   "name": "body_emis",
+   "triangles": 2410,
+   "materials": [
+    "emis_hero_forgebody"
+   ]
+  },
+  {
+   "name": "body_hair",
+   "triangles": 1814,
+   "materials": [
+    "hair_hero_forgebody"
+   ]
+  },
+  {
+   "name": "body_leather",
+   "triangles": 1400,
+   "materials": [
+    "leather_hero_forgebody"
+   ]
+  },
+  {
+   "name": "body_metal",
+   "triangles": 2208,
+   "materials": [
+    "metal_hero_forgebody"
+   ]
+  },
+  {
+   "name": "body_skin",
+   "triangles": 9530,
+   "materials": [
+    "skin_hero_forgebody"
+   ]
+  },
+  {
+   "name": "wpn_1",
+   "triangles": 528,
+   "materials": [
+    "leather_hero_forgebody",
+    "metal_hero_forgebody"
+   ]
+  },
+  {
+   "name": "wpn_1_off",
+   "triangles": 528,
+   "materials": [
+    "leather_hero_forgebody",
+    "metal_hero_forgebody"
+   ]
+  },
+  {
+   "name": "wpn_2",
+   "triangles": 846,
+   "materials": [
+    "leather_hero_forgebody",
+    "metal_hero_forgebody"
+   ]
+  },
+  {
+   "name": "wpn_2_off",
+   "triangles": 846,
+   "materials": [
+    "leather_hero_forgebody",
+    "metal_hero_forgebody"
+   ]
+  },
+  {
+   "name": "wpn_3",
+   "triangles": 1134,
+   "materials": [
+    "leather_hero_forgebody",
+    "metal_hero_forgebody",
+    "emis_hero_forgebody"
+   ]
+  },
+  {
+   "name": "wpn_3_off",
+   "triangles": 1134,
+   "materials": [
+    "leather_hero_forgebody",
+    "metal_hero_forgebody",
+    "emis_hero_forgebody"
+   ]
+  }
+ ],
+ "materials": [
+  "cloth_hero_forgebody",
+  "emis_hero_forgebody",
+  "hair_hero_forgebody",
+  "leather_hero_forgebody",
+  "metal_hero_forgebody",
+  "skin_hero_forgebody"
+ ],
+ "triangles": 30514,
+ "notes": "Pose-tested: Punch_Jab, Punch_Cross, Melee_Hook, Idle_Loop, Jog_Fwd_Loop. Fist gauntlets: wpn_N skinned 100% to hand_r, wpn_N_off (mirrored) 100% to hand_l; they cover the back of the hand, the knuckle line and the outer edge and leave the fingers free, so open-hand clips do not pierce them. The ember scars are separate emis_ geometry that follows the skin weights. The topknot is baked into the cloth_ atlas (hair_ holds stubble + brows).",
+ "triangles_body": 25498,
+ "height_m": 1.866,
+ "bbox_blender_zup": {
+  "min": [
+   -0.981,
+   -0.196,
+   -0.004
+  ],
+  "max": [
+   0.981,
+   0.208,
+   1.866
+  ]
+ },
+ "bbox_gltf_yup": {
+  "min": [
+   -0.981,
+   -0.004,
+   -0.208
+  ],
+  "max": [
+   0.981,
+   1.866,
+   0.196
+  ]
+ },
+ "bbox_note": "rest pose (T-pose, arms out), body_* meshes only (weapons excluded)",
+ "size_bytes": 9465160,
+ "textures": {
+  "cloth": 2048,
+  "leather": 512,
+  "metal": 1024,
+  "skin": 2048,
+  "hair": 512
+ },
+ "fast_preview_build": false
+}

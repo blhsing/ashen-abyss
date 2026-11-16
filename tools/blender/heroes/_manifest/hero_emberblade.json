@@ -1,0 +1,101 @@
+{
+ "id": "hero_emberblade",
+ "file": "hero_emberblade.glb",
+ "meshes": [
+  {
+   "name": "body_cloth",
+   "triangles": 5887,
+   "materials": [
+    "cloth_hero_emberblade"
+   ]
+  },
+  {
+   "name": "body_emis",
+   "triangles": 40,
+   "materials": [
+    "emis_hero_emberblade"
+   ]
+  },
+  {
+   "name": "body_leather",
+   "triangles": 224,
+   "materials": [
+    "leather_hero_emberblade"
+   ]
+  },
+  {
+   "name": "body_metal",
+   "triangles": 19832,
+   "materials": [
+    "metal_hero_emberblade"
+   ]
+  },
+  {
+   "name": "wpn_1",
+   "triangles": 186,
+   "materials": [
+    "leather_hero_emberblade",
+    "metal_hero_emberblade"
+   ]
+  },
+  {
+   "name": "wpn_2",
+   "triangles": 410,
+   "materials": [
+    "leather_hero_emberblade",
+    "metal_hero_emberblade"
+   ]
+  },
+  {
+   "name": "wpn_3",
+   "triangles": 424,
+   "materials": [
+    "leather_hero_emberblade",
+    "metal_hero_emberblade",
+    "emis_hero_emberblade"
+   ]
+  }
+ ],
+ "materials": [
+  "cloth_hero_emberblade",
+  "emis_hero_emberblade",
+  "leather_hero_emberblade",
+  "metal_hero_emberblade"
+ ],
+ "triangles": 27003,
+ "notes": "Pose-tested: Sword_Idle, Idle_Loop, Sword_Regular_A, Jog_Fwd_Loop, Roll. Weapons wpn_1..3 = greatswords skinned 100% to hand_r (fist grip of the UAL sword clips).",
+ "triangles_body": 25983,
+ "height_m": 1.905,
+ "bbox_blender_zup": {
+  "min": [
+   -0.985,
+   -0.211,
+   -0.016
+  ],
+  "max": [
+   0.985,
+   0.302,
+   1.905
+  ]
+ },
+ "bbox_gltf_yup": {
+  "min": [
+   -0.985,
+   -0.016,
+   -0.302
+  ],
+  "max": [
+   0.985,
+   1.905,
+   0.211
+  ]
+ },
+ "bbox_note": "rest pose (T-pose, arms out), body_* meshes only (weapons excluded)",
+ "size_bytes": 9282496,
+ "textures": {
+  "cloth": 2048,
+  "leather": 512,
+  "metal": 2048
+ },
+ "fast_preview_build": false
+}

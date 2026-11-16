@@ -1,0 +1,76 @@
+{
+ "id": "form_bear",
+ "file": "form_bear.glb",
+ "meshes": [
+  {
+   "name": "body_bone",
+   "triangles": 1100,
+   "materials": [
+    "bone_form_bear"
+   ]
+  },
+  {
+   "name": "body_cloth",
+   "triangles": 30726,
+   "materials": [
+    "cloth_form_bear"
+   ]
+  },
+  {
+   "name": "body_emis",
+   "triangles": 2452,
+   "materials": [
+    "emis_form_bear"
+   ]
+  },
+  {
+   "name": "body_leather",
+   "triangles": 272,
+   "materials": [
+    "leather_form_bear"
+   ]
+  }
+ ],
+ "materials": [
+  "bone_form_bear",
+  "cloth_form_bear",
+  "emis_form_bear",
+  "leather_form_bear"
+ ],
+ "triangles": 34550,
+ "notes": "Pose-tested: Melee_Hook, Punch_Cross, Zombie_Scratch, Jog_Fwd_Loop, Zombie_Idle_Loop. Beast proportions are mesh-only on the unmodified UAL rig; the bear head, hump and shoulder mounds are rigid / two-bone parts over a fully skinned pelt. No skin, no weapons; emis_ = moss-green spirit markings and eyes (same colour as hero_wildsoul).",
+ "triangles_body": 34550,
+ "height_m": 1.816,
+ "bbox_blender_zup": {
+  "min": [
+   -1.084,
+   -0.415,
+   0.0
+  ],
+  "max": [
+   1.084,
+   0.355,
+   1.816
+  ]
+ },
+ "bbox_gltf_yup": {
+  "min": [
+   -1.084,
+   0.0,
+   -0.355
+  ],
+  "max": [
+   1.084,
+   1.816,
+   0.415
+  ]
+ },
+ "bbox_note": "rest pose (T-pose, arms out), body_* meshes only (weapons excluded)",
+ "size_bytes": 7840548,
+ "textures": {
+  "cloth": 2048,
+  "leather": 256,
+  "bone": 256
+ },
+ "fast_preview_build": false
+}

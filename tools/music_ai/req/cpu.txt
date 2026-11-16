@@ -1,0 +1,10 @@
+# CPU reference / fallback environment (see install_extra.ps1): PyPI's CPU build of the same torch generation
+torch==2.9.1
+numpy
+diffusers==0.39.0
+transformers>=4.55.5,<4.58.0
+accelerate>=1.12.0
+safetensors
+sentencepiece
+soundfile>=0.13.1
+scipy

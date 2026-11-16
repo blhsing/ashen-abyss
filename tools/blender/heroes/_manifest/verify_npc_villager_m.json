@@ -1,0 +1,130 @@
+{
+ "id": "npc_villager_m",
+ "ok": true,
+ "problems": [],
+ "triangles": 18133,
+ "size_bytes": 8139488,
+ "meshes": [
+  "body_cloth",
+  "body_hair",
+  "body_leather",
+  "body_metal",
+  "body_skin"
+ ],
+ "materials": [
+  "cloth_npc_villager_m",
+  "hair_npc_villager_m",
+  "leather_npc_villager_m",
+  "metal_npc_villager_m",
+  "skin_npc_villager_m"
+ ],
+ "images": [
+  {
+   "name": "cloth_n",
+   "mime": "image/jpeg",
+   "w": 2048,
+   "h": 2048,
+   "bytes": 1457563
+  },
+  {
+   "name": "cloth_orm",
+   "mime": "image/jpeg",
+   "w": 2048,
+   "h": 2048,
+   "bytes": 1165414
+  },
+  {
+   "name": "cloth_c",
+   "mime": "image/jpeg",
+   "w": 2048,
+   "h": 2048,
+   "bytes": 648866
+  },
+  {
+   "name": "hair_n",
+   "mime": "image/jpeg",
+   "w": 512,
+   "h": 512,
+   "bytes": 97462
+  },
+  {
+   "name": "hair_orm",
+   "mime": "image/jpeg",
+   "w": 512,
+   "h": 512,
+   "bytes": 76140
+  },
+  {
+   "name": "hair_c",
+   "mime": "image/jpeg",
+   "w": 512,
+   "h": 512,
+   "bytes": 39478
+  },
+  {
+   "name": "leather_n",
+   "mime": "image/jpeg",
+   "w": 1024,
+   "h": 1024,
+   "bytes": 465647
+  },
+  {
+   "name": "leather_orm",
+   "mime": "image/jpeg",
+   "w": 1024,
+   "h": 1024,
+   "bytes": 381754
+  },
+  {
+   "name": "leather_c",
+   "mime": "image/jpeg",
+   "w": 1024,
+   "h": 1024,
+   "bytes": 197958
+  },
+  {
+   "name": "metal_n",
+   "mime": "image/jpeg",
+   "w": 256,
+   "h": 256,
+   "bytes": 14992
+  },
+  {
+   "name": "metal_orm",
+   "mime": "image/jpeg",
+   "w": 256,
+   "h": 256,
+   "bytes": 17206
+  },
+  {
+   "name": "metal_c",
+   "mime": "image/jpeg",
+   "w": 256,
+   "h": 256,
+   "bytes": 12296
+  },
+  {
+   "name": "skin_n",
+   "mime": "image/jpeg",
+   "w": 2048,
+   "h": 2048,
+   "bytes": 1556171
+  },
+  {
+   "name": "skin_orm",
+   "mime": "image/jpeg",
+   "w": 2048,
+   "h": 2048,
+   "bytes": 673823
+  },
+  {
+   "name": "skin_c",
+   "mime": "image/jpeg",
+   "w": 2048,
+   "h": 2048,
+   "bytes": 374609
+  }
+ ],
+ "bones": 65,
+ "extensions": []
+}

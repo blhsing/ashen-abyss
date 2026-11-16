@@ -1,0 +1,335 @@
+{
+ "about": "2K equirect HDR skies (Radiance .hdr, linear). light_dir_godot = unit vector pointing TOWARD the brightest sky region (sun/moon/glow) for Godot's PanoramaSkyMaterial mapping (u=0 looks down -Z, +X at u=0.25) with sky rotation 0; aim DirectionalLight3D along the negative of it. Source metadata has no sun position, so it is measured from the image. mean_luminance helps choose sky energy/exposure (these are real-world dim skies: expect to multiply energy for night/dusk).",
+ "skies": [
+  {
+   "name": "dusk",
+   "file": "dusk.hdr",
+   "path": "res://assets/env/sky/dusk.hdr",
+   "source": "Poly Haven",
+   "source_id": "qwantani_dusk_2_puresky",
+   "source_url": "https://polyhaven.com/a/qwantani_dusk_2_puresky",
+   "author": "Greg Zaal, Jarod Guest",
+   "licence": "CC0 1.0",
+   "resolution": [
+    2048,
+    1024
+   ],
+   "zones": [
+    "wastes",
+    "town"
+   ],
+   "use": "cold blue-hour dusk, faint warm glow on the horizon: default 灰暮 ashen-dusk sky",
+   "light_dir_godot": [
+    -0.522,
+    0.219,
+    0.824
+   ],
+   "light_azimuth_deg": 212.3,
+   "light_elevation_deg": 12.7,
+   "light_is_distinct": false,
+   "peak_luminance": 5.324,
+   "mean_luminance": 0.9403,
+   "avg_color_linear": [
+    1.1077,
+    0.8675,
+    1.1678
+   ],
+   "upper_hemisphere_color_linear": [
+    1.4409,
+    1.1545,
+    1.5801
+   ],
+   "sky_only": true,
+   "bytes": 4612798
+  },
+  {
+   "name": "night",
+   "file": "night.hdr",
+   "path": "res://assets/env/sky/night.hdr",
+   "source": "Poly Haven",
+   "source_id": "kloppenheim_02_puresky",
+   "source_url": "https://polyhaven.com/a/kloppenheim_02_puresky",
+   "author": "Greg Zaal, Jarod Guest",
+   "licence": "CC0 1.0",
+   "resolution": [
+    2048,
+    1024
+   ],
+   "zones": [
+    "wastes",
+    "town",
+    "mire"
+   ],
+   "use": "moonlit night with thin cloud: night variant, graveyard scenes",
+   "light_dir_godot": [
+    -0.547,
+    0.314,
+    0.776
+   ],
+   "light_azimuth_deg": 215.2,
+   "light_elevation_deg": 18.3,
+   "light_is_distinct": true,
+   "peak_luminance": 693.877,
+   "mean_luminance": 0.31,
+   "avg_color_linear": [
+    0.2686,
+    0.314,
+    0.3917
+   ],
+   "upper_hemisphere_color_linear": [
+    0.4241,
+    0.4889,
+    0.6044
+   ],
+   "sky_only": true,
+   "bytes": 5563538
+  },
+  {
+   "name": "night_dark",
+   "file": "night_dark.hdr",
+   "path": "res://assets/env/sky/night_dark.hdr",
+   "source": "Poly Haven",
+   "source_id": "kloppenheim_07_puresky",
+   "source_url": "https://polyhaven.com/a/kloppenheim_07_puresky",
+   "author": "Greg Zaal, Jarod Guest",
+   "licence": "CC0 1.0",
+   "resolution": [
+    2048,
+    1024
+   ],
+   "zones": [
+    "abyss",
+    "wastes",
+    "crypt"
+   ],
+   "use": "very dark overcast night, moon behind cloud: abyss surface / ambient for dark interiors",
+   "light_dir_godot": [
+    -0.454,
+    0.615,
+    0.645
+   ],
+   "light_azimuth_deg": 215.2,
+   "light_elevation_deg": 38.0,
+   "light_is_distinct": false,
+   "peak_luminance": 1.932,
+   "mean_luminance": 0.2487,
+   "avg_color_linear": [
+    0.2284,
+    0.2509,
+    0.287
+   ],
+   "upper_hemisphere_color_linear": [
+    0.3033,
+    0.3346,
+    0.3845
+   ],
+   "sky_only": true,
+   "bytes": 5003360
+  },
+  {
+   "name": "cave",
+   "file": "cave.hdr",
+   "path": "res://assets/env/sky/cave.hdr",
+   "source": "Poly Haven",
+   "source_id": "drachenfels_cellar",
+   "source_url": "https://polyhaven.com/a/drachenfels_cellar",
+   "author": "Andreas Mischok",
+   "licence": "CC0 1.0",
+   "resolution": [
+    2048,
+    1024
+   ],
+   "zones": [
+    "crypt",
+    "abyss",
+    "sanctum"
+   ],
+   "use": "dark brick cellar tunnel (indoor): reflection/ambient probe for crypt and cave interiors",
+   "light_dir_godot": [
+    -0.673,
+    0.219,
+    0.707
+   ],
+   "light_azimuth_deg": 223.6,
+   "light_elevation_deg": 12.7,
+   "light_is_distinct": true,
+   "peak_luminance": 63.374,
+   "mean_luminance": 0.4338,
+   "avg_color_linear": [
+    0.4636,
+    0.4167,
+    0.516
+   ],
+   "upper_hemisphere_color_linear": [
+    0.6858,
+    0.6559,
+    0.8676
+   ],
+   "sky_only": false,
+   "bytes": 7371243
+  },
+  {
+   "name": "overcast",
+   "file": "overcast.hdr",
+   "path": "res://assets/env/sky/overcast.hdr",
+   "source": "Poly Haven",
+   "source_id": "mud_road_puresky",
+   "source_url": "https://polyhaven.com/a/mud_road_puresky",
+   "author": "Sergey Rudavin, Jarod Guest",
+   "licence": "CC0 1.0",
+   "resolution": [
+    2048,
+    1024
+   ],
+   "zones": [
+    "wastes",
+    "mire",
+    "town",
+    "frost"
+   ],
+   "use": "heavy flat grey overcast: neutral gloomy daylight",
+   "light_dir_godot": [
+    0.449,
+    0.893,
+    0.011
+   ],
+   "light_azimuth_deg": 91.4,
+   "light_elevation_deg": 63.3,
+   "light_is_distinct": false,
+   "peak_luminance": 0.804,
+   "mean_luminance": 0.3669,
+   "avg_color_linear": [
+    0.3578,
+    0.3652,
+    0.4104
+   ],
+   "upper_hemisphere_color_linear": [
+    0.4905,
+    0.5014,
+    0.5652
+   ],
+   "sky_only": true,
+   "bytes": 4302862
+  },
+  {
+   "name": "snow_overcast",
+   "file": "snow_overcast.hdr",
+   "path": "res://assets/env/sky/snow_overcast.hdr",
+   "source": "Poly Haven",
+   "source_id": "snow_field_2_puresky",
+   "source_url": "https://polyhaven.com/a/snow_field_2_puresky",
+   "author": "Jarod Guest, Sergej Majboroda",
+   "licence": "CC0 1.0",
+   "resolution": [
+    2048,
+    1024
+   ],
+   "zones": [
+    "frost"
+   ],
+   "use": "bright flat overcast over snow: frost pass",
+   "light_dir_godot": [
+    -0.648,
+    0.122,
+    0.752
+   ],
+   "light_azimuth_deg": 220.8,
+   "light_elevation_deg": 7.0,
+   "light_is_distinct": false,
+   "peak_luminance": 2.416,
+   "mean_luminance": 0.5966,
+   "avg_color_linear": [
+    0.6045,
+    0.595,
+    0.5885
+   ],
+   "upper_hemisphere_color_linear": [
+    0.8128,
+    0.7994,
+    0.7916
+   ],
+   "sky_only": true,
+   "bytes": 4045437
+  },
+  {
+   "name": "desert_dusk",
+   "file": "desert_dusk.hdr",
+   "path": "res://assets/env/sky/desert_dusk.hdr",
+   "source": "Poly Haven",
+   "source_id": "syferfontein_0d_clear_puresky",
+   "source_url": "https://polyhaven.com/a/syferfontein_0d_clear_puresky",
+   "author": "Greg Zaal, Jarod Guest",
+   "licence": "CC0 1.0",
+   "resolution": [
+    2048,
+    1024
+   ],
+   "zones": [
+    "sands"
+   ],
+   "use": "clear desert dusk, orange horizon under deep blue: rust-sand ruins",
+   "light_dir_godot": [
+    -0.574,
+    0.074,
+    0.815
+   ],
+   "light_azimuth_deg": 215.2,
+   "light_elevation_deg": 4.2,
+   "light_is_distinct": true,
+   "peak_luminance": 13.019,
+   "mean_luminance": 0.6664,
+   "avg_color_linear": [
+    0.6257,
+    0.6513,
+    0.9358
+   ],
+   "upper_hemisphere_color_linear": [
+    0.7251,
+    0.7859,
+    1.1963
+   ],
+   "sky_only": true,
+   "bytes": 4352080
+  },
+  {
+   "name": "swamp_fog",
+   "file": "swamp_fog.hdr",
+   "path": "res://assets/env/sky/swamp_fog.hdr",
+   "source": "Poly Haven",
+   "source_id": "kloofendal_misty_morning_puresky",
+   "source_url": "https://polyhaven.com/a/kloofendal_misty_morning_puresky",
+   "author": "Greg Zaal",
+   "licence": "CC0 1.0",
+   "resolution": [
+    2048,
+    1024
+   ],
+   "zones": [
+    "mire"
+   ],
+   "use": "low-contrast fog, sun as a pale disc: swamp",
+   "light_dir_godot": [
+    -0.499,
+    0.69,
+    0.525
+   ],
+   "light_azimuth_deg": 223.6,
+   "light_elevation_deg": 43.6,
+   "light_is_distinct": false,
+   "peak_luminance": 1.665,
+   "mean_luminance": 0.8326,
+   "avg_color_linear": [
+    0.7908,
+    0.8344,
+    0.9376
+   ],
+   "upper_hemisphere_color_linear": [
+    1.069,
+    1.1337,
+    1.282
+   ],
+   "sky_only": true,
+   "bytes": 2958072
+  }
+ ]
+}

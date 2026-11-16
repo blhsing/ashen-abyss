@@ -1,0 +1,104 @@
+class StyleA(Style):
+    key = "A"
+    title = "forged iron with ember-gold inlay"
+    field = "slate"
+    field_tip = "soot"
+    corner_reach = 166.0
+
+    def mats(self, k):
+        M = k.MATS
+        M['bar'] = k.mat_metal('A_bar', metal=0.85, base=(0.034, 0.033, 0.038), rough=(0.32, 0.58), edge=(0.62, 0.58, 0.52), edge_amt=0.9, dark=(0.016, 0.013, 0.012), soot=0.8, hammer=1.0)
+        M['plate'] = k.mat_metal('A_plate', metal=0.85, base=(0.046, 0.044, 0.048), rough=(0.30, 0.54), edge=(0.70, 0.66, 0.60), edge_amt=1.0, dark=(0.02, 0.016, 0.014), soot=0.8, hammer=0.9)
+        M['face'] = k.mat_metal('A_face', metal=0.8, base=(0.040, 0.037, 0.038), rough=(0.44, 0.68), edge=(0.6, 0.56, 0.5), edge_amt=0.7, dark=(0.03, 0.026, 0.024), soot=0.6, hammer=1.2)
+        M['face_hi'] = k.mat_metal('A_face_hi', metal=0.8, base=(0.070, 0.056, 0.046), rough=(0.40, 0.62), edge=(0.75, 0.66, 0.52), edge_amt=0.8, dark=(0.045, 0.034, 0.026), soot=0.5, hammer=1.2)
+        M['face_dn'] = k.mat_metal('A_face_dn', metal=0.8, base=(0.022, 0.021, 0.023), rough=(0.5, 0.72), edge=(0.45, 0.42, 0.38), edge_amt=0.6, dark=(0.014, 0.012, 0.012), soot=0.7, hammer=1.2)
+        M['face_off'] = k.mat_metal('A_face_off', metal=0.7, base=(0.024, 0.023, 0.024), rough=(0.62, 0.82), edge=(0.22, 0.21, 0.20), edge_amt=0.3, dark=(0.016, 0.015, 0.015), soot=0.7, hammer=1.0)
+        M['face_on'] = k.mat_metal('A_face_on', metal=0.8, base=(0.19, 0.078, 0.026), rough=(0.4, 0.62), edge=(1.0, 0.70, 0.36), edge_amt=0.7, dark=(0.085, 0.032, 0.012), soot=0.35, hammer=1.2)
+        M['trim'] = k.mat_metal('A_trim', base=(0.86, 0.50, 0.15), rough=(0.22, 0.40), edge=(1.0, 0.86, 0.55), edge_amt=0.6, dark=(0.36, 0.17, 0.04),
+                                soot=0.55, hammer=0.25, scan_set='Metal038', bump=0.5)
+        M['stud'] = k.mat_metal('A_stud', base=(0.10, 0.095, 0.095), rough=(0.28, 0.5), edge=(0.8, 0.76, 0.7), edge_amt=1.0, soot=0.7, hammer=0.3)
+        M['stone'] = k.mat_ember('A_stone', strength=5.0)
+        M['floor'] = k.mat_field('A_floor', color=(0.013, 0.012, 0.013))
+
+    def sprig(self, k, F, u0, vm, ln, z, amp=9.0):
+        """Flame sprig: F maps (u, v) to image px; root at u0, centre line v = vm, length ln. A long tongue with two
+        leaflets licking off it (no closed loops: they read as eyes at small sizes)."""
+        def pts(seq): return [F(p) for p in seq]
+        a = amp
+        k.tube(pts(k.bez((u0, vm + a * 0.45), (u0 + ln * 0.30, vm - a * 1.25), (u0 + ln * 0.62, vm + a * 1.15), (u0 + ln, vm - 1), 32)), 3.3, 'trim', z=z, taper='out')
+        k.tube(pts(k.bez((u0 + ln * 0.14, vm - a * 0.05), (u0 + ln * 0.24, vm - a * 1.15), (u0 + ln * 0.40, vm - a * 1.2), (u0 + ln * 0.50, vm - a * 0.55), 20)), 2.3, 'trim', z=z - 0.15, taper='out')
+        k.tube(pts(k.bez((u0 + ln * 0.36, vm + a * 0.35), (u0 + ln * 0.46, vm + a * 1.2), (u0 + ln * 0.62, vm + a * 1.25), (u0 + ln * 0.74, vm + a * 0.6), 20)), 2.1, 'trim', z=z - 0.15, taper='out')
+        k.tube(pts(k.bez((u0 + 1, vm + a * 0.5), (u0 + ln * 0.08, vm + a * 1.3), (u0 + ln * 0.2, vm + a * 1.25), (u0 + ln * 0.27, vm + a * 0.8), 16)), 1.8, 'trim', z=z - 0.2, taper='out')
+        bx, by = F((u0 - 1.5, vm + a * 0.45))
+        k.dome(bx, by, 4.6, 3.2, 'trim', z=z - 1.2)
+
+    def corner(self, k, T, bar_w, heavy=True, idx=0):
+        b = bar_w
+        if heavy:
+            L, e, tip = 128.0, 3.0, 26.0                    # arm length, overhang, spear tip
+            mid = b * 0.5
+            c = b + e
+            # L bracket with spear tips; in the angle a pointed leaf reaches a little into the field
+            out = [(-e, -e), (L, -e), (L + tip, mid), (L, c), (c + 30, c), (c + 17, c + 5), (c + 17, c + 17), (c + 5, c + 17), (c, c + 30), (c, L), (mid, L + tip), (-e, L)]
+            k.solid(T(out), [(0, 0), (0, 12.5), (2.5, 15), (5.5, 15), (7, 13.5)], 'plate', cap=True, name="bracket")
+            for sw in (False, True):
+                def S(p, sw=sw): return (p[1], p[0]) if sw else p
+                self.sprig(k, lambda p, S=S: T(S(p)), 50.0, mid, L + 10.0 - 50.0, 14.2, amp=8.0)
+                self.stud(k, *T(S((L + 4, mid))), 4.2, 15.0)
+            # corner boss: raised rhombic seat, gold bezel, ember stone
+            cx, cy = T((mid + 5, mid + 5))
+            k.solid(k.rhombus(cx, cy, 24, 24), [(0, 13), (0, 16.5), (2.5, 19), (6, 19), (7.5, 17.5)], 'plate', cap=True, name="seat")
+            self.jewel(k, cx, cy, 10.5, 10.5, 18.0)
+            lx, ly = T((c + 12.5, c + 12.5))
+            self.stud(k, lx, ly, 3.4, 15.0, 'trim')
+        else:
+            # light corner: a clipped square cap with one stud (thin mouldings) or a gold boss (window moulding)
+            s = b + 8.0
+            out = [(-2, -2), (s, -2), (s + 6, b * 0.5), (s, b + 2), (b + 2, b + 2), (b + 2, s), (b * 0.5, s + 6), (-2, s)]
+            if b < 30:
+                k.solid(T(out), [(0, 0), (0, 7), (1.6, 8.6), (3.6, 8.6), (4.6, 7.6)], 'plate', cap=True, name="cap")
+                self.stud(k, *T((b * 0.5, b * 0.5)), 3.6, 8.6, 'trim')
+            else:
+                k.solid(T(out), [(0, 0), (0, 12.5), (2.5, 15), (5.5, 15), (7, 13.5)], 'plate', cap=True, name="cap")
+                cx, cy = T((b * 0.5 + 1, b * 0.5 + 1))
+                k.solid(k.rhombus(cx, cy, 13, 13), [(0, 13.5), (0, 15.5), (1.8, 17.3), (4, 17.3), (5, 16)], 'trim', cap=True, name="boss")
+
+    def edge(self, k, m, R, bw, heavy=True):
+        xs, ys = self._runs(m)
+        p = m['pad']
+        d = 25.5
+        for x in xs:
+            self.stud(k, x, p + d, 4.0, 12.0); self.stud(k, x, m['h'] - p - d, 4.0, 12.0)
+        for y in ys:
+            self.stud(k, p + d, y, 4.0, 12.0); self.stud(k, m['w'] - p - d, y, 4.0, 12.0)
+
+    def crest(self, k, cx, y, bar_w):
+        """Sun-Forge crest: the dead sun with an ember heart, rising over two spear wings. (cx, y) = middle of the
+        frame's outer top edge."""
+        from pieces import ray
+        b = bar_w
+        mid = y + b * 0.5
+        w0, w1, tip = 44.0, 214.0, 30.0
+        for s in (-1, 1):
+            out = [(cx + s * w0, y - 8), (cx + s * (w0 + 66), y - 8), (cx + s * (w0 + 80), y - 3), (cx + s * w1, y - 3), (cx + s * (w1 + tip), mid),
+                   (cx + s * w1, y + b + 3), (cx + s * (w0 + 80), y + b + 3), (cx + s * (w0 + 66), y + b + 8), (cx + s * w0, y + b + 8)]
+            if s < 0: out = out[::-1]
+            k.solid(out, [(0, 0), (0, 12.5), (2.5, 15), (5.5, 15), (7, 13.5)], 'plate', cap=True, name="wing")
+            self.sprig(k, lambda p, s=s: (cx + s * p[0], p[1]), w0 + 28.0, mid, w1 + 12.0 - (w0 + 28.0), 14.2, amp=9.0)
+            self.stud(k, cx + s * (w1 + 4), mid, 4.4, 15.0)
+        # pendant under the disc
+        k.solid([(cx - 16, y + b + 2), (cx + 16, y + b + 2), (cx, y + b + 20)], [(0, 0), (0, 10), (2.2, 12.5)], 'plate', cap=True, name="drop")
+        # rays of the dead sun: a fan over the top
+        cy = y + 15.0
+        R = 53.0
+        for i in range(-4, 5):
+            a = math.radians(-90 + i * 21.0)
+            ray(k, (cx, cy), a, R - 6, R + (32.0 if i % 2 == 0 else 20.0), 0.115 if i % 2 == 0 else 0.09, 'plate', z=9.0)
+        # disc: iron rim, gold ring, soot well, ember rhombus in a gold bezel, four gold beads
+        k.solid(k.ngon(cx, cy, R, 72), [(0, 0), (0, 15), (3, 18), (9, 18), (11, 15.5)], 'plate', cap=True, name="disc")
+        k.solid(k.ngon(cx, cy, R - 12, 72), [(0, 15), (0.8, 17.6), (4.0, 17.6), (4.8, 15.2)], 'trim', cap=False, name="ring")
+        k.solid(k.ngon(cx, cy, R - 18.5, 72), [(0, 15.2), (2.5, 12.5)], 'floor', cap=True, name="well")
+        self.jewel(k, cx, cy, 16.0, 22.5, 14.5, h=8.0)
+        for i in range(4):
+            a = math.pi / 4 + i * math.pi / 2
+            k.dome(cx + 24.5 * math.cos(a), cy + 24.5 * math.sin(a), 3.2, 2.4, 'trim', z=12.6)

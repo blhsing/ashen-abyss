@@ -1,0 +1,77 @@
+{
+ "id": "npc_villager_f",
+ "file": "npc_villager_f.glb",
+ "meshes": [
+  {
+   "name": "body_cloth",
+   "triangles": 3588,
+   "materials": [
+    "cloth_npc_villager_f"
+   ]
+  },
+  {
+   "name": "body_hair",
+   "triangles": 2858,
+   "materials": [
+    "hair_npc_villager_f"
+   ]
+  },
+  {
+   "name": "body_leather",
+   "triangles": 1352,
+   "materials": [
+    "leather_npc_villager_f"
+   ]
+  },
+  {
+   "name": "body_skin",
+   "triangles": 8730,
+   "materials": [
+    "skin_npc_villager_f"
+   ]
+  }
+ ],
+ "materials": [
+  "cloth_npc_villager_f",
+  "hair_npc_villager_f",
+  "leather_npc_villager_f",
+  "skin_npc_villager_f"
+ ],
+ "triangles": 16528,
+ "notes": "Pose-tested: Idle_Loop, Idle_Talking_Loop, Walk_Loop, Interact. Long skirt is weighted to the thighs/shins.",
+ "triangles_body": 16528,
+ "height_m": 1.798,
+ "bbox_blender_zup": {
+  "min": [
+   -0.983,
+   -0.247,
+   -0.004
+  ],
+  "max": [
+   0.983,
+   0.308,
+   1.798
+  ]
+ },
+ "bbox_gltf_yup": {
+  "min": [
+   -0.983,
+   -0.004,
+   -0.308
+  ],
+  "max": [
+   0.983,
+   1.798,
+   0.247
+  ]
+ },
+ "bbox_note": "rest pose (T-pose, arms out), body_* meshes only (weapons excluded)",
+ "size_bytes": 7917736,
+ "textures": {
+  "cloth": 2048,
+  "leather": 512,
+  "skin": 2048,
+  "hair": 1024
+ },
+ "fast_preview_build": false
+}

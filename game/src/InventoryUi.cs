@@ -1,0 +1,1561 @@
+using Godot;
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Text;
+
+namespace AshenAbyss;
+
+/// <summary>Remembers which items the player has already looked at, so freshly acquired ones can carry a marker.</summary>
+public static class ItemMarks
+{
+    private static Hero _hero;
+    private static bool _hooked;
+    private static readonly HashSet<string> Seen = new();
+
+    /// <summary>
+    /// Starts following the game from the first world event on (the "area" event of every load comes before any
+    /// loot can be picked up), so items found before the inventory was ever opened still count as new.
+    /// </summary>
+    public static void EnsureHooked()
+    {
+        if (_hooked) return;
+        _hooked = true;
+        World.Event += (evt, arg) => Track(Game.I?.Hero);
+    }
+
+    /// <summary>Cheap; call often. When the hero changes (new game, load) everything already owned counts as seen.</summary>
+    public static void Track(Hero h)
+    {
+        if (ReferenceEquals(h, _hero)) return;
+        _hero = h;
+        Seen.Clear();
+        if (h == null) return;
+        foreach (var it in h.D.Bag) Seen.Add(it.Uid);
+        foreach (var it in h.D.Stash) Seen.Add(it.Uid);
+        foreach (var it in h.D.Equip) if (it != null) Seen.Add(it.Uid);
+    }
+
+    public static bool IsNew(Item it) => it != null && !Seen.Contains(it.Uid);
+    public static void See(Item it) { if (it != null) Seen.Add(it.Uid); }
+}
+
+/// <summary>One hoverable cell registered with a <see cref="SlotBoard"/>: an item, or any control with an explanation.</summary>
+public sealed class SlotView
+{
+    public Control Node;                 // rectangle that reacts to the mouse
+    public Control Clip;                 // scroll area that may hide the cell (null when always visible)
+    public Item Item;
+    public bool Compare = true;          // show the equipped counterpart beside the tooltip
+    public bool Glow = true;             // outline the cell while hovered
+    public Func<Item, string> Extra;     // extra BBCode lines under the item tooltip (price, hints)
+    public string Text;                  // tooltip of a cell that is not an item
+    public Control NewDot;               // "new item" marker, hidden on first hover
+}
+
+/// <summary>
+/// The hover logic shared by the item panels. Cells are found by rectangle every frame, so a cell that is rebuilt
+/// under a resting pointer still answers, and the tooltip is shown once per change with the equipped item beside it.
+/// (The theme's slot widget shows the same text on its own mouse-enter; this adds the comparison card and the
+/// markers, and covers the cells that are not items.)
+/// </summary>
+public sealed class SlotBoard
+{
+    private readonly List<SlotView> _views = new();
+    private SlotView _cur;
+    private Panel _glow;
+    public Action<SlotView> OnHover;
+    public Item Hovered => _cur?.Item;
+
+    public SlotView Add(SlotView v) { _views.Add(v); return v; }
+
+    /// <summary>Forget every cell. Call BEFORE freeing the nodes of a rebuild.</summary>
+    public void Clear()
+    {
+        DetachGlow();
+        _views.Clear();
+        if (_cur != null) { _cur = null; Game.I?.Ui?.HideTooltip(); }
+    }
+
+    public void Dispose()
+    {
+        Clear();
+        if (_glow != null && GodotObject.IsInstanceValid(_glow)) _glow.QueueFree();
+        _glow = null;
+    }
+
+    public void Poll(Control panel)
+    {
+        SlotView hit = null;
+        if (_views.Count > 0 && panel.IsVisibleInTree())
+        {
+            var vp = panel.GetViewport();
+            var over = vp?.GuiGetHoveredControl();
+            // a dialog or another panel above us owns the mouse: no tooltips from underneath
+            if (vp != null && (over == null || over == panel || panel.IsAncestorOf(over)))
+            {
+                Vector2 m = Ui.PointerPos(panel);
+                for (int i = 0; i < _views.Count; i++)
+                {
+                    var v = _views[i];
+                    if (!GodotObject.IsInstanceValid(v.Node)) continue;
+                    if (v.Clip != null && GodotObject.IsInstanceValid(v.Clip) && !v.Clip.GetGlobalRect().HasPoint(m)) continue;
+                    if (v.Node.GetGlobalRect().HasPoint(m)) { hit = v; break; }
+                }
+            }
+        }
+        if (ReferenceEquals(hit, _cur)) return;
+        _cur = hit;
+        DetachGlow();
+        var ui = Game.I?.Ui;
+        if (hit == null) { ui?.HideTooltip(); return; }
+        if (hit.Glow) AttachGlow(hit.Node);
+        OnHover?.Invoke(hit);
+        string bb = hit.Item != null ? ItemUi.Tip(hit) : hit.Text;
+        if (string.IsNullOrEmpty(bb)) { ui?.HideTooltip(); return; }
+        string cmp = hit.Item != null && hit.Compare ? ItemUi.CompareTip(hit.Item) : null;
+        // beside the cell, never on top of it: the manager puts the card to the right of the rectangle, or to its
+        // left when the right has no room, and the comparison card on the far side of that
+        ui?.ShowTooltipAt(hit.Node.GetGlobalRect(), bb, cmp, null);
+    }
+
+    private void AttachGlow(Control host)
+    {
+        if (_glow == null || !GodotObject.IsInstanceValid(_glow))
+        {
+            _glow = new Panel { MouseFilter = Control.MouseFilterEnum.Ignore };
+            _glow.AddThemeStyleboxOverride("panel", ItemUi.OutlineBox(new Color(1f, 0.93f, 0.76f, 0.9f), 2));
+        }
+        host.AddChild(_glow);
+        _glow.SetAnchorsAndOffsetsPreset(Control.LayoutPreset.FullRect);
+    }
+
+    private void DetachGlow()
+    {
+        if (_glow == null || !GodotObject.IsInstanceValid(_glow)) { _glow = null; return; }
+        _glow.GetParent()?.RemoveChild(_glow);
+    }
+}
+
+/// <summary>Widgets shared by the inventory and the vendor panels: item cells with markers, currency rows, tabs, cost lines.</summary>
+public static class ItemUi
+{
+    public static readonly Color ScrapColor = new(0.72f, 0.76f, 0.8f);
+    public static readonly Color DustColor = new(0.7f, 0.58f, 0.96f);
+    public static readonly Color CoreColor = new(1f, 0.55f, 0.2f);
+    public static readonly Color JunkColor = new(0.92f, 0.4f, 0.34f);
+    public static readonly Color PickColor = new(0.45f, 0.9f, 0.4f);
+
+    private static StyleBox _emptyBox;
+    private static readonly Dictionary<(Color, int), StyleBox> Outlines = new();
+    private static readonly Dictionary<Color, StyleBox> Dots = new();
+    private static readonly Dictionary<int, StyleBox> OptionBoxes = new();
+
+    // ───────────────────────── raster art ─────────────────────────
+
+    private static bool _artLooked;
+    private static UiArt.Piece _socket, _mount, _bullet, _headLine, _rule;
+
+    /// <summary>The pieces the item panels draw by themselves, looked up once. They stay null without the art: every user falls back to its flat drawing.</summary>
+    private static void LookArt()
+    {
+        if (_artLooked) return;
+        _artLooked = true;
+        if (!UiTheme.Art) return;
+        _socket = UiArt.P("socket"); _mount = UiArt.P("gem_slot"); _bullet = UiArt.P("bullet");
+        _headLine = UiArt.P("header_line"); _rule = UiArt.P("rule");
+    }
+
+    /// <summary>True when the forged socket pieces are there: <see cref="DrawSocket"/> may be used.</summary>
+    public static bool SocketArt { get { LookArt(); return _socket != null && _mount != null; } }
+
+    /// <summary>
+    /// One forged socket filling the square <paramref name="box"/>: the iron ring — or, with <paramref name="mount"/>,
+    /// the diamond mount — holding a stone of colour <paramref name="stone"/> when <paramref name="filled"/>.
+    /// For draw callbacks (it allocates nothing); draws nothing without the art, see <see cref="SocketArt"/>.
+    /// </summary>
+    public static void DrawSocket(CanvasItem ci, Rect2 box, bool filled, Color stone, bool mount = false)
+    {
+        var piece = mount ? _mount : _socket;
+        if (piece == null) return;
+        UiArt.Sprite(ci, piece, box);
+        if (!filled) return;
+        Vector2 c = box.Position + box.Size * 0.5f;
+        float r = box.Size.X * (mount ? 0.25f : 0.31f);
+        ci.DrawCircle(c, r, stone.Darkened(0.5f), true, -1f, true);
+        ci.DrawCircle(c, r * 0.8f, stone, true, -1f, true);
+        if (r >= 3.5f) ci.DrawCircle(c - new Vector2(r, r) * 0.28f, r * 0.3f, new Color(stone.Lightened(0.6f), 0.85f), true, -1f, true);
+    }
+
+    /// <summary>A stone of colour <paramref name="c"/> set in a small iron socket (the mark of a currency), <paramref name="size"/> design px.</summary>
+    private static Control Stone(Color c, float size)
+    {
+        var p = new Control
+        {
+            CustomMinimumSize = new Vector2(size, size), SizeFlagsVertical = Control.SizeFlags.ShrinkCenter,
+            MouseFilter = Control.MouseFilterEnum.Ignore, TextureFilter = CanvasItem.TextureFilterEnum.LinearWithMipmaps,
+        };
+        p.Draw += () => DrawSocket(p, new Rect2(Vector2.Zero, p.Size), true, c);
+        return p;
+    }
+
+    /// <summary>
+    /// The theme's slot marks the sockets of an item with flat squares; here they become forged sockets, each one
+    /// holding a stone of its gem's colour once it is filled. The squares are recognised by their shape (a row of
+    /// one colour rectangle per socket) and hidden only when found, so a slot that draws its sockets differently
+    /// is left exactly as the theme made it.
+    /// </summary>
+    private static void SocketPips(Control holder, Control inner, Item it, int size)
+    {
+        if (it == null || it.Sockets <= 0 || inner == null || !SocketArt) return;
+        int n = it.Sockets;
+        HBoxContainer flat = null;
+        foreach (var ch in inner.GetChildren())
+        {
+            if (ch is not HBoxContainer hb || hb.GetChildCount() != n) continue;
+            bool squares = true;
+            foreach (var sq in hb.GetChildren()) if (sq is not ColorRect) { squares = false; break; }
+            if (squares) { flat = hb; break; }
+        }
+        if (flat == null) return;
+        flat.Visible = false;
+        var set = new bool[n];
+        var stones = new Color[n];
+        for (int i = 0; i < n; i++)
+        {
+            GemDef g = i < it.Gems.Count ? ItemDb.Gem(it.Gems[i]) : null;
+            set[i] = g != null;
+            if (g != null) stones[i] = g.Color;
+        }
+        float d = MathF.Max(10f, MathF.Round(size / 5f)), step = d + 1f;
+        var pips = new Control { MouseFilter = Control.MouseFilterEnum.Ignore, TextureFilter = CanvasItem.TextureFilterEnum.LinearWithMipmaps };
+        pips.Draw += () =>
+        {
+            for (int i = 0; i < n; i++) DrawSocket(pips, new Rect2(i * step, 0f, d, d), set[i], stones[i]);
+        };
+        holder.AddChild(pips);
+        Corner(pips, false, true, n * step - 1f, d, 6f);      // inside the cell's rarity line
+    }
+
+    /// <summary>
+    /// Underlines a section heading with the forged header line (a stud and a tapering rule) across the heading's
+    /// column. The line lies in the gap under the label, so nothing changes size.
+    /// </summary>
+    public static T Underlined<T>(T label) where T : Control
+    {
+        LookArt();
+        if (_headLine == null) return label;
+        float h = _headLine.BoxSize.Y;
+        label.Draw += () => UiArt.Nine(label, _headLine, new Rect2(0f, label.Size.Y - 2f, label.Size.X, h));
+        return label;
+    }
+
+    /// <summary>A vertical divider between two columns: the forged rule stood on end (the theme's flat line without the art).</summary>
+    public static Control VRule()
+    {
+        LookArt();
+        if (_rule == null) return new VSeparator();
+        float h = _rule.BoxSize.Y;
+        var host = new Control { CustomMinimumSize = new Vector2(10f, 0f), MouseFilter = Control.MouseFilterEnum.Ignore };
+        // a quarter turn to the left: the piece's lit upper edge ends up on the left, as the light falls on everything else
+        var line = new Control { MouseFilter = Control.MouseFilterEnum.Ignore, Rotation = -Mathf.Pi * 0.5f };
+        line.Draw += () => UiArt.Nine(line, _rule, new Rect2(0f, 0f, line.Size.X, h), new Color(1f, 1f, 1f, 0.8f));
+        host.AddChild(line);
+        host.Resized += () =>
+        {
+            line.Size = new Vector2(host.Size.Y, h);
+            line.Position = new Vector2(MathF.Round((host.Size.X - h) * 0.5f), host.Size.Y);
+            line.QueueRedraw();
+        };
+        return host;
+    }
+
+    /// <summary>
+    /// An inset well (recessed rim over the darkest field) around a grid of cells or a list. With
+    /// <paramref name="fill"/> it is as wide as its column and a grid sits in its middle; otherwise it hugs its content.
+    /// </summary>
+    public static PanelContainer Well(Control content, bool fill = true, bool centre = true)
+    {
+        var w = UiTheme.Well();
+        w.MouseFilter = Control.MouseFilterEnum.Pass;
+        w.SizeFlagsHorizontal = fill ? Control.SizeFlags.Fill : Control.SizeFlags.ShrinkBegin;
+        if (content != null)
+        {
+            if (fill && centre && content is GridContainer) content.SizeFlagsHorizontal = Control.SizeFlags.ShrinkCenter;
+            w.AddChild(content);
+        }
+        return w;
+    }
+
+    /// <summary>Room the well takes around its content on each axis (both sides together), in design px.</summary>
+    public static float WellPad
+    {
+        get
+        {
+            var sb = UiTheme.WellBox;
+            return sb == null ? 0f : sb.GetMargin(Side.Left) + sb.GetMargin(Side.Right);
+        }
+    }
+
+    /// <summary>
+    /// Dresses a button as one of several options to pick from (an affix, a recipe, a codex entry): a quiet row
+    /// plate that lights up on hover, and the ember plate for the chosen one. Actions keep the theme's button.
+    /// Without the row pieces only the lettering changes, as before.
+    /// </summary>
+    public static void Option(Button b, bool active, float padX = 18f)
+    {
+        Tone(b, active);
+        if (!UiTheme.Art || !UiArt.Has("row") || !UiArt.Has("row_hover") || !UiArt.Has("row_on")) return;
+        b.AddThemeStyleboxOverride("normal", OptionBox(active ? 2 : 0, padX));
+        b.AddThemeStyleboxOverride("hover", OptionBox(active ? 2 : 1, padX));
+        b.AddThemeStyleboxOverride("pressed", OptionBox(2, padX));
+        b.AddThemeStyleboxOverride("hover_pressed", OptionBox(2, padX));
+        b.AddThemeStyleboxOverride("disabled", OptionBox(3, padX));
+        if (!active) return;
+        var c = UiTheme.Gold.Lightened(0.3f);
+        b.AddThemeColorOverride("font_color", c);
+        b.AddThemeColorOverride("font_focus_color", c);
+        b.AddThemeColorOverride("font_hover_color", UiTheme.Gold.Lightened(0.35f));
+    }
+
+    /// <summary>
+    /// Row plates for options: 0 idle, 1 hover, 2 chosen, 3 disabled. With the theme button's content margins
+    /// (18 × 8) an option is exactly as large as a button; a smaller <paramref name="padX"/> makes a compact chip.
+    /// </summary>
+    private static StyleBox OptionBox(int state, float padX)
+    {
+        int key = state + 8 * (int)MathF.Round(padX);
+        if (OptionBoxes.TryGetValue(key, out var sb)) return sb;
+        sb = state switch
+        {
+            1 => UiTheme.ArtBox("row_hover", padX, 8f),
+            2 => UiTheme.ArtBox("row_on", padX, 8f),
+            3 => UiTheme.ArtBox("items_row_off|" + key, () => new UiNine("row", null, 0f, padX, 8f) { FrameMod = new Color(0.66f, 0.66f, 0.68f, 0.6f) }),
+            _ => UiTheme.ArtBox("row", padX, 8f),
+        };
+        return OptionBoxes[key] = sb;
+    }
+
+    // ───────────────────────── text ─────────────────────────
+
+    public static string Col(Color c, string s) => $"[color=#{c.ToHtml(false)}]{s}[/color]";
+    public static string Dim(string s) => Col(Palette.TextDim, s);
+    public static string Pct(float v) => v.ToString("0.#", CultureInfo.InvariantCulture) + "%";
+
+    /// <summary>"花費　金幣 1,200（持有 3,400）　碎鐵 4（持有 2）" with unaffordable parts in red.</summary>
+    public static string Costs(SaveData d, long gold, int scrap = 0, int dust = 0, int cores = 0)
+    {
+        var sb = new StringBuilder("花費　");
+        int n = 0;
+        n += Part(sb, "金幣", gold, d.Gold, Palette.Gold);
+        // gold and materials together: the materials go on a line of their own under the gold, so no entry is ever
+        // broken between its amount and what the hero holds (the panes are narrow at the largest text size)
+        int kinds = n + (scrap > 0 ? 1 : 0) + (dust > 0 ? 1 : 0) + (cores > 0 ? 1 : 0);
+        if (n > 0 && kinds >= 2) sb.Append('\n').Append("　　　");
+        n += Part(sb, Crafting.ScrapName, scrap, d.Scrap, ScrapColor);
+        n += Part(sb, Crafting.DustName, dust, d.Dust, DustColor);
+        n += Part(sb, Crafting.CoreName, cores, d.Cores, CoreColor);
+        if (n == 0) sb.Append(Dim("無"));
+        return sb.ToString();
+    }
+
+    private static int Part(StringBuilder sb, string name, long need, long have, Color c)
+    {
+        if (need <= 0) return 0;
+        sb.Append(Col(have >= need ? c : Palette.Bad, $"{name} {Crafting.Num(need)}"));
+        sb.Append(Dim($"（持有 {Crafting.Num(have)}）　"));
+        return 1;
+    }
+
+    public static string Tip(SlotView v)
+    {
+        var it = v.Item;
+        if (it == null) return v.Text ?? "";
+        var h = Game.I?.Hero;
+        Item eq = v.Compare && h != null && !h.IsEquipped(it) ? h.Compared(it) : null;
+        string bb = ItemText.Tooltip(it, eq, h?.D.Level ?? 99, eq != null);
+        string extra = v.Extra?.Invoke(it);
+        return string.IsNullOrEmpty(extra) ? bb : bb + "\n" + extra;
+    }
+
+    /// <summary>Tooltip of the equipped item this one would replace, for the side-by-side comparison (null when there is none).</summary>
+    public static string CompareTip(Item it)
+    {
+        var h = Game.I?.Hero;
+        if (h == null || it == null || h.IsEquipped(it)) return null;
+        var eq = h.Compared(it);
+        if (eq == null || ReferenceEquals(eq, it)) return null;
+        return Dim("— 目前裝備 —") + "\n" + ItemText.Tooltip(eq, null, h.D.Level, false);
+    }
+
+    public static string EquipSound(Item it) =>
+        it.Kind == ItemKind.Weapon ? "equip_weapon" : it.Kind is ItemKind.Amulet or ItemKind.Ring ? "equip_jewel" : "equip_armor";
+
+    public static ItemKind KindOf(EquipSlot s) => s switch
+    {
+        EquipSlot.Weapon => ItemKind.Weapon, EquipSlot.Helm => ItemKind.Helm, EquipSlot.Chest => ItemKind.Chest, EquipSlot.Gloves => ItemKind.Gloves,
+        EquipSlot.Pants => ItemKind.Pants, EquipSlot.Boots => ItemKind.Boots, EquipSlot.Amulet => ItemKind.Amulet, _ => ItemKind.Ring
+    };
+
+    // ───────────────────────── style ─────────────────────────
+
+    /// <summary>
+    /// The frame of a marked cell. With the raster art it is a glowing rim around the forged cell, tinted with
+    /// <paramref name="c"/> (the theme's gold keeps the rim's own colour): the bracketed selection rim from 3 px up
+    /// (the chosen cell), the plain rim below (a candidate, the hovered cell). The rim lies outside the cell's
+    /// rarity line, so both read. Without the art: a flat outline of that thickness.
+    /// </summary>
+    public static StyleBox OutlineBox(Color c, int px)
+    {
+        if (Outlines.TryGetValue((c, px), out var sb)) return sb;
+        UiArt.Piece rim = UiTheme.Art ? UiArt.P(px >= 3 ? "slot_selected" : "slot_hover") : null;
+        if (rim != null) sb = new UiNine { Over1 = rim, Over1Mod = c == UiTheme.Gold ? Colors.White : c };
+        else sb = UiTheme.Box(new Color(0, 0, 0, 0), c, px, 4);
+        return Outlines[(c, px)] = sb;
+    }
+
+    /// <summary>The theme's cell box for the plain cells built here when the slot widget itself cannot be; flat as the last resort.</summary>
+    private static StyleBox CellBox(int rarity, Color flatBg, Color flatBorder, int px)
+    {
+        try
+        {
+            var sb = UiTheme.SlotBox(rarity, false, false);
+            if (sb != null) return sb;
+        }
+        catch (Exception e) { Log.Error("ui", "theme slot box failed", e); }
+        return UiTheme.Box(flatBg, flatBorder, px, 4);
+    }
+
+    private static StyleBox Dot(Color c)
+    {
+        if (!Dots.TryGetValue(c, out var sb)) Dots[c] = sb = UiTheme.Box(c, c.Darkened(0.45f), 1, 6);
+        return sb;
+    }
+
+    private static T Fill<T>(T c) where T : Control
+    {
+        c.MouseFilter = Control.MouseFilterEnum.Ignore;
+        c.SetAnchorsAndOffsetsPreset(Control.LayoutPreset.FullRect);
+        return c;
+    }
+
+    private static void Corner(Control c, bool right, bool bottom, float w, float h, float inset)
+    {
+        float ax = right ? 1f : 0f, ay = bottom ? 1f : 0f;
+        c.AnchorLeft = ax; c.AnchorRight = ax; c.AnchorTop = ay; c.AnchorBottom = ay;
+        c.OffsetLeft = right ? -(w + inset) : inset; c.OffsetRight = right ? -inset : w + inset;
+        c.OffsetTop = bottom ? -(h + inset) : inset; c.OffsetBottom = bottom ? -inset : h + inset;
+    }
+
+    // ───────────────────────── cells ─────────────────────────
+
+    /// <summary>
+    /// An item cell: the theme's slot widget inside a holder that carries our markers, registered for hover.
+    /// Clicks always report the item the cell was built for. The widget's own tooltip is switched off (its text
+    /// function answers null): the board shows the card, so the comparison and the extra lines cannot be replaced
+    /// by a second, plainer tooltip when the pointer re-enters the cell.
+    /// </summary>
+    public static SlotView Slot(SlotBoard board, Item it, int size, Action<Item> onLeft, Action<Item> onRight,
+        Func<Item, string> extra = null, bool compare = true, Control clip = null)
+    {
+        var holder = new Control { CustomMinimumSize = new Vector2(size, size), MouseFilter = Control.MouseFilterEnum.Ignore };
+        var view = new SlotView { Node = holder, Item = it, Extra = extra, Compare = compare, Clip = clip };
+        void Left() => Log.Guard("ui", () => onLeft?.Invoke(it));
+        void Right() => Log.Guard("ui", () => onRight?.Invoke(it));
+        Control inner = null;
+        try { inner = UiTheme.ItemSlot(it, size, _ => Left(), _ => Right(), _ => null); }
+        catch (Exception e) { Log.Error("ui", $"theme item slot failed for {it?.Name}", e); }
+        inner ??= FallbackSlot(it, Left, Right);
+        holder.AddChild(inner);
+        inner.SetAnchorsAndOffsetsPreset(Control.LayoutPreset.FullRect);
+        try { SocketPips(holder, inner, it, size); }
+        catch (Exception e) { Log.Error("ui", $"socket marks failed for {it?.Name}", e); }
+        board?.Add(view);
+        return view;
+    }
+
+    /// <summary>Plain cell used only if the theme's slot widget cannot be built: rarity frame, tinted icon, clicks.</summary>
+    private static Control FallbackSlot(Item it, Action left, Action right)
+    {
+        var rc = Palette.Rarity(it.Rarity);
+        var p = new Panel { MouseFilter = Control.MouseFilterEnum.Stop };
+        p.AddThemeStyleboxOverride("panel", CellBox((int)it.Rarity, new Color(0.07f, 0.065f, 0.06f, 0.95f), rc.Darkened(0.25f), 2));
+        var icon = new TextureRect
+        {
+            Texture = Icons.ForItem(it), Modulate = rc, MouseFilter = Control.MouseFilterEnum.Ignore,
+            ExpandMode = TextureRect.ExpandModeEnum.IgnoreSize, StretchMode = TextureRect.StretchModeEnum.KeepAspectCentered,
+        };
+        p.AddChild(icon);
+        icon.SetAnchorsAndOffsetsPreset(Control.LayoutPreset.FullRect, Control.LayoutPresetMode.Minsize, 6);
+        p.GuiInput += ev =>
+        {
+            if (ev is not InputEventMouseButton { Pressed: true } mb) return;
+            if (mb.ButtonIndex == MouseButton.Left) left();
+            else if (mb.ButtonIndex == MouseButton.Right) right();
+        };
+        return p;
+    }
+
+    /// <summary>An empty cell (the theme's recessed slot), optionally with a faint icon of what belongs there.</summary>
+    public static Control Empty(int size, Texture2D ghost = null)
+    {
+        Control p = null;
+        try { p = UiTheme.ItemSlot(null, size, null, null, null); }
+        catch (Exception e) { Log.Error("ui", "theme empty slot failed", e); }
+        if (p == null)
+        {
+            _emptyBox ??= CellBox(-1, new Color(0.05f, 0.048f, 0.045f, 0.82f), new Color(0.24f, 0.22f, 0.2f, 0.9f), 1);
+            var panel = new Panel { MouseFilter = Control.MouseFilterEnum.Ignore };
+            panel.AddThemeStyleboxOverride("panel", _emptyBox);
+            p = panel;
+        }
+        p.CustomMinimumSize = new Vector2(size, size);
+        if (ghost != null)
+        {
+            var t = new TextureRect
+            {
+                Texture = ghost, Modulate = new Color(1, 1, 1, 0.12f), MouseFilter = Control.MouseFilterEnum.Ignore,
+                ExpandMode = TextureRect.ExpandModeEnum.IgnoreSize, StretchMode = TextureRect.StretchModeEnum.KeepAspectCentered,
+            };
+            p.AddChild(t);
+            t.SetAnchorsAndOffsetsPreset(Control.LayoutPreset.FullRect, Control.LayoutPresetMode.Minsize, Math.Max(4, size / 7));
+        }
+        return p;
+    }
+
+    /// <summary>An empty cell that waits for a gem: the theme's recessed slot with the forged gem mount in its middle (at its own size).</summary>
+    public static Control EmptySocket(int size)
+    {
+        var p = Empty(size);
+        LookArt();
+        if (_mount == null) return p;
+        var m = new Control { MouseFilter = Control.MouseFilterEnum.Ignore, TextureFilter = CanvasItem.TextureFilterEnum.LinearWithMipmaps };
+        m.Draw += () => UiArt.SpriteCentered(m, _mount, m.Size * 0.5f);
+        p.AddChild(m);
+        m.SetAnchorsAndOffsetsPreset(Control.LayoutPreset.FullRect);
+        return p;
+    }
+
+    public static void Outline(Control holder, Color c, int px = 2)
+    {
+        var p = new Panel();
+        p.AddThemeStyleboxOverride("panel", OutlineBox(c, px));
+        holder.AddChild(Fill(p));
+    }
+
+    public static void Dimmed(Control holder, float alpha = 0.62f) =>
+        holder.AddChild(Fill(new ColorRect { Color = new Color(0, 0, 0, alpha) }));
+
+    /// <summary>
+    /// The "廢" mark of a junk item. The four corners of a cell are shared out: masterwork badge top-right and socket
+    /// pips bottom-left (both drawn by the theme's slot), the new-item dot top-left, this mark bottom-right. The
+    /// label is pinned to its corner and takes whatever room its caption-size glyph needs, at any text scale.
+    /// </summary>
+    public static void JunkMark(Control holder)
+    {
+        var veil = Fill(new ColorRect { Color = new Color(0.08f, 0.02f, 0.02f, 0.5f) });
+        holder.AddChild(veil);
+        // the veil darkens the cell's floor and glyph; the forged rim around them stays as it is
+        if (UiTheme.Art) veil.SetAnchorsAndOffsetsPreset(Control.LayoutPreset.FullRect, Control.LayoutPresetMode.Minsize, 4);
+        var l = UiTheme.Label("廢", UiTheme.FsCaption, JunkColor);
+        l.MouseFilter = Control.MouseFilterEnum.Ignore;
+        l.AddThemeConstantOverride("line_spacing", 0);
+        holder.AddChild(l);
+        // anchored to the bottom-right corner with no size of its own: the label grows up and to the left to the
+        // size of its text (the line box already carries 3–4 px of air under the glyph, so the bottom inset is small)
+        l.AnchorLeft = 1f; l.AnchorRight = 1f; l.AnchorTop = 1f; l.AnchorBottom = 1f;
+        l.GrowHorizontal = Control.GrowDirection.Begin;
+        l.GrowVertical = Control.GrowDirection.Begin;
+        l.OffsetLeft = -5f; l.OffsetRight = -5f; l.OffsetTop = -1f; l.OffsetBottom = -1f;
+    }
+
+    /// <summary>The ember dot of a freshly acquired item, in the top-left corner (the top-right one belongs to the masterwork badge).</summary>
+    public static Control NewDot(Control holder)
+    {
+        LookArt();
+        if (_bullet != null)
+        {
+            // an ember stone in its gold setting, riveted over the cell's corner
+            var stud = new Control { MouseFilter = Control.MouseFilterEnum.Ignore, TextureFilter = CanvasItem.TextureFilterEnum.LinearWithMipmaps };
+            stud.Draw += () => UiArt.Sprite(stud, _bullet, new Rect2(Vector2.Zero, stud.Size));
+            holder.AddChild(stud);
+            Corner(stud, false, false, 18, 18, -1);
+            return stud;
+        }
+        var p = new Panel { MouseFilter = Control.MouseFilterEnum.Ignore };
+        p.AddThemeStyleboxOverride("panel", Dot(Palette.Ember));
+        holder.AddChild(p);
+        Corner(p, false, false, 10, 10, 4);
+        return p;
+    }
+
+    /// <summary>
+    /// A cell with one line of text under it (prices) at caption size. <paramref name="width"/> is the DESIGN width
+    /// kept for the caption: it grows with the text scale, so the column can become wider than the cell. A caption
+    /// that still does not fit ends in an ellipsis.
+    /// </summary>
+    public static Control Captioned(Control cell, string text, Color c, int width)
+    {
+        var v = new VBoxContainer { MouseFilter = Control.MouseFilterEnum.Ignore };
+        v.AddThemeConstantOverride("separation", 1);
+        cell.SizeFlagsHorizontal = Control.SizeFlags.ShrinkCenter;
+        v.AddChild(cell);
+        var l = UiTheme.Trimmed(UiTheme.Label(text, UiTheme.FsCaption, c), false);
+        l.HorizontalAlignment = HorizontalAlignment.Center;
+        UiTheme.MinSize(l, width, 0);
+        l.MouseFilter = Control.MouseFilterEnum.Ignore;
+        v.AddChild(l);
+        return v;
+    }
+
+    // ───────────────────────── layout pieces ─────────────────────────
+
+    public static GridContainer Grid(int columns, int sep = 4)
+    {
+        var g = new GridContainer { Columns = columns, MouseFilter = Control.MouseFilterEnum.Ignore, SizeFlagsHorizontal = Control.SizeFlags.ShrinkBegin };
+        g.AddThemeConstantOverride("h_separation", sep);
+        g.AddThemeConstantOverride("v_separation", sep);
+        return g;
+    }
+
+    /// <summary>The forty bag cells. <paramref name="decorate"/> runs for every item cell (selection frames, markers).</summary>
+    public static GridContainer BagGrid(SlotBoard board, Hero h, int cell, Action<Item> onLeft, Action<Item> onRight,
+        Func<Item, string> extra = null, Action<Item, SlotView> decorate = null, bool compare = true)
+    {
+        var g = Grid(10);
+        var bag = h.D.Bag;
+        for (int i = 0; i < Hero.BagSize; i++)
+        {
+            if (i >= bag.Count) { g.AddChild(Empty(cell)); continue; }
+            var it = bag[i];
+            var v = Slot(board, it, cell, onLeft, onRight, extra, compare);
+            if (h.IsJunk(it)) JunkMark(v.Node);
+            decorate?.Invoke(it, v);
+            g.AddChild(v.Node);
+        }
+        return g;
+    }
+
+    public static ScrollContainer Scroll(Control content, Vector2 minSize)
+    {
+        var sc = new ScrollContainer { CustomMinimumSize = minSize, HorizontalScrollMode = ScrollContainer.ScrollMode.Disabled };
+        content.SizeFlagsHorizontal = Control.SizeFlags.ExpandFill;
+        sc.AddChild(content);
+        return sc;
+    }
+
+    /// <summary>
+    /// A theme button (it clicks and guards its callback by itself) that never takes keyboard focus.
+    /// <paramref name="size"/> is a DESIGN font size: UiTheme.Button sends it through UiTheme.Fs — pass a plain number.
+    /// </summary>
+    public static Button Btn(string text, Action onPress, int size = UiTheme.FsRow)
+    {
+        var b = UiTheme.Button(text, onPress, size);
+        b.FocusMode = Control.FocusModeEnum.None;
+        return b;
+    }
+
+    /// <summary>Colours a button as the chosen (gold) or an idle (dim) option of a group.</summary>
+    public static void Tone(Button b, bool active)
+    {
+        var c = active ? UiTheme.Gold : UiTheme.Dim;
+        b.AddThemeColorOverride("font_color", c);
+        b.AddThemeColorOverride("font_focus_color", c);
+        b.AddThemeColorOverride("font_hover_color", active ? UiTheme.Gold : UiTheme.Text);
+        b.AddThemeColorOverride("font_pressed_color", UiTheme.Gold);
+    }
+
+    /// <summary>
+    /// A row of option buttons, the current one in gold. <paramref name="size"/> is a DESIGN font size (it reaches
+    /// UiTheme.Fs through <see cref="Btn"/>) and <paramref name="minWidth"/> a design width: both grow with the text scale.
+    /// </summary>
+    public static HBoxContainer Tabs(string[] names, int current, Action<int> pick, int size = UiTheme.FsRow, int minWidth = 120)
+    {
+        var box = new HBoxContainer();
+        box.AddThemeConstantOverride("separation", 6);
+        for (int i = 0; i < names.Length; i++)
+        {
+            int idx = i;
+            var b = Btn(names[i], () => pick(idx), size);
+            UiTheme.MinSize(b, minWidth, 0);
+            UiTheme.TabTone(b, i == current);
+            box.AddChild(b);
+        }
+        return box;
+    }
+
+    /// <summary>Gold and the three crafting materials, each with a short explanation on hover.</summary>
+    public static HBoxContainer Money(SlotBoard board, SaveData d)
+    {
+        var box = new HBoxContainer();
+        box.AddThemeConstantOverride("separation", 20);
+        box.AddChild(Purse(board, "金幣", d.Gold, Palette.Gold, "金幣\n" + Dim("買賣、精鑄、淬火、附魔與銘刻都少不了它。")));
+        box.AddChild(Purse(board, Crafting.ScrapName, d.Scrap, ScrapColor, Crafting.ScrapName + "\n" + Dim("拆解任何裝備都能得到。精鑄與淬火的基本材料。")));
+        box.AddChild(Purse(board, Crafting.DustName, d.Dust, DustColor, Crafting.DustName + "\n" + Dim("拆解稀有以上的裝備所得。用於附魔、開鑿插槽、淬火與高階精鑄。")));
+        box.AddChild(Purse(board, Crafting.CoreName, d.Cores, CoreColor, Crafting.CoreName + "\n" + Dim("傳奇與獨特裝備拆解後留下的餘火。用於銘刻威能與最後幾級精鑄。")));
+        return box;
+    }
+
+    private static Control Purse(SlotBoard board, string name, long value, Color c, string tip)
+    {
+        var h = new HBoxContainer();
+        h.AddThemeConstantOverride("separation", 6);
+        if (SocketArt) h.AddChild(Stone(c, 18f));
+        else
+        {
+            var dot = new Panel { CustomMinimumSize = new Vector2(12, 12), SizeFlagsVertical = Control.SizeFlags.ShrinkCenter, MouseFilter = Control.MouseFilterEnum.Ignore };
+            dot.AddThemeStyleboxOverride("panel", Dot(c));
+            h.AddChild(dot);
+        }
+        // caption-size name, row-size amount: bottom-aligned so the two sizes share a baseline
+        var label = UiTheme.Label(name, UiTheme.FsCaption, UiTheme.Dim);
+        label.VerticalAlignment = VerticalAlignment.Bottom;
+        h.AddChild(label);
+        var amount = UiTheme.Label(Crafting.Num(value), UiTheme.FsRow, c);
+        amount.VerticalAlignment = VerticalAlignment.Bottom;
+        h.AddChild(amount);
+        board?.Add(new SlotView { Node = h, Text = tip, Glow = false, Compare = false });
+        return h;
+    }
+
+    public static void Clear(Node n)
+    {
+        if (n == null) return;
+        foreach (var c in n.GetChildren()) { n.RemoveChild(c); c.QueueFree(); }
+    }
+}
+
+/// <summary>
+/// Panel "inventory": character sheet on the left, paper doll and bag on the right.
+/// Left click equips or swaps, right click on worn gear unequips, Shift+left click marks junk, right click on a gem
+/// then a click on gear with a free socket sets the gem. New items carry an ember dot until hovered.
+/// </summary>
+public partial class InventoryUi : UiPanel
+{
+    public override string Id => "inventory";
+
+    // Design sizes at text scale 1.0. SheetW is a minimum width that grows with the text scale (UiTheme.MinSize);
+    // RightW is the width of the bag's well and of the column it stands in, the cells keep their size, and the paper
+    // doll (at least DollW × DollH) spreads over the width of its panel. The frame is at least FrameW × FrameH and
+    // grows with its content: about 1196 × 950 at 標準 and 1316 × 1008 at the largest text size, which leaves the
+    // crest its 34 px above the frame on a 1080-line screen.
+    private const int FrameW = 1196, FrameH = 900, SheetW = 400, RightW = 696, DollW = 676, DollH = 338, DollCell = 68, BagCell = 64, DollTagW = 100;
+    private const float DollEdge = 10f, DollPad = 10f, NicheW = 236f, NicheTop = 4f, NicheH = 252f, FigureLift = 8f;
+    private const float SmithRange = 9f;
+    private const string IdleHint = "左鍵：裝備　右鍵：卸下裝備／選取寶石　Shift＋左鍵：標記廢品";
+    private static readonly string[] SheetTabs = { "總覽", "攻勢", "守禦", "巧用" };
+
+    // paper-doll cells: column (-1 = along the left edge, 1 = along the right edge, 0 = the middle) and top, in the
+    // doll's own coordinates
+    private static readonly (EquipSlot slot, int col, float y)[] DollLayout =
+    {
+        (EquipSlot.Helm, -1, 8), (EquipSlot.Chest, -1, 90), (EquipSlot.Gloves, -1, 172), (EquipSlot.Pants, -1, 254),
+        (EquipSlot.Amulet, 1, 8), (EquipSlot.Ring1, 1, 90), (EquipSlot.Ring2, 1, 172), (EquipSlot.Boots, 1, 254),
+        (EquipSlot.Weapon, 0, 262),
+    };
+
+    // silhouette, in figure coordinates (centred on x = 300; DrawSilhouette moves it to the middle of the doll)
+    private static readonly Vector2[] Torso = { new(246, 82), new(354, 82), new(338, 170), new(262, 170) };
+    private static readonly Vector2[] ArmL = { new(246, 82), new(226, 92), new(212, 178), new(230, 182) };
+    private static readonly Vector2[] ArmR = { new(354, 82), new(374, 92), new(388, 178), new(370, 182) };
+    private static readonly Vector2[] Hips = { new(262, 170), new(338, 170), new(342, 190), new(258, 190) };
+    private static readonly Vector2[] LegL = { new(258, 190), new(298, 190), new(294, 254), new(266, 254) };
+    private static readonly Vector2[] LegR = { new(302, 190), new(342, 190), new(334, 254), new(306, 254) };
+    private static readonly Vector2[][] Body = { ArmL, ArmR, Torso, Hips, LegL, LegR };
+
+    private readonly SlotBoard _board = new();
+    private bool _built, _open, _dirty;
+    private Hero _hero;
+    private PanelContainer _frame;
+    private Label _name, _class, _who, _msg, _bagCount;
+    private HBoxContainer _tabBox, _moneyBox;
+    private VBoxContainer _rows;
+    private ScrollContainer _sheetScroll;
+    private Control _doll, _bagBox;
+    private Button _junkBtn;
+    private int _tab;
+    private Item _gemPick;
+    private float _msgT, _dt;
+    private int _faults, _settle;
+    private UiArt.Piece _niche, _nicheField;     // the recess the figure stands in (null without the art)
+
+    // ───────────────────────── life cycle ─────────────────────────
+
+    public InventoryUi()
+    {
+        Name = "InventoryUi";
+        ItemMarks.EnsureHooked();
+    }
+
+    public override void _Ready()
+    {
+        base._Ready();
+        Log.Guard("ui", EnsureBuilt);
+    }
+
+    // the manager takes a closed panel out of the tree: nothing may stay subscribed or parked in a freed cell
+    public override void _ExitTree()
+    {
+        base._ExitTree();
+        _open = false;
+        Hook(null);
+        _board.Dispose();
+    }
+
+    public override void OnOpen(object arg)
+    {
+        EnsureBuilt();
+        _open = true;
+        _gemPick = null;
+        _msgT = 0;
+        _faults = 0;
+        Hook(Game.I?.Hero);
+        ItemMarks.Track(_hero);
+        _hero?.PruneJunk();
+        // the vendor panels bring their own bag view and need the room: they win
+        if (Game.I?.Ui != null && Game.I.Ui.IsOpen("vendor"))
+            Callable.From(() => Game.I?.Ui?.Close("inventory")).CallDeferred();
+        Log.Guard("ui", Rebuild);
+    }
+
+    public override void OnClose()
+    {
+        _open = false;
+        _gemPick = null;
+        _board.Clear();
+        Hook(null);
+    }
+
+    public override void Refresh() => _dirty = true;
+
+    private void Hook(Hero h)
+    {
+        if (ReferenceEquals(h, _hero)) return;
+        if (_hero != null) _hero.Changed -= OnHeroChanged;
+        _hero = h;
+        if (_hero != null) _hero.Changed += OnHeroChanged;
+    }
+
+    private void OnHeroChanged() => _dirty = true;
+
+    public override void _Process(double delta)
+    {
+        base._Process(delta);
+        if (!_built) return;
+        _dt = (float)delta;
+        try { Tick(); }
+        catch (Exception e)
+        {
+            // never let a fault escape the frame, and never let it repeat sixty times a second in the log
+            _dirty = false;
+            if (++_faults <= 5) Log.Error("ui", "inventory panel frame failed", e);
+        }
+    }
+
+    private void Tick()
+    {
+        var h = Game.I?.Hero;
+        ItemMarks.Track(h);
+        if (!_open) return;
+        if (!ReferenceEquals(h, _hero)) { Hook(h); _dirty = true; }
+        if (_msgT > 0f)
+        {
+            _msgT -= _dt;
+            if (_msgT <= 0f) ShowIdleHint();
+        }
+        if (_dirty) Rebuild();
+        if (_settle > 0) { _settle--; return; }     // rebuilt cells get their place at the end of the frame: hover resumes on the next
+        _board.Poll(this);
+    }
+
+    // ───────────────────────── static layout ─────────────────────────
+
+    private void EnsureBuilt()
+    {
+        if (_built) return;
+        _built = true;
+        _board.OnHover = OnHover;
+        MouseFilter = MouseFilterEnum.Ignore;
+        SetAnchorsAndOffsetsPreset(LayoutPreset.FullRect);
+
+        _frame = UiTheme.Frame(true);
+        _frame.MouseFilter = MouseFilterEnum.Stop;
+        AddChild(_frame);
+        _frame.AnchorLeft = 1f; _frame.AnchorRight = 1f; _frame.AnchorTop = 0.5f; _frame.AnchorBottom = 0.5f;
+        _frame.OffsetLeft = -(FrameW + 28); _frame.OffsetRight = -28;
+        _frame.OffsetTop = -FrameH * 0.5f; _frame.OffsetBottom = FrameH * 0.5f;
+        _frame.GrowHorizontal = GrowDirection.Begin;
+        _frame.GrowVertical = GrowDirection.Both;
+
+        // the heavy frame brings its own padding (UiTheme.WinPadX × WinPadY)
+        var root = new VBoxContainer();
+        root.AddThemeConstantOverride("separation", 8);
+        _frame.AddChild(root);
+        if (UiTheme.Art) { _niche = UiArt.P("well"); _nicheField = UiArt.Field("well"); }
+
+        // header
+        var head = new HBoxContainer();
+        head.AddThemeConstantOverride("separation", 14);
+        head.AddChild(UiTheme.Label("行囊", UiTheme.FsTitle, UiTheme.Gold, true));
+        _who = UiTheme.Trimmed(UiTheme.Label("", UiTheme.FsRow, UiTheme.Dim), false);
+        _who.SizeFlagsHorizontal = SizeFlags.ExpandFill;
+        _who.HorizontalAlignment = HorizontalAlignment.Right;
+        _who.VerticalAlignment = VerticalAlignment.Center;
+        head.AddChild(_who);
+        var close = ItemUi.Btn("關閉", () => Game.I?.Ui?.Close("inventory"), UiTheme.FsRow);
+        close.SizeFlagsVertical = SizeFlags.ShrinkCenter;
+        head.AddChild(close);
+        root.AddChild(head);
+        root.AddChild(UiTheme.Rule());
+
+        var body = new HBoxContainer();
+        body.AddThemeConstantOverride("separation", 16);
+        body.SizeFlagsVertical = SizeFlags.ExpandFill;
+        root.AddChild(body);
+
+        // character sheet: the column widens with the text so a stat name and its value keep sharing one line;
+        // the stat list scrolls in a well under its tabs, inside whatever height the right-hand column gives the body
+        var sheet = new VBoxContainer();
+        sheet.AddThemeConstantOverride("separation", 6);
+        _name = UiTheme.Trimmed(UiTheme.Label("", 30, UiTheme.Text, true));
+        sheet.AddChild(_name);
+        _class = UiTheme.Wrapped(UiTheme.Label("", UiTheme.FsRow, UiTheme.Dim));      // level, class, paragon, spec: two lines when it must
+        sheet.AddChild(_class);
+        _tabBox = new HBoxContainer();
+        sheet.AddChild(_tabBox);
+        _rows = new VBoxContainer();
+        _rows.AddThemeConstantOverride("separation", 2);
+        _sheetScroll = UiTheme.MinSize(ItemUi.Scroll(_rows, Vector2.Zero), SheetW, 300);
+        var sheetWell = ItemUi.Well(_sheetScroll);
+        sheetWell.SizeFlagsVertical = SizeFlags.ExpandFill;
+        sheet.AddChild(sheetWell);
+        body.AddChild(sheet);
+
+        // paper doll, purse, bag. The column is as wide as the bag's well at every text size (the purse row and
+        // the two-line hint fit in it at the largest one; should a purse ever need more, the column and both boxes
+        // widen with it). The doll stands in a sub-panel as wide as the column — its side cells keep to the panel's
+        // edges, the figure in its niche and the weapon to the middle — and the bag lies in a well of the same width.
+        var right = new VBoxContainer { CustomMinimumSize = new Vector2(RightW, 0) };
+        right.AddThemeConstantOverride("separation", 8);
+        var dollFrame = new PanelContainer { MouseFilter = MouseFilterEnum.Ignore };
+        dollFrame.AddThemeStyleboxOverride("panel", UiTheme.Art
+            ? UiTheme.ArtBox("panel", DollPad, DollPad, "soot", 3f)
+            : new StyleBoxEmpty { ContentMarginLeft = DollPad, ContentMarginRight = DollPad, ContentMarginTop = DollPad, ContentMarginBottom = DollPad });
+        _doll = new Control { CustomMinimumSize = new Vector2(DollW, DollH), MouseFilter = MouseFilterEnum.Ignore };
+        _doll.Draw += DrawSilhouette;
+        dollFrame.AddChild(_doll);
+        right.AddChild(dollFrame);
+        _moneyBox = new HBoxContainer { Alignment = BoxContainer.AlignmentMode.Center };
+        right.AddChild(_moneyBox);
+        _bagBox = new MarginContainer();
+        right.AddChild(_bagBox);
+
+        var tools = new HBoxContainer();
+        tools.AddThemeConstantOverride("separation", 10);
+        tools.AddChild(ItemUi.Btn("整理", SortBag, UiTheme.FsRow));
+        _junkBtn = ItemUi.Btn("拆解廢品", SalvageJunk, UiTheme.FsRow);
+        tools.AddChild(_junkBtn);
+        _bagCount = UiTheme.Trimmed(UiTheme.Label("", UiTheme.FsCaption, UiTheme.Dim), false);
+        _bagCount.SizeFlagsHorizontal = SizeFlags.ExpandFill;
+        _bagCount.HorizontalAlignment = HorizontalAlignment.Right;
+        _bagCount.VerticalAlignment = VerticalAlignment.Center;
+        tools.AddChild(_bagCount);
+        right.AddChild(tools);
+
+        // hint and message line: room for two lines is always kept, so a long message wraps (and ends in an ellipsis
+        // only past the second line) and the frame does not change height when the text does
+        _msg = UiTheme.Wrapped(UiTheme.Label(IdleHint, UiTheme.FsCaption, UiTheme.Dim));
+        _msg.MaxLinesVisible = 2;
+        _msg.TextOverrunBehavior = TextServer.OverrunBehavior.TrimEllipsis;
+        UiTheme.MinSize(_msg, 0, 62);
+        right.AddChild(_msg);
+        body.AddChild(right);
+    }
+
+    // ───────────────────────── rebuild ─────────────────────────
+
+    private void Rebuild()
+    {
+        _dirty = false;
+        if (!_built) return;
+        _settle = 1;
+        _board.Clear();
+        var h = _hero;
+        if (h == null) return;
+        if (_gemPick != null && !h.InBag(_gemPick)) _gemPick = null;
+        var d = h.D;
+        _who.Text = $"{(string.IsNullOrEmpty(d.Name) ? "持燼者" : d.Name)}　等級 {d.Level} {Names.Class(h.Class)}";
+        BuildSheet(h);
+        BuildDoll(h);
+        ItemUi.Clear(_moneyBox);
+        _moneyBox.AddChild(ItemUi.Money(_board, d));
+        ItemUi.Clear(_bagBox);
+        _bagBox.AddChild(ItemUi.Well(ItemUi.BagGrid(_board, h, BagCell, OnBagLeft, OnBagRight, BagHint, DecorateBag)));
+        _bagCount.Text = $"行囊 {d.Bag.Count} / {Hero.BagSize}";
+        int junk = h.JunkItems().Count;
+        bool smith = AtSmith();
+        string verb = smith ? "拆解廢品" : "丟棄廢品";
+        _junkBtn.Text = junk > 0 ? $"{verb}（{junk}）" : verb;
+        ItemUi.Tone(_junkBtn, junk > 0);
+        if (_msgT <= 0f) ShowIdleHint();
+    }
+
+    private void ShowIdleHint()
+    {
+        _msgT = 0f;
+        if (_msg == null) return;
+        if (_gemPick != null)
+        {
+            _msg.Text = $"鑲嵌「{_gemPick.Name}」：點擊一件有空插槽的裝備（右鍵取消）";
+            _msg.AddThemeColorOverride("font_color", ItemUi.PickColor);
+        }
+        else
+        {
+            _msg.Text = IdleHint;
+            _msg.AddThemeColorOverride("font_color", UiTheme.Dim);
+        }
+    }
+
+    private void Say(string text, Color? c = null)
+    {
+        if (_msg == null) return;
+        _msg.Text = text;
+        _msg.AddThemeColorOverride("font_color", c ?? UiTheme.Text);
+        _msgT = 4.5f;
+    }
+
+    private void Fail(string why)
+    {
+        Say(why, Palette.Bad);
+        Snd.Ui("ui_error");
+    }
+
+    private void OnHover(SlotView v)
+    {
+        if (v.Item == null || v.NewDot == null) return;
+        ItemMarks.See(v.Item);
+        if (GodotObject.IsInstanceValid(v.NewDot)) v.NewDot.Visible = false;
+        v.NewDot = null;
+    }
+
+    // ───────────────────────── paper doll ─────────────────────────
+
+    private void BuildDoll(Hero h)
+    {
+        ItemUi.Clear(_doll);
+        foreach (var (slot, col, y) in DollLayout)
+        {
+            var kind = ItemUi.KindOf(slot);
+            var it = h.D.Equip[(int)slot];
+            Control node;
+            if (it != null)
+            {
+                var v = ItemUi.Slot(_board, it, DollCell, OnWornLeft, OnWornRight, WornHint, false);
+                node = v.Node;
+                if (_gemPick != null)
+                {
+                    if (it.Gems.Count < it.Sockets) ItemUi.Outline(node, ItemUi.PickColor);
+                    else ItemUi.Dimmed(node);
+                }
+            }
+            else
+            {
+                node = ItemUi.Empty(DollCell, Icons.ForKind(kind, slot == EquipSlot.Weapon ? (int)h.Class : -1));
+                string what = slot == EquipSlot.Weapon ? ItemDb.WeaponTypeNames[(int)h.Class] : Names.Kind(kind);
+                _board.Add(new SlotView { Node = node, Text = what + "\n" + ItemUi.Dim("尚未裝備"), Compare = false, Glow = false });
+            }
+            // pinned to the doll's left edge, right edge or middle, so the layout follows the width of the panel
+            _doll.AddChild(node);
+            float ax = col < 0 ? 0f : col > 0 ? 1f : 0.5f;
+            float x = col < 0 ? DollEdge : col > 0 ? -(DollEdge + DollCell) : -DollCell * 0.5f;
+            Pin(node, ax, x, y, DollCell, DollCell);
+
+            // slot name beside the cell, toward the silhouette: a box as tall as the cell with the text centred in
+            // it, so the caption sits level with the cell at every text size (two glyphs are 52 px wide at the largest)
+            var tag = UiTheme.Label(Names.Kind(kind), UiTheme.FsCaption, UiTheme.Dim);
+            tag.MouseFilter = MouseFilterEnum.Ignore;
+            tag.ClipText = true;
+            _doll.AddChild(tag);
+            bool rightSide = col > 0;
+            tag.HorizontalAlignment = rightSide ? HorizontalAlignment.Right : HorizontalAlignment.Left;
+            tag.VerticalAlignment = VerticalAlignment.Center;
+            Pin(tag, ax, rightSide ? x - 8 - DollTagW : x + DollCell + 8, y, DollTagW, DollCell);
+        }
+        _doll.QueueRedraw();
+    }
+
+    /// <summary>Places a child of the doll: <paramref name="ax"/> 0 measures x from the doll's left edge, 1 from its right edge, 0.5 from its middle.</summary>
+    private static void Pin(Control c, float ax, float x, float y, float w, float h)
+    {
+        c.AnchorLeft = ax; c.AnchorRight = ax; c.AnchorTop = 0f; c.AnchorBottom = 0f;
+        c.OffsetLeft = x; c.OffsetRight = x + w; c.OffsetTop = y; c.OffsetBottom = y + h;
+    }
+
+    private void DrawSilhouette()
+    {
+        float cx = MathF.Round(_doll.Size.X * 0.5f);
+        float lift = 0f, glow = 118f;
+        if (_niche != null)
+        {
+            // the recess the figure stands in: the darkest field inside a sunken rim, between the two columns of cells
+            var recess = new Rect2(cx - NicheW * 0.5f, NicheTop, NicheW, NicheH);
+            if (_nicheField != null) UiArt.Tile(_doll, _nicheField, recess.Grow(-2f));
+            UiArt.Nine(_doll, _niche, recess);
+            lift = FigureLift; glow = 106f;
+        }
+        _doll.DrawSetTransform(new Vector2(cx - 300f, -lift));
+        var fill = new Color(0.115f, 0.11f, 0.105f, 0.94f);
+        var rim = new Color(0.5f, 0.34f, 0.2f, 0.55f);
+        var ember = _hero != null ? Names.ClassColor(_hero.Class) : Palette.Ember;
+        var heart = new Vector2(300, 124);
+        _doll.DrawCircle(heart, glow, new Color(ember, 0.035f));
+        _doll.DrawCircle(heart, 78f, new Color(ember, 0.05f));
+        foreach (var poly in Body)
+        {
+            _doll.DrawColoredPolygon(poly, fill);
+            for (int i = 0; i < poly.Length; i++) _doll.DrawLine(poly[i], poly[(i + 1) % poly.Length], rim, 1.5f, true);
+        }
+        _doll.DrawRect(new Rect2(290, 64, 20, 20), fill);
+        var head = new Vector2(300, 46);
+        _doll.DrawCircle(head, 25f, fill);
+        _doll.DrawArc(head, 25f, 0f, Mathf.Tau, 40, rim, 1.5f, true);
+        // the ember every bearer carries in the chest
+        _doll.DrawCircle(heart, 22f, new Color(ember, 0.1f));
+        _doll.DrawCircle(heart, 11f, new Color(ember, 0.32f));
+        _doll.DrawCircle(heart, 5f, new Color(ember.Lightened(0.4f), 0.85f));
+        _doll.DrawSetTransform(Vector2.Zero);
+    }
+
+    private string WornHint(Item it) => _gemPick != null ? SocketHint(it) : ItemUi.Dim("右鍵：卸下");
+
+    /// <summary>While a gem is picked: what a click on this piece of gear would do.</summary>
+    private string SocketHint(Item target)
+    {
+        string why = _hero?.WhyCantSocket(_gemPick, target);
+        return why == null ? ItemUi.Col(ItemUi.PickColor, "左鍵：嵌入所選的寶石") : ItemUi.Col(Palette.Bad, why);
+    }
+
+    private void OnWornLeft(Item it)
+    {
+        if (_hero == null) return;
+        if (_gemPick != null) { TrySocket(it); return; }
+        Say("右鍵點擊可卸下這件裝備。");
+    }
+
+    private void OnWornRight(Item it)
+    {
+        var h = _hero;
+        if (h == null) return;
+        if (_gemPick != null) { CancelGemPick(); return; }
+        int idx = Array.IndexOf(h.D.Equip, it);
+        if (idx < 0) return;
+        string why = h.WhyCantUnequip((EquipSlot)idx);
+        if (why != null) { Fail(why); return; }
+        if (!h.Unequip((EquipSlot)idx)) { Fail("無法卸下"); return; }
+        ItemMarks.See(it);
+        Snd.Ui(ItemUi.EquipSound(it));
+        Log.Info("inv", $"unequipped {it.Name} from {(EquipSlot)idx}");
+    }
+
+    // ───────────────────────── bag ─────────────────────────
+
+    private void DecorateBag(Item it, SlotView v)
+    {
+        if (_gemPick != null)
+        {
+            if (ReferenceEquals(it, _gemPick)) ItemUi.Outline(v.Node, ItemUi.PickColor, 3);
+            else if (it.IsEquip && it.Gems.Count < it.Sockets) ItemUi.Outline(v.Node, ItemUi.PickColor);
+            else ItemUi.Dimmed(v.Node, 0.5f);
+        }
+        if (ItemMarks.IsNew(it)) v.NewDot = ItemUi.NewDot(v.Node);
+    }
+
+    private string BagHint(Item it)
+    {
+        var h = _hero;
+        if (h == null) return null;
+        if (_gemPick != null)
+            return ReferenceEquals(it, _gemPick) ? ItemUi.Dim("再次點擊：取消鑲嵌") : it.IsEquip ? SocketHint(it) : ItemUi.Dim("點擊：改選這顆寶石");
+        string junk = h.IsJunk(it) ? "Shift＋左鍵：取消廢品標記" : "Shift＋左鍵：標記廢品";
+        if (it.Kind == ItemKind.Gem) return ItemUi.Dim(junk + "\nCtrl＋左鍵：丟在地上");
+        string why = h.WhyCantEquip(it);
+        return (why != null ? ItemUi.Col(Palette.Bad, why) + "\n" : "") + ItemUi.Dim("左鍵：裝備　" + junk + "\nCtrl＋左鍵：丟在地上");
+    }
+
+    private void OnBagLeft(Item it)
+    {
+        var h = _hero;
+        if (h == null || !h.InBag(it)) return;
+        ItemMarks.See(it);
+        if (_gemPick != null) { TrySocket(it); return; }
+        if (Input.IsKeyPressed(Key.Ctrl)) { DropOnGround(h, it); return; }
+        if (Input.IsKeyPressed(Key.Shift))
+        {
+            bool junk = h.ToggleJunk(it);
+            Snd.Ui("ui_click");
+            Say(junk ? $"已將「{it.Name}」標記為廢品。" : $"已取消「{it.Name}」的廢品標記。");
+            return;
+        }
+        if (it.Kind == ItemKind.Gem) { BeginGemPick(it); return; }
+        EquipFromBag(h, it);
+    }
+
+    private void OnBagRight(Item it)
+    {
+        var h = _hero;
+        if (h == null || !h.InBag(it)) return;
+        ItemMarks.See(it);
+        if (_gemPick != null) { CancelGemPick(); return; }
+        if (it.Kind == ItemKind.Gem) { BeginGemPick(it); return; }
+        EquipFromBag(h, it);
+    }
+
+    private void EquipFromBag(Hero h, Item it)
+    {
+        string why = h.WhyCantEquip(it);
+        if (why != null) { Fail(why); return; }
+        if (!h.Equip(it)) { Fail("無法裝備"); return; }
+        h.ClearJunk(it);
+        Snd.Ui(ItemUi.EquipSound(it));
+        Log.Info("inv", $"equipped {it.Name} ({it.Rarity}, power {it.Power})");
+    }
+
+    /// <summary>Ctrl＋左鍵: the item leaves the bag and lies on the ground at the hero's feet, where it can be picked up again.</summary>
+    private void DropOnGround(Hero h, Item it)
+    {
+        string why = h.WhyCantDiscard(it);
+        if (why != null) { Fail(why); return; }
+        var p = Game.I?.Player;
+        if (p == null || !GodotObject.IsInstanceValid(p)) { Fail("現在無法丟棄物品"); return; }
+        if (!h.Discard(it)) { Fail("無法丟棄"); return; }
+        Log.Guard("loot", () => Loot.DropItem(it, p.Pos2));
+        Snd.Ui("ui_click");
+        Say($"已將「{it.Name}」丟在地上。");
+    }
+
+    /// <summary>Away from the smith: every item marked as junk is thrown away (after a confirmation; it cannot be undone).</summary>
+    private void DiscardJunk(Hero h)
+    {
+        var junk = h.JunkItems().FindAll(i => h.WhyCantDiscard(i) == null);
+        if (junk.Count == 0) { Fail("沒有可丟棄的廢品。以 Shift＋左鍵標記不要的裝備。"); return; }
+        int precious = 0;
+        foreach (var i in junk) if (i.Rarity is Rarity.Legendary or Rarity.Unique) precious++;
+        void Go()
+        {
+            int n = 0;
+            foreach (var it in junk) if (h.Discard(it)) n++;
+            Snd.Ui("ui_click");
+            Say($"丟棄了 {n} 件廢品。（在殘燈鎮的鐵匠布蘭那裡，廢品可以拆解成材料。）");
+        }
+        string extra = precious > 0 ? $"\n其中有 {precious} 件傳奇或獨特裝備。" : "";
+        if (Game.I?.Ui != null)
+            Game.I.Ui.Confirm($"丟棄 {junk.Count} 件廢品？丟棄之後無法找回。{extra}\n（到鐵匠那裡拆解可以換得材料。）", () => Log.Guard("ui", Go), "丟棄", "取消");
+        else Go();
+    }
+
+    private void SortBag() => _hero?.SortBag();
+
+    // ───────────────────────── gems ─────────────────────────
+
+    private void BeginGemPick(Item gem)
+    {
+        _gemPick = gem;
+        _msgT = 0f;
+        _dirty = true;
+        Snd.Ui("ui_click");
+    }
+
+    private void CancelGemPick()
+    {
+        _gemPick = null;
+        _msgT = 0f;
+        _dirty = true;
+    }
+
+    private void TrySocket(Item target)
+    {
+        var h = _hero; var gem = _gemPick;
+        if (h == null || gem == null) return;
+        if (ReferenceEquals(target, gem)) { CancelGemPick(); return; }
+        if (target.Kind == ItemKind.Gem) { BeginGemPick(target); return; }
+        string why = h.WhyCantSocket(gem, target);
+        if (why != null) { Fail(why); return; }
+        if (!h.Socket(gem, target)) { Fail("無法鑲嵌"); return; }
+        _gemPick = null;
+        Snd.Ui("gem_socket");
+        Say($"「{gem.Name}」已嵌入「{target.Name}」。", Palette.Good);
+        Log.Info("craft", $"socketed {gem.GemId} into {target.Name} ({target.Gems.Count}/{target.Sockets})");
+    }
+
+    // ───────────────────────── junk ─────────────────────────
+
+    /// <summary>True while the smith's panel is open or the hero stands next to the smith in town.</summary>
+    public static bool AtSmith()
+    {
+        if (VendorUi.ActiveNpc == "smith") return true;
+        var g = Game.I;
+        var lv = g?.Level; var p = g?.Player;
+        if (lv == null || p == null || !GodotObject.IsInstanceValid(lv) || !GodotObject.IsInstanceValid(p)) return false;
+        if (!lv.IsTown || lv.Data == null) return false;
+        foreach (var poi in lv.Data.All("npc"))
+            if (poi != null && poi.Tag == "smith" && poi.Pos.DistanceTo(p.Pos2) <= SmithRange) return true;
+        return false;
+    }
+
+    private void SalvageJunk()
+    {
+        var h = _hero;
+        if (h == null) return;
+        if (!AtSmith()) { DiscardJunk(h); return; }
+        var junk = h.JunkItems().FindAll(i => h.WhyCantSalvage(i) == null);
+        if (junk.Count == 0) { Fail("沒有可拆解的廢品。以 Shift＋左鍵標記不要的裝備。"); return; }
+        var pre = Crafting.PreviewSalvage(junk, h.D);
+        void Go()
+        {
+            var r = h.SalvageMany(junk);
+            if (r.Count == 0) { Fail("沒有拆解任何物品"); return; }
+            Snd.Ui("salvage");
+            string powers = r.Powers.Count > 0 ? $"　威能典籍：{string.Join("、", r.Powers)}" : "";
+            Say($"拆解了 {r.Count} 件廢品：{Crafting.Mats(r.Scrap, r.Dust, r.Cores)}{powers}", Palette.Good);
+        }
+        if (pre.Precious > 0 && Game.I?.Ui != null)
+            Game.I.Ui.Confirm($"廢品之中有 {pre.Precious} 件傳奇或獨特裝備。\n拆解之後無法復原，確定要一併拆解嗎？", () => Log.Guard("ui", Go), "拆解", "取消");
+        else Go();
+    }
+
+    // ───────────────────────── character sheet ─────────────────────────
+
+    private void BuildSheet(Hero h)
+    {
+        var d = h.D;
+        _name.Text = string.IsNullOrEmpty(d.Name) ? Names.Class(h.Class) : d.Name;
+        string line = $"等級 {d.Level}　{Names.Class(h.Class)}";
+        if (d.Paragon > 0) line += $"　燼紋 {d.Paragon}";
+        if (h.Spec != null) line += $"　{h.Spec.Name}";
+        _class.Text = line;
+        ItemUi.Clear(_tabBox);
+        _tabBox.AddChild(ItemUi.Tabs(SheetTabs, _tab, PickTab, UiTheme.FsRow, 86));
+        ItemUi.Clear(_rows);
+        switch (_tab)
+        {
+            case 1: Offence(h); break;
+            case 2: Defence(h); break;
+            case 3: Utility(h); break;
+            default: Overview(h); break;
+        }
+    }
+
+    private void PickTab(int i)
+    {
+        if (i == _tab) return;
+        _tab = i;
+        _dirty = true;
+        if (_sheetScroll != null) _sheetScroll.ScrollVertical = 0;
+    }
+
+    private static string N(float v) => Crafting.Num((long)MathF.Round(v));
+
+    /// <summary>Sustained basic-attack output: weapon × speed × main attribute × damage bonuses, with crits averaged in.</summary>
+    public static float EstimateDps(Hero h)
+    {
+        float w = (h.WeaponMin + h.WeaponMax) * 0.5f;
+        float add = h.S[Stat.DmgAll];
+        float crit = Mathf.Clamp(h.S[Stat.CritChance] / 100f, 0f, 1f);
+        float normal = 1f + add / 100f;
+        float critical = 1.5f * (1f + (add + h.S[Stat.CritDmg]) / 100f);
+        return w * h.Aps * h.AttackSpeedMul * h.MainMul * ((1f - crit) * normal + crit * critical);
+    }
+
+    private void Head(string text)
+    {
+        var l = UiTheme.Label(text, UiTheme.FsBody, UiTheme.Gold, true);
+        UiTheme.MinSize(l, 0, 44);                       // a 35 px line with some air above it; grows with the text
+        l.VerticalAlignment = VerticalAlignment.Bottom;
+        _rows.AddChild(ItemUi.Underlined(l));
+    }
+
+    /// <summary>
+    /// One line of the sheet: name on the left, value on the right, both at row size. The value always shows in
+    /// full; a name that cannot fit beside it would end in an ellipsis (the column is sized so that none does, and
+    /// the tooltip of a row starts with its whole name).
+    /// </summary>
+    private void Row(string name, string value, string tip = null, Color? valueColor = null)
+    {
+        var row = UiTheme.MinSize(new HBoxContainer(), 0, 34);
+        var l = UiTheme.Trimmed(UiTheme.Label(name, UiTheme.FsRow, UiTheme.Dim), false);
+        l.SizeFlagsHorizontal = SizeFlags.ExpandFill;
+        l.VerticalAlignment = VerticalAlignment.Center;
+        row.AddChild(l);
+        var v = UiTheme.Label(value, UiTheme.FsRow, valueColor ?? UiTheme.Text);
+        v.HorizontalAlignment = HorizontalAlignment.Right;
+        v.VerticalAlignment = VerticalAlignment.Center;
+        row.AddChild(v);
+        row.AddChild(new Control { CustomMinimumSize = new Vector2(10, 0), MouseFilter = MouseFilterEnum.Ignore });   // keeps numbers clear of the scrollbar
+        _rows.AddChild(row);
+        if (tip != null) _board.Add(new SlotView { Node = row, Clip = _sheetScroll, Text = name + "\n" + ItemUi.Dim(tip), Glow = false, Compare = false });
+    }
+
+    /// <summary>A row for one stat straight from the stat block, gold when it sits at its cap.</summary>
+    private void StatRow(Hero h, Stat s, float cap = 0f, string name = null)
+    {
+        float v = h.S[s];
+        bool pct = StatInfo.IsPct(s);
+        bool capped = cap > 0f && v >= cap - 0.01f;
+        string text = pct ? ItemUi.Pct(v) : N(v);
+        if (capped) text += "（上限）";
+        string tip = StatTip(s);
+        if (cap > 0f) tip = (tip == null ? "" : tip + "\n") + $"上限 {cap:0}{(pct ? "%" : "")}。";
+        Row(name ?? StatInfo.Name(s), text, tip, capped ? UiTheme.Gold : (Color?)null);
+    }
+
+    private void Overview(Hero h)
+    {
+        var d = h.D;
+        Head("概況");
+        Row("等級", d.Paragon > 0 ? $"{d.Level}　燼紋 {d.Paragon}" : d.Level.ToString());
+        if (d.Level < Balance.LevelCap) Row("經驗", $"{Crafting.Num(d.Xp)} / {Crafting.Num(Balance.XpToNext(d.Level))}");
+        else if (d.Paragon < Balance.ParagonCap) Row("燼紋經驗", $"{Crafting.Num(d.ParagonXp)} / {Crafting.Num(Balance.ParagonXp(d.Paragon))}");
+        else Row("燼紋經驗", "已達頂點");
+        Row("生命上限", N(h.MaxLife), "生命歸零時倒下。由等級、裝備上的生命與生命加成決定。");
+        Row("護甲", N(h.Armor), $"面對同等級的敵人，護甲使你受到的傷害降低 {ItemUi.Pct(Balance.ArmorDr(h.Armor, d.Level) * 100f)}。\n敵人等級越高，同樣的護甲效果越低。");
+        Row("每秒傷害（估算）", N(EstimateDps(h)), "以武器傷害、攻擊速度、主屬性、傷害加成與爆擊推算的持續輸出。\n不含技能倍率與條件加成，僅供比較裝備。");
+        Row("武器傷害", $"{h.WeaponMin:0}–{h.WeaponMax:0}", "每一次技能命中，都以這個範圍內的一個數值為基礎。");
+        Row("每秒攻擊", (h.Aps * h.AttackSpeedMul).ToString("0.00", CultureInfo.InvariantCulture), "武器的基礎攻擊頻率，再乘上攻擊速度加成。");
+        Row($"{Names.Resource(h.Class)}上限", N(h.MaxResource));
+        Row("藥水容量", d.PotionCap.ToString());
+
+        Head("屬性");
+        var main = Names.MainStat(h.Class);
+        Attr(h, Stat.Str, main, "每點力量提供 1 點護甲。");
+        Attr(h, Stat.Int, main, "每點智力提供 0.04% 全元素抗性。");
+        Attr(h, Stat.Dex, main, "每點敏捷提供 0.015% 閃避機率與 0.01% 爆擊機率。");
+        Attr(h, Stat.Wil, main, "每點意志提供 0.08% 受到治療效果與 0.05% 資源產生。");
+
+        Head("專精");
+        if (h.Spec != null) Row(h.Spec.Name, "", h.Spec.Desc);
+        else Row(d.Level >= SkillDb.SpecLevel ? "尚未選擇專精" : $"等級 {SkillDb.SpecLevel} 開放", "");
+    }
+
+    private void Attr(Hero h, Stat s, Stat main, string tip)
+    {
+        bool isMain = s == main;
+        string name = StatInfo.Name(s) + (isMain ? "（主屬性）" : "");
+        if (isMain) tip += $"\n主屬性：每點使你造成的傷害提高 0.25%（目前 +{ItemUi.Pct((h.MainMul - 1f) * 100f)}）。";
+        Row(name, N(h.S[s]), tip, isMain ? UiTheme.Gold : (Color?)null);
+    }
+
+    private void Offence(Hero h)
+    {
+        Head("攻擊");
+        Row("武器傷害", $"{h.WeaponMin:0}–{h.WeaponMax:0}");
+        Row("每秒攻擊", (h.Aps * h.AttackSpeedMul).ToString("0.00", CultureInfo.InvariantCulture));
+        StatRow(h, Stat.AttackSpeed, 100f);
+        StatRow(h, Stat.CritChance, 75f);
+        Row("爆擊傷害", $"×1.5　+{ItemUi.Pct(h.S[Stat.CritDmg])}", "爆擊造成 1.5 倍傷害；此處的加成在爆擊時併入傷害加成一起計算。");
+        StatRow(h, Stat.LuckyHit);
+        Row("主屬性加成", "+" + ItemUi.Pct((h.MainMul - 1f) * 100f), $"來自{StatInfo.Name(Names.MainStat(h.Class))}：每點 0.25%。與下列加成相乘。");
+
+        Head("傷害加成");
+        StatRow(h, Stat.DmgAll);
+        StatRow(h, Stat.DmgPhysical); StatRow(h, Stat.DmgFire); StatRow(h, Stat.DmgFrost);
+        StatRow(h, Stat.DmgLightning); StatRow(h, Stat.DmgPoison); StatRow(h, Stat.DmgShadow);
+        StatRow(h, Stat.DmgDot); StatRow(h, Stat.DmgElite); StatRow(h, Stat.DmgCC);
+        StatRow(h, Stat.DmgVuln); StatRow(h, Stat.DmgOverpower);
+
+        Head("技能");
+        StatRow(h, Stat.DmgBasic); StatRow(h, Stat.DmgCore); StatRow(h, Stat.DmgUlt); StatRow(h, Stat.MinionDmg);
+        StatRow(h, Stat.SkillRanks);
+    }
+
+    private void Defence(Hero h)
+    {
+        Head("生存");
+        Row("生命上限", N(h.MaxLife));
+        StatRow(h, Stat.MaxLife, 0f, "額外生命");
+        StatRow(h, Stat.LifePct, 0f, "生命上限加成");
+        Row("護甲", N(h.Armor), $"面對同等級的敵人，受到的傷害降低 {ItemUi.Pct(Balance.ArmorDr(h.Armor, h.D.Level) * 100f)}（最高 80%）。");
+        StatRow(h, Stat.DmgReduction, 75f);
+        StatRow(h, Stat.Dodge, 50f);
+        StatRow(h, Stat.BarrierPct);
+
+        Head("元素抗性");
+        Res(h, Element.Fire); Res(h, Element.Frost); Res(h, Element.Lightning); Res(h, Element.Poison); Res(h, Element.Shadow);
+        StatRow(h, Stat.ResAll);
+
+        Head("恢復");
+        StatRow(h, Stat.LifeRegen); StatRow(h, Stat.LifeOnHit); StatRow(h, Stat.LifeOnKill);
+        StatRow(h, Stat.Healing); StatRow(h, Stat.Thorns);
+    }
+
+    private void Res(Hero h, Element e)
+    {
+        const float cap = 70f;
+        float v = h.Res(e);
+        bool capped = v >= cap - 0.01f;
+        var own = StatInfo.ResOf(e);
+        string tip = $"全元素抗性 {ItemUi.Pct(h.S[Stat.ResAll])} ＋ {StatInfo.Name(own)} {ItemUi.Pct(h.S[own])}。\n抗性使該元素的傷害按比例降低，上限 {cap:0}%。";
+        Row(StatInfo.Name(own), $"{ItemUi.Pct(v)} / {cap:0}%", tip, capped ? UiTheme.Gold : Palette.Element(e));
+    }
+
+    private void Utility(Hero h)
+    {
+        var d = h.D;
+        Head("機動與資源");
+        StatRow(h, Stat.MoveSpeed, 100f);
+        Row($"{Names.Resource(h.Class)}上限", N(h.MaxResource));
+        StatRow(h, Stat.MaxResource, 0f, $"額外{Names.Resource(h.Class)}上限");
+        StatRow(h, Stat.ResourceGen);
+        StatRow(h, Stat.ResourceCost, 50f);
+        StatRow(h, Stat.Cdr, 60f);
+
+        Head("拾獲");
+        StatRow(h, Stat.GoldFind); StatRow(h, Stat.MagicFind); StatRow(h, Stat.XpGain);
+
+        Head("旅途");
+        var t = TimeSpan.FromSeconds(Math.Max(0, d.PlayTime));
+        Row("旅行時間", $"{(int)t.TotalHours} 小時 {t.Minutes} 分");
+        Row("擊殺", Crafting.Num(d.Kills));
+        Row("菁英", Crafting.Num(d.Elites));
+        Row("首領", Crafting.Num(d.Bosses));
+        Row("倒下", Crafting.Num(d.Deaths));
+        Row("威能典籍", $"{d.Codex.Count} / {ItemDb.Aspects.Count}", "拆解傳奇裝備所收錄的威能，可請祕術師銘刻到其他裝備上。");
+    }
+
+    private static string StatTip(Stat s) => s switch
+    {
+        Stat.MaxLife => "裝備、寶石與被動技能直接提供的生命，計入生命上限加成之前。",
+        Stat.LifePct => "按比例提高生命上限。",
+        Stat.ResAll => "同時計入五種元素抗性。智力也會提供少量。",
+        Stat.DmgReduction => "所有受到的傷害按比例降低，與護甲、抗性相乘。",
+        Stat.Dodge => "完全避開一次攻擊的機率。敏捷也會提供少量。",
+        Stat.LifeRegen => "每秒自然恢復的生命。",
+        Stat.LifeOnHit => "每次命中敵人時恢復的生命。",
+        Stat.LifeOnKill => "每擊殺一名敵人時恢復的生命。",
+        Stat.Healing => "藥水、技能與擊中恢復等所有治療的效果提高。",
+        Stat.Thorns => "近戰攻擊者每次打中你時受到的反擊傷害。",
+        Stat.BarrierPct => "你獲得的屏障更厚。",
+        Stat.DmgAll => "所有傷害的加成。與下列各項相加後一併計算。",
+        Stat.DmgDot => "燃燒、中毒、流血與腐蝕等持續傷害的加成。",
+        Stat.DmgElite => "對菁英與首領的傷害加成。",
+        Stat.DmgCC => "對暈眩、凍結、緩速、定身等受控敵人的傷害加成。",
+        Stat.DmgVuln => "對易傷敵人的額外加成（易傷本身已使其多受 20% 傷害）。",
+        Stat.DmgOverpower => "壓制一擊的額外加成。壓制偶爾觸發，造成 1.25 倍傷害。",
+        Stat.DmgBasic => "基本技能的傷害加成。",
+        Stat.DmgCore => "核心技能的傷害加成。",
+        Stat.DmgUlt => "終極技能的傷害加成。",
+        Stat.MinionDmg => "你的僕從與召喚物造成的傷害加成。",
+        Stat.AttackSpeed => "提高攻擊與施放的速度。",
+        Stat.CritChance => "每次命中成為爆擊的機率。基礎 5%，敏捷也會提供少量。",
+        Stat.LuckyHit => "提高各種「幸運一擊」效果的觸發機率。",
+        Stat.MaxResource => "裝備、寶石與被動技能直接提供的資源上限，加在基礎的 100 點之上。",
+        Stat.ResourceGen => "資源的產生與自然恢復加快。意志也會提供少量。",
+        Stat.ResourceCost => "技能消耗的資源減少。",
+        Stat.Cdr => "技能的冷卻時間縮短。",
+        Stat.MoveSpeed => "移動得更快。",
+        Stat.GoldFind => "敵人與寶箱掉落更多金幣。",
+        Stat.MagicFind => "提高掉落稀有以上裝備的機會。",
+        Stat.XpGain => "獲得的經驗值提高。",
+        Stat.SkillRanks => "所有已學會的技能額外提高的等級。",
+        _ => null
+    };
+}

@@ -1,0 +1,269 @@
+{
+ "time": "2026-11-15 19:28",
+ "with_audio": 25,
+ "total": 188,
+ "removed_stale": [
+  "elder_epilogue_06",
+  "elder_idle_2"
+ ],
+ "removed_invalid": [],
+ "per_voice": {
+  "narrator": [
+   16,
+   16
+  ],
+  "elder": [
+   3,
+   66
+  ],
+  "occultist": [
+   0,
+   11
+  ],
+  "smith": [
+   0,
+   9
+  ],
+  "merchant": [
+   3,
+   8
+  ],
+  "jeweler": [
+   0,
+   7
+  ],
+  "villager_m": [
+   0,
+   5
+  ],
+  "villager_f": [
+   0,
+   5
+  ],
+  "boss_gravedigger": [
+   0,
+   3
+  ],
+  "boss_rimelord": [
+   0,
+   3
+  ],
+  "boss_bishop": [
+   0,
+   3
+  ],
+  "boss_mire_mother": [
+   0,
+   3
+  ],
+  "boss_sand_tyrant": [
+   0,
+   3
+  ],
+  "boss_grand_hush": [
+   0,
+   3
+  ],
+  "boss_osaros": [
+   3,
+   3
+  ],
+  "hero_emberblade": [
+   0,
+   5
+  ],
+  "hero_astromancer": [
+   0,
+   5
+  ],
+  "hero_hunter": [
+   0,
+   5
+  ],
+  "hero_soulbinder": [
+   0,
+   5
+  ],
+  "hero_wildsoul": [
+   0,
+   5
+  ],
+  "hero_forgebody": [
+   0,
+   5
+  ],
+  "hero_lampknight": [
+   0,
+   5
+  ],
+  "hero_pactbinder": [
+   0,
+   5
+  ]
+ },
+ "left": [
+  "elder_first_04",
+  "elder_first_05",
+  "elder_first_06",
+  "elder_first_07",
+  "elder_first_08",
+  "elder_first_09",
+  "elder_act1_return_01",
+  "elder_act1_return_02",
+  "elder_act1_return_03",
+  "elder_act1_return_04",
+  "elder_act1_return_05",
+  "elder_act1_return_06",
+  "elder_act1_return_07",
+  "elder_act1_return_08",
+  "elder_act1_return_09",
+  "elder_frost_return_01",
+  "elder_frost_return_02",
+  "elder_frost_return_03",
+  "elder_frost_return_04",
+  "elder_crypt_return_01",
+  "elder_crypt_return_02",
+  "elder_crypt_return_03",
+  "elder_crypt_return_04",
+  "elder_mire_return_01",
+  "elder_mire_return_02",
+  "elder_mire_return_03",
+  "elder_mire_return_04",
+  "elder_act5_brief_01",
+  "elder_act5_brief_02",
+  "elder_act5_brief_03",
+  "elder_act5_brief_04",
+  "elder_act5_brief_05",
+  "elder_act5_brief_06",
+  "elder_act5_return_01",
+  "elder_act5_return_02",
+  "elder_act5_return_03",
+  "elder_act5_return_04",
+  "elder_act5_return_05",
+  "elder_act5_return_06",
+  "elder_act5_return_07",
+  "elder_act5_return_08",
+  "elder_act6_return_01",
+  "elder_act6_return_02",
+  "elder_act6_return_03",
+  "elder_act6_return_04",
+  "elder_act6_return_05",
+  "elder_act6_return_06",
+  "elder_act6_return_07",
+  "elder_epilogue_01",
+  "elder_epilogue_02",
+  "elder_epilogue_03",
+  "elder_epilogue_04",
+  "elder_epilogue_05",
+  "elder_epilogue_06",
+  "elder_epilogue_07",
+  "elder_remind_act1",
+  "elder_remind_keys",
+  "elder_remind_act5",
+  "elder_remind_act6",
+  "elder_remind_act7",
+  "elder_remind_after",
+  "elder_idle_1",
+  "elder_idle_2",
+  "elder_idle_3",
+  "smith_greet_1",
+  "smith_greet_2",
+  "smith_greet_3",
+  "smith_idle_1",
+  "smith_idle_2",
+  "merchant_greet_2",
+  "merchant_idle_2",
+  "occultist_greet_1",
+  "occultist_greet_2",
+  "occultist_greet_3",
+  "occultist_idle_1",
+  "occultist_idle_2",
+  "jeweler_greet_1",
+  "jeweler_greet_2",
+  "jeweler_greet_3",
+  "jeweler_idle_1",
+  "jeweler_idle_2",
+  "villager_m_1",
+  "villager_m_2",
+  "villager_m_3",
+  "villager_m_4",
+  "villager_f_1",
+  "villager_f_2",
+  "villager_f_3",
+  "villager_f_4",
+  "dawn_villager_m",
+  "dawn_villager_f",
+  "side_wastes_elites_done",
+  "side_wastes_cellar_done",
+  "side_frost_altars_done",
+  "side_frost_post_done",
+  "side_crypt_tomb_done",
+  "side_crypt_elites_done",
+  "side_mire_events_done",
+  "side_mire_lair_done",
+  "side_sands_workshop_done",
+  "side_sands_altars_done",
+  "side_sanctum_cloister_done",
+  "side_sanctum_elites_done",
+  "side_abyss_forge_done",
+  "side_abyss_events_done",
+  "boss_gravedigger_intro",
+  "boss_gravedigger_phase",
+  "boss_gravedigger_death",
+  "boss_rimelord_intro",
+  "boss_rimelord_phase",
+  "boss_rimelord_death",
+  "boss_bishop_intro",
+  "boss_bishop_phase",
+  "boss_bishop_death",
+  "boss_mire_mother_intro",
+  "boss_mire_mother_phase",
+  "boss_mire_mother_death",
+  "boss_sand_tyrant_intro",
+  "boss_sand_tyrant_phase",
+  "boss_sand_tyrant_death",
+  "boss_grand_hush_intro",
+  "boss_grand_hush_phase",
+  "boss_grand_hush_death",
+  "hero_emberblade_levelup",
+  "hero_emberblade_lowlife",
+  "hero_emberblade_noresource",
+  "hero_emberblade_bagfull",
+  "hero_emberblade_legendary",
+  "hero_astromancer_levelup",
+  "hero_astromancer_lowlife",
+  "hero_astromancer_noresource",
+  "hero_astromancer_bagfull",
+  "hero_astromancer_legendary",
+  "hero_hunter_levelup",
+  "hero_hunter_lowlife",
+  "hero_hunter_noresource",
+  "hero_hunter_bagfull",
+  "hero_hunter_legendary",
+  "hero_soulbinder_levelup",
+  "hero_soulbinder_lowlife",
+  "hero_soulbinder_noresource",
+  "hero_soulbinder_bagfull",
+  "hero_soulbinder_legendary",
+  "hero_wildsoul_levelup",
+  "hero_wildsoul_lowlife",
+  "hero_wildsoul_noresource",
+  "hero_wildsoul_bagfull",
+  "hero_wildsoul_legendary",
+  "hero_forgebody_levelup",
+  "hero_forgebody_lowlife",
+  "hero_forgebody_noresource",
+  "hero_forgebody_bagfull",
+  "hero_forgebody_legendary",
+  "hero_lampknight_levelup",
+  "hero_lampknight_lowlife",
+  "hero_lampknight_noresource",
+  "hero_lampknight_bagfull",
+  "hero_lampknight_legendary",
+  "hero_pactbinder_levelup",
+  "hero_pactbinder_lowlife",
+  "hero_pactbinder_noresource",
+  "hero_pactbinder_bagfull",
+  "hero_pactbinder_legendary"
+ ]
+}

@@ -1,0 +1,107 @@
+{
+ "id": "npc_villager_f",
+ "ok": true,
+ "problems": [],
+ "triangles": 16528,
+ "size_bytes": 7917736,
+ "meshes": [
+  "body_cloth",
+  "body_hair",
+  "body_leather",
+  "body_skin"
+ ],
+ "materials": [
+  "cloth_npc_villager_f",
+  "hair_npc_villager_f",
+  "leather_npc_villager_f",
+  "skin_npc_villager_f"
+ ],
+ "images": [
+  {
+   "name": "cloth_n",
+   "mime": "image/jpeg",
+   "w": 2048,
+   "h": 2048,
+   "bytes": 1529356
+  },
+  {
+   "name": "cloth_orm",
+   "mime": "image/jpeg",
+   "w": 2048,
+   "h": 2048,
+   "bytes": 1147161
+  },
+  {
+   "name": "cloth_c",
+   "mime": "image/jpeg",
+   "w": 2048,
+   "h": 2048,
+   "bytes": 692276
+  },
+  {
+   "name": "hair_n",
+   "mime": "image/jpeg",
+   "w": 1024,
+   "h": 1024,
+   "bytes": 329751
+  },
+  {
+   "name": "hair_orm",
+   "mime": "image/jpeg",
+   "w": 1024,
+   "h": 1024,
+   "bytes": 348575
+  },
+  {
+   "name": "hair_c",
+   "mime": "image/jpeg",
+   "w": 1024,
+   "h": 1024,
+   "bytes": 193432
+  },
+  {
+   "name": "leather_n",
+   "mime": "image/jpeg",
+   "w": 512,
+   "h": 512,
+   "bytes": 112795
+  },
+  {
+   "name": "leather_orm",
+   "mime": "image/jpeg",
+   "w": 512,
+   "h": 512,
+   "bytes": 105384
+  },
+  {
+   "name": "leather_c",
+   "mime": "image/jpeg",
+   "w": 512,
+   "h": 512,
+   "bytes": 52516
+  },
+  {
+   "name": "skin_n",
+   "mime": "image/jpeg",
+   "w": 2048,
+   "h": 2048,
+   "bytes": 1440272
+  },
+  {
+   "name": "skin_orm",
+   "mime": "image/jpeg",
+   "w": 2048,
+   "h": 2048,
+   "bytes": 665210
+  },
+  {
+   "name": "skin_c",
+   "mime": "image/jpeg",
+   "w": 2048,
+   "h": 2048,
+   "bytes": 360165
+  }
+ ],
+ "bones": 65,
+ "extensions": []
+}

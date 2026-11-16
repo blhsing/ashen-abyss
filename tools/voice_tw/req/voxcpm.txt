@@ -1,0 +1,25 @@
+# VoxCPM2 (OpenBMB) on Windows, CPU. The voxcpm package itself is installed with --no-deps (see
+# install.ps1): its declared dependencies include gradio, funasr, datasets, modelscope, spaces and
+# torchcodec, none of which the inference path uses (demo UI, training, denoiser). Only these are needed.
+# PyPI's torch wheel for Windows is the CPU build. 2.8.0: last torchaudio that does not need torchcodec/FFmpeg.
+torch==2.8.0
+torchaudio==2.8.0
+numpy
+transformers
+einops
+pydantic
+tqdm
+safetensors
+librosa
+soundfile
+huggingface_hub
+inflect
+addict
+simplejson
+sortedcontainers
+pypinyin
+opencc-python-reimplemented
+# production (gen.py runs synthesis, ASR check, DSP and OGG encoding in ONE process inside this venv)
+sherpa-onnx
+pyloudnorm
+scipy

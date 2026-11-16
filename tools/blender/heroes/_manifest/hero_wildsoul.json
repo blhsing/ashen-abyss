@@ -1,0 +1,121 @@
+{
+ "id": "hero_wildsoul",
+ "file": "hero_wildsoul.glb",
+ "meshes": [
+  {
+   "name": "body_bone",
+   "triangles": 1702,
+   "materials": [
+    "bone_hero_wildsoul"
+   ]
+  },
+  {
+   "name": "body_cloth",
+   "triangles": 12696,
+   "materials": [
+    "cloth_hero_wildsoul"
+   ]
+  },
+  {
+   "name": "body_emis",
+   "triangles": 260,
+   "materials": [
+    "emis_hero_wildsoul"
+   ]
+  },
+  {
+   "name": "body_hair",
+   "triangles": 2018,
+   "materials": [
+    "hair_hero_wildsoul"
+   ]
+  },
+  {
+   "name": "body_leather",
+   "triangles": 6278,
+   "materials": [
+    "leather_hero_wildsoul"
+   ]
+  },
+  {
+   "name": "body_skin",
+   "triangles": 8560,
+   "materials": [
+    "skin_hero_wildsoul"
+   ]
+  },
+  {
+   "name": "wpn_1",
+   "triangles": 574,
+   "materials": [
+    "leather_hero_wildsoul",
+    "bone_hero_wildsoul"
+   ]
+  },
+  {
+   "name": "wpn_2",
+   "triangles": 978,
+   "materials": [
+    "cloth_hero_wildsoul",
+    "leather_hero_wildsoul",
+    "bone_hero_wildsoul"
+   ]
+  },
+  {
+   "name": "wpn_3",
+   "triangles": 1424,
+   "materials": [
+    "cloth_hero_wildsoul",
+    "leather_hero_wildsoul",
+    "bone_hero_wildsoul",
+    "emis_hero_wildsoul"
+   ]
+  }
+ ],
+ "materials": [
+  "bone_hero_wildsoul",
+  "cloth_hero_wildsoul",
+  "emis_hero_wildsoul",
+  "hair_hero_wildsoul",
+  "leather_hero_wildsoul",
+  "skin_hero_wildsoul"
+ ],
+ "triangles": 34490,
+ "notes": "Pose-tested: Sword_Regular_A, Sword_Idle, Spell_Simple_Shoot, Idle_Loop, Jog_Fwd_Loop. wpn_1..3 = totem war-clubs skinned 100% to hand_r in the UAL sword fist grip (weapon +X = striking side). No metal material: wood, bark and stone-like parts live in the leather_ atlas, fur / feathers in cloth_.",
+ "triangles_body": 31514,
+ "height_m": 1.993,
+ "bbox_blender_zup": {
+  "min": [
+   -0.981,
+   -0.271,
+   -0.004
+  ],
+  "max": [
+   0.981,
+   0.314,
+   1.993
+  ]
+ },
+ "bbox_gltf_yup": {
+  "min": [
+   -0.981,
+   -0.004,
+   -0.314
+  ],
+  "max": [
+   0.981,
+   1.993,
+   0.271
+  ]
+ },
+ "bbox_note": "rest pose (T-pose, arms out), body_* meshes only (weapons excluded)",
+ "size_bytes": 11224504,
+ "textures": {
+  "cloth": 2048,
+  "leather": 2048,
+  "bone": 512,
+  "skin": 2048,
+  "hair": 512
+ },
+ "fast_preview_build": false
+}
