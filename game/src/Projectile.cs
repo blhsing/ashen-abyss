@@ -27,6 +27,8 @@ public partial class Projectile : Node3D
     private static readonly List<Actor> Tmp = new();
 
     private Vector2 Pos2 => new(GlobalPosition.X, GlobalPosition.Z);
+    /// <summary>True for the hero's shots (read by the bestiary's shield-bearers and absorbers and by the named layer).</summary>
+    public bool FromPlayer => _p != null;
 
     public static Projectile SpawnPlayer(Player p, SkillDef d, Vector3 origin, Vector2 dir, float coef, float mul, bool forceCrit, bool wave = false, bool child = false)
     {
@@ -84,6 +86,7 @@ public partial class Projectile : Node3D
 
         if (_p != null)
         {
+            if (Monster.Absorbers.Count > 0 && Monster.AbsorbShot(to)) { End(to, false); return; }     // a Pale Hush mouth swallows it (roster)
             World.InCapsule(Faction.Player, from, to, _radius, Tmp);
             foreach (var t in Tmp.ToArray())
             {
@@ -119,6 +122,7 @@ public partial class Projectile : Node3D
     {
         Vector2 at = Pos2;
         if (t is Monster mon && mon.BlocksProjectiles) { Fx.Hit(World.To3(at, _height), Element.Physical, false); Snd.At("block", GlobalPosition, 0.6f); End(at, false); return false; }
+        if (t is Monster sb && sb.InterceptShot(_dir, at)) { End(at, false); return false; }       // a raised shield (roster: Shieldbearer, Reflect)
         float coef = _coef * (1f + _d.PierceRamp * _pierced);
         if (_d.Explode > 0 && !_wave)
         {

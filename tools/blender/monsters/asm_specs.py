@@ -19,6 +19,10 @@ POSES = {
     'punch': ["Idle_Loop:0.3", "Punch_Cross:0.45", "Sprint_Loop:0.3"],
     'pistol': ["Pistol_Idle_Loop:0.3", "Pistol_Shoot:0.3", "Walk_Loop:0.3"],
     'lantern': ["Idle_Lantern_Loop:0.3", "Spell_Simple_Shoot:0.5", "Walk_Loop:0.3"],
+    # what the game really plays for a type whose `anims` text names no idle / walk: Idle_Loop + Walk_Loop (Bestiary.cs)
+    'brute': ["Idle_Loop:0.3", "Sword_Attack:0.45", "Walk_Loop:0.3"],
+    'bomber': ["Idle_Loop:0.3", "OverhandThrow:0.3", "Walk_Loop:0.3"],
+    'zbrute': ["Zombie_Idle_Loop:0.3", "Sword_Attack:0.45", "Zombie_Walk_Fwd_Loop:0.3"],
 }
 # hand-built creatures: id -> (family, engine scale, pose kind)
 EXISTING = {

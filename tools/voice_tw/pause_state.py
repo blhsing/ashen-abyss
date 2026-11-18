@@ -79,7 +79,8 @@ with open(os.path.join(HERE, "RUNNING.txt"), "w", encoding="utf-8") as f:
             "Resume (CPU, 6 threads; check Y:\\tools\\music_ai\\RUNNING.txt first - never two GPU jobs, and this run uses the CPU):\n"
             "  powershell -ExecutionPolicy Bypass -File Y:\\tools\\voice_tw\\x.ps1 "
             "\"$env:LOCALAPPDATA\\AshenAbyssTools\\voice_tw\\venvs\\voxcpm\\Scripts\\python.exe\" Y:\\tools\\voice_tw\\gen.py all\n"
-            "It continues with the elder (new male voice), then the remaining voices one by one, auditing each (see DECISION.md).\n"
+            "It continues voice by voice with what is missing (a designed but not yet audited voice is audited first; see DECISION.md).\n"
+            "Optional: $env:VT_THREADS=8 before it when no other heavy CPU job runs (default 6).\n"
             "State: Y:\\tools\\voice_tw\\pause_state.json, log: %LOCALAPPDATA%\\AshenAbyssTools\\voice_tw\\logs\\gen.log\n")
 
 dec = os.path.join(HERE, "DECISION.md")
@@ -87,14 +88,17 @@ text = open(dec, encoding="utf-8").read()
 start, end = "<!-- pause-state-start -->", "<!-- pause-state-end -->"
 done_v = [f"{v} {a}/{b}" for v, (a, b) in per_voice.items() if a]
 todo_v = [f"{v} {a}/{b}" for v, (a, b) in per_voice.items() if a < b]
-audited = [v for v, a in anchors.items()]
+au = json.load(open(os.path.join(PROD, "audit.json"), encoding="utf-8")) if os.path.exists(os.path.join(PROD, "audit.json")) else {}
+audited = [v for v in anchors if v in au]
+unaudited = [v for v in anchors if v not in au]
 block = "\n".join([start, f"## State when the run was paused ({state['time']})", "",
                    f"- **{len(good)} of {len(lines)} ids have audio** in `Y:\\game\\assets\\audio\\vo` (every file decoded and checked: mono 44.1 kHz OGG Vorbis, "
                    "complete, identical to the validated staging file, made from the current anchor of its voice).",
                    f"- Voices with audio: {', '.join(done_v)}.",
-                   f"- Voices designed and audited so far (anchor exists): {', '.join(audited)}. Audit results: table below.",
+                   f"- Voices designed and audited so far: {', '.join(audited)}. Audit results: table below.",
+                   f"- Anchor designed but not yet audited (the run stopped while making its first lines): {', '.join(unaudited) or 'none'}.",
                    f"- Removed from the game folder because they were takes of a rejected voice: {', '.join(removed) or 'none'}"
-                   " (the old female-sounding elder; those lines fall back to the timed stand-in until they are redone).",
+                   ".",
                    f"- Still to record: {len(left)} ids - " + ", ".join(todo_v) + ".",
                    "- Resume with `gen.py all` (see `RUNNING.txt`); nothing has to be redone.", end])
 if start in text and end in text:

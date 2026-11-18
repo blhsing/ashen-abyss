@@ -80,6 +80,8 @@ public partial class Game : Node
         // switches read by the UI and rendering test layers (listed so they are accepted without the "--" separator too)
         "textscale", "menu", "uido", "uiclick", "uikeys", "hover", "uidir", "gfx-tour",
         "portrait-stats", "portrait-off", "portrait-scale", "portrait-model",       // inventory hero portrait (HeroPortrait3D)
+        "bestiary", "no-bestiary", "spawn", "spawn-aggro",                             // monster roster (Bestiary.cs, Populate.HarnessSpawns)
+        "gptest", "gpexpect", "gpthen", "gpclasses", "gpcancel", "gpout",                                             // gameplay harness (GameplayTest.cs): click-to-attack, save resume
     };
     private bool _forceWindow, _windowPlaced, _quitting;
     private bool? _cfgFullscreen;
@@ -102,6 +104,7 @@ public partial class Game : Node
     private Label _ovTitle, _ovSub, _ovTip;
     private int _lastTip = -1;
     private int _levelSeed, _returnSeed;
+    private LevelSnapshot _resume, _returnState;      // the state to rebuild on loading a save / on taking the town portal back (LevelState)
     private readonly Dictionary<string, (int seed, bool[] seen)> _seen = new();
 
     // ── play ──
@@ -220,6 +223,7 @@ public partial class Game : Node
             Ui.SetAnchorsAndOffsetsPreset(Control.LayoutPreset.FullRect);
         });
         Log.Guard("boot", BuildOverlay);
+        Log.Guard("boot", () => AddChild(new Cursors { Name = "Cursors" }));        // contextual mouse cursor (ticks itself)
 
         ApplySettings();
         if (Arg("mute")) Log.Guard("boot", () => Audio?.Mute(true));
@@ -227,6 +231,7 @@ public partial class Game : Node
         World.Event += OnWorldEvent;
         GetTree().Root.SizeChanged += OnWindowResized;
 
+        Log.Guard("boot", Bestiary.Boot);           // the designed roster: one summary line, the data checks, models and stand-ins
         SetupHarness();
         if (_args.Keys.Any(k => k.StartsWith("gfx", StringComparison.Ordinal))) Log.Guard("test", () => AddChild(new EnvProbe()));   // graphics review harness (--gfx-*)
         StartFromArgs();
@@ -317,6 +322,7 @@ public partial class Game : Node
             AddChild(Bot);
             Log.Info("test", "TestBot enabled");
         }
+        if (Arg("gptest")) AddChild(new GameplayTest { Name = "GameplayTest" });      // gameplay harness (bot off)
     }
 
     // ═════════════════════════ settings / window ═════════════════════════
@@ -643,13 +649,19 @@ public partial class Game : Node
 
         string entry = null;
         string start = isNew ? ZoneDb.Town : ResumeArea(d, out entry);
+        _resume = null;
+        if (!isNew)
+        {
+            try { if (TakeResume(d)) { start = _resume.Area; entry = null; } }
+            catch (Exception e) { Log.Error("save", "reading the resume state failed; waking at a portal as before", e); _resume = null; ClearReturn(); }
+        }
         Action after = null;
         bool skipIntro = !isNew || _hUi != null || _hArea != null || Arg("bot") || _shotTimes.Count > 0;
         if (!skipIntro) after = PlayIntro;
         if (_hArea != null && !_hAreaUsed)
         {
             _hAreaUsed = true;
-            if (IsKnownArea(_hArea)) { start = _hArea; entry = null; }
+            if (IsKnownArea(_hArea)) { start = _hArea; entry = null; _resume = null; ClearReturn(); }
             else Log.Warn("test", $"--area: unknown area '{_hArea}', starting in {start}");
         }
         if (_hUi != null && !_hUiUsed) { _hUiUsed = true; after = OpenHarnessUi; }
@@ -743,6 +755,7 @@ public partial class Game : Node
         Log.Info("game", "returning to the title screen");
         EndHitStop();
         if (Hero != null) SaveNow("menu");
+        _resume = null;
         _load = LoadStep.Idle;
         _afterLoad = null;
         _failNote = null;
@@ -852,6 +865,9 @@ public partial class Game : Node
             if (fromCombat && pl != null && !pl.Dead && (entry == null || entry == "portal"))
             {
                 ReturnArea = cur.AreaId; ReturnPos = pl.Pos2; _returnSeed = _levelSeed;
+                _returnState = null;
+                try { if (LevelState.Enabled) _returnState = LevelState.Capture(cur, pl, _levelSeed); }       // the way back finds the place as it was left
+                catch (Exception e) { Log.Error("save", "capturing the level for the town portal failed", e); }
                 Log.Info("area", $"town portal opened from {ReturnArea} at ({ReturnPos.X:0.0}, {ReturnPos.Y:0.0})");
                 Log.Guard("audio", () => Snd.Ui("portal_open"));
             }
@@ -878,7 +894,7 @@ public partial class Game : Node
         return true;
     }
 
-    private void ClearReturn() { ReturnArea = null; ReturnPos = Vector2.Zero; _returnSeed = 0; }
+    private void ClearReturn() { ReturnArea = null; ReturnPos = Vector2.Zero; _returnSeed = 0; _returnState = null; }
 
     private void TickLoading(double real, ulong now)
     {
@@ -978,11 +994,16 @@ public partial class Game : Node
         }
         RememberSeen();
 
-        int seed = returning && _returnSeed != 0 ? _returnSeed : SeedFor(areaId);
+        var resume = _resume; _resume = null;
+        if (resume != null && resume.Area != areaId) resume = null;
+        int seed = resume != null ? resume.Seed : returning && _returnSeed != 0 ? _returnSeed : SeedFor(areaId);
+        // a loaded save or the town portal back: the level is rebuilt as it was (dead monsters, used objects, objective, fog)
+        LevelState.Pending = resume ?? (returning && _returnState != null && _returnState.Area == areaId && _returnState.Seed == seed ? _returnState : null);
         Log.Info("area", $"building {areaId} entry={entry ?? "-"} seed={seed} tier={WorldTier} heroLevel={Hero.D.Level}");
         // The new level is built while the old one still stands: Level.Build notes where the hero left the old one (for
         // "return" entries), takes over World.Root and populates itself. Only then is the old level released.
         var level = AshenAbyss.Level.Build(areaId, returning ? "return" : entry, seed);
+        LevelState.Pending = null;
         if (level == null) throw new InvalidOperationException("Level.Build returned null");
         if (level.GetParent() == null) WorldRoot.AddChild(level);
         ReleaseWorldExcept(level);
@@ -1009,6 +1030,7 @@ public partial class Game : Node
         }
         p.Teleport(at);
         if (returning) ClearReturn();
+        if (resume != null) Log.Guard("save", () => LevelState.ApplyHero(p, resume, level, level.IsTown));
         // the level updates this every unpaused frame; set it now so the hidden warm-up frames already cut walls round the hero
         RenderingServer.GlobalShaderParameterSet(HeroPosGlobal, p.GlobalPosition);
 
@@ -1022,10 +1044,12 @@ public partial class Game : Node
         Hero.D.Area = areaId;
         _combat = 0f;
         _deathPending = false;
-        SaveNow("area");
         try { AreaEntered?.Invoke(areaId); }
         catch (Exception e) { Log.Error("area", "an AreaEntered handler failed", e); }
         World.Emit("area", areaId);
+        // after the "area" event: the named layer has placed its named monsters; a resumed save restores the level now
+        Log.Guard("levelstate", () => LevelState.OnArrived(level));
+        SaveNow("area");
     }
 
     /// <summary>Frees everything in the world except <paramref name="keep"/> (the level that was just built). The hero node goes with its level.</summary>
@@ -1295,9 +1319,64 @@ public partial class Game : Node
         if (Hero == null) return;
         _saveReq = null;
         _autosaveT = 0;
+        Log.Guard("save", CaptureResume);
         bool ok = SaveSystem.Save(Slot, Hero.D);
         Log.Info("save", $"save reason={reason} slot={Slot} ok={ok} area={Hero.D.Area} playtime={Hero.D.PlayTime:0}s");
         if (!ok) Log.Guard("hud", () => Hud?.Warn("存檔失敗。詳情請見日誌。"));
+    }
+
+    /// <summary>
+    /// Puts the current area's state into the save (LevelState): a loaded save resumes in the same layout, at the same
+    /// spot, with the same dead monsters, used objects, objective, ground loot and explored map; plus an open town portal
+    /// and the explored maps of the town and the overworld regions.
+    /// </summary>
+    private void CaptureResume()
+    {
+        if (!LevelState.Enabled) { Hero.D.Resume = null; Hero.D.Portal = null; Hero.D.Fog?.Clear(); return; }
+        var d = Hero.D;
+        var lv = Level != null && IsInstanceValid(Level) ? Level : null;
+        var pl = Player != null && IsInstanceValid(Player) ? Player : null;
+        var snap = lv != null && lv.AreaId == d.Area ? LevelState.Capture(lv, pl, _levelSeed) : null;
+        if (snap != null) d.Resume = snap;
+        else if (d.Resume != null && d.Resume.Area != d.Area) d.Resume = null;
+        d.Portal = ReturnArea != null && _returnSeed != 0
+            ? new PortalSnapshot { Area = ReturnArea, X = ReturnPos.X, Z = ReturnPos.Y, Seed = _returnSeed, State = _returnState }
+            : null;
+        RememberSeen();
+        d.Fog ??= new();
+        d.Fog.Clear();
+        foreach (var kv in _seen)
+        {
+            bool stable = kv.Key == ZoneDb.Town || ZoneDb.Region(kv.Key) != null;
+            if ((!stable && kv.Key != ReturnArea) || kv.Value.seen == null) continue;
+            d.Fog[kv.Key] = new FogRec { Seed = kv.Value.seed, Len = kv.Value.seen.Length, Bits = LevelState.PackBits(kv.Value.seen) };
+        }
+    }
+
+    /// <summary>
+    /// A save of format 2 or later: wake exactly where the game was left (its area, layout and spot) with the town portal
+    /// that was open. False for older saves and for places that cannot be rebuilt (named encounter arenas): those wake
+    /// at the overworld entrance or in town, as before.
+    /// </summary>
+    private bool TakeResume(SaveData d)
+    {
+        _resume = null;
+        if (!LevelState.Enabled) return false;              // feature off: wake the old way
+        if (d.Fog != null)
+            foreach (var kv in d.Fog)
+                if (kv.Value?.Bits != null && kv.Value.Len > 0) _seen[kv.Key] = (kv.Value.Seed, LevelState.UnpackBits(kv.Value.Bits, kv.Value.Len));
+        var s = d.Resume;
+        if (s == null || string.IsNullOrEmpty(s.Area) || s.Seed == 0) { Log.Info("save", $"no resume state (format {d.Version}): waking in {d.Area} the old way"); return false; }
+        if (s.Area.StartsWith("rift~") || !IsKnownArea(s.Area)) { Log.Info("save", $"resume state for {s.Area} cannot be rebuilt: waking the old way"); return false; }
+        _resume = s;
+        var pt = d.Portal;
+        if (s.Area == ZoneDb.Town && pt != null && !string.IsNullOrEmpty(pt.Area) && pt.Seed != 0 && IsKnownArea(pt.Area) && !pt.Area.StartsWith("rift~"))
+        {
+            ReturnArea = pt.Area; ReturnPos = new Vector2(pt.X, pt.Z); _returnSeed = pt.Seed;
+            _returnState = pt.State != null && pt.State.Area == pt.Area && pt.State.Seed == pt.Seed ? pt.State : null;
+        }
+        Log.Info("save", $"resume: {s.Area} seed={s.Seed} at ({s.X:0.00}, {s.Z:0.00}) dead={s.DeadMons?.Count ?? 0} spent={s.Spent?.Count ?? 0} loot={s.Loot?.Count ?? 0} portal={ReturnArea ?? "-"}");
+        return true;
     }
 
     /// <summary>Asks for an autosave a little later, so bursts of progress (quest counters, several level-ups) become one write.</summary>

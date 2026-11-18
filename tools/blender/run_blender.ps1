@@ -51,7 +51,8 @@ try {
     $p = New-Object System.Diagnostics.Process
     $p.StartInfo = $psi
     [void]$p.Start()
-    try { $p.PriorityClass = [System.Diagnostics.ProcessPriorityClass]::BelowNormal } catch { }
+    $prio = if (@(Get-Process -Name AshenAbyss -ErrorAction SilentlyContinue).Count -gt 0) { [System.Diagnostics.ProcessPriorityClass]::Idle } else { [System.Diagnostics.ProcessPriorityClass]::BelowNormal }   # the player's game comes first
+    try { $p.PriorityClass = $prio } catch { }
     $outTask = $p.StandardOutput.ReadToEndAsync()
     $errTask = $p.StandardError.ReadToEndAsync()
     $p.WaitForExit()

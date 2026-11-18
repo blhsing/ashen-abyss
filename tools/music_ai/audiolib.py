@@ -54,6 +54,25 @@ def true_peak_db(x, sr):
     return float(db(np.max(np.abs(up))))
 
 
+def dynamics(x, sr):
+    """Macro dynamics: integrated loudness, PLR (true peak - loudness) and LRA (EBU Tech 3342 style: 10th-95th
+    percentile of the 3 s short-term loudness every 1 s, absolute gate -70 LUFS, relative gate -20 LU)."""
+    import pyloudnorm
+    meter = pyloudnorm.Meter(sr)
+    integ = lufs(x, sr)
+    st = []
+    win, hop = int(3 * sr), int(sr)
+    for i in range(0, max(1, len(x) - win + 1), hop):
+        v = meter.integrated_loudness(x[i:i + win]) if len(x) >= win else integ
+        if np.isfinite(v) and v > -70.0:
+            st.append(v)
+    st = np.asarray(st)
+    if len(st):
+        st = st[st > 10 * np.log10(np.mean(10 ** (st / 10))) - 20.0]
+    lra = float(np.percentile(st, 95) - np.percentile(st, 10)) if len(st) >= 3 else 0.0
+    return dict(lufs=round(integ, 2), plr=round(true_peak_db(x, sr) - integ, 2), lra=round(lra, 2))
+
+
 # ------------------------------------------------------------------------------------------------ analysis
 def _frame_rms_db(mono, sr, win_s, hop_s):
     win = max(1, int(win_s * sr))

@@ -161,6 +161,8 @@ public sealed partial class TestSuite
             case "objects": yield return ObjectsSuite(); break;
             case "save": yield return SaveSuite(); break;
             case "dps": yield return DpsSuite(); break;
+            case "named": yield return NamedSuite(); break;      // NAMED-HOOK: --suite=named[:filter[:class]] (TestSuite.Named.cs)
+            case "census": case "bestiary": case "ai": case "rosterperf": yield return RosterSuite(); break;      // TestSuite.Roster.cs
             case "anims":
                 if (_arg.StartsWith("shots")) yield return AnimShots(); else yield return AnimsSuite();
                 break;

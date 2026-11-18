@@ -47,7 +47,7 @@ public partial class Monster : Actor
     public bool Aggro => _aggro;
     public override bool IsElite => Tier is MonTier.Elite or MonTier.Champion || MiniBoss;
     public override bool IsBoss => Tier == MonTier.Boss || MiniBoss;
-    public override bool Unstoppable => _st == Mode.Spawn || (Tier == MonTier.Minion && Def.Poise > 50);
+    public override bool Unstoppable => _st == Mode.Spawn || (Tier == MonTier.Minion && Def.Poise > 50) || AiUnstoppable;
     public bool Attacking => _st is Mode.Windup or Mode.Busy;
 
     public static Monster Spawn(MonsterDef def, int level, MonTier tier, Vector2 pos, Faction faction, IEnumerable<string> affixes = null, bool miniBoss = false)
@@ -110,6 +110,7 @@ public partial class Monster : Actor
             else Model.Play("LayToIdle", 1.6f, 0f, true);
         }
         else Model.Play(Def.Idle);
+        Log.Guard("monster-ai", AiSetup);          // bestiary behaviours (MonsterAi*.cs); nothing for the built-in kinds
     }
 
     /// <summary>One line for test logs: what the state machine is doing right now.</summary>
@@ -149,11 +150,14 @@ public partial class Monster : Actor
         if (Faction == Faction.Monster && dp > 46f && !IsBoss)           // asleep far from the hero: no AI, no animation work
         {
             int far = dp < 60f ? 1 : 2;
-            if (_sleep != far) { _sleep = far; Model.Visible = far == 1; Model.SetAsleep(true); }
+            if (_sleep != far) { _sleep = far; Model.Visible = far == 1 && !AiHidden; Model.SetAsleep(true); }
             return;
         }
-        if (_sleep != 0) { _sleep = 0; Model.Visible = true; Model.SetAsleep(false); }
+        if (_sleep != 0) { _sleep = 0; Model.Visible = !AiHidden; Model.SetAsleep(false); }
         TickStatuses(dt);
+        if (Dead) return;
+        float facing0 = Facing;
+        AiTickAlways(dt);
         if (Dead) return;
         if (_enrage > 0) _enrage -= dt;
         if (LifeTime > 0) { LifeTime -= dt; if (LifeTime <= 0) { Expire(); return; } }
@@ -165,7 +169,7 @@ public partial class Monster : Actor
             if (StaggerLeft <= 0) { Stagger = 0; StaggerImmune = 14f; Model.Play(Def.Idle); }
             return;
         }
-        if (Stunned) { Model.Pause(Has(StatusId.Freeze)); if (!Has(StatusId.Freeze)) Model.Play("Hit_Head", 0.6f, 0.1f); CancelTelegraph(); if (_st is Mode.Windup) _st = Mode.Chase; return; }
+        if (Stunned) { AiOnStunned(); Model.Pause(Has(StatusId.Freeze)); if (!Has(StatusId.Freeze) && !AiHidden) Model.Play("Hit_Head", 0.6f, 0.1f); CancelTelegraph(); if (_st is Mode.Windup) _st = Mode.Chase; return; }
         if (!_buried) Model.Pause(false);
         if (Affixes.Count > 0) EliteFx.Tick(this, dt);
 
@@ -189,12 +193,14 @@ public partial class Monster : Actor
             case Mode.Chase: TickChase(dt); break;
             case Mode.Windup: TickWindup(dt); break;
             case Mode.Recover: _t -= dt; if (_t <= 0) _st = Mode.Chase; break;
-            case Mode.Busy: _t -= dt; if (_t <= 0) { _st = Mode.Chase; var e = _busyEnd; _busyEnd = null; e?.Invoke(); } break;
+            case Mode.Busy: _t -= dt; if (_t <= 0) { _st = Mode.Chase; var e = _busyEnd; _busyEnd = null; _busyCancel = null; e?.Invoke(); } break;
         }
+        AiPostTick(dt, facing0);
     }
 
     private void TickIdle(float dt, float distToPlayer)
     {
+        if (AiIdle(dt, distToPlayer)) return;
         Model.Play(Def.Idle, 1f, 0.3f);
         _idleSfx -= dt;
         if (_idleSfx <= 0 && distToPlayer < 22f) { _idleSfx = Rng.Range(6f, 16f); Snd.At(Def.Sfx + "_idle", GlobalPosition, 0.5f); }
@@ -234,8 +240,8 @@ public partial class Monster : Actor
         return t;
     }
 
-    private float MoveSpeed => Def.Speed * SpeedMul * SlowMul * (_enrage > 0 ? 1.2f : 1f);
-    private float AtkSpeed => Def.AnimSpeed * AtkSpeedMul * (_enrage > 0 ? 1.3f : 1f) * Mathf.Lerp(1f, 0.6f, 1f - SlowMul);
+    private float MoveSpeed => AiBaseSpeed * SpeedMul * SlowMul * (_enrage > 0 ? 1.2f : 1f) * AiSpeedMul;
+    private float AtkSpeed => Def.AnimSpeed * AtkSpeedMul * (_enrage > 0 ? 1.3f : 1f) * Mathf.Lerp(1f, 0.6f, 1f - SlowMul) * AiAtkMul;
 
     private void TickChase(float dt)
     {
@@ -256,6 +262,7 @@ public partial class Monster : Actor
         float reach = Def.Range + (IsRanged ? 0f : Radius + _target.Radius - 0.5f);
         bool los = !IsRanged || World.Grid == null || World.Grid.LineShot(Pos2, _target.Pos2);
 
+        if (Faction == Faction.Monster && AiChase(dt, dist, los, reach)) return;
         if (TrySpecial(dist, los)) return;
 
         if (dist <= reach && los)
@@ -272,7 +279,7 @@ public partial class Monster : Actor
         MoveToward(_target.Pos2, dt, IsRanged && los ? reach * 0.8f : 0f);     // without a line of fire, keep walking until there is one
     }
 
-    private bool IsRanged => Def.AI is MonAI.Ranged or MonAI.Caster or MonAI.Teleporter or MonAI.Support;
+    private bool IsRanged => Def.AI is MonAI.Ranged or MonAI.Caster or MonAI.Teleporter or MonAI.Support or MonAI.Bomber || (Def.AI == MonAI.Caller && Def.Range > 6f);
 
     /// <summary>Runs from a target that came too close, for up to 1.6 s. False when there is nowhere to go.</summary>
     private bool Retreat(float dt, Vector2 toTarget)
@@ -317,7 +324,7 @@ public partial class Monster : Actor
     {
         float sp = MoveSpeed;
         // neighbours nudge a walker sideways, never backward: the shove is capped well below its own pace
-        Vector2 sep = SeparationPush() * 2.2f;
+        Vector2 sep = AiNoSeparation ? Vector2.Zero : SeparationPush() * 2.2f;
         float cap = sp * 0.55f;
         if (sep.LengthSquared() > cap * cap) sep = sep.Normalized() * cap;
         // turning round (a kiting archer, a feared monster): pivot first, then run — no running backward
@@ -351,7 +358,7 @@ public partial class Monster : Actor
         var list = Faction == Faction.Monster ? World.Monsters : World.Minions;
         foreach (var o in list)
         {
-            if (o == this || o.Dead) continue;
+            if (o == this || o.Dead || o.AiNoSeparation) continue;
             Vector2 d = Pos2 - o.Pos2;
             float min = Radius + o.Radius + 0.15f, len = d.Length();
             if (len < min && len > 0.001f) push += d / len * (min - len) / min;
@@ -416,7 +423,7 @@ public partial class Monster : Actor
                 });
                 return true;
             }
-            case MonAI.Support:
+            case MonAI.Support when !Def.Is(MonTrait.Empower):
             {
                 Monster ally = null; float best = 14f;
                 foreach (var m in World.Monsters)
@@ -448,7 +455,7 @@ public partial class Monster : Actor
     private bool _buried;        // lying in the ground, waiting for its pack to wake
     private readonly AnimCheck.Probe _animProbe = new();
     private float _blocked;
-    public void Busy(float time, Action end, Action<float> tick = null) { _st = Mode.Busy; _t = time; _busyEnd = end; _busyTick = tick; SetPhysicsProcess(tick != null); }
+    public void Busy(float time, Action end, Action<float> tick = null) { _st = Mode.Busy; _t = time; _busyEnd = end; _busyTick = tick; _busyCancel = null; SetPhysicsProcess(tick != null); }
 
     /// <summary>Pact fiend: leap to a point on the owner's command, then run the callback.</summary>
     public void CommandLeap(Vector2 to, float time, Action onLand)
@@ -480,8 +487,9 @@ public partial class Monster : Actor
             switch (Def.AI)
             {
                 case MonAI.Brute: _telegraph = Fx.TelegraphCone(this, Def.Range + Radius + 0.6f, 110f, _t, Palette.Danger); break;
-                case MonAI.Exploder: _t = 0.95f; _telegraph = Fx.Telegraph(Pos2, 3.6f, _t, Palette.Danger); Model.Flash(new Color(0.8f, 1f, 0.3f), 1.5f); break;
+                case MonAI.Exploder: _t = 0.95f; _telegraph = Fx.Telegraph(Pos2, ExplodeRadius, _t, Palette.Danger); Model.Flash(Def.Element == Element.Poison ? new Color(0.8f, 1f, 0.3f) : Palette.Element(Def.Element), 1.5f); break;
             }
+        if (Faction == Faction.Monster) anim = AiStartAttack(anim);
         Model.PlayAttack(anim, sp, _t, 0.1f);          // the swing meets the moment the blow resolves
     }
 
@@ -501,39 +509,47 @@ public partial class Monster : Actor
     {
         Vector3 hand = Model.BonePos("hand_r");
         if (Faction == Faction.Player) { MinionAttack(hand); return; }
+        if (AiResolveAttack(hand)) return;            // bombs, beams, the shield bash, eruptions … (MonsterAiKinds.cs)
         switch (Def.AI)
         {
-            case MonAI.Ranged: case MonAI.Caster: case MonAI.Teleporter: case MonAI.Support:
+            case MonAI.Ranged: case MonAI.Caster: case MonAI.Teleporter: case MonAI.Support: case MonAI.Caller when IsRanged:
             {
                 Vector2 dir = (_target.Pos2 - Pos2).Normalized();
                 hand.Y = Mathf.Clamp(hand.Y, 0.9f, 1.8f);
-                Projectile.SpawnMonster(this, hand, dir, Def.ProjSpeed, Def.Range + 8f, 1f, Def.Element, Def.OnHit);
+                AiShoot(hand, dir);
                 Snd.At(Def.Sfx + "_attack", GlobalPosition, 0.7f);
                 break;
             }
             case MonAI.Brute:
             {
                 World.InCone(Faction.Monster, Pos2, _attackDir, Def.Range + Radius + 0.6f, 110f, Tmp);
-                foreach (var a in Tmp.ToArray()) Combat.MonsterHit(this, a, 1f, Def.Element, Def.OnHit, true);
+                foreach (var a in Tmp.ToArray()) Strike(a, AiFirstMul());
                 Fx.Burst(World.To3(Pos2 + _attackDir * (Def.Range * 0.6f), 0.2f), Def.Element, 2.2f, 0.6f);
                 Fx.Shake(0.2f, 0.2f);
                 Snd.At(Def.Sfx + "_attack", GlobalPosition);
+                AiAfterSlam(Pos2 + _attackDir * (Def.Range * 0.6f));
                 break;
             }
             case MonAI.Exploder:
-                Combat.MonsterArea(this, Pos2, 3.6f, 1f, Def.Element, St.Poison(0.5f, 4));
-                Fx.Burst(Chest, Element.Poison, 3.6f, 1.2f);
-                Snd.At("bloat_explode", GlobalPosition);
+            {
+                // the bloated husk keeps its poison burst; the bestiary's exploders burst in their own element and status
+                bool builtIn = !Def.OnHit.HasValue && Def.Element == Element.Poison;
+                Combat.MonsterArea(this, Pos2, ExplodeRadius, AiFirstMul(), Def.Element, builtIn ? St.Poison(0.5f, 4) : Def.OnHit);
+                if (!builtIn && Def.OnHit2.HasValue) Combat.MonsterArea(this, Pos2, ExplodeRadius, 0.01f, Def.Element, Def.OnHit2);
+                Fx.Burst(Chest, Def.Element, ExplodeRadius, 1.2f);
+                Snd.At(Def.Element == Element.Fire ? "fire_impact" : "bloat_explode", GlobalPosition);
+                AiTrailAt(Pos2);
                 NoLoot = false;
                 TakeHit(new Hit { Source = this, Amount = MaxLife * 10f, NoReact = true });
                 break;
+            }
             default:
             {
                 float reach = Def.Range + Radius + _target.Radius + 0.5f;
                 Vector2 to = _target.Pos2 - Pos2;
                 if (to.Length() <= reach && to.Normalized().Dot(Forward) > 0.2f)
                 {
-                    Combat.MonsterHit(this, _target, 1f, Def.Element, Def.OnHit, true);
+                    Strike(_target, AiFirstMul());
                     Fx.Hit(_target.Chest, Def.Element, false);
                     Snd.At("hit_flesh", _target.GlobalPosition, 0.6f);
                     EliteFx.OnAttackHit(this);
@@ -575,8 +591,9 @@ public partial class Monster : Actor
     public override float TakeHit(Hit h)
     {
         if (Dead) return 0;
-        if (Faction == Faction.Monster) { h.Amount *= DrMul * (Staggered ? 1.25f : 1f); }
+        if (Faction == Faction.Monster) { h.Amount *= DrMul * (Staggered ? 1.25f : 1f); if (!AiModifyHit(ref h)) return 0f; }
         float d = base.TakeHit(h);
+        if (Faction == Faction.Monster) AiAfterHit(h, d);
         if (Dead) return d;
         if (!_aggro && Faction == Faction.Monster) WakePack();
         if (!h.Dot)
@@ -584,7 +601,7 @@ public partial class Monster : Actor
             Model.Flash(Colors.White, h.Crit ? 1f : 0.55f);
             EliteFx.OnHitTaken(this, h);
             _flinchIcd -= 0.3f;
-            if (!h.NoReact && Brain == null && (_st == Mode.Chase || _st == Mode.Idle) && _flinchIcd <= 0 && h.Amount > MaxLife * 0.05f * Def.Poise && !IsElite)
+            if (!h.NoReact && Brain == null && (_st == Mode.Chase || _st == Mode.Idle) && _flinchIcd <= 0 && h.Amount > MaxLife * 0.05f * Def.Poise && !IsElite && !AiNoFlinch)
             {
                 _flinchIcd = 1.2f;
                 Model.Play(Rng.Chance(0.5f) ? "Hit_Chest" : "Hit_Head", 1.6f, 0.05f, true);
@@ -624,6 +641,7 @@ public partial class Monster : Actor
     {
         _st = Mode.Dead; _deadT = 0;
         CancelTelegraph();
+        if (Faction == Faction.Monster) Log.Guard("monster-ai", () => AiOnDeath(h));
         Untargetable = true;
         (Faction == Faction.Monster ? World.Monsters : World.Minions).Remove(this);
         Model.Pause(false);
@@ -651,7 +669,7 @@ public partial class Monster : Actor
             Fx.Ash(this);
             Snd.At("ash_crumble", GlobalPosition, 0.5f);
         }
-        if (Model.Dissolved || _deadT > 6f) QueueFree();
+        if ((Model.Dissolved || _deadT > 6f) && !AiKeepsBody) QueueFree();
     }
 
     public override void _Notification(int what)

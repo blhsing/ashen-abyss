@@ -49,6 +49,22 @@ def bundle(count=5, L_=0.62, r=0.058, seed=0):
 
 
 # ================================================================================================ fuel-bearers
+def load_straps(A, look='strap', y_back=0.16, z_top=1.50, z_bot=1.08, x=0.125, w=0.024, chest=1.30):
+    """harness of a back load: a strap over each shoulder from the load down the chest to the belt and one round the chest,
+    all seated on the body and skinned like it (they follow the bulk of the bearer instead of floating as hoops)"""
+    S = A.S('body')
+    for sx in (1, -1):
+        pts = [V(sx * x, y_back, z_top - 0.04), V(sx * x, 0.06, z_top + 0.06), V(sx * x * 1.05, -0.08, z_top - 0.02), V(sx * x * 1.1, -0.16, chest),
+               V(sx * x * 0.9, -0.16, (chest + z_bot) / 2), V(sx * x * 0.7, -0.14, z_bot)]
+        P = KX.surf_path(S, pts, lift=0.009, n=16)
+        A.add(tube(P, w, n=4, r2=0.006, up=(sx, 0, 0), phase=math.pi / 4), look=look, skin=2, smooth=40)
+    cx, cy, rx, ry = girth_of(A, 'body', chest)
+    a = np.radians(np.linspace(0, 360, 26, endpoint=False))
+    ring = np.stack([cx + (rx + 0.02) * np.cos(a), cy + (ry + 0.02) * np.sin(a), np.full(26, chest) + 0.02 * np.sin(a)], axis=1)
+    P = np.array([S.nearest(q)[0] + S.nearest(q)[1] * 0.011 for q in ring])
+    A.add(tube(P, w, n=4, r2=0.006, up=(0, 0, 1), closed=True, phase=math.pi / 4), look=look, skin=2, smooth=40)
+
+
 @part
 def brand_ring(A, look='brand', at=(0.0, -0.175, 1.33), R=0.07, bone='spine_03'):
     """the Forge brand on the chest: a raised scar ring that still glows dully"""
@@ -62,74 +78,82 @@ def brand_ring(A, look='brand', at=(0.0, -0.175, 1.33), R=0.07, bone='spine_03')
 def yoke(A, look='tar', length=1.75, z=1.565, y=0.085, r=0.05, loads='logs', drop=0.34, bone='spine_03', chain='rust'):
     """shoulder-yoke as long as its bearer is tall, lying across the shoulders behind the neck, a chained bundle of logs
     hung from each end (rigid on spine_03: the swing has to come from the clips)"""
+    K = V(0, y, z)                     # the whole assembly moves as one rigid thing (shared keep anchor)
     xs = np.linspace(-length / 2, length / 2, 11)
     pts = np.stack([xs, np.full(11, y), z + 0.10 * (np.abs(xs) / (length / 2)) ** 2 - 0.02], axis=1)
     b = tube(pts, r * (1.0 - 0.25 * (np.abs(xs) / (length / 2)) ** 2), n=8, r2=r * 1.25 * (1.0 - 0.25 * (np.abs(xs) / (length / 2)) ** 2), up=(0, 1, 0))
     b.rough(0.004, 12.0, seed=3.0)
-    A.add(b, bone=bone, look=look, smooth=40, keep=True)
-    A.add(revolve([(0.13, -0.035), (0.14, 0.0), (0.13, 0.035)], n=10, cap=False).rot('x', 90).scale((1, 1, 0.8)).move(0, y, z - 0.03), bone=bone, look='strap', keep=True)   # neck pad
+    A.add(b, bone=bone, look=look, smooth=40, keep=K)
+    A.add(revolve([(0.13, -0.035), (0.14, 0.0), (0.13, 0.035)], n=10, cap=False).rot('x', 90).scale((1, 1, 0.8)).move(0, y, z - 0.03), bone=bone, look='strap', keep=K)   # neck pad
     for sx in (-1, 1):
         e = pts[0 if sx < 0 else -1] + V(-sx * 0.06, 0, 0)
-        A.add(torus(r * 0.9, 0.012, n=10, m=4).rot('y', 90).move(e), bone=bone, look=chain, keep=True)
-        A.add(M.chain(np.array([e + V(0, 0, -r * 0.8), e + V(0, 0, -drop)]), link=0.07, r=0.011), bone=bone, look=chain, smooth=60, keep=True)
+        A.add(torus(r * 0.9, 0.012, n=10, m=4).rot('y', 90).move(e), bone=bone, look=chain, keep=K)
+        A.add(M.chain(np.array([e + V(0, 0, -r * 0.8), e + V(0, 0, -drop)]), link=0.07, r=0.011), bone=bone, look=chain, smooth=60, keep=K)
         if loads == 'logs':
             for p, lk in bundle(5, 0.62, 0.058, seed=4 + sx):
-                A.add(p.move(e + V(0, 0, -drop)), bone=bone, look=lk, smooth=40, keep=True)
+                A.add(p.move(e + V(0, 0, -drop)), bone=bone, look=lk, smooth=40, keep=K)
         else:
             for p, lk in item_parts(A, loads, 2.2):
-                A.add(p.move(e + V(0, 0, -drop)), bone=bone, look=lk, smooth=40, keep=True)
+                A.add(p.move(e + V(0, 0, -drop)), bone=bone, look=lk, smooth=40, keep=K)
 
 
 @part
-def hod(A, look='wicker', frame='tar', z0=1.0, h=1.75, w=0.62, d=0.36, y=0.20, trunks=5, bone='spine_03', strap='strap'):
+def hod(A, look='wicker', frame='tar', z0=1.0, h=1.75, w=0.62, d=0.36, y=0.135, trunks=5, bone='spine_03', strap='strap'):
     """wicker-and-timber hod on the back rising a body-height above the head, stacked with tree trunks like arrows in a
     quiver"""
     c = V(0, y + d / 2, z0)
+    K = V(0, y, z0 + 0.3)                    # keep anchor on the hod's front face: it stays against the back whatever the bulk
     for sx in (-1, 1):
         for sy in (0, 1):
-            A.add(cyl(c + V(sx * w / 2, (sy - 0.5) * d, 0), c + V(sx * w / 2 * 1.15, (sy - 0.5) * d * 1.2, h), 0.028, n=6), bone=bone, look=frame, smooth=40, keep=True)
+            A.add(cyl(c + V(sx * w / 2, (sy - 0.5) * d, 0), c + V(sx * w / 2 * 1.15, (sy - 0.5) * d * 1.2, h), 0.028, n=6), bone=bone, look=frame, smooth=40, keep=K)
     for zz in (0.02, h * 0.45, h * 0.9):
         f = 1 + 0.15 * zz / h
         ring = np.array([c + V(sx * w / 2 * f, sy * d / 2 * f * 1.05, zz) for sx, sy in ((-1, -1), (1, -1), (1, 1), (-1, 1))])
-        A.add(tube(ring, 0.02, n=5, closed=True), bone=bone, look=frame, smooth=40, keep=True)
+        A.add(tube(ring, 0.02, n=5, closed=True), bone=bone, look=frame, smooth=40, keep=K)
     bk = M.loft_z([(z0 + 0.02, 0, y + d / 2, w / 2, d / 2, 4.0), (z0 + h * 0.6, 0, y + d / 2, w / 2 * 1.09, d / 2 * 1.1, 4.0)], n=16, cap1=False)
     bk.rough(0.004, 30.0, seed=2.0)
-    A.add(bk, bone=bone, look=look, smooth=40, keep=True)
+    A.add(bk, bone=bone, look=look, smooth=40, keep=K)
     rng = np.random.default_rng(5)
     for k in range(trunks):
         x = (k - (trunks - 1) / 2) * w / trunks * 0.9
         yy = y + d / 2 + rng.uniform(-0.08, 0.08)
         L_ = h * rng.uniform(1.0, 1.28)
         lg = log_part(L_, rng.uniform(0.055, 0.075), seed=k).rot('x', 90).rot('y', rng.uniform(-5, 5)).move(x, yy, z0 + 0.12 + L_ / 2)
-        A.add(lg, bone=bone, look='log', smooth=40, keep=True)
-    for z_, tl in ((1.22, 14.0), (1.40, -14.0)):
-        cx, cy, rx, ry = girth_of(A, 'body', z_)
-        A.add(band((0, cy + 0.04, z_), rx * 0.92 + 0.014, ry + 0.07, 0.04, 0.009, tilt_y=tl, n=22), bone=bone, look=strap)
+        A.add(lg, bone=bone, look='log', smooth=40, keep=K)
+    load_straps(A, look=strap, y_back=y)
 
 
 @part
-def cage_back(A, look='wicker', R=0.36, h=0.72, z0=1.02, y=0.20, bone='spine_03', glow='glow', strap='strap'):
-    """domed wicker cage strapped to the back like an enormous lobster-pot, a faint warm glow inside"""
+def cage_back(A, look='wicker', R=0.36, h=0.72, z0=1.04, y=0.115, bone='spine_03', glow='glow', strap='strap', load='rag'):
+    """domed wicker cage strapped to the back like an enormous lobster-pot: open weave (ribs + hoops, the level shows
+    through it), a heap of stolen warm things on its floor with a faint glow between them"""
     c = V(0, y + R * 0.8, z0)
-    ribs = 12
+    K = V(0, y, z0 + h * 0.35)                            # shared keep anchor on the cage's front: it stays against the back
+    prof = ((0.72, 0.0), (0.96, h * 0.22), (1.0, h * 0.42), (0.90, h * 0.66), (0.60, h * 0.88), (0.10, h * 0.985))
+    ribs = 14
     for k in range(ribs):
         a = 2 * math.pi * k / ribs
-        pts = [c + V(R * math.cos(a) * f, R * 0.8 * math.sin(a) * f, zz) for f, zz in ((0.8, 0.0), (1.0, h * 0.3), (0.93, h * 0.62), (0.6, h * 0.9), (0.0, h))]
-        A.add(tube(M.polyline(pts, 8), 0.012, n=4), bone=bone, look=look, smooth=40, keep=True)
-    for zz, f in ((0.0, 0.8), (h * 0.3, 1.0), (h * 0.62, 0.93), (h * 0.88, 0.63)):
-        A.add(torus(R * f, 0.014, n=18, m=4, ry=R * 0.8 * f).move(c + V(0, 0, zz)), bone=bone, look=look, smooth=40, keep=True)
-    inner = M.loft_z([(0.0, 0, 0, R * 0.76, R * 0.6), (h * 0.3, 0, 0, R * 0.95, R * 0.75), (h * 0.62, 0, 0, R * 0.88, R * 0.7), (h * 0.9, 0, 0, R * 0.55, R * 0.44), (h * 0.99, 0, 0, 0.02, 0.02)],
-                      n=12)
-    A.add(inner.move(c), bone=bone, look='void', smooth=60, keep=True)
-    if glow:
-        A.add(ellipsoid(R * 0.3, R * 0.25, R * 0.3, n=8, m=6).move(c + V(0, 0, h * 0.3)), bone=bone, look=glow, smooth=80, keep=True)
-        for k in range(5):
-            a = 2 * math.pi * (k + 0.5) / 5
-            A.add(box(0.03, 0.012, h * 0.4).move(c + V(R * 0.9 * math.cos(a), R * 0.72 * math.sin(a), h * 0.4)).rot('z', math.degrees(a) + 90, pivot=c + V(R * 0.9 * math.cos(a), R * 0.72 * math.sin(a), 0)),
-                  bone=bone, look=glow, keep=True)
-    for z_, tl in ((1.22, 14.0), (1.40, -14.0)):
-        cx, cy, rx, ry = girth_of(A, 'body', z_)
-        A.add(band((0, cy + 0.05, z_), rx * 0.92 + 0.014, ry + 0.09, 0.04, 0.009, tilt_y=tl, n=22), bone=bone, look=strap)
+        pts = [c + V(R * math.cos(a) * f, R * 0.8 * math.sin(a) * f, zz) for f, zz in prof]
+        A.add(tube(M.polyline(pts, 9), 0.011, n=4), bone=bone, look=look, smooth=40, keep=K)
+    for f, zz in prof[:-1]:
+        A.add(torus(R * f, 0.013, n=20, m=4, ry=R * 0.8 * f).move(c + V(0, 0, zz)), bone=bone, look=look, smooth=40, keep=K)
+    A.add(M.loft_z([(h * 0.95, 0, 0, R * 0.16, R * 0.13), (h * 1.03, 0, 0, R * 0.10, R * 0.08), (h * 1.06, 0, 0, 0.0, 0.0)], n=8).move(c), bone=bone, look=look, smooth=50, keep=K)
+    A.add(torus(0.04, 0.009, n=10, m=4).rot('x', 90).move(c + V(0, 0, h * 1.07)), bone=bone, look=strap, keep=K)
+    fl = M.loft_z([(-0.012, 0, 0, R * 0.70, R * 0.56), (0.012, 0, 0, R * 0.74, R * 0.59), (0.02, 0, 0, 0.0, 0.0)], n=14)
+    A.add(fl.move(c), bone=bone, look=look, smooth=40, keep=K)
+    rng = np.random.default_rng(7)
+    for k in range(6):                                    # the heap: bundles of rag and hide
+        a = 2 * math.pi * k / 6 + 0.4
+        rr = R * (0.36 if k else 0.0)
+        s_ = rng.uniform(0.09, 0.14)
+        lp = KX.lump(s_, s_ * 0.85, s_ * 0.75, seed=20 + k, amp=0.28, freq=8.0)
+        A.add(lp.move(c + V(rr * math.cos(a), rr * 0.8 * math.sin(a), 0.02 + s_ * 0.62 + (0.12 if k == 0 else 0.0))), bone=bone, look=load if k % 2 else 'hide',
+              smooth=60, keep=K)
+    if glow:                                              # warmth leaking between the bundles
+        for k in range(4):
+            a = 2 * math.pi * (k + 0.5) / 4 + 0.4
+            A.add(ellipsoid(0.05, 0.045, 0.04, n=7, m=5).move(c + V(R * 0.2 * math.cos(a), R * 0.16 * math.sin(a), 0.105)), bone=bone, look=glow, smooth=80, keep=K)
+    load_straps(A, look=strap, y_back=y)
 
 
 @part
@@ -158,7 +182,11 @@ def bowl_helm(A, look='rust', R=0.30, z=1.42, h=0.42, slot='void'):
     A.add(b.move(0, 0.0, z), bone='spine_03', look=look, smooth=45)
     A.add(revolve([(R * 0.985, 0.0), (R * 0.9, h * 0.3), (R * 0.45, h * 0.88), (0.0, h * 0.94)], n=14, cap=False).scale((1.0, 0.86, 1.0)).flip().move(0, 0, z), bone='spine_03', look='void')
     A.add(torus(R * 1.02, 0.014, n=18, m=4, ry=R * 1.02 * 0.86).move(0, 0, z + 0.012), bone='spine_03', look=look)
-    A.add(box(0.19, 0.03, 0.035).move(0, -R * 0.86 * 0.9, z + h * 0.6), bone='spine_03', look=slot)
+    rs = float(np.interp(h * 0.6, [p_[1] for p_ in prof], [p_[0] for p_ in prof]))                    # the bowl's radius at slot height
+    A.add(band((0, 0, z + h * 0.6), rs + 0.002, rs * 0.86 + 0.002, 0.03, 0.005, n=9, a0=-111.0, a1=-69.0), bone='spine_03', look=slot)   # hacked slot, flush
+    for sx in (-1, 1):                                   # torn metal lips at the ends of the slot
+        a = math.radians(-90 + sx * 22)
+        A.add(box(0.016, 0.014, 0.05, bevel=0.004).rot('z', sx * 22).move(rs * math.cos(a), rs * 0.86 * math.sin(a), z + h * 0.6), bone='spine_03', look=look, smooth=30)
     for k in range(3):                                   # the bowl's three stubby legs, now horns on top
         a = 2 * math.pi * k / 3 + 0.5
         A.add(cyl(V(R * 0.42 * math.cos(a), R * 0.36 * math.sin(a), z + h * 0.92), V(R * 0.6 * math.cos(a), R * 0.5 * math.sin(a), z + h + 0.12), 0.022, n=6),
@@ -201,8 +229,10 @@ def amalgam(A, look='bone', eye='eye', thick=1.5):
         A.add(KB.seg(el, wr, 0.011, 0.010, 1.5, 1.5, n=5), bone='spine_03', look=look, smooth=50)
         for k in range(3):
             A.add(KB.seg(wr, wr + V(-sx * 0.05, -0.012 + 0.012 * k, -0.035 + 0.03 * k), 0.006, 0.004, 1.3, 1.0, n=4), bone='spine_03', look=look, smooth=50)
-    A.add(band((0, 0.0, 1.30), 0.235, 0.185, 0.03, 0.008, tilt_y=10, n=24), bone='spine_03', look='rope')
-    A.add(band((0, 0.0, 1.16), 0.215, 0.165, 0.03, 0.008, tilt_y=-8, n=24), bone='spine_02', look='rope')
+    # grave cord lashing the two ribcages together: tight rope loops (they were wide flat hoops standing off the ribs)
+    for (zz, rx_, ry_, tl, bn) in ((1.31, 0.192, 0.176, 9.0, 'spine_03'), (1.285, 0.19, 0.174, -7.0, 'spine_03'), (1.15, 0.176, 0.158, -8.0, 'spine_02'),
+                                   (1.125, 0.172, 0.155, 6.0, 'spine_02')):
+        A.add(torus(rx_, 0.011, n=24, m=5, ry=ry_).rot('y', tl).move(0, 0.012, zz), bone=bn, look='rope', smooth=60)
 
 
 @part

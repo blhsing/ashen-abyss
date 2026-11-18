@@ -359,7 +359,7 @@ public partial class HudWorld : Control
     {
         _plateCount = 0;
         Vector2 hp = p.Pos2;
-        Actor hover = p.Hover;
+        Actor hover = p.Hover ?? p.AttackTarget;          // the enemy under the cursor, else the one being run at or attacked
         var mons = World.Monsters;
         for (int i = 0; i < mons.Count; i++)
         {

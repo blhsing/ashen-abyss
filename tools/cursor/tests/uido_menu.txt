@@ -1,0 +1,35 @@
+# Mouse cursor on the title screen and in the settings (use a fresh profile). Run with --cursor-log:
+# every change of the arrow's picture is a "[cursor]" log line; "[uitest] STEP ..." lines mark what the pointer is on.
+#   Y:\tools\repo\fresh_profile_run.ps1 -GameArgs "--win --mute --cursor-log --uidir=Y:\shots\cursor --uido=@Y:\tools\cursor\tests\uido_menu.txt" -Timeout 90
+wait 2.5
+log STEP title-background
+hover 1250,500
+wait 0.7
+log STEP menu-entry (pointing-hand shape)
+hover @新遊戲
+wait 0.7
+unhover
+log STEP open-settings
+click @設定
+wait 1.2
+hover 800,300
+wait 0.5
+shot cursor_settings_display
+log STEP settings-page-game
+click @遊戲
+wait 0.8
+shot cursor_settings_game
+log STEP system-cursor-on
+click @系統
+wait 0.9
+shot cursor_settings_game_system
+log STEP system-cursor-off
+click @遊戲
+wait 0.9
+log STEP text-scale-2
+scale 2
+wait 0.8
+log STEP text-scale-0
+scale 0
+wait 0.8
+quit

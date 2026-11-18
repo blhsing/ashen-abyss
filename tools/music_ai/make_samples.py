@@ -22,6 +22,7 @@ import audiolib as al  # noqa: E402
 MA_ROOT = os.environ.get("MA_ROOT", os.path.join(os.environ.get("LOCALAPPDATA", ""), "AshenAbyssTools", "music_ai"))
 OUT = r"Y:\music_samples"
 BACKUP = r"Y:\music_backup\procedural"
+GAME_MUSIC = "Y:/game/assets/audio/music"
 TARGET = -18.0
 
 PIECE_NOTES = {
@@ -70,11 +71,19 @@ def level_to_target(src, dst):
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--pieces", default=",".join(T.PILOT))
+    ap.add_argument("--pieces", default="all", help="all (every piece of tracks.py) or a comma list")
     args = ap.parse_args()
-    pieces = [p for p in args.pieces.split(",") if p]
+    pieces = [t["name"] for t in T.TRACKS] if args.pieces == "all" else [p for p in args.pieces.split(",") if p]
     with open(os.path.join(HERE, "samples_models.json"), encoding="utf-8") as f:
         cfg = json.load(f)
+    for m in cfg["models"]:
+        m["final_dir"] = os.path.expandvars(m["final_dir"])
+    # which version each piece has in the game right now (written by deliver.py)
+    try:
+        with open(os.path.join(GAME_MUSIC, "music_info.json"), encoding="utf-8") as f:
+            in_game = {k: v.get("model", "") for k, v in json.load(f)["tracks"].items()}
+    except (OSError, ValueError, KeyError):
+        in_game = {}
     os.makedirs(OUT, exist_ok=True)
     # text-match numbers come from the batch's own records (no model is loaded here)
     cols = [dict(key="procedural", title="Previous version (procedural)", note="SoundFont-based synthesis, kept as the fallback", baseline=True)]
@@ -109,7 +118,11 @@ def main():
                     bits.append("%.0f BPM measured (asked %d)" % (meta["ogg"]["tempo"], tr["bpm"]))
                 if not meta.get("passed", True):
                     bits.append("FAILED checks: " + meta.get("reason", ""))
-            cells.append(dict(file=name, bits=bits, recommended=bool(c.get("recommended"))))
+            here = in_game.get(p, "")
+            live = here.startswith("procedural") if c.get("baseline") else bool(here) and here.startswith(c["title"])
+            if live:
+                bits.insert(0, "IN THE GAME")
+            cells.append(dict(file=name, bits=bits, recommended=live))
             print("%-12s %-16s %6.1f s  %.2f -> %.2f LUFS%s" % (p, c["key"], sec, before, after, " (re-encoded)" if redone else ""))
         rows.append((p, cells))
 
@@ -117,7 +130,7 @@ def main():
          "<meta name='viewport' content='width=device-width, initial-scale=1'>",
          "<title>Ashen Abyss - music samples</title>", "<style>%s</style></head><body>" % CSS,
          "<h1>燼淵 Ashen Abyss — music model samples</h1>",
-         "<div class='sub'>Generated %s on this machine. All files are OGG Vorbis, loudness-matched to about %d LUFS. "
+         "<div class='sub'>Generated %s on this machine. The framed cell of each row is the version the game plays now. All files are OGG Vorbis, loudness-matched to about %d LUFS. "
          "Loops are cut and crossfaded the same way as the delivered tracks.</div>" % (time.strftime("%Y-%m-%d %H:%M"), TARGET),
          "<p>%s</p>" % cfg.get("intro", ""),
          "<table><tr><th>Piece</th>"]

@@ -32,7 +32,10 @@ asm.PRE.update(
     tallow=asm._p('wax', 'bone', color=(0.66, 0.58, 0.38), soot=0.12),
     bronze=asm._p('metal', 'metal', color=(0.22, 0.15, 0.07), rust=(0.07, 0.16, 0.13), rust2=(0.04, 0.08, 0.06), amount=0.5,
                   edge_color=(0.62, 0.48, 0.25), rough=0.42, hammer=14.0),
-    chalk=asm._p('wax', 'bone', color=(0.80, 0.80, 0.78), soot=0.0),
+    # chalk: was plain wax (read as smooth clay); now dry cracked chalk -- pale plates, hairline cracks, dust on top, scanned relief
+    chalk=asm._p('rock', 'bone', color=(0.33, 0.33, 0.32), ash=(0.80, 0.80, 0.78), ash_amt=0.75, scale=8.0, crack_w=0.012, rough=0.9, bump=0.55,
+                 grime=(0.20, 0.19, 0.18), grime_amt=0.5),
+    chalk_wax=asm._p('wax', 'bone', color=(0.80, 0.80, 0.78), soot=0.0),
     ashcrust=asm._p('rock', 'rock', color=(0.20, 0.195, 0.19), ash=(0.42, 0.41, 0.40), ash_amt=0.8, scale=16.0, crack_w=0.035, rough=0.95),
     charwood=asm._p('rock', 'rock', color=(0.028, 0.026, 0.025), ash=(0.50, 0.49, 0.47), ash_amt=0.35, scale=20.0, crack_w=0.06, bump=1.0,
                     heat=(0.5, 0.12, 0.02), heat_amt=0.25),
@@ -228,7 +231,8 @@ def eel_string(A, bone='pelvis', at=(-0.15, -0.07, 1.02), count=3, look='skin_bo
 
 # ================================================================================================ wax
 @part
-def wax_dome(A, look='tallow', R=0.185, z0=1.36, z1=1.90, bone='spine_03', wick=True, drips=9, seed=2, melted=None):
+def wax_dome(A, look='tallow', R=0.185, z0=1.36, z1=1.90, bone='spine_03', wick=True, drips=9, seed=2, melted=None, melt_drop=0.42, melt_in=0.25,
+             melt_off=0.02, melt_w=1.0, melt_zw=0.5):
     """smooth dome of poured wax hiding head and shoulders (narrower than the shoulders: a candle-end), thick runs down
     its sides and a short wick on the crown.  melted = 'l' | 'r' cuts half of it away to show the jaw"""
     H = z1 - z0
@@ -237,9 +241,9 @@ def wax_dome(A, look='tallow', R=0.185, z0=1.36, z1=1.90, bone='spine_03', wick=
     d.rough(0.006, 9.0, seed=float(seed))
     if melted:
         sx = 1 if melted == 'l' else -1
-        t = np.clip((sx * d.v[:, 0] + 0.02) / R, 0, 1) * np.clip((d.v[:, 2] - H * 0.15) / (H * 0.5), 0, 1)
-        d.v[:, 2] -= t * H * 0.42
-        d.v[:, 0] -= sx * t * R * 0.25
+        t = np.clip((sx * d.v[:, 0] + melt_off) / (R * melt_w), 0, 1) * np.clip((d.v[:, 2] - H * 0.15) / (H * melt_zw), 0, 1)
+        d.v[:, 2] -= t * H * melt_drop
+        d.v[:, 0] -= sx * t * R * melt_in
     A.add(d.move(0, 0.0, z0), bone=bone, look=look, smooth=80)
     rng = np.random.default_rng(seed)
     for k in range(drips):
@@ -248,9 +252,12 @@ def wax_dome(A, look='tallow', R=0.185, z0=1.36, z1=1.90, bone='spine_03', wick=
         x = R * 1.07 * math.cos(a); y = R * 1.07 * 0.92 * math.sin(a)
         pts = [(x, y, z0 + H * 0.2), (x * 1.03, y * 1.03, z0 + 0.02), (x * 1.02, y * 1.02, z0 - L_ * 0.6), (x * 1.0, y * 1.0, z0 - L_)]
         A.add(tube(np.array(pts), [0.016, 0.02, 0.014, 0.004], n=6), bone=bone, look=look, smooth=70)
+    tp = V(0, 0, z1)
+    if melted:                                            # the wick stands on what is left: the highest point of the melted dome
+        tp = d.v[int(np.argmax(d.v[:, 2]))].copy()
     if wick:
-        A.add(tube([(0, 0, z1 - 0.01), (0.004, 0, z1 + 0.03), (0.012, 0.004, z1 + 0.055)], 0.0045, n=5), bone=bone, look='wick')
-    A.refs['dome_top'] = V(0.012, 0.004, z1 + 0.055)
+        A.add(tube([tp + V(0, 0, -0.012), tp + V(0.004, 0, 0.03), tp + V(0.012, 0.004, 0.055)], 0.0045, n=5), bone=bone, look='wick')
+    A.refs['dome_top'] = tp + V(0.012, 0.004, 0.055)
 
 
 @part

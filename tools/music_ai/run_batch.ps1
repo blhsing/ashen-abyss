@@ -2,12 +2,12 @@
 # and a lock, so a second start while one is running exits immediately).
 #
 #   powershell -NoProfile -ExecutionPolicy Bypass -File Y:\tools\music_ai\run_batch.ps1 [-Tracks all|pilot|a,b] [-Device cuda|cpu]
-#        [-Stage <folder>] [-ModelDir <Diffusers model folder>] [-ModelId "<name for the metadata>"] [-OnlyEval] [-Chunk 4] [-Deliver] [-MaxSeeds 3]
+#        [-Stage <folder>] [-ModelDir <Diffusers model folder>] [-ModelId "<name for the metadata>"] [-OnlyEval] [-Chunk 4] [-Deliver] [-MaxSeeds 3] [-FirstSeeds 2] [-RedoFinal]
 #
 # While it runs, Y:\tools\music_ai\RUNNING.txt holds the process ids, the log path and the stop command;
 # the batch deletes that file when it ends.
 # Progress:  Get-Content <stage>\produce.log -Tail 20      (generator output: gen.log next to it)
-param([string]$Tracks = 'all', [string]$Device = 'cuda', [string]$Stage = '', [string]$ModelDir = '', [string]$ModelId = '', [switch]$OnlyEval, [int]$Chunk = 0, [switch]$Deliver, [int]$MaxSeeds = 0, [int]$FirstSeeds = 0)
+param([string]$Tracks = 'all', [string]$Device = 'cuda', [string]$Stage = '', [string]$ModelDir = '', [string]$ModelId = '', [switch]$OnlyEval, [int]$Chunk = 0, [switch]$Deliver, [int]$MaxSeeds = 0, [int]$FirstSeeds = 0, [switch]$RedoFinal)
 . "$PSScriptRoot\env.ps1"
 $env:PYTHONWARNINGS = 'ignore'
 if (-not $Stage) { $Stage = "$MA_ROOT\stage\ace_xl" }
@@ -17,6 +17,7 @@ $argv = @("`"$PSScriptRoot\produce.py`"", '--tracks', $Tracks, '--device', $Devi
 if ($ModelDir) { $argv += @('--model-dir', "`"$ModelDir`"") }
 if ($ModelId) { $argv += @('--model-id', "`"$ModelId`"") }
 if ($OnlyEval) { $argv += '--only-eval' }
+if ($RedoFinal) { $argv += '--redo-final' }
 if ($Chunk -gt 0) { $argv += @('--chunk', "$Chunk") }
 if ($Deliver) { $argv += '--deliver' }
 if ($FirstSeeds -gt 0) { $argv += @('--first-seeds', "$FirstSeeds") }

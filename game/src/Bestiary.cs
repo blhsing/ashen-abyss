@@ -61,12 +61,32 @@ public static class Bestiary
     private static int _merged, _added, _reskinsAdded, _reskinsMerged;
 
     /// <summary>
-    /// PARKED (2026-11-15, see Y:\ROSTER_NOTES.md): while this is false the bestiary changes nothing in the game — no new
-    /// definitions in MonsterDb, the built-in region spawn lists stay, CharModel resolves models as before. The data can
-    /// still be read (Info, Named, Family, Region). Set to true only together with the new AI (MonsterAi*.cs) and the
-    /// family-based Populate, which are not written yet.
+    /// The game's default: whether the designed roster is in play. While it is false the bestiary changes nothing — no
+    /// new definitions in MonsterDb, the built-in region spawn lists stay, CharModel resolves models as before (the data
+    /// can still be read: Info, Named, Family, Region).
     /// </summary>
-    public static readonly bool Live = false;
+    public const bool LiveByDefault = false;
+    /// <summary>
+    /// The roster is live: <see cref="LiveByDefault"/>, overridden for a test run by the switches --bestiary (on) and
+    /// --no-bestiary (off; for comparing a build against the old roster). Read once, before MonsterDb is built.
+    /// </summary>
+    public static readonly bool Live = ReadLive();
+
+    private static bool ReadLive()
+    {
+        bool on = LiveByDefault;
+        try
+        {
+            foreach (var a in OS.GetCmdlineUserArgs().Concat(OS.GetCmdlineArgs()))
+            {
+                string s = a.TrimStart('-').ToLowerInvariant();
+                if (s == "bestiary") on = true;
+                else if (s == "no-bestiary") on = false;
+            }
+        }
+        catch (Exception) { }
+        return on;
+    }
 
     public static bool Loaded { get; private set; }
     /// <summary>The whole document (ValueKind Undefined when the file could not be read).</summary>

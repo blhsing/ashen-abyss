@@ -21,7 +21,7 @@ public sealed class SettingsView
 
     private readonly MenuSeg _tabs;
     private readonly List<Control> _pages = new();
-    private MenuSeg _display, _vsync, _quality, _scaleMode, _dmgNum, _shake, _subs, _loot, _textScale;
+    private MenuSeg _display, _vsync, _quality, _scaleMode, _dmgNum, _shake, _subs, _loot, _textScale, _cursor;
     private HSlider _scale, _bright;
     private Label _brightGlyph;
     private Label _scaleValue;
@@ -281,6 +281,9 @@ public sealed class SettingsView
         col.AddChild(Row("字幕", "顯示對白與旁白的文字", _subs.Root));
         _loot = new MenuSeg(OnOff, i => { Cfg.ShowAllLoot = i == 0; Commit("showAllLoot=" + Cfg.ShowAllLoot); }, UiTheme.Fs(FsOption), UiTheme.Px(150f));
         col.AddChild(Row("總是顯示掉落物標籤", "關閉時，按住 Alt 才會顯示地上物品的名稱", _loot.Root));
+        // 滑鼠游標: the forged cursors that follow what is under the pointer, or the operating system's own (Cursors.cs applies it at once)
+        _cursor = new MenuSeg(new[] { "遊戲", "系統" }, i => { Cfg.SystemCursor = i == 1; Commit("systemCursor=" + Cfg.SystemCursor); }, UiTheme.Fs(FsOption), UiTheme.Px(150f));
+        col.AddChild(Row("滑鼠游標", "遊戲：游標會隨指向的敵人、人物、物品而變化；系統：使用作業系統的游標", _cursor.Root));
         return col;
     }
 
@@ -493,6 +496,7 @@ public sealed class SettingsView
             _shake.Select(c.ScreenShake ? 0 : 1);
             _subs.Select(c.Subtitles ? 0 : 1);
             _loot.Select(c.ShowAllLoot ? 0 : 1);
+            _cursor.Select(c.SystemCursor ? 1 : 0);
         }
         finally { _refreshing = false; }
     }
@@ -551,7 +555,7 @@ public sealed class SettingsView
         c.Master = d.Master; c.Music = d.Music; c.Sfx = d.Sfx; c.Voice = d.Voice; c.Ambience = d.Ambience;
         c.Fullscreen = d.Fullscreen; c.VSync = d.VSync; c.DamageNumbers = d.DamageNumbers; c.ScreenShake = d.ScreenShake;
         c.Subtitles = d.Subtitles; c.ShowAllLoot = d.ShowAllLoot; c.Quality = d.Quality; c.RenderScale = d.RenderScale;
-        c.UiTextScale = d.UiTextScale; c.Brightness = d.Brightness;
+        c.UiTextScale = d.UiTextScale; c.Brightness = d.Brightness; c.SystemCursor = d.SystemCursor;
         // LastSlot is not a preference and stays as it is
         try { UiTheme.ApplyTextScale(c.UiTextScale); }
         catch (Exception e) { Log.Error("cfg", "resetting the text size failed", e); }

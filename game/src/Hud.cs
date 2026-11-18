@@ -48,6 +48,8 @@ public partial class Hud : Control
 
     /// <summary>True while the pointer rests on a loot label or prompt (the click belongs to the HUD, not the ground).</summary>
     public bool PointerOnLabel => _world != null && _world.PointerObj != null;
+    /// <summary>The object whose loot label or prompt the pointer rests on, or null (read by the mouse cursor, Cursors.cs).</summary>
+    public Interactable PointerObj => _world?.PointerObj;
 
     public Hud()
     {
@@ -354,7 +356,7 @@ public partial class Hud : Control
             _bossT -= dt;
             if (_bossT <= 0f) { _bossT = 0.2f; _bossPick = FindBoss(lv, p); }
             if (_bossPick != null && (!IsInstanceValid(_bossPick) || _bossPick.Dead)) _bossPick = null;
-            Monster hover = _bossPick == null ? p.Hover as Monster : null;
+            Monster hover = _bossPick == null ? (p.Hover ?? p.AttackTarget) as Monster : null;
             if (hover != null && (!IsInstanceValid(hover) || hover.Dead || hover.Faction != Faction.Monster)) hover = null;
             _boss.Tick(_bossPick, hover, dt);
         }

@@ -284,6 +284,24 @@ def k_glow(N, p):
     return r
 
 
+def k_cglass(N, p):
+    """sooted lantern glass lit from inside: black glass whose cracks (and a halo round them) leak the inner light"""
+    r = L.KINDS['glass'](N, p)
+    e = _c(p, 'emit', (0.5, 0.78, 1.0))
+    cw = _c(p, 'crack_w', 0.035)
+    cr = N.voro(_c(p, 'crack', 24.0), 'DISTANCE_TO_EDGE', vec=N.warp(0.06, 7))
+    line = N.mapr(cr, 0.0, cw, 1.0, 0.0)
+    halo = N.mapr(cr, 0.0, cw * 6, 1.0, 0.0)
+    amt = N.mapr(N.noise(_c(p, 'patch', 5.0), 3, 0.6, vec=N.mapping(N.coord(), loc=(3.3, 1.7, 6.1))), 0.32, 0.6)
+    em = N.math('MULTIPLY', N.math('ADD', line, N.math('MULTIPLY', N.math('POWER', halo, 2.0), _c(p, 'halo', 0.3))), amt, clamp=True)
+    r['color'] = N.mix(N.math('MULTIPLY', em, 0.7), r['color'], tuple(x * 0.6 for x in e))
+    r['emit'] = (e, _c(p, 'strength', 2.0))
+    r['emask'] = em
+    return r
+
+
+L.KINDS.update(cglass=k_cglass)
+L.GRIME.update(cglass=((0.03, 0.03, 0.03), 0.4))
 L.KINDS.update(chitin=k_chitin, scales=k_scales, slime=k_slime, bfur=k_bfur, membrane=k_membrane, chalk=k_chalk,
                bark=k_bark, glow=k_glow)
 L.GRIME.update(chitin=((0.035, 0.028, 0.02), 0.8), scales=((0.03, 0.024, 0.016), 0.7), slime=((0.02, 0.016, 0.012), 0.6),
@@ -436,11 +454,13 @@ def tufts(host, n, length=(0.05, 0.09), radius=(0.012, 0.02), seed=1, mask=None,
     return q
 
 
-def organic(parts, voxel=0.012, tris=6000, smooth=3, sculpt=None):
+def organic(parts, voxel=0.012, tris=6000, smooth=8, sculpt=None, inflate=None):
     """union + voxel remesh of closed skinned Parts into one skin; weights come back from the parts by nearest
-    surface. sculpt(part) may displace the dense mesh before it is decimated to `tris`"""
+    surface. sculpt(part) may displace the dense mesh before it is decimated to `tris`. The smoothing that fuses the
+    forms also thins them: `inflate` (default 0.18 mm per smoothing pass x voxel/1 cm) gives the volume back"""
     ref = M.join([p.copy() for p in parts])
     body = M.remesh([p.copy() for p in parts], voxel=voxel, smooth_iter=smooth)
+    body.inflate((0.00018 * smooth * voxel / 0.01) if inflate is None else inflate)
     if sculpt is not None:
         sculpt(body)
     if tris and body.ntri > tris:

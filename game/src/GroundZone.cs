@@ -51,6 +51,17 @@ public partial class GroundZone : Node3D
 
     public void Remove() { Done = true; QueueFree(); }
 
+    // read-only accessors and a registry of live zones (roster engineer: Flammable, Extinguish, Reform; the named layer's FireNear)
+    public static readonly List<GroundZone> Live = new();
+    public Element El => _z?.El ?? Element.Physical;
+    public float Radius => _z?.Radius ?? 0f;
+    public bool Hostile => _m != null;
+    public bool FromPlayer => _p != null;
+    public Monster OwnerMonster => _m;
+    public Vector2 Center => Pos2;
+    public override void _EnterTree() { Live.Add(this); Monster.ZoneBorn(this); }
+    public override void _ExitTree() => Live.Remove(this);
+
     public override void _Process(double delta)
     {
         if (Game.I.Paused || Done) return;

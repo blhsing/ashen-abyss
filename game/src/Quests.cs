@@ -560,6 +560,7 @@ public static class Quests
     public static bool CanEnter(string areaId)
     {
         if (string.IsNullOrEmpty(areaId) || areaId == ZoneDb.Town || _h == null) return true;
+        if (NamedAreas.IsNamedArea(areaId)) return true;      // NAMED-HOOK: world-boss fields and the Ember Stair gate themselves
         if (areaId.StartsWith("rift", StringComparison.Ordinal)) return _h.D.Has(FlagCampaign);
         var r = FindRegion(areaId);
         if (r == null)

@@ -14,6 +14,9 @@ PREFIX = ('skin_', 'cloth_', 'leather_', 'metal_', 'bone_', 'rock_', 'emis_', 's
 # per-creature limits that differ from the defaults (triangles, file size in MB, materials). boss_osaros v2 is the final boss: he
 # appears alone and in close-up on the title screen, so the lead gave him 45k triangles, ~12 MB and three atlases (11 materials).
 LIMITS = {'boss_osaros': dict(tris=45000, mb=12.6, mats=12)}
+# giants of the bestiary (body plan "giant / construct", engine scale >= 1.75): the lead allows them 22,000 triangles
+LIMITS.update({k: dict(tris=22000) for k in ('mon_ash_colossus', 'mon_engine_carrier', 'mon_hauler_yoke', 'mon_hauler_hod', 'mon_hauler_collector',
+                                             'mon_hauler_stoker')})
 
 
 def read_glb(path):

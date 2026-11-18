@@ -37,6 +37,7 @@ public sealed class NamedDef
     public string DungeonId;                             // dungeon bosses
     public Func<NamedScript> Script;                     // null = no script yet (the monster still spawns, named and scaled)
     public string[] Mechs = Array.Empty<string>();       // keys the script reports through Mech(); the suite expects each at least once
+    public string[] MechsOpt = Array.Empty<string>();    // keys written "?key": reported when the fight takes that turn (the suite lists them, does not require them)
     public Action<MonsterDef> Shape;                     // last-minute changes to the cloned definition
 
     public string Region => Regions.Length > 0 ? Regions[0] : null;
@@ -136,6 +137,7 @@ public static partial class NamedDb
         try { RegisterDungeons(reg); } catch (Exception e) { Log.Error("named", "registering the dungeon bosses failed", e); }
         try { RegisterWorld(reg); } catch (Exception e) { Log.Error("named", "registering the world bosses failed", e); }
         try { RegisterPinnacle(reg); } catch (Exception e) { Log.Error("named", "registering the pinnacle bosses failed", e); }
+        try { Tune(); } catch (Exception e) { Log.Error("named", "applying the measured tuning failed", e); }
         int scripted = All.Count(n => n.Script != null);
         Log.Info("named", $"layer ready: {All.Count} definitions ({string.Join(", ", Enum.GetValues<NamedKind>().Select(k => $"{k} {All.Count(n => n.Kind == k)}"))}), scripted={scripted}");
     }
@@ -245,8 +247,8 @@ public static partial class NamedDb
                 {
                     n.Rung = int.TryParse(n.Id.AsSpan(4, 1), out int r) ? r : 0;
                     var b = MonsterDb.Get(n.Base);
-                    n.Hp = (b?.Hp ?? 60f) * 1.15f + 12f; n.Dmg = (b?.Dmg ?? 2.2f) * 1.2f; n.Xp = (b?.Xp ?? 60f) * 1.2f;
-                    n.LootTier = 4; n.Scale = (b?.Scale ?? 2f) * 1.08f; n.LevelBonus = 2; n.Title = $"燼階・第{"一二三四五六七八"[Math.Clamp(n.Rung - 1, 0, 7)]}階";
+                    n.Hp = (b?.Hp ?? 60f) * 1.15f + 12f; n.Dmg = (b?.Dmg ?? 2.2f) * 0.85f; n.Xp = (b?.Xp ?? 60f) * 1.2f;
+                    n.LootTier = 4; n.Scale = (b?.Scale ?? 2f) * 1.08f; n.LevelBonus = 0; n.Title = $"燼階・第{"一二三四五六七八"[Math.Clamp(n.Rung - 1, 0, 7)]}階";
                     n.Rim = new Color(1f, 0.9f, 0.6f);
                     n.IntroSpeaker = n.NameZh; n.IntroVoice = b != null ? n.Base : n.Id;
                     break;
@@ -377,7 +379,9 @@ public static partial class NamedDb
         {
             if (!ById.TryGetValue(id, out var n)) { Log.Warn("named", $"script for unknown encounter '{id}'"); return; }
             n.Script = script;
-            n.Mechs = string.IsNullOrWhiteSpace(mechs) ? Array.Empty<string>() : mechs.Split(new[] { ' ', ',' }, StringSplitOptions.RemoveEmptyEntries);
+            var keys = string.IsNullOrWhiteSpace(mechs) ? Array.Empty<string>() : mechs.Split(new[] { ' ', ',' }, StringSplitOptions.RemoveEmptyEntries);
+            n.Mechs = keys.Where(k => !k.StartsWith("?")).ToArray();
+            n.MechsOpt = keys.Where(k => k.StartsWith("?")).Select(k => k[1..]).ToArray();
             tune?.Invoke(n);
         }
     }
@@ -387,4 +391,5 @@ public static partial class NamedDb
     static partial void RegisterDungeons(Registry r);
     static partial void RegisterWorld(Registry r);
     static partial void RegisterPinnacle(Registry r);
+    static partial void Tune();
 }

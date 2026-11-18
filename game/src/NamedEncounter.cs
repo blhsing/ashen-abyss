@@ -1,6 +1,7 @@
 using Godot;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace AshenAbyss;
 
@@ -32,6 +33,8 @@ public abstract class NamedScript
     public virtual void Damaged(Hit h, float amount) { }
     /// <summary>The hero was hit by the named monster or by something of this encounter.</summary>
     public virtual void HeroHit(Hit h, float amount) { }
+    /// <summary>An add or a prop of this encounter took a hit.</summary>
+    public virtual void OtherDamaged(Monster m, Hit h, float amount) { }
     /// <summary>Any hostile monster died while the fight is on (adds, props, bystanders).</summary>
     public virtual void Killed(Monster m) { }
     public virtual void Phase(int n) { }
@@ -46,6 +49,8 @@ public abstract class NamedScript
     /// <summary>Where a self-playing hero should stand right now / what it should hit first (test hints; null = no opinion).</summary>
     public virtual Vector2? BotStand => null;
     public virtual Monster BotTarget => null;
+    /// <summary>Test hint: the named monster should not be struck right now (a neutral guide, a phase to sit out).</summary>
+    public virtual bool BotPassive => false;
 
     protected void Mech(string key) => E.Mech(key);
 }
@@ -295,7 +300,8 @@ public partial class NamedEncounter : Node
         var missing = new List<string>();
         foreach (var k in Def.Mechs) if (!Fired.Contains(k)) missing.Add(k);
         Result = $"killed in {FightTime:F1}s";
-        Log.Info("named", $"{Def.Id} slain: fight={FightTime:F1}s engaged={wasEngaged} mechs={Fired.Count}/{Def.Mechs.Length}{(missing.Count > 0 ? $" missing=[{string.Join(",", missing)}]" : "")} " +
+        Log.Info("named", $"{Def.Id} slain: fight={FightTime:F1}s engaged={wasEngaged} mechs={Def.Mechs.Length - missing.Count}/{Def.Mechs.Length}{(missing.Count > 0 ? $" missing=[{string.Join(",", missing)}]" : "")} " +
+            $"counts=[{string.Join(",", MechCount.Select(kv => $"{kv.Key}×{kv.Value}"))}] " +
             $"heroLevel={Game.I?.Hero?.D.Level ?? 0} tier={Game.I?.WorldTier ?? 0} godSaves={Player.GodSaves}");
         Fx.Burst(World.To3(at, 1f), Def.Aura, 5f, 1.6f);
         Fx.Shake(0.4f, 0.5f);
@@ -383,6 +389,9 @@ public partial class NamedEncounter : Node
 
     internal void OnHeroHit(Hit h, float amount) { if (Engaged) Guard(() => S.HeroHit(h, amount)); }
 
+    /// <summary>A prop or an add of this encounter took a hit (after it was applied).</summary>
+    internal void OnPropDamaged(Monster m, Hit h, float amount) { if (!Slain) Guard(() => S.OtherDamaged(m, h, amount)); }
+
     internal void OnKilled(Monster m)
     {
         if (_props.TryGetValue(m, out var info))
@@ -400,9 +409,14 @@ public partial class NamedEncounter : Node
     /// <summary>Reports that a mechanic fired (one log line per trigger; the test suite expects every key of the definition).</summary>
     public void Mech(string key)
     {
-        Fired.Add(key);
-        Log.Info("named", $"{Def.Id} mech {key} t={FightTime:F1}s life={LifeFrac:P0}");
+        int n = MechCount.TryGetValue(key, out int had) ? had + 1 : 1;
+        MechCount[key] = n;
+        if (Fired.Add(key) || (n % 10 == 0 && n <= 50))
+            Log.Info("named", $"{Def.Id} mech {key}{(n > 1 ? $" ×{n}" : "")} t={FightTime:F1}s life={LifeFrac:P0}");
     }
+
+    /// <summary>How often each mechanic fired since the encounter was created.</summary>
+    public readonly Dictionary<string, int> MechCount = new();
 
     /// <summary>Runs once when the monster's life falls to each fraction (re-armed when the fight resets).</summary>
     public void AtLife(Action a, params float[] fracs)
@@ -616,8 +630,12 @@ public partial class NamedEncounter : Node
     // ───────────────────────── blocks: adds and props ─────────────────────────
 
     /// <summary>The definition an add is spawned from: the roster's type, or a stand-in while it does not exist.</summary>
-    public static MonsterDef AddDef(string id, string fallback = null) =>
-        MonsterDb.Get(id) ?? MonsterDb.Get(fallback) ?? MonsterDb.Get("husk") ?? MonsterDb.All[0];
+    public static MonsterDef AddDef(string id, string fallback = null)
+    {
+        MonsterDef d = null;
+        try { d = Bestiary.Live ? Bestiary.Local(id) : null; } catch (Exception) { }
+        return d ?? MonsterDb.Get(id) ?? MonsterDb.Get(fallback) ?? MonsterDb.Get("husk") ?? MonsterDb.All[0];
+    }
 
     /// <summary>Spawns one add now. It gives nothing (a named monster's servants are not a harvest) and belongs to the fight.</summary>
     public Monster Summon(string defId, Vector2 at, string fallback = null, bool aggro = true, float life = 1f, MonTier tier = MonTier.Normal)

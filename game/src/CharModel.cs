@@ -861,9 +861,22 @@ public partial class CharModel : Node3D
         if (!walkMeasured) walk = MathF.Min(run * 0.45f, 1.6f);
         if (!found.ContainsKey("Run")) run = walk;            // the walk clip plays for both
         if (!found.ContainsKey("Walk")) walk = run;
+        // the artist's numbers (rigs_bf_meta.json) win over the measurement: the generator knows its own gait and hit frames
+        var meta = CreatureMeta(fileId);
+        string metaNote = "";
+        if (meta != null)
+        {
+            if (meta.Walk > 0.05f) { walk = meta.Walk; walkMeasured = true; }
+            if (meta.Run > 0.05f) { run = meta.Run; runMeasured = true; }
+            metaNote = " (strides and hit times from rigs_bf_meta.json)";
+        }
         set.WalkStride = Mathf.Clamp(walk, 0.15f, 12f); set.RunStride = Mathf.Clamp(run, 0.3f, 20f);
         foreach (var c in new[] { "Attack1", "Attack2" })
-            if (found.ContainsKey(c)) set.Strike[c] = StrikeTime(found[c], skel, skelPath, rel);
+            if (found.ContainsKey(c))
+            {
+                float hit = c == "Attack1" ? meta?.Hit1 ?? 0f : meta?.Hit2 ?? 0f;
+                set.Strike[c] = hit > 0.01f ? hit : StrikeTime(found[c], skel, skelPath, rel);
+            }
         // every name the humanoid library knows becomes an alias of one of the eight
         if (_baseLib != null)
             foreach (var an in _baseLib.GetAnimationList())
@@ -876,10 +889,47 @@ public partial class CharModel : Node3D
             }
         set.Note = $"own clips [{string.Join(",", found.Keys)}]{(missing.Count > 0 ? $" missing [{string.Join(",", missing)}]" : "")} " +
             $"walk {set.WalkStride:0.00} m/s{(walkMeasured ? "" : " (assumed)")} run {set.RunStride:0.00} m/s{(runMeasured ? "" : " (assumed)")} " +
-            $"strikes {string.Join(" ", new[] { "Attack1", "Attack2" }.Where(found.ContainsKey).Select(c => $"{c}={set.Strike[c]:0.00}/{found[c].Length:0.00}s"))}";
+            $"strikes {string.Join(" ", new[] { "Attack1", "Attack2" }.Where(found.ContainsKey).Select(c => $"{c}={set.Strike[c]:0.00}/{found[c].Length:0.00}s"))}{metaNote}";
         Log.Info("model", $"'{fileId}' animates with its {set.Note}");
         if (missing.Count > 0) Log.Warn("model", $"'{fileId}' lacks the clips [{string.Join(",", missing)}]; the nearest of its other clips plays instead");
         return set;
+    }
+
+    private sealed class MetaEntry { public float Walk, Run, Hit1, Hit2; }
+    private static Dictionary<string, MetaEntry> _meta;
+
+    /// <summary>
+    /// The creature generator's measurements for a model (assets/chars/rigs_bf_meta.json: an object keyed by model id, or a
+    /// list of entries with "model"; fields walk_speed, run_speed — m/s at scale 1 and rate 1 — attack1_hit_time,
+    /// attack2_hit_time). Null when the file or the entry is missing.
+    /// </summary>
+    private static MetaEntry CreatureMeta(string fileId)
+    {
+        if (_meta == null)
+        {
+            _meta = new Dictionary<string, MetaEntry>();
+            const string path = "res://assets/chars/rigs_bf_meta.json";
+            try
+            {
+                if (FileAccess.FileExists(path))
+                {
+                    using var doc = System.Text.Json.JsonDocument.Parse(FileAccess.GetFileAsString(path));
+                    var root = doc.RootElement;
+                    IEnumerable<(string, System.Text.Json.JsonElement)> entries = Enumerable.Empty<(string, System.Text.Json.JsonElement)>();
+                    if (root.ValueKind == System.Text.Json.JsonValueKind.Object && root.TryGetProperty("models", out var models)) root = models;
+                    if (root.ValueKind == System.Text.Json.JsonValueKind.Array)
+                        entries = root.EnumerateArray().Select(e => (e.TryGetProperty("model", out var id) ? id.GetString() : null, e)).ToList();
+                    else if (root.ValueKind == System.Text.Json.JsonValueKind.Object)
+                        entries = root.EnumerateObject().Select(p => (p.Name, p.Value)).ToList();
+                    float F(System.Text.Json.JsonElement e, string k) => e.ValueKind == System.Text.Json.JsonValueKind.Object && e.TryGetProperty(k, out var v) && v.ValueKind == System.Text.Json.JsonValueKind.Number ? (float)v.GetDouble() : 0f;
+                    foreach (var (id, e) in entries)
+                        if (!string.IsNullOrEmpty(id)) _meta[id] = new MetaEntry { Walk = F(e, "walk_speed"), Run = F(e, "run_speed"), Hit1 = F(e, "attack1_hit_time"), Hit2 = F(e, "attack2_hit_time") };
+                    Log.Info("model", $"rigs_bf_meta.json: {_meta.Count} creatures");
+                }
+            }
+            catch (Exception e) { Log.Error("model", "rigs_bf_meta.json could not be read; strides are measured from the clips", e); }
+        }
+        return fileId != null && _meta.TryGetValue(fileId, out var m) ? m : null;
     }
 
     /// <summary>Positions of every bone (model space, scale 1) at one moment of a clip, by forward kinematics on the tracks.</summary>

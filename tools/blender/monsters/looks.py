@@ -1300,8 +1300,11 @@ def bake_and_assign(C, objs, size=2048, ao_strength=0.5, mask_size=1024):
             float(np.median(dd)), float(np.percentile(dd, 90)), float(rr.std()), 100.0 * cover.mean()))
 
     # base colour / emission: 4:2:0 chroma is fine.  Normal map and ORM: full chroma (4:4:4), the data is not a picture
-    T = dict(bc=_save_jpg(C.id + "_bc", bc, False, 90), orm=_save_jpg(C.id + "_orm", orm, True, 88, full_chroma=True),
-             nrm=_save_jpg(C.id + "_nrm", nrm, True, 95, full_chroma=True))
+    # C.jpg_q = (base colour, ORM, normal) JPEG qualities: creatures whose looks are almost all noisy rock exceed the 6 MB
+    # limit at the defaults (90, 88, 95) and set lower values (asm spec key `jpeg`)
+    qb, qo, qn = getattr(C, 'jpg_q', None) or (90, 88, 95)
+    T = dict(bc=_save_jpg(C.id + "_bc", bc, False, qb), orm=_save_jpg(C.id + "_orm", orm, True, qo, full_chroma=True),
+             nrm=_save_jpg(C.id + "_nrm", nrm, True, qn, full_chroma=True))
     if has_em:
         e = _np(imgs['emi'])[:, :, :3]                      # sRGB-encoded emission colour x pattern, black elsewhere
         if e.max() > 0.02:

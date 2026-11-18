@@ -43,6 +43,15 @@ public partial class Level : Node3D
     public float RiftPoints, RiftNeed = 30f, RiftMul = 1f; public bool RiftFailed;
     public bool Built { get; private set; }
     public bool BossDead => _bossDead;
+    // ── save resume (LevelState) ──
+    /// <summary>The checkpoint the level was populated with (spawns keep clear of it; a resumed save rebuilds with the same one).</summary>
+    public Vector2 BuildCheckpoint;
+    /// <summary>Where the boss fell (the exit portal stands beside it).</summary>
+    public Vector2 BossFellAt;
+    /// <summary>Reward chests that arrived during play (boss, events, rifts) with their quality.</summary>
+    public readonly List<(Interactable chest, int quality)> RewardChests = new();
+    public bool DoorOpened => _doorCells != null && _doorOpen;
+    public bool LiberatedAtBuild;
     /// <summary>
     /// Where a dungeon or rift stands. <see cref="ObjectiveDone"/> alone only says the door is open: the boss may still
     /// be alive. Objective = the task is still open (the door is sealed); Boss = the task is done and the boss or rift
@@ -124,6 +133,8 @@ public partial class Level : Node3D
         lv.RiftTimeLeft = lv.IsRift ? RiftTime : 0f;
         lv.Goal = req.Goal;
         lv.Checkpoint = lv.EntryPos(entry);
+        lv.BuildCheckpoint = lv.Checkpoint;
+        LevelState.BeforePopulate(lv);                    // a resumed save: the monster level and checkpoint of the saved level
         Log.Info("level", $"build area={lv.AreaId} kind={req.Kind} theme={req.ThemeId} size={req.Size} seed={req.Seed} grid={lv.Grid.W}x{lv.Grid.H} " +
             $"mlvl={lv.MonsterLevel} tier={tier} entry={entry ?? "-"} pois={data.Pois?.Count ?? 0} spawns={data.Spawns?.Count ?? 0} props={data.Props?.Count ?? 0}");
 
@@ -153,6 +164,7 @@ public partial class Level : Node3D
     private LevelRequest Resolve(string areaId, int seed)
     {
         var r = new LevelRequest { AreaId = areaId, Seed = seed, Goal = DungeonGoal.None };
+        if (NamedAreas.Resolve(this, areaId, seed) is { } named) { AreaId = named.AreaId; return named; }      // NAMED-HOOK: encounter arenas (rift~arena / rift~wb / rift~pin)
         var rng = new Random(seed);
         if (areaId.StartsWith("rift"))
         {
@@ -203,6 +215,7 @@ public partial class Level : Node3D
         Log.Guard("level", () => Populate.Run(this));
         Log.Guard("level", OpenPropBlockages);            // objects added by Populate (chests, altars, totems) can block too
         if (IsRift) ScaleRiftMonsters();
+        Log.Guard("levelstate", () => LevelState.OnPopulated(this));      // records the placement; a resumed save puts its state back
         UpdateObjective();
         var p = World.P;
         if (p != null && IsInstanceValid(p)) RenderingServer.GlobalShaderParameterSet(HeroPos, p.GlobalPosition);
@@ -531,6 +544,7 @@ public partial class Level : Node3D
     {
         at = Grid != null ? Grid.NearestWalk(at) : at;
         var chest = WorldObjects.Chest(at, quality, 0f, onOpened);
+        RewardChests.Add((chest, quality));
         Fx.Burst(World.To3(at, 0.6f), Element.Fire, 2.5f, 0.8f);
         Snd.At("drop_rare", World.To3(at, 0.5f), 0.9f);
         AddMarker("chest", chest.Label, at, chest);
@@ -866,7 +880,7 @@ public partial class Level : Node3D
     }
 
     /// <summary>Opens the sealed door: the cells are floor again, the gate sinks away and the checkpoint moves here.</summary>
-    public void OpenBossDoor()
+    public void OpenBossDoor(bool instant = false)
     {
         if (_doorCells == null || _doorOpen) return;
         _doorOpen = true;
@@ -875,6 +889,7 @@ public partial class Level : Node3D
         foreach (var v in _doorVisuals)
         {
             if (!IsInstanceValid(v)) continue;
+            if (instant) { v.QueueFree(); continue; }       // a resumed save: the gate is simply gone
             var node = v;
             var tw = CreateTween();
             tw.TweenProperty(node, "position:y", -4.2f, 1.4f).SetTrans(Tween.TransitionType.Sine).SetEase(Tween.EaseType.In);
@@ -883,7 +898,7 @@ public partial class Level : Node3D
             Fx.Dust(node.GlobalPosition);
         }
         _doorVisuals.Clear();
-        Fx.Shake(0.15f, 0.4f);
+        if (!instant) Fx.Shake(0.15f, 0.4f);
         Checkpoint = Grid.WalkAt(_doorOutside) ? _doorOutside : Grid.NearestWalk(_doorOutside);
         RemoveMarker(_doorMarker);
         _doorMarker = null;
@@ -988,6 +1003,7 @@ public partial class Level : Node3D
     {
         _bossDead = true; _engaged = false;
         Vector2 at = Grid.NearestWalk(m.Pos2);
+        BossFellAt = at;
         string defId = m.Def.Id;
         Log.Info("boss", $"defeated {defId} in {AreaId}");
         Defer(() =>
@@ -1004,14 +1020,67 @@ public partial class Level : Node3D
                 World.Emit("dungeon", Dungeon.Id);
                 if (!BossIsStory) World.Emit("miniboss", Dungeon.Id);
                 Game.I?.Hud?.Toast($"{Dungeon.Name}已淨化", Palette.Gold);
-                string back = Region?.Id ?? ZoneDb.Town, from = AreaId;
-                var portal = WorldObjects.Portal(ExitSpot(at), $"返回{ZoneDb.AreaName(back)}", "傳送門", Palette.Ember, _ => Game.I.EnterArea(back, from));
-                AddMarker("exit", portal.Label, portal.Pos2, portal);
+                DungeonExitPortal(at);
             }
             Snd.Ui("victory_sting");
             UpdateObjective();
             Game.I?.SaveNow("boss");
         });
+    }
+
+    private void DungeonExitPortal(Vector2 at)
+    {
+        string back = Region?.Id ?? ZoneDb.Town, from = AreaId;
+        var portal = WorldObjects.Portal(ExitSpot(at), $"返回{ZoneDb.AreaName(back)}", "傳送門", Palette.Ember, _ => Game.I.EnterArea(back, from));
+        AddMarker("exit", portal.Label, portal.Pos2, portal);
+    }
+
+    private void RiftExitPortal(Vector2 at)
+    {
+        string from = AreaId;
+        var portal = WorldObjects.Portal(ExitSpot(at), $"返回{ZoneDb.TownName}", "傳送門", Palette.Ember, _ => Game.I.EnterArea(ZoneDb.Town, from));
+        AddMarker("exit", portal.Label, portal.Pos2, portal);
+    }
+
+    /// <summary>
+    /// Save restore: the boss of this dungeon or rift died before the save. Nothing is paid, flagged or announced again;
+    /// the place is cleared and its exit portal stands where it did. (The boss monster itself is removed by LevelState.)
+    /// </summary>
+    public void RestoreBossDefeated(Vector2 at)
+    {
+        if (_bossDead) return;
+        _bossDead = true; _engaged = false; Boss = null;
+        if (BossMon != null) RemoveMarker(BossMon);
+        BossMon = null;
+        if (Grid != null) at = Grid.NearestWalk(at == Vector2.Zero ? ArenaPos : at);
+        BossFellAt = at;
+        if (IsRift) RiftExitPortal(at);
+        else if (Dungeon != null) DungeonExitPortal(at);
+        _dirty = true;
+    }
+
+    /// <summary>Save restore: the stronghold was freed after this level was first built. The beacon burns, without fanfare or events.</summary>
+    public void RestoreLiberated()
+    {
+        if (Liberated || Region == null) return;
+        Liberated = true;
+        if (Beacon != null && IsInstanceValid(Beacon))
+        {
+            WorldObjects.LightBeacon(Beacon, false);
+            var bm = MarkerOf(Beacon);
+            if (bm != null) { bm.Kind = "waypoint"; bm.Label = Beacon.Label; }
+        }
+        RemoveMarker(StrongholdMarker);
+        _dirty = true;
+    }
+
+    /// <summary>Save restore: a reward chest that was still closed (no arrival flash).</summary>
+    public void RestoreRewardChest(Vector2 at, int quality)
+    {
+        at = Grid != null ? Grid.NearestWalk(at) : at;
+        var chest = WorldObjects.Chest(at, quality);
+        RewardChests.Add((chest, quality));
+        AddMarker("chest", chest.Label, at, chest);
     }
 
     // ───────────────────────── rift ─────────────────────────
@@ -1061,9 +1130,7 @@ public partial class Level : Node3D
             for (int i = 0; i < Math.Min(3, tier / 4); i++) Loot.OpenChest(Grid.NearestWalk(spot + new Vector2(1.2f * (i - 1), 1f)), 2);
         });
         Game.I?.Hud?.Toast(ok ? $"裂隙第 {tier} 層已封閉" : "裂隙已崩解——只搶回些許殘物", ok ? Palette.Gold : Palette.TextDim);
-        string from = AreaId;
-        var portal = WorldObjects.Portal(ExitSpot(at), $"返回{ZoneDb.TownName}", "傳送門", Palette.Ember, _ => Game.I.EnterArea(ZoneDb.Town, from));
-        AddMarker("exit", portal.Label, portal.Pos2, portal);
+        RiftExitPortal(at);
         Log.Info("rift", $"tier {tier} finished success={ok} timeLeft={RiftTimeLeft:F0}s best={hero?.D.RiftBest ?? 0}");
     }
 

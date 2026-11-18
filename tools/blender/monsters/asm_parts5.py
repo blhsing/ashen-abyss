@@ -21,7 +21,9 @@ asm.PRE.update(
     net=asm._p('cloth', 'cloth', color=(0.20, 0.17, 0.11), hem_lo=-2, hem_hi=-1, fold=30.0, scale=3.0, weave_size=3.0, stain_amt=0.6),
     peatskin=asm._p('skin', 'skin', color=(0.03, 0.026, 0.02), blotch=(0.012, 0.01, 0.008), sore_amt=0.0, vein_amt=0.0, rough=0.3, dry=0.2),
     peat=asm._p('mud', 'rock', color=(0.03, 0.024, 0.018), dry=(0.10, 0.08, 0.055), dry_amt=0.6, scale=9.0),
-    slag=asm._p('emis', 'emis', emit=(1.0, 0.36, 0.05), strength=3.0, base_mul=0.8, mottle=0.6, _name='lava'),
+    # crust=1: islands of cooled crust (the kind keys that on the look NAME, which is 'slag' here, so it must be explicit)
+    slag=asm._p('emis', 'emis', emit=(1.0, 0.20, 0.02), strength=2.0, base_mul=0.25, mottle=0.6, crust=1.0, scale=12.0),
+    clinker=asm._p('rock', 'rock', color=(0.035, 0.03, 0.03), ash=(0.16, 0.15, 0.14), scale=26.0, heat=(1.0, 0.3, 0.03), heat_amt=0.5, ash_amt=0.4, bump=0.9),
     flame=asm._p('emis', 'emis', emit=(1.0, 0.62, 0.22), strength=2.2, mottle=0.35, base_mul=1.0),
     pod=asm._p('skin', 'skin', color=(0.42, 0.44, 0.16), blotch=(0.25, 0.3, 0.1), sore_amt=0.0, vein_amt=0.2, rough=0.55),
 )
@@ -155,9 +157,9 @@ def plinth_foot(A, side='l', look='limestone', seed=2):
 
 # ================================================================================================ marsh
 @part
-def cast_net(A, look='net', seed=5, sinkers='stone', floats='wood_z'):
-    """huge weighted cast-net draped over the left shoulder and trailing behind like a train, stone sinkers on its hem;
-    a string of cork floats round the neck"""
+def cast_net_v1(A, look='net', seed=5, sinkers='stone', floats='wood_z'):
+    """(superseded by asm_parts8.cast_net: real cord net)  punched cloth sheet draped over the left shoulder and trailing
+    behind like a train, stone sinkers on its hem; a string of cork floats round the neck"""
     xs = np.linspace(-0.05, 0.30, 9)
     top = np.stack([xs, 0.09 + 0.05 * np.sin(np.linspace(0, math.pi, 9)), 1.49 + 0.03 * np.sin(np.linspace(0, math.pi, 9))], axis=1)
     out = np.tile((0.0, 1.0, 0.0), (9, 1))
@@ -201,10 +203,14 @@ def creel(A, look='wicker', at=(0.0, 0.26, 1.24), r=0.13, h=0.28, bone='spine_03
 
 
 @part
-def reed_straw(A, look='reed', length=0.62, cord='rope'):
-    """long reed breathing-straw bound to the mouth, sticking straight up past the head"""
+def reed_straw(A, look='reed', length=0.62, cord='rope', lean=0.0):
+    """long reed breathing-straw bound to the mouth, sticking straight up past the head; lean (deg) tips it back over the
+    brow, so that it stands upright when the clip set keeps the head bowed (Zombie_*)"""
     m = V(0.0, -0.118, 1.60)
-    pts = M.polyline([m + V(0, 0.01, 0), m + V(0, -0.045, 0.02), m + V(0, -0.055, 0.12), m + V(0.01, -0.04, length)], 9)
+    top = m + V(0.01, -0.04, length)
+    if lean:
+        top = m + V(0, -0.055, 0.12) + M.rot_axis('x', -lean) @ (top - (m + V(0, -0.055, 0.12)))
+    pts = M.polyline([m + V(0, 0.01, 0), m + V(0, -0.045, 0.02), m + V(0, -0.055, 0.12), top], 9)
     A.add(tube(pts, 0.0085, n=6), bone='Head', look=look, smooth=50)
     A.add(band((0, -0.012, 1.60), 0.094, 0.108, 0.014, 0.006, n=18), bone='Head', look=cord)
     for zz in (0.05, 0.3):

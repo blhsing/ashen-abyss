@@ -10,7 +10,8 @@ namespace AshenAbyss;
 /// <summary>Everything persisted for one character. Plain data; serialised as JSON with public fields.</summary>
 public sealed partial class SaveData
 {
-    public int Version = 1;
+    /// <summary>Save format: 1 = original; 2 = adds Resume (exact place and state of the current area), Portal and Fog (LevelState.cs).</summary>
+    public int Version = SaveSystem.FormatVersion;
     public string Name = "";
     public ClassId Class;
     public bool Hardcore, Dead;
@@ -65,6 +66,8 @@ public sealed class SlotInfo
 public static class SaveSystem
 {
     public const int SlotCount = 8;
+    /// <summary>1 = original; 2 = with the exact resume state (written only while LevelState.Enabled).</summary>
+    public static int FormatVersion => LevelState.Enabled ? 2 : 1;
     private static readonly JsonSerializerOptions Opt = new() { IncludeFields = true, WriteIndented = false, AllowTrailingCommas = true };
     private static string Dir => ProjectSettings.GlobalizePath("user://saves");
     private static string PathOf(int slot, string ext = "json") => System.IO.Path.Combine(Dir, $"slot{slot}.{ext}");
@@ -75,6 +78,7 @@ public static class SaveSystem
         {
             Directory.CreateDirectory(Dir);
             d.SavedAt = DateTime.Now.ToString("yyyy-MM-dd HH:mm");
+            d.Version = FormatVersion;
             string json = JsonSerializer.Serialize(d, Opt);
             string tmp = PathOf(slot, "tmp"), main = PathOf(slot), bak = PathOf(slot, "bak");
             File.WriteAllText(tmp, json);
@@ -118,6 +122,9 @@ public static class SaveSystem
         d.Skills ??= new(); d.Ups ??= new(); d.Talents ??= new(); d.Bag ??= new(); d.Stash ??= new(); d.Codex ??= new();
         d.Quests ??= new(); d.Waypoints ??= new() { "town" }; d.Flags ??= new(); d.Glyphs ??= new(); d.Sockets ??= new();
         d.Enchants ??= new(); d.Renown ??= new();
+        d.Fog ??= new();
+        if (d.Resume != null && (string.IsNullOrEmpty(d.Resume.Area) || d.Resume.Area != d.Area)) d.Resume = null;   // not where the save says the hero is: wake as before
+        if (d.Resume != null) { d.Resume.Cds ??= new(); d.Resume.DeadMons ??= new(); d.Resume.Spent ??= new(); d.Resume.Loot ??= new(); d.Resume.Gold ??= new(); d.Resume.Shards ??= new(); d.Resume.Chests ??= new(); d.Resume.Loot.RemoveAll(l => l == null || l.It == null); }
         if (d.Bar == null || d.Bar.Length != 6) d.Bar = new string[6];
         if (d.Equip == null || d.Equip.Length != 9) { var e = new Item[9]; if (d.Equip != null) Array.Copy(d.Equip, e, Math.Min(9, d.Equip.Length)); d.Equip = e; }
         d.Level = Math.Clamp(d.Level, 1, Balance.LevelCap);
@@ -185,6 +192,7 @@ public sealed class Settings
     public int LastSlot = 0;
     public float Brightness = 1f;       // 亮度 0.8 … 1.3: exposure of the 3D picture on top of the level grading (applied by Gfx.TuneEnvironment); 1 = the dark look the game is graded for
     public int UiTextScale = 0;         // 介面文字大小：0 標準 (×1.0), 1 大 (×1.15), 2 特大 (×1.3) — applied by UiTheme.ApplyTextScale
+    public bool SystemCursor = false;   // 滑鼠游標：false 遊戲 (the forged cursors, Cursors.cs), true 系統 (the operating system's own pointer)
 
     private static readonly JsonSerializerOptions Opt = new() { IncludeFields = true, WriteIndented = true };
     private static string FilePath => ProjectSettings.GlobalizePath("user://settings.json");

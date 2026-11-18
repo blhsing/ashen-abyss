@@ -22,6 +22,18 @@ M.WORK = WORK
 M.TEXDIR = os.path.join(WORK, "tex")
 for _d in (WORK, M.TEXDIR):
     os.makedirs(_d, exist_ok=True)
+
+
+def set_work(path):
+    """redirect the work folder (meta files, baked textures, --nobake previews): helpers use their own"""
+    global WORK
+    WORK = path
+    M.WORK = WORK
+    M.TEXDIR = os.path.join(WORK, "tex")
+    for d in (WORK, M.TEXDIR):
+        os.makedirs(d, exist_ok=True)
+
+
 FPS = 30
 CLIPS = ("Idle", "Walk", "Run", "Attack1", "Attack2", "Hit", "Death", "Spawn")
 LOOPS = ("Idle", "Walk", "Run")
@@ -393,6 +405,18 @@ def slerpR(R, w):
     return np.array(q.to_matrix())
 
 
+def leg_axis(rg, lg):
+    """unit normal of the plane a leg bends in (the axis ik2 flexes the knee about); cached on the Leg"""
+    n = getattr(lg, 'axis', None)
+    if n is None:
+        h0 = rg.H(lg.b[0]); h1 = rg.H(lg.b[1])
+        e = rg.H(lg.b[2]) if len(lg.b) > 2 else lg.c
+        n = np.cross(h1 - h0, e - h1)
+        n = unit(n) if np.linalg.norm(n) > 1e-6 else V(1.0, 0, 0)
+        lg.axis = n
+    return n
+
+
 def plant_legs(p, legs, air=None, off=None, tuck=None):
     """legs: {name: Leg with .par}. Feet stay on their ground homes; air {name or first letter: 0..1} lets a leg
     follow the body instead (1 = hangs as in the rest pose, folded by tuck {name: (upper, lower, foot) degrees about
@@ -414,9 +438,15 @@ def plant_legs(p, legs, air=None, off=None, tuck=None):
         for b in lg.b:
             p.Rd[rg.idx[b]] = I3
         if tk:
-            for b, a in zip(lg.b, tk):
-                if a:
-                    p.rot(b, x=a)
+            if isinstance(tk, dict):            # {'bend': (a, b, c)}: degrees about the leg's own knee axis (+ = flex)
+                n = leg_axis(rg, lg)
+                for b, a in zip(lg.b, tk['bend']):
+                    if a:
+                        p.Rd[rg.idx[b]] = rot_axis(n, a)
+            else:
+                for b, a in zip(lg.b, tk):
+                    if a:
+                        p.rot(b, x=a)
         if w >= 0.999:
             continue
         Pf = p.pt(lg.b[-1], lg.c)
@@ -573,8 +603,14 @@ class Beast(M.Creature):
         return Pose(self.rg)
 
     # ---- clips
-    def clip(self, name, dur, fn, hit=None, under_ok=False):
-        """fn(p, u): fill Pose p for normalised time u (0..1). Looping clips get frame N = frame 0."""
+    def clip(self, name, dur, fn, hit=None, under_ok=False, floor=None, settle=None):
+        """fn(p, u): fill Pose p for normalised time u (0..1). Looping clips get frame N = frame 0.
+        floor = bone (a child of root, e.g. 'hip'): on every frame the posed mesh is lifted so nothing is below z = 0;
+        settle = (u0, u1): additionally the mesh is lowered onto the ground, blending in from u0 to u1 (Death)"""
+        if floor is not None:
+            if getattr(self, '_vw', None) is None or self._vw[0] != len(self.parts):
+                V0, W, _, _ = self._collect()
+                self._vw = (len(self.parts), V0, W)
         n = max(2, int(round(dur * FPS)))
         loop = name in LOOPS
         nb = self.rg.nb
@@ -591,6 +627,12 @@ class Beast(M.Creature):
             fn(p, u)
             err = max(err, p.err)
             Gs[f] = p.fk()
+            if floor is not None:
+                mz = float(self.posed(self._vw[1], self._vw[2], Gs[f])[:, 2].min())
+                dz = -mz if mz < 0.0 else (-mz * sm(u, settle[0], settle[1]) if settle is not None else 0.0)
+                if dz != 0.0:
+                    p.move(floor, 0, 0, dz)
+                    Gs[f] = p.fk()
             for i in range(nb):
                 Rb = rg.R[i].T @ p.Rd[i] @ rg.R[i]
                 q = Matrix(Rb.tolist()).to_quaternion()
@@ -710,33 +752,41 @@ class Beast(M.Creature):
             off += n
         tpiece = piece[tris[:, 0]]
         size = np.array([x[2] for x in info]); skinned = np.array([x[1] is None for x in info])
+        isfree = np.array([x[3] and x[1] is not None for x in info])
         rng = np.random.default_rng(3)
+        npc = len(info)
 
-        def near(bvh, P, k):
-            best = 9.0
-            bi = None
-            for loc, nrm, ti, dist in bvh.find_nearest_range(Vector(P), 0.06):
-                j = tpiece[ti]
-                if j == k or not (skinned[j] or size[j] > 1.2 * size[k]):
+        def near_all(bvh, P, k):
+            """{other piece: distance} for the pieces within 6 cm of point P (0 when P is inside the other piece,
+            judged on the nearest triangle of that piece)"""
+            out = {}
+            sgn = {}
+            Pv = Vector(P)
+            for loc, nrm, ti, dist in bvh.find_nearest_range(Pv, 0.06):
+                j = int(tpiece[ti])
+                if j == k:
                     continue
-                if dist < best:
-                    best = dist; bi = (loc, nrm)
-            if bi is not None and (Vector(P) - bi[0]).dot(bi[1]) < -1e-5:
-                return 0.0
-            return best
+                if dist < out.get(j, 9.0):
+                    out[j] = dist
+                    sgn[j] = (Pv - loc).dot(nrm)
+            for j, sv in sgn.items():
+                if sv < -1e-5:
+                    out[j] = 0.0
+            return out
 
         def mk_bvh(P):
             return BVHTree.FromPolygons([tuple(x) for x in P], [tuple(int(i) for i in t) for t in tris])
         bvh0 = mk_bvh(V0)
-        cps = {}
-        g0 = {}
         res = dict(rest_float=[], clip_float={}, minz={}, maxz={})
         off = 0
         offs = []
         for p in self.parts:
             offs.append(off); off += len(p.v)
+        # sample points per rigid piece and their distances to every other piece
+        samp = {}
+        dist = {}
         for k, (pi, bone, sz, skip) in enumerate(info):
-            if skip:
+            if bone is None:
                 continue
             p = self.parts[pi]
             ids = np.where(piece[offs[pi]:offs[pi] + len(p.v)] == k)[0]
@@ -755,11 +805,55 @@ class Beast(M.Creature):
             pts = np.vstack(pts)
             if len(pts) > 300:
                 pts = pts[rng.choice(len(pts), 300, replace=False)]
-            d = np.array([near(bvh0, q, k) for q in pts])
-            g0[k] = float(d.min())
-            cps[k] = pts[np.argsort(d)[:12]]
-            if g0[k] > 0.006:
-                res['rest_float'].append((bone, p.look, round(g0[k], 3), [round(float(x), 2) for x in pts.mean(0)]))
+            samp[k] = pts
+            D = np.full((len(pts), npc), 9.0)
+            for i, q in enumerate(pts):
+                for j, d in near_all(bvh0, q, k).items():
+                    D[i, j] = d
+            dist[k] = D
+        # attachment tree: start from the skinned geometry (or the largest rigid piece) and grow over touching pieces
+        TOUCH = 0.006
+        roots = [k for k in range(npc) if skinned[k]]
+        if not roots:
+            roots = [int(np.argmax(np.where(isfree, -1.0, size)))]
+
+        def gap(k, j):
+            d = float(dist[k][:, j].min()) if k in dist else 9.0
+            d2 = float(dist[j][:, k].min()) if j in dist else 9.0
+            return min(d, d2)
+        depth = {k: 0 for k in roots}
+        frontier = list(roots)
+        while frontier:
+            nxt = []
+            for k in samp:
+                if k in depth:
+                    continue
+                if any(gap(k, j) <= TOUCH for j in frontier):
+                    nxt.append(k)
+            for k in nxt:
+                depth[k] = depth[frontier[0]] + 1
+            frontier = nxt
+        cps = {}
+        for k in samp:
+            pi, bone, sz, skip = info[k]
+            if skip:
+                continue
+            if k not in depth:
+                g0 = float(dist[k].min())
+                res['rest_float'].append((bone, self.parts[pi].look, round(min(g0, 9.0), 3), [round(float(x), 2) for x in samp[k].mean(0)]))
+                continue
+            if depth[k] == 0:
+                continue
+            hosts = sorted((gap(k, j), j) for j in depth if depth[j] < depth[k] and gap(k, j) <= TOUCH)
+            if any(info[j][1] == bone and j != k and gap(k, j) <= TOUCH for j in depth):
+                continue                                # touches a piece on its own bone: they move as one, cannot come off
+            tr = []
+            for _, j in hosts[:3]:
+                if float(dist[k][:, j].min()) <= TOUCH:
+                    tr.append((k, j, samp[k][np.argsort(dist[k][:, j])[:12]]))
+                else:                                   # the host's points touch this piece: track those instead
+                    tr.append((j, k, samp[j][np.argsort(dist[j][:, k])[:12]]))
+            cps[k] = tr
         res['rest_minz'] = float(V0[:, 2].min())
         for name in CLIPS:
             c = self.clips[name]
@@ -773,15 +867,17 @@ class Beast(M.Creature):
                 if f == n:
                     endz = float(P[:, 2].min())
                 bvh = mk_bvh(P)
-                for k, cp in cps.items():
-                    if g0[k] > 0.006:
-                        continue
-                    Gb = c['G'][f][R.idx[info[k][1]]]
-                    q = np.c_[cp, np.ones(len(cp))] @ Gb.T
-                    d = min(near(bvh, x[:3], k) for x in q)
+                for k, tr in cps.items():
+                    d = 9.0
+                    for src, dst, cp in tr:
+                        Gb = c['G'][f][R.idx[info[src][1]]]
+                        q = np.c_[cp, np.ones(len(cp))] @ Gb.T
+                        d = min(d, min(near_all(bvh, x[:3], src).get(dst, 9.0) for x in q))
+                        if d <= 0.012:
+                            break
                     if d > 0.012:
                         worst[k] = max(worst.get(k, 0), d)
-            res['clip_float'][name] = [(info[k][1], self.parts[info[k][0]].look, round(d, 3)) for k, d in worst.items()]
+            res['clip_float'][name] = [(info[k][1], self.parts[info[k][0]].look, round(min(d, 9.0), 3)) for k, d in worst.items()]
             res['minz'][name] = round(mz, 3); res['maxz'][name] = round(Mz, 3)
             if name == 'Death':
                 res['death_end_minz'] = round(endz, 3)
@@ -868,6 +964,11 @@ class Beast(M.Creature):
         m['triangles'] = tot; m['bones'] = self.rg.nb
         m['bbox_min'] = [round(float(x), 3) for x in mn]; m['bbox_max'] = [round(float(x), 3) for x in mx]
         m['foot_drift'] = fc
+        m['budget_tris'] = self.budget; m['budget_bones'] = self.bone_budget; m['budget_mb'] = self.mb
+        m['contacts'] = [dict(bone=lg.b[-1], p=[round(float(x), 4) for x in lg.c]) for lg in self.legs]
+        m['under_ok'] = {k: True for k, c in self.clips.items() if c['under_ok']}
+        for k in ('walk_speed', 'run_speed', 'attack_reach'):
+            m.setdefault(k, 0.0)
         m['audit'] = dict(rest_float=au['rest_float'], clip_float={k: v for k, v in au['clip_float'].items() if v},
                           minz=au['minz'], death_end_minz=au.get('death_end_minz'))
         m['notes'] = notes

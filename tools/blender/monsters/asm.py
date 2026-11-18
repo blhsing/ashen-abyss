@@ -24,6 +24,8 @@ One SPEC (a python dict / JSON object, see specs_*.py) -> one finished creature:
     weapons  [{w: <name in asm_weapons.WEAPONS>, hand: 'r' | 'l', ...kwargs}]
     script   optional module with extra(A) (bespoke sculpt on top of the spec), called after parts and weapons
     float    metres the lowest point hovers above the ground (legless creatures); default 0 = feet on the ground
+    budget   triangle budget (default 15000; giants 22000)
+    jpeg     (base colour, ORM, normal) JPEG qualities, default (90, 88, 95): lower them when an all-rock creature exceeds 6 MB
     notes    free text stored in the build json
 
 Everything is built in REST space around the unsculpted T-pose body with the kit helpers; `finish()` then applies the
@@ -297,6 +299,7 @@ class Asm:
         self.refs = {}             # name -> Part in rest space that other parts may sit on (robe, mantle ...)
         self.notes = []
         self.mouth_c = None; self.gap = 0.0
+        self.merge = {}            # bone -> bone it is merged into (stiff limbs, see body_flesh merge_w)
 
     # ---- looks
     def _pre(self, name):
@@ -370,7 +373,9 @@ class Asm:
         (n smoothing passes);  like = Part -> weights copied from that skinned Part;  ride = point -> the whole part takes
         the weights of the body surface nearest to that point (a lump riding on the skin);  flip = mirror to the right
         side;  mirror = add both sides;  final = already in final space (skips the sculpt in finish());  keep = a carried
-        object on a scaled bone keeps its own shape and size, only its position follows the bone's scale."""
+        object on a scaled bone keeps its own shape and size, only its position follows the bone's scale: keep=True
+        moves the piece with its own centre, keep=(x, y, z) with that anchor -- give EVERY piece of one assembly the
+        same anchor (on the face that touches the body), otherwise the assembly comes apart on bulky bodies."""
         C = self.C
         if look is not None:
             look = self.lk(look)
@@ -387,7 +392,11 @@ class Asm:
         n0 = len(C.parts)
         C.add(part, bone=bone, look=look, obj=obj, smooth=smooth, mirror=mirror)
         for p in C.parts[n0:]:
-            p._final = final; p._noground = noground; p._noscale = noscale; p._keep = keep
+            p._final = final; p._noground = noground; p._noscale = noscale
+            # keep = True: the piece keeps its shape, its own centre follows the bone's scale;  keep = (x, y, z): an anchor
+            # shared by every piece of one assembly (yoke + chains + loads), so the assembly moves as ONE rigid thing
+            p._keep = keep is not False and keep is not None
+            p._keep_c = None if isinstance(keep, bool) or keep is None else np.asarray(keep, float)
         return part
 
     def ride(self, part, at=None):
@@ -425,12 +434,23 @@ class Asm:
             importlib.import_module(sp['script']).extra(self)
         self.finish()
         slots = self._fit_materials()
+        if sp.get('jpeg'):
+            self.C.jpg_q = tuple(sp['jpeg'])
         M.log("asm %s: %d parts, materials %s" % (self.id, len(self.C.parts), slots))
         return self.C, sp.get('notes', '') + ((' ' + ' '.join(self.notes)) if self.notes else '')
 
     def finish(self):
         C = self.C; R = self.R
         full = merge_pose(self.pose, self.post)
+        if self.merge:                          # stiff limbs: everything that was put on a merged bone follows its target
+            for p in C.parts:
+                if p.bone is not None:
+                    p.bone = self.merge.get(p.bone, p.bone)
+                elif p.W is not None:
+                    for sb, tgt in self.merge.items():
+                        i, t = R.idx[sb], R.idx[tgt]
+                        if p.W[:, i].any():
+                            p.W[:, t] += p.W[:, i]; p.W[:, i] = 0
         for p in C.parts:
             if getattr(p, '_final', False):
                 if self.post:
@@ -443,7 +463,8 @@ class Asm:
                 if e and e.get('scale') is not None and not getattr(p, '_noscale', False):
                     s = np.asarray(e['scale'], float)
                     if getattr(p, '_keep', False):
-                        c = p.center(); h = R.H(p.bone)
+                        c = p.center() if getattr(p, '_keep_c', None) is None else p._keep_c
+                        h = R.H(p.bone)
                         p.move(h + s * (c - h) - c)
                     elif not p.obj.startswith('wpn_'):
                         p.scale(s, pivot=R.H(p.bone))
@@ -567,7 +588,8 @@ def body_flesh(A, b):
     """sculpted CC0 base body (weights preserved).  kind male|female, decimate, look, show = 'all' | [regions] (only
     these regions are emitted; the rest stays as the hidden reference under clothes), hide = [regions], gaunt, jaw (deg),
     teeth, eyes ('eye' look name | None), eye_y, ribs, knobs, claws (length), toe_claws, fingers (stretch factor),
-    melt (smoothing passes that dissolve the anatomy), head_look (the head as a separate piece with that look)"""
+    melt (smoothing passes that dissolve the anatomy), head_look (the head as a separate piece with that look),
+    merge_w = {bone: [bones / regions]} (their weights go to `bone`: a stiff limb)"""
     C = A.C
     kind = b.get('kind', 'male')
     body = M.load_body(kind)
@@ -594,6 +616,16 @@ def body_flesh(A, b):
     A.vis = None
     if vis is not None and len(vis.f):
         vis = vis.copy()
+    # merge_w = {target bone: [bones / regions]}: limbs that were baked far off their joints (arms raised for good) become
+    # stiff -- everything below the joint is weighted to the bone that still pivots at the right place
+    for tgt, srcs in b.get('merge_w', {}).items():
+        ids = M.RIG.ids(region_bones(srcs)); t = M.RIG.idx[tgt]
+        for sb in region_bones(srcs):
+            A.merge[sb] = tgt
+        for q in (body, vis):
+            if q is not None and q.W is not None:
+                q.W[:, t] += q.W[:, ids].sum(1); q.W[:, ids] = 0
+    if vis is not None and len(vis.f):
         if b.get('melt'):                       # smooth the anatomy away (wax models, crusts): n smoothing passes
             M.smooth_verts(vis, int(b['melt']), 0.5)
         if b.get('head_look') and shown('head'):   # the head as its own piece with another look (paint, other skin)

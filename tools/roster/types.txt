@@ -1,0 +1,130 @@
+skeleton             bone     melee                  Melee                              A sc1    sp3.9  hp0.9  w4    M wastes,frost,crypt,mire,sands,sanctum
+skeleton_thrower     bone     ranged                 Ranged                             A sc1    sp3.6  hp0.7  w2.2  M wastes,frost,crypt,mire,sands,sanctum
+bone_scrap           bone     swarmer                Melee                              A sc0.7  sp5.8  hp0.4  w5    M wastes,frost,crypt,sanctum
+bone_pallbearer      bone     shield-bearer          Shieldbearer                       A sc1.05 sp3.2  hp1.4  w1.5  M wastes,frost,crypt,sanctum
+bone_urnbearer       bone     support (reviver)      Reviver                            A sc1    sp3.2  hp0.8  w1.2  M crypt,sanctum
+bone_amalgam         bone     bruiser                Brute                              A sc1.45 sp3    hp3    w1    M crypt,sanctum
+husk                 husk     swarmer                Melee                              A sc1    sp5.6  hp0.6  w5    M wastes,crypt,mire,sands
+husk_bloated         husk     exploder               Exploder                           A sc1.15 sp2.9  hp1.5  w1    M wastes,crypt,mire,sands
+husk_chained         husk     melee (puller)         Melee + Hook                       A sc1.05 sp4.2  hp1.1  w2    M wastes,crypt,mire
+husk_huddle          husk     bruiser (splits)       Brute + SplitOnDeath               A sc1.5  sp2.6  hp3    w0.8  - wastes,crypt
+husk_wailer          husk     support (summoner)     Caller                             A sc1    sp3.6  hp0.8  w1.2  M wastes,crypt,mire
+cultist              cult     melee                  Melee                              A sc1    sp4.6  hp0.85 w4    M crypt,sands,sanctum,abyss
+cult_caster          cult     caster                 Caster                             A sc1    sp3.4  hp0.75 w2    M crypt,sands,sanctum,abyss
+knight               cult     bruiser                Brute                              A sc1.15 sp3.6  hp2.6  w1    M frost,crypt,sanctum,abyss
+choir                cult     support (shielder)     Support                            A sc1    sp3    hp0.9  w1.2  M sanctum,abyss
+cult_snuffer         cult     melee (debuffer, reach Melee + Drain + Extinguish         A sc1.05 sp4    hp1    w1.5  M frost,crypt,sands,sanctum,abyss
+cult_crossbow        cult     ranged                 Ranged                             A sc1    sp3.8  hp0.7  w2.2  M crypt,sands,sanctum
+cult_censer          cult     support (healer)       Healer                             A sc1    sp3.2  hp0.85 w1.2  M crypt,sanctum,abyss
+cult_flagellant      cult     swarmer                Melee                              A sc0.95 sp5.8  hp0.5  w5    M crypt,sanctum,abyss
+cult_assassin        cult     stealth pouncer        Stalker                            A sc1    sp5.4  hp0.7  w1.2  M sands,sanctum,abyss
+wraith               wraith   caster (teleporter)    Teleporter                         A sc1    sp3.2  hp0.8  w2    M frost,crypt,mire,sanctum,abyss
+wraith_mourner       wraith   melee (phasing)        Melee + Phasing                    A sc1.1  sp4.4  hp0.9  w3    M frost,crypt,mire,sanctum
+wraith_gasp          wraith   swarmer                Melee + Phasing + DeathBurst       F sc1    sp5    hp0.3  w4    - frost,crypt,mire,sanctum,abyss
+reaver_cutter        reaver   swarmer                Melee                              A sc0.95 sp5.6  hp0.55 w5    M wastes,frost,crypt,sands
+reaver_hook          reaver   melee (puller)         Melee + Hook                       A sc1    sp4.4  hp1    w3    M wastes,frost,crypt,sands
+reaver_firepot       reaver   ranged (bomber)        Bomber                             A sc1    sp3.8  hp0.7  w2    M wastes,frost,crypt,sands
+reaver_cagebearer    reaver   support (aura)         Support + Aura                     A sc1    sp3.6  hp1    w1    M wastes,frost,crypt,sands
+reaver_brute         reaver   bruiser                Brute                              A sc1.4  sp3.2  hp2.8  w1    M wastes,frost,crypt,sands
+reaver_houndmaster   reaver   support (handler)      Caller + Escort                    A sc1    sp4    hp0.9  w0.8  M wastes,frost,sands
+dusk_hound           dusk     swarmer (pack)         Melee                              B sc1    sp6.2  hp0.5  w5    - wastes,crypt,sands
+dusk_boar            dusk     charger                Charger                            B sc1.2  sp3.8  hp1.6  w1.5  - wastes,mire
+dusk_yak             dusk     bruiser                Brute                              B sc1.5  sp3    hp3    w1    - frost
+dusk_lynx            dusk     stealth pouncer        Stalker                            B sc1    sp6.4  hp0.7  w1.2  - frost
+dusk_lizard          dusk     ranged                 Ranged                             B sc1    sp3.6  hp0.8  w2    - sands
+dusk_crow            dusk     flyer (thief)          Flyer + Drain                      E sc1    sp6.5  hp0.4  w2    - wastes,sands,sanctum
+dusk_bat             dusk     flyer (ambusher)       Flyer + Dormant(ceiling)           E sc1    sp6    hp0.45 w2    - frost,crypt,mire,abyss
+dusk_gadfly          dusk     flyer (drain)          Flyer + Drain                      E sc1.1  sp5.6  hp0.5  w2    - mire
+dusk_moths           dusk     swarm                  Swarm                              F sc1    sp4.6  hp0.9  w1    - wastes,crypt,mire,sands,sanctum
+frostbound           frost    melee                  Melee                              A sc1    sp3.8  hp1    w4    M frost
+rime_stalker         frost    swarmer (leaper)       Leaper                             A sc1    sp6    hp0.7  w4    M frost
+rime_horn            frost    support (breath)       Caster + Breath                    A sc1    sp3.4  hp0.9  w1.2  M frost
+rime_sentry          frost    ambusher (tank)        Melee + Dormant(statue) + Shell    A sc1.1  sp3    hp1.6  w1.5  M frost
+rime_breaker         frost    bruiser                Brute                              A sc1.5  sp3    hp3.2  w1    - frost
+rime_packbeast       frost    charger (bursts)       Charger + DeathBurst               B sc1.15 sp3.4  hp1.2  w1    - frost
+cf_flicker           coldfire swarmer                Melee + Phasing + DeathBurst       F sc1    sp5.2  hp0.35 w5    - frost
+cf_spirit            coldfire caster                 Caster + Trail                     A sc1.1  sp3.2  hp0.8  w2    M frost
+cf_hulk              coldfire bruiser                Brute + Aura + Hook                A sc1.55 sp2.8  hp3.4  w1    - frost
+cf_mite              coldfire ranged (crawler)       Ranged                             C sc0.9  sp4.2  hp0.6  w2    - frost
+hauler_yoke          hauler   giant bruiser          Brute                              A sc1.8  sp2.9  hp5    w1    M wastes,frost,sands
+hauler_hod           hauler   giant ranged (siege)   Bomber                             A sc1.8  sp2.6  hp4.5  w1    M frost,sands
+hauler_collector     hauler   giant special (grabber Brute + Grab                       A sc1.75 sp3.1  hp4.8  w1    M wastes,frost,sands
+hauler_stoker        hauler   giant bomber           Bomber                             A sc1.85 sp2.8  hp5.2  w1    M abyss
+sexton_grub          sexton   swarmer                Melee                              C sc0.8  sp4.8  hp0.25 w5    - wastes,crypt
+sexton_beetle        sexton   melee (armoured)       Melee + FrontArmour                C sc1    sp4    hp1.1  w3    - wastes,crypt
+sexton_digger        sexton   burrower               Burrower                           C sc1.05 sp4.4  hp0.9  w1.5  - wastes,crypt
+sexton_matron        sexton   mother (bruiser)       Spawner                            C sc1.7  sp2.8  hp3    w0.6  - wastes,crypt
+char_stump           char     swarmer                Melee + Flammable                  A sc0.75 sp4.6  hp0.5  w5    M wastes,mire
+char_walker          char     melee                  Melee + Flammable                  A sc1.15 sp3.6  hp1.2  w3    M wastes,mire
+char_hangtree        char     bruiser (reach)        Brute + Hook + Flammable           A sc1.6  sp2.6  hp3.2  w0.8  - wastes,mire
+char_root            char     ambusher (burrowing tu Burrower + Flammable               D sc1    sp5    hp0.9  w1.5  - wastes,mire
+ash_cast             ash      melee                  Melee + Reform                     A sc1    sp4    hp0.7  w4    M wastes,abyss
+ash_weeper           ash      caster                 Caster + Eruption                  A sc1    sp2.8  hp0.8  w1.8  M wastes,abyss
+ash_colossus         ash      giant (splits)         Brute + SplitOnDeath               A sc1.9  sp2.6  hp5.5  w0.5  - wastes,abyss
+ash_worm             ash      burrower (breath)      Burrower + Breath                  D sc1.2  sp3    hp1.4  w1.2  - wastes,abyss
+shroud_ling          shroud   swarmer                Melee                              C sc0.6  sp6    hp0.25 w5    - crypt
+shroud_weaver        shroud   ranged (control)       Ranged + Snare                     C sc1    sp4    hp0.8  w2.2  - crypt
+shroud_dropper       shroud   ambusher               Melee + Dormant(ceiling)           C sc1    sp5.2  hp0.7  w2    - crypt
+shroud_matron        shroud   mother (bruiser)       Spawner                            C sc1.7  sp2.8  hp3    w0.6  - crypt
+shroud_wrapped       shroud   melee (puppet)         Melee                              A sc1    sp3.4  hp1.2  w3    M crypt
+effigy_knight        effigy   melee (armoured)       Melee                              A sc1.1  sp3    hp1.8  w3    M crypt,sanctum
+effigy_orant         effigy   caster                 Caster                             A sc1.1  sp2.6  hp1.2  w1.8  M crypt,sanctum
+effigy_caryatid      effigy   bruiser (thrower)      Bomber                             A sc1.5  sp2.6  hp3.4  w0.8  - crypt,sanctum
+effigy_warden        effigy   ambusher               Melee + Dormant(statue)            A sc1.05 sp3.8  hp1.4  w2    M crypt,sanctum
+effigy_hound         effigy   ambusher (pouncer)     Leaper + Dormant(statue)           B sc1    sp5.4  hp0.9  w2    - crypt,sanctum
+mire_hag             mire     caster                 Caster                             A sc1    sp3.2  hp0.85 w2    M mire
+rotspawn             mire     bruiser                Brute                              A sc1.4  sp2.8  hp3.2  w1    M mire
+bog_fisher           mire     melee (reach)          Melee                              A sc1    sp4    hp1    w4    M mire
+bog_netter           mire     ranged (control)       Ranged + Snare                     A sc1    sp3.6  hp0.8  w2    M mire
+bog_sleeper          mire     swarmer (ambusher)     Melee + Dormant(buried)            A sc1    sp4.8  hp0.6  w4    M mire
+bog_toad             mire     special (puller)       Melee + Hook                       B sc1.2  sp2.6  hp1.6  w1.2  - mire
+lamp_lure            lamp     turret                 Turret + Dormant(statue)           F sc1    sp0    hp1.5  w1.2  - mire
+lamp_bearer          lamp     melee                  Melee                              A sc1    sp3.6  hp1    w4    M mire
+lamp_bomber          lamp     ranged (bomber)        Bomber                             A sc1    sp3    hp0.8  w2    M mire
+lamp_crawler         lamp     swarmer (crawler)      Melee + DeathBurst                 C sc0.8  sp5    hp0.4  w5    - mire
+lamp_colony          lamp     bruiser                Brute + Aura                       A sc1.5  sp2.4  hp3.2  w0.8  - mire
+lurk_leech           lurk     swarmer                Melee + Drain                      D sc0.6  sp5    hp0.3  w5    - mire
+lurk_eel             lurk     burrower (ambusher)    Burrower                           D sc1    sp3    hp1    w2    - mire
+lurk_spitter         lurk     ranged (pools)         Bomber                             D sc1.05 sp3.4  hp0.8  w2    - mire
+lurk_elder           lurk     bruiser (inhale)       Brute + Hook + Drain + SplitOnDeath D sc1.8  sp2.4  hp4    w0.6  - mire
+sand_revenant        sands    melee (fast)           Melee                              A sc1    sp5    hp0.85 w4    M sands
+brass_sentinel       sands    bruiser (construct)    Brute                              A sc1.3  sp3    hp3    w1    M sands
+dune_disc            sands    ranged                 Ranged + Return                    A sc1    sp4.2  hp0.7  w2.2  M sands
+dune_mirror          sands    shield-bearer (reflect Shieldbearer + Reflect             A sc1.05 sp3.4  hp1.5  w1.5  M sands
+dune_stormjar        sands    caster                 Caster + Eruption + DeathBurst     A sc1    sp3.2  hp0.8  w1.8  M sands
+dune_masker          sands    support (empower)      Support + Empower                  A sc1    sp3.4  hp0.9  w1    M sands
+rust_helm            rust     swarmer                Melee + FrontArmour                C sc0.7  sp5.2  hp0.45 w5    - sands
+rust_stinger         rust     bruiser                Brute                              C sc1.4  sp3.6  hp2.2  w1    - sands
+rust_gear            rust     charger                Charger                            C sc1    sp3    hp0.9  w1.5  - sands
+rust_jar             rust     ranged                 Ranged + DeathBurst                C sc1    sp2.8  hp0.8  w2    - sands
+rust_locust          rust     flyer                  Flyer                              E sc0.9  sp7    hp0.35 w2    - sands
+engine_heliostat     engine   turret                 Turret                             F sc1    sp0    hp1.8  w1    - sands
+engine_carrier       engine   giant (construct)      Brute                              A sc1.85 sp2.8  hp5.5  w0.6  - sands
+engine_winder        engine   support                Healer + Aura                      A sc0.7  sp4.6  hp0.6  w1.4  M sands
+wax_sealed           wax      melee                  Melee + Dormant(statue) + Flammable A sc1    sp3    hp1.3  w4    M sanctum
+wax_wick             wax      exploder               Exploder + Trail                   A sc1    sp5.4  hp0.7  w1    M sanctum
+wax_dripper          wax      bruiser                Brute + Trail                      A sc1.5  sp2.4  hp3.4  w0.8  - sanctum
+wax_chandler         wax      support (caster)       Support + Trail                    A sc1    sp3.2  hp0.85 w1.5  M sanctum
+bell_hood            bell     melee (charger)        Charger                            A sc1.05 sp3.4  hp1.4  w3    M sanctum
+bell_clapper         bell     bruiser                Brute + Pulse                      A sc1.45 sp2.8  hp3.2  w1    M sanctum
+bell_hanging         bell     support (pulse)        Melee + Pulse + Extinguish         F sc1.2  sp1.6  hp2    w1    - sanctum
+fiend                fiend    melee                  Melee                              A sc1    sp4.8  hp1.2  w4    M abyss
+imp                  fiend    ranged (swarm)         Ranged                             A sc0.6  sp5.4  hp0.45 w4    M abyss
+brute                fiend    bruiser                Brute                              A sc1.5  sp3.1  hp3.4  w1    M abyss
+fiend_wing           fiend    flyer (bomber)         Flyer + Trail                      E sc1.2  sp6.4  hp0.6  w2    - abyss
+fiend_maw            fiend    charger (quadruped)    Charger + Breath                   B sc1.3  sp3.8  hp2    w1.5  - abyss
+fiend_caller         fiend    caster (summoner)      Caller + Eruption                  A sc1.2  sp3.4  hp1    w1.2  M abyss
+forge_bellows        forge    special (control)      Caster + Breath                    A sc1.05 sp3.4  hp1.1  w1.5  M abyss
+forge_tongs          forge    melee (grabber)        Melee + Grab                       A sc1.05 sp4    hp1.2  w3    M abyss
+forge_pourer         forge    ranged (bomber)        Bomber                             A sc1.05 sp3    hp0.9  w2    M abyss
+forge_hammer         forge    bruiser                Brute + Pulse                      A sc1.5  sp2.8  hp3.4  w1    - abyss
+forge_eye            forge    turret                 Turret                             F sc1    sp0    hp2    w1    - abyss
+forge_hound          forge    swarmer (quadruped)    Melee                              B sc1    sp6    hp0.5  w4    - abyss
+hush_blank           hush     melee                  Melee + Drain                      A sc1.1  sp4.4  hp1.1  w4    M sanctum,abyss
+hush_mouth           hush     caster                 Caster + Absorb                    A sc1.1  sp3    hp0.9  w1.8  M sanctum,abyss
+hush_mute            hush     bruiser                Brute + Pulse                      A sc1.55 sp2.8  hp3.4  w1    M abyss
+hush_ribwalker       hush     swarmer (crawler)      Melee                              C sc0.8  sp5.6  hp0.4  w5    - sanctum,abyss
+hush_beast           hush     stealth pouncer        Stalker + Drain                    B sc1.1  sp6.4  hp0.8  w1.5  - abyss
+hush_serpent         hush     burrower               Burrower + Extinguish              D sc1.2  sp3    hp1.3  w1.5  - abyss
+hush_wing            hush     flyer                  Flyer + Drain + Extinguish         E sc1.2  sp6    hp0.5  w2    - sanctum,abyss
+129

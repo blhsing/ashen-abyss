@@ -51,46 +51,85 @@ mon_lamp_bearer | lamp | 9676 | 5.21 MB | verify OK | spec | the raised lamp arm
 mon_engine_winder | engine | 4944 | 4.19 MB | verify OK | spec (bespoke parts pot_body, stick_limbs, key_head) | the key head does not turn (needs a shader or the Head bone); block fingers; carried key is held in the fist, not really shouldered
 mon_wax_sealed | wax | 10432 | 4.26 MB | verify OK | spec | dome is rigid on spine_03 (the head under it does not turn it); drips on arms / fingers are rigid cones that point along the arm; no thread geometry to the floor
 mon_forge_bellows | forge | 11769 | 4.15 MB | verify OK | spec | bellows is a rigid stack of pleats on spine_02 (does not pump; the real arms hang beside it, they do not grip the handles); nozzle pipe passes close to the face
-mon_hush_blank | hush | 7277 | 1.42 MB | verify OK | spec | fingers curl into cages in relaxed clips (2x stretch off their joints); floats 2.5 cm; plain chalk look without texture interest
+mon_hush_blank | hush | 7277 | 2.50 MB | verify OK | spec, rebuilt 11-18 with the cracked-chalk look | fingers curl into cages in relaxed clips (2x stretch off their joints); floats 2.5 cm
 mon_effigy_orant | effigy | 1572 | 4.97 MB | verify OK | spec (bespoke part stone_lady, hidden body) | low-poly (1.6k tris); arms are not modelled (sleeves + praying block rigid on spine_03, so arm clips move nothing); face is a block nose and two slots; the gown is pelvis-weighted (legs barely move it)
 mon_effigy_warden | effigy | 8874 | 5.18 MB | verify OK | spec | canopy is rigid on Head and swings with every head turn; armour is the knight's harness slimmed (same great helm under the canopy); plinth is a rigid lump on the left foot
 mon_lamp_bomber | lamp | 8154 | 5.13 MB | verify OK | spec | pagoda tiers are rigid on spine_03 / Head (the stack kinks at the neck in deep bows); pods are spheres riding on the back skin; no head under the fungus
 mon_wax_chandler | wax | 8492 | 4.77 MB | verify OK | spec | cauldron is rigid on spine_02 (no slosh), its harness straps are flat ribbons; face is the Order mask plate inside a leather hood
 mon_forge_tongs | forge | 14519 | 5.00 MB | verify OK | spec | the tong arm is rigid on lowerarm_r and its jaws are fixed open (no closing joint); it drags through the floor when the arm hangs (1.35 m); chain wrap on the left arm is 6k triangles
-mon_forge_pourer | forge | 11211 | 4.64 MB | verify OK | spec | crucible frame is rigid on spine_03 while the head moves under it; slag surface is mostly cooled crust with one bright patch; dipper bowl small
-mon_hush_mouth | hush | 6995 | 2.05 MB | verify OK | spec | the hoop is skinned by height to the spine and pinches when the torso twists; a small gap shows between the pelvis stub and the legs from below; plain chalk surface
+mon_forge_pourer | forge | 11211 | 4.64 MB | verify OK | spec, rebuilt 11-19 (slag look: deeper orange, real crust islands) | crucible frame is rigid on spine_03 while the head moves under it; dipper bowl small
+mon_hush_mouth | hush | 6995 | 4.02 MB | verify OK | spec, rebuilt 11-18 with the cracked-chalk look | the hoop is skinned by height to the spine and pinches when the torso twists; a small gap shows between the pelvis stub and the legs from below
 mon_char_walker | char | 1768 | 5.34 MB | verify OK | spec (bespoke part trunk_body, hidden body) | low-poly (1.8k tris); the long left arm is 1.4x and its fork swings on a wide arc; legs are plain tapered tubes; the ember split is a flat glowing bar between two bark lips
 mon_ash_cast | ash | 7982 | 2.80 MB | verify OK | spec | the chest hole lining is a rigid tube on spine_03 (it shows at the back in deep bends); elbow ash streams are rigid spikes; the body is the smoothed base mesh with a crust look (no shell thickness at the hole or the skull edge)
 mon_shroud_wrapped | shroud | 4812 | 4.22 MB | verify OK | spec (bespoke part cocoon) | the upper arms are wrapped but free (a bound arm cannot be rigged), the 'torn free' read comes from web sheets between arm and flank; threads are rigid on clavicles / Head and tilt with the Zombie stoop instead of staying vertical
 mon_effigy_knight | effigy | 8988 | 6.57 MB | verify OK | spec | slab is rigid on spine_02 (its foot swings behind the heels and can dip into the floor in deep lunges); harness plates are plain lofted shells over the stone body; inscription is a row of plain glowing bars
 mon_bell_hood | bell | 9041 | 3.85 MB | verify OK | spec (bespoke part body_bell) | bell is rigid on spine_03: forearms pass through its wall when they reach forward (Shield_Dash, Punch); the white lip line is a plain emissive ring; no head / upper arms modelled inside
 mon_reaver_cagebearer | reaver | 9630 | 5.73 MB | verify OK | spec | the cage hangs along the knuckle direction of the fist (correct when the arm is held out, wrong when the arm drops); quilted arm is an inflated shell with cord rings
-mon_ash_weeper | ash | 5424 | 5.04 MB | verify OK | spec | ON DISK = build with arms baked 150 deg (shoulders twist into ribbons in Walk_Loop); spec already changed to 112 deg -> REBUILD PENDING; legs hidden in a pelvis-rigid ash mound (it does not kneel)
-mon_bog_netter | mire | 12124 | 4.67 MB | verify OK | spec | ON DISK = build whose stone sinkers lie loose on the floor bound to root (read as debris following her); part cast_net already changed (sinkers ride on the net hem) -> REBUILD PENDING; net is a punched cloth sheet
-mon_bog_sleeper | mire | 9336 | 3.66 MB | verify OK | spec | ON DISK = build that is pale all over (skin feet_dirt did not reach the chest); spec already has a peat-black skin shell to chest height -> REBUILD PENDING; slab and reed are rigid
-mon_wax_wick | wax | 12172 | 4.48 MB | verify OK | spec | ON DISK = build whose flame is blown-out white; look 'flame' already toned down -> REBUILD PENDING; bare jaw shows only as a small patch in the melted side
-mon_hauler_yoke | hauler | 11316 | 5.50 MB | verify OK | spec | NOT YET LOOKED AT (sheets Y:\shots\chars\family_stage4a*.jpg unreviewed); loads are rigid on spine_03 by design
-mon_hauler_hod | hauler | 10340 | 5.46 MB | verify OK | spec | NOT YET LOOKED AT
-mon_hauler_collector | hauler | 11069 | 4.37 MB | verify OK | spec | NOT YET LOOKED AT
-mon_hauler_stoker | hauler | 10406 | 4.18 MB | verify OK | spec | NOT YET LOOKED AT
-mon_reaver_brute | reaver | 12480 | 4.80 MB | verify OK | spec | NOT YET LOOKED AT
-mon_bell_clapper | bell | 9040 | 5.11 MB | verify OK | spec | NOT YET LOOKED AT
-mon_bone_amalgam | bone | 14676 | 5.41 MB | verify OK | spec | NOT YET LOOKED AT; small bone pieces were auto-decimated x0.4 / x0.86 to fit 15k (check the skulls)
-mon_hush_mute | hush | 5556 | 1.96 MB | verify OK | spec | NOT YET LOOKED AT
+mon_ash_weeper | ash | 5424 | 4.95 MB | verify OK | spec, REBUILT 11-18 | arms baked 122 deg up and made stiff casts (body merge_w: elbow / hand weights go to the upper arm) -> a clean Y in the idle, no ribbons in any clip; the arms cannot bend; shoulder skin is crumpled in the armpit; legs hidden in a pelvis-rigid ash mound (it does not kneel)
+mon_bog_netter | mire | 14258 | 4.78 MB | verify OK | spec, REBUILT 11-18 | net is real cord geometry now (open diamond mesh, 12 mm cords): gathered on the shoulder, a triangular train on the floor with 12 sinker stones on its hem; train + stones are bound to the ROOT bone (they stay on the floor, the hanging part stretches in lunges, the train turns with her like a stiff board); cords are single flat quads (thin edge-on)
+mon_bog_sleeper | mire | 14746 | 4.93 MB | verify OK | spec, REBUILT 11-18 | wet peat (mud look in the skin slot) to a ragged tide-line at the chest + hands / forearms + clods on the pale skin (clods read a little like dark spots); straw leans back 42 deg so that it stands upright in the Zombie stoop (it leans back in the rest pose); slab and reed are rigid
+mon_wax_wick | wax | 12392 | 4.46 MB | verify OK | spec, REBUILT 11-18 | flame in three colour bands (part flame3), no white blob; the dome is really melted away on the left: half the face and the jaw are bare; wax runs round the dome rim are stiff cones (read like tusks); flame is rigid on spine_03
+mon_hauler_yoke | hauler | 11316 | 5.43 MB | verify OK | spec, FIXED 11-18 | fault found: yoke, chains and bundles each followed the bone's bulk scale with their own centre (bundles hung in the air beside the yoke ends) -> one shared keep anchor; loads are rigid on spine_03 by design (no swing of their own)
+mon_hauler_hod | hauler | 10452 | 5.57 MB | verify OK | spec, FIXED 11-18 | same fault (frame posts stood apart from the hoops and the basket; the hod hovered behind the back) -> shared anchor on its front face, bound to spine_02, straps seated on the body and skinned (were two loose hoops); the hod tips forward with the whole trunk in Sword_Attack / OverhandThrow; trunks are plain logs
+mon_hauler_collector | hauler | 12217 | 4.72 MB | verify OK | spec, FIXED 11-18 | cage rebuilt: open weave (14 ribs, 5 hoops, floor), a heap of bundles with a faint glow between them instead of a black blob with floating glow bars; sits on the back, real shoulder straps; nothing moves inside it; tong arm drags close to the floor when the arm hangs
+mon_hauler_stoker | hauler | 10926 | 5.95 MB | verify OK | spec, FIXED 11-18 | shovel load is a heap now: lava-orange slag with crust + dark clinker lumps (was one flat yellow lump); the square window of the face-shield is a dark plate on the surface, not a hole; brand ring half hidden by the apron bib
+mon_reaver_brute | reaver | 12628 | 4.85 MB | verify OK | spec, FIXED 11-18 | bowl is soot-black iron with rust (was bright orange), eye-slot follows the bowl's curve (a black bar stood 3 cm proud); no head modelled under the bowl; rope belt is a clean ring
+mon_bell_clapper | bell | 9040 | 5.11 MB | verify OK | spec, reviewed 11-18 (no change) | plain mask-like face; the coat is one padded surface without seams or buttons; clapper is carried like a sword, not over the shoulder
+mon_bone_amalgam | bone | 14676 | 5.42 MB | verify OK | spec, FIXED 11-18 | the cord lashing of the doubled ribcage was two wide flat hoops standing off the ribs -> four tight rope loops; small bone pieces are still auto-decimated x0.4 / x0.86 to fit 15k (side skulls a little faceted); second ribcage intersects the first
+mon_hush_mute | hush | 6622 | 5.08 MB | verify OK | spec, REDONE 11-18 | new torso (part mute_torso: a low wide arch with a real tunnel through the chest, skinned like the body), paddle hands fused to the forearm (hand-bound mittens came apart with the lengthened arms), cracked-chalk look for the whole family (was smooth clay); from the front the hole still reads a little like a mouth in a head; arms 1.15x swing slightly off the elbow
+mon_husk_huddle | husk | 14745 | 5.35 MB | verify OK | spec (part huddle) | five half-figures in one rigid cluster on spine_03, their hanging arms blend to spine_01 (lag, no real swing); the blanket is a heightfield draped over the real shapes (frozen stiff, a few holes, strips over the walker's brow); body parts decimated x0.89; the fused figures have no legs (cut at the waist inside the mass)
+mon_rime_breaker | frost | 9836 | 5.41 MB | verify OK | spec (part arm_plough) | the plough is rigid on the left forearm (stands upright in front of the arm when it hangs, swings up with every arm movement and can cut through the coat in Sword_Attack); it is at his side, not in front as a prow; no face (hood void); the boulder's core shows as three small glowing windows
+mon_cf_hulk | coldfire | 4406 | 4.42 MB | verify OK | spec (bespoke part brazier_hulk, hidden body) | low-poly faceted ice (4.4k tris); the core is a plain glowing loft with dark crust patches; the basket is rigid on spine_02 while the arms pass between its bars (they can cut the bars in wide swings); the three brazier legs read like big nails
+mon_char_hangtree | char | 6806 | 5.12 MB | verify OK | spec (bespoke part gallows_tree, hidden body) | the bough is rigid on spine_03 (the right arm bones move nothing; the bough sweeps and tips with the trunk, in Sword_Attack the cage reaches the floor); nooses / cage only lag by a weight blend, they do not hang true when the trunk tips; trunk is one loft with painted bark (no separate bark plates)
+mon_ash_colossus | ash | 21750 | 5.53 MB | verify OK (giant limit 22k) | spec (part drift_mass) | 14 half-figures + big ash drifts, all rigid lumps on the spine bones (they slide against each other when the torso bends); the figures only read as figures up close, from the game camera it is one lumpy mound; sparks are few and small; plume tongues are stiff blades with a weight blend; legs are the plain body
+mon_effigy_caryatid | effigy | 9998 | 5.07 MB | verify OK | spec (part pillar_load) | arms are stiff (baked 110 deg up, weights merged into the upper arm): the hands are near the pillar in the idle but leave it in every attack; pillar and capital rigid on spine_03 / Head (the capital tilts with the head); body is the smoothed base mesh under carved armour
+mon_lamp_colony | lamp | 14750 | 5.53 MB | verify OK | spec (part colony) | the two extra bodies are skinned by height to the walker's spine and their legs dangle rigidly from the pelvis (they do not walk); cap, stalk and lantern-fruit are one rigid assembly on spine_03 (no swing; the cap tips with the trunk in attacks); twisted arms are three copies of the same arm; walker's body decimated x0.83
+mon_engine_carrier | engine | 9740 | 5.08 MB | verify OK (giant) | spec (bespoke part carrier, hidden body) | rigid boxes and cylinders per bone (gaps open at hips and shoulders in deep bends); fork tines are thin; the wedge is low-roughness brass, not a mirror; A-frame chains are rigid
+mon_wax_dripper | wax | 14736 | 4.12 MB | verify OK | spec (bespoke part tallow_mound, hidden body) | the cone is pelvis-rigid below the hips and stands on the floor (it slides, no legs); half-figures / hands are rigid lumps on the cone; the arm-bodies are weighted along the arm (they hang inside the cone's outline in the idle, the head-fist only reads up close); wax is smooth by nature (runs, soot, no cracks)
+mon_forge_hammer | forge | 13453 | 5.24 MB | verify OK | spec (part hammer_arm) | hammer assembly is rigid on clavicle / upper arm / forearm (plates slide at shoulder and elbow); the block hangs at knee height in the idle and passes through the thigh in some frames of Walk_Loop; the left hand does not steady anything; body does not list (only a 6 deg spine roll)
 
-## STATE WHEN PAUSED (2026-11-15 ~19:25, lead asked to stop) -- how to continue
-Built + verify OK with the assembler: 56 rig-A models (stage 1: 19, stage 2: 14, stage 3: 15, stage 4: 8). Every .glb in game\assets\chars passed verify; nothing half-written.
-Stage 1 (19): bone_scrap, bone_pallbearer, bone_urnbearer, husk_chained, husk_wailer, cult_snuffer, cult_crossbow, cult_flagellant, cult_assassin, cult_censer, wraith_mourner, rime_horn, rime_sentry, dune_disc, dune_mirror, dune_stormjar, dune_masker, imp, fiend_caller.
-Stage 2 (14): reaver_cutter, cf_spirit, char_stump, char_walker, ash_cast, shroud_wrapped, effigy_knight, bog_fisher, lamp_bearer, engine_winder, wax_sealed, bell_hood, forge_bellows, hush_blank.
-Stage 3 (15): reaver_hook, reaver_firepot, reaver_cagebearer, reaver_houndmaster, ash_weeper, effigy_orant, effigy_warden, bog_netter, bog_sleeper, lamp_bomber, wax_wick, wax_chandler, forge_tongs, forge_pourer, hush_mouth.
-Stage 4 (8 of 18): hauler_yoke, hauler_hod, hauler_collector, hauler_stoker, reaver_brute, bell_clapper, bone_amalgam, hush_mute.
-TO DO NEXT, in this order:
- 1. Rebuild the four REBUILD PENDING ids above (asm_batch.ps1 -Ids mon_ash_weeper,mon_bog_netter,mon_bog_sleeper,mon_wax_wick -ShotArgs "--name=fix3") and look at them.
- 2. Look at Y:\shots\chars\family_stage4a.jpg + _detail1..3.jpg (the 8 stage-4 models were built but never reviewed) and fix what is wrong.
- 3. Remaining rig-A ids (10, all stage-4 bases), in bestiary order: husk_huddle, rime_breaker, cf_hulk, char_hangtree, ash_colossus, effigy_caryatid, lamp_colony, engine_carrier, wax_dripper, forge_hammer.
-    - specs_s4_b.py already holds specs for rime_breaker, forge_hammer, husk_huddle, effigy_caryatid: WRITTEN BUT NEVER RUN (not even a dry run; they use asm_parts7.py parts fused_bodies / blanket / snowshoes / hammer_arm / pillar_load and weapons plough / boulder_pick, also untested). Start with asm_batch.ps1 -Ids ... -Dry.
-    - ash_colossus, wax_dripper, lamp_colony: planned as specs on fused_bodies + two small new parts (a wax cone, a giant table cap); nothing written.
-    - cf_hulk, engine_carrier, char_hangtree: need bespoke shell parts (like asm_parts4.py); nothing written.
- 4. Final sheets per family for the user: asm_batch.ps1 -Family <fam> -NoBuild for bone husk cult wraith reaver frost coldfire hauler char ash shroud effigy mire lamp sands engine wax bell fiend forge hush; then delete the working sheets family_stage2* family_stage3* family_stage4a* family_fix2*.
-Not mine (other rigs, 46 types): see asm_out\not_rigA.txt.
-Assembler quick reference: spec format in asm.py docstring; parts in asm_parts.py .. asm_parts7.py (@part), weapons in asm_weapons.py (@weapon), specs in specs_*.py (SPECS dict), registry asm_specs.py; asm_batch.ps1 -Family f | -Ids a,b [-Dry] [-NoBuild] builds + verifies + renders tiles and family sheets in ONE Blender run; asm_dry.py checks geometry only. Rules learnt: keep arm_len / leg_len within +-15 %, hunch < 30 (parts moved off their joints swing apart in the clips); carried loads use keep=True; nothing bound to the root bone except things meant to lie on the floor.
+## FINISHING PASS 2026-11-18 / 19 (second artist) -- STATE: all 83 rig-A types are built; nothing pending
+Done: the 4 pending rebuilds, the 8 unreviewed stage-4 models looked at and fixed, the 10 remaining stage-4 bases built (lines above), hush_blank /
+hush_mouth / forge_pourer rebuilt because shared looks changed (chalk, slag).  Every .glb passed verify; all are <= 6 MB.  Imported with
+Y:\tools\import.ps1; game run with --bestiary --spawn=<the 22 types>: see the report / the end of this section.
+New tools and rules (read before touching the assembler again):
+ - asm_review.py / asm_review.ps1 -Ids a,b : one sheet per creature (Y:\shots\chars\asm\review_<id>.png, 4 x 2 tiles: game camera | front |
+   back | side | attack early | attack late | walk | raking close-up).  asm_go.ps1 -Ids a,b = build + verify + these sheets.  The family
+   tiles alone hide too much (their 'bust' frames the top 0.62 m, i.e. only the load of a carrier).
+ - asm_specs.POSES 'brute' / 'bomber' / 'zbrute': what the GAME plays (Bestiary.cs: Idle_Loop + Walk_Loop unless the anims text names a Zombie
+   idle).  'heavy' (Sword_Idle) is NOT what a monster idles in.
+ - A.add(..., keep=<point>): pieces of ONE carried assembly share an anchor.  keep=True moves every piece with its own centre: on a body with
+   bulk / chest scale the assembly comes apart (that was the fault of the yoke, hod and cage).  Put the anchor on the face that touches the body.
+ - body merge_w={'upperarm_l': ['lowerarm_l', 'hand_l'], ...}: a limb baked far from its rest pose must be made stiff, otherwise forearm and
+   hand swing round joints that are no longer where the mesh is (ash_weeper ribbons).  Rigid parts on merged bones are re-bound in finish().
+ - never bind a mitten / club to the hand bone when arm_len != 1 (it swings off the wrist and separates): bind it to the forearm.
+ - straps round a body are seated + skinned (asm_parts6.load_straps, asm_parts9.chest_band), not rigid bands (they float as hoops as soon as
+   the body has bulk or a hunch).
+ - skin weights of a wide thing lying along a limb: by position along the limb (weights_by), not by nearest surface (it picks up the torso).
+ - only cloth_ / leather_ / spectral_ materials are double sided: flat cords, sheets and nets must use such a look (asm_parts8.net_cords).
+ - emissive looks: sRGB lifts the green channel, a 'lava' colour of (1, 0.36, 0.05) renders yellow; use (1, 0.2, 0.02), base_mul <= 0.3, and
+   crust=1 explicitly (the kind keys the crust on the look NAME, which the preset name hides).  One strength per emis_ slot (the first look).
+ - spec keys: budget (22000 for giants; verify.LIMITS lists them), jpeg=(bc, orm, nrm) qualities for all-rock creatures that exceed 6 MB.
+ - parts: asm_parts8.py (cast_net, flame3, mute_torso, mute_hands, looks), asm_parts9.py (arm_plough, huddle, gallows_tree, brazier_hulk,
+   carrier, colony, drift_mass, tallow_mound, chest_band, band_glow), specs_s4_c.py.  dbg\ holds the one-off patch scripts and stretch.py
+   (lists edges that stretch in a pose: finds weights left on bones that are far from the mesh).
+Sheets: Y:\shots\chars\family_<family>.jpg (+ _sil, _detail<k>) for all 21 families; working sheets family_stage*/fix* deleted.
+Game run 2026-11-19 00:40 (windowed, run.ps1 -Tag rigA): --bestiary --area=wastes --level=30 --god --spawn=<the 22 types> --spawn-aggro ->
+22 of 22 placed, bestiary boot "rig A 83/83 real models", log ERR=0 WRN=0, shutdown errors=0 (log game_20261119_004032.log; pictures
+Y:\shots\run\rigA_finish_1..3.png; test save slot 93 moved to saves_test_backup).  Imported before it (import.ps1 exit 0, 00:12).
+No detached processes are left running.
+
+## PAUSED 2026-11-19 00:45 on the lead's order (user wants the game playable with what is finished)
+State: nothing half-written.  Every .glb I wrote into game\assets\chars passed verify at its LAST build and was imported:
+ rebuilt (4): ash_weeper, bog_netter, bog_sleeper, wax_wick;  reviewed + fixed (8): hauler_yoke / _hod / _collector / _stoker, reaver_brute,
+ bell_clapper (no change needed), bone_amalgam, hush_mute;  new (10): husk_huddle, rime_breaker, cf_hulk, char_hangtree, ash_colossus,
+ effigy_caryatid, lamp_colony, engine_carrier, wax_dripper, forge_hammer;  rebuilt for shared look changes (3): hush_blank, hush_mouth, forge_pourer.
+Left / next steps when resumed (none of them blocks the game):
+ 1. Look at the three game screenshots more closely and do a daylight region run (the 00:40 run was a dark fight scene: the read from the
+    game camera was only judged on the Blender game-camera tiles).
+ 2. Known weak points worth another pass, in this order: hush_mute (the chest hole still reads like a mouth from the front), ash_colossus
+    (figures only read up close; few sparks), wax_dripper (arm-bodies hide in the cone's outline in the idle), cf_hulk (4.4k tris, plain core),
+    rime_breaker (plough at the side, not in front), engine_carrier (thin fork tines).
+ 3. bell_clapper's family tile was re-rendered with the 'brute' pose set; the other 'heavy' specs of stages 1-3 still preview Sword_Idle
+    (previews only -- the models are unaffected).
+ 4. dbg\patch_*.py are one-off edit scripts that are already applied (kept as a record; do not run them again).

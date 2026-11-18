@@ -93,3 +93,11 @@ tools/repo/
 release_out/
 *.ico
 *.bmp
+tools/**/test_out/
+tools/named/suite_*.txt
+tools/**/*_log.txt
+tools/**/*_out.txt
+tools/**/*_err.txt
+tools/release/*.txt
+tools/repo/
+tools/roster/orig/

@@ -83,20 +83,21 @@ ONNX Runtime + DirectML (CosyVoice 3 and BreezyVoice ship an official ONNX expor
 estimator), Vulkan GGUF runtimes (VoxCPM2: VoxCPM.cpp / llama.cpp-omni, community ports), else CPU.
 
 <!-- pause-state-start -->
-## State when the run was paused (2026-11-15 19:28)
+## State when the run was paused (2026-11-19 00:41)
 
-- **25 of 188 ids have audio** in `Y:\game\assets\audio\vo` (every file decoded and checked: mono 44.1 kHz OGG Vorbis, complete, identical to the validated staging file, made from the current anchor of its voice).
-- Voices with audio: narrator 16/16, elder 3/66, merchant 3/8, boss_osaros 3/3.
-- Voices designed and audited so far (anchor exists): boss_osaros, elder, merchant, narrator. Audit results: table below.
-- Removed from the game folder because they were takes of a rejected voice: elder_epilogue_06, elder_idle_2 (the old female-sounding elder; those lines fall back to the timed stand-in until they are redone).
-- Still to record: 163 ids - elder 3/66, occultist 0/11, smith 0/9, merchant 3/8, jeweler 0/7, villager_m 0/5, villager_f 0/5, boss_gravedigger 0/3, boss_rimelord 0/3, boss_bishop 0/3, boss_mire_mother 0/3, boss_sand_tyrant 0/3, boss_grand_hush 0/3, hero_emberblade 0/5, hero_astromancer 0/5, hero_hunter 0/5, hero_soulbinder 0/5, hero_wildsoul 0/5, hero_forgebody 0/5, hero_lampknight 0/5, hero_pactbinder 0/5.
+- **99 of 207 ids have audio** in `Y:\game\assets\audio\vo` (every file decoded and checked: mono 44.1 kHz OGG Vorbis, complete, identical to the validated staging file, made from the current anchor of its voice).
+- Voices with audio: narrator 16/19, elder 66/66, merchant 8/8, boss_gravedigger 3/4, boss_rimelord 3/4, boss_osaros 3/4.
+- Voices designed and audited so far: boss_gravedigger, boss_osaros, boss_rimelord, elder, merchant, narrator. Audit results: table below.
+- Anchor designed but not yet audited (the run stopped while making its first lines): boss_bishop.
+- Removed from the game folder because they were takes of a rejected voice: none.
+- Still to record: 108 ids - narrator 16/19, occultist 0/11, smith 0/9, jeweler 0/7, villager_m 0/5, villager_f 0/5, boss_gravedigger 3/4, boss_rimelord 3/4, boss_bishop 0/4, boss_mire_mother 0/4, boss_sand_tyrant 0/4, boss_grand_hush 0/4, boss_osaros 3/4, hero_emberblade 0/5, hero_astromancer 0/5, hero_hunter 0/5, hero_soulbinder 0/5, hero_wildsoul 0/5, hero_forgebody 0/5, hero_lampknight 0/5, hero_pactbinder 0/5, boss_sh_wastes 0/1, boss_sh_frost 0/1, boss_sh_crypt 0/1, boss_sh_mire 0/1, boss_sh_sands 0/1, boss_sh_sanctum 0/1, boss_sh_abyss 0/1, boss_wb_firstbearer 0/1, boss_firstkeeper 0/1.
 - Resume with `gen.py all` (see `RUNNING.txt`); nothing has to be redone.
 <!-- pause-state-end -->
 
 <!-- voice-audit-start -->
 ## Voice audit - does every designed voice measure as its character?
 
-Written by `gen.py` (2026-11-15 19:16). Gates: (1) median pitch of the anchor inside the range wanted for the
+Written by `gen.py` (2026-11-19 00:35). Gates: (1) median pitch of the anchor inside the range wanted for the
 character, and of its first three lines within 10 % of it (men at most 150 Hz - the elder 140 Hz -, women at least
 165 Hz); (2) the male / female classifier of `gender.py` (CAM++ speaker embeddings, calibrated on the 100 labelled
 Kokoro speakers: 0.99 cross-validated accuracy there; on VoxCPM2 voices a man must score at least
@@ -108,7 +109,7 @@ Kokoro speakers: 0.99 cross-validated accuracy there; on VoxCPM2 voices a man mu
 | elder (rejected) | old man | 95-140 | 172 | 170 (3) | 0.33 / 0.31 | **failed** (pitch classifier) | rejected: the user heard an elderly woman (first design, pitch range then allowed up to 190 Hz); designed again, all lines redone |
 | elder | old man | 95-140 | 122 | 116 (3) | 0.7 / 0.67 | pass | kept (design round 2) |
 | smith | man, middle-aged, burly | 85-140 | - | - | - | not designed yet | - |
-| merchant | young woman | 200-330 | - | - | - | not designed yet | - |
+| merchant | young woman | 200-330 | 296 | 276 (3) | 0.36 / 0.39 | pass | kept |
 | occultist | woman, mature | 170-250 | - | - | - | not designed yet | - |
 | jeweler | woman, elderly | 165-250 | - | - | - | not designed yet | - |
 | villager_m | man, middle-aged | 95-150 | - | - | - | not designed yet | - |
@@ -121,8 +122,8 @@ Kokoro speakers: 0.99 cross-validated accuracy there; on VoxCPM2 voices a man mu
 | hero_forgebody | young man | 95-150 | - | - | - | not designed yet | - |
 | hero_lampknight | woman, adult | 170-250 | - | - | - | not designed yet | - |
 | hero_pactbinder | man, adult | 95-150 | - | - | - | not designed yet | - |
-| boss_gravedigger | old man | 70-120 | - | - | - | not designed yet | - |
-| boss_rimelord | man, middle-aged soldier | 75-125 | - | - | - | not designed yet | - |
+| boss_gravedigger | old man | 70-120 | 77 | 79 (3) | 0.67 / 0.62 | pass | kept |
+| boss_rimelord | man, middle-aged soldier | 75-125 | 103 | 101 (3) | 0.71 / 0.69 | pass | kept |
 | boss_bishop | woman, elderly cleric (she in the script) | 175-290 | - | - | - | not designed yet | - |
 | boss_mire_mother | woman, middle-aged | 165-235 | - | - | - | not designed yet | - |
 | boss_sand_tyrant | man, middle-aged king | 90-150 | - | - | - | not designed yet | - |

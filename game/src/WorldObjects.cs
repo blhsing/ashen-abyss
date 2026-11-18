@@ -265,6 +265,14 @@ public static class WorldObjects
             Log.Info("objects", $"chest opened quality={quality} at ({it.Pos2.X:F0},{it.Pos2.Y:F0})");
             onOpened?.Invoke(at);
         };
+        it.Spend = () =>
+        {
+            it.CanUse = false; it.ShowLabel = false;
+            if (vis.FindChild("lid", true, false) is Node3D lid) lid.Rotation = new Vector3(lid.Rotation.X - 1.25f, lid.Rotation.Y, lid.Rotation.Z);
+            if (beam != null && GodotObject.IsInstanceValid(beam)) beam.QueueFree();
+            if (glow != null) glow.Visible = false;
+            Level.Current?.RemoveMarker(it);
+        };
         return it;
     }
 
@@ -322,6 +330,7 @@ public static class WorldObjects
             Level.Current?.RemoveMarker(it);
             Log.Info("objects", $"shrine used: {k.Buffs[0].Id}");
         };
+        it.Spend = () => { it.CanUse = false; it.ShowLabel = false; gem.Visible = false; glow.Visible = false; Level.Current?.RemoveMarker(it); };
         return it;
     }
 
@@ -437,6 +446,7 @@ public static class WorldObjects
             }
             it.QueueFree();
         };
+        it.Spend = () => { it.CanUse = false; if (blocks) World.Grid?.RemoveObstacle(at); it.QueueFree(); };
         return it;
     }
 
@@ -839,6 +849,13 @@ public static class WorldObjects
             var lv = Level.Current;
             if (lv != null) lv.BeginChannel(it, 1.5f, "推倒圖騰", done); else done();
         };
+        it.Spend = () =>
+        {
+            it.CanUse = false; it.ShowLabel = false;
+            eye.Visible = false; glow.Visible = false;
+            pivot.Rotation = new Vector3(pivot.Rotation.X, pivot.Rotation.Y, 1.42f);
+            Level.Current?.RemoveMarker(it);
+        };
         return it;
     }
 
@@ -891,6 +908,7 @@ public static class WorldObjects
             var lv = Level.Current;
             if (lv != null) lv.After(4f, leave); else leave();
         };
+        it.Spend = () => { it.CanUse = false; it.ShowLabel = false; World.Grid?.RemoveObstacle(pos); Level.Current?.RemoveMarker(it); it.QueueFree(); };
         return it;
     }
 
@@ -915,6 +933,12 @@ public static class WorldObjects
             Snd.At("ember_buff", it.GlobalPosition);
             Level.Current?.RemoveMarker(it);
             onOffer?.Invoke();
+        };
+        it.Spend = () =>
+        {
+            it.CanUse = false; it.Sub = "燼火已燃";
+            Attach(it, Fx.Fire(1.1f, true), new Vector3(0, 1.4f, 0));
+            Level.Current?.RemoveMarker(it);
         };
         return it;
     }

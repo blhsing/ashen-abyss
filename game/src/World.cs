@@ -363,6 +363,7 @@ public static class World
         void Test(Actor a)
         {
             if (!Ok(a) || (filter != null && !filter(a))) return;
+            if (a is Monster sm && sm.Stealthed) return;        // a stealthed stalker is not auto-targeted (roster)
             float d = a.Pos2.DistanceSquaredTo(p);
             if (d < bd) { bd = d; best = a; }
         }

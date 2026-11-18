@@ -9,7 +9,8 @@ namespace AshenAbyss;
 /// The hero in the world: mouse/keyboard control, movement, the cast state machine, resources, cooldowns, evade,
 /// potions and every hook that gear powers and passives attach to. Skill behaviour itself lives in SkillExec.
 /// Controls: LMB move / basic skill / interact, RMB core skill, 1-4 skills, Q potion, Space evade, Shift stand still,
-/// WASD direct movement.
+/// WASD direct movement. Clicking an enemy out of reach runs up to it (A*) and strikes; ranged skills stop at their range
+/// with a clear line of sight; holding the button keeps attacking it (see Order / TickChase).
 /// </summary>
 public partial class Player : Actor
 {
@@ -44,8 +45,30 @@ public partial class Player : Actor
     private int _pathI;
     private bool _hasMove;
     private Interactable _goUse;
-    private (int slot, Actor target)? _pending;
     private float _repath;
+    // attack order: an enemy was clicked out of reach → run up to it (A*, re-planned as it moves), then strike
+    private int _chSlot = -1;
+    private Actor _chTarget;
+    private float _chRepath, _chStuck, _chBest, _chStart, _chT;
+    private Vector2 _chGoal, _chLast;
+    // the enemy the button that is held down keeps attacking after the first blow, even when the cursor slips off it
+    private int _keepSlot = -1;
+    private Actor _keepTarget;
+    private Actor _unreachable;          // the last chase gave up on this one (cursor shows "cannot reach")
+    private float _unreachableT;
+    /// <summary>Chase statistics for the test harness: started, struck on arrival, cancelled (by reason).</summary>
+    public int ChaseStarts, ChaseHits;
+    public string LastChaseEnd = "";
+    /// <summary>Test harness: the run-up state in one line.</summary>
+    public string ChaseDebug => $"target={(_chTarget as Monster)?.Def?.Id ?? "-"} keep={(_keepTarget as Monster)?.Def?.Id ?? "-"} act={_act} move={_hasMove} path={_pathI}/{_path.Count} stuck={_chStuck:0.0} t={_chT:0.0} best={_chBest:0.0} unreach={(_unreachable as Monster)?.Def?.Id ?? "-"}";
+    /// <summary>The enemy the hero is running at or attacking right now (null when none). For the HUD and cursor.</summary>
+    public Actor AttackTarget => ValidTarget(_chTarget) ? _chTarget : ValidTarget(_keepTarget) && Held(_keepSlot) ? _keepTarget : null;
+    /// <summary>What a left click would do right now (None while the UI has the mouse). Set in UpdateAim; read by the cursor.</summary>
+    public enum HoverAct { None, Move, Attack, Talk, PickUp, Interact, Unreachable }
+    public HoverAct HoverKind;
+    // test harness: a simulated mouse (screen position + buttons) used instead of the real one while set
+    public static Vector2? TestMouse;
+    public static bool TestLeft, TestRight, TestShift;
     // aim
     public Vector2 Aim;
     public Actor Hover;
@@ -171,20 +194,30 @@ public partial class Player : Actor
         }
     }
 
-    private bool Held(int slot) => slot == ForceHold || InputEnabled && !Game.I.UiBlocksMouse && slot switch
+    private bool Held(int slot) => slot >= 0 && (slot == ForceHold || InputEnabled && !Game.I.UiBlocksMouse && slot switch
     {
-        0 => Input.IsMouseButtonPressed(MouseButton.Left), 1 => Input.IsMouseButtonPressed(MouseButton.Right),
+        0 => Input.IsMouseButtonPressed(MouseButton.Left) || TestMouse != null && TestLeft,
+        1 => Input.IsMouseButtonPressed(MouseButton.Right) || TestMouse != null && TestRight,
         2 => Input.IsKeyPressed(Key.Key1), 3 => Input.IsKeyPressed(Key.Key2), 4 => Input.IsKeyPressed(Key.Key3), _ => Input.IsKeyPressed(Key.Key4)
-    };
+    });
+
+    /// <summary>Shift: attack in place (no running up), cast where the cursor is.</summary>
+    private static bool ShiftHeld => Input.IsKeyPressed(Key.Shift) || TestMouse != null && TestShift;
+
+    /// <summary>Test harness: a click of a mouse button (0 left, 1 right) at the simulated cursor, as if it had been pressed now.</summary>
+    public void TestClick(int slot) { if (slot >= 0 && slot < 6) _press[slot] = true; }
+
+    private static bool ValidTarget(Actor t) => t != null && IsInstanceValid(t) && !t.Dead && !t.Untargetable && t.IsInsideTree() && !(t is Monster m && m.Stealthed);
 
     private void UpdateAim()
     {
         var cam = GetViewport().GetCamera3D();
         if (cam == null) return;
-        var mp = GetViewport().GetMousePosition();
+        var mp = TestMouse ?? GetViewport().GetMousePosition();
         Vector3 o = cam.ProjectRayOrigin(mp), d = cam.ProjectRayNormal(mp);
         if (Mathf.Abs(d.Y) > 1e-4f) { float t = -o.Y / d.Y; if (t > 0) Aim = World.To2(o + d * t); }
         Hover = null; HoverObj = null;
+        HoverKind = HoverAct.None;
         if (Game.I.UiBlocksMouse) return;
         // enemies are picked a little above the ground so tall monsters are easy to click
         float t2 = Mathf.Abs(d.Y) > 1e-4f ? (1.0f - o.Y) / d.Y : 0;
@@ -192,11 +225,14 @@ public partial class Player : Actor
         float best = 1e9f;
         foreach (var m in World.Monsters)
         {
-            if (m.Dead || m.Untargetable) continue;
+            if (m.Dead || m.Untargetable || m.Stealthed) continue;
             float dist = Mathf.Min(m.Pos2.DistanceTo(Aim), m.Pos2.DistanceTo(aimHigh)) - m.Radius;
             if (dist < 1.1f && dist < best) { best = dist; Hover = m; }
         }
         if (Hover == null) HoverObj = Interactable.Pick(Aim, 1.6f);
+        if (Hover != null) HoverKind = ReferenceEquals(Hover, _unreachable) ? HoverAct.Unreachable : HoverAct.Attack;
+        else if (HoverObj != null) HoverKind = HoverObj.Kind switch { "npc" or "prisoner" => HoverAct.Talk, "loot" => HoverAct.PickUp, _ => HoverAct.Interact };
+        else HoverKind = World.Grid != null && !World.Grid.WalkAt(Aim) ? HoverAct.Unreachable : HoverAct.Move;
     }
 
     // ───────────────────────── frame ─────────────────────────
@@ -226,7 +262,7 @@ public partial class Player : Actor
         UpdateAim();
 
         bool stunned = Stunned && !Unstoppable;
-        if (stunned) { Model.Play("Hit_Chest", 0.5f); ClearPress(); return; }
+        if (stunned) { Model.Play("Hit_Chest", 0.5f); EndChase("interrupted"); ClearPress(); return; }
 
         if (_pressPotion) { _pressPotion = false; UsePotion(); }
         if (_pressEvade) { _pressEvade = false; TryEvade(); }
@@ -254,6 +290,7 @@ public partial class Player : Actor
             if (cd.Left <= 0f) { cd.Charges++; cd.Left = cd.Charges < cd.MaxCharges ? cd.Max : 0f; }
         }
         if (EvadeCd > 0) EvadeCd -= dt;
+        if (_unreachableT > 0f && (_unreachableT -= dt) <= 0f) _unreachable = null;
         if (IFrames > 0) IFrames -= dt;
         if (InCombat > 0) InCombat -= dt;
         if (SkirmishLeft > 0) SkirmishLeft -= dt;
@@ -293,20 +330,27 @@ public partial class Player : Actor
 
     private void HandleOrders(float dt)
     {
-        bool shift = Input.IsKeyPressed(Key.Shift);
-        // skills
+        bool shift = ShiftHeld;
+        // skills: a fresh press, or a held button (the left one only over an enemy, or while it keeps attacking one)
         if (_act == Act.Free)
         {
             for (int slot = 5; slot >= 0; slot--)
             {
-                bool want = _press[slot] || (Held(slot) && (slot != 0 || Hover != null || shift));
-                if (!want) continue;
+                bool press = _press[slot], held = !press && Held(slot);
+                if (!press && !held) continue;
+                Actor target = Hover;
+                // holding the button after a blow keeps attacking that enemy, even when the cursor slips off it
+                if (target == null && held && slot == _keepSlot && ValidTarget(_keepTarget)) target = _keepTarget;
                 if (slot == 0 && !shift)
                 {
-                    if (_press[0] && HoverObj != null) { GoUse(HoverObj); break; }
-                    if (Hover == null) continue;       // plain ground click = move
+                    if (press && Hover == null && HoverObj != null) { GoUse(HoverObj); break; }
+                    if (target == null) continue;          // plain ground click or drag = move (below)
                 }
-                if (TryCast(slot, Aim, Hover, _press[slot])) { _hasMove = false; _goUse = null; return; }
+                // held over the enemy this button is already running at: let the run-up go on
+                if (held && slot == _chSlot && ReferenceEquals(target, _chTarget)) break;
+                int r = Order(slot, Aim, target, press, shift);
+                if (r == 1) { _hasMove = false; _goUse = null; return; }
+                if (r == 2) break;
             }
         }
         // movement
@@ -316,24 +360,20 @@ public partial class Player : Actor
             if (Input.IsKeyPressed(Key.W)) wish.Y -= 1; if (Input.IsKeyPressed(Key.S)) wish.Y += 1;
             if (Input.IsKeyPressed(Key.A)) wish.X -= 1; if (Input.IsKeyPressed(Key.D)) wish.X += 1;
         }
-        if (wish != Vector2.Zero) { _hasMove = false; _goUse = null; _pending = null; }
-        else if (Held(0) && Hover == null && HoverObj == null && !shift && !Game.I.UiBlocksMouse && _pending == null)
+        if (wish != Vector2.Zero) { _hasMove = false; _goUse = null; EndChase("wasd"); _keepTarget = null; }
+        else if ((_press[0] || Held(0)) && Hover == null && HoverObj == null && !shift && !Game.I.UiBlocksMouse)
         {
-            if (Aim.DistanceTo(Pos2) > 0.6f) SetMove(Aim, false);
-        }
-
-        if (_pending is { } pc)
-        {
-            if (pc.target == null || !IsInstanceValid(pc.target) || pc.target.Dead) _pending = null;
-            else
+            // a fresh click on the ground cancels the attack order; dragging the held button keeps attacking the same enemy
+            bool attacking = !_press[0] && (_chSlot == 0 && _chTarget != null || _keepSlot == 0 && ValidTarget(_keepTarget));
+            if (!attacking)
             {
-                var def = Hero.Eff(Hero.D.Bar[pc.slot]);
-                float reach = (def?.Radius ?? 2.5f) * 0.8f + pc.target.Radius;
-                if (def == null) _pending = null;
-                else if (Pos2.DistanceTo(pc.target.Pos2) <= reach) { _pending = null; _hasMove = false; if (TryCast(pc.slot, pc.target.Pos2, pc.target, true)) return; }
-                else { _repath -= dt; if (_repath <= 0) { SetMove(pc.target.Pos2, true); _repath = 0.25f; } }
+                if (_chTarget != null) EndChase("ground click");
+                _keepTarget = null;
+                if (Aim.DistanceTo(Pos2) > 0.6f) SetMove(Aim, false);
             }
         }
+
+        if (_act == Act.Free && _chTarget != null && TickChase(dt)) return;
         if (_goUse != null)
         {
             if (!IsInstanceValid(_goUse) || !_goUse.CanUse) _goUse = null;
@@ -396,7 +436,7 @@ public partial class Player : Actor
     public void SetMove(Vector2 target, bool keepPending)
     {
         var grid = World.Grid;
-        if (!keepPending) _pending = null;
+        if (!keepPending) EndChase("move");
         _path.Clear(); _pathI = 0;
         if (grid == null || grid.LineWalk(Pos2, target)) _path.Add(grid?.NearestWalk(target) ?? target);
         else _path.AddRange(grid.Path(Pos2, target));
@@ -404,8 +444,8 @@ public partial class Player : Actor
         _repath = 0.25f;
     }
 
-    public void GoUse(Interactable obj) { _goUse = obj; _pending = null; SetMove(obj.Pos2, false); }
-    public void Stop() { _hasMove = false; _goUse = null; _pending = null; }
+    public void GoUse(Interactable obj) { EndChase("use"); _keepTarget = null; _goUse = obj; SetMove(obj.Pos2, false); }
+    public void Stop() { EndChase("stop"); _keepTarget = null; _hasMove = false; _goUse = null; }
 
     // ───────────────────────── casting ─────────────────────────
 
@@ -438,27 +478,165 @@ public partial class Player : Actor
     }
 
     private float _warnT;
+    private void WarnOnce(string why)
+    {
+        if (string.IsNullOrEmpty(why) || Game.I.Time - _warnT <= 0.8f) return;
+        _warnT = (float)Game.I.Time; Game.I.Hud?.Warn(why); Snd.Ui("ui_error");
+    }
+
+    /// <summary>
+    /// Casts the skill in a bar slot (used by the bot and the test suites). A melee skill aimed at an enemy out of reach
+    /// runs up to it first (Shift: strike in place).
+    /// </summary>
     public bool TryCast(int slot, Vector2 point, Actor target, bool fresh)
     {
         string id = Hero.D.Bar[slot];
         var d = Hero.Eff(id);
         if (d == null || Hero.Rank(id) <= 0) return false;
         string why = WhyCant(d);
-        if (why != null)
-        {
-            if (fresh && why.Length > 0 && Game.I.Time - _warnT > 0.8f) { _warnT = (float)Game.I.Time; Game.I.Hud?.Warn(why); Snd.Ui("ui_error"); }
-            return false;
-        }
-        // melee skills walk into reach when an enemy was clicked
+        if (why != null) { if (fresh) WarnOnce(why); return false; }
         bool melee = d.Kind == SkillKind.Melee || (d.Kind == SkillKind.Nova && d.Radius < 4.5f && d.Coef > 0);
         if (target != null && !IsInstanceValid(target)) target = null;
-        if (melee && target != null && !Input.IsKeyPressed(Key.Shift))
+        if (melee && target != null && !ShiftHeld && Pos2.DistanceTo(target.Pos2) > d.Radius * 0.8f + target.Radius)
         {
-            float reach = d.Radius * 0.8f + target.Radius;
-            if (Pos2.DistanceTo(target.Pos2) > reach) { _pending = (slot, target); SetMove(target.Pos2, true); return true; }
+            StartChase(slot, target);
+            return true;
         }
+        EndChase(null);
         BeginCast(d, slot, point, target);
         return true;
+    }
+
+    /// <summary>
+    /// A mouse/keyboard order: the skill in <paramref name="slot"/> at the cursor or at the enemy under it. A skill that
+    /// needs its target in reach (melee, projectiles, waves, chains) runs up to an enemy out of reach or out of sight
+    /// first; ground-targeted, movement and self skills are cast at once. Returns 0 refused, 1 cast begun, 2 running up.
+    /// </summary>
+    private int Order(int slot, Vector2 point, Actor target, bool fresh, bool shift)
+    {
+        string id = Hero.D.Bar[slot];
+        var d = Hero.Eff(id);
+        if (d == null || Hero.Rank(id) <= 0) return 0;
+        string why = WhyCant(d);
+        if (why != null) { if (fresh) WarnOnce(why); return 0; }
+        if (!ValidTarget(target)) target = null;
+        if (target != null && !shift && ReachOf(d, out _) > 0f && !InReach(d, target))
+        {
+            if (!fresh && ReferenceEquals(target, _unreachable)) return 0;   // given up on a moment ago: no retry every frame while held
+            StartChase(slot, target);
+            return _chTarget != null ? 2 : 0;
+        }
+        EndChase(null);
+        if (target != null) { _keepSlot = slot; _keepTarget = target; }
+        BeginCast(d, slot, point, target);
+        return 1;
+    }
+
+    /// <summary>
+    /// How close (metres, plus the target's radius) the hero must stand to use a skill on an enemy, and whether it needs
+    /// a clear line of sight. 0 = used from anywhere (ground-targeted, dashes, leaps, blinks, buffs, summons, channels).
+    /// </summary>
+    public static float ReachOf(SkillDef d, out bool sight)
+    {
+        sight = false;
+        switch (d.Kind)
+        {
+            case SkillKind.Melee: return d.Radius * 0.8f;
+            case SkillKind.Nova: return d.Radius < 4.5f && d.Coef > 0 ? d.Radius * 0.8f : 0f;
+            case SkillKind.Proj: sight = true; return (d.Range > 0 ? d.Range : 18f) * 0.85f;
+            case SkillKind.Wave: sight = true; return (d.Range > 0 ? d.Range : 9f) * 0.85f;
+            case SkillKind.Chain: sight = true; return (d.Range > 0 ? d.Range : 12f) * 0.9f;
+            default: return 0f;
+        }
+    }
+
+    /// <summary>True when the skill can be used on the target from where the hero stands.</summary>
+    public bool InReach(SkillDef d, Actor t)
+    {
+        float r = ReachOf(d, out bool sight);
+        if (r <= 0f) return true;
+        if (Pos2.DistanceTo(t.Pos2) > r + t.Radius) return false;
+        return !sight || World.Grid == null || World.Grid.LineShot(Pos2, t.Pos2);
+    }
+
+    private void StartChase(int slot, Actor t)
+    {
+        bool same = _chSlot == slot && ReferenceEquals(_chTarget, t);
+        _goUse = null;
+        if (same) return;
+        _chSlot = slot; _chTarget = t;
+        _chBest = _chStart = Pos2.DistanceTo(t.Pos2); _chStuck = 0f; _chT = 0f; _chLast = Pos2;
+        ChaseStarts++;
+        if (!PlanChase(t)) { GiveUp(t, "no path"); return; }
+        if (Log.Verbose) Log.Debug("hero", $"run-up to {(t as Monster)?.Def?.Id ?? t.Name} ({_chBest:0.0} m) for slot {slot}");
+    }
+
+    /// <summary>A* route to the target (straight when the way is clear). False when there is no way there.</summary>
+    private bool PlanChase(Actor t)
+    {
+        _chRepath = 0.3f; _chGoal = t.Pos2;
+        var grid = World.Grid;
+        _path.Clear(); _pathI = 0;
+        if (grid == null || grid.LineWalk(Pos2, t.Pos2)) _path.Add(t.Pos2);
+        else
+        {
+            var route = grid.Path(Pos2, t.Pos2);
+            if (route.Count == 0) { _hasMove = false; return false; }
+            _path.AddRange(route);
+        }
+        _hasMove = true; _repath = 0.25f;
+        return true;
+    }
+
+    /// <summary>One frame of a run-up: strike once in reach, re-plan as the target moves (at most ~3 times a second), give up when stuck.</summary>
+    private bool TickChase(float dt)
+    {
+        var t = _chTarget;
+        if (!ValidTarget(t)) { EndChase(t != null && IsInstanceValid(t) && t.Dead ? "target died" : "target gone"); _keepTarget = null; return false; }
+        string id = Hero.D.Bar[_chSlot];
+        var d = Hero.Eff(id);
+        if (d == null || Hero.Rank(id) <= 0) { EndChase("skill gone"); return false; }
+        if (InReach(d, t))
+        {
+            _hasMove = false;
+            string why = WhyCant(d);
+            if (why != null) { WarnOnce(why); EndChase("cannot cast: " + why); return false; }
+            int slot = _chSlot;
+            EndChase(null);
+            ChaseHits++; LastChaseEnd = "struck";
+            _keepSlot = slot; _keepTarget = t;
+            BeginCast(d, slot, t.Pos2, t);
+            return true;
+        }
+        float dist = Pos2.DistanceTo(t.Pos2);
+        // progress: the hero must get somewhere (0.5 m every 1.5 s: not pinned against a wall, a pit edge or a crowd), and
+        // a detour round a wall may lead away for a while but not for ever (12 s without getting closer than at the start)
+        _chT += dt;
+        if (dist < _chBest) _chBest = dist;
+        if (Pos2.DistanceTo(_chLast) > 0.5f) { _chLast = Pos2; _chStuck = 0f; }
+        else if (!(Rooted && !Unstoppable)) { _chStuck += dt; if (_chStuck > 1.5f) { GiveUp(t, "stuck"); return false; } }
+        if (_chT > 12f && _chBest > _chStart - 0.5f) { GiveUp(t, "no progress"); return false; }
+        _chRepath -= dt;
+        if (_chRepath <= 0f && (!_hasMove || t.Pos2.DistanceTo(_chGoal) > 0.75f) && !PlanChase(t)) GiveUp(t, "no path");
+        return false;
+    }
+
+    private void GiveUp(Actor t, string why)
+    {
+        EndChase(why);
+        _keepTarget = null;
+        _unreachable = t; _unreachableT = 2.5f;
+        WarnOnce("無法抵達");
+        Log.Info("hero", $"run-up to {(t as Monster)?.Def?.Id ?? t?.Name ?? "?"} given up: {why}");
+    }
+
+    /// <summary>Ends the run-up (null reason = silently, a new order replaces it). The hero stops where he is.</summary>
+    private void EndChase(string why)
+    {
+        if (_chTarget == null) return;
+        if (why != null) LastChaseEnd = why;
+        _chTarget = null; _chSlot = -1;
+        _hasMove = false;
     }
 
     private void BeginCast(SkillDef d, int slot, Vector2 point, Actor target)
@@ -554,6 +732,7 @@ public partial class Player : Actor
 
     public void CancelAction()
     {
+        EndChase(null);
         if (_act == Act.Channel) EndChannel();
         _act = Act.Free; _castDef = null;
         var p = GlobalPosition; GlobalPosition = new Vector3(p.X, 0, p.Z);
@@ -574,7 +753,7 @@ public partial class Player : Actor
         _dashFrom = Pos2; _dashTo = to; _dashDur = Mathf.Max(0.05f, dur); _dashArc = arc; _dashIframes = iframes; _dashStep = step; _dashEnd = end;
         _act = Act.Dash; _actT = 0;
         if (iframes) IFrames = Mathf.Max(IFrames, dur + 0.05f);
-        _hasMove = false; _pending = null;
+        _hasMove = false; EndChase(null);
     }
 
     private void TickDash(float dt)
@@ -598,12 +777,13 @@ public partial class Player : Actor
     public void Teleport(Vector2 to)
     {
         GlobalPosition = new Vector3(to.X, 0, to.Y);
-        _hasMove = false; _pending = null;
+        _hasMove = false; EndChase("teleport");
     }
 
     private void TryEvade()
     {
         if (EvadeCd > 0 || Rooted && !Unstoppable) return;
+        EndChase("evade"); _keepTarget = null;
         if (_act == Act.Channel) EndChannel();
         Vector2 dir = Aim - Pos2;
         Vector2 wish = Vector2.Zero;

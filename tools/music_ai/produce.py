@@ -232,6 +232,15 @@ def _get_scorer():
     return _scorer
 
 
+STRICT_PLR_DB = 9.0     # true peak minus integrated loudness of the delivered file
+STRICT_LRA_LU = 1.5     # loudness range of the delivered file
+
+
+def _key_pc_of(name):
+    import audiolib as al
+    return al.key_pc(name)
+
+
 def evaluate(flac, tr, force=False):
     import audiolib as al
     out = flac[:-5] + ".eval.json"
@@ -338,6 +347,21 @@ def finalize(tr, flac, ev, final_dir, model_name):
         problems.append("decoded length differs")
     if chk["dropouts"] or chk["zero_runs"]:
         problems.append("dropout in final")
+    if tr.get("strict"):
+        # the stricter bar for the last four pieces (tracks.py): minor mode, the tonic of the exploration track,
+        # dynamics that are not flat. Thresholds: about the middle of the combat tracks already in the game
+        # (PLR 7.9-10.2 dB, LRA 1.0-11.8 LU; tests/dyn_probe.py).
+        dyn = al.dynamics(d, dsr)
+        info["dynamics"] = dyn
+        if chk["key_est"].split()[1] != "minor":
+            problems.append("not in a minor mode (%s)" % chk["key_est"])
+        want = ev.get("strict_pc")
+        if want is not None and al.key_pc(chk["key_est"]) != want:
+            problems.append("tonic %s differs from its exploration track's" % chk["key_est"].split()[0])
+        if dyn["plr"] < STRICT_PLR_DB:
+            problems.append("flat dynamics (PLR %.1f dB < %.1f)" % (dyn["plr"], STRICT_PLR_DB))
+        if dyn["lra"] < STRICT_LRA_LU:
+            problems.append("flat dynamics (LRA %.1f LU < %.1f)" % (dyn["lra"], STRICT_LRA_LU))
     info["problems"] = problems
     return info
 
@@ -443,6 +467,13 @@ def main():
                         base = report.get(tr["pair"] + "_base") or _load_final(final_dir, tr["pair"] + "_base")
                         if base and base.get("key_pc") is not None:
                             want_pc = base["key_pc"]
+                    if tr.get("strict"):
+                        # the combat track must share the tonic of the exploration track that is in the game
+                        # (a passing generated one, else the procedural one, which is in the requested key)
+                        ev["strict_pc"] = None
+                        if tr["pair"] and n.endswith("_combat"):
+                            b = report.get(tr["pair"] + "_base") or _load_final(final_dir, tr["pair"] + "_base")
+                            ev["strict_pc"] = b["key_pc"] if b and b.get("passed") and b.get("key_pc") is not None else _key_pc_of(T.BY_NAME[tr["pair"] + "_base"]["key"])
                     if want_pc is not None:
                         d = (ev["measure"]["key_pc"] - want_pc) % 12
                         ev["pair_interval"] = d

@@ -23,9 +23,13 @@ Fields
 """
 
 
-def _t(name, gen_s, loop_s, bpm, key, ts, pulse, caption, describe, lufs=-18.0, seeds=None, pair=None):
+def _t(name, gen_s, loop_s, bpm, key, ts, pulse, caption, describe, lufs=-18.0, seeds=None, pair=None, strict=False):
     return dict(name=name, gen_s=gen_s, loop_s=loop_s, bpm=bpm, key=key, ts=ts, pulse=pulse, caption=caption,
-                describe=describe, lufs=lufs, seeds=seeds, pair=pair)
+                describe=describe, lufs=lufs, seeds=seeds, pair=pair, strict=strict)
+
+
+# The stricter bar (lead, 2026-11-18) for the last four pieces: the delivered file must be in a minor mode, a combat
+# track must share the tonic of its exploration track, and the dynamics must not be flat (produce.py, STRICT_*).
 
 
 COMBAT = "epic orchestral, cinematic, film score, battle, "
@@ -105,12 +109,15 @@ TRACKS = [
        "plucked lute, harp, soft hand drum, hot empty air, Phrygian, minor key, minimal, instrumental",
        "a lonely double-reed woodwind line over sparse plucked lute and harp with soft hand drum, dry ancient desert ambient",
        pair="sands"),
+    # v2 caption (2026-11-18): the v1 caption (fast lute ostinato, wailing double-reed melody) gave bright / comedic
+    # or major-key results for all four seeds (v1 candidates: stage/ace_xl/cand/_v1_sands_combat/).
     _t("sands_combat", 150, (110, 130), 116, "A minor", 4, True,
-       "epic, cinematic, film score, battle, desert, ancient, dry, fierce, driving, percussive, fast plucked lute "
-       "ostinato, harp, frame drums, goblet drums, shakers, wailing double-reed woodwind melody, Phrygian, minor key, "
-       "instrumental",
-       "fast plucked lute ostinato with energetic hand percussion and a wailing double-reed woodwind, fierce desert battle music",
-       pair="sands"),
+       COMBAT + "tense, menacing, dark, desert ruins, ancient, driving, percussive, low frame drums, taiko drums, "
+       "deep war drums, heavy hand percussion, distorted low brass, growling brass drone, low strings ostinato, "
+       "Phrygian, harmonic minor, minor key, instrumental",
+       "tense menacing desert ruins battle music with low taiko-like drums, heavy hand percussion, a growling low brass "
+       "drone and a dark low string ostinato in a minor key",
+       seeds=[7540, 7541, 7542, 7543], pair="sands", strict=True),
     _t("sanctum_base", 165, (120, 150), 55, "G minor", 4, False,
        AMBIENT + "sacred, solemn, austere, reverent, mournful, cold, slow pipe organ pads, wordless choir, long "
        "sustained vowels, distant tolling church bells, very slow, vast cathedral reverb, minor key, minimal, instrumental",
@@ -121,17 +128,17 @@ TRACKS = [
        "choir, tolling church bells, pounding timpani, deep drums, marcato low strings, cathedral reverb, minor key, "
        "instrumental",
        "pipe organ ostinato with powerful wordless choir, tolling bells and pounding timpani, solemn wrathful battle music",
-       pair="sanctum"),
+       pair="sanctum", strict=True),
     _t("abyss_base", 165, (120, 150), 60, "D minor", 4, False,
        AMBIENT + "menacing, ominous, infernal, immense, threatening, bowed metal scrapes, deep sub bass rumble, "
        "distant heavy drum hits, low dissonant string clusters, slow, vast cavern reverb, minor key, minimal, instrumental",
        "bowed metal scrapes, deep rumble and distant heavy drum hits with low dissonant strings, menacing infernal dark ambient",
-       pair="abyss"),
+       pair="abyss", strict=True),
     _t("abyss_combat", 150, (110, 130), 120, "D minor", 4, True,
        COMBAT + "infernal, menacing, relentless, brutal, driving, percussive, heavy war drums, taiko drums, bowed "
        "metal, anvil strikes, sub bass rumble, low strings ostinato, dissonant clusters, minor key, instrumental",
        "heavy pounding war drums with bowed metal shrieks, deep rumble and a brutal low string ostinato, menacing battle music",
-       pair="abyss"),
+       pair="abyss", strict=True),
 ]
 
 # Fixed seeds, derived from the position in the list so they never change: 3 candidates for free-time pieces,

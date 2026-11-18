@@ -6,7 +6,7 @@ namespace AshenAbyss;
 
 /// <summary>
 /// The whole audio side of the game: bus layout, the listener, pooled positional sound effects, loops that follow
-/// nodes, adaptive music (a base layer plus a combat layer in exact sync), ambience beds, voice lines with ducking and
+/// nodes, adaptive music (a base track and a combat track in one synchronized stream, crossfaded), ambience beds, voice lines with ducking and
 /// the low-life heartbeat. Sound effects are requested through <see cref="Snd"/>.
 ///
 /// Buses (built at runtime): Master (gentle limiter) ← Music, Sfx, Amb, Voice, Ui.
@@ -101,7 +101,7 @@ public partial class AudioMan : Node
     private float _musicFade = 2f, _ambFade = 2f;
     private bool _musicDirty, _ambDirty;
     private float _combat, _combatTarget, _autoT;
-    private bool _combatManual;
+    private bool _combatManual, _combatHeard;
 
     private AudioStreamPlayer _voice;
     private bool _voiceActive, _voiceTimed;
@@ -719,8 +719,8 @@ public partial class AudioMan : Node
 
     /// <summary>
     /// Crossfades to a track: "menu_theme", "town", "boss", "boss_final", "intro_bed" (plays once), or a zone such as
-    /// "wastes", which starts wastes_base and wastes_combat in exact sync with the combat layer silent until
-    /// <see cref="SetCombat"/> raises it. Null, "" or "none" fades to silence. Asking for the current track does nothing.
+    /// "wastes", which starts wastes_base and wastes_combat together with the combat track silent until
+    /// <see cref="SetCombat"/> crossfades to it. Null, "" or "none" fades to silence. Asking for the current track does nothing.
     /// </summary>
     public void PlayMusic(string track, float fade = 2f)
     {
@@ -757,14 +757,24 @@ public partial class AudioMan : Node
             if (_autoT <= 0f) { _autoT = 0.25f; _combatTarget = AutoCombat(); }
         }
         _combat = Mathf.MoveToward(_combat, _combatTarget, dt / (_combatTarget > _combat ? CombatRise : CombatFall));
+        bool heard = _combatTarget > 0f;
+        if (heard != _combatHeard && _music?.Layers != null)
+        {
+            _combatHeard = heard;
+            Log.Info("audio", heard ? $"music '{_music.Id}': crossfade to the combat track (intensity {_combatTarget:0.00})" : $"music '{_music.Id}': crossfade back to the base track");
+        }
         if (_music?.Layers != null)
         {
+            // The base and combat tracks are independent pieces (own tempo and length, see music_info.json
+            // "combat_mode": "crossfade"), not stems: an equal-power crossfade, base out as the combat track comes in.
             float g = Mathf.Sin(_combat * Mathf.Pi * 0.5f);
             float db = g <= 0.0001f ? SilentDb : Mathf.LinearToDb(g);
             if (Mathf.Abs(db - _music.LayerDb) > 0.1f)
             {
                 _music.LayerDb = db;
                 _music.Layers.SetSyncStreamVolume(1, db);
+                float gb = Mathf.Cos(_combat * Mathf.Pi * 0.5f);
+                _music.Layers.SetSyncStreamVolume(0, gb <= 0.0001f ? SilentDb : Mathf.LinearToDb(gb));
             }
         }
 
@@ -829,7 +839,7 @@ public partial class AudioMan : Node
             bed.Layers = sync;
             bed.LayerDb = SilentDb;
             player.Stream = sync;
-            kind = "base + combat layers in sync";
+            kind = "base + combat tracks, crossfaded by combat intensity";
         }
         else
         {

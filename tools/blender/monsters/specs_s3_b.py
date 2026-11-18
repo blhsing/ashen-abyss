@@ -3,8 +3,9 @@
 SPECS = {
     'mon_ash_weeper': dict(
         family='ash', scale=1.0, poses='caster', emis=(1.0, 0.22, 0.06),
-        body=dict(type='flesh', decimate=0.62, look='ashcrust', eyes=None, melt=2, jaw=34.0, teeth=False, hide=['hands', 'calves', 'feet']),
-        props=dict(bulk=0.94, head_pitch=-26, pose={'upperarm_l': dict(rot=[('y', -112)]), 'upperarm_r': dict(rot=[('y', 112)]), 'spine_03': dict(rot=[('x', -8)])}),
+        body=dict(type='flesh', decimate=0.62, look='ashcrust', eyes=None, melt=2, jaw=34.0, teeth=False, hide=['hands', 'calves', 'feet'],
+                  merge_w={'upperarm_l': ['lowerarm_l', 'hand_l'], 'upperarm_r': ['lowerarm_r', 'hand_r']}),
+        props=dict(bulk=0.94, head_pitch=-26, pose={'upperarm_l': dict(rot=[('y', -122)]), 'upperarm_r': dict(rot=[('y', 122)]), 'spine_03': dict(rot=[('x', -8)])}),
         looks={'ember': {'strength': 1.8, 'mottle': 0.6}},
         parts=[
             dict(p='ash_mound'),
@@ -13,7 +14,8 @@ SPECS = {
             dict(p='fixed_claw', bone='lowerarm_r', at=(-0.735, 0.065, 1.44), n=2, length=0.05, r=0.02, look='ashcrust', side=-1, droop=0.0),
         ],
         notes="Ash-weeper: the cast of someone who died begging the sky -- the legs are fused into a mound of ash (pelvis-weighted "
-              "skirt to the floor), the arms are baked 112 deg up at the shoulder joints so the idle reads as a Y, the hands "
+              "skirt to the floor), the arms are baked 122 deg up at the shoulder joints and are stiff casts (elbow and hand weights "
+              "merged into the upper arm: nothing swings off its joint), so the idle reads as a Y, the hands "
               "crumbled to stumps, face tilted up with a hollow mouth (emis_ sparks inside)."),
     'mon_effigy_orant': dict(
         family='effigy', scale=1.1, poses='caster', emis=(0.45, 1.0, 0.5),
@@ -40,20 +42,26 @@ SPECS = {
         props=dict(bulk=1.12, hips=1.1, hunch=22, belly=0.12),
         parts=[
             dict(p='reed_kilt', length=0.5), dict(p='shell', look='rag', regions=('torso',), z0=1.18, z1=1.46, noise=0.03, offset=0.012),
-            dict(p='cast_net'), dict(p='creel'),
+            dict(p='cast_net'), dict(p='creel', at=(-0.07, 0.27, 1.24)),
             dict(p='shell', look='rag', regions=('head',), z0=1.69, offset=0.01, sink=False),
         ],
         notes="Net-caster: broad stooped marsh-woman with a huge cast-net draped over the left shoulder and trailing behind like a train "
-              "(stone sinkers on the ground bound to the root bone), a lidded creel basket on her back, cork floats round the neck."),
+              "(real cord net; the train and its stone sinkers lie on the floor, bound to the root bone, the hanging part stretches), "
+              "a lidded creel basket on her back, cork floats round the neck."),
     'mon_bog_sleeper': dict(
         family='mire', scale=1.0, poses='zombie',
         body=dict(type='flesh', decimate=0.66, look='skin_bog', eyes='void', gaunt=0.3, fingers=1.5, claws=0.03),
         props=dict(bulk=1.1, belly=0.38, hunch=18, arm=0.9, neck=1.15),
-        looks={'skin_bog': {'color': (0.42, 0.43, 0.38), 'blotch': (0.2, 0.22, 0.2), 'feet_dirt': 1.0, 'feet_hi': 1.32, 'dirt': (0.022, 0.018, 0.014), 'rough': 0.35}},
-        parts=[dict(p='reed_straw'), dict(p='back_slab'),
-               dict(p='shell', look='peatskin', regions=('thighs', 'calves', 'feet', 'pelvis', 'spine_01', 'spine_02'), z1=1.24, noise=0.07, freq=7.0, offset=0.004)],
+        looks={'skin_bog': {'color': (0.42, 0.43, 0.38), 'blotch': (0.2, 0.22, 0.2), 'feet_dirt': 1.0, 'feet_hi': 1.32, 'dirt': (0.022, 0.018, 0.014), 'rough': 0.35},
+               'peatskin': ['mud', 'skin', {'color': (0.028, 0.022, 0.016), 'dry': (0.085, 0.066, 0.045), 'dry_amt': 0.55, 'scale': 9.0, 'wet_rough': 0.18}]},
+        parts=[dict(p='reed_straw', lean=42.0), dict(p='back_slab'),
+               dict(p='shell', look='peatskin', regions=('thighs', 'calves', 'feet', 'pelvis', 'spine_01', 'spine_02', 'spine_03'), z1=1.36, noise=0.16, freq=5.0,
+                    offset=0.006),
+               dict(p='shell', look='peatskin', regions=('forearms', 'hands'), x0=0.56, noise=0.0, offset=0.005),
+               dict(p='sores', look='peatskin', count=18, regions=('torso', 'upperarms', 'head'), r=(0.016, 0.038), seed=9, squash=0.4)],
         notes="Peat-sleeper: naked and swollen, peat-black to the chest and corpse-pale above, a long reed breathing-straw bound to the "
-              "mouth and sticking straight up past the head, a slab of peat stuck to the back; stretched fingers."),
+              "mouth (leaning back over the brow so that it stands upright in the Zombie stoop), a slab of peat stuck to the back, wet "
+              "peat to a ragged tide-line at the chest, on the hands and forearms and in runs below the slab; stretched fingers."),
     'mon_lamp_bomber': dict(
         family='lamp', scale=1.0, poses='thrower', emis=(1.0, 0.62, 0.18),
         body=dict(type='flesh', decimate=0.62, show=['forearms', 'hands', 'calves', 'feet'], look='skin', eyes=None),
@@ -72,7 +80,8 @@ SPECS = {
         looks={'robe': ['linen', {'color': (0.40, 0.37, 0.31), 'hem_lo': 0.1, 'hem_hi': 0.7}]},
         parts=[
             dict(p='robe', hem=0.12, girth=1.0, seed=3, rag=0.08), dict(p='sleeves', x1=0.50, r_cuff=0.085, droop=0.02),
-            dict(p='wax_dome', melted='l', drips=14), dict(p='wax_drips'), dict(p='flame'), dict(p='rope_belt'), dict(p='foot_wraps', look='robe'),
+            dict(p='wax_dome', melted='l', drips=14, melt_drop=0.68, melt_in=0.10, melt_off=0.065, melt_w=0.55, melt_zw=0.32), dict(p='wax_drips'), dict(p='flame3'), dict(p='rope_belt'),
+            dict(p='foot_wraps', look='robe'),
         ],
         notes="Lit wick: a wax-sealed one already alight -- the dome has half melted away on the left so a bare jaw shows, wax runs off "
               "in ropes, a tall guttering emis_ flame streams back from the wick."),

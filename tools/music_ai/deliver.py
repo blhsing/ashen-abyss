@@ -177,11 +177,18 @@ def run(stage, dry_run, say):
             tracks_info[n] = dict(seconds=r["ogg"]["seconds"], bpm=round(r["ogg"]["tempo"], 1) if tr["pulse"] else tr["bpm"],
                                   loop=tr["loop_s"] is not None, seed=r["seed"], model=r["model"])
             durations[n] = r["ogg"]["seconds"]
-        elif n not in tracks_info or tracks_info[n].get("seed") is None:
-            i = sf.info(dst)
+        else:
+            # no passing AI version (any more): the game must play the procedural track
+            bk = os.path.join(BACKUP, n + ".ogg")
+            if os.path.exists(bk) and (not os.path.exists(dst) or sha(dst) != sha(bk)):
+                print("restore %-15s procedural track from the backup (%s)" % (n, (r or {}).get("reason") or "no passing AI version"))
+                if not args.dry_run:
+                    shutil.copyfile(bk, dst)
+            i = sf.info(bk if args.dry_run and os.path.exists(bk) else dst)
             print("keep    %-15s procedural fallback (%s)" % (n, (r or {}).get("reason") or "no passing AI version yet"))
             tracks_info[n] = dict(seconds=round(i.frames / i.samplerate, 3), bpm=old_bpm.get(n), loop=tr["loop_s"] is not None,
                                   seed=None, model=PROCEDURAL)
+            durations[n] = tracks_info[n]["seconds"]
     out = dict(combat_mode="crossfade", tracks={t["name"]: tracks_info[t["name"]] for t in T.TRACKS if t["name"] in tracks_info})
     if not args.dry_run:
         with open(info_path, "w", encoding="utf-8", newline="\n") as f:

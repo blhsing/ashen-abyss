@@ -490,9 +490,12 @@ def shovel(A, hand='r', length=1.25, name='shovel', look='rust', load=None, back
     ps = shaft(back, length, 0.022, wraps=1)
     bl = KX.spade(Ln=0.62 * size, w=0.46 * size, dish=0.06 * size)
     ps.append((bl.move(0, length - 0.03, 0), look, 30))
-    if load:
-        h = KX.lump(0.16 * size, 0.2 * size, 0.07 * size, seed=4, amp=0.3)
-        ps.append((h.move(0, length + 0.30 * size, 0.045 * size), load, 60))
+    if load:                                             # a heap: glowing slag between darker, cooled clinker lumps
+        h = KX.lump(0.15 * size, 0.2 * size, 0.06 * size, seed=4, amp=0.3, n=12, m=7)
+        ps.append((h.move(0, length + 0.30 * size, 0.04 * size), load, 60))
+        for k, (dx, dy, rr) in enumerate(((0.07, 0.17, 0.075), (-0.08, 0.26, 0.085), (0.05, 0.38, 0.07), (-0.03, 0.45, 0.06), (0.10, 0.30, 0.05), (-0.11, 0.40, 0.05))):
+            c = KX.lump(rr * size, rr * 0.9 * size, rr * 0.62 * size, seed=10 + k, amp=0.38, freq=11.0)
+            ps.append((c.move(dx * size, length + dy * size, (0.075 + 0.02 * (k % 2)) * size), 'clinker' if k % 3 else load, 50))
     emit(A, ps, name, hand)
 
 
@@ -539,8 +542,9 @@ def boulder_pick(A, hand='r', length=1.35, name='pick', look='ice', glow='glow',
     ps = shaft(back, length, 0.024, wraps=1)
     ps.append((KC3.ice_chunk(r, r * 0.85, r * 0.9, seed=4, n=14).move(0, length + r * 0.5, 0), look, 18))
     ps.append((M.cone_spike(0.05, 0.3, n=5).rot('y', 90).move(r * 0.6, length + r * 0.5, 0), look, 18))
-    if glow:
-        ps.append((ellipsoid(r * 0.3, r * 0.3, r * 0.3, n=7, m=5).move(-r * 0.62, length + r * 0.5, 0.0), glow, 60))
+    if glow:                                             # the core: seen through three windows in the boulder's faces
+        for (dx, dy, dz, a_, b_, c_) in ((-0.66, 0.5, 0.0, 0.07, 0.26, 0.22), (0.1, 0.5, 0.58, 0.22, 0.22, 0.06), (0.05, 0.5, -0.60, 0.2, 0.24, 0.06)):
+            ps.append((ellipsoid(r * a_, r * b_, r * c_, n=8, m=5).move(r * dx, length + r * dy, r * dz), glow, 30))
     for k in range(3):
         ps.append((torus(0.04, 0.008, n=8, m=4).rot('x', 90).move(0, length - 0.05 + 0.06 * k, 0), 'rope', 50))
     emit(A, ps, name, hand)

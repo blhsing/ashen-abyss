@@ -218,3 +218,111 @@ public sealed class RitualEvent : WorldEvent
         _circle = null; _orb = null;
     }
 }
+
+/// <summary>
+/// 世界首領甦醒：a timed world event of the named layer. Every <see cref="Interval"/> seconds of play each of the four
+/// world bosses wakes again; while it is awake, entering one of its two regions' overworld opens a gateway at the far
+/// side of the map to its dedicated field ("rift~wb:&lt;id&gt;"). The first kill in each interval also pays the boss's
+/// cache (kept in <see cref="SaveData.NamedCache"/>); later kills in the same interval pay the ordinary drop.
+/// </summary>
+public sealed class WorldBossEvent : WorldEvent
+{
+    public const double Interval = 1200.0;
+    /// <summary>Test switch (--named=&lt;wb id&gt;@route): the gateway of this boss opens on the next overworld load whatever the timer says.</summary>
+    public static string Force;
+    public NamedDef Def;
+    private string _text = "";
+    public override string Text => _text;
+    public override float Progress => 0f;
+
+    private static SaveData D => Game.I?.Hero?.D;
+    public static int IntervalNow => (int)Math.Floor((D?.PlayTime ?? 0.0) / Interval);
+    public static double UntilNext => Interval - ((D?.PlayTime ?? 0.0) % Interval);
+
+    /// <summary>Awake now: its cache for the current interval has not been claimed.</summary>
+    public static bool Awake(NamedDef d)
+    {
+        var s = D; if (s == null || d == null) return false;
+        s.NamedCache ??= new();
+        return !s.NamedCache.TryGetValue(d.Id, out int k) || k != IntervalNow;
+    }
+
+    /// <summary>A world boss shows itself once the hero is strong enough for the stronger of its two regions and both are open.</summary>
+    public static bool Eligible(NamedDef d, out string why)
+    {
+        why = "";
+        var h = Game.I?.Hero;
+        if (h == null) { why = "no hero"; return false; }
+        int need = 0;
+        foreach (var r in d.Regions)
+        {
+            var reg = ZoneDb.Region(r);
+            if (reg == null) continue;
+            need = Math.Max(need, reg.Level + 2);
+            bool open = true;
+            try { open = Quests.CanEnter(r); } catch (Exception) { }
+            if (!open) { why = $"region {r} not open"; return false; }
+        }
+        if (h.D.Level < need) { why = $"hero level {h.D.Level} < {need}"; return false; }
+        return true;
+    }
+
+    internal static void Offer(Level L)
+    {
+        if (L?.Region == null) return;
+        foreach (var d in NamedDb.Of(NamedKind.World))
+        {
+            if (Array.IndexOf(d.Regions, L.Region.Id) < 0) continue;
+            bool forced = Force == d.Id;
+            if (!forced && !NamedAreas.LiveWorld) continue;
+            if (!forced)
+            {
+                if (!Awake(d)) { Log.Info("named", $"world boss {d.Id}: asleep for {UntilNext:0}s more"); continue; }
+                if (!Eligible(d, out string why)) { Log.Info("named", $"world boss {d.Id}: not yet ({why})"); continue; }
+            }
+            if (forced) Force = null;
+            var spot = NamedAreas.SpotFor(L, "far", new List<Vector2>(), L.Rand ?? new Random());
+            if (spot == null) { Log.Warn("named", $"world boss {d.Id}: no place for its gateway"); continue; }
+            var ev = new WorldBossEvent { Def = d, L = L, Pos = spot.Value };
+            L.Events.Add(ev);
+            try { ev.Setup(); }
+            catch (Exception e) { Log.Error("named", $"world boss gateway {d.Id} failed to set up", e); L.Events.Remove(ev); }
+        }
+    }
+
+    public override void Setup()
+    {
+        string field = NamedAreas.FieldOf(Def.Id), from = L.AreaId;
+        Obj = WorldObjects.Portal(Pos, $"世界首領・{Def.NameZh}", NamedAreas.Name(field), new Color(1f, 0.55f, 0.25f), _ => Game.I.EnterArea(field, from));
+        L.AddMarker("event", $"世界首領：{Def.NameZh}", Pos, Obj);
+        Game.I?.Hud?.Toast($"大地震動——世界首領「{Def.NameZh}」甦醒了", Palette.Gold);
+        Snd.Ui("event_start");
+        Log.Info("named", $"world boss {Def.Id}: gateway open at ({Pos.X:0},{Pos.Y:0}) in {L.AreaId}, interval {IntervalNow}");
+    }
+
+    public override void Tick(float dt)
+    {
+        var p = World.P;
+        bool near = p != null && !p.Dead && p.Pos2.DistanceTo(Pos) < 26f;
+        if (near != Active) { Active = near; L.MarkDirty(); }
+        if (Active) _text = $"世界首領「{Def.NameZh}」：踏入門扉挑戰（{(Awake(Def) ? "寶藏未領" : "本輪寶藏已領")}）";
+    }
+
+    /// <summary>A world boss died: the first kill of the interval opens its cache.</summary>
+    internal static void Claimed(NamedDef d)
+    {
+        var s = D; if (s == null || d == null) return;
+        s.NamedCache ??= new();
+        int k = IntervalNow;
+        if (s.NamedCache.TryGetValue(d.Id, out int had) && had == k) { Log.Info("named", $"world boss {d.Id}: cache already claimed in interval {k}"); return; }
+        s.NamedCache[d.Id] = k;
+        var L = Level.Current; var p = World.P;
+        if (L != null && p != null && L.Grid != null)
+        {
+            Vector2 at = L.Grid.RandomWalkNear(p.Pos2, 2f, 3.5f, L.Rand);
+            L.RewardChest(at, 3, spot => { Loot.DropMaterials(15, 10, 4, spot); Loot.OpenChest(spot, 3); });
+        }
+        Game.I?.Hud?.Toast($"世界首領的寶藏顯現——下次甦醒約在 {UntilNext / 60.0:0} 分鐘後", Palette.Gold);
+        Log.Info("named", $"world boss {d.Id}: cache claimed for interval {k}");
+    }
+}

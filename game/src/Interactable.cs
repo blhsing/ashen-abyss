@@ -21,6 +21,8 @@ public partial class Interactable : Node3D
     public Rarity LootRarity;
     public float LabelHeight = 1.0f;
     public object Tag;
+    /// <summary>Puts the object in its used-up state without its effects (rewards, sounds, events): a loaded save restoring an opened chest, a toppled idol…</summary>
+    public Action Spend;
 
     public Vector2 Pos2 => new(GlobalPosition.X, GlobalPosition.Z);
 
@@ -53,4 +55,11 @@ public partial class Interactable : Node3D
     }
 
     public void Consume() { CanUse = false; QueueFree(); }
+
+    /// <summary>Save restore: this object was already used. Without a <see cref="Spend"/> it just stops being usable.</summary>
+    public void RestoreSpent()
+    {
+        if (Spend != null) { Log.Guard("interact", Spend); return; }
+        CanUse = false; ShowLabel = false;
+    }
 }
