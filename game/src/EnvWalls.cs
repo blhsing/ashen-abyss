@@ -205,7 +205,7 @@ internal static class EnvWalls
         private float TopShade(int i, int j) =>
             Style == Style.Cliff ? DepthShade(i, j)
             : Roofs ? Mathf.Lerp(0.97f, 0.62f, Mathf.SmoothStep(2f, 10f, D[j * _lw + i]))
-            : 0.42f * (1f - Mathf.SmoothStep(0.15f, CapFade, D[j * _lw + i]));
+            : EnvMats.LidShade;      // one level up to where the lid takes over; the lid then sinks into darkness with depth
 
         private float SideShade(int i, int j, int row)
         {
@@ -370,9 +370,9 @@ internal static class EnvWalls
         if (t.Organic)
         {
             var flags = Glossy(wall) ? WallFlags.Tri | WallFlags.Gloss : WallFlags.Tri;
-            mass.Emit(wall, flags, top, WallFlags.Tri);
+            mass.Emit(wall, flags, top, mass.Roofs ? WallFlags.Tri : WallFlags.Tri | WallFlags.Top);
         }
-        else mass.Emit(wall, WallFlags.None, top, WallFlags.None);
+        else mass.Emit(wall, WallFlags.None, top, mass.Roofs ? WallFlags.None : WallFlags.Top);
         Guard("wall lids", () => BuildLids(b, mass));
         Log.Debug("env", $"walls: solid style={mass.Style} cells={count} height={mass.Height:0.0} rows={mass.Rows} quads={mass.Quads.Count}");
     }
@@ -413,7 +413,20 @@ internal static class EnvWalls
         Flat(lid, x0 - SkirtM, x0, z0, z1, h);
         Flat(lid, x1, x1 + SkirtM, z0, z1, h);
 
-        var mat = EnvMats.Cap(new Color(0f, 0f, 0f));
+        // the lid is the same rock as the wall tops, sinking into darkness with the depth into the mass (one texel per metre)
+        Texture2D depthTex = null;
+        const float depthRange = 24f;
+        try
+        {
+            var px = new byte[lw * lh];
+            for (int k = 0; k < px.Length; k++) px[k] = (byte)Mathf.Clamp(Mathf.RoundToInt(d[k] / depthRange * 255f), 0, 255);
+            depthTex = ImageTexture.CreateFromImage(Image.CreateFromData(lw, lh, false, Image.Format.L8, px));
+        }
+        catch (Exception e) { Log.Error("env", "walls: building the lid depth map failed", e); }
+        // texel (i, j) sits on lattice vertex (X0 + i, Z0 + j): half a texel of margin on every side
+        var depthRect = new Vector4(f.X0 - 0.5f, f.Z0 - 0.5f, 1f / lw, 1f / lh);
+        string topSet = Set(b.Theme.WallTopTex, Set(b.Theme.WallTex, "castle_blocks"));
+        var mat = EnvMats.Lid(b.Theme, topSet, depthTex, depthRect, depthRange);
         // under a sun the lid has to throw the shadow of the block it closes; indoors nothing is above the torches
         var lidMesh = lid.Build();
         if (lidMesh != null) { b.AddMesh(b.Walls, "Lid", lidMesh, mat, b.Theme.Outdoor); b.Triangles += lid.TriangleCount; }

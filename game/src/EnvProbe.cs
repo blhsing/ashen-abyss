@@ -26,10 +26,25 @@ namespace AshenAbyss;
 ///   --gfx-novsync            uncapped frame rate while measuring
 ///   --gfx-fx                 spawn a gallery of ground zones, telegraphs, bursts and loot beams round the hero before each shot
 ///   --gfx-stay               do not quit after the last area
+///   a tour stop may carry a placement: label=area@behind:tree:2 stands the hero just north of (behind, seen from the
+///   lens) the 3rd nearest prop slot of that category; consecutive stops in the same area do not reload it
+///   Options of one stop, joined by '+' after the '@' (they replace the global switch of the same name for that stop):
+///     behind:tree:2[:back[:side]] · at:3/5.5/8 (shot times) · fx[:2] · hud:0 · fov:16 · life:0.15 · hug:5 · evade:5 ·
+///     run:7.5:30 · bot (the test bot plays) · clips:Roll*1.9/Sword_Dash*1.5[:start] · ui:paragon (opens that panel) ·
+///     class:astromancer[:level[:paragon]] · focusbehind:tree:1 (holds the target cut on the spot behind that prop, marked by a ring)
+///     (a new hero of that class starts in the stop's area: a whole class sweep in one process)
+///   --gfx-burst=6,0.06,8     eight more shots from second 6 on, one every 0.06 s
+///   --gfx-evade=6            the hero evades to screen-right at second 6; the pose is logged for 0.9 s
+///   --gfx-run=5              the hero runs to screen-right from second 5 on (--gfx-runspeed=30 adds that much move speed %)
+///   --gfx-life=0.2           holds the hero's life at this fraction (low-life warning)
+///   --gfx-hug=4              at second 4 the hero is put right on top of the nearest boss or giant (body blocking)
+///   --gfx-fov=14             a narrower lens for close-ups
+///   --gfx-clips=Roll@1.9,Sword_Dash@1.5   clip viewer: from --gfx-clips-at (default 5 s) each clip is played on the standing
+///                            hero (turned to screen-right, its own controller held) and shot 0.08 / 0.2 / 0.32 / 0.5 s in
 /// </summary>
 public partial class EnvProbe : Node
 {
-    private sealed class Stop { public string Label, Area; }
+    private sealed class Stop { public string Label, Area, Spec; public readonly Dictionary<string, string[]> Opt = new(); }
 
     private readonly List<Stop> _tour = new();
     private readonly List<double> _at = new();
@@ -76,20 +91,46 @@ public partial class EnvProbe : Node
                 int eq = part.IndexOf('=');
                 string area = eq > 0 ? part[(eq + 1)..] : part;
                 string label = eq > 0 ? part[..eq] : null;
-                _tour.Add(new Stop { Label = label, Area = area });
+                string spec = null;
+                int atSign = area.IndexOf('@');
+                if (atSign > 0) { spec = area[(atSign + 1)..]; area = area[..atSign]; }
+                var stop = new Stop { Label = label, Area = area, Spec = spec };
+                if (spec != null)
+                    foreach (var item in spec.Split('+', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries))
+                    {
+                        var ip = item.Split(':');
+                        stop.Opt[ip[0]] = ip.Length > 1 ? ip[1..] : Array.Empty<string>();
+                    }
+                _tour.Add(stop);
             }
         string at = A("gfx-at");
         if (!string.IsNullOrWhiteSpace(at))
             foreach (var part in at.Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries))
                 if (double.TryParse(part, NumberStyles.Float, inv, out double v) && v >= 0) _at.Add(v);
         if (_at.Count == 0) { _at.Add(5); _at.Add(12); }
+        string burst = A("gfx-burst");
+        if (!string.IsNullOrWhiteSpace(burst))
+        {
+            var bp = burst.Split(',');
+            if (bp.Length == 3 && double.TryParse(bp[0], NumberStyles.Float, inv, out double b0) && double.TryParse(bp[1], NumberStyles.Float, inv, out double bd) && int.TryParse(bp[2], out int bn))
+                for (int i = 0; i < Math.Clamp(bn, 1, 40); i++) _at.Add(b0 + i * Math.Max(bd, 0.01));
+        }
+        _evadeAt = double.TryParse(A("gfx-evade"), NumberStyles.Float, inv, out double ev) ? ev : -1;
+        _runAt = double.TryParse(A("gfx-run"), NumberStyles.Float, inv, out double rn) ? rn : -1;
+        _runSpeed = float.TryParse(A("gfx-runspeed"), NumberStyles.Float, inv, out float rs) ? rs : 0f;
+        _hugAt = double.TryParse(A("gfx-hug"), NumberStyles.Float, inv, out double hg) ? hg : -1;
+        _lifeFrac = float.TryParse(A("gfx-life"), NumberStyles.Float, inv, out float lf) ? lf : -1f;
+        _fov = float.TryParse(A("gfx-fov"), NumberStyles.Float, inv, out float fv) ? fv : 0f;
         _at.Sort();
+        _atDef = new List<double>(_at);
+        _evadeDef = _evadeAt; _runDef = _runAt; _runSpeedDef = _runSpeed; _hugDef = _hugAt; _lifeDef = _lifeFrac; _fovDef = _fov;
         _out = A("gfx-out");
         if (string.IsNullOrWhiteSpace(_out)) _out = @"Y:\shots\gfx";
         try { System.IO.Directory.CreateDirectory(_out); } catch (Exception e) { Log.Warn("gfx", "cannot create " + _out + ": " + e.Message); }
         _beauty = Has("gfx-beauty");
         _hideHud = A("gfx-hud") == "0";
         _fx = Has("gfx-fx");
+        _hideHudDef = _hideHud; _fxDef = _fx; _botDef = Has("bot");
         _stay = Has("gfx-stay");
         _noVsync = Has("gfx-novsync");
         _sweep = Has("gfx-sweep");
@@ -103,6 +144,7 @@ public partial class EnvProbe : Node
         if (Has("gfx-nocut")) EnvMats.WalkMaskOff = true;                                             // --gfx-nocut: indoor walls keep hiding floor (A/B of the floor cut)
         if (Has("gfx-trim")) LevelBuilder.TrimEnabled = true;                                         // --gfx-trim: release the caches of themes left behind (to be verified)
         _maskMode = Has("gfx-mask");                                                                  // --gfx-mask: also save <shot>_mask.png (hero green, other actors magenta)
+        if (Has("gfx-gates")) WorldObjects.BuiltGateways = true;                                      // --gfx-gates: the built gateways with their veil (item 11; off by default until verified)
         if (Has("gfx-nogov")) Gfx.GovernorOff = true;                                                 // --gfx-nogov: keep the render scale fixed
         string res = A("gfx-res");
         if (!string.IsNullOrWhiteSpace(res))
@@ -206,7 +248,7 @@ public partial class EnvProbe : Node
             // first stop: the area the game started in when no tour was given
             if (_tour.Count == 0) _tour.Add(new Stop { Area = g.Level.AreaId });
             _index = 0;
-            if (g.Level.AreaId == _tour[0].Area) Arrive(g);
+            if (g.Level.AreaId == _tour[0].Area && !_tour[0].Opt.ContainsKey("class")) Arrive(g);
             else Travel(g);
             return;
         }
@@ -214,7 +256,7 @@ public partial class EnvProbe : Node
         {
             // wait until the game has left Play for the loading screen and come back with the new level
             _wait += real;
-            if (playing && g.Level.AreaId != _areaNow && _wait > 0.3) Arrive(g);
+            if (playing && !ReferenceEquals(g.Level, _levelBefore) && _wait > 0.3) Arrive(g);
             else if (playing && _wait > 25) { Log.Warn("gfx", $"probe: '{_tour[_index].Area}' did not load (still in {g.Level.AreaId}); taking it as it is"); Arrive(g); }
             return;
         }
@@ -232,6 +274,9 @@ public partial class EnvProbe : Node
             _primSum += Performance.GetMonitor(Performance.Monitor.RenderTotalPrimitivesInFrame);
         }
         if (_fx && !_fxDone && _t >= Math.Max(0.5, _at[0] - 1.6)) { _fxDone = true; Log.Guard("gfx", () => Gallery(g)); }
+        Log.Guard("gfx", () => Staged(g));
+        if (_focusHold is Vector3 fh) RenderingServer.GlobalShaderParameterSet("focus_pos", new Vector4(fh.X, fh.Y, fh.Z, 1f));
+        Log.Guard("gfx", () => ClipViewer(g));
         while (_shot < _at.Count && _t >= _at[_shot])
         {
             Shoot(_tour[_index], _shot + 1);
@@ -253,6 +298,26 @@ public partial class EnvProbe : Node
         _areaNow = g.Level?.AreaId;
         _entering = true; _wait = 0;
         string area = _tour[_index].Area;
+        _levelBefore = g.Level;
+        if (_tour[_index].Opt.TryGetValue("class", out var cls) && cls.Length > 0)
+        {
+            // a new hero of another class, started in this stop's area (what the UI test layer's "newgame" does)
+            int idx = Array.IndexOf(Names.ClassKeys, cls[0].ToLowerInvariant());
+            int level = cls.Length > 1 && int.TryParse(cls[1], out int lv) ? lv : 30;
+            if (idx >= 0)
+            {
+                _areaNow = g.Level?.AreaId;
+                _entering = true; _wait = 0;
+                if (g.UiLayer != null) g.UiLayer.Visible = true;
+                g.Ui?.CloseAll();
+                Log.Info("gfx", $"probe: new {cls[0]} (level {level}) in {area} ({_index + 1}/{_tour.Count})");
+                g.HarnessNext(area, level, true, -1, true, cls.Length > 2 && int.TryParse(cls[2], out int pg) ? pg : -1);
+                g.NewGame(g.Slot, "試煉者", (ClassId)idx, false);
+                return;
+            }
+            Log.Warn("gfx", $"probe: unknown class '{cls[0]}'");
+        }
+        if (g.Level != null && g.Level.AreaId == area) { Arrive(g); return; }           // another view of the area we are in
         Log.Info("gfx", $"probe: travelling to {area} ({_index + 1}/{_tour.Count})");
         if (_hideHud && g.UiLayer != null) g.UiLayer.Visible = true;
         if (!g.HarnessTravel(area)) Log.Warn("gfx", $"probe: travel to {area} was refused");
@@ -271,7 +336,26 @@ public partial class EnvProbe : Node
         }
         Gfx.Apply(g.Cfg, _sub != null ? _sub : GetTree().Root);
         if (g.Level?.Env?.Environment != null) Gfx.TuneEnvironment(g.Level.Env.Environment, g.Cfg);
-        Log.Guard("gfx", () => GoToPoi(g));
+        Log.Guard("gfx", () => ApplyStop(g, stop));
+        Log.Guard("gfx", () => GoToPoi(g, stop));
+        if (stop.Opt.TryGetValue("behind", out var beh)) Log.Guard("gfx", () => Place(g, "behind:" + string.Join(":", beh)));
+        _focusHold = null;
+        if (stop.Opt.TryGetValue("focusbehind", out var fb) && fb.Length > 0)
+            Log.Guard("gfx", () =>
+            {
+                var data = g.Level?.Data; var pl = g.Player;
+                if (data?.Props == null || pl == null) return;
+                int nth = fb.Length > 1 && int.TryParse(fb[1], out int k) ? k : 1;
+                var here = new Vector2(pl.GlobalPosition.X, pl.GlobalPosition.Z);
+                var c = data.Props.Where(s => s != null && s.Category == fb[0]).OrderBy(s => s.Pos.DistanceSquaredTo(here)).ToList();
+                if (c.Count == 0) return;
+                var slot = c[Math.Clamp(nth, 0, c.Count - 1)];
+                var at = slot.Pos + new Vector2(0f, -(Mathf.Max(slot.Radius, 0.4f) + 0.75f));
+                _focusHold = new Vector3(at.X, 0f, at.Y);
+                Fx.Telegraph(at, 0.7f, 40f, Palette.Element(Element.Lightning), true);
+                Log.Info("gfx", $"probe: target cut held at ({at.X:0.0}, {at.Y:0.0}), {at.DistanceTo(here):0.0} m from the hero");
+            });
+        _evadeDone = false; _hugDone = false; _poseLeft = 0; _runOn = false; _hugTarget = null;
         Log.Info("gfx", $"probe: in {g.Level?.AreaId} (theme {g.Level?.Theme?.Id}) as '{stop.Label}'");
     }
 
@@ -303,14 +387,14 @@ public partial class EnvProbe : Node
     /// (e.g. npc:smith, brazier, entrance, boss, waypoint), so a shot can be framed on a particular place.
     /// --gfx-xz=x,z moves the hero by that many metres from where the level put them.
     /// </summary>
-    private static void GoToPoi(Game g)
+    private static void GoToPoi(Game g, Stop stop)
     {
         var inv = CultureInfo.InvariantCulture;
         var p = g.Player;
         var data = g.Level?.Data;
         if (p == null || data == null) return;
         Vector2? goal = null;
-        string spec = A("gfx-poi");
+        string spec = stop != null && stop.Opt.TryGetValue("poi", out var po) && po.Length > 0 ? string.Join(":", po) : A("gfx-poi");
         if (!string.IsNullOrWhiteSpace(spec))
         {
             int nth = 0;
@@ -334,11 +418,249 @@ public partial class EnvProbe : Node
         // stand a few metres south of it (towards the lens), on the nearest walkable spot
         var grid = g.Level.Grid;
         Vector2 best = goal.Value;
-        foreach (var off in new[] { new Vector2(0f, 3.2f), new Vector2(1.5f, 3f), new Vector2(-1.5f, 3f), new Vector2(0f, 2f), new Vector2(2.5f, 1f), new Vector2(-2.5f, 1f), new Vector2(0f, 4.5f), Vector2.Zero })
+        var offsets = new List<Vector2> { new Vector2(0f, 3.2f), new Vector2(1.5f, 3f), new Vector2(-1.5f, 3f), new Vector2(0f, 2f), new Vector2(2.5f, 1f), new Vector2(-2.5f, 1f), new Vector2(0f, 4.5f), Vector2.Zero };
+        // off:dx:dz — stand there instead (e.g. off:0:-3 = three metres north of it, so the thing itself is in the picture)
+        if (stop != null && stop.Opt.TryGetValue("off", out var of) && of.Length >= 2 &&
+            float.TryParse(of[0], NumberStyles.Float, inv, out float ox) && float.TryParse(of[1], NumberStyles.Float, inv, out float oz))
+        {
+            offsets.Insert(0, new Vector2(ox, oz));
+            offsets.Insert(1, new Vector2(ox + 1.5f, oz)); offsets.Insert(2, new Vector2(ox - 1.5f, oz)); offsets.Insert(3, new Vector2(ox, oz * 0.6f));
+        }
+        foreach (var off in offsets)
             if (grid == null || grid.WalkAt(goal.Value + off)) { best = goal.Value + off; break; }
         p.Teleport(best);
         g.Cam?.Snap();
         Log.Info("gfx", $"probe: hero moved to ({best.X:0.0}, {best.Y:0.0})");
+    }
+
+    // ───────────── staged moments (graphics pass 0.3) ─────────────
+
+    private double _evadeAt = -1, _hugAt = -1, _runAt = -1, _poseLeft;
+    private float _lifeFrac = -1f, _fov, _runSpeed;
+    private bool _evadeDone, _hugDone, _runOn;
+    private Monster _hugTarget; private int _hugLog;
+
+    // what the global switches said: a stop without its own option falls back to these
+    private List<double> _atDef = new();
+    private double _evadeDef = -1, _runDef = -1, _hugDef = -1;
+    private float _runSpeedDef, _lifeDef = -1f, _fovDef;
+    private bool _hideHudDef, _fxDef, _botDef;
+    private Level _levelBefore;
+    private string _clipSpec;
+    private double _clipAt = -1;
+    private static string _fxArg;
+    private string[] _uiOpen;
+    private Vector3? _focusHold;
+    private bool _uiDone;
+
+    /// <summary>Loads the options of a stop (see the header) into the fields the probe works with.</summary>
+    private void ApplyStop(Game g, Stop stop)
+    {
+        var inv = CultureInfo.InvariantCulture;
+        var o = stop.Opt;
+        double D(string k, double def, int i = 0) => o.TryGetValue(k, out var a) && a.Length > i && double.TryParse(a[i], NumberStyles.Float, inv, out double v) ? v : def;
+        _at.Clear();
+        if (o.TryGetValue("at", out var at) && at.Length > 0)
+            foreach (var part in at[0].Split('/', StringSplitOptions.RemoveEmptyEntries))
+                if (double.TryParse(part, NumberStyles.Float, inv, out double v) && v >= 0) _at.Add(v);
+        if (_at.Count == 0) _at.AddRange(_atDef);
+        _at.Sort();
+        _fx = o.ContainsKey("fx") || _fxDef;
+        _fxArg = o.TryGetValue("fx", out var fa) && fa.Length > 0 ? fa[0] : A("gfx-fx");
+        _hideHud = o.TryGetValue("hud", out var hu) && hu.Length > 0 ? hu[0] == "0" : _hideHudDef;
+        if (!_hideHud && g.UiLayer != null) g.UiLayer.Visible = true;
+        _evadeAt = D("evade", _evadeDef); _runAt = D("run", _runDef); _runSpeed = (float)D("run", _runSpeedDef, 1);
+        _hugAt = D("hug", _hugDef); _lifeFrac = (float)D("life", _lifeDef); _fov = (float)D("fov", _fovDef);
+        g.HarnessFov(_fov > 1f ? _fov : 0f);
+        bool bot = o.ContainsKey("bot") || _botDef;
+        if (bot && (g.Bot == null || !IsInstanceValid(g.Bot)))
+        {
+            g.Bot = new TestBot { Name = "TestBot" };
+            g.AddChild(g.Bot);
+        }
+        if (g.Bot != null && IsInstanceValid(g.Bot))
+        {
+            g.Bot.SetProcess(bot);
+            if (!bot)
+            {
+                // a bot stopped in mid-fight may leave a skill key down: let every key it uses go
+                foreach (var key in new[] { Key.Key1, Key.Key2, Key.Key3, Key.Key4, Key.Q, Key.Space, Key.Shift })
+                    Input.ParseInputEvent(new InputEventKey { Keycode = key, PhysicalKeycode = key, Pressed = false });
+                var pl = g.Player;
+                if (pl != null && IsInstanceValid(pl)) pl.ForceHold = -1;
+            }
+        }
+        Player.TestMouse = null; Player.TestLeft = false; Player.TestRight = false; Player.TestShift = false;
+        _clips = null; _clipIndex = -1;
+        _clipSpec = o.TryGetValue("clips", out var cl) && cl.Length > 0 ? cl[0].Replace('/', ',').Replace('*', '@') : null;
+        _clipAt = D("clips", -1, 1);
+        g.Ui?.CloseAll();
+        _uiOpen = o.TryGetValue("ui", out var uo) && uo.Length > 0 ? uo : null;
+        _uiDone = false;
+    }
+
+    /// <summary>Per-stop placement: behind:&lt;category&gt;[:n[:back[:side]]] puts the hero just north of the n-th nearest prop slot of that category (back / side in metres).</summary>
+    private static void Place(Game g, string spec)
+    {
+        if (string.IsNullOrWhiteSpace(spec)) return;
+        var p = g.Player; var data = g.Level?.Data; var grid = g.Level?.Grid;
+        if (p == null || data?.Props == null) return;
+        var parts = spec.Split(':');
+        if (parts[0] != "behind" || parts.Length < 2) { Log.Warn("gfx", $"probe: unknown placement '{spec}'"); return; }
+        int nth = parts.Length > 2 && int.TryParse(parts[2], out int k) ? k : 0;
+        float back = parts.Length > 3 && float.TryParse(parts[3], NumberStyles.Float, CultureInfo.InvariantCulture, out float bk) ? bk : 0.75f;
+        float side = parts.Length > 4 && float.TryParse(parts[4], NumberStyles.Float, CultureInfo.InvariantCulture, out float sd) ? sd : 0f;
+        var here = new Vector2(p.GlobalPosition.X, p.GlobalPosition.Z);
+        var cands = data.Props.Where(s => s != null && s.Category == parts[1] && s.Tag is not ("house" or "hall" or "inn" or "forge" or "stall" or "tent"))
+            .Select(s => (s, at: s.Pos + new Vector2(side, -(Mathf.Max(s.Radius, 0.4f) + back))))
+            .Where(c => grid == null || grid.WalkAt(c.at))
+            .OrderBy(c => c.s.Pos.DistanceSquaredTo(here)).ToList();
+        if (cands.Count == 0) { Log.Warn("gfx", $"probe: no '{parts[1]}' slot to stand behind"); return; }
+        var pick = cands[Math.Clamp(nth, 0, cands.Count - 1)];
+        p.Teleport(pick.at);
+        g.Cam?.Snap();
+        Log.Info("gfx", $"probe: hero behind {parts[1]} #{nth} at ({pick.s.Pos.X:0.0}, {pick.s.Pos.Y:0.0}) r={pick.s.Radius:0.00} scale={pick.s.Scale:0.00}; standing at ({pick.at.X:0.0}, {pick.at.Y:0.0})");
+    }
+
+    private static int Bone(Skeleton3D sk, params string[] words)
+    {
+        for (int i = 0; i < sk.GetBoneCount(); i++)
+        {
+            string n = sk.GetBoneName(i).ToLowerInvariant();
+            foreach (var w in words) if (n == w) return i;
+        }
+        for (int i = 0; i < sk.GetBoneCount(); i++)
+        {
+            string n = sk.GetBoneName(i).ToLowerInvariant();
+            foreach (var w in words) if (n.Contains(w)) return i;
+        }
+        return -1;
+    }
+
+    /// <summary>The evade, the run, the low-life hold and the walk into a boss, each at its second of the stop.</summary>
+    private void Staged(Game g)
+    {
+        var p = g.Player;
+        if (p == null) return;
+        var inv = CultureInfo.InvariantCulture;
+        if (_lifeFrac >= 0f && !p.Dead) p.Life = Mathf.Max(1f, p.MaxLife * _lifeFrac);
+        if (_uiOpen != null && !_uiDone && _t >= 1.5)
+        {
+            _uiDone = true;
+            g.Ui?.Open(_uiOpen[0], _uiOpen.Length > 1 ? _uiOpen[1] : null);
+        }
+        var vp = GetTree().Root.GetVisibleRect().Size;
+        if (_runAt >= 0 && _t >= _runAt && !_runOn)
+        {
+            _runOn = true;
+            if (_runSpeed > 0f) g.Hero.AddBuff(new BuffDef { Id = "probe_run", Name = "probe", Stat = Stat.MoveSpeed, Value = _runSpeed }, 30f);
+            Player.TestMouse = new Vector2(vp.X * 0.93f, vp.Y * 0.45f);
+            Player.TestLeft = true;
+            _poseLeft = 1.2;
+            Log.Info("gfx", $"probe: run to screen-right (move speed +{_runSpeed:0}%)");
+        }
+        if (_evadeAt >= 0 && _t >= _evadeAt && !_evadeDone)
+        {
+            _evadeDone = true;
+            Player.TestLeft = false;
+            Player.TestMouse = new Vector2(vp.X * 0.93f, vp.Y * 0.45f);
+            p.QueueEvade();
+            _poseLeft = 0.9;
+            Log.Info("gfx", "probe: evade to screen-right");
+        }
+        if (_hugAt >= 0 && _t >= _hugAt && !_hugDone)
+        {
+            _hugDone = true;
+            Monster big = null; float best = 1e9f;
+            foreach (var m in World.Monsters)
+            {
+                if (m == null || !IsInstanceValid(m) || m.Dead || m.Radius < 0.85f) continue;
+                float d = m.Pos2.DistanceTo(p.Pos2);
+                if (d < best) { best = d; big = m; }
+            }
+            if (big == null) Log.Warn("gfx", "probe: no boss or giant to walk into");
+            else
+            {
+                if (big.Life >= big.MaxLife - 0.5f) big.Life = big.MaxLife - 2f;       // a boss behind its sealed door sleeps (no processing) until it is provoked
+                p.Teleport(big.Pos2 + new Vector2(0.35f, 0.5f));
+                g.Cam?.Snap();
+                _hugTarget = big; _hugLog = 0;
+                Log.Info("gfx", $"probe: hero put on top of {big.Def?.Id} (radius {big.Radius:0.00}, hero radius {p.Radius:0.00})");
+            }
+        }
+        if (_hugTarget != null && IsInstanceValid(_hugTarget) && _hugLog < 6 && _t >= _hugAt + 0.25 * (_hugLog + 1))
+        {
+            _hugLog++;
+            Log.Info("gfx", string.Format(inv, "probe: hug +{0:0.00}s distance={1:0.00} m (bodies touch at {2:0.00})", _t - _hugAt, _hugTarget.Pos2.DistanceTo(p.Pos2), _hugTarget.Radius + p.Radius));
+        }
+        if (_poseLeft > 0)
+        {
+            _poseLeft -= GetProcessDeltaTime();
+            var cm = p.ActiveModel; var sk = cm?.Skeleton;
+            if (sk != null)
+            {
+                int head = Bone(sk, "head"), hips = Bone(sk, "pelvis", "hips", "root");
+                if (head >= 0 && hips >= 0)
+                {
+                    var a = sk.GlobalTransform * sk.GetBoneGlobalPose(hips).Origin; var b = sk.GlobalTransform * sk.GetBoneGlobalPose(head).Origin;
+                    var up = b - a;
+                    float tilt = up.LengthSquared() > 1e-6f ? Mathf.RadToDeg(up.Normalized().AngleTo(Vector3.Up)) : 0f;
+                    Log.Info("gfx", string.Format(inv, "pose t={0:0.000} clip={1} at={2:0.00}s tilt={3:0}deg hipsY={4:0.00} headY={5:0.00} busy={6}", _t, cm.Current, cm.Anim != null ? cm.Anim.CurrentAnimationPosition : 0, tilt, a.Y, b.Y, p.Busy));
+                }
+            }
+        }
+    }
+
+    // ───────────── clip viewer ─────────────
+
+    private List<(string clip, float rate)> _clips;
+    private int _clipIndex = -1, _clipShot;
+    private double _clipT0;
+    private static readonly double[] ClipShots = { 0.08, 0.2, 0.32, 0.5 };
+
+    private void ClipViewer(Game g)
+    {
+        var p = g.Player;
+        if (p == null) return;
+        if (_clips == null)
+        {
+            _clips = new List<(string, float)>();
+            string spec = _clipSpec ?? A("gfx-clips");
+            if (!string.IsNullOrWhiteSpace(spec))
+                foreach (var part in spec.Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries))
+                {
+                    int at = part.IndexOf('@');
+                    float rate = at > 0 && float.TryParse(part[(at + 1)..], NumberStyles.Float, CultureInfo.InvariantCulture, out float r) ? r : 1f;
+                    _clips.Add((at > 0 ? part[..at] : part, rate));
+                }
+        }
+        if (_clips.Count == 0) return;
+        double start = _clipAt >= 0 ? _clipAt : double.TryParse(A("gfx-clips-at"), NumberStyles.Float, CultureInfo.InvariantCulture, out double s0) ? s0 : 5.0;
+        if (_t < start) return;
+        var cm = p.ActiveModel;
+        if (cm == null) return;
+        if (_clipIndex < 0 || _t - _clipT0 > 0.75)
+        {
+            _clipIndex++;
+            if (_clipIndex >= _clips.Count)
+            {
+                if (_clipIndex == _clips.Count) { p.SetProcess(true); Log.Info("gfx", "probe: clip viewer done"); }
+                _clipIndex = _clips.Count + 1; _clipT0 = _t;
+                return;
+            }
+            p.SetProcess(false);                              // its controller would put the idle clip back every frame
+            p.Rotation = new Vector3(0f, Mathf.Pi * 0.5f, 0f);
+            _clipT0 = _t; _clipShot = 0;
+            cm.Play(_clips[_clipIndex].clip, _clips[_clipIndex].rate, 0.05f, true);
+            Log.Info("gfx", $"probe: clip {_clips[_clipIndex].clip} at rate {_clips[_clipIndex].rate:0.##}, length {(cm.Anim != null && cm.Anim.HasAnimation(_clips[_clipIndex].clip) ? cm.Anim.GetAnimation(_clips[_clipIndex].clip).Length : 0):0.00} s");
+            return;
+        }
+        if (_clipIndex < _clips.Count && _clipShot < ClipShots.Length && _t - _clipT0 >= ClipShots[_clipShot])
+        {
+            _clipShot++;
+            var stop = new Stop { Label = $"clip_{_clips[_clipIndex].clip}_r{_clips[_clipIndex].rate:0.##}".Replace('.', 'p') };
+            Shoot(stop, _clipShot);
+        }
     }
 
     // ───────────── cost sweep ─────────────
@@ -539,6 +861,6 @@ public partial class EnvProbe : Node
                 holder.Rotation = new Vector3(0f, Mathf.Pi * 0.5f, 0f);
                 holder.AddChild(Fx.ProjectileVisual(els[i], i % 2, 0.4f, "", h == 1));
             }
-        if (A("gfx-fx") == "2") { Fx.LevelUp(p); Fx.Heal(p); }
+        if ((_fxArg ?? A("gfx-fx")) == "2") { Fx.LevelUp(p); Fx.Heal(p); }
     }
 }

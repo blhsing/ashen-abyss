@@ -542,7 +542,7 @@ public static class LevelThemes
         A(new LevelTheme
         {
             Id = "cathedral", Scatter = 0.05f, GroundGloss = 0.6f, Wet = 0.1f, MistDensity = 0.02f,
-            Ground = "marble_floor", GroundAlt = "cracked_tiles", Path = "red_carpet", RoomFloor = "marble_checker", ArenaFloor = "ornate_tiles",
+            Ground = "marble_floor", GroundAlt = "cracked_tiles", Path = "red_carpet", RoomFloor = "worn_marble", ArenaFloor = "ornate_tiles",
             WallTex = "gothic_stone", WallTopTex = "gothic_stone", PitKind = "void", Sky = "cave", Weather = "dust", Footstep = "footstep_stone",
             WallHeight = 6.4f, FogDensity = 0.013f, AmbientEnergy = 0.5f, SunEnergy = 0.14f, TorchRange = 12f,
             Ambient = C(0.34f, 0.37f, 0.47f), FogColor = C(0.2f, 0.23f, 0.3f), SunColor = C(0.78f, 0.84f, 1f), Accent = C(0.95f, 0.95f, 1f), TorchColor = Fire2200,

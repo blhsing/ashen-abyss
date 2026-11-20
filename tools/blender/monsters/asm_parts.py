@@ -26,7 +26,7 @@ import kit_boss as KX
 from monlib import V, tube, ellipsoid, box, join, revolve, torus, hang, arc_pts, band, unit
 
 PARTS = {}
-EXTRA = ['asm_parts2', 'asm_parts3', 'asm_parts4', 'asm_parts5', 'asm_parts6', 'asm_parts7', 'asm_parts8', 'asm_parts9']        # more part modules, imported at the bottom if they exist
+EXTRA = ['asm_parts2', 'asm_parts3', 'asm_parts4', 'asm_parts5', 'asm_parts6', 'asm_parts7', 'asm_parts8', 'asm_parts9', 'asm_parts10']        # more part modules, imported at the bottom if they exist
 
 
 def part(fn):

@@ -83,21 +83,22 @@ ONNX Runtime + DirectML (CosyVoice 3 and BreezyVoice ship an official ONNX expor
 estimator), Vulkan GGUF runtimes (VoxCPM2: VoxCPM.cpp / llama.cpp-omni, community ports), else CPU.
 
 <!-- pause-state-start -->
-## State when the run was paused (2026-11-19 00:41)
+## State when the run was paused (2026-11-21 00:53)
 
-- **99 of 207 ids have audio** in `Y:\game\assets\audio\vo` (every file decoded and checked: mono 44.1 kHz OGG Vorbis, complete, identical to the validated staging file, made from the current anchor of its voice).
-- Voices with audio: narrator 16/19, elder 66/66, merchant 8/8, boss_gravedigger 3/4, boss_rimelord 3/4, boss_osaros 3/4.
-- Voices designed and audited so far: boss_gravedigger, boss_osaros, boss_rimelord, elder, merchant, narrator. Audit results: table below.
-- Anchor designed but not yet audited (the run stopped while making its first lines): boss_bishop.
+- **130 of 207 ids have audio** in `Y:\game\assets\audio\vo` (every file decoded and checked: mono 44.1 kHz OGG Vorbis, complete, identical to the validated staging file, made from the current anchor of its voice).
+- Voices with audio: narrator 19/19, elder 66/66, merchant 8/8, boss_gravedigger 4/4, boss_rimelord 4/4, boss_bishop 4/4, boss_mire_mother 4/4, boss_sand_tyrant 4/4, boss_grand_hush 4/4, boss_osaros 4/4, boss_sh_wastes 1/1, boss_sh_frost 1/1, boss_sh_crypt 1/1, boss_sh_mire 1/1, boss_sh_sands 1/1, boss_sh_sanctum 1/1, boss_sh_abyss 1/1, boss_wb_firstbearer 1/1, boss_firstkeeper 1/1.
+- Voices designed and audited so far: boss_bishop, boss_firstkeeper, boss_grand_hush, boss_gravedigger, boss_mire_mother, boss_osaros, boss_rimelord, boss_sand_tyrant, boss_sh_abyss, boss_sh_crypt, boss_sh_frost, boss_sh_mire, boss_sh_sanctum, boss_sh_sands, boss_sh_wastes, boss_wb_firstbearer, elder, merchant, narrator. Audit results: table below.
+- Anchor designed but not yet audited (the run stopped while making its first lines): occultist.
 - Removed from the game folder because they were takes of a rejected voice: none.
-- Still to record: 108 ids - narrator 16/19, occultist 0/11, smith 0/9, jeweler 0/7, villager_m 0/5, villager_f 0/5, boss_gravedigger 3/4, boss_rimelord 3/4, boss_bishop 0/4, boss_mire_mother 0/4, boss_sand_tyrant 0/4, boss_grand_hush 0/4, boss_osaros 3/4, hero_emberblade 0/5, hero_astromancer 0/5, hero_hunter 0/5, hero_soulbinder 0/5, hero_wildsoul 0/5, hero_forgebody 0/5, hero_lampknight 0/5, hero_pactbinder 0/5, boss_sh_wastes 0/1, boss_sh_frost 0/1, boss_sh_crypt 0/1, boss_sh_mire 0/1, boss_sh_sands 0/1, boss_sh_sanctum 0/1, boss_sh_abyss 0/1, boss_wb_firstbearer 0/1, boss_firstkeeper 0/1.
-- Resume with `gen.py all` (see `RUNNING.txt`); nothing has to be redone.
+- Still to record: 77 ids - occultist 0/11, smith 0/9, jeweler 0/7, villager_m 0/5, villager_f 0/5, hero_emberblade 0/5, hero_astromancer 0/5, hero_hunter 0/5, hero_soulbinder 0/5, hero_wildsoul 0/5, hero_forgebody 0/5, hero_lampknight 0/5, hero_pactbinder 0/5.
+- Resume with `gen.py all` (see `RUNNING.txt`); nothing has to be redone except the four voices below.
+- To redo on resume, AFTER gen.py all finishes (descriptions already rewritten in voices.py for the first three): boss_sand_tyrant (failed all 3 rounds: 232-340 Hz, lines delivered and marked LISTEN), boss_sh_wastes and boss_sh_frost (passed pitch/classifier but harmonics-to-noise 4.0 / 4.1 dB, under the 5.5 dB boss floor), boss_sh_sands (failed all 3 rounds: 139-178 Hz, wanted 85-140; needs a lower description). For each: gen.py all --voice <v> --force (Idle priority).
 <!-- pause-state-end -->
 
 <!-- voice-audit-start -->
 ## Voice audit - does every designed voice measure as its character?
 
-Written by `gen.py` (2026-11-19 00:35). Gates: (1) median pitch of the anchor inside the range wanted for the
+Written by `gen.py` (2026-11-21 00:50). Gates: (1) median pitch of the anchor inside the range wanted for the
 character, and of its first three lines within 10 % of it (men at most 150 Hz - the elder 140 Hz -, women at least
 165 Hz); (2) the male / female classifier of `gender.py` (CAM++ speaker embeddings, calibrated on the 100 labelled
 Kokoro speakers: 0.99 cross-validated accuracy there; on VoxCPM2 voices a man must score at least
@@ -124,9 +125,25 @@ Kokoro speakers: 0.99 cross-validated accuracy there; on VoxCPM2 voices a man mu
 | hero_pactbinder | man, adult | 95-150 | - | - | - | not designed yet | - |
 | boss_gravedigger | old man | 70-120 | 77 | 79 (3) | 0.67 / 0.62 | pass | kept |
 | boss_rimelord | man, middle-aged soldier | 75-125 | 103 | 101 (3) | 0.71 / 0.69 | pass | kept |
-| boss_bishop | woman, elderly cleric (she in the script) | 175-290 | - | - | - | not designed yet | - |
-| boss_mire_mother | woman, middle-aged | 165-235 | - | - | - | not designed yet | - |
-| boss_sand_tyrant | man, middle-aged king | 90-150 | - | - | - | not designed yet | - |
-| boss_grand_hush | old man | 90-150 | - | - | - | not designed yet | - |
+| boss_bishop | woman, elderly cleric (she in the script) | 175-290 | 254 | 254 (3) | 0.39 / 0.35 | pass | kept |
+| boss_mire_mother (rejected) | woman, middle-aged | 165-235 | 239 | 208 (3) | 0.29 / 0.3 | **failed** (pitch) | rejected, designed again; its lines were discarded |
+| boss_mire_mother (rejected) | woman, middle-aged | 165-235 | 176 | 86 (3) | 0.37 / 0.42 | **failed** (pitch) | rejected, designed again; its lines were discarded |
+| boss_mire_mother | woman, middle-aged | 165-235 | 235 | 216 (3) | 0.45 / 0.44 | pass | kept (design round 3) |
+| boss_sand_tyrant (rejected) | man, middle-aged king | 90-150 | 250 | 271 (3) | 0.63 / 0.56 | **failed** (pitch classifier) | rejected, designed again; its lines were discarded |
+| boss_sand_tyrant (rejected) | man, middle-aged king | 90-150 | 232 | 262 (3) | 0.72 / 0.75 | **failed** (pitch) | rejected, designed again; its lines were discarded |
+| boss_sand_tyrant | man, middle-aged king | 90-150 | 276 | 320 (3) | 0.64 / 0.63 | **failed** (pitch) | kept after three design rounds - no design passed both gates: LISTEN |
+| boss_grand_hush | old man | 90-150 | 99 | 100 (3) | 0.66 / 0.63 | pass | kept |
 | boss_osaros | man, ageless | 65-125 | 124 | 117 (3) | 0.55 / 0.52 | **failed** (classifier) | kept: chosen by the user by ear on the choice page |
+| boss_sh_wastes | man, middle-aged (swollen outpost captain who swallowed the beacon's ember) | 75-135 | 99 | 101 (1) | 0.68 / 0.66 | pass | kept |
+| boss_sh_frost | man, middle-aged castellan (fallen knight) | 80-135 | 111 | 129 (1) | 0.72 / 0.62 | pass | kept |
+| boss_sh_crypt | man, adult (oath-broken barrow warden) | 85-140 | 105 | 107 (1) | 0.69 / 0.63 | pass | kept |
+| boss_sh_mire | old man, huge (stockade master of the bog) | 70-125 | 97 | 106 (1) | 0.69 / 0.74 | pass | kept |
+| boss_sh_sands (rejected) | brass custodian (construct; male register) | 85-140 | 139 | 158 (1) | 0.75 / 0.71 | **failed** (pitch) | rejected, designed again; its lines were discarded |
+| boss_sh_sands (rejected) | brass custodian (construct; male register) | 85-140 | 170 | 198 (1) | 0.63 / 0.63 | **failed** (pitch) | rejected, designed again; its lines were discarded |
+| boss_sh_sands | brass custodian (construct; male register) | 85-140 | 178 | 189 (1) | 0.67 / 0.66 | **failed** (pitch) | kept after three design rounds - no design passed both gates: LISTEN |
+| boss_sh_sanctum | man, adult knight-commander | 85-140 | 96 | 99 (1) | 0.7 / 0.7 | pass | kept |
+| boss_sh_abyss | man, huge brute (ember-eater) | 70-125 | 101 | 99 (1) | 0.79 / 0.81 | pass | kept |
+| boss_wb_firstbearer (rejected) | old man, giant (the oldest fuel-bearer) | 65-120 | 101 | 100 (1) | 0.64 / 0.59 | **failed** (classifier) | rejected, designed again; its lines were discarded |
+| boss_wb_firstbearer | old man, giant (the oldest fuel-bearer) | 65-120 | 106 | 96 (1) | 0.64 / 0.64 | pass | kept (design round 2) |
+| boss_firstkeeper | woman, adult (the first lamp-keeper; warm) | 170-260 | 225 | 242 (1) | 0.17 / 0.19 | pass | kept |
 <!-- voice-audit-end -->

@@ -205,6 +205,87 @@ public static class WorldObjects
         return n;
     }
 
+    // ── [gfx 0.3, item 11] gateways: the gate is the portal (Gateways.cs builds it, Fx.Veil fills its opening) ──
+
+    /// <summary>
+    /// OFF for the 0.3.0 release: the built gateways compile but had not been seen on screen when work was paused, so
+    /// every way in / way out is built as in 0.2.0 (the arch with the round swirl). EnvProbe's --gfx-gates switches
+    /// them on for a test run; flip the default once all regions, dungeons and the rift stone have been looked at.
+    /// </summary>
+    public static bool BuiltGateways = false;
+
+    /// <summary>A kit surface laid in world metres (for unit meshes stretched into slabs and monoliths; static things only).</summary>
+    private static Material TexW(string set, Color fallback)
+    {
+        string key = "tw" + set;
+        if (!Mats.TryGetValue(key, out var m))
+        {
+            try { m = LevelBuilder.Surface(set, 1f, true); }
+            catch (Exception e) { Log.Warn("objects", $"surface '{set}' unavailable: {e.Message}"); }
+            Mats[key] = m;
+        }
+        return m ?? Flat(fallback);
+    }
+
+    /// <summary>Metres from a spot to the nearest wall, pit or blocking prop, looked for up to <paramref name="upTo"/> (0 when the spot itself is blocked).</summary>
+    private static float FreeAround(Vector2 at, float upTo)
+    {
+        var g = World.Grid;
+        if (g == null) return upTo;
+        if (!g.WalkAt(at)) return 0f;
+        float free = upTo;
+        for (int i = 0; i < 16 && free > 0.25f; i++)
+        {
+            var d = Vector2.FromAngle(i * Mathf.Tau / 16f);
+            for (float s = 0.25f; s < free; s += 0.25f)
+                if (!g.WalkAt(at + d * s)) { free = s; break; }
+        }
+        return free;
+    }
+
+    /// <summary>
+    /// Where a portal may stand near <paramref name="pos"/>: the spot within <paramref name="reach"/> metres that keeps
+    /// <paramref name="need"/> metres clear of walls and blocking props, or the clearest one there is (level generators
+    /// put a way out on the last cell before the rim, where a ring of stones would stand half inside the border).
+    /// </summary>
+    private static Vector2 PortalSpot(Vector2 pos, float need, out float free, float reach = 3f)
+    {
+        free = FreeAround(pos, need);
+        if (free >= need) return pos;
+        Vector2 best = pos;
+        float bestScore = free;
+        for (float r = 0.5f; r <= reach; r += 0.5f)
+            for (int i = 0; i < 12; i++)
+            {
+                var at = pos + Vector2.FromAngle(i * Mathf.Tau / 12f) * r;
+                float f = FreeAround(at, need);
+                float score = f - r * 0.06f;                 // nearer is better at equal clearance
+                if (score > bestScore + 0.04f) { bestScore = score; best = at; free = f; }
+            }
+        if (best != pos) Log.Info("objects", $"portal moved {best.DistanceTo(pos):0.0} m off its marker at ({pos.X:0},{pos.Y:0}) to stand clear ({free:0.0} m free)");
+        return best;
+    }
+
+    /// <summary>
+    /// One gateway: the gate built in the manner of the level's region (Gateways.Build) and, filling its rectangular
+    /// opening, the veil that is the portal. The jambs are solid. Returns the height of the opening.
+    /// </summary>
+    private static float Gateway(Interactable it, Vector2 pos, float facing, float free, Color veil, float gain, bool grand)
+    {
+        // the opening: a hero and a half wide and well over head height; narrower where the place is tight
+        float w = free >= 2.3f ? (grand ? 2.7f : 2.5f) : free >= 1.95f ? 2.2f : 1.9f;
+        float h = grand ? 3.2f : 3.0f;
+        Gateways.Build(it, facing, pos, w, h, veil, grand);
+        var fx = Fx.Veil(veil, w - 0.04f, h - 0.02f, gain);
+        Attach(it, fx, new Vector3(0, 0.06f, 0));
+        fx.Rotation = new Vector3(0, -facing, 0);                        // like the gate: across world X, face-on to the lens
+        var grid = World.Grid;
+        if (grid != null && free >= 1.6f)
+            foreach (float s in new[] { -1f, 1f })
+                grid.AddObstacle(pos + new Vector2(s * (w * 0.5f + 0.38f), 0f), 0.36f);      // the jambs; the opening stays free
+        return h;
+    }
+
     private static Node3D Bowl(Material stone, Material metal, float radius, float standHeight)
     {
         var n = new Node3D { Name = "bowl" };
@@ -527,13 +608,25 @@ public static class WorldObjects
     public static Interactable Entrance(Vector2 pos, DungeonDef d, RegionDef region, float facing = 0f)
     {
         Color col = d.Story ? Palette.Danger : region?.Accent ?? Palette.Ember;
-        var it = Make("entrance", pos, d.Name, d.Story ? Palette.Ember : Palette.Text, 3f, 3.2f, facing);
+        float free = 3f;
+        if (BuiltGateways) pos = PortalSpot(pos, 2.4f, out free, 2.5f);
+        var it = Make("entrance", pos, d.Name, d.Story ? Palette.Ember : Palette.Text, 3f, BuiltGateways ? 3.9f : 3.2f, facing);
         bool cleared = Game.I?.Hero != null && Game.I.Hero.D.Has("dg_" + d.Id);
         it.Sub = (d.Story ? "首領巢穴" : "地城") + (cleared ? "（已淨化）" : "");
         it.Tag = d;
-        it.AddChild(Arch(Tex("rough_stone_wall", DarkStone), 2.4f, 2.9f));
-        Attach(it, Fx.Portal(col, 1.25f), new Vector3(0, 1.45f, 0));
-        Light(it, col, 1.3f, 7f, 1.8f);
+        // [gfx 0.3, item 11] The gate is the portal: a built gate of the region with a veil filling its opening. (It was
+        // an arch of three boxes with a round swirl hung 1.45 m up inside it, half of it in the lintel.)
+        if (BuiltGateways)
+        {
+            Gateway(it, pos, facing, free, col, 0.62f, true);
+            Light(it, col, 0.9f, 7f, 1.8f);
+        }
+        else
+        {
+            it.AddChild(Arch(Tex("rough_stone_wall", DarkStone), 2.4f, 2.9f));
+            Attach(it, Fx.Portal(col, 1.25f), new Vector3(0, 1.45f, 0));
+            Light(it, col, 1.3f, 7f, 1.8f);
+        }
         it.OnUse = p =>
         {
             bool open = true;
@@ -550,11 +643,18 @@ public static class WorldObjects
     public static Interactable Exit(Vector2 pos, string toArea, float facing = 0f)
     {
         string name = ZoneDb.AreaName(toArea);
-        var it = Make("exit", pos, $"前往{name}", Palette.Text, 3f, 3.0f, facing);
+        float free = 3f;
+        if (BuiltGateways) pos = PortalSpot(pos, 2.3f, out free, 2.5f);
+        var it = Make("exit", pos, $"前往{name}", Palette.Text, 3f, BuiltGateways ? 3.7f : 3.0f, facing);
         it.Tag = toArea;
-        it.AddChild(Arch(Tex("drystone_wall", Stone), 2.4f, 2.7f));
         Color col = toArea == ZoneDb.Town ? Warm : ZoneDb.Region(toArea)?.Accent ?? new Color(0.7f, 0.8f, 1f);
-        Attach(it, Fx.Portal(col, 1.15f), new Vector3(0, 1.35f, 0));
+        // [gfx 0.3, item 11] The gate is the portal (see Gateway). The way back is the dimmer, colder veil.
+        if (BuiltGateways) Gateway(it, pos, facing, free, col.Lerp(new Color(0.55f, 0.68f, 1f), 0.5f), 0.45f, false);
+        else
+        {
+            it.AddChild(Arch(Tex("drystone_wall", Stone), 2.4f, 2.7f));
+            Attach(it, Fx.Portal(col, 1.15f), new Vector3(0, 1.35f, 0));
+        }
         Light(it, col, 0.9f, 6f, 1.8f);
         it.OnUse = p =>
         {
@@ -573,7 +673,7 @@ public static class WorldObjects
         var it = Make("portal", pos, label, Palette.Gold, 2.8f, 2.9f);
         it.Sub = sub ?? "";
         Part(it, TorusM, Glow(c, 2f), new Vector3(0, 0.08f, 0), new Vector3(1.3f, 1f, 1.3f), default, false);
-        Attach(it, Fx.Portal(c, 1.2f), new Vector3(0, 1.4f, 0));
+        Attach(it, Fx.Portal(c, 1.2f), new Vector3(0, BuiltGateways ? 0.02f : 1.4f, 0));       // [gfx 0.3, item 11] on the ground inside its ring (it hung 1.4 m above it)
         Light(it, c, 1.3f, 7f, 1.6f);
         if (it.IsInsideTree())
         {
@@ -676,7 +776,8 @@ public static class WorldObjects
         Part(it, ConeM, obsidian, new Vector3(-0.2f, 1.4f, 0), new Vector3(0.8f, 2.6f, 0.6f), new Vector3(0, 0, 6));
         Part(it, ConeM, obsidian, new Vector3(0.55f, 0.85f, 0.1f), new Vector3(0.5f, 1.5f, 0.45f), new Vector3(0, 0, -12));
         Part(it, BoxM, Glow(Hush, 3.5f), new Vector3(-0.2f, 1.5f, 0.26f), new Vector3(0.07f, 1.7f, 0.05f), new Vector3(0, 0, 6), false);
-        Attach(it, Fx.Portal(Hush, 0.5f), new Vector3(0.25f, 2.3f, 0));
+        if (BuiltGateways) Attach(it, Fx.Portal(Hush, 0.5f, false), new Vector3(0.62f, 2.3f, 0.1f));
+        else Attach(it, Fx.Portal(Hush, 0.5f), new Vector3(0.25f, 2.3f, 0));     // [gfx 0.3, item 11] a vortex held over the lesser shard, clear of both stones (no pool in mid-air)
         Light(it, Hush, 1.2f, 6f, 1.8f);
         Block(pos, 0.8f);
         it.OnUse = _ => Game.I?.Ui?.Open("rift");

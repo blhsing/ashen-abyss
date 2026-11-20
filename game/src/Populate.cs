@@ -40,6 +40,19 @@ public static class Populate
         public readonly List<(MonsterDef d, float w)> All = new(), Core = new(), Ranged = new(), Bruiser = new(), Leaders = new();
         /// <summary>The bestiary's families in this level (null: the region has no family table — the flat list above is used).</summary>
         public List<FamPool> Fams;
+        /// <summary>How many of each type this level has placed so far: types not yet seen are favoured, so that a region's
+        /// rarer members (a cage-bearer, a moth cloud, a guest giant) show up on most visits.</summary>
+        public readonly Dictionary<string, int> Placed = new();
+        public int Packs;          // family packs placed so far in this level (the pull of unseen families grows with it)
+        public bool Unseen(List<(MonsterDef d, float w)> pool) { foreach (var e in pool) if (!Placed.ContainsKey(e.d.Id)) return true; return false; }
+        public MonsterDef PickFresh(List<(MonsterDef d, float w)> pool, Random rng)
+        {
+            float total = 0f;
+            foreach (var e in pool) total += e.w * (Placed.ContainsKey(e.d.Id) ? 1f : 4f);
+            float x = (float)rng.NextDouble() * total;
+            foreach (var e in pool) { x -= e.w * (Placed.ContainsKey(e.d.Id) ? 1f : 4f); if (x <= 0f) return e.d; }
+            return pool[^1].d;
+        }
         public string Note = "";
     }
 
@@ -140,6 +153,20 @@ public static class Populate
         return list[^1].d;
     }
 
+    /// <summary>The pack's family by weight, a family with types this level has not placed yet counting 1.6 times.</summary>
+    private static FamPool PickFamFresh(Roster ro, List<FamPool> fams, Random rng, Func<FamPool, bool> ok)
+    {
+        float pull = 1.6f + 0.12f * ro.Packs;
+        float W(FamPool p) => p.W * (ro.Unseen(p.Core) || ro.Unseen(p.Back) || ro.Unseen(p.Heavy) || ro.Unseen(p.Special) || ro.Unseen(p.Placed) || ro.Unseen(p.Cloud) || ro.Unseen(p.Giant) ? pull : 1f);
+        float total = 0f;
+        foreach (var p in fams) if (ok(p)) total += W(p);
+        if (total <= 0f) return null;
+        float x = (float)rng.NextDouble() * total;
+        foreach (var p in fams) { if (!ok(p)) continue; x -= W(p); if (x <= 0f) return p; }
+        foreach (var p in fams) if (ok(p)) return p;
+        return null;
+    }
+
     private static FamPool PickFam(List<FamPool> fams, Random rng, Func<FamPool, bool> ok, FamPool not = null)
     {
         float total = 0f;
@@ -234,8 +261,9 @@ public static class Populate
         int cap = PackCap(L);
         int n = Math.Clamp(count, 1, cap), pack = L.NextPack();
         var list = into ?? new List<Monster>(n + 3);
-        var f = PickFam(fams, rng, p => !p.IsGuest && (p.HasLine || p.Back.Count > 0 || p.Heavy.Count > 0));
+        var f = PickFamFresh(ro, fams, rng, p => !p.IsGuest && (p.HasLine || p.Back.Count > 0 || p.Heavy.Count > 0));
         if (f == null) { ro.Fams = null; return Pack(L, pos, count, objective, into); }
+        ro.Packs++;
         // a family without swarmers or line melee (the frost pass's yak, lynx and bat) walks with another family's line
         var lineFam = f.HasLine ? f : PickFam(fams, rng, p => !p.IsGuest && p.HasLine, f);
         // a second family for the back line and the special now and then (packs of two or three families)
@@ -243,10 +271,12 @@ public static class Populate
         var backFrom = f.Back.Count > 0 && (partner == null || partner.Back.Count == 0 || rng.NextDouble() < 0.5) ? f : partner?.Back.Count > 0 ? partner : null;
         var specialFrom = f.Special.Count > 0 && (partner == null || partner.Special.Count == 0 || rng.NextDouble() < 0.6) ? f : partner?.Special.Count > 0 ? partner : null;
         int left = n;
-        void Add(Monster m, bool obj = true) { if (m == null) return; m.Objective = objective && obj; list.Add(m); }
+        // ambushers placed round an objective pack are not its carriers: they stay out of the list the objective counts
+        void Add(Monster m, bool obj = true) { if (m == null) return; m.Objective = objective && obj; if (obj || !objective) list.Add(m); }
         Monster Put(MonsterDef d, float rMin, float rMax, int packId = -1)
         {
             var m = SpawnOne(L, d, MonTier.Normal, Scatter(L, pos, rMin, rMax), packId < 0 ? pack : packId);
+            ro.Placed.TryGetValue(d.Id, out int pc); ro.Placed[d.Id] = pc + 1;
             Add(m);
             // the ash-handler's hounds come with him and count toward the pack
             if (d.Is(MonTrait.Escort) && d.Ai.EscortDefs != null)
@@ -265,16 +295,17 @@ public static class Populate
         }
         // one guest giant at most: the pack family's own colossus, or a Fuel-bearer / an engine of the region walking with
         // someone else's pack (those families never make packs of their own); not before level 4
-        if (L.MonsterLevel >= 4 && left >= 3 && rng.NextDouble() < (f.Giant.Count > 0 ? 0.25 : 0.12))
+        bool giantsUnseen = fams.Any(p => p.Giant.Count > 0 && ro.Unseen(p.Giant));
+        if (L.MonsterLevel >= 4 && left >= 3 && rng.NextDouble() < (f.Giant.Count > 0 ? (ro.Unseen(f.Giant) ? 0.6 : 0.25) : giantsUnseen ? 0.2 : 0.12))
         {
             MonsterDef giant = null;
-            if (f.Giant.Count > 0 && rng.NextDouble() < 0.75) giant = Pick(f.Giant, rng);
+            if (f.Giant.Count > 0 && rng.NextDouble() < 0.75) giant = ro.PickFresh(f.Giant, rng);
             else
             {
                 var guests = fams.Where(p => p.Giant.Count > 0 && (p.IsGuest || !p.HasLine)).ToList();
                 var gf = guests.Count > 0 ? PickFam(guests, rng, _ => true) : null;
-                if (gf != null) giant = Pick(gf.Giant, rng);
-                else if (f.Giant.Count > 0) giant = Pick(f.Giant, rng);
+                if (gf != null) giant = ro.PickFresh(gf.Giant, rng);
+                else if (f.Giant.Count > 0) giant = ro.PickFresh(f.Giant, rng);
             }
             if (giant != null) { Put(giant, 0.6f, 2.4f); left -= 2; }       // a giant takes two places of the pack
         }
@@ -282,9 +313,9 @@ public static class Populate
         // or ambushes at level 1
         int lv = L.MonsterLevel;
         // a swarm cloud drifts with the pack
-        if (lv >= 2 && f.Cloud.Count > 0 && left >= 2 && rng.NextDouble() < 0.55) { Put(Pick(f.Cloud, rng), 0.5f, 2f); left--; }
+        if (lv >= 2 && f.Cloud.Count > 0 && left >= 2 && rng.NextDouble() < (ro.Unseen(f.Cloud) ? 0.9 : 0.55)) { Put(ro.PickFresh(f.Cloud, rng), 0.5f, 2f); left--; }
         // one special (healer, reviver, mother, caller, aura or shield support)
-        if (lv >= 3 && specialFrom != null && left >= 3 && rng.NextDouble() < (specialFrom == f ? 0.4 : 0.3)) { Put(Pick(specialFrom.Special, rng), 2.5f, 4.5f); left--; }
+        if (lv >= 3 && specialFrom != null && left >= 3 && rng.NextDouble() < (ro.Unseen(specialFrom.Special) ? 0.75 : specialFrom == f ? 0.4 : 0.3)) { Put(ro.PickFresh(specialFrom.Special, rng), 2.5f, 4.5f); left--; }
         // the back line
         int back = 0;
         if (backFrom != null && left >= 3)
@@ -293,25 +324,28 @@ public static class Populate
             back = left >= 5 ? (x < 0.3 ? 0 : x < 0.75 ? 1 : 2) : (x < 0.55 ? 0 : 1);
             if (!f.HasLine && backFrom == f) back = Math.Max(back, 1);
         }
-        for (int i = 0; i < back && left > 0; i++, left--) Put(Pick(backFrom.Back, rng), 2.5f, 4.5f);
+        for (int i = 0; i < back && left > 0; i++, left--) Put(ro.PickFresh(backFrom.Back, rng), 2.5f, 4.5f);
         // a heavy (always one from a line-less family that has no back line of its own to show)
-        if (f.Heavy.Count > 0 && left >= 3 && rng.NextDouble() < (!f.HasLine && f.Back.Count == 0 ? 1.0 : f.HasLine ? 0.28 : 0.5)) { Put(Pick(f.Heavy, rng), 0.5f, 2.2f); left--; }
+        if (f.Heavy.Count > 0 && left >= 3 && rng.NextDouble() < (!f.HasLine && f.Back.Count == 0 ? 1.0 : ro.Unseen(f.Heavy) ? 0.6 : f.HasLine ? 0.28 : 0.5)) { Put(ro.PickFresh(f.Heavy, rng), 0.5f, 2.2f); left--; }
         // ambushers and emplacements are placed round the pack by the layout, in their own group (they wake on their own
         // trigger); they take places of the pack, so the level's density stays what it was
         var placedFrom = f.Placed.Count > 0 ? f : partner?.Placed.Count > 0 ? partner : null;
+        // a family that is nothing but ambushers (the abyss's roosting bats) never leads a pack: it lies in wait near others'
+        if (placedFrom == null && rng.NextDouble() < 0.3)
+            placedFrom = PickFam(fams, rng, p => p.Placed.Count > 0 && !p.HasLine && p.Back.Count == 0 && p.Heavy.Count == 0 && p.Special.Count == 0);
         int k = 0; MonsterDef placedDef = null;
-        if (lv >= 2 && placedFrom != null && left >= 2 && rng.NextDouble() < 0.6)
+        if (lv >= 2 && placedFrom != null && left >= 2 && rng.NextDouble() < (ro.Unseen(placedFrom.Placed) ? 0.9 : 0.6))
         {
             k = Math.Min(left - 1, 1 + (n >= 5 && rng.NextDouble() < 0.5 ? 1 : 0) + (n >= 8 && rng.NextDouble() < 0.4 ? 1 : 0));
-            placedDef = Pick(placedFrom.Placed, rng);
+            placedDef = ro.PickFresh(placedFrom.Placed, rng);
             left -= k;
         }
         // the core: one or two kinds of swarmer and line melee
         var core = lineFam != null && lineFam.HasLine ? lineFam.Core : f.Back.Count > 0 ? f.Back : f.Heavy;
         if (left > 0 && core.Count > 0)
         {
-            var a = Pick(core, rng);
-            var b = rng.NextDouble() < 0.35 ? Pick(core, rng) : a;
+            var a = ro.PickFresh(core, rng);
+            var b = rng.NextDouble() < 0.35 ? ro.PickFresh(core, rng) : a;
             for (int i = 0; i < left; i++) Put(i % 3 == 2 ? b : a, 0.4f, 1.6f + n * 0.3f);
             left = 0;
         }
@@ -323,6 +357,7 @@ public static class Populate
             {
                 Vector2 at = PlacedSpot(L, pos, d);
                 var m = SpawnOne(L, d, MonTier.Normal, at, ambush);
+                ro.Placed.TryGetValue(d.Id, out int pc); ro.Placed[d.Id] = pc + 1;
                 if (d.AI == MonAI.Turret) m.FaceDir(pos - m.Pos2);
                 Add(m, false);
             }

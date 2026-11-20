@@ -207,6 +207,12 @@ public partial class MainMenu : Control
                 _modal = null;
                 Go(Page.Title, true);
                 FadeIn(1.2f);
+                // back from 展示模式: the focus goes back where it was (after FocusDefault's own deferred call)
+                var back = _demoFocus;
+                _demoFocus = null;
+                _idleT = 0f;
+                if (back != null)
+                    Callable.From(() => { if (_modal == null && IsInstanceValid(back) && back.IsVisibleInTree() && back.FocusMode != FocusModeEnum.None) back.GrabFocus(); }).CallDeferred();
             }
         }
         GateBackdrops(vis);
@@ -214,6 +220,7 @@ public partial class MainMenu : Control
 
         dt = Mathf.Min(dt, 0.1f);
         _t += dt;
+        TickIdle(dt);
         if (_modal != null && !_modal.Alive) _modal = null;
 
         TuneBackdrop(false);
@@ -241,6 +248,7 @@ public partial class MainMenu : Control
     public override void _Input(InputEvent e)
     {
         if (!_built || !IsVisibleInTree()) return;
+        NoteActivity(e);
         try
         {
             if (_busy)
@@ -284,6 +292,57 @@ public partial class MainMenu : Control
             }
         }
         catch (Exception ex) { Log.Error("menu", "title screen input failed", ex); }
+    }
+
+    // ───────────────────────── 展示模式 (DemoMode.cs) ─────────────────────────
+
+    private float _idleT;
+    private Control _demoFocus;
+    private Vector2? _lastMouse;
+
+    /// <summary>Any key, button, stick or a real mouse move on the title screen restarts the idle clock.</summary>
+    private void NoteActivity(InputEvent e)
+    {
+        if (e.Device == TestBot.BotDevice) return;
+        switch (e)
+        {
+            case InputEventMouseMotion mm:
+            {
+                Vector2 d = mm.Relative;
+                if (d == Vector2.Zero && _lastMouse.HasValue) d = mm.Position - _lastMouse.Value;     // synthetic events carry no Relative
+                _lastMouse = mm.Position;
+                if (d.LengthSquared() > 9f) _idleT = 0f;
+                break;
+            }
+            case InputEventJoypadMotion jm: if (Mathf.Abs(jm.AxisValue) > 0.3f) _idleT = 0f; break;
+            case InputEventKey or InputEventMouseButton or InputEventJoypadButton: _idleT = 0f; break;
+        }
+    }
+
+    /// <summary>
+    /// The attract loop: after <see cref="DemoMode.IdleSeconds"/> without input on the title screen itself — not on the
+    /// other screens, not with a dialog open, not while the window is in the background or minimised — 展示模式 starts.
+    /// </summary>
+    private void TickIdle(float dt)
+    {
+        var g = Game.I;
+        bool armed = _page == Page.Title && _modal == null && !_busy && g != null && g.State == Game.GameState.Menu && g.Hero == null
+                     && g.AppFocused && !(g.Ui?.AnyOpen ?? false) && !DemoMode.Active
+                     && DisplayServer.WindowGetMode() != DisplayServer.WindowMode.Minimized;
+        if (!armed) { _idleT = 0f; return; }
+        _idleT += dt;
+        if (_idleT < DemoMode.IdleSeconds) return;
+        _idleT = 0f;
+        Log.Info("menu", $"title screen idle for {DemoMode.IdleSeconds:0.#} s: 展示模式 starts");
+        StartDemo(true);
+    }
+
+    private void StartDemo(bool attract)
+    {
+        if (_busy || DemoMode.Active) return;
+        _demoFocus = GetViewport().GuiGetFocusOwner();
+        Log.Info("menu", $"展示模式 ({(attract ? "idle" : "chosen")}); focus was on '{(_demoFocus as Button)?.Text ?? _demoFocus?.Name ?? "-"}'");
+        Leave(attract ? "attract demo" : "demo", () => DemoMode.Start(attract));
     }
 
     /// <summary>Opens a screen by name: title, new, load, settings or credits (used by the test harness).</summary>
@@ -747,6 +806,7 @@ public partial class MainMenu : Control
         AddEntry(list, "載入遊戲", () => Go(Page.Load));
         AddEntry(list, "設定", () => Go(Page.Settings));
         AddEntry(list, "製作名單", () => Go(Page.Credits));
+        AddEntry(list, "展示模式", () => StartDemo(false));          // DemoMode.cs
         AddEntry(list, "離開遊戲", OnQuit);
 
         // the two footers stand on the bottom edge and grow upward with the text
@@ -790,7 +850,7 @@ public partial class MainMenu : Control
             _crest.QueueRedraw();
         }
         if (_titleAxis && _titleGap != null && IsInstanceValid(_titleGap))
-            _titleGap.CustomMinimumSize = new Vector2(0, MathF.Round(44f - (UiTheme.TextScale - 1f) * 54f));
+            _titleGap.CustomMinimumSize = new Vector2(0, MathF.Max(4f, MathF.Round(44f - (UiTheme.TextScale - 1f) * 133f)));     // seven entries since 展示模式
     }
 
     /// <summary>The logo grows with the text-size setting only by a third of the way (×1.09 at 特大), so the menu under it keeps its room.</summary>
@@ -802,10 +862,10 @@ public partial class MainMenu : Control
 
     // the emblem over the name (design px at 標準): the scale of the piece, the height it reserves in the lockup, and how
     // far above the top of the name's line box the centre of its ring sits. The six entries under the lockup grow with
-    // the text and the screen does not, so the emblem shrinks a little as the text grows (×0.82 at 特大).
+    // the text and the screen does not, so the emblem shrinks as the text grows (×0.52 at 特大; seven entries since 展示模式).
     private const float CrestSize = 0.74f, CrestRoom = 112f, CrestAxis = 50f;
     private static readonly Color CrestTint = new(1f, 0.97f, 0.93f, 0.96f);
-    private static float CrestScale => 1f - (UiTheme.TextScale - 1f) * 0.6f;
+    private static float CrestScale => 1f - (UiTheme.TextScale - 1f) * 1.6f;      // ×0.52 at 特大: room for the seventh entry (展示模式)
 
     private void DrawCrest()
     {
@@ -1357,7 +1417,7 @@ public partial class MainMenu : Control
             try { tex = Icons.ForSkill(s); }
             catch (Exception e) { Log.Debug("menu", "skill icon unavailable: " + e.Message); }
             _skIcon[i].Texture = tex;
-            _skIcon[i].Modulate = cc.Lerp(Colors.White, 0.35f);
+            _skIcon[i].Modulate = Icons.Tint(tex, cc.Lerp(Colors.White, 0.35f));
             _skFrame[i].AddThemeStyleboxOverride("panel", SkillFrame(cc));
         }
 

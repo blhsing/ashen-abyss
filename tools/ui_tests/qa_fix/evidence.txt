@@ -1,0 +1,139 @@
+# QA UI fixes evidence run (items 1-5), 1600x900 windowed, text size 標準. Starts at the title screen.
+#   run.ps1 -GameArgs "--win --mute --uidir=Y:\shots\uiart\qa --uido=@Y:\tools\ui_tests\qa_fix\evidence.txt --quit-at=300" -Timeout 420 -Tag uiqa
+
+# ── item 1: class screen signature-skill icons ──
+wait 3.5
+menu class:lampknight
+wait 1.8
+shot q1_class_lampknight
+menu title
+wait 0.8
+
+# ── geared hero in town ──
+newgame lampknight 20 town
+give set
+give legendary
+give legendary
+give gem
+give gem
+gold 250000
+mats 300
+wait 4.5
+shot q1_hud_town
+
+# ── item 2: toasts + area title + warning + subtitle in town ──
+hud title 灰燼荒原|枯木與墳塚之地
+hud toast 新委託：哨站欠下的命、地窖裡的貨
+hud toast 灰燼荒原　名望 +100（斷燈哨站）
+hud toast 灰燼荒原名望「初識」：金幣 120、經驗 4,980
+hud toast 燼塔重燃——斷燈哨站已奪回
+wait 1.6
+shot q2_toasts_title
+hud warn 怒焰不足
+hud sub 引燈長老|燼火未熄，孩子。只要還有人肯往深處走，這座鎮就還沒有輸。
+wait 0.6
+shot q2_all_notices
+wait 4.5
+
+# ── item 1: inventory, vendors, skill tree ──
+open inventory
+wait 1.0
+shot q1_inventory
+close
+wait 0.3
+open vendor:merchant
+wait 0.9
+shot q1_vendor_merchant
+click @賭運
+wait 0.7
+shot q1_vendor_gamble
+close
+wait 0.3
+open vendor:jeweler
+wait 0.9
+shot q1_vendor_jeweler
+close
+wait 0.3
+points 4
+open skills
+wait 1.0
+shot q1_skills
+close
+wait 0.5
+
+# ── item 4: loot labels walking toward the minimap / tracker column ──
+drop
+wait 0.8
+click 300,640
+wait 0.3
+keydown Alt
+wait 0.3
+shot q4_loot_a
+wait 0.5
+shot q4_loot_b
+wait 0.5
+shot q4_loot_c
+wait 0.5
+shot q4_loot_d
+wait 0.6
+shot q4_loot_e
+keyup Alt
+wait 0.3
+
+# ── item 5: dungeon objective, boss alive vs. dead (掘墓者的墓園: no task, so the boss is the next step at once) ──
+newgame lampknight 30 wastes_boss
+wait 2.5
+shot q5_boss_alive_hud
+open map
+wait 1.0
+shot q5_boss_alive_map
+close
+wait 0.3
+boss
+wait 0.3
+hud title 掘墓者的墓園|灰燼荒原
+hud toast 封印之門開啟了
+hud toast 拾取：灰鑄斬劍
+hud toast 獲得 128 金幣
+wait 1.2
+shot q2_boss_frame_toasts
+boss
+wait 0.4
+boss
+wait 0.4
+boss
+wait 0.4
+boss
+wait 0.4
+boss
+wait 0.4
+boss
+wait 0.4
+boss
+wait 2.5
+close
+wait 0.5
+shot q5_boss_dead_hud
+open map
+wait 1.0
+shot q5_boss_dead_map
+close
+wait 0.5
+
+# ── item 3: death panel; notices fired just before dying must not show through ──
+hud toast 獲得 128 金幣
+hud toast 拾取：灰鑄斬劍
+hud title 灰燼荒原|枯木與墳塚之地
+hud warn 怒焰不足
+wait 0.3
+die
+wait 0.7
+shot q3_death_0.7s
+wait 1.1
+shot q3_death_1.8s_open0.7
+wait 1.3
+shot q3_death_3.1s_open2.0
+click @重生
+wait 2.0
+shot q3_after_respawn
+quit

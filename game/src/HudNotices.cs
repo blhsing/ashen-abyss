@@ -5,7 +5,7 @@ using System.Collections.Generic;
 namespace AshenAbyss;
 
 /// <summary>
-/// The HUD's transient messages, all drawn by one control: toasts (stacked under the boss bar), the red warning
+/// The HUD's transient messages, all drawn by one control: toasts (a lane down the upper left), the red warning
 /// line, the area title card, the level-up banner and the subtitle band for barks and voiced lines.
 /// Timers only run while the game is being played, so a title queued during loading is not lost.
 /// </summary>
@@ -20,8 +20,20 @@ public partial class HudNotices : Control
     private const int AreaTitleSize = 60, AreaSubSize = 26, BannerSize = 48, BannerSubSize = 24, ToastSize = 24, WarnSize = 28,
         SubtitleSize = 28, SpeakerSize = 24;
 
-    /// <summary>Where the first toast starts (top of its line), set by the HUD so the stack begins under the boss frame.</summary>
+    /// <summary>
+    /// Top of the toast lane (top of its first line), set by the HUD a little below the band of the boss frame.
+    /// Toasts run down a lane along the upper left (clear of the hero in the middle, of the boss frame at the top
+    /// centre and of the minimap / tracker column on the right).
+    /// </summary>
     public float ToastTop = 176f;
+    /// <summary>Left edge of the toast lane (the plaque's edge; the words start a plaque margin further in).</summary>
+    public float ToastLeft = 36f;
+    /// <summary>
+    /// Foot of the boss / target frame while one is up (0 when none), set by the HUD every frame: an area title card
+    /// that appears meanwhile stands below it.
+    /// </summary>
+    public float BossBottom;
+    private float _titleY = -1f;          // baseline of the area title card, chosen when it appears (see Paint)
     /// <summary>Distance from the bottom of the screen to the bottom of the subtitle text (clear of the action bar and its buffs).</summary>
     public float SubtitleBottom = 318f;
     private int _linePx;
@@ -85,7 +97,7 @@ public partial class HudNotices : Control
     public void AreaTitle(string name, string subtitle)
     {
         if (string.IsNullOrEmpty(name)) return;
-        _title = name; _titleSub = subtitle ?? ""; _titleT = 0f; _idle = false;
+        _title = name; _titleSub = subtitle ?? ""; _titleT = 0f; _titleY = -1f; _idle = false;
     }
 
     public void Banner(string title, string sub, Color c)
@@ -147,6 +159,7 @@ public partial class HudNotices : Control
     {
         _lineWidth = 0f;
         _linePx = 0;
+        _titleY = -1f;
         QueueRedraw();
     }
 
@@ -156,6 +169,14 @@ public partial class HudNotices : Control
         var pos = new Vector2(dx, baseline);
         DrawStringOutline(f, pos, s, HorizontalAlignment.Center, Size.X, size, outline, new Color(0f, 0f, 0f, 0.85f * col.A));
         DrawString(f, pos, s, HorizontalAlignment.Center, Size.X, size, col);
+    }
+
+    /// <summary>One left-aligned, outlined line starting at x (the toast lane). <paramref name="size"/> is the final pixel size.</summary>
+    private void LineAt(Font f, float x, float baseline, string s, int size, Color col, int outline)
+    {
+        var pos = new Vector2(x, baseline);
+        DrawStringOutline(f, pos, s, HorizontalAlignment.Left, -1f, size, outline, new Color(0f, 0f, 0f, 0.85f * col.A));
+        DrawString(f, pos, s, HorizontalAlignment.Left, -1f, size, col);
     }
 
     /// <summary>A hairline that fades out toward both ends, centred on x.</summary>
@@ -222,18 +243,30 @@ public partial class HudNotices : Control
         Vector2 s = Size;
         float cx = s.X * 0.5f;
         Font title = UiTheme.Title, body = UiTheme.Body;
-        float titleBottom = 0f;           // toasts step below the title card while it is on screen
 
-        // ── area title card ──
+        // ── area title card: upper third, above the hero; its soft veil stays clear of the boss frame ──
         if (_titleT < TitleLife && _title != null)
         {
             int big = UiTheme.Fs(AreaTitleSize), sub = UiTheme.Fs(AreaSubSize);
             float a = Fade(_titleT, TitleLife, 0.7f, 1.1f);
-            float y = s.Y * 0.25f;
+            float asc = title.GetAscent(big);
+            float ruleOff = MathF.Round(title.GetDescent(big) * 0.7f) + 4f;
+            float below = ruleOff + 8f + (_titleSub.Length > 0 ? body.GetHeight(sub) : 0f) + 10f;   // baseline to the card's foot
+            float cardH = asc + 4f + below;
+            // where the card stands is chosen when it appears and kept for its life: in the upper fifth of the screen,
+            // below a boss / target frame that is up then (with its soft veil, which reaches about half the card's
+            // height beyond it and is nearly clear in its outer third), and never down onto the hero at the centre
+            if (_titleY < 0f)
+            {
+                float y0 = s.Y * 0.2f;
+                if (BossBottom > 0f) y0 = Mathf.Max(y0, BossBottom + cardH * 0.34f + asc + 4f);
+                _titleY = Mathf.Min(y0, s.Y * 0.31f - below);
+            }
+            float y = _titleY;
             float drift = (1f - Mathf.Min(1f, _titleT / 0.9f)) * 10f;
-            float rule = y + MathF.Round(title.GetDescent(big) * 0.7f) + 4f;
-            float vTop = y - title.GetAscent(big) - 4f;
-            titleBottom = rule + 8f + (_titleSub.Length > 0 ? body.GetHeight(sub) : 0f) + 10f;
+            float rule = y + ruleOff;
+            float vTop = y - asc - 4f;
+            float titleBottom = y + below;
             Veil(cx, vTop, titleBottom - vTop, 620f, 0.7f * a);
             Line(title, y - drift, _title, big, new Color(UiTheme.Gold, a), 8);
             if (RuleArt != null) UiArt.SpriteAt(this, RuleArt, new Vector2(cx, rule + 3f), new Color(1f, 1f, 1f, a * Mathf.Min(1f, _titleT / 0.8f)), 1f);
@@ -259,19 +292,21 @@ public partial class HudNotices : Control
             Flourish(cx, bBottom, 340f, new Color(_bannerCol, 0.85f * a));
         }
 
-        // ── toasts ──
+        // ── toasts: a lane down the upper left, under the band of the boss frame (never over the hero in the middle,
+        // the boss frame or the minimap / tracker column on the right); each slides in from the left ──
         if (_toasts.Count > 0)
         {
             int px = UiTheme.Fs(ToastSize);
-            float lineH = body.GetHeight(px);
+            float lineH = body.GetHeight(px), ascent = body.GetAscent(px);
             var veil = VeilArt;
             float step = veil != null ? MathF.Round(lineH + 6f) : MathF.Round(lineH * 0.92f);
-            float y = Mathf.Max(ToastTop, titleBottom) + body.GetAscent(px);
+            float y = ToastTop + ascent;
+            float x0 = ToastLeft + 26f;           // the words sit a plaque margin inside the lane
             for (int i = 0; i < _toasts.Count; i++)
             {
                 var t = _toasts[i];
                 float a = Fade(t.T, ToastLife, 0.14f, 0.6f);
-                float slide = (1f - Mathf.Min(1f, t.T / 0.16f)) * 8f;
+                float x = x0 - (1f - Mathf.Min(1f, t.T / 0.16f)) * 10f;
                 if (veil != null)
                 {
                     // a translucent plaque behind the line: readable over fire and snow alike (width measured once per text)
@@ -280,9 +315,9 @@ public partial class HudNotices : Control
                         t.W = body.GetStringSize(t.Shown, HorizontalAlignment.Left, -1f, px).X; t.Px = px;
                         _toasts[i] = t;
                     }
-                    UiArt.Nine(this, veil, new Rect2(MathF.Round(cx - t.W * 0.5f - 26f), MathF.Round(y + slide - body.GetAscent(px)), MathF.Round(t.W + 52f), MathF.Round(lineH + 2f)), new Color(1f, 1f, 1f, a));
+                    UiArt.Nine(this, veil, new Rect2(MathF.Round(x - 26f), MathF.Round(y - ascent), MathF.Round(t.W + 52f), MathF.Round(lineH + 2f)), new Color(1f, 1f, 1f, a));
                 }
-                Line(body, y + slide, t.Shown, px, new Color(t.Col, a), 5);
+                LineAt(body, MathF.Round(x), y, t.Shown, px, new Color(t.Col, a), 5);
                 y += step;
             }
         }

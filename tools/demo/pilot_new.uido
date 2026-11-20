@@ -1,0 +1,16 @@
+# AI pilot from a new game: on by --pilot-at, ~20 min of play, then hand-back by F8 and by a world click
+waitplay
+wait 1170
+shot Y:\shots\demo\pilot_new_20min
+log TEST: F8 turns the pilot off
+key F8
+wait 4
+log TEST: F8 turns it on again
+key F8
+wait 10
+shot Y:\shots\demo\pilot_new_badge
+log TEST: a movement click in the world takes over
+click 700,380
+wait 5
+shot Y:\shots\demo\pilot_new_after
+quit

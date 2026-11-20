@@ -51,3 +51,18 @@ The project is a public GitHub repository (`blhsing/ashen-abyss`); only the lead
 ## While the user plays
 - When `AshenAbyss.exe` is running, start any heavy background job (Python generators, Blender, 7-Zip) at Idle
   priority (`(Get-Process -Id <pid>).PriorityClass = 'Idle'`); run_blender.ps1 does this by itself.
+
+## Test save slots (fixed per work stream; use ONLY your own; `--slot=N`)
+| slot | owner |
+|---|---|
+| 90 | roster / bestiary |
+| 91 | named encounters |
+| 92, 93 | gameplay (click-to-attack, save restore) |
+| 94 | cursors / UI |
+| 95 | humanoid monster art; AI 代打 tests (new game) while art is parked |
+| 96 | creature (rig B–F) art; AI 代打 tests (mid-campaign) while art is parked |
+| 97 | music / voice in-game checks |
+| 98 | graphics |
+| 99 | lead |
+Before a run, if your slot already holds a save that is not yours, stop and tell the lead. The UI test layer's
+`newgame` writes slot 0 — move `slot0*` to `saves_test_backup` after such runs.

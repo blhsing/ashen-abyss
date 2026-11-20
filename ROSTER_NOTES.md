@@ -196,3 +196,71 @@ Next steps (in order)
 5. Windowed `--suite=ai --shot=Y:\shots\roster\ai.png --shot-at=100000` and `--suite=bestiary:all:shots …`; look at every picture.
 6. Then set `Bestiary.LiveByDefault = true` (Bestiary.cs) and repeat 4 without the switch.
 No detached process of mine is running (all my queued run.ps1 waiters were stopped at 00:45).
+
+### 2026-11-20 ~21:35 — RESUMED (0.2.0 shipped with the bestiary off). Test slot is now 90 (AGENT_RULES table).
+- runq.sh now moves only slot0* and slot90* (never other streams' slots).
+- Populate: per-level `Roster.Placed` counts; types not placed yet in this level are favoured (×4 in pool picks, families
+  with unseen types ×1.6, special / heavy / cloud / ambush / guest-giant chances raised while unseen). Meant to close the
+  per-region misses of the 8-visit census without new table entries (all missed types ARE in their region tables).
+- Queued: AI suite (slot 90), census 8 visits, bestiary line-up headless, rosterperf A/B.
+- 21:41 bestiary line-up all regions headless (game_20261120_214115.log): 246 PASS; 28 rig B-F creature files load with
+  all 8 own clips (bog_toad cf_mite dusk_bat/boar/hound/lizard/lynx/yak effigy_hound fiend_maw forge_hound hush_beast
+  hush_ribwalker lamp_crawler lurk_eel rime_packbeast rust_gear/helm/jar/stinger sexton_beetle/digger/matron
+  shroud_dropper/ling/matron/weaver wraith_gasp). 2 ERR: harness god-save clears the hero's Dots inside Actor's DoT loop
+  (pre-existing, god mode only) → guarded in Actor.cs (+1 line); anim-check flagged the prim_swarm stand-in (no clips by
+  design) → Monster.MoveDir skips AnimCheck for primitives.
+- 21:55 AI suite (game_20261120_215507.log): **49/49 PASS, 0 errors, 0 warnings** (shield guard break now passes).
+- Perf A/B, 40 wastes monsters fighting a standing hero, windowed 1600×900, same seed (steady-state [perf] lines):
+  old roster (game_20261120_221705.log): fps 56-60, frame 16.7-18.2 ms, monster code 1.10-1.26 ms (37 alive), draws ~1040,
+  prims ~1.58 M, VRAM 2006 MB. New (game_20261120_220024.log): fps 56-60, frame 16.9-17.1 ms, monster code 1.47-1.75 ms
+  (41-45 alive: callers / mothers add), draws ~975, prims ~1.50 M, **VRAM 3552 MB** (33 distinct types' textures vs 5).
+  Frame cost equal; monster code ≈ +10 % per monster; VRAM +1.5 GB for the region's full roster → for the lead.
+- 22:04 census with --seed=4242: the seed makes every visit the SAME layout (8 identical visits) → coverage numbers
+  meaningless for rare types; still: frost/mire/sands/sanctum complete, 129/129 + 28/28. Re-running without --seed.
+- 22:20 census without seed (game_20261120_222016.log): 129/129 types, 27/28 reskins (mire_hangtree missing), regions
+  complete: frost, sands, sanctum; misses: wastes ash_colossus+ash_worm, crypt husk_bloated, mire mire_hangtree, abyss dusk_bat
+  (all low-weight families: ash 6, husk 5 in crypt, char 6 in mire, dusk 5 in abyss). → families with unseen types now pull
+  harder as the level fills (×(1.6 + 0.12 × packs placed)), own unseen giant 60 %. census3 queued.
+- Queued: campaign chain (`Y:\tools\roster\campaign.sh --bestiary`, slot 90, hunter from level 1, ×6, 20-min chunks),
+  side-dungeon + rift tour (`--tour=wastes_d1,frost_d2,crypt_d2,mire_d1,sands_d1,sanctum_d1,abyss_d2,rift:1`, lv 30 god, slot 0).
+- 22:31-22:54 **CAMPAIGN with --bestiary, level-1 hunter, bot, ×6, no god (game_20261120_223155.log): whole campaign in
+  ONE 20-min chunk: lvl 1→40, 14 bosses (7 region + 7 stronghold), "campaign over", 2162 kills, errors=0, warnings=1 (bot
+  path "going nowhere" in mire_boss, bot-side).** Balance: ttk normal 3.8 s (n=1961), champion 12.0 s (n=98), elite 5.4 s,
+  58 deaths — 46 of them in wastes_boss: boss_gravedigger lv4 took 3435 s (killed at hero lv5) with ~400 adds killed meanwhile
+  (its kit's own husk/skeleton waves; same ids in both rosters). Rest of campaign 12 deaths. Baseline (--no-bestiary, same
+  seed) chunk queued for a fair comparison (QA's 2.7 s / 8.3 s are pre-0.2.0).
+- 22:56 baseline campaign --no-bestiary, same seed 777 (game_20261120_225649.log): the SAME gravedigger deadlock at hero
+  lv4 (19 deaths by 1700 s game, 12 to the boss, adds husk/skeleton) → not caused by the bestiary (boss kit / bot / 0.2.0
+  items; reported to the lead).
+- 23:17 census3 (no seed, game_20261120_231744.log): **wastes 33/33, frost 31/31, crypt 43/43, mire 32/32, sands 36/36,
+  sanctum 36/36, abyss 34/35; 129/129 + 28/28; 0 errors.** abyss dusk_bat impossible by construction (abyss's dusk family = only
+  the roosting bat → never a pack's family) → ambusher-only families now place near other packs (30 %).
+- Campaign comparison: bestiary run champion ttk 12.0 s (QA 8.3 s, baseline 7.6 s n=9 wastes only) → shield-bearers,
+  front-armoured, shelled and dormant types no longer lead champions / elites (MonsterDef.CanLead).
+- Baseline final (game_20261120_225649.log): never passed the gravedigger in 7195 s game (84 deaths), ttk normal 4.0 s.
+- 23:28 tour lv30 god --bestiary (game_20261120_232759.log, errors=0): done wastes_d1, crypt_d2, mire_d1, sanctum_d1,
+  abyss_d2, rift:1 (tier 1 success, 360 s left, sanctum roster); TIMED OUT frost_d2 (embers collected, bot then stuck
+  fighting a `named_prop` by the ember altar — named layer) and sands_d1 (objective done AND boss db_sands_d1 dead; bot did
+  not leave in time). Baseline (--no-bestiary) of those two queued. Fix: ambushers next to objective packs no longer count as carriers.
+- 23:51 **census4 (no seed, 8 visits, game_20261120_235142.log): 9/9 PASS, 0 errors, 0 warnings — every region complete
+  (wastes 33, frost 31, crypt 43, mire 32, sands 36, sanctum 36, abyss 35), 129/129 types, 28/28 reskins.**
+  Overworld density 333-398 per visit (baseline 343-400, same range).
+- 00:00 baseline tour --no-bestiary (game_20261121_000054.log): sands_d1 TIMED OUT the same way (objective done, db_sands_d1
+  dead, bot never left) → bot / named-boss exit issue, not the roster. 00:08 --bestiary retry (game_20261121_000844.log):
+  frost_d2 #1 timed out with objective done + db_frost_d2 dead (same pattern), frost_d2 #2 done, sands_d2 done; errors=0.
+- Creature glow: rigs_bf_meta.json "light" → shadowless OmniLight under the model (energy ×0.8), only while the monster is
+  awake near the hero, hidden while dormant / burrowed / stealthed, freed at death; at most 8 live. (creature artist's request)
+
+### 2026-11-21 ~00:55 — PAUSED for 0.3.0. EXACT STATE
+**Compiles (check.ps1 BUILD OK, 0 errors). `Bestiary.LiveByDefault = false` (kept OFF): the game plays the old roster;
+everything new runs only with `--bestiary`.** All my queued runs and waiters were stopped (the level-6 campaign test process
+was killed by me, it was mine); test saves moved to saves_test_backup. No process of mine is running.
+Why still off: the one full --bestiary campaign that passed (lvl 1→40, 0 errors, game_20261120_223155.log) ran BEFORE the last
+changes (leaders, ambusher-only families, objective carriers, creature glow); with the final code: census4 9/9 (0 errors),
+tours 0 errors, campaign chunks 0 errors — but every later campaign hit the region-1 boss deadlock (boss_gravedigger at hero
+lv 4-8, 22-84 deaths, also with --no-bestiary → NOT a roster bug; boss kit / bot / items — for the lead), so no second full
+campaign; and the kill-time A/B (`--area=wastes lv5`, `--area=frost lv12 --gear`, both rosters) was queued but not run.
+Champion ttk in the passing campaign 12.0 s vs QA 8.3 s → leaders restricted since (untested).
+Next: (1) controlled ttk A/B runs above; (2) a full campaign with the final code (needs the gravedigger deadlock fixed, or
+start at lv 10); (3) AI suite once more on the final code; then LiveByDefault = true.
+Edits in others' files this session: Actor.cs (+1 line, DoT loop guard after a god-save clears Dots).

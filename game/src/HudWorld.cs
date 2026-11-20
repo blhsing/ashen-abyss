@@ -71,6 +71,26 @@ public partial class HudWorld : Control
     /// <summary>The object whose label the pointer is resting on (clicking walks there and uses it), or null.</summary>
     public Interactable PointerObj => _pointer;
 
+    // HUD regions (minimap column, bottom cluster, boss frame …) that labels yield to, in this control's coordinates;
+    // handed over by the HUD every frame before Tick
+    private readonly Rect2[] _keepOut = new Rect2[8];
+    private int _keepOutCount;
+
+    /// <summary>Forgets the HUD regions of the previous frame.</summary>
+    public void ClearKeepOut() => _keepOutCount = 0;
+
+    /// <summary>A HUD region (this control's coordinates) that no label may be drawn over or clicked through.</summary>
+    public void KeepOut(Rect2 r)
+    {
+        if (_keepOutCount < _keepOut.Length && r.Size.X > 0f && r.Size.Y > 0f) _keepOut[_keepOutCount++] = r.Grow(4f);
+    }
+
+    private bool InKeepOut(Rect2 r)
+    {
+        for (int i = 0; i < _keepOutCount; i++) if (_keepOut[i].Intersects(r)) return true;
+        return false;
+    }
+
     public HudWorld()
     {
         Name = "HudWorld";
@@ -321,6 +341,22 @@ public partial class HudWorld : Control
                 if (!moved) break;
             }
             _labs[i].Rect = a;
+        }
+
+        // labels yield to the HUD: one that would lie over the minimap / tracker column, the bottom cluster or the boss
+        // frame is left out this frame (drawn nowhere, so it cannot be clicked there either); it returns as soon as it is
+        // clear of them. The others keep the places the stacking gave them.
+        if (_keepOutCount > 0)
+        {
+            int kept = 0;
+            for (int i = 0; i < count; i++)
+            {
+                if (InKeepOut(_labs[i].Rect)) continue;
+                if (kept != i) _labs[kept] = _labs[i];
+                kept++;
+            }
+            count = kept;
+            _labCount = count;
         }
 
         Interactable pointer = null;

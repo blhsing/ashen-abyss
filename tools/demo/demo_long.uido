@@ -1,0 +1,9 @@
+# 30+ minute soak of 展示模式 from the title (default 30-45 s scenes), then Esc returns to the title
+wait 4
+click @展示模式
+wait 1900
+log TEST: Esc returns to the title screen after the soak
+key Escape
+wait 8
+shot Y:\shots\demo\long_back
+quit

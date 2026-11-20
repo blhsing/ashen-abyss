@@ -25,6 +25,7 @@ One SPEC (a python dict / JSON object, see specs_*.py) -> one finished creature:
     script   optional module with extra(A) (bespoke sculpt on top of the spec), called after parts and weapons
     float    metres the lowest point hovers above the ground (legless creatures); default 0 = feet on the ground
     budget   triangle budget (default 15000; giants 22000)
+    (parts: A.add(..., sway=(low bone, t)) makes a rigid piece hang -- see add();  body bind_w -- see body_flesh)
     jpeg     (base colour, ORM, normal) JPEG qualities, default (90, 88, 95): lower them when an all-rock creature exceeds 6 MB
     notes    free text stored in the build json
 
@@ -300,6 +301,7 @@ class Asm:
         self.notes = []
         self.mouth_c = None; self.gap = 0.0
         self.merge = {}            # bone -> bone it is merged into (stiff limbs, see body_flesh merge_w)
+        self.late = {}             # bone -> bone it is bound to AFTER the sculpt pose (body_flesh bind_w)
 
     # ---- looks
     def _pre(self, name):
@@ -368,7 +370,7 @@ class Asm:
 
     # ---- parts
     def add(self, part, bone=None, look=None, obj=None, smooth=None, mirror=False, flip=False, final=False, skin=None,
-            ride=None, like=None, noground=False, noscale=False, keep=False):
+            ride=None, like=None, noground=False, noscale=False, keep=False, sway=None):
         """add a Part built in REST space.  bone = rigid on that bone;  skin = n -> weights transferred from the rest body
         (n smoothing passes);  like = Part -> weights copied from that skinned Part;  ride = point -> the whole part takes
         the weights of the body surface nearest to that point (a lump riding on the skin);  flip = mirror to the right
@@ -397,6 +399,14 @@ class Asm:
             # shared by every piece of one assembly (yoke + chains + loads), so the assembly moves as ONE rigid thing
             p._keep = keep is not False and keep is not None
             p._keep_c = None if isinstance(keep, bool) or keep is None else np.asarray(keep, float)
+            # sway = (low bone, t): a rigid piece that HANGS from its bone.  t (per vertex, 0..1, from rest coordinates) is the
+            # share of `low bone` (normally 'pelvis', which tips far less than the chest in the attack clips): after the piece
+            # has been placed like any rigid part it becomes skinned  (1 - t) x its bone + t x low bone,  so its lower end lags
+            # and stays nearer the vertical when the trunk tips.  No extra bones, the shared skeleton is untouched.
+            p._sway = None
+            if sway is not None and bone is not None:
+                t = np.clip(np.broadcast_to(np.asarray(sway[1], float), (len(p.v),)), 0.0, 1.0).copy()
+                p._sway = (sway[0], t)
         return part
 
     def ride(self, part, at=None):
@@ -471,6 +481,20 @@ class Asm:
                     elif abs(s[0] - s[1]) < 1e-6 and abs(s[1] - s[2]) < 1e-6:
                         p.scale(float(s[0]), pivot=R.H(p.bone))
                 M.pose_part(p, full, p.bone)
+                sw = getattr(p, '_sway', None)
+                if sw is not None:                  # hanging piece: rigid placement done, now it lags by a weight blend
+                    W = M.rigid_W(len(p.v), p.bone) * (1.0 - sw[1])[:, None].astype(np.float32)
+                    W[:, R.idx[sw[0]]] += sw[1].astype(np.float32)
+                    p.W = W; p.bone = None
+        if self.late:                           # limbs posed with their own bones, animated by another one (bind_w)
+            for p in C.parts:
+                if p.bone is not None:
+                    p.bone = self.late.get(p.bone, p.bone)
+                elif p.W is not None:
+                    for sb, tgt in self.late.items():
+                        i, t = R.idx[sb], R.idx[tgt]
+                        if i != t and p.W[:, i].any():
+                            p.W[:, t] += p.W[:, i]; p.W[:, i] = 0
         self._fit_budget()
         zs = [p.v[:, 2].min() for p in C.parts if not getattr(p, '_noground', False) and not p.obj.startswith('wpn_')]
         dz = min(zs) - float(self.spec.get('float', 0.0))
@@ -589,7 +613,9 @@ def body_flesh(A, b):
     these regions are emitted; the rest stays as the hidden reference under clothes), hide = [regions], gaunt, jaw (deg),
     teeth, eyes ('eye' look name | None), eye_y, ribs, knobs, claws (length), toe_claws, fingers (stretch factor),
     melt (smoothing passes that dissolve the anatomy), head_look (the head as a separate piece with that look),
-    merge_w = {bone: [bones / regions]} (their weights go to `bone`: a stiff limb)"""
+    merge_w = {bone: [bones / regions]} (their weights go to `bone`: a stiff limb),
+    bind_w = {bone: [bones / regions]} (the same, but AFTER the sculpt pose: the limb is posed by its own bones -- props
+    pose -- and then animated by `bone`: an arm that holds on to a load which is rigid on that bone)"""
     C = A.C
     kind = b.get('kind', 'male')
     body = M.load_body(kind)
@@ -616,6 +642,9 @@ def body_flesh(A, b):
     A.vis = None
     if vis is not None and len(vis.f):
         vis = vis.copy()
+    for tgt, srcs in b.get('bind_w', {}).items():
+        for sb in region_bones(srcs):
+            A.late[sb] = tgt
     # merge_w = {target bone: [bones / regions]}: limbs that were baked far off their joints (arms raised for good) become
     # stiff -- everything below the joint is weighted to the bone that still pivots at the right place
     for tgt, srcs in b.get('merge_w', {}).items():

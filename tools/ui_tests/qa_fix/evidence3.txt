@@ -1,0 +1,38 @@
+# QA UI fixes, third pass: loot labels vs. the right-hand column and the bottom cluster (item 4). 1600x900, 標準.
+#   run.ps1 -GameArgs "--win --mute --uidir=Y:\shots\uiart\qa --uido=@Y:\tools\ui_tests\qa_fix\evidence3.txt --quit-at=120" -Timeout 240 -Tag uiqa
+# The wastes spawn has the exit to town right below the hero: walk west (away from it), then north.
+wait 3.0
+newgame lampknight 30 wastes
+wait 3.0
+drop
+wait 0.8
+keydown Alt
+wait 0.3
+shot r3_q4_west_0
+click 380,330
+wait 0.3
+shot r3_q4_west_1
+wait 0.3
+shot r3_q4_west_2
+wait 0.3
+shot r3_q4_west_3
+wait 0.3
+shot r3_q4_west_4
+wait 0.4
+shot r3_q4_west_5
+wait 0.5
+shot r3_q4_west_6
+keyup Alt
+click 700,90
+keydown Alt
+wait 0.4
+shot r3_q4_north_1
+wait 0.4
+shot r3_q4_north_2
+wait 0.4
+shot r3_q4_north_3
+wait 0.5
+shot r3_q4_north_4
+keyup Alt
+wait 0.3
+quit

@@ -139,11 +139,18 @@ public static class LevelBuilder
     /// Cached PBR material from res://assets/env/tex/&lt;set&gt;/ that works on any mesh (object-space triplanar, so no UVs
     /// are needed): one repeat every size_m / uvScale metres. Missing sets give a flat stand-in (logged once).
     /// </summary>
-    public static Material Surface(string texSet, float uvScale = 1f)
+    public static Material Surface(string texSet, float uvScale = 1f) => Surface(texSet, uvScale, false);
+
+    /// <summary>
+    /// As <see cref="Surface(string, float)"/>; with <paramref name="world"/> the texture is laid in world metres, so a
+    /// unit mesh stretched into a beam or a slab keeps the true scale of its stone (object-space mapping smeared a
+    /// drystone wall along a 3.7 m lintel until it read as stacked timber). For things that never move.
+    /// </summary>
+    public static Material Surface(string texSet, float uvScale, bool world)
     {
         texSet ??= "";
         if (uvScale <= 0f) uvScale = 1f;
-        string key = texSet + "|" + uvScale.ToString("0.###", CultureInfo.InvariantCulture);
+        string key = texSet + "|" + uvScale.ToString("0.###", CultureInfo.InvariantCulture) + (world ? "|w" : "");
         if (Surfaces.TryGetValue(key, out var cached)) return cached;
 
         var info = EnvAssets.Info(texSet);
@@ -177,6 +184,7 @@ public static class LevelBuilder
             }
             float s = uvScale / Mathf.Max(info.SizeM, 0.05f);
             mat.Uv1Triplanar = true;
+            mat.Uv1WorldTriplanar = world;
             mat.Uv1TriplanarSharpness = 4f;
             mat.Uv1Scale = new Vector3(s, s, s);
         }
@@ -452,6 +460,8 @@ internal enum WallFlags
     NoShadow = 32,    // does not cast shadows
     Dull = 64,        // extra rough (cloth, thatch)
     Lit = 128,        // keeps its texture but glows faintly in the batch tint (ice, rift crystal)
+    Top = 256,        // top sheet of a solid block indoors: carries the lid's unlit level (one surface with the lid behind it)
+    Stand = 512,      // a free-standing landmark (gateways): the indoor floor cut leaves it whole; only the cut round the hero opens it
 }
 
 /// <summary>Theme-graded shader materials. Rebuilt for every level because tints and cover depend on the theme.</summary>
@@ -505,6 +515,80 @@ internal static class EnvMats
     }
 
     private static Vector3 V(Color c) => new(c.R, c.G, c.B);
+
+    // ── form in the dark (graphics pass 0.3) ──
+    /// <summary>Share of the theme's wall-albedo floor that near-black prop textures are lifted to (env_prop: lum_floor).</summary>
+    public const float PropLumFloor = 0.75f;
+    /// <summary>Share of the ambient that rock under an open sky receives again on its up-facing surfaces.</summary>
+    public const float SkyFillShare = 0.42f;
+    /// <summary>Linear level of the grazing-angle sheen on rock (silhouettes), before the moon's strength.</summary>
+    public const float SkyRimLevel = 0.022f;
+    /// <summary>
+    /// Grey level of the textured wall tops of a solid block and of the lid that continues them (they used to fade from
+    /// 0.42 to black within 2.3 m: with ambient and fill alone that came out at 0-2 % sRGB, a black hole). 0.72 puts
+    /// unlit wall tops at about 3 %, level with unlit floor and far below anything a torch lights. LidGain scales the
+    /// lid alone (tests).
+    /// </summary>
+    public const float LidShade = 0.72f;
+    /// <summary>
+    /// Measured with ambient and fill alone (gain 1): wall tops and lid at 0.8-1.5 % sRGB, against 14 % for the floor in
+    /// the hero's fire — still a hole. Tops (env_wall: self_lit) and lid (env_cap: lid_gain) carry this much of that
+    /// level as unlit light near the hero, a third of the lift far from him.
+    /// </summary>
+    public static float LidGain = 1.9f;
+
+    /// <summary>What an unlit, up-facing surface receives indoors: the ambient and the dim fill that comes straight down (linear).</summary>
+    public static Vector3 IndoorTopLight(LevelTheme t) =>
+        V(t.Ambient) * (Mathf.Max(t.AmbientEnergy, 0f) * EnvAtmosphere.AmbientGainIndoor) + V(t.SunColor) * (Mathf.Max(t.SunEnergy, 0.02f) * EnvAtmosphere.FillGain);
+
+    /// <summary>
+    /// The ambient is one flat colour, so a rock in the moon's shadow had no shape at all (black blobs in the abyss).
+    /// Outdoors the sky is above: up-facing rock gets this much more of the ambient colour (linear; zero indoors).
+    /// </summary>
+    public static Vector3 SkyFill(LevelTheme t) =>
+        t == null || !t.Outdoor ? Vector3.Zero : V(t.Ambient) * (Mathf.Max(t.AmbientEnergy, 0f) * EnvAtmosphere.AmbientGainOutdoor * SkyFillShare);
+
+    /// <summary>A faint sheen in the moon's colour at grazing angles, so a cliff or boulder in shadow keeps a readable edge (zero indoors).</summary>
+    public static Vector3 SkyRim(LevelTheme t)
+    {
+        if (t == null || !t.Outdoor) return Vector3.Zero;
+        var c = t.RimColor.R + t.RimColor.G + t.RimColor.B > 0.02f ? t.RimColor : t.SunColor.Lerp(new Color(0.75f, 0.85f, 1f), 0.5f);
+        return V(c) * (Mathf.Clamp(t.SunEnergy * EnvAtmosphere.SunGain, 0.3f, 1.2f) * SkyRimLevel);
+    }
+
+    /// <summary>
+    /// The lid over solid rock indoors. Not a black hole: the rock of the wall tops at about the level an unlit,
+    /// up-facing wall top has (ambient plus the dim fill that comes straight down), sinking into darkness with the
+    /// depth into the mass (env_cap). <paramref name="depth"/> holds metres to the nearest open floor ÷ range.
+    /// </summary>
+    public static Material Lid(LevelTheme t, string topSet, Texture2D depth, Vector4 depthRect, float depthRange)
+    {
+        var shader = EnvAssets.LoadShader("env_cap");
+        if (shader == null) return Fallback;
+        var m = new ShaderMaterial { Shader = shader, ResourceName = "lid" };
+        m.SetShaderParameter("color", new Color(0f, 0f, 0f));
+        if (t != null && !t.Outdoor && !string.IsNullOrEmpty(topSet) && LidGain > 0f)
+        {
+            var e = IndoorTopLight(t);
+            float lv = EnvAssets.LevelScale(topSet, t.WallLumMin, t.WallLumMax);
+            var level = new Vector3(t.WallTint.R * e.X, t.WallTint.G * e.Y, t.WallTint.B * e.Z) * (lv * LidShade);
+            m.SetShaderParameter("lid_gain", Mathf.Max(LidGain, 1f));
+            m.SetShaderParameter("rock_tex", EnvAssets.Albedo(topSet));
+            m.SetShaderParameter("noise_tex", EnvAssets.Noise);
+            m.SetShaderParameter("rock_scale", 1f / Mathf.Max(EnvAssets.Info(topSet).SizeM, 0.05f));
+            m.SetShaderParameter("rock_level", level);
+            m.SetShaderParameter("dust", V(t.FogColor) * 0.006f);
+            m.SetShaderParameter("desaturate", t.Desaturate * 0.85f);
+            if (depth != null)
+            {
+                m.SetShaderParameter("depth_tex", depth);
+                m.SetShaderParameter("depth_rect", depthRect);
+                m.SetShaderParameter("depth_range", depthRange);
+            }
+        }
+        ApplyWalkMask(m);
+        return m;
+    }
 
     private static readonly string[] LaidWords =
     {
@@ -608,6 +692,13 @@ internal static class EnvMats
         if ((flags & WallFlags.Gloss) != 0) { m.SetShaderParameter("rough_mul", 0.45f); m.SetShaderParameter("normal_strength", 0.8f); }
         else if (!Mathf.IsEqualApprox(t.WallGloss, 1f)) m.SetShaderParameter("rough_mul", Mathf.Clamp(t.WallGloss, 0.3f, 1.5f));
         if ((flags & WallFlags.Dull) != 0) { m.SetShaderParameter("rough_add", 0.25f); m.SetShaderParameter("metal_mul", 0f); }
+        if ((flags & WallFlags.Top) != 0 && !glow && !t.Outdoor && LidGain > 1f) m.SetShaderParameter("self_lit", IndoorTopLight(t) * (LidGain - 1f));
+        if ((flags & WallFlags.Tri) != 0 && !glow && t.Outdoor)
+        {
+            // cliffs and boulders under the sky keep a shape on their shadow side (see SkyFill / SkyRim)
+            m.SetShaderParameter("sky_fill", SkyFill(t));
+            m.SetShaderParameter("sky_rim", SkyRim(t));
+        }
         if (glow)
         {
             m.SetShaderParameter("emission", new Color(tint.R, tint.G, tint.B));
@@ -618,7 +709,7 @@ internal static class EnvMats
             m.SetShaderParameter("emission", new Color(tint.R, tint.G, tint.B));
             m.SetShaderParameter("emission_energy", 0.4f);
         }
-        ApplyWalkMask(m);
+        if ((flags & WallFlags.Stand) == 0) ApplyWalkMask(m);
         Walls[key] = m;
         return m;
     }

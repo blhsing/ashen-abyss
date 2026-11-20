@@ -27,10 +27,10 @@ public static class NamedAreas
     public static bool LiveRares = true;
     /// <summary>The stronghold leader is the named boss (tested: sh_wastes killed in the overworld, the stronghold liberated).</summary>
     public static bool LiveStrongholds = true;
-    /// <summary>OFF: side-dungeon bosses stay the old placeholders (the normal-play dungeon route was not smoke-tested).</summary>
-    public static bool LiveDungeons = false;
-    /// <summary>OFF: no world-boss gateways in the overworld (route not smoke-tested).</summary>
-    public static bool LiveWorld = false;
+    /// <summary>Side-dungeon bosses replace the placeholders (tested 2026-11-20: wastes_d1/d2, frost_d1/d2 toured by the bot — door, kill, chest, portal).</summary>
+    public static bool LiveDungeons = true;
+    /// <summary>World-boss gateways open in the overworld (tested 2026-11-20: gateway in the wastes, field fought by the bot, cache once, exit to the region).</summary>
+    public static bool LiveWorld = true;
     /// <summary>OFF: no Ember Stair altar in town (route and panel not tested on screen).</summary>
     public static bool LiveLadder = false;
     private static bool _testDone;
@@ -93,9 +93,10 @@ public static class NamedAreas
     internal static void OnArea(Level L, string areaId)
     {
         if (L == null || !GodotObject.IsInstanceValid(L) || L.Grid == null) return;
+        LiveSwitch();
         TestSwitch(areaId);
         if (IsNamedArea(L.AreaId)) { BuildArena(L); return; }
-        if (L.IsTown) { if (LiveLadder) Ladder(L); return; }
+        if (L.IsTown) { if (LiveLadder || (Game.I?.Arg("named") ?? false)) Ladder(L); return; }
         if (L.IsRift) return;
         if (L.Dungeon != null) { if (!L.Dungeon.Story && LiveDungeons) DungeonBoss(L); return; }
         if (L.Region != null)
@@ -104,6 +105,21 @@ public static class NamedAreas
             if (LiveRares) Rares(L);
             if (LiveWorld || WorldBossEvent.Force != null) WorldBossEvent.Offer(L);
         }
+    }
+
+    private static bool _liveRead;
+    /// <summary>Test switch --named-live=dungeons,world,ladder (or all): turns a group on for this run without changing the defaults.</summary>
+    private static void LiveSwitch()
+    {
+        if (_liveRead) return;
+        _liveRead = true;
+        string v = Game.I?.ArgValue("named-live");
+        if (string.IsNullOrEmpty(v)) return;
+        bool all = v.Contains("all");
+        if (all || v.Contains("dungeons")) LiveDungeons = true;
+        if (all || v.Contains("world")) LiveWorld = true;
+        if (all || v.Contains("ladder")) LiveLadder = true;
+        Log.Info("named", $"--named-live={v}: rares={LiveRares} strongholds={LiveStrongholds} dungeons={LiveDungeons} world={LiveWorld} ladder={LiveLadder}");
     }
 
     private static void TestSwitch(string areaId)

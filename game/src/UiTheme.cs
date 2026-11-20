@@ -1101,11 +1101,13 @@ public static class UiTheme
     /// <summary>A tinted glyph from the icon set.</summary>
     public static TextureRect Icon(string name, float size, Color? tint = null)
     {
+        // raster icons keep their own colours (Icons.Tint passes only brightness and alpha); vector glyphs take the tint
+        var tex = Icons.Get(name);
         return new TextureRect
         {
-            Texture = Icons.Get(name), ExpandMode = TextureRect.ExpandModeEnum.IgnoreSize, StretchMode = TextureRect.StretchModeEnum.KeepAspectCentered,
+            Texture = tex, ExpandMode = TextureRect.ExpandModeEnum.IgnoreSize, StretchMode = TextureRect.StretchModeEnum.KeepAspectCentered,
             CustomMinimumSize = new Vector2(size, size), Size = new Vector2(size, size), MouseFilter = Control.MouseFilterEnum.Ignore,
-            Modulate = tint ?? Text, TextureFilter = CanvasItem.TextureFilterEnum.LinearWithMipmaps,
+            Modulate = Icons.Tint(tex, tint ?? Text), TextureFilter = CanvasItem.TextureFilterEnum.LinearWithMipmaps,
         };
     }
 
@@ -1209,10 +1211,12 @@ public static class UiTheme
         if (it != null)
         {
             int pad = Math.Max(3, size / 9);
+            // raster art is not stained by the rarity colour (the slot's rarity rim carries it); vector glyphs still are
+            var tex = Icons.ForItem(it);
             var icon = new TextureRect
             {
-                Texture = Icons.ForItem(it), ExpandMode = TextureRect.ExpandModeEnum.IgnoreSize, StretchMode = TextureRect.StretchModeEnum.KeepAspectCentered,
-                MouseFilter = Control.MouseFilterEnum.Ignore, Modulate = ItemTint(it), TextureFilter = CanvasItem.TextureFilterEnum.LinearWithMipmaps,
+                Texture = tex, ExpandMode = TextureRect.ExpandModeEnum.IgnoreSize, StretchMode = TextureRect.StretchModeEnum.KeepAspectCentered,
+                MouseFilter = Control.MouseFilterEnum.Ignore, Modulate = Icons.Tint(tex, ItemTint(it)), TextureFilter = CanvasItem.TextureFilterEnum.LinearWithMipmaps,
             };
             icon.SetAnchorsAndOffsetsPreset(Control.LayoutPreset.FullRect, Control.LayoutPresetMode.Minsize, pad);
             root.AddChild(icon);

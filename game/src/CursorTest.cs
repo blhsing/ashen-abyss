@@ -14,8 +14,15 @@ namespace AshenAbyss;
 ///     shrine, a portal, a waypoint, a totem, an NPC (objects it places itself around the hero), every other kind of
 ///     object the level holds, a monster, a panel and a button on it, the HUD, the system-cursor setting, the text
 ///     scale, the window size, then a journey (--cursor-then=&lt;area&gt;, default town) for the loading cursor.
-///   on the title screen (no --new): the menu background and a menu entry (pointing-hand shape).
-/// Use a private slot (--slot=90..99) and --god.
+///   on the title screen (no --new): the menu background, a menu entry (pointing-hand shape), the class screen's
+///     turn-the-hero area (drag shape) and the name field (I-beam).
+///   --cursor-test=chase (in a level with monsters): the click-to-attack run-up. The enemy that was clicked out of
+///     reach shows the blade while the hero runs at it; the pointer leaving it with the button up / with the button
+///     held; an enemy no path leads to (the red ring after the run-up gave up, the blade again 2.5 s later).
+///     Monsters are frozen and one is moved to open ground for this: the cursor is what is checked, not the fight.
+///   --cursor-expect=&lt;px|off&gt; (with --cursor-drop): the fallback. Pictures missing at the wanted size -> the nearest
+///     complete size is used (px); a picture missing at every size -> the feature is off, the system cursor stays (off).
+/// Use the cursor stream's own slot (--slot=94) and --god.
 /// </summary>
 public partial class CursorTest : Node
 {
@@ -39,7 +46,8 @@ public partial class CursorTest : Node
         HoldPointer();
         if (_run == null)
         {
-            if (g.State == Game.GameState.Play && P != null && IsInstanceValid(P) && g.Level != null) _run = Level();
+            string mode = (g.ArgValue("cursor-test") ?? "").Trim().ToLowerInvariant();
+            if (g.State == Game.GameState.Play && P != null && IsInstanceValid(P) && g.Level != null) _run = mode == "chase" ? Chase() : Level();
             else if (g.State == Game.GameState.Menu && !g.Arg("new") && !g.Arg("load")) _run = Menu();
             else return;
         }
@@ -52,7 +60,7 @@ public partial class CursorTest : Node
         if (more) { _wait = _run.Current; return; }
         Log.Info(Cat, $"done pass={_pass} fail={_fail} skip={_skip}");
         _run = Idle();
-        _point = null; Player.TestMouse = null;
+        _point = null; Player.TestMouse = null; Player.TestLeft = Player.TestRight = Player.TestShift = false;
         g.Quit();
     }
 
@@ -104,6 +112,32 @@ public partial class CursorTest : Node
 
     private void Skip(string what) { _skip++; Log.Info(Cat, $"SKIP {what}"); }
 
+    /// <summary>
+    /// --cursor-shots=&lt;folder&gt;: a screenshot of this moment plus a "SHOT" log line (where the pointer is in window
+    /// pixels, which picture and hotspot the cursor has). A screenshot never contains the cursor itself;
+    /// Y:\tools\cursor\ingame.py pastes the picture in at that place afterwards, to judge it at its real size in the game.
+    /// </summary>
+    private void Shot(string name)
+    {
+        string dir = G.ArgValue("cursor-shots");
+        if (string.IsNullOrWhiteSpace(dir) || _point == null) return;
+        Vector2? at;
+        try { at = _point(); } catch { at = null; }
+        if (at is not { } d) return;
+        Vector2 win = GetViewport().GetFinalTransform() * d;
+        // the picture on screen: the arrow's, or the one of the shape a control asked for
+        CursorKind kind = Input.GetCurrentCursorShape() switch
+        {
+            Input.CursorShape.PointingHand => CursorKind.UiHot, Input.CursorShape.Ibeam => CursorKind.Caret,
+            Input.CursorShape.Drag or Input.CursorShape.CanDrop => CursorKind.PickUp, Input.CursorShape.Forbidden => CursorKind.Forbidden,
+            Input.CursorShape.Wait or Input.CursorShape.Busy => CursorKind.Busy, _ => Cursors.Current,
+        };
+        var hot = Cursors.HotspotOf(kind);
+        string path = System.IO.Path.Combine(dir.Trim(), name + ".png");
+        Log.Info(Cat, $"SHOT {path} pointer={win.X:0},{win.Y:0} picture={Cursors.FileName(kind)}_{Cursors.Size} hotspot={hot.X:0},{hot.Y:0}");
+        G.HarnessShot(path);
+    }
+
     // ───────────────────────── places ─────────────────────────
 
     private static bool Clear(Vector2 at, float fromMonsters, float fromObjects)
@@ -152,6 +186,30 @@ public partial class CursorTest : Node
         return null;
     }
 
+    /// <summary>Puts the hero two or three cells from the nearest unwalkable ground (away from monsters). False when the level has none.</summary>
+    private static bool StandBesideWall()
+    {
+        var p = P; var grid = World.Grid;
+        if (grid == null) return false;
+        var c0 = grid.CellOf(p.Pos2);
+        for (int r = 3; r <= 70; r++)
+            for (int dy = -r; dy <= r; dy++)
+                for (int dx = -r; dx <= r; dx++)
+                {
+                    if (Math.Abs(dx) != r && Math.Abs(dy) != r) continue;
+                    int x = c0.X + dx, y = c0.Y + dy;
+                    if (!grid.In(x, y) || grid.Walk(x, y) || !Clear(grid.Center(x, y), 3.5f, 2.6f)) continue;
+                    for (int k = 0; k < 16; k++)
+                    {
+                        int sx = x + Mathf.RoundToInt(Mathf.Cos(k * Mathf.Tau / 16f) * 2.6f), sy = y + Mathf.RoundToInt(Mathf.Sin(k * Mathf.Tau / 16f) * 2.6f);
+                        if (!grid.Walk(sx, sy) || !Clear(grid.Center(sx, sy), 9f, 2.6f)) continue;
+                        p.Stop(); p.Teleport(grid.Center(sx, sy)); G.Cam?.Snap();
+                        return true;
+                    }
+                }
+        return false;
+    }
+
     private static IEnumerable<Monster> Living => World.Monsters.Where(m => m != null && IsInstanceValid(m) && !m.Dead && !m.Untargetable && !m.Stealthed && m.IsInsideTree());
 
     // ───────────────────────── checks that need no pointer ─────────────────────────
@@ -185,6 +243,54 @@ public partial class CursorTest : Node
             Log.Info(Cat, $"hotspots at {size} px: {string.Join(" ", parts)}");
         }
         Check(bad == 0 && n > 0, $"art: {n} pictures are the stated size, RGBA8 without mipmaps, hotspot on the picture ({bad} bad)");
+        ImportCheck();
+    }
+
+    /// <summary>
+    /// A development run only (the PNGs lie beside the project): what the game loaded must be the PNG on disk — the same
+    /// alpha everywhere and the same colour wherever the picture is visible. An import older than the art, or a lossy
+    /// one, would show here. (Godot's importer rewrites the colour of all-but-invisible pixels next to the picture,
+    /// "fix alpha border": colour differences are therefore reported with the highest alpha they occur at.)
+    /// </summary>
+    private void ImportCheck()
+    {
+        const int Faint = 20;                // alpha (of 255) below which a pixel's colour is left to the importer
+        int compared = 0, stale = 0, imported = 0, touched = 0, worstAlpha = 0;
+        long faintPixels = 0;
+        var names = new List<string>();
+        foreach (int size in Cursors.Sizes)
+            foreach (CursorKind k in Enum.GetValues(typeof(CursorKind)))
+            {
+                string res = $"res://assets/ui/cursor/{Cursors.FileName(k)}_{size}.png";
+                string path = ProjectSettings.GlobalizePath(res);
+                var img = Cursors.ImageOf(k, size, out _);
+                if (img == null || !System.IO.File.Exists(path)) continue;
+                if (ResourceLoader.Exists(res)) imported++;
+                var disk = Image.LoadFromFile(path);
+                if (disk == null || disk.IsEmpty()) continue;
+                if (disk.GetFormat() != Image.Format.Rgba8) disk.Convert(Image.Format.Rgba8);
+                compared++;
+                bool same = disk.GetWidth() == img.GetWidth() && disk.GetHeight() == img.GetHeight();
+                int faint = 0, top = 0;
+                if (same)
+                {
+                    byte[] a = img.GetData(), b = disk.GetData();
+                    same = a.Length == b.Length;
+                    for (int i = 0; same && i + 3 < a.Length; i += 4)
+                    {
+                        if (a[i + 3] != b[i + 3]) { same = false; break; }
+                        if (a[i + 3] == 0 || a[i] == b[i] && a[i + 1] == b[i + 1] && a[i + 2] == b[i + 2]) continue;
+                        faint++; if (a[i + 3] > top) top = a[i + 3];          // a visible pixel whose colour differs
+                    }
+                    if (top >= Faint) same = false;
+                }
+                if (top > worstAlpha) worstAlpha = top;
+                if (!same) { stale++; if (names.Count < 8) names.Add($"{Cursors.FileName(k)}_{size}(a{top})"); }
+                else if (faint > 0) { touched++; faintPixels += faint; }
+            }
+        if (compared == 0) { Skip("import: no PNGs beside the project to compare with (an installed build)"); return; }
+        Check(stale == 0, $"import: {compared} loaded pictures ({imported} through Godot's import) have the alpha of the PNGs on disk and their colour wherever alpha >= {Faint}/255; {stale} differ{(stale > 0 ? ": " + string.Join(", ", names) : "")}");
+        Log.Info(Cat, $"  import detail: in {touched} pictures the importer recoloured {faintPixels} nearly invisible border pixels (highest alpha among them {worstAlpha}/255)");
     }
 
     private void SizeTable()
@@ -210,6 +316,34 @@ public partial class CursorTest : Node
         Check(bad == 0, $"size table: {rows.Length} screens pick the expected size");
     }
 
+    /// <summary>
+    /// The fallback (--cursor-drop + --cursor-expect): never a half set. Returns true when the run was a fallback run
+    /// (the art checks that assume a whole set are skipped then).
+    /// </summary>
+    private bool FallbackCheck()
+    {
+        var g = G;
+        string drop = g.ArgValue("cursor-drop"), expect = (g.ArgValue("cursor-expect") ?? "").Trim().ToLowerInvariant();
+        if (string.IsNullOrWhiteSpace(drop)) return false;
+        Log.Info(Cat, $"fallback: pictures treated as missing = {drop}; expected = {(expect.Length > 0 ? expect : "(not given)")}; now: {Cursors.Describe()}");
+        if (expect == "off")
+        {
+            Check(!Cursors.Active, $"fallback: a picture is missing at every size -> the game's cursors are off, the system cursor stays ({Cursors.Describe()})");
+            return true;
+        }
+        int size = Cursors.Size;
+        int whole = 0;
+        foreach (CursorKind k in Enum.GetValues(typeof(CursorKind))) if (Cursors.ImageOf(k, size, out _) != null) whole++;
+        int kinds = Enum.GetValues(typeof(CursorKind)).Length;
+        Check(Cursors.Active && whole == kinds, $"fallback: the size in use ({size} px) has all {kinds} pictures ({whole} found), the game's cursors stay on");
+        if (int.TryParse(expect, out int want))
+        {
+            int wanted = Cursors.SizeFor(GetTree().Root.Size, Cursors.DisplayScale(), UiTheme.TextScale, Cursors.Sizes, out float target);
+            Check(size == want && wanted != want, $"fallback: this window wants {target:0.#} px -> {wanted} px, which is incomplete -> {size} px is used (expected {want})");
+        }
+        return true;
+    }
+
     private int ExpectedSizeNow()
     {
         Vector2 ws = GetTree().Root.Size;
@@ -223,6 +357,17 @@ public partial class CursorTest : Node
     {
         var g = G; var p = P;
         Log.Info(Cat, $"level {g.Level.AreaId}: {Cursors.Describe()}");
+        if (FallbackCheck())
+        {
+            // a fallback run: with the game's cursors still on, one thing in the world must still switch the picture
+            if (Cursors.Active)
+            {
+                var fs = FreeSpot(3f, 7f);
+                if (fs is { } f0) { PointAtWorld(() => World.To3(f0)); yield return 0.5f; Check("fallback: empty ground", CursorKind.Default); }
+            }
+            _point = null; Player.TestMouse = null;
+            yield break;
+        }
         Check(Cursors.Active, "the game's cursors are active");
         HotspotChecks();
         SizeTable();
@@ -236,16 +381,25 @@ public partial class CursorTest : Node
             PointAtWorld(() => World.To3(gs));
             yield return 0.5f;
             Check("empty ground", CursorKind.Default);
+            Shot("ground");
         }
         else Skip("empty ground: no free spot on screen");
 
         // ── ground that cannot be reached ──
         var wall = Unwalkable();
+        if (wall == null && StandBesideWall())
+        {
+            // none in view from where the hero woke: he now stands beside the nearest unwalkable ground
+            yield return 0.8f;
+            wall = Unwalkable();
+            spot = FreeSpot(3f, 7f);
+        }
         if (wall is { } w)
         {
             PointAtWorld(() => World.To3(w));
             yield return 0.5f;
             Check($"unreachable ground at ({w.X:0},{w.Y:0})", CursorKind.Forbidden);
+            Shot("ground_unreachable");
             if (spot is { } back)
             {
                 PointAtWorld(() => World.To3(back));
@@ -281,6 +435,7 @@ public partial class CursorTest : Node
             PointAtWorld(() => IsInstanceValid(o) ? new Vector3(o.GlobalPosition.X, 0f, o.GlobalPosition.Z) : World.To3(pos));
             yield return 0.5f;
             Check($"{what} (kind '{obj.Kind}')", want);
+            Shot("object_" + obj.Kind);
             if (obj.Kind != "loot" && IsInstanceValid(obj)) { obj.QueueFree(); _used.Remove(pos); yield return 0.1f; }
         }
         // the label of the loot (the HUD owns that click): the same picture as the item itself
@@ -301,6 +456,7 @@ public partial class CursorTest : Node
                 yield return 0.3f;
                 Log.Info(Cat, $"loot label: pointerObj={g.Hud?.PointerObj?.Kind ?? "-"} overUi={g.Ui?.MouseOverUi} hoveredControl={(GetViewport().GuiGetHoveredControl() != null)}");
                 Check("the label of the loot (the HUD owns the click)", CursorKind.PickUp);
+                Shot("loot_label");
             }
             else Skip("loot label: the pointer never came to rest on it");
             if (IsInstanceValid(lo)) lo.QueueFree();
@@ -323,6 +479,7 @@ public partial class CursorTest : Node
         PointAtScreen(new Vector2(ViewSize.X * 0.5f, ViewSize.Y - 60f));
         yield return 0.5f;
         Check("the action bar (HUD)", CursorKind.Ui);
+        Shot("hud");
         g.Ui.Open("inventory");
         yield return 0.8f;
         var panel = g.Ui.Find("inventory");
@@ -338,6 +495,7 @@ public partial class CursorTest : Node
                 PointAtScreen(btn.GetGlobalRect().GetCenter());
                 yield return 0.4f;
                 Check($"a button on the panel ('{(btn as Button)?.Text}', shape {Input.GetCurrentCursorShape()})", CursorKind.Ui);
+                Shot("panel_button");
             }
             else Skip("a button on the panel: none found");
             // behind an open panel the world does not answer: still the interface pointer
@@ -379,6 +537,7 @@ public partial class CursorTest : Node
                 PointAtWorld(() => IsInstanceValid(m) ? m.GlobalPosition + Vector3.Up * 1.0f : Vector3.Zero);
                 yield return 0.5f;
                 Check($"a hostile ({mon.DisplayName})", CursorKind.Attack);
+                Shot("hostile");
             }
             else Skip("a hostile: none on screen after walking there");
         }
@@ -404,9 +563,11 @@ public partial class CursorTest : Node
         }
         UiTheme.ApplyTextScale(ts0);
         yield return 0.3f;
+        // resizing the test window covers the user's desktop for a moment: only when asked for (--cursor-resize)
         var win = GetTree().Root;
         Vector2I size0 = win.Size;
-        foreach (var s in new[] { new Vector2I(1280, 720), new Vector2I(1920, 1080), new Vector2I(2560, 1440), size0 })
+        if (!g.Arg("cursor-resize")) Log.Info(Cat, "window-size steps not run in this pass (--cursor-resize runs them)");
+        else foreach (var s in new[] { new Vector2I(1280, 720), new Vector2I(1920, 1080), new Vector2I(2560, 1440), size0 })
         {
             win.Size = s;
             yield return 0.7f;
@@ -458,6 +619,217 @@ public partial class CursorTest : Node
         yield return 0.3f;
     }
 
+    // ───────────────────────── the click-to-attack run-up ─────────────────────────
+
+    private static void Freeze()
+    {
+        foreach (var m in Living) if (m.ProcessMode != ProcessModeEnum.Disabled) m.ProcessMode = ProcessModeEnum.Disabled;
+    }
+
+    private static bool ClearOf(Vector2 at, float fromMonsters, float fromObjects, Monster except)
+    {
+        foreach (var m in World.Monsters) if (m != null && m != except && IsInstanceValid(m) && !m.Dead && m.Pos2.DistanceTo(at) < fromMonsters + m.Radius) return false;
+        foreach (var i in Interactable.All) if (i != null && IsInstanceValid(i) && i.Pos2.DistanceTo(at) < fromObjects) return false;
+        return true;
+    }
+
+    private static float Now => Time.GetTicksMsec() / 1000f;
+
+    private IEnumerator<float> Chase()
+    {
+        var g = G; var p = P; var grid = World.Grid;
+        Log.Info(Cat, $"chase test in {g.Level.AreaId}: {Cursors.Describe()}");
+        Check(Cursors.Active, "the game's cursors are active");
+        if (grid == null) { Skip("chase: this level has no grid"); yield break; }
+        Freeze();
+        Monster t = Living.Where(m => !m.IsBoss && m != g.Level?.BossMon).OrderBy(m => m.Pos2.DistanceTo(p.Pos2)).FirstOrDefault();
+        if (t == null) { Skip("chase: this level has no monsters"); yield break; }
+        t.MaxLife *= 200f; t.Life = t.MaxLife;                 // lives through the test
+
+        // ── a stage on open ground: the hero at A, the enemy at B (9.5 m away, a straight walk), C = open ground beside A ──
+        // The camera rests on the hero, so what is on screen relative to him here is on screen wherever he stands.
+        bool Seen(Vector2 offset, float up) => ScreenOk(World.To3(p.Pos2 + offset) + Vector3.Up * up);
+        Vector2 A = default, B = default, C = default;
+        bool staged = false;
+        var c0 = grid.CellOf(p.Pos2);
+        float[] fars = { 9.5f, 8f, 6.5f };
+        for (int r = 0; r <= 30 && !staged; r++)
+            for (int dy = -r; dy <= r && !staged; dy++)
+                for (int dx = -r; dx <= r && !staged; dx++)
+                {
+                    if (Math.Abs(dx) != r && Math.Abs(dy) != r) continue;
+                    if (!grid.Walk(c0.X + dx, c0.Y + dy)) continue;
+                    Vector2 a = grid.Center(c0.X + dx, c0.Y + dy);
+                    if (!ClearOf(a, 9f, 3.5f, t)) continue;
+                    for (int fi = 0; fi < fars.Length && !staged; fi++)
+                        for (int k = 0; k < 8 && !staged; k++)
+                        {
+                            Vector2 dir = new Vector2(Mathf.Cos(k * Mathf.Tau / 8f), Mathf.Sin(k * Mathf.Tau / 8f)), side = new Vector2(-dir.Y, dir.X);
+                            Vector2 offB = dir * fars[fi], offC = side * 4.5f - dir * 1.5f;
+                            if (!Seen(offB, 1f) || !Seen(offC, 0f)) continue;
+                            Vector2 b = a + offB, c = a + offC;
+                            if (!grid.WalkAt(b) || !grid.LineWalk(a, b) || !ClearOf(b, 9f, 3.5f, t)) continue;
+                            if (!grid.WalkAt(c) || !grid.LineWalk(a, c) || !ClearOf(c, 7f, 3.5f, t)) continue;
+                            A = a; B = b; C = c; staged = true;
+                        }
+                }
+        if (!staged) { Skip("chase: no open stage (hero, enemy 6.5-9.5 m away in a straight walk, open ground beside) found within 60 m"); yield break; }
+        p.Stop(); p.Teleport(A); t.Pos2 = B; g.Cam?.Snap();
+        yield return 0.6f;
+        if (!ScreenOk(World.To3(B) + Vector3.Up) || !ScreenOk(World.To3(C)))
+            Log.Info(Cat, $"  note: after the move the enemy / the open ground are not where expected on screen (enemy {Screen(World.To3(B))}, ground {Screen(World.To3(C))}); the pointer follows them anyway");
+        Log.Info(Cat, $"stage: hero ({A.X:0.0},{A.Y:0.0}) enemy {t.DisplayName} ({B.X:0.0},{B.Y:0.0}) {A.DistanceTo(B):0.0} m, open ground ({C.X:0.0},{C.Y:0.0}); monsters frozen");
+        Func<Vector3> onEnemy = () => IsInstanceValid(t) ? t.GlobalPosition + Vector3.Up * 1.0f : World.To3(B);
+        Func<Vector3> onGround = () => World.To3(C);
+
+        // ── 1. the enemy out of reach, before any click ──
+        PointAtWorld(onEnemy);
+        yield return 0.45f;
+        Check($"an enemy {p.Pos2.DistanceTo(t.Pos2):0.0} m away (out of reach), before the click", CursorKind.Attack);
+        Shot("chase_before_click");
+
+        // ── 2. the click: the hero runs up; the pointer stays on the enemy ──
+        int s0 = p.ChaseStarts, h0 = p.ChaseHits;
+        { float w0 = Now; while (p.Busy && Now - w0 < 2.5f) yield return 0.03f; }      // a click during a swing would be dropped
+        p.TestClick(0);
+        int n = 0, bad = 0; bool ran = false; float t0 = Now;
+        while (Now - t0 < 6f && p.ChaseHits == h0)
+        {
+            yield return 0.02f;
+            if (ReferenceEquals(p.AttackTarget, t)) { ran = true; n++; if (Cursors.Current != CursorKind.Attack) bad++; if (n == 8) Shot("chase_running"); }
+            else if (ran) break;
+        }
+        Check(p.ChaseStarts > s0 && ran && n >= 5 && bad == 0 && p.ChaseHits > h0,
+            $"click on it: the run-up started ({p.ChaseStarts - s0}), the blade on {n - bad} of {n} samples while the hero ran at it ({Now - t0:0.00} s), ended '{p.LastChaseEnd}' at {p.Pos2.DistanceTo(t.Pos2):0.0} m [pointer ON the target: the blade comes from the hover, hoverKind={p.HoverKind}]");
+        yield return 0.5f;
+        Check("after the blow, the pointer still on the enemy", CursorKind.Attack);
+
+        // ── 3. a click, then the pointer leaves for open ground with the button UP: the run-up goes on, a click there would walk ──
+        Freeze();
+        p.Stop(); p.Teleport(A); g.Cam?.Snap();
+        PointAtWorld(onEnemy);
+        yield return 0.5f;
+        s0 = p.ChaseStarts; h0 = p.ChaseHits;
+        { float w0 = Now; while (p.Busy && Now - w0 < 2.5f) yield return 0.03f; }      // a click during a swing would be dropped
+        p.TestClick(0);
+        yield return 0.12f;
+        bool running = ReferenceEquals(p.AttackTarget, t);
+        PointAtWorld(onGround);
+        yield return 0.18f;
+        bool still = ReferenceEquals(p.AttackTarget, t);
+        var kUp = Cursors.Current;
+        Check(running && still && kUp == CursorKind.Default,
+            $"run-up in progress (target kept: {still}), button up, pointer moved to open ground: {kUp} (want Default: a click there would walk and cancel) hoverKind={p.HoverKind}");
+        PointAtWorld(onEnemy);
+        yield return 0.12f;
+        Check("pointer back on the enemy the hero is running at", CursorKind.Attack);
+        t0 = Now;
+        while (Now - t0 < 5f && p.ChaseHits == h0 && ReferenceEquals(p.AttackTarget, t)) yield return 0.05f;
+        Log.Info(Cat, $"  run-up 2 ended '{p.LastChaseEnd}' hits+{p.ChaseHits - h0}");
+        yield return 0.5f;
+
+        // ── 4. the button HELD: press on the enemy, the pointer slips off during the run-up and stays off after the blow ──
+        Freeze();
+        p.Stop(); p.Teleport(A); g.Cam?.Snap();
+        PointAtWorld(onEnemy);
+        yield return 0.5f;
+        s0 = p.ChaseStarts; h0 = p.ChaseHits;
+        int f0 = p.Fired;
+        { float w0 = Now; while (p.Busy && Now - w0 < 2.5f) yield return 0.03f; }      // a click during a swing would be dropped
+        Player.TestLeft = true;
+        p.TestClick(0);
+        yield return 0.12f;
+        PointAtWorld(onGround);
+        n = 0; bad = 0; ran = false; t0 = Now;
+        while (Now - t0 < 6f && p.ChaseHits == h0)
+        {
+            yield return 0.02f;
+            if (ReferenceEquals(p.AttackTarget, t)) { ran = true; if (p.Hover == null) { n++; if (Cursors.Current != CursorKind.Attack) bad++; if (n == 8) Shot("held_pointer_on_ground"); } }
+            else if (ran) break;
+        }
+        Check(p.ChaseStarts > s0 && ran && n >= 5 && bad == 0,
+            $"button held, the pointer slipped onto open ground during the run-up: the blade on {n - bad} of {n} samples (hoverKind={p.HoverKind}), ended '{p.LastChaseEnd}' [pointer OFF the target: the blade comes from the held-button rule; the button is the harness flag Player.TestLeft, not a real mouse button]");
+        // the held button keeps striking although the pointer is on the ground
+        n = 0; bad = 0; t0 = Now;
+        while (Now - t0 < 2.4f)
+        {
+            yield return 0.03f;
+            if (ReferenceEquals(p.AttackTarget, t) && p.Hover == null) { n++; if (Cursors.Current != CursorKind.Attack) bad++; }
+        }
+        Check(n >= 10 && bad == 0 && p.Fired - f0 >= 2,
+            $"button still held after the blow, pointer on open ground: {p.Fired - f0} blows so far, the blade on {n - bad} of {n} samples");
+        Player.TestLeft = false;
+        yield return 0.45f;
+        Check($"button released, pointer on open ground (attack target now: {(p.AttackTarget == null ? "none" : "kept")})", CursorKind.Default);
+        PointAtWorld(onEnemy);
+        yield return 0.3f;
+        Check("pointer back on the enemy", CursorKind.Attack);
+
+        // ── 5. an enemy no path leads to: deep inside unwalkable ground ──
+        Freeze();
+        p.Stop(); g.Cam?.Snap();
+        yield return 0.4f;                      // the camera rests on the hero again (Seen measures from him)
+        bool walled = false; Vector2 W = default, S = default;
+        var h = grid.CellOf(A);
+        for (int r = 2; r <= 45 && !walled; r++)
+            for (int dy = -r; dy <= r && !walled; dy++)
+                for (int dx = -r; dx <= r && !walled; dx++)
+                {
+                    if (Math.Abs(dx) != r && Math.Abs(dy) != r) continue;
+                    int x = h.X + dx, y = h.Y + dy;
+                    if (!grid.In(x, y) || grid.Walk(x, y)) continue;
+                    bool deep = true;
+                    for (int ay = -1; ay <= 1 && deep; ay++) for (int ax = -1; ax <= 1 && deep; ax++) if (grid.Walk(x + ax, y + ay)) deep = false;
+                    if (!deep) continue;
+                    // somewhere to stand three to five cells away, with the enemy on screen from there
+                    for (int rr = 3; rr <= 5 && !walled; rr++)
+                        for (int k = 0; k < 16 && !walled; k++)
+                        {
+                            int sx = x + Mathf.RoundToInt(Mathf.Cos(k * Mathf.Tau / 16f) * rr), sy = y + Mathf.RoundToInt(Mathf.Sin(k * Mathf.Tau / 16f) * rr);
+                            if (!grid.Walk(sx, sy)) continue;
+                            Vector2 s = grid.Center(sx, sy), w = grid.Center(x, y);
+                            if (!Seen(w - s, 1f) || !ClearOf(s, 8f, 3.5f, t) || !ClearOf(w, 6f, 3.5f, t)) continue;
+                            W = w; S = s; walled = true;
+                        }
+                }
+        if (!walled) Skip("an enemy no path leads to: no 3x3 block of unwalkable cells with a place to stand 3-5 cells off (enemy on screen) within 90 m");
+        else
+        {
+            p.Teleport(S); t.Pos2 = W; g.Cam?.Snap();
+            yield return 0.6f;
+            Log.Info(Cat, $"stage: enemy moved into unwalkable ground ({W.X:0.0},{W.Y:0.0}), hero ({S.X:0.0},{S.Y:0.0}) {S.DistanceTo(W):0.0} m away");
+            PointAtWorld(onEnemy);
+            yield return 0.45f;
+            Check("an enemy no path leads to, before the click (the game cannot know yet)", CursorKind.Attack);
+            s0 = p.ChaseStarts;
+            { float w0 = Now; while (p.Busy && Now - w0 < 2.5f) yield return 0.03f; }      // a click during a swing would be dropped
+            p.TestClick(0);
+            t0 = Now; ran = false; n = 0; bad = 0;
+            yield return 0.05f;
+            while (Now - t0 < 14f)
+            {
+                yield return 0.03f;
+                if (ReferenceEquals(p.AttackTarget, t)) { ran = true; n++; if (Cursors.Current != CursorKind.Attack) bad++; }
+                else if (p.ChaseStarts > s0) break;
+            }
+            float gave = Now - t0;
+            yield return 0.12f;
+            var kind = Cursors.Current; var hk = p.HoverKind;
+            Check(p.ChaseStarts > s0 && p.AttackTarget == null && kind == CursorKind.Forbidden && hk == Player.HoverAct.Unreachable,
+                $"the run-up gave up after {gave:0.0} s ('{p.LastChaseEnd}'{(ran ? $", the blade on {n - bad} of {n} samples while trying" : ", at once")}): pointer on that enemy -> {kind} (hoverKind={hk})");
+            Shot("hostile_unreachable");
+            PointAtWorld(() => World.To3(S + (S - W).Normalized() * 2.5f));
+            yield return 0.3f;
+            Log.Info(Cat, $"  meanwhile the ground beside the hero: {Cursors.Current} (hoverKind={p.HoverKind})");
+            PointAtWorld(onEnemy);
+            yield return 3.0f;
+            Check("3 s later the blade again on that enemy (a new click may try again)", CursorKind.Attack);
+        }
+        Player.TestLeft = false;
+        _point = null; Player.TestMouse = null;
+        yield return 0.3f;
+    }
+
     private static BaseButton FirstButton(Node n)
     {
         foreach (var c in n.GetChildren())
@@ -476,12 +848,25 @@ public partial class CursorTest : Node
         var g = G;
         yield return 1.5f;
         Log.Info(Cat, $"title screen: {Cursors.Describe()}");
+        if (FallbackCheck())
+        {
+            if (Cursors.Active)
+            {
+                PointAtScreen(new Vector2(ViewSize.X * 0.78f, ViewSize.Y * 0.5f));
+                yield return 0.6f;
+                Check($"fallback: title background (shape {Input.GetCurrentCursorShape()})", CursorKind.Ui);
+            }
+            _point = null;
+            yield break;
+        }
         Check(Cursors.Active, "the game's cursors are active");
         HotspotChecks();
         SizeTable();
+        Check(Cursors.Size == ExpectedSizeNow(), $"size in use {Cursors.Size} px = the size for this window ({ExpectedSizeNow()} px)");
         PointAtScreen(new Vector2(ViewSize.X * 0.78f, ViewSize.Y * 0.5f));
         yield return 0.6f;
         Check($"title background (shape {Input.GetCurrentCursorShape()})", CursorKind.Ui);
+        Shot("title_background");
         BaseButton hand = null;
         foreach (var n in g.UiLayer.GetChildren())
         {
@@ -495,6 +880,7 @@ public partial class CursorTest : Node
             var shape = Input.GetCurrentCursorShape();
             Check(shape == Input.CursorShape.PointingHand, $"a menu entry ('{(hand as Button)?.Text}') asks for the pointing hand: shape {shape} -> the lit pointer (UiHot, hotspot {Cursors.HotspotOf(CursorKind.UiHot).X:0},{Cursors.HotspotOf(CursorKind.UiHot).Y:0})");
             Check("the arrow slot stays the interface pointer", CursorKind.Ui);
+            Shot("title_menu_entry");
         }
         else Skip("a menu entry with the pointing-hand shape: none found");
         MainMenu menu = null;
@@ -511,6 +897,7 @@ public partial class CursorTest : Node
                 yield return 0.6f;
                 var shape = Input.GetCurrentCursorShape();
                 Check(shape == Input.CursorShape.Drag, $"class screen, the turn-the-hero area asks for the drag shape: shape {shape} -> the reaching gauntlet (PickUp, hotspot {Cursors.HotspotOf(CursorKind.PickUp).X:0},{Cursors.HotspotOf(CursorKind.PickUp).Y:0})");
+                Shot("class_turn_area");
             }
             else Skip("class screen: no drag area found");
             menu.Open("identity");
@@ -522,6 +909,7 @@ public partial class CursorTest : Node
                 yield return 0.6f;
                 var shape = Input.GetCurrentCursorShape();
                 Check(shape == Input.CursorShape.Ibeam, $"name field asks for the I-beam: shape {shape} -> the iron caret (hotspot {Cursors.HotspotOf(CursorKind.Caret).X:0},{Cursors.HotspotOf(CursorKind.Caret).Y:0})");
+                Shot("name_field");
             }
             else Skip("name screen: no text field found");
             menu.Open("");

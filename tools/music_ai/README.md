@@ -155,11 +155,12 @@ To remove everything: delete `%LOCALAPPDATA%\AshenAbyssTools\music_ai` (nothing 
 system-wide: no drivers, services, registry entries or PATH changes). `Y:\tools\music_ai`, `Y:\music_samples`
 and `Y:\music_backup` are plain folders. The game keeps working: it only needs the `.ogg` files.
 
-## State on 2026-11-19 00:45 (work paused)
+## State on 2026-11-21 (production complete)
 
-15 of the 19 pieces in `Y:/game/assets/audio/music` are generated versions; `sands_combat`, `sanctum_combat`,
-`abyss_base` and `abyss_combat` are the procedural tracks. Those four are held to a stricter bar (`strict=True` in
-`tracks.py`: minor mode, combat tonic = exploration tonic, PLR >= 9 dB, LRA >= 1.5 LU on the delivered file); the
-generated candidates so far fail it. `deliver.py` now restores the procedural file for any piece without a passing
-final. `verify_delivery.py`: 19 of 19 files complete and consistent. What is left and the exact resume commands are
-in `RUNNING.txt`.
+All 19 pieces in `Y:/game/assets/audio/music` are generated versions that passed every check after a final re-cut
+pass; `sands_combat`, `sanctum_combat`, `abyss_base` and `abyss_combat` also pass the stricter bar (`strict=True` in
+`tracks.py`: minor mode, combat tonic = exploration tonic, PLR >= 9 dB, LRA >= 1.5 LU on the delivered file;
+`produce.py` re-judges a strict combat piece when its exploration piece changes). `deliver.py` restores the
+procedural file for any piece without a passing final. `idle_guard.ps1` lowers the batch to Idle priority while the
+game runs. The game crossfades between the exploration and combat track of a zone (`AudioMan.cs`).
+Open points: `RUNNING.txt`.

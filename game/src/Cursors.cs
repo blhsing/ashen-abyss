@@ -21,17 +21,20 @@ public enum CursorKind
 }
 
 /// <summary>
-/// The contextual mouse cursor. The pictures are raster art rendered from 3D models (Y:\tools\cursor) in four sizes;
+/// The contextual mouse cursor. The pictures are raster art rendered from 3D models (Y:\tools\cursor) in five sizes;
 /// this node loads them, picks the size for the screen, dresses Godot's own cursor shapes (pointing hand, I-beam, drag,
 /// forbidden, busy) and every frame decides what the plain arrow should be: over the interface the slim pointer, in
 /// play what a click would do (<see cref="Player.HoverKind"/>, decided by the hero's own picking; nothing is picked
-/// twice). A change costs one <c>Input.SetCustomMouseCursor</c> call; a frame without a change costs a few comparisons.
+/// twice). While a held mouse button keeps the hero striking or running at an enemy (<see cref="Player.AttackTarget"/>)
+/// the blade stays, even when the pointer has slipped off that enemy: the button, not the pointer, decides then.
+/// A change costs one <c>Input.SetCustomMouseCursor</c> call; a frame without a change costs a few comparisons.
 ///
 /// Size: 32 px × max(window scale, display scaling) × the interface text size, snapped to the nearest size in the set
 /// (32 / 40 / 48 / 64 / 96), so a 4K screen gets the 64 px cursor instead of a tiny 32 px one.
 /// Setting 「滑鼠游標」 (<see cref="Settings.SystemCursor"/>) hands every shape back to the operating system.
 /// Switches: --cursor-size=&lt;px&gt; forces a size, --cursor-display=&lt;factor&gt; stands in for the display scaling,
-/// --cursor-log writes a "cursor" line per change, --cursor-test runs <see cref="CursorTest"/>.
+/// --cursor-log writes a "cursor" line per change, --cursor-test[=chase] runs <see cref="CursorTest"/>,
+/// --cursor-drop=&lt;kind[_size]&gt;[,…] pretends pictures are missing (the test of the never-a-half-set fallback).
 /// </summary>
 public partial class Cursors : Node
 {
@@ -64,6 +67,7 @@ public partial class Cursors : Node
     private float _fitT, _forbidT, _forceDisplay;
     private string _fitWhy = "";
     private Input.CursorShape _shapeSeen = Input.CursorShape.Arrow;
+    private HashSet<string> _drop;             // test harness (--cursor-drop): pictures treated as missing
 
     /// <summary>The picture the arrow carries now.</summary>
     public static CursorKind Current => I != null ? I._kind : CursorKind.Default;
@@ -105,6 +109,12 @@ public partial class Cursors : Node
             _log = g != null && (g.Arg("cursor-log") || g.Arg("cursor-test")) || Log.Verbose;
             if (g != null && int.TryParse(g.ArgValue("cursor-size"), NumberStyles.Integer, CultureInfo.InvariantCulture, out int fs) && fs > 0) _forceSize = fs;
             if (g != null && float.TryParse(g.ArgValue("cursor-display"), NumberStyles.Float, CultureInfo.InvariantCulture, out float fd) && fd > 0f) _forceDisplay = Mathf.Clamp(fd, 0.5f, 4f);
+            string drop = g?.ArgValue("cursor-drop");
+            if (!string.IsNullOrWhiteSpace(drop))
+            {
+                _drop = new HashSet<string>(drop.ToLowerInvariant().Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries));
+                Log.Info("cursor", $"test: these pictures are treated as missing: {string.Join(", ", _drop)}");
+            }
             LoadManifest();
             var win = GetTree()?.Root;
             if (win != null) win.SizeChanged += () => { if (IsInstanceValid(this)) Fit("window resized"); };
@@ -158,6 +168,7 @@ public partial class Cursors : Node
         int missing = 0;
         for (int k = 0; k < KindCount; k++)
         {
+            if (_drop != null && (_drop.Contains(FileOf[k]) || _drop.Contains($"{FileOf[k]}_{size}"))) { missing++; continue; }
             var img = LoadImage($"{Dir}{FileOf[k]}_{size}.png");
             if (img == null || !_hot.TryGetValue((k, size), out var hot)) { missing++; continue; }
             // the hotspot has to lie inside the picture or the engine refuses the cursor
@@ -388,6 +399,10 @@ public partial class Cursors : Node
         if (p == null || !IsInstanceValid(p)) { why = "no hero"; return CursorKind.Default; }
         if (p.Dead) { why = "hero dead"; return CursorKind.Default; }
         if (g.Paused || !p.InputEnabled) { why = "paused"; return CursorKind.Default; }     // the hover is not updated while paused
+        // a held button that keeps the hero striking (or running at) an enemy: the blade stays although the pointer has
+        // slipped off it — releasing the button, not moving the pointer, is what ends the attack. An enemy under the
+        // pointer keeps its own answer (the blade, or "cannot reach").
+        if (p.Hover == null && HeldAttack(p)) { _forbidT = 0; why = "attacking"; return CursorKind.Attack; }
         switch (p.HoverKind)
         {
             case Player.HoverAct.Attack: _forbidT = 0; why = "hostile"; return CursorKind.Attack;
@@ -402,6 +417,16 @@ public partial class Cursors : Node
                 why = "ground"; return _kind == CursorKind.Ui || _kind == CursorKind.Busy ? CursorKind.Default : _kind;
             default: _forbidT = 0; why = "ground"; return CursorKind.Default;
         }
+    }
+
+    /// <summary>True while a mouse button is down and the hero's attack order is alive (asked only while a button is down).</summary>
+    private static bool HeldAttack(Player p)
+    {
+        bool down = Input.IsMouseButtonPressed(MouseButton.Left) || Input.IsMouseButtonPressed(MouseButton.Right)
+                    || Player.TestMouse != null && (Player.TestLeft || Player.TestRight);
+        if (!down) return false;
+        var t = p.AttackTarget;
+        return t != null && IsInstanceValid(t);
     }
 
     /// <summary>The picture for an object's label (the same reading Player.HoverKind gives the object itself).</summary>
@@ -420,6 +445,7 @@ public partial class Cursors : Node
                 case "npc": case "loot": case "object": return p.HoverObj != null && IsInstanceValid(p.HoverObj) ? $"{why}: {p.HoverObj.Kind} '{p.HoverObj.Label}'" : why;
                 case "label": { var o = g.Hud?.PointerObj; return o != null && IsInstanceValid(o) ? $"label of {o.Kind} '{o.Label}'" : why; }
                 case "ground": case "unreachable ground": return $"{why} ({p.Aim.X:0.0},{p.Aim.Y:0.0})";
+                case "attacking": { var t = p.AttackTarget; return t != null && IsInstanceValid(t) ? $"button held, attacking {t.DisplayName}" : why; }
             }
         }
         catch { /* the log line must never break the frame */ }
@@ -439,6 +465,8 @@ public partial class Cursors : Node
 
     /// <summary>Test harness: the sizes of the set, the picture of a kind at a size (null when missing) and its hotspot.</summary>
     public static IReadOnlyList<int> Sizes => I?._sizes ?? Array.Empty<int>();
+    /// <summary>Test harness: the file name stem of a kind ("attack" -> attack_&lt;size&gt;.png).</summary>
+    public static string FileName(CursorKind kind) => FileOf[(int)kind];
     public static Image ImageOf(CursorKind kind, int size, out Vector2 hot)
     {
         hot = Vector2.Zero;

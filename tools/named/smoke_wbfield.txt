@@ -1,0 +1,12 @@
+build ok
+exit= seconds=125
+log: C:\Users\blhsi\AppData\Roaming\AshenAbyss\logs\game_20261120_221803.log  lines=457  ERR=0  WRN=0
+--- last lines ---
+  122.357 INF [save] save reason=quit slot=91 ok=True area=wastes playtime=109s
+  122.361 INF [bot] final summary t=659s game=648s area=wastes doing=use loot kills=471 elites=29 bosses=2 level=20 life=100% items=108 gold=19018 deaths=0 areas=2 casts=463 unstuck=0 monsters=14 errors=0 warnings=0 botErrors=0
+  122.365 INF [bot] final progress: waypoints=[town,wastes] renown=[wastes:150] quests done=0/3 skillpts bonus=0 potion cap=4 altars=1 codex=0 tier=0/1 riftBest=0 paragon=0 playtime=109s
+  122.370 INF [bot] final skills [emberblade lv20] cast/hits/damage: (dot):c0/h354/d7169 (other):c0/h75/d8422 eb_cleave:c114/h580/d97538 eb_leap:c41/h118/d26192 eb_roar:c28/h0/d0 eb_rupture:c53/h84/d47786 eb_slash:c135/h166/d18472 eb_whirl:c92/h1038/d87001
+  122.373 INF [bot] final balance: ttk normal=1.0s(n=439) champion=1.5s(n=22) elite=4.6s(n=7) boss=104.0s(n=2) | taken 1135/min in 1027 hits (life 1084; 1.05 life bars/min) god-saves=0 | kills/min 43.6 | never cast: [] cast but never hit: []
+  122.374 INF [anim] anim-check: hero moved 272.4s - 0.0s without a locomotion clip, 0.0s with frozen legs; hero stood 42.3s - 0.0s in a run clip or none; monsters moved 662.7s - 0.0s without a locomotion clip, 0.0s with frozen legs; models without a skeleton  ƒ?Ý
+  122.375 INF [input] keyboard hook saw 4 key events, 0 of them PrtSc
+  122.376 INF [boot] shutdown errors=0 warnings=0 uptime=122s

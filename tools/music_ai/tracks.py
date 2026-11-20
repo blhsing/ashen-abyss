@@ -65,7 +65,7 @@ TRACKS = [
        AMBIENT + "solo viola, lonely, slow, sparse, cold, desolate, bleak, mournful, breathy flute textures, wind, "
        "low drone, minor key, long reverb, minimal, instrumental",
        "a lonely slow solo viola over breathy airy textures and wind, cold, sparse and desolate ambient music",
-       pair="wastes"),
+       pair="wastes", strict=True),
     _t("wastes_combat", 150, (110, 130), 112, "E minor", 4, True,
        COMBAT + "cold, bleak, tense, driving, percussive, urgent solo viola, low strings ostinato, frame drums, "
        "low toms, breathy flute textures, wind, minor key, instrumental",
@@ -93,17 +93,17 @@ TRACKS = [
        "strikes, pounding deep drums, frame drums, low strings ostinato, cavernous reverb, minor key, Phrygian, "
        "instrumental",
        "deep male choir, tolling bells and pounding deep drums with a low string ostinato, grim driving battle music",
-       pair="crypt"),
+       pair="crypt", strict=True),
     _t("mire_base", 165, (120, 150), 50, "Bb minor", 4, False,
        AMBIENT + "murky, swampy, slow, heavy, queasy, sickly, dissonant, bass clarinet, contrabassoon, detuned low "
        "wordless choir, wet dripping percussion, waterphone, soft log drums, fog, minor key, minimal, instrumental",
        "murky bass clarinet and contrabassoon with detuned low choir and wet dripping percussion, slow queasy swamp ambient",
-       pair="mire"),
+       pair="mire", strict=True),
     _t("mire_combat", 150, (110, 130), 100, "Bb minor", 4, True,
        COMBAT + "murky, swampy, queasy, dissonant, tense, driving, percussive, bass clarinet ostinato, "
        "contrabassoon, detuned low choir, wet hand percussion, log drums, deep toms, minor key, instrumental",
        "bass clarinet and contrabassoon ostinato with wet hand percussion and log drums, murky dissonant driving battle music",
-       pair="mire"),
+       pair="mire", strict=True),
     _t("sands_base", 165, (120, 150), 58, "A minor", 4, False,
        "ambient, film score, desert, ancient, dry, lonely, mysterious, slow, sparse, double-reed woodwind melody, "
        "plucked lute, harp, soft hand drum, hot empty air, Phrygian, minor key, minimal, instrumental",
@@ -134,7 +134,8 @@ TRACKS = [
        "distant heavy drum hits, low dissonant string clusters, slow, vast cavern reverb, minor key, minimal, instrumental",
        "bowed metal scrapes, deep rumble and distant heavy drum hits with low dissonant strings, menacing infernal dark ambient",
        pair="abyss", strict=True),
-    _t("abyss_combat", 150, (110, 130), 120, "D minor", 4, True,
+    # key A minor since 2026-11-20: the abyss_base version that passed the strict bar (seed 7474) is in A minor
+    _t("abyss_combat", 150, (110, 130), 120, "A minor", 4, True,
        COMBAT + "infernal, menacing, relentless, brutal, driving, percussive, heavy war drums, taiko drums, bowed "
        "metal, anvil strikes, sub bass rumble, low strings ostinato, dissonant clusters, minor key, instrumental",
        "heavy pounding war drums with bowed metal shrieks, deep rumble and a brutal low string ostinato, menacing battle music",

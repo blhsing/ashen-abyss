@@ -317,3 +317,138 @@ def dish(c, axis, r, depth=0.06, n=12, m=5, th=0.006, squash=1.0, upv=(0, 0, 1))
     s.solidify(th)
     s.smooth = 180.0
     return s
+
+
+# ------------------------------------------------------------------------------------------------ additions by H3
+def panes(lead, trail, sub=5, nv=5, th=0.008, notch=0.25, camber=0.0, droop=0.0):
+    """wing of flat panes with STRAIGHT edges (glass, slag, metal leaf): lead[k] / trail[k] are matching stations from
+    the body outwards (the same number of points on both edges); between two stations the trailing edge is cut back
+    towards the leading edge in a V (notch = fraction of the chord, one value or one per interval), so the trailing
+    edge is a row of points. Closed thin slab."""
+    Lp = [np.asarray(q, dtype=float) for q in lead]
+    Tp = [np.asarray(q, dtype=float) for q in trail]
+    assert len(Lp) == len(Tp) and len(Lp) >= 2
+    k = len(Lp) - 1
+    nt = np.broadcast_to(np.asarray(notch, dtype=float), (k,))
+    cols = []
+    for i in range(k):
+        for j in range(sub + (1 if i == k - 1 else 0)):
+            t = j / sub
+            a = Lp[i] * (1 - t) + Lp[i + 1] * t
+            b = Tp[i] * (1 - t) + Tp[i + 1] * t
+            b = b + (a - b) * (nt[i] * (1.0 - abs(2 * t - 1)))
+            cols.append((a, b, (i + t) / k))
+    G = np.zeros((len(cols), nv, 3))
+    for c, (a, b, u) in enumerate(cols):
+        for j in range(nv):
+            v = j / (nv - 1)
+            G[c, j] = a * (1 - v) + b * v + V(0, 0, camber * math.sin(math.pi * v) * (0.5 + 0.5 * math.sin(math.pi * u)) - droop * v * v)
+    s = P.sheet_solid(G, th)
+    s.smooth = 40.0
+    s.grid = G.reshape(-1, 3).copy()                                   # for pane_weights
+    s.gu = np.repeat(np.array([c[2] * k for c in cols]), nv)
+    s.gv = np.tile(np.linspace(0.0, 1.0, nv), len(cols))
+    return s
+
+
+def pane_weights(part, lead_bones, trail_bones):
+    """skin a panes() wing so that it stays on its spars: lead_bones[i] = the bone the leading edge of interval i rides
+    on; trail_bones[k] = the bone (or {bone: weight}) of trail station k. Weights run linearly along the trailing edge
+    and from the leading edge to the trailing edge."""
+    R = M.RIG
+    k = len(trail_bones) - 1
+    assert len(lead_bones) == k
+
+    def vec(b):
+        w = np.zeros(R.nb, dtype=np.float32)
+        for n, x in (b.items() if isinstance(b, dict) else [(b, 1.0)]):
+            w[R.idx[n]] = x
+        return w
+    T = [vec(b) for b in trail_bones]
+    Lb = [vec(b) for b in lead_bones]
+    Wg = np.zeros((len(part.grid), R.nb), dtype=np.float32)
+    for q in range(len(part.grid)):
+        i = min(int(part.gu[q] + 1e-9), k - 1)
+        t = part.gu[q] - i
+        Wg[q] = Lb[i] * (1 - part.gv[q]) + (T[i] * (1 - t) + T[i + 1] * t) * part.gv[q]
+    d = np.linalg.norm(part.v[:, None, :] - part.grid[None, :, :], axis=2)
+    part.W = Wg[d.argmin(1)]
+    part.bone = None
+    return part
+
+
+def kite_skel(h, half, front, back, hole, nx=3, nf=2, nb=3, ribbons=None, extra=None):
+    """flat kite / ray without a body: `body` at the centre (h above the origin), flex chains from the rim of the central
+    hole (radius `hole`) to the four corners: fx_<s>1..nx (side corners at x = +-half), ff1..nf (front corner at
+    y = -front), fb1..nb (back corner at y = +back). ribbons = {name: (points, parent bone)} -> chains <name>1.."""
+    sk = B.Sk()
+    sk.bone('body', (0, 0.5 * hole, h), (0, -0.5 * hole, h), 'root')
+    for s, sg in (('l', 1.0), ('r', -1.0)):
+        sk.chain('fx_%s' % s, [(sg * (hole + (half - hole) * i / nx), 0, h) for i in range(nx + 1)], 'body')
+    sk.chain('ff', [(0, -(hole + (front - hole) * i / nf), h) for i in range(nf + 1)], 'body')
+    sk.chain('fb', [(0, hole + (back - hole) * i / nb, h) for i in range(nb + 1)], 'body')
+    for name, (pts, par) in (ribbons or {}).items():
+        sk.chain(name, pts, par)
+    if extra:
+        extra(sk)
+    return sk
+
+
+class Kite(Flyer):
+    """motion blocks of a kite that NEVER flaps: it flexes along its diagonals (the four arms curl up or down) and
+    trails ribbon chains. Bones as kite_skel makes them; rib = {key: chain prefix} names the ribbon chains."""
+
+    def __init__(self, C, h, rib=None):
+        Flyer.__init__(self, C, h)
+        names = C.rg.names
+
+        def chain(prefix):
+            out = [n for n in names if n.startswith(prefix) and n[len(prefix):].isdigit()]
+            return sorted(out, key=lambda n: int(n[len(prefix):]))
+        self.fx = {'l': chain('fx_l'), 'r': chain('fx_r')}
+        self.ff = chain('ff')
+        self.fb = chain('fb')
+        self.rib = {k: chain(v) for k, v in (rib or {}).items()}
+
+    @staticmethod
+    def _share(n, grow):
+        w = np.array([(i + 1.0) ** grow for i in range(n)])
+        return w / w.sum()
+
+    def flex(self, p, l=0.0, r=None, f=0.0, b=0.0, grow=1.0):
+        """curl the arms: degrees by which the left / right side corner, the front and the back corner turn towards
+        +Z (negative = down); the bend is shared over the chain, more towards the tip (grow)"""
+        r = l if r is None else r
+        for n, w in zip(self.fx['l'], self._share(len(self.fx['l']), grow)):
+            p.rot(n, y=-l * w)
+        for n, w in zip(self.fx['r'], self._share(len(self.fx['r']), grow)):
+            p.rot(n, y=r * w)
+        for n, w in zip(self.ff, self._share(len(self.ff), grow)):
+            p.rot(n, x=-f * w)
+        for n, w in zip(self.fb, self._share(len(self.fb), grow)):
+            p.rot(n, x=b * w)
+
+    def wave(self, p, u, n=1, side=10.0, fore=7.0, lag=0.12, ph=0.0, skew=0.0):
+        """the ray-like undulation: a wave runs out along the side arms (both in phase, `skew` shifts left against
+        right) while the front / back arms move against it (a slow saddle). Degrees per bone at the tip."""
+        for s, sg in (('l', 1.0), ('r', -1.0)):
+            ch = self.fx[s]
+            for i, bn in enumerate(ch):
+                a = side * (i + 1.0) / len(ch) * osc(u, n, ph - i * lag + skew * sg)
+                p.rot(bn, y=-sg * a)
+        for i, bn in enumerate(self.ff):
+            p.rot(bn, x=-fore * (i + 1.0) / len(self.ff) * osc(u, n, ph + 0.5 - i * lag))
+        for i, bn in enumerate(self.fb):
+            p.rot(bn, x=fore * (i + 1.0) / len(self.fb) * osc(u, n, ph + 0.5 - i * lag))
+
+    def ribbons(self, p, u=0.0, n=2, amp=9.0, amp_z=None, lag=0.16, lift=0.0, spread=0.0, ph=0.0, curl=0.0):
+        """ribbon tails (chains pointing back): lift = degrees the whole ribbon rises at its root, spread = degrees it
+        swings outwards at its root, curl = extra rise per link, plus a wave that grows towards the tip"""
+        for k, key in enumerate(sorted(self.rib)):
+            ch = self.rib[key]
+            sg = 1.0 if self.C.rg.H(ch[0])[0] >= 0 else -1.0
+            for i, bn in enumerate(ch):
+                g = 0.4 + 0.6 * i / max(len(ch) - 1, 1)
+                az = amp if amp_z is None else amp_z
+                p.rot(bn, x=(lift if i == 0 else 0.0) + curl + amp * g * osc(u, n, ph + 0.13 * k - i * lag),
+                      z=(-sg * spread if i == 0 else 0.0) + az * g * osc(u, n, ph + 0.25 + 0.21 * k - i * lag))

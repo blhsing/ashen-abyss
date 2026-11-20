@@ -1,1 +1,12 @@
 build ok
+exit= seconds=600
+log: C:\Users\blhsi\AppData\Roaming\AshenAbyss\logs\game_20261120_213041.log  lines=2939  ERR=0  WRN=0
+--- last lines ---
+  596.424 INF [ui] open map arg=travel
+  596.427 INF [map] opened area=town travel=True gate=True tab=1
+  596.668 INF [ui] close map
+  596.692 INF [ui] open map arg=travel
+  596.695 INF [map] opened area=town travel=True gate=True tab=1
+  596.735 INF [bot] summary t=3129s game=2983s area=town doing=use waypoint kills=1337 elites=98 bosses=14 level=50 life=100% items=173 gold=142746 deaths=0 areas=22 casts=2464 unstuck=0 monsters=0 errors=0 warnings=0 botErrors=0 focus=campaign over
+  596.929 INF [ui] close map
+  598.398 INF [bot] summary t=3139s game=2992s area=town doing=idle (nothing left here) kills=1337 elites=98 bosses=14 level=50 life=100% items=173 gold=142746 deaths=0 areas=22 casts=2464 unstuck=0 monsters=0 errors=0 warnings=0 botErrors=0 focus=campaign ove ƒ?Ý

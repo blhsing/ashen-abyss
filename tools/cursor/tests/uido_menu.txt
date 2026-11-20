@@ -1,6 +1,6 @@
-# Mouse cursor on the title screen and in the settings (use a fresh profile). Run with --cursor-log:
-# every change of the arrow's picture is a "[cursor]" log line; "[uitest] STEP ..." lines mark what the pointer is on.
-#   Y:\tools\repo\fresh_profile_run.ps1 -GameArgs "--win --mute --cursor-log --uidir=Y:\shots\cursor --uido=@Y:\tools\cursor\tests\uido_menu.txt" -Timeout 90
+# Mouse cursor on the title screen and in the settings (fresh profile). Run with --cursor-log: every change of the
+# arrow's picture and every cursor shape a control asks for is a "[cursor]" log line; "[uitest] STEP ..." lines mark
+# what the pointer is on. Started by Y:\tools\cursor\tests\run_all.ps1 -Only uidomenu
 wait 2.5
 log STEP title-background
 hover 1250,500
@@ -18,7 +18,14 @@ shot cursor_settings_display
 log STEP settings-page-game
 click @遊戲
 wait 0.8
+log STEP hover-the-row-label
+hover @滑鼠游標
+wait 0.5
 shot cursor_settings_game
+dump cursor_settings_game
+log STEP hover-an-option (pointing-hand shape)
+hover @系統
+wait 0.5
 log STEP system-cursor-on
 click @系統
 wait 0.9
@@ -28,8 +35,17 @@ click @遊戲
 wait 0.9
 log STEP text-scale-2
 scale 2
-wait 0.8
+wait 0.9
+shot cursor_settings_game_scale2
+dump cursor_settings_game_scale2
 log STEP text-scale-0
 scale 0
 wait 0.8
+log STEP system-cursor-on-again
+click @系統
+wait 0.9
+log STEP reset-defaults (must bring the game's cursors back)
+click @恢復預設值
+wait 1.0
+shot cursor_settings_game_after_reset
 quit

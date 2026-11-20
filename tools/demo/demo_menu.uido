@@ -1,0 +1,10 @@
+# demo chosen from the title screen by a click on 展示模式, fast scenes, then a key returns to the title
+wait 4
+shot Y:\shots\demo\menu_title
+click @展示模式
+wait 470
+log TEST: Space returns to the title screen
+key Space
+wait 8
+shot Y:\shots\demo\menu_back
+quit

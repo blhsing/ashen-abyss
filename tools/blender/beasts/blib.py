@@ -931,6 +931,34 @@ class Beast(M.Creature):
             out[name] = round(worst, 4)
         return out
 
+    def rescale(self, K):
+        """make the finished creature K times larger about the origin: parts, skeleton, clips, contact points and the
+        distances in the meta (walk_speed / run_speed too: bigger steps cover more ground - set them again afterwards
+        when they are nominal, as for flyers). Call it after the last clip, before finalize(). Look parameters given
+        in object-space coordinates (centres, heights, bands) must already be in the final size."""
+        K = float(K)
+        for p in self.parts:
+            p.v = p.v * K
+        self.arm.data.transform(Matrix.Scale(K, 4))
+        bpy.context.view_layer.update()
+        M.RIG = M.Rig(self.arm)
+        self.rig = M.RIG
+        self.rig.idx.setdefault('pelvis', self.rig.idx.get('body', 0))
+        self.rg = Rg(self.arm)
+        for c in self.clips.values():
+            c['T'] = c['T'] * K
+            c['G'] = c['G'].copy()
+            c['G'][:, :, :3, 3] *= K
+        for lg in self.legs:
+            lg.c = lg.c * K
+            lg.home = lg.home * K
+        for k in ('walk_speed', 'run_speed', 'attack_reach', 'fly_height', 'radius', 'height', 'buried'):
+            v = self.meta.get(k)
+            if isinstance(v, (int, float)) and not isinstance(v, bool):
+                self.meta[k] = round(v * K, 3)
+        self._vw = None
+        self.meta['enlarged'] = K
+
     # ---- finish
     def finalize(self, bake=True, export=True, notes=""):
         t0 = time.time()

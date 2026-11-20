@@ -1,0 +1,25 @@
+# run with --menu=title --textscale=2 --demo-idle=6 --blur-at=42 --focus-at=64
+# title-screen idle → attract demo, a mouse move ends it, the settings screen and an unfocused window never start it
+wait 2
+shot Y:\shots\demo\idle_title_bigtext
+log TEST idle: waiting on the title screen
+wait 16
+shot Y:\shots\demo\idle_started
+log TEST idle: a mouse move ends the attract demo
+move 400,300
+move 760,520
+wait 6
+shot Y:\shots\demo\idle_back
+log TEST idle: on the settings screen nothing may start
+click @設定
+wait 16
+key Escape
+wait 1
+log TEST idle: back on the title; the window loses focus at 42 s (blur-at) and must not start the demo until it is back (focus-at 64 s)
+wait 40
+shot Y:\shots\demo\idle_refocused
+log TEST idle: a key ends it
+key Space
+wait 6
+shot Y:\shots\demo\idle_end
+quit

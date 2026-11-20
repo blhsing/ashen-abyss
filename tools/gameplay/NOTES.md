@@ -43,3 +43,28 @@ leaders/rares/boss) → LevelState.OnArrived (records roster, applies snapshot) 
 - cursor artist (ad3aab400e28f1a03): asked for Player.HoverKind — added, told.
 - named engineer (a8845208710eba0bf): ok with rift~ not resumed, events reset, order above.
 - roster engineer (a9189dad600ef6776): confirmed Populate determinism; told about SAVE-HOOK.
+
+## Resume (2026-11-20/21) — slots 92/93 only (AGENT_RULES)
+- Fixes: `NavGrid.LineWalkWide` + `Path(from,to,width)` (straight walks that grazed wall corners pinned the hero:
+  emberblade 0 blows / "stuck" at 3.3 m); run-up un-sticking: strike if a melee blow already reaches, then forced A*,
+  then a side step, give up after 1.5 s without moving; detour time limit = route time ×1.6 + 4 s (min 12 s).
+- Harness: `--gptest=chaseall` (run-up all classes + detour/LOS in wastes_d2 + cancel cases),
+  `--gpresume` (switches the save resume on for a test run), `saveall --gpcases=…`, `verifyall --gpslots=… --gpold=…`.
+  Scripts: `run_one.sh` (retries when the run lock times out), `run_save.sh` (A dungeon+overworld, B town+portal, C old format).
+- chase2 (game_20261120_2214xx): all 10 run-ups PASS (8 classes + bear + wolf), emberblade cancel cases + hold PASS.
+- verifyA (game_20261120_235123.log): 17/17 PASS (dungeon + overworld: seed, props, position 0.000 m, facing,
+  totems, dead monsters, living count, chest, fog, ground loot). Overworld roster signature differs between builds
+  (positions); restore matched by type+position, missed=0.
+- 2026-11-21 lead: pause everything except click-to-attack. Save resume PARKED: `LevelState.Enabled = false`
+  (verifyA 17/17 passed; town / portal / old-format verify (B, C) never got the run lock — not run). To finish later:
+  `bash run_save.sh` (it uses `--gpresume`, slots 92/93), then set Enabled = true only if B and C pass.
+- chase3 (01:0x): run-ups 10/10, detours 8/8 (all classes incl. emberblade + pactbinder), cancel cases all PASS;
+  remaining FAILs were test artefacts (LOS check used the contact frame; soulbinder bolt still in flight after 0.7 s;
+  hunter hold "walked toward cursor" = knock-back along the cursor line) → test criteria fixed, chase4 re-run.
+- 2026-11-21 02:11 chase10 (game_20261121_020809.log): 36/36 PASS, 0 ERR/WRN — run-ups 10/10 (8 classes + bear + wolf),
+  detours 7/8 classes (wildsoul: no detour target found that run; PASS in chase9), LOS 5/5 ranged-capable, cancel
+  ground/evade/died/stun ×2, unreachable sealed boss, Shift, hold ×2. Further fixes after chase3: waypoint skipping
+  when a prop sits on a cell centre, ResolveCircle never ends inside a wall + lets a body out of one + slides round a
+  prop on its open side, side-step search (16 dirs, simulated steps, second try another way), A* that avoids the
+  small-prop cells that pinned the hero (NavGrid.PathAvoiding), detour time limit set once from the first route.
+- Save resume stays OFF (LevelState.Enabled = false). Test saves of slots 92/93 moved to saves_test_backup.

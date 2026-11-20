@@ -53,8 +53,8 @@ void fragment() {
 		float breathe = 0.7 + 0.3 * sin(t * 2.3 + n1 * 14.0);
 		dark = 0.62 * body;
 		pool = vec3(0.012, 0.008, 0.006);
-		glow = tint * (veins * 1.9 * breathe + blot * 0.35 * (1.0 - r * 0.6)) * body;
-		glow += vec3(1.0, 0.75, 0.4) * veins * blot * 0.9 * breathe * body;
+		glow = tint * (veins * 1.45 * breathe + blot * 0.35 * (1.0 - r * 0.6)) * body;      // 1.9 and 0.9 read white-yellow over a 6 m field at the dark level
+		glow += vec3(1.0, 0.75, 0.4) * veins * blot * 0.55 * breathe * body;
 	} else if (kind < 1.5) {
 		// frost: a skin of rime with bright fracture lines
 		float crystals = smoothstep(0.55, 0.8, n3) * 0.5 + veins * 0.9;

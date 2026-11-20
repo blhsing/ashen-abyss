@@ -236,6 +236,21 @@ STRICT_PLR_DB = 9.0     # true peak minus integrated loudness of the delivered f
 STRICT_LRA_LU = 1.5     # loudness range of the delivered file
 
 
+def _off_key(report, names, final_dir):
+    """Strict combat pieces that passed against another tonic than that of their (now passing) exploration piece:
+    the base can change in a later round, so the combat piece is judged again."""
+    out = set()
+    for n in names:
+        tr = T.BY_NAME[n]
+        r = report.get(n)
+        if not (tr.get("strict") and tr["pair"] and n.endswith("_combat") and r and r.get("passed")):
+            continue
+        b = report.get(tr["pair"] + "_base") or _load_final(final_dir, tr["pair"] + "_base")
+        if b and b.get("passed") and b.get("key_pc") is not None and _key_pc_of(r["ogg"]["key_est"]) != b["key_pc"]:
+            out.add(n)
+    return out
+
+
 def _key_pc_of(name):
     import audiolib as al
     return al.key_pc(name)
@@ -430,7 +445,8 @@ def main():
         if step < len(all_names):
             log("--- chunk %d/%d: %s" % (c0 // step + 1, -(-len(all_names) // step), ",".join(names)))
         for rnd in range(EXTRA_SEED_ROUNDS + 1):
-            pending = [n for n in names if n not in report or not report[n]["passed"]]
+            off_key = _off_key(report, names, final_dir)
+            pending = [n for n in names if n not in report or not report[n]["passed"] or n in off_key]
             if not pending:
                 break
             if not args.only_eval:
@@ -488,7 +504,7 @@ def main():
                     continue
                 fj = os.path.join(final_dir, n + ".json")
                 prev = _load_final(final_dir, n)
-                if prev and prev.get("passed") and not args.redo_final and len(prev.get("candidates", [])) == len(cands) \
+                if prev and prev.get("passed") and not args.redo_final and n not in off_key and len(prev.get("candidates", [])) == len(cands) \
                         and os.path.exists(os.path.join(final_dir, n + ".ogg")):
                     report[n] = prev                 # nothing new since the last run
                     continue
@@ -526,7 +542,7 @@ def main():
                 log("%s: seed %d, score %.1f, sim %.3f, %.1f s, tempo %.1f, %s" % (
                     n, best["seed"], best["score"], best["clap"]["sim"], info["ogg"]["seconds"], info["ogg"]["tempo"],
                     "PASSED" if info["passed"] else "FAILED: " + info["reason"]))
-            failed = [n for n in names if not report[n]["passed"]]
+            failed = [n for n in names if not report[n]["passed"] or n in _off_key(report, names, final_dir)]
             if not failed or args.only_eval or rnd == EXTRA_SEED_ROUNDS:
                 break
             for n in failed:                       # two fresh seeds for the next round

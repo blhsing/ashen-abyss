@@ -115,8 +115,11 @@ public sealed class MonsterDef
     public PackSlot Slot = PackSlot.Front;        // its place in a pack (Populate)
     public bool Is(MonTrait t) => (Traits & t) != 0;
     public bool IsReskin => BaseId != null;
-    /// <summary>Kinds that never lead a pack or carry elite affixes (BESTIARY.md 0: exploders, swarms, turrets, mothers, support roles).</summary>
-    public bool CanLead => AI is not (MonAI.Exploder or MonAI.Swarm or MonAI.Turret or MonAI.Spawner or MonAI.Healer or MonAI.Reviver or MonAI.Caller or MonAI.Boss)
+    /// <summary>Kinds that never lead a pack or carry elite affixes (BESTIARY.md 0: exploders, swarms, turrets, mothers, support roles).
+    /// Shield-bearers, front-armoured, shelled and dormant types do not lead either: their guard (×0.15 / ×0.5 from the front)
+    /// on top of a champion's life made champions half again slower to kill than QA's targets (12 s vs 8 s).</summary>
+    public bool CanLead => AI is not (MonAI.Exploder or MonAI.Swarm or MonAI.Turret or MonAI.Spawner or MonAI.Healer or MonAI.Reviver or MonAI.Caller or MonAI.Boss or MonAI.Shieldbearer)
+        && !Is(MonTrait.FrontArmour) && !Is(MonTrait.Shell) && !Is(MonTrait.Dormant)
         && Role != "support" && Family != "hauler";
     public bool Giant => Scale >= 1.75f;
 
@@ -349,6 +352,7 @@ public static class ZoneDb
     public static RegionDef RegionOf(string areaId) => Regions.FirstOrDefault(r => r.Id == areaId || r.Dungeons.Any(d => d.Id == areaId));
     public static DungeonDef Dungeon(string areaId) => Regions.SelectMany(r => r.Dungeons).FirstOrDefault(d => d.Id == areaId);
     public static string AreaName(string areaId) =>
+        NamedAreas.IsNamedArea(areaId) ? NamedAreas.Name(areaId) :      // NAMED-HOOK: encounter areas (rift~…) carry their own names
         areaId == Town ? TownName : areaId.StartsWith("rift") ? "深淵裂隙" : Dungeon(areaId)?.Name ?? Region(areaId)?.Name ?? areaId;
 
     public static readonly string[] GoalText =

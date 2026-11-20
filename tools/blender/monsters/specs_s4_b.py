@@ -3,8 +3,10 @@
 SPECS = {
     'mon_rime_breaker': dict(
         family='frost', scale=1.5, poses='brute', emis=(0.45, 0.78, 1.0), dress={'frost': 0.6},
-        body=dict(type='flesh', decimate=1.0, show=['hands'], look='skin_ash', eyes=None),
-        props=dict(bulk=1.25, chest=1.08, hunch=10, hands=1.2),
+        body=dict(type='flesh', decimate=1.0, show=['hands'], look='skin_ash', eyes=None,
+                  bind_w={'spine_02': ['upperarm_l'], 'pelvis': ['lowerarm_l', 'hand_l']}),
+        props=dict(bulk=1.25, chest=1.08, hunch=10, hands=1.2,
+                   pose={'upperarm_l': dict(rot=[('y', 36), ('z', -92)]), 'lowerarm_l': dict(rot=[('z', -10)])}),
         looks={'glow': {'emit': (0.10, 0.34, 0.9), 'strength': 1.4, 'mottle': 0.6, 'base_mul': 0.25}, 'hood': ['sealskin', {}], 'oak': {'color': (0.13, 0.125, 0.115)}},
         parts=[
             dict(p='robe', look='sealskin', hem=0.22, top=1.51, girth=1.06, flare=1.3, rag=0.02, pleat=0.03, seed=5, crumple=0.006, pelvis_mix=0.5),
@@ -14,11 +16,12 @@ SPECS = {
             dict(p='belt', on='robe', z=1.07, bone='spine_01', pad=0.01, w=0.05),
             dict(p='foot_wraps', look='sealskin', z=0.3),
             dict(p='icicles', bone='Head', a=(-0.07, -0.145, 1.60), b=(0.07, -0.145, 1.60), count=5, length=0.07),
-            dict(p='arm_plough', side='l'),
+            dict(p='prow_plough'),
         ],
         weapons=[dict(w='boulder_pick')],
         notes="Ice-breaker: giant road-clearer in a hooded sealskin coat as stiff as a bell, a V-shaped wooden snow-plough blade on the "
-              "left forearm like a prow (rigid on lowerarm_l: it stands upright in front of the arm when it hangs), a long pick with a "
+              "hips IN FRONT of him like the prow of a ship (rigid on the pelvis, two ropes to the belt; the left arm is baked forward on its "
+              "grip bar and bound to spine_02 / pelvis, so it never leaves the bar), a long pick with a "
               "frozen boulder for a head (wpn_pick, emis_ core), "
               "snowshoes lashed upright on the back."),
     'mon_forge_hammer': dict(
@@ -57,8 +60,10 @@ SPECS = {
     'mon_effigy_caryatid': dict(
         family='effigy', scale=1.5, poses='brute', emis=(0.45, 1.0, 0.5),
         body=dict(type='flesh', decimate=0.5, look='limestone', eyes=None, melt=2,
-                  merge_w={'upperarm_l': ['lowerarm_l', 'hand_l'], 'upperarm_r': ['lowerarm_r', 'hand_r']}),
-        props=dict(bulk=1.3, chest=1.08, leg=1.08, pose={'upperarm_l': dict(rot=[('z', -10), ('y', -110)]), 'upperarm_r': dict(rot=[('z', 10), ('y', 110)])}),
+                  bind_w={'spine_03': ['upperarm_l', 'lowerarm_l', 'hand_l', 'upperarm_r', 'lowerarm_r', 'hand_r', 'clavicle_l', 'clavicle_r']}),
+        props=dict(bulk=1.3, chest=1.08, leg=1.08,
+                   pose={'upperarm_l': dict(rot=[('y', -15)]), 'lowerarm_l': dict(rot=[('y', -75)]), 'hand_l': dict(rot=[('x', 90), ('z', 90)]),
+                         'upperarm_r': dict(rot=[('y', 15)]), 'lowerarm_r': dict(rot=[('y', 75)]), 'hand_r': dict(rot=[('x', 90), ('z', -90)])}),
         looks={'glow': {'strength': 1.5, 'mottle': 0.2}, 'robe': ['limestone', {}]}, jpeg=(86, 84, 90),
         parts=[
             dict(p='pillar_load'),
@@ -66,8 +71,8 @@ SPECS = {
             dict(p='stone_armour', helm=False),
             dict(p='band_glow', z=1.538, r=0.086, w=0.007),
         ],
-        notes="Caryatid: a broad column-statue with its arms baked 110 deg up at the shoulders (stiff: elbow / hand weights merged into the "
-              "upper arm) so that they reach up to the load in the idle, carrying a broken length of fluted "
+        notes="Caryatid: a broad column-statue whose arms are carved in one block with the chest and the load (posed elbows out, forearms "
+              "up, hands laid over the pillar, then bound to spine_03 like the pillar: they never leave it), carrying a broken length of fluted "
               "pillar across its shoulders (rigid on spine_03) and a square capital block on its head; carved skirt; thin emis_ line "
               "at the neck joint."),
 }

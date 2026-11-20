@@ -38,9 +38,9 @@ public static class CreditsData
             try
             {
                 string v = ProjectSettings.GetSetting("application/config/version").AsString();
-                return string.IsNullOrWhiteSpace(v) ? "0.2.0" : v;
+                return string.IsNullOrWhiteSpace(v) ? "0.3.0" : v;
             }
-            catch (Exception) { return "0.2.0"; }
+            catch (Exception) { return "0.3.0"; }
         }
     }
 

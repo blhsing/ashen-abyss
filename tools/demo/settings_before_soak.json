@@ -1,0 +1,19 @@
+{
+  "Master": 0.9,
+  "Music": 0.7,
+  "Sfx": 0.9,
+  "Voice": 1,
+  "Ambience": 0.8,
+  "Fullscreen": true,
+  "VSync": true,
+  "DamageNumbers": true,
+  "ScreenShake": true,
+  "Subtitles": true,
+  "ShowAllLoot": false,
+  "Quality": 2,
+  "RenderScale": 0,
+  "LastSlot": 0,
+  "Brightness": 1,
+  "UiTextScale": 0,
+  "SystemCursor": false
+}

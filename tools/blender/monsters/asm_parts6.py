@@ -75,7 +75,7 @@ def brand_ring(A, look='brand', at=(0.0, -0.175, 1.33), R=0.07, bone='spine_03')
 
 
 @part
-def yoke(A, look='tar', length=1.75, z=1.565, y=0.085, r=0.05, loads='logs', drop=0.34, bone='spine_03', chain='rust'):
+def yoke(A, look='tar', length=1.75, z=1.565, y=0.085, r=0.05, loads='logs', drop=0.34, bone='spine_03', chain='rust', sway=('pelvis', 0.4)):
     """shoulder-yoke as long as its bearer is tall, lying across the shoulders behind the neck, a chained bundle of logs
     hung from each end (rigid on spine_03: the swing has to come from the clips)"""
     K = V(0, y, z)                     # the whole assembly moves as one rigid thing (shared keep anchor)
@@ -88,10 +88,12 @@ def yoke(A, look='tar', length=1.75, z=1.565, y=0.085, r=0.05, loads='logs', dro
     for sx in (-1, 1):
         e = pts[0 if sx < 0 else -1] + V(-sx * 0.06, 0, 0)
         A.add(torus(r * 0.9, 0.012, n=10, m=4).rot('y', 90).move(e), bone=bone, look=chain, keep=K)
-        A.add(M.chain(np.array([e + V(0, 0, -r * 0.8), e + V(0, 0, -drop)]), link=0.07, r=0.011), bone=bone, look=chain, smooth=60, keep=K)
+        # chain and load HANG: their low end follows the hips (sway), so they lag when the shoulders turn or tip
+        ch_ = M.chain(np.array([e + V(0, 0, -r * 0.8), e + V(0, 0, -drop)]), link=0.07, r=0.011)
+        A.add(ch_, bone=bone, look=chain, smooth=60, keep=K, sway=(sway[0], sway[1] * np.clip((e[2] - ch_.v[:, 2]) / drop, 0, 1)))
         if loads == 'logs':
             for p, lk in bundle(5, 0.62, 0.058, seed=4 + sx):
-                A.add(p.move(e + V(0, 0, -drop)), bone=bone, look=lk, smooth=40, keep=K)
+                A.add(p.move(e + V(0, 0, -drop)), bone=bone, look=lk, smooth=40, keep=K, sway=sway)
         else:
             for p, lk in item_parts(A, loads, 2.2):
                 A.add(p.move(e + V(0, 0, -drop)), bone=bone, look=lk, smooth=40, keep=K)

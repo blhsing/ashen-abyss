@@ -308,21 +308,21 @@ def gallows_tree(A, look='charwood', glow='ember', rope='rope', cage='rust', see
         A.add(torus(rb + 0.008, 0.012, n=10, m=4).tf(M.rot_to((0, 0, 1), d)).move(p0), bone='spine_03', look=rope, smooth=50)
         A.add(torus(rb + 0.008, 0.012, n=10, m=4).tf(M.rot_to((0, 0, 1), d)).move(p0 + d * 0.022), bone='spine_03', look=rope, smooth=50)
         ns = noose(p0 + V(0, 0, -rb - 0.004), L_, seed=k + 1)
-        sway_weights(ns, zb, zb - 0.75, amt=0.6)
+        sway_weights(ns, zb, zb - 0.75, low='pelvis', amt=0.6)
         A.add(ns, look=rope)
     p0 = BP[11] + V(0, 0, -0.06)
     ch = M.chain(np.array([p0 + V(0, 0, 0.03), p0 + V(0, 0, -0.16)]), link=0.05, r=0.008)
-    sway_weights(ch, zb, zb - 0.9, amt=0.6)
+    sway_weights(ch, zb - 0.06, zb - 0.25, low='pelvis', amt=0.5)
     A.add(ch, look=cage, smooth=60)
     A.add(torus(0.07, 0.011, n=10, m=4).tf(M.rot_to((0, 0, 1), d)).move(BP[11]), bone='spine_03', look=cage, smooth=50)
     for q, lk in gibbet():
         q.move(p0 + V(0, 0, -0.16))
-        sway_weights(q, zb, zb - 0.9, amt=0.6)
+        M.weights_from(q, {'spine_03': 0.5, 'pelvis': 0.5})
         A.add(q, look=cage if lk == 'rust' else lk, smooth=40)
     P = KB.skull_parts(10.0, teeth=False)
     sk = join([P['skull'], P['jaw']]).scale(0.58).rot('x', 24).rot('z', 35).move(p0 + V(0.01, 0.0, -0.16 - 0.07 - 0.56 * 0.80))
     sk = M.decimate(sk, 0.5) if sk.ntri > 500 else sk
-    sway_weights(sk, zb, zb - 0.9, amt=0.6)
+    M.weights_from(sk, {'spine_03': 0.5, 'pelvis': 0.5})
     A.add(sk, look='bone', smooth=60)
 
 
@@ -518,20 +518,22 @@ def carrier(A, look='brass', dark='brass_dark', glow='arc', bright='brass_bright
         arc_light(A, el + V(0, -0.081, 0), (0, -1, 0), 0.026, 'lowerarm' + s, glow, look)
         fl = float(np.linalg.norm(wr - el))
         A.add(box(fl + 0.08, 0.07, 0.095, bevel=0.008).move((el + wr) / 2 + V(sx * 0.04, 0, 0)), bone='lowerarm' + s, look=look, smooth=30)
-        # fork carriage at the wrist: two tines side by side (T-pose Z = sideways once the arm hangs), pointing forward (-Y)
-        A.add(box(0.085, 0.06, 0.32, bevel=0.01).move(wr + V(sx * 0.06, -0.01, 0)), bone='lowerarm' + s, look=dark, smooth=30)
-        for tz in (-0.115, 0.115):
-            hx = 0.017                                               # half thickness of a tine (along the arm), half width 0.04
-            tine = M.loft(np.array([[(-hx, 0.0, -0.04), (hx, 0.0, -0.04), (hx, 0.0, 0.04), (-hx, 0.0, 0.04)],
-                                    [(-hx, -0.30, -0.04), (hx, -0.30, -0.04), (hx, -0.30, 0.04), (-hx, -0.30, 0.04)],
-                                    [(-hx * 0.9, -0.42, -0.036), (hx * 0.2, -0.42, -0.036), (hx * 0.2, -0.42, 0.036), (-hx * 0.9, -0.42, 0.036)],
-                                    [(-hx * 0.9, -0.47, -0.028), (-hx * 0.5, -0.47, -0.028), (-hx * 0.5, -0.47, 0.028), (-hx * 0.9, -0.47, 0.028)]]), cap0=True, cap1=True).recalc()
+        # fork carriage at the wrist: two thick tines side by side (T-pose Z = sideways once the arm hangs), pointing forward (-Y)
+        A.add(box(0.10, 0.075, 0.44, bevel=0.012).move(wr + V(sx * 0.06, -0.012, 0)), bone='lowerarm' + s, look=dark, smooth=30)
+        A.add(cyl(wr + V(sx * 0.06, -0.012, -0.24), wr + V(sx * 0.06, -0.012, 0.24), 0.03, n=8), bone='lowerarm' + s, look=look, smooth=40)        # the carriage's axle
+        for tz in (-0.145, 0.145):
+            hx = 0.03; hw = 0.062                                    # half thickness of a tine (along the arm), half width
+            tine = M.loft(np.array([[(-hx, 0.02, -hw), (hx, 0.02, -hw), (hx, 0.02, hw), (-hx, 0.02, hw)],
+                                    [(-hx, -0.34, -hw), (hx, -0.34, -hw), (hx, -0.34, hw), (-hx, -0.34, hw)],
+                                    [(-hx, -0.48, -hw * 0.9), (hx * 0.1, -0.48, -hw * 0.9), (hx * 0.1, -0.48, hw * 0.9), (-hx, -0.48, hw * 0.9)],
+                                    [(-hx, -0.56, -hw * 0.7), (-hx * 0.55, -0.56, -hw * 0.7), (-hx * 0.55, -0.56, hw * 0.7), (-hx, -0.56, hw * 0.7)]]), cap0=True, cap1=True).recalc()
             tine.smooth = 30.0
             if sx < 0:
                 tine.mirror()
-            A.add(tine.move(wr + V(sx * 0.09, -0.035, tz)), bone='lowerarm' + s, look=bright)
-            A.add(box(0.22, 0.036, 0.08, bevel=0.006).move(wr + V(-sx * 0.01, -0.02, tz)), bone='lowerarm' + s, look=look, smooth=30)       # the tine's heel up the arm
-            A.add(KC3.rivet(wr + V(sx * 0.06, -0.042, tz), (0, -1, 0), r=0.014, n=6), bone='lowerarm' + s, look=look)
+            A.add(tine.move(wr + V(sx * 0.105, -0.04, tz)), bone='lowerarm' + s, look=bright)
+            A.add(box(0.30, 0.06, 0.124, bevel=0.008).move(wr + V(-sx * 0.045, -0.025, tz)), bone='lowerarm' + s, look=look, smooth=30)        # the tine's shank up the arm
+            for xx in (-0.14, -0.02):
+                A.add(KC3.rivet(wr + V(sx * xx, -0.056, tz), (0, -1, 0), r=0.016, n=6), bone='lowerarm' + s, look=dark)
     # ---- the A-frame and the wedge of the Brass Sun
     K = V(0, 0.30, 1.30)
     bone = 'spine_03'
@@ -606,7 +608,7 @@ def colony(A, look='skin', cap='capskin', gill='gill', lamp='lampglow', stalk='s
             A.add(q, look=look, smooth=180)
     # the stalk between the three necks
     K = V(0, 0.13, 1.60)
-    bone = 'spine_03'
+    bone = 'spine_02'
     zc = 2.02
     stp = M.loft_z([(1.40, 0, 0.13, 0.20, 0.19), (1.52, 0, 0.13, 0.15, 0.14), (1.70, 0, 0.13, 0.125, 0.12), (1.88, 0, 0.13, 0.14, 0.135), (zc - 0.02, 0, 0.13, 0.24, 0.23)], n=14,
                     mod=bark_mod(seed, 5, 0.05))
@@ -653,10 +655,11 @@ def colony(A, look='skin', cap='capskin', gill='gill', lamp='lampglow', stalk='s
         a = 2 * math.pi * (k + 0.3) / lamps
         L_ = rng.uniform(0.13, 0.30)
         p0 = V(R_ * 0.955 * math.cos(a), 0.13 + R_ * 0.955 * math.sin(a), zc - 0.04)
-        A.add(tube([p0 + V(0, 0, 0.02), p0 + V(0, 0, -L_)], 0.0045, n=4), bone=bone, look=stalk, keep=K)
+        th_ = tube([p0 + V(0, 0, 0.02), p0 + V(0, 0, -L_)], 0.0045, n=4)
+        A.add(th_, bone=bone, look=stalk, keep=K, sway=('pelvis', 0.3 * np.clip((p0[2] - th_.v[:, 2]) / L_, 0, 1)))
         fr = revolve([(0.0, 0.0), (0.02, -0.006), (0.04, -0.03), (0.05, -0.058), (0.05, -0.082), (0.038, -0.108), (0.018, -0.122), (0.0, -0.126)], n=10)
-        A.add(fr.move(p0 + V(0, 0, -L_)), bone=bone, look=lamp, smooth=180, keep=K)
-        A.add(revolve([(0.0, 0.012), (0.026, 0.004), (0.032, -0.018), (0.02, -0.014), (0.0, -0.004)], n=7).move(p0 + V(0, 0, -L_)), bone=bone, look=stalk, smooth=60, keep=K)
+        A.add(fr.move(p0 + V(0, 0, -L_)), bone=bone, look=lamp, smooth=180, keep=K, sway=('pelvis', 0.3))
+        A.add(revolve([(0.0, 0.012), (0.026, 0.004), (0.032, -0.018), (0.02, -0.014), (0.0, -0.004)], n=7).move(p0 + V(0, 0, -L_)), bone=bone, look=stalk, smooth=60, keep=K, sway=('pelvis', 0.3))
 
 
 # ================================================================================================ ash: the drift-colossus
@@ -731,7 +734,7 @@ def drift_mass(A, look='ashcrust', pale='ashpale', spark='spark', seed=7, ratio=
 
 # ================================================================================================ wax: the tallow-mound
 @part
-def tallow_mound(A, look='tallow', wick='wick', seed=5, wicks=12, lit=True):
+def tallow_mound(A, look='tallow', wick='wick', seed=5, wicks=12, lit=True, splay=(0.05, 0.27)):
     """sealed chandlers who stood too close and ran together: a slumped cone of wax taller than a door (from the floor
     to a leaning tip, pelvis-rigid below the hips) with heads, shoulders and praying hands half-sunk in its surface,
     thick runs and a puddle skirt, a comb of dead wicks down the ridge of its back (one may still burn) and two arms
@@ -815,16 +818,20 @@ def tallow_mound(A, look='tallow', wick='wick', seed=5, wicks=12, lit=True):
         q = b.v.copy()
         # figure Z -> along the arm, figure Y stays (its face looks forward when the arm hangs), figure X -> -/+ Z
         b.v = np.outer((q[:, 2] - 0.98) * kz - 0.12, ax) + np.outer((q[:, 1] - 0.02) * 0.9, V(0, 1, 0)) + np.outer(q[:, 0] * 0.74, V(0, 0, -sx)) + sh
+        # T-pose +Z is OUTWARD once the arm hangs: lift the body off the bone line, more towards the wrist, so that the
+        # hanging arm lies on the outside of the cone instead of inside it
+        b.v[:, 2] += splay[0] + splay[1] * np.clip((b.v - sh) @ ax, 0.0, None)
         b.recalc()
         # weights by the position ALONG the arm (a nearest-surface transfer gives the wide figure torso weights: the arm
         # then stays spread like a wing while the bones hang)
         along = (b.v - sh) @ ax
         el = float((R.H('lowerarm' + s) - sh) @ ax); wr = float((R.H('hand' + s) - sh) @ ax)
-        M.weights_by(b, along, [(-0.11, {'clavicle' + s: 1.0}), (0.02, {'upperarm' + s: 1.0}), (el - 0.05, {'upperarm' + s: 1.0}), (el + 0.05, {'lowerarm' + s: 1.0}),
-                                (wr - 0.03, {'lowerarm' + s: 1.0}), (wr + 0.05, {'hand' + s: 1.0})])
+        M.weights_by(b, along, [(-0.11, {'clavicle' + s: 1.0}), (0.02, {'upperarm' + s: 1.0}), (el - 0.12, {'upperarm' + s: 1.0}), (el + 0.12, {'lowerarm' + s: 1.0}),
+                                (wr - 0.09, {'lowerarm' + s: 1.0}), (wr + 0.08, {'hand' + s: 1.0})])
         A.add(b, look=look, smooth=180)
         for t, rr in ((0.25, 0.07), (0.8, 0.06)):                   # wax runs hanging from the arm
             p0 = KC3.BP('lowerarm' + s, t) + V(0, 0.0, -rr)
+            p0[2] += splay[0] + splay[1] * max(0.0, float((p0 - sh) @ ax))
             A.add(tube([p0 + V(0, 0, 0.03), p0 + V(sx * 0.02, 0, -0.05), p0 + V(sx * 0.03, 0, -0.12)], [0.02, 0.014, 0.004], n=5), bone='lowerarm' + s, look=look, smooth=80)
 
 

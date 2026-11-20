@@ -60,7 +60,7 @@ public partial class NamedLadderUi : UiPanel
         WorldUiKit.ClearChildren(_list);
         bool open = NamedAreas.LadderOpen(out string why);
         _why.Text = open ? $"目前世界階級：{ZoneDb.TierNames[Game.I?.WorldTier ?? 0]}" : why;
-        _why.Modulate = open ? UiTheme.Gold : Colors.White;
+        _why.AddThemeColorOverride("font_color", open ? UiTheme.Gold : Palette.Bad);
         for (int rung = 1; rung <= 8; rung++)
         {
             var d = NamedDb.RungOf(rung);

@@ -1,0 +1,21 @@
+# run with --menu=title --demo-idle=6: no attract demo may start on the sub-screens, only back on the title
+wait 2
+click @設定
+wait 12
+log TEST sub: 12 s idle on the settings screen
+key Escape
+wait 1
+click @新遊戲
+wait 12
+log TEST sub: 12 s idle on the class screen
+shot Y:\shots\demo\sub_class
+key Escape
+wait 1
+click @製作名單
+wait 12
+log TEST sub: 12 s idle on the credits
+key Escape
+wait 10
+log TEST sub: 10 s on the title (the demo must have started)
+shot Y:\shots\demo\sub_title_idle
+quit

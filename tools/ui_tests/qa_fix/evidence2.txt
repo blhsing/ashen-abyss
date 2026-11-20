@@ -1,0 +1,84 @@
+# QA UI fixes, second pass: title card placement (item 2), loot labels vs. the minimap / tracker column (item 4),
+# objective line with the boss alive and after the kill (item 5). 1600x900, 標準.
+#   run.ps1 -GameArgs "--win --mute --uidir=Y:\shots\uiart\qa --uido=@Y:\tools\ui_tests\qa_fix\evidence2.txt --quit-at=240" -Timeout 360 -Tag uiqa
+
+wait 3.0
+newgame lampknight 20 town
+wait 4.5
+hud title 灰燼荒原|枯木與墳塚之地
+hud toast 新委託：哨站欠下的命、地窖裡的貨
+hud toast 灰燼荒原　名望 +100（斷燈哨站）
+hud toast 灰燼荒原名望「初識」：金幣 120、經驗 4,980
+hud toast 燼塔重燃——斷燈哨站已奪回
+hud warn 怒焰不足
+wait 1.6
+shot r2_q2_town_title_toasts
+
+# ── item 4: loot dropped round the hero, the hero walks west so the loot drifts toward the right-hand column ──
+newgame lampknight 30 wastes
+wait 3.0
+drop
+wait 0.8
+keydown Alt
+wait 0.3
+shot r2_q4_loot_0
+click 330,560
+wait 0.3
+shot r2_q4_loot_1
+wait 0.3
+shot r2_q4_loot_2
+wait 0.3
+shot r2_q4_loot_3
+wait 0.3
+shot r2_q4_loot_4
+wait 0.4
+shot r2_q4_loot_5
+click 330,520
+wait 0.5
+shot r2_q4_loot_6
+wait 0.5
+shot r2_q4_loot_7
+wait 0.6
+shot r2_q4_loot_8
+keyup Alt
+wait 0.3
+
+# ── item 5 (and item 2 with a boss frame up) ──
+newgame lampknight 30 wastes_boss
+wait 2.5
+shot r2_q5_boss_alive_hud
+boss
+life 100
+wait 0.5
+hud title 掘墓者的墓園|灰燼荒原
+hud toast 封印之門開啟了
+wait 1.4
+shot r2_q2_title_under_boss_frame
+life 100
+boss
+life 100
+wait 1.8
+boss
+life 100
+wait 1.8
+boss
+life 100
+wait 1.8
+boss
+life 100
+wait 1.8
+boss
+life 100
+wait 1.8
+boss
+life 100
+wait 3.0
+close
+wait 0.5
+shot r2_q5_boss_dead_hud
+open map
+wait 1.0
+shot r2_q5_boss_dead_map
+close
+wait 0.3
+quit

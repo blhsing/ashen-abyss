@@ -1,12 +1,12 @@
 {
- "time": "2026-11-19 00:41",
- "with_audio": 99,
+ "time": "2026-11-21 00:53",
+ "with_audio": 130,
  "total": 207,
  "removed_stale": [],
  "removed_invalid": [],
  "per_voice": {
   "narrator": [
-   16,
+   19,
    19
   ],
   "elder": [
@@ -38,31 +38,31 @@
    5
   ],
   "boss_gravedigger": [
-   3,
+   4,
    4
   ],
   "boss_rimelord": [
-   3,
+   4,
    4
   ],
   "boss_bishop": [
-   0,
+   4,
    4
   ],
   "boss_mire_mother": [
-   0,
+   4,
    4
   ],
   "boss_sand_tyrant": [
-   0,
+   4,
    4
   ],
   "boss_grand_hush": [
-   0,
+   4,
    4
   ],
   "boss_osaros": [
-   3,
+   4,
    4
   ],
   "hero_emberblade": [
@@ -98,39 +98,39 @@
    5
   ],
   "boss_sh_wastes": [
-   0,
+   1,
    1
   ],
   "boss_sh_frost": [
-   0,
+   1,
    1
   ],
   "boss_sh_crypt": [
-   0,
+   1,
    1
   ],
   "boss_sh_mire": [
-   0,
+   1,
    1
   ],
   "boss_sh_sands": [
-   0,
+   1,
    1
   ],
   "boss_sh_sanctum": [
-   0,
+   1,
    1
   ],
   "boss_sh_abyss": [
-   0,
+   1,
    1
   ],
   "boss_wb_firstbearer": [
-   0,
+   1,
    1
   ],
   "boss_firstkeeper": [
-   0,
+   1,
    1
   ]
  },
@@ -172,18 +172,6 @@
   "side_sands_altars_done",
   "side_sanctum_elites_done",
   "side_abyss_forge_done",
-  "boss_bishop_intro",
-  "boss_bishop_phase",
-  "boss_bishop_death",
-  "boss_mire_mother_intro",
-  "boss_mire_mother_phase",
-  "boss_mire_mother_death",
-  "boss_sand_tyrant_intro",
-  "boss_sand_tyrant_phase",
-  "boss_sand_tyrant_death",
-  "boss_grand_hush_intro",
-  "boss_grand_hush_phase",
-  "boss_grand_hush_death",
   "hero_emberblade_levelup",
   "hero_emberblade_lowlife",
   "hero_emberblade_noresource",
@@ -223,25 +211,6 @@
   "hero_pactbinder_lowlife",
   "hero_pactbinder_noresource",
   "hero_pactbinder_bagfull",
-  "hero_pactbinder_legendary",
-  "sh_wastes_intro",
-  "sh_frost_intro",
-  "sh_crypt_intro",
-  "sh_mire_intro",
-  "sh_sands_intro",
-  "sh_sanctum_intro",
-  "sh_abyss_intro",
-  "wb_barrowbearer_intro",
-  "wb_firstbearer_intro",
-  "wb_daylessdisc_intro",
-  "wb_breathofsilence_intro",
-  "pin_1_gravedigger_intro",
-  "pin_2_rimelord_intro",
-  "pin_3_bishop_intro",
-  "pin_4_mire_mother_intro",
-  "pin_5_sand_tyrant_intro",
-  "pin_6_grand_hush_intro",
-  "pin_7_firstkeeper_intro",
-  "pin_8_osaros_intro"
+  "hero_pactbinder_legendary"
  ]
 }

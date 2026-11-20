@@ -275,11 +275,13 @@ public partial class DeathUi : UiPanel
         _veil.Modulate = new Color(1, 1, 1, 0);
         _col.Modulate = new Color(1, 1, 1, 0);
         _buttons.Modulate = new Color(1, 1, 1, 0);
-        _tween = CreateTween();
-        _tween.TweenProperty(_veil, "modulate:a", 1f, 1.4f).SetTrans(Tween.TransitionType.Sine).SetEase(Tween.EaseType.Out);
-        _tween.Parallel().TweenProperty(_col, "modulate:a", 1f, 1.1f).SetDelay(0.5f);
-        _tween.TweenProperty(_buttons, "modulate:a", 1f, 0.45f);
-        _tween.TweenCallback(Callable.From(EnableButtons));
+        // prompt: veil, words and buttons overlap their fades and the buttons are usable after 0.55 s (a short grace
+        // so a click still held from the fight does not land on 重生)
+        _tween = CreateTween().SetParallel(true);
+        _tween.TweenProperty(_veil, "modulate:a", 1f, 0.5f).SetTrans(Tween.TransitionType.Sine).SetEase(Tween.EaseType.Out);
+        _tween.TweenProperty(_col, "modulate:a", 1f, 0.4f).SetDelay(0.1f);
+        _tween.TweenProperty(_buttons, "modulate:a", 1f, 0.25f).SetDelay(0.3f);
+        _tween.Chain().TweenCallback(Callable.From(EnableButtons));
 
         var d = Game.I?.Hero?.D;
         Log.Info("ui", $"death screen: hardcore={_hardcore} killer={(string.IsNullOrEmpty(_killer.Text) ? "unknown" : "known")} area={Game.I?.Level?.AreaId ?? d?.Area ?? "?"} deaths={d?.Deaths ?? 0}");

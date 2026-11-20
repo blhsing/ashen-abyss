@@ -35,7 +35,7 @@ def dusk_hound(bake=True):
     C.look('ear', 'membrane', 'skin_hide', color=(0.20, 0.15, 0.14), vein=(0.07, 0.035, 0.04), vein_scale=16.0)
     C.look('mane', 'bfur', 'hair_mane', color=(0.075, 0.07, 0.068), tip=(0.20, 0.19, 0.18), ash=0.9, flow=(0, 0.8, 0.5), scale=70.0)
     C.look('teeth', 'bone', 'bone_teeth', color=(0.55, 0.50, 0.40), stain=(0.22, 0.15, 0.08), dirt_lo=-2.0, dirt_hi=-1.5)
-    C.look('pits', 'emis', 'emis_pits', emit=(1.0, 0.24, 0.03), strength=2.2, mottle=0.7, base_mul=0.5)
+    C.look('pits', 'emis', 'emis_pits', emit=(1.0, 0.30, 0.04), strength=1.6, mottle=0.4, base_mul=0.5)
 
     def ribs(body):
         v = body.v
@@ -61,7 +61,7 @@ def dusk_hound(bake=True):
         fpaw=(0.032, 0.05, 0.022), hpaw=(0.03, 0.048, 0.022),
         blobs=[((0.07, 0.25, 0.48), (0.05, 0.10, 0.115), ['hip', 'h_upper_l'], True),
                ((0.075, -0.27, 0.51), (0.04, 0.07, 0.10), ['chest', 'f_upper_l'], True)],
-        voxel=0.0105, tris=2080, sculpt=ribs)
+        voxel=0.0105, tris=2030, sculpt=ribs)
     body = RB.quad_flesh(C, J, S)
     C.skin(body, 'hide')
     bvh = P.bvh_of(body)
@@ -84,8 +84,8 @@ def dusk_hound(bake=True):
         c = V(sg * 0.017, -0.812, 0.787)
         q, nrm, _ = P.nearest(bvh, c)
         d = unit(V(sg * 0.5, -1.0, 0.25))
-        C.rigid(P.blob(q - d * 0.004, 0.0105, 0.0105, 0.0105, n=6, m=4), 'head', 'pits', smooth=180)
-        C.rigid(P.ring(q + d * 0.002, 0.0125, 0.0045, axis=d, n=8, m=4), 'head', 'hide', smooth=180)
+        C.rigid(P.blob(q - d * 0.003, 0.016, 0.016, 0.016, n=6, m=4), 'head', 'pits', smooth=180)
+        C.rigid(P.ring(q + d * 0.004, 0.018, 0.0055, axis=d, n=8, m=4), 'head', 'hide', smooth=180)
         # ears
         e = RB.ear_sheet(J['ear'][0] * (sg, 1, 1), J['ear'][1] * (sg, 1, 1), 0.058, cup=0.022, th=0.006, sink=0.03, rows=5, cols=4,
                          face=(sg * 0.5, -1, 0))

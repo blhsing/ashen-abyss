@@ -1,8 +1,8 @@
-# Mouse cursor over the interface in a level (normal harness). Run with --cursor-log.
-#   Y:\tools\run.ps1 -GameArgs "--win --mute --new=emberblade --slot=91 --area=town --level=12 --gear --cursor-log --uidir=Y:\shots\cursor --uido=@Y:\tools\cursor\tests\uido_level.txt" -Timeout 120 -Tag cursor
+# Mouse cursor over the interface in a level (normal harness, slot 94). Run with --cursor-log.
+# Started by Y:\tools\cursor\tests\run_all.ps1 -Only uidolevel
 # The hero's own picking reads the operating system's pointer, which a script cannot move: world targets (monster,
 # NPC, loot, chest, portal, ground) are driven by --cursor-test (CursorTest.cs) instead; this script covers the
-# interface: HUD, a panel, a button, a text field, the pause menu.
+# interface: HUD, a panel, a button, the map, the pause menu and the settings sheet opened from it.
 wait 2.0
 log STEP hud-action-bar
 hover 800,848
@@ -31,6 +31,14 @@ open pause
 wait 0.8
 hover @設定
 wait 0.6
+log STEP settings-from-pause
+click @設定
+wait 1.0
+click @遊戲
+wait 0.8
+hover @滑鼠游標
+wait 0.4
+shot cursor_level_settings_game
 close
 wait 0.5
 quit

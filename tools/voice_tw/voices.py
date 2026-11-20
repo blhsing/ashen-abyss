@@ -89,14 +89,44 @@ VOICES = {
         desc=f"中年女性，{TW}，声音低柔，像在哄孩子入睡，语速缓慢，吐字清晰",
         anchor="乖，不要哭。媽媽在這邊，媽媽哪裡也不去，慢慢睡吧，天亮還早呢。"),
     "boss_sand_tyrant": dict(sex="m", who="man, middle-aged king", f0=(90, 150), hnr_min=5.5, designs=5,
-        desc=f"中年男性君王，{TW}，男中音，声音洪亮威严，语气高傲，吐字清晰有力",
-        anchor="跪下！在你面前的是黃銅的君王。我的城牆不會倒，我的名字不會被忘記！"),
+        desc=f"中年男性君王，{TW}，男低音，声音低沉浑厚，威严而平静，语气高傲，语速缓慢，吐字清晰",          # round 2 (2026-11-20): the loud, exclaimed first design came out at 232-340 Hz
+        anchor="抬起頭來，看著我。這座城是我用黃銅一塊一塊蓋起來的，它不會倒，我也不會。"),
     "boss_grand_hush": dict(sex="m", who="old man", f0=(90, 150), hnr_min=5.5, designs=5,
         desc=f"年长男性，{TW}，男中音，声音轻柔低缓，平静慈祥，语速很慢，吐字清晰",
         anchor="不用害怕，一切都會安靜下來。閉上眼睛，聽，鐘聲很快就要響了。"),
     "boss_osaros": dict(sex="m", who="man, ageless", f0=(65, 125), hnr_min=5.5, designs=5,         # default = the variant picked on Y:\voice_samples\osaros (see OSAROS_DEFAULT)
         desc=None,
         anchor="我在這底下睡了很久，很久。火光來了又走，只有黑暗，一直陪著我。"),
+
+    # ------------------------------------------------------------------ named encounters (BESTIARY.md section 4; added 2026-11-20)
+    # stronghold bosses (4.2), world boss (4.5), pinnacle rung 7 (4.6). Clear first, like the other bosses.
+    "boss_sh_wastes": dict(sex="m", who="man, middle-aged (swollen outpost captain who swallowed the beacon's ember)", f0=(75, 135), hnr_min=5.5, designs=5,
+        desc=f"中年男性，{TW}，男低音，声音低沉厚实，语速缓慢，吐字清晰，固执，压抑着痛苦",          # round 2: "murky, halting" gave a rough voice (HNR 4.0 dB)
+        anchor="這座塔的鑰匙，還掛在我的腰上。我是哨長，我說不准走，就沒有人可以走。"),
+    "boss_sh_frost": dict(sex="m", who="man, middle-aged castellan (fallen knight)", f0=(80, 135), hnr_min=5.5, designs=5,
+        desc=f"中年男性守将，{TW}，男低音，声音低沉坚定，语速平稳，吐字清晰干净，像在城墙上下令，军人的严肃",          # round 2: first design rough (HNR 4.1 dB)
+        anchor="弓手上牆，盾手守門。只要我還站在這裡，這座關口就一步也不會讓出去。"),
+    "boss_sh_crypt": dict(sex="m", who="man, adult (oath-broken barrow warden)", f0=(85, 140), hnr_min=5.5, designs=5,
+        desc=f"成年男性，{TW}，男中音，声音低而沉重，带着愧疚和固执，语速缓慢，吐字清晰",
+        anchor="我發過誓，要替死去的人守門。後來門是我自己打開的，所以我得守到最後。"),
+    "boss_sh_mire": dict(sex="m", who="old man, huge (stockade master of the bog)", f0=(70, 125), hnr_min=5.0, designs=5,
+        desc=f"老年男性，{TW}，男低音，声音非常低沉厚重，慢吞吞的，像从泥里冒出来，但每个字都说得清楚，贪婪而固执",
+        anchor="這片泥地上的每一根木頭，都是我一根一根拖回來的。誰也別想拿走一塊。"),
+    "boss_sh_sands": dict(sex="m", who="brass custodian (construct; male register)", f0=(85, 140), hnr_min=5.5, designs=5,
+        desc=f"男性，{TW}，男中音，声音平板冷淡，像在宣读告示，语速均匀，每个字一样轻重，吐字非常清楚，没有感情",
+        anchor="本站營業時間已經結束。請各位旅客帶好隨身物品，依照指示，從東門離開。"),
+    "boss_sh_sanctum": dict(sex="m", who="man, adult knight-commander", f0=(85, 140), hnr_min=5.5, designs=5,
+        desc=f"成年男性骑士，{TW}，男中音，声音冷静克制，傲慢而有礼，语速缓慢，吐字清晰",
+        anchor="這條街已經封起來了。我不想動手，但命令就是命令，請你往回走吧。"),
+    "boss_sh_abyss": dict(sex="m", who="man, huge brute (ember-eater)", f0=(70, 125), hnr_min=5.0, designs=5,
+        desc=f"男性巨人，{TW}，男低音，声音极低沉，粗大而缓慢，饥饿又贪婪，吐字依然清楚，不嘶哑",
+        anchor="好暖，好香。我已經很久沒有吃飽了。這一點火，只夠我塞塞牙縫而已。"),
+    "boss_wb_firstbearer": dict(sex="m", who="old man, giant (the oldest fuel-bearer)", f0=(65, 120), hnr_min=5.0, designs=5,
+        desc=f"非常年迈的男性巨人，{TW}，男低音，声音极其低沉浑厚，说话很慢很少，像搬了一辈子重物，疲惫但坚定，吐字清楚",
+        anchor="這條路，我走了一千年。山上砍下來的柴，一捆一捆，全都是我背下來的。"),
+    "boss_firstkeeper": dict(sex="f", who="woman, adult (the first lamp-keeper; warm)", f0=(170, 260), hnr_min=5.5, designs=5,
+        desc=f"成年女性，{TW}，声音温暖清亮，沉稳坚定，像一位老练的守灯人，语速从容，吐字清晰",
+        anchor="第一盞燈是我點起來的。那時候天還沒有黑，我也還不知道，這把火要傳多久。"),
 }
 
 # Three descriptions of the final boss for the user's choice page. All ask for clear articulation.

@@ -188,8 +188,8 @@ public partial class HudActionSlot : Control
     private void Bind(Texture2D tex, Color tint)
     {
         _icon.Texture = tex;
-        _tint = tint;
-        _icon.Modulate = tint;
+        _tint = Icons.Tint(tex, tint);          // raster art keeps its colours (potion, evade and skills alike)
+        _icon.Modulate = _tint;
         _icon.Visible = true;
         _bound = true;
         _dim = false;

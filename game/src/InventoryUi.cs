@@ -480,9 +480,10 @@ public static class ItemUi
         var rc = Palette.Rarity(it.Rarity);
         var p = new Panel { MouseFilter = Control.MouseFilterEnum.Stop };
         p.AddThemeStyleboxOverride("panel", CellBox((int)it.Rarity, new Color(0.07f, 0.065f, 0.06f, 0.95f), rc.Darkened(0.25f), 2));
+        var tex = Icons.ForItem(it);
         var icon = new TextureRect
         {
-            Texture = Icons.ForItem(it), Modulate = rc, MouseFilter = Control.MouseFilterEnum.Ignore,
+            Texture = tex, Modulate = Icons.Tint(tex, rc), MouseFilter = Control.MouseFilterEnum.Ignore,
             ExpandMode = TextureRect.ExpandModeEnum.IgnoreSize, StretchMode = TextureRect.StretchModeEnum.KeepAspectCentered,
         };
         p.AddChild(icon);

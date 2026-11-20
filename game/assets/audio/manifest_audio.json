@@ -1455,7 +1455,7 @@
     "abyss_base": {
       "path": "assets/audio/music/abyss_base.ogg",
       "loop": true,
-      "duration": 120,
+      "duration": 128,
       "lufs": -18.01,
       "peak_db": -2.83,
       "pair": "abyss_combat"
@@ -1463,7 +1463,7 @@
     "abyss_combat": {
       "path": "assets/audio/music/abyss_combat.ogg",
       "loop": true,
-      "duration": 120,
+      "duration": 128,
       "lufs": -19.02,
       "peak_db": -3.35,
       "pair": "abyss_base"
@@ -1487,7 +1487,7 @@
     "crypt_base": {
       "path": "assets/audio/music/crypt_base.ogg",
       "loop": true,
-      "duration": 128,
+      "duration": 120,
       "lufs": -18.02,
       "peak_db": -3,
       "pair": "crypt_combat"
@@ -1527,7 +1527,7 @@
     "menu_theme": {
       "path": "assets/audio/music/menu_theme.ogg",
       "loop": true,
-      "duration": 176,
+      "duration": 175.997,
       "lufs": -18.02,
       "peak_db": -1.41,
       "pair": ""
@@ -1559,7 +1559,7 @@
     "sanctum_combat": {
       "path": "assets/audio/music/sanctum_combat.ogg",
       "loop": true,
-      "duration": 120,
+      "duration": 113.453,
       "lufs": -19.03,
       "peak_db": -3.44,
       "pair": "sanctum_base"
@@ -1575,7 +1575,7 @@
     "sands_combat": {
       "path": "assets/audio/music/sands_combat.ogg",
       "loop": true,
-      "duration": 120,
+      "duration": 124.82,
       "lufs": -19.01,
       "peak_db": -3.36,
       "pair": "sands_base"
@@ -1583,7 +1583,7 @@
     "town": {
       "path": "assets/audio/music/town.ogg",
       "loop": true,
-      "duration": 135,
+      "duration": 135.783,
       "lufs": -17.99,
       "peak_db": -1.38,
       "pair": ""
@@ -8790,7 +8790,7 @@
       "category": "music",
       "group": "abyss",
       "variation": 0,
-      "duration": 120,
+      "duration": 128,
       "channels": 2,
       "sample_rate": 44100,
       "loop": true,
@@ -8817,7 +8817,7 @@
       "category": "music",
       "group": "abyss",
       "variation": 0,
-      "duration": 120,
+      "duration": 128,
       "channels": 2,
       "sample_rate": 44100,
       "loop": true,
@@ -8890,7 +8890,7 @@
       "category": "music",
       "group": "crypt",
       "variation": 0,
-      "duration": 128,
+      "duration": 120,
       "channels": 2,
       "sample_rate": 44100,
       "loop": true,
@@ -9020,7 +9020,7 @@
       "category": "music",
       "group": "menu_theme",
       "variation": 0,
-      "duration": 176,
+      "duration": 175.997,
       "channels": 2,
       "sample_rate": 44100,
       "loop": true,
@@ -9124,7 +9124,7 @@
       "category": "music",
       "group": "sanctum",
       "variation": 0,
-      "duration": 120,
+      "duration": 113.453,
       "channels": 2,
       "sample_rate": 44100,
       "loop": true,
@@ -9178,7 +9178,7 @@
       "category": "music",
       "group": "sands",
       "variation": 0,
-      "duration": 120,
+      "duration": 124.82,
       "channels": 2,
       "sample_rate": 44100,
       "loop": true,
@@ -9205,7 +9205,7 @@
       "category": "music",
       "group": "town",
       "variation": 0,
-      "duration": 135,
+      "duration": 135.783,
       "channels": 2,
       "sample_rate": 44100,
       "loop": true,

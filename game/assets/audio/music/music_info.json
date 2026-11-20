@@ -2,14 +2,14 @@
   "combat_mode": "crossfade",
   "tracks": {
     "menu_theme": {
-      "seconds": 176.0,
+      "seconds": 175.997,
       "bpm": 60,
       "loop": true,
       "seed": 7103,
       "model": "ACE-Step 1.5 XL turbo (acestep-v15-xl-turbo-diffusers)"
     },
     "town": {
-      "seconds": 135.0,
+      "seconds": 135.783,
       "bpm": 76,
       "loop": true,
       "seed": 7112,
@@ -65,10 +65,10 @@
       "model": "ACE-Step 1.5 XL turbo (acestep-v15-xl-turbo-diffusers)"
     },
     "crypt_base": {
-      "seconds": 128.0,
+      "seconds": 120.0,
       "bpm": 52,
       "loop": true,
-      "seed": 7192,
+      "seed": 7191,
       "model": "ACE-Step 1.5 XL turbo (acestep-v15-xl-turbo-diffusers)"
     },
     "crypt_combat": {
@@ -100,11 +100,11 @@
       "model": "ACE-Step 1.5 XL turbo (acestep-v15-xl-turbo-diffusers)"
     },
     "sands_combat": {
-      "seconds": 120.0,
-      "bpm": 104,
+      "seconds": 124.82,
+      "bpm": 115.5,
       "loop": true,
-      "seed": null,
-      "model": "procedural (own synthesis + MuseScore_General SoundFont)"
+      "seed": 7542,
+      "model": "ACE-Step 1.5 XL turbo (acestep-v15-xl-turbo-diffusers)"
     },
     "sanctum_base": {
       "seconds": 124.0,
@@ -114,25 +114,25 @@
       "model": "ACE-Step 1.5 XL turbo (acestep-v15-xl-turbo-diffusers)"
     },
     "sanctum_combat": {
-      "seconds": 120.0,
-      "bpm": 64,
+      "seconds": 113.453,
+      "bpm": 110.0,
       "loop": true,
-      "seed": null,
-      "model": "procedural (own synthesis + MuseScore_General SoundFont)"
+      "seed": 7262,
+      "model": "ACE-Step 1.5 XL turbo (acestep-v15-xl-turbo-diffusers)"
     },
     "abyss_base": {
-      "seconds": 120.0,
-      "bpm": 96,
+      "seconds": 128.0,
+      "bpm": 60,
       "loop": true,
-      "seed": null,
-      "model": "procedural (own synthesis + MuseScore_General SoundFont)"
+      "seed": 7474,
+      "model": "ACE-Step 1.5 XL turbo (acestep-v15-xl-turbo-diffusers)"
     },
     "abyss_combat": {
-      "seconds": 120.0,
-      "bpm": 96,
+      "seconds": 128.0,
+      "bpm": 120.2,
       "loop": true,
-      "seed": null,
-      "model": "procedural (own synthesis + MuseScore_General SoundFont)"
+      "seed": 7485,
+      "model": "ACE-Step 1.5 XL turbo (acestep-v15-xl-turbo-diffusers)"
     }
   }
 }

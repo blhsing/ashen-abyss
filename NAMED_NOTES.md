@@ -157,3 +157,35 @@ their window; out: rare hamo 61 s, whiteshadow 52 s, lastrun 48 s, firstcantor 5
 Balance changes after run 3 not in the table: Hamo musters on every second blast (design: every blast), White Shadow
 pounces every 4 s. Pinnacle tests ran at world tier 2 with paragon 50; many god-saves there (bot does not dodge).
 Test saves slot9* / slot0* moved to `%APPDATA%\AshenAbyss\saves_test_backup\` at the pause.
+
+## RESUMED 2026-11-20 (test slot 91 only)
+- Full campaign (`--campaign --level=30 --god`, slot 91): **campaign finished** at play 384 s — all 7 named strongholds
+  killed and liberated, all 7 region bosses killed, 0 errors. Log `Y:\tools\named\campaign_full_log.txt`.
+- Side dungeons (`--named-live=dungeons --tour=wastes_d1,wastes_d2,frost,frost_d1,frost_d2`, unassisted bot):
+  db_wastes_d1 24 s, db_wastes_d2 11 s (hero had levelled to 16-17), db_frost_d1 141 s (the bot never lures Od into
+  brazier light: regrow ×11 — a player will), db_frost_d2 44 s; each: door → kill → chest → "此地已淨化" → portal; 0 errors.
+  → `LiveDungeons = true`. Log `Y:\tools\named\tour_log.txt`.
+- World boss: `--named=wb_barrowbearer@route` opens the gateway at the far side of the wastes; the field
+  `rift~wb:wb_barrowbearer` fought by the unassisted bot: killed 173 s, cache claimed once (interval 0), bot left through
+  the portal back to the wastes. → `LiveWorld = true`.
+- New test switch `--named-live=dungeons,world,ladder|all` (turns a group on for one run).
+- Ladder: `LiveLadder` stays false until the panel screenshot is checked (`Y:\shots\named\ladder.png`).
+- Running now: `Y:\tools\named\resume.sh` (ladder shot, fight shot, suite run 4 of the 10 retuned; retries while the
+  run lock is busy; writes `Y:\tools\named\resume_done.txt` at the end). Stop: kill the bash running resume.sh and
+  any Godot with `--slot=91`.
+- Ladder panel (windowed, tier 2, lv50): `Y:\shots\named\ladder.png` checked by eye — framed, 8 rungs readable, rung 1
+  open, 2-8 closed; bug fixed after the shot: the tier line was tinted red (now gold). The rung route (enter rung 1 →
+  kill → portal to rung 2) runs in `Y:\tools\named\resume2.sh` after resume.sh.
+
+## STATE 2026-11-21 ~01:00: PAUSED again (0.3.0 release) — compiles (check.ps1: 0 errors), nothing of mine running
+Live: `LiveRares`, `LiveStrongholds`, `LiveDungeons`, `LiveWorld` = true. Off: `LiveLadder` = false (panel checked on
+screen; the rung route — enter rung 1, kill, portal to rung 2 — never got the run lock). vo_lines.json: 207 entries,
+all complete, 19 named intros.
+New since the last pause: `ZoneDb.AreaName` hook (MonstersData.cs, one inserted line) so encounter areas show their own
+names; ladder tier line colour fix; `--named-live=` switch; fight shots `Y:\shots\named\sh_frost_1/2.png` (boss bar
+and name read correctly; the banner prop is plain).
+Suite run 4 (partial, stopped at the pause; `Y:\tools\named\suite_run4_partial_log.txt`): hamo 12.5 s (FAST),
+whiteshadow 10.5 s (FAST), lastrun 29.8 s ok, namelessking 25.6 s ok, dafu 21.6 s ok but its required "nets" mech did
+not fire (the bot stayed in melee: nets need 3.2 m+). Not re-measured: firstcantor, vesna, db_wastes_d1/d2, pin_7.
+NEXT: rung route run (resume2.sh, without --named) → LiveLadder; re-tune hamo / whiteshadow up (≈ ×2 life), make dafu's
+nets usable at melee range or mark it "?nets"; finish run 4. The run lock is heavily contended — expect long waits.

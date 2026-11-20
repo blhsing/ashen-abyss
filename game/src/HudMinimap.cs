@@ -246,7 +246,7 @@ public partial class HudMinimap : Control
                 Color col = goal ? new Color(1f, 0.86f, 0.4f) : st.Col;
                 if (clamped) col = new Color(col, 0.8f);
                 _over.DrawCircle(at, size * 0.62f, goal ? new Color(0.25f, 0.17f, 0.03f, 0.85f) : shade);
-                _over.DrawTextureRect(st.Tex, new Rect2(at.X - size * 0.5f, at.Y - size * 0.5f, size, size), false, col);
+                _over.DrawTextureRect(st.Tex, new Rect2(at.X - size * 0.5f, at.Y - size * 0.5f, size, size), false, Icons.Tint(st.Tex, col));
             }
         }
 

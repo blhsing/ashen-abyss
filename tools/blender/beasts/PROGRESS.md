@@ -1,44 +1,38 @@
 # Beasts (rigs B-F, 46 non-humanoid creatures) - progress
 
-## STATE WHEN PAUSED (2026-11-19, lead's order: stop, the game is made playable with what is complete)
-- **28 of 46 creatures are in `Y:\game\assets\chars`** (complete files with the 8 embedded clips), all re-verified from
-  the exported files with `bverify.py` just before the pause: 27 PASS; `mon_dusk_hound` fails ONE check only (4019
-  triangles against the 4000 swarm budget I put it under as a pack swarmer; clips, loops, ground, feet, materials all
-  pass). `rigs_bf_meta.json` = exactly these 28 models (flat `{model: {...}}`), every entry has all contract fields.
-  `import.ps1` was run after the last file. No Blender job is running or queued; both helpers have ended.
-- **Per rig:** B quadruped 11 / 11 done (hound = mine, 10 by helper H2 in `h2\`). C arthropod 14 / 15 done (beetle =
-  mine, 13 by helper H1 in `h1\`; missing: `sexton_grub`). D serpent 1 / 7 (`lurk_eel`). E flyer 1 / 6 (`dusk_bat`).
-  F rigid / floating 1 / 7 (`wraith_gasp`).
-- **Not built (18):** D `lurk_leech`, `lurk_spitter`, `lurk_elder`, `ash_worm`, `char_root`, `hush_serpent`; C-family
-  `sexton_grub`; E `dusk_crow`, `dusk_gadfly`, `rust_locust`, `fiend_wing`, `hush_wing`; F `cf_flicker`, `dusk_moths`,
-  `lamp_lure`, `engine_heliostat`, `bell_hanging`, `forge_eye`. The game uses its stand-ins for them.
-- **Written but NEVER RUN:** `spec_d.py` `looper_clips`, `lurk_leech`, `sexton_grub` (the `Looper` class of `rig_d.py`
-  and the `Rearer` class have not been executed once: expect first-run bugs). `bshots.py` got the true game-camera view
-  (512 px = 6.1 m) after the proofs were rendered: proofs' `_game.png` are still the older, closer view.
-- **Not done at all:** the message to the lead with the five proofs (overtaken by the pause), family sheets
-  `Y:\shots\chars\beast_<family>.jpg`, the five proof WebPs (`out\shots\<model>_webp\f_*.png` frames exist for the five
-  proofs, `make_webp.py` was not run), `Y:\credits\beasts.md` (nothing third-party beyond the monsters kit's CC0 scans,
-  already credited in `Y:\credits\monsters.md`), any look at the creatures IN THE ENGINE (no test run of the game was
-  made: material prefixes, emission pulse, hover height, `rust_gear` spin, near-zero bone scales are unchecked there).
-- Strips exist for all 28: `Y:\shots\chars\beast_mon_<id>_anim.jpg` (the bat strip crops the wings: re-render it with
-  the wider framing noted below). Helper overviews: `h1\out\shots\h1_tile_sheet.jpg`, `h1_game_sheet.jpg`.
-
-## NEXT STEPS (in order, when resumed)
-1. `bshots.py`: strip framing (sample Walk / Run at 8 phases for the bounds, margin 1.2 so `sheet.ps1`'s 86 % crop does
-   not cut wings); re-render the bat strip. Trim `dusk_hound` by 20+ triangles (`tris=2080` -> 2040 in `spec_b.py`).
-2. Build `lurk_leech` + `sexton_grub` with `--nobake` first (debug `Looper.place`, `set_homes`), then bake.
-3. D: `ash_worm`, `char_root`, `hush_serpent` on `Column` (copy `lurk_eel`); `lurk_spitter`, `lurk_elder` on `Rearer`.
-4. E on `Flyer`: `dusk_crow`, `fiend_wing` (bat-like), `dusk_gadfly`, `rust_locust` (`buzz=True` wings), `hush_wing`
-   (kite: no flap, flex bones, ribbon tails). F: `cf_flicker`, `bell_hanging`, `dusk_moths` (8 cluster bones x 2 flap
-   bones, <= 28 bones), turrets `lamp_lure`, `engine_heliostat`, `forge_eye` (Walk / Run = `Rigid.copy_clip('Idle', ..)`).
-5. `bmeta.py Y:\tools\blender\beasts\h1\out Y:\tools\blender\beasts\h2\out`, `import.ps1`, an engine look
-   (`run.ps1 -GameArgs "--win --mute --bestiary --new=emberblade --area=wastes --god --spawn=<ids> --shot=... --shot-at=..
-   --quit-at=.."`, only when `tasklist | grep -i AshenAbyss` prints nothing), family sheets, WebPs, the report.
-- Helpers: H1 owns the additions in `rig_c.py` + `h1\spec_h1.py`; H2 those in `rig_b.py` + `h2\spec_h2.py`, `h2\h2lib.py`
-  (their notes: `h1\PROGRESS.md`, `h2\PROGRESS.md`). Rebuild their creatures with
-  `bb.ps1 bbuild.py "<ids> --path=Y:\tools\blender\beasts\hN --spec=spec_hN --out=Y:\tools\blender\beasts\hN\out"`.
-- Known kit weakness (both helpers hit it): `Beast.audit` judges "inside" by the nearest triangle's normal and only
-  searches 6 cm: false "detaches" near convex edges of faceted pieces and for joints buried deep in a fat body.
+## STATE WHEN PAUSED (2026-11-21 00:56, lead's order: all work paused for the 0.3.0 release)
+- **All 46 creatures are in `Y:\game\assets\chars`, complete, and all 46 PASS `bverify.py`** (full run 00:40 on `out`,
+  `h1\out` .. `h4\out`; `lurk_leech` rebuilt and re-verified 00:53). `rigs_bf_meta.json` = exactly these 46 models, every
+  entry has all contract fields (10 with `hover_in_model`, 5 with a `light` entry: lantern, flicker, lure, gadfly, fiend
+  wing). Godot's import cache is newer than every one of the files (checked 00:55; `import.ps1` exit 0).
+- No Blender job, import or game run of mine is running or queued; all four helpers have ended.
+- Delivered: 46 strips `Y:\shots\chars\beast_mon_<id>_anim.jpg`, 18 family sheets `beast_<family>.jpg`, four dark game-view
+  sheets `beast_gameview_1..4.jpg` (the leech tile in sheet 3 and in `beast_lurk.jpg` is one small colour tweak behind:
+  re-run `bshots.py "lurk_leech --tile --game"` is done, re-run `scratch\family_sheets.ps1` to refresh the sheets),
+  proof overview `beast_proofs_def.jpg`, five proof WebPs `Y:\shots\preview\beast_<b..f>_proof.webp`, credits
+  `Y:\credits\beasts.md`, the table at the end of this file (`python -I btable.py` regenerates `out\table.md`).
+- **NOT DONE: the in-engine check.** No creature of rigs B-F has been looked at in the game by me. The check is
+  prepared: `bash scratch/engine_check.sh 1 11` (eleven `--bestiary --spawn` line-ups on test slot 96, pictures
+  `out\engine\g<N>_<1|2>.png`, never runs while AshenAbyss.exe is open, moves slot96* to saves_test_backup at the end).
+  It is blocked by the file `scratch\PAUSED`: delete that file first. Unchecked in the engine: material prefixes
+  (`hair_`, `spectral_ghost` on the lantern's smoke), emission clamp / pulse, hover heights, the meta lights, the
+  `rust_gear` wheel spin, near-zero and non-uniform bone scales, 360-degree turns in looping clips (`hush_serpent`).
+- **Next when resumed:** (1) delete `scratch\PAUSED`, run the engine check, look at every picture, fix what it shows;
+  (2) `powershell -File scratch\family_sheets.ps1`; (3) final report to the lead (table, shared skeletons, deviations,
+  what could not be checked).
+- Lead's review bar (2026-11-20/21, proofs approved): every creature must read as a creature at game-camera size on
+  dark ground - real head / face, S-bends instead of straight columns, one bright accent, enlarged where it was a
+  speck. Applied after the helpers finished: crow (slate feathers, smouldering primaries), locust (violet static),
+  digger (paler soil), hound (larger heat pits), spitter (S-bend, dark feathered frill with glowing tips), elder
+  (dimmer belly), leech x1.3 (lighter skin, pale sucker lip), grub x1.25.
+- Kit additions since the first pause: `Beast.rescale(K)`; `bshots.py` game view = the REAL camera (CameraRig.cs: pitch 48,
+  15.6 m, FOV 32 -> 121 px per metre; ARCHITECTURE.md's 24 m is out of date) on dark ground, `_game2.png` = Run,
+  `spectral_*` materials previewed as additive ghost matter, a preview light from the meta `light` entry, margins 1.2;
+  look kinds `slick`, `warm`, `ghostface`, `frond`, `sglow`, `tipglow`, `cglass`; `rig_d.Looper` rewritten (flat end links,
+  solved hump), `Rearer.tailwave` runs backwards; meta `light` entry (the roster engineer hangs a soft shadowless light
+  on the creature, max 8 live; `bmeta.py` LIGHTS table); `bsheets.py`, `btable.py`; `HELPERS.md` has the helpers' lessons.
+- Rule learnt the hard way: never write Python through bash heredocs (quotes break); write a patch file with the
+  Write tool (`scratch\patch_*.py`, `.new` + `os.replace`) and run it. In bash, quote Windows paths ('Y:\...').
 
 ## How to run (all through the throttled launcher)
 - Build:   `powershell -NoProfile -ExecutionPolicy Bypass -File Y:\tools\blender\beasts\bb.ps1 bbuild.py "dusk_hound sexton_beetle [--nobake] [--path=<dir>] [--spec=<module>] [--out=<work dir>]"`
@@ -109,32 +103,51 @@
 - **Textures**: one 2048 atlas (1024 for swarm creatures): normal JPEG q90 4:4:4, ORM q84, base colour / emission q88.
 
 ## Creatures (model | family | rig | tris | bones | MB | verify | weaknesses)
-(verify column = `bverify.py` on the exported file, 2026-11-19; "swarm" = built to the 4,000 tris / 2.5 MB / 28 bones budget)
-mon_dusk_hound | dusk | B | 4019 | 28 | 1.51 | FAIL (19 tris over the swarm budget; all other checks pass) | swarm build (lite skeleton, 1024 atlas); chest / haunch forms simple; mane tufts are flat cones; death pose legs stiff; leap IK stretch 0.17 m
+(generated by btable.py from the verify results of the exported files, 2026-11-21; (H1)..(H4) = built by that helper;
+swarm = built to the 4,000 tris / 2.5 MB / 28 bones budget; xK = enlarged against the brief size for readability)
+mon_wraith_gasp | wraith | F | 3170 | 15 | 1.27 | PASS | x1.55, swarm build; the ghost face is opaque glowing geometry (only its cowl and smoke trail are ghost matter); the pool of light on the ground is a game light (meta `light`), not part of the model; glass shards opaque
+mon_dusk_hound | dusk | B | 3969 | 28 | 1.49 | PASS | swarm build (lite skeleton, 1024 atlas); chest / haunch forms simple; mane tufts are flat cones; death pose legs stiff; leap IK stretch 0.17 m
+mon_dusk_boar | dusk | B | 7612 | 29 | 3.96 | PASS | (H2) mouth glow is a thin bright line, not a soft glow; bristles are flat cones; plain hooves; Attack1 stretches the hind legs 3 cm
+mon_dusk_yak | dusk | B | 12268 | 33 | 4.35 | PASS | (H2) face is a dark mass under the forelock; fringe = rigid ropes on 4 skirt bones (no finer secondary motion); snow drift simple
+mon_dusk_lynx | dusk | B | 6100 | 30 | 3.31 | PASS | (H2) fur tufts are chunky cones; face more dog than cat; death pose legs stiff; pounce IK stretch 0.28 m
+mon_dusk_lizard | dusk | B | 6648 | 32 | 4.12 | PASS | (H2) stands 2 cm clear of the ground rather than belly-down; sail is a thin line from straight above; tail straight at rest; Attack2 is a hop-spin (feet in the air)
+mon_dusk_crow | dusk | E | 10228 | 13 | 3.43 | PASS | (H3) beak long (hornbill rather than crow); feathers are flat rigid slabs (coverts read as tiles close up, wings fold as stacked plates in Hit); ruff / body tufts are cones; wingspan 2.2 m (oversized on purpose); one-shot clips end in the stock hover pose, not exactly Idle frame 0 (as the bat) Since then: slate feathers with a blue sheen, primaries smoulder at their tips.
+mon_dusk_bat | dusk | E | 7292 | 15 | 4.01 | PASS | x1.2; wing membrane stretches at the body on the full upstroke; one-shot clips end in the hover pose, not exactly Idle frame 0
+mon_dusk_gadfly | dusk | E | 5618 | 19 | 3.33 | PASS | (H3) each wing is a fan of three blades (my reading of "blurred"; they also alternate per frame); globe is opaque (vein-net emission), cannot turn amber when fed (only swells: bone `abdomen` scale); globe trails 45 deg back instead of hanging straight down; legs are stiff two-segment rods
+mon_dusk_moths | dusk | F | 3584 | 26 | 1.86 | PASS | (H4) 448 moths, each two flat kites (folded paper close up, no bodies); the ball is flattened (2.3 m high, 3 m wide) to clear the ground; Death squashes the clusters flat with a non-uniform bone scale (the dead moths' normals may shade wrong in the engine); wing beat = 4-frame cycle of the flap bones, judged from stills only
+mon_rime_packbeast | frost | B | 7986 | 31 | 4.09 | PASS | (H2) head simple; whole load rigid on one bone; Attack1 "kick" is a fore-hoof strike while rearing; pawing hoof dips 2.6 cm
+mon_cf_flicker | coldfire | F | 342 | 21 | 1.03 | PASS | (H4) built 1.14 x (0.72 m flame = 1.4 x "knee-high") and still small in the game view; glass is opaque: the orange "pinpoint deep inside" is painted on the belly front and back (not seen from the sides); few, large facets; Attack2 / Death swap the flame for ten loose shards (bone scale 0.001)
+mon_cf_mite | coldfire | C | 3206 | 23 | 3.57 | PASS | (H1) glass is opaque (no transparency in the shader); the flames bend as skinned geometry; tip light is subtle
+mon_sexton_grub | sexton | C | 1604 | 11 | 1.08 | PASS | x1.25, swarm build, built on the looper (rig C family); bounding Run (each end planted for one frame of eight); stub legs do not move
 mon_sexton_beetle | sexton | C | 4104 | 29 | 3.52 | PASS | head shield reads lumpy close up; legs thin for a beetle
-mon_lurk_eel | lurk | D | 3026 | 13 | 2.98 | PASS | Attack2 is a low sweep of the column (tail stays buried); mound chunks are simple; no feet, speeds are nominal
-mon_dusk_bat | dusk | E | 6170 | 15 | 3.82 | PASS | wing membrane stretches at the body on full upstroke; strip picture crops the wings
-mon_wraith_gasp | wraith | F | 1438 | 8 | 1.13 | PASS | swarm build; glass is opaque (cracks glow instead: no transparency in the game shader); the wisp is hidden from behind
-mon_dusk_boar | dusk | B | 7612 | 29 | 3.96 | PASS | (H2) mouth glow is a thin bright line; bristles are flat cones; plain hooves; Attack1 stretches the hind legs 3 cm
-mon_dusk_lizard | dusk | B | 6648 | 32 | 4.12 | PASS | (H2) stands 2 cm clear of the ground rather than belly-down; sail thin from above; Attack2 is a hop-spin
-mon_forge_hound | forge | B | 3528 | 28 | 1.53 | PASS | (H2) swarm; clinker yokes boxy; trap head thin from the side; rod legs thin; no tail / ear bones (4 chain bones)
-mon_dusk_lynx | dusk | B | 6100 | 30 | 3.31 | PASS | (H2) fur tufts chunky; face more dog than cat; death legs stiff; pounce IK stretch 0.28 m
-mon_hush_beast | hush | B | 4935 | 24 | 2.23 | PASS | (H2) chalk crazing visible; thin triangles round the hole; Spawn scales the bone `hip`
-mon_effigy_hound | effigy | B | 4966 | 27 | 3.51 | PASS | (H2) lumpy bulldog rather than a crisp brick; notch reads as a saddle; Run is a 6-frame patter
-mon_dusk_yak | dusk | B | 12268 | 33 | 4.35 | PASS | (H2) face a dark mass under the forelock; fringe = rigid ropes on 4 skirt bones; snow drift simple
-mon_rime_packbeast | frost | B | 7986 | 31 | 4.09 | PASS | (H2) head simple; load rigid on one bone; Attack1 "kick" is a rearing fore-hoof strike; hoof dips 2.6 cm
-mon_fiend_maw | fiend | B | 6192 | 25 | 4.49 | PASS | (H2) firebox only 0.2 m deep; body cracks coloured, not emissive; door = `jaw` bone about Z
-mon_bog_toad | mire | B | 7240 | 30 | 3.43 | PASS | (H2) belly sack is a rigid glowing ellipsoid; belly slam barely squashes; death undramatic
-mon_rust_helm | rust | C | 3788 | 25 | 1.33 | PASS | (H1) swarm; built 1.4 x brief size and still small on screen; crest = stiff spikes; legs long
-mon_rust_stinger | rust | C | 7568 | 42 | 4.29 | PASS | (H1) tongs chitin-coloured; breastplate a simple domed plate; verdigris sting not emissive
-mon_rust_gear | rust | C | 3532 | 32 | 3.47 | PASS | (H1) Run = tucked wheel centred at height 0.5, axle along X (the game spins it; meta `wheel_radius`); body sticks out of the hub
-mon_rust_jar | rust | C | 5848 | 34 | 3.74 | PASS | (H1) more barrel than amphora; mouth light hidden from the side; wire is a static tangle on root-level bones
-mon_cf_mite | coldfire | C | 3206 | 23 | 3.57 | PASS | (H1) glass opaque; flames bend as skinned geometry; tip light subtle
-mon_sexton_digger | sexton | C | 4664 | 25 | 3.57 | PASS | (H1) walks on four legs (spades are free limbs); dark on dark; both attacks dig below ground (under_ok)
-mon_sexton_matron | sexton | C | 9036 | 34 | 4.24 | PASS | (H1) lid passes through the root lashings in Attack2; grubs simple; wing-case flaps nearly hidden
-mon_shroud_weaver | shroud | C | 5672 | 34 | 3.67 | PASS | (H1) six walking legs + two combs; shroud is a hanging rag
-mon_shroud_ling | shroud | C | 2896 | 23 | 1.17 | PASS | (H1) swarm; built 1.25 x brief size; legs long, faceted close up
-mon_shroud_dropper | shroud | C | 2876 | 32 | 1.61 | PASS | (H1) REST pose shows the 6 m thread (bone scaled to 0.001 in every clip but Spawn); plain legs
-mon_shroud_matron | shroud | C | 13016 | 33 | 4.54 | PASS | (H1) green skin shows under the cocoons low down; Death is a belly collapse; laid sac shrinks away
-mon_lamp_crawler | lamp | C | 3636 | 27 | 1.42 | PASS | (H1) swarm; legs hidden under the skirt (motion reads through the body ripple); curl opens gaps between plates
-mon_hush_ribwalker | hush | C | 1832 | 18 | 0.83 | PASS | (H1) swarm; Death flattens to low hoops; ribs are simple blades
+mon_sexton_digger | sexton | C | 4664 | 25 | 3.65 | PASS | (H1) walks on four legs (spades are free limbs); dark on dark at game size; ridges of the wing-case are buried under dust and clods; both attacks dig below the ground (under_ok) Since then: paler grave soil and dust so it shows on dark ground.
+mon_sexton_matron | sexton | C | 9036 | 34 | 4.24 | PASS | (H1) the opening lid passes through the root lashings in Attack2; grubs are simple; wing-case flaps are almost hidden
+mon_char_root | char | D | 2760 | 13 | 3.66 | PASS | slender; rootlets are cones that move with the body only; no head by brief; does not travel above ground (Walk / Run are a weaving column)
+mon_ash_worm | ash | D | 4632 | 11 | 4.63 | PASS | Death sinks back into the hole leaving a stump; the sieve holes are glowing discs, not real holes; Walk / Run = leaning weaving column
+mon_shroud_ling | shroud | C | 2896 | 23 | 1.17 | PASS | (H1) built 1.25 x brief size; legs long, not "short" (10 m/s model speed needs the reach); faceted 5-sided legs close up
+mon_shroud_weaver | shroud | C | 5672 | 34 | 3.67 | PASS | (H1) six walking legs + two combs; the shroud is a hanging rag, not a long trailing cloth
+mon_shroud_dropper | shroud | C | 2876 | 32 | 1.61 | PASS | (H1) rest pose shows the 6 m thread (hidden by bone scale in all clips but Spawn); legs are plain tapering tubes
+mon_shroud_matron | shroud | C | 13016 | 33 | 4.54 | PASS | (H1) green skin shows on the lower half of the abdomen (cocoons thin out there); Death is a belly collapse, not the family's leg curl; the laid sac just shrinks away after the hit
+mon_effigy_hound | effigy | B | 4966 | 27 | 3.51 | PASS | (H2) lumpy bulldog rather than a crisp brick; notch reads as a saddle; Run is a 6-frame patter (short legs at 5.4 m/s)
+mon_bog_toad | mire | B | 7240 | 30 | 3.43 | PASS | (H2) belly sack is a rigid glowing ellipsoid (slosh = bone rotation / scale); belly slam barely squashes; death undramatic
+mon_lamp_lure | lamp | F | 4196 | 19 | 3.63 | PASS | (H4) stays amber when attacking (emission is baked); stalk tan rather than iron-dark; Attack2 reads mainly through the roof flipping up; the dead stalk lies in one long wavy line
+mon_lamp_crawler | lamp | C | 3636 | 27 | 1.42 | PASS | (H1) legs are hidden under the skirt, so Walk / Run read only through the body ripple; the curl opens gaps between the plates
+mon_lurk_leech | lurk | D | 1848 | 10 | 0.76 | PASS | x1.3, swarm build; small and dark on screen; belly rings read like wood grain close up; Run is bounding loops, not a crawl
+mon_lurk_eel | lurk | D | 6012 | 19 | 3.23 | PASS | x1.2; no feet, speeds nominal; Attack2 is a low sweep of the body (the tail stays buried); in Death it sinks back into its hole and only a stump and the head stay above ground; mud ripples are geometry rings
+mon_lurk_spitter | lurk | D | 6724 | 20 | 3.68 | PASS | frond tips glow while it is dead; the frill is rigid sheets on six fold bones; Walk / Run frames differ little (tail wave + steady head)
+mon_lurk_elder | lurk | D | 7152 | 13 | 3.1 | PASS | giant; flute-holes are painted discs that do not open and close; clinging leeches are static; tail wave is weak on the short fat tail
+mon_rust_helm | rust | C | 3788 | 25 | 1.33 | PASS | (H1) built 1.4 x helmet size (0.47 m long in game) and still small on screen; crest reads as stiff spikes, not hair; legs long for "thin legs"
+mon_rust_stinger | rust | C | 7568 | 42 | 4.29 | PASS | (H1) tongs are chitin-coloured (sugar-tong shape only); breastplate is a simple domed plate with notches; verdigris sting is not emissive
+mon_rust_gear | rust | C | 3532 | 32 | 3.47 | PASS | (H1) in the tucked pose the hermit's body and leg stubs stick out of both hub faces; teeth are plain blocks
+mon_rust_jar | rust | C | 5848 | 34 | 3.74 | PASS | (H1) jar reads more barrel than tall amphora; the mouth light is hidden from most side views; wire is a static tangle on root-level bones
+mon_rust_locust | rust | E | 5564 | 25 | 3.35 | PASS | (H3) brass leaves are plain flat sheets of one tone (reads olive under a grey sky); hind wings are fans of three blades; no violet static (not built); small legs simple; small on screen (0.8 m body) Since then: faint violet static towards the tips of the brass leaves.
+mon_engine_heliostat | engine | F | 8244 | 14 | 3.33 | PASS | (H4) the dish faces up and forward (30 deg from horizontal, 3.3 m to the vane), not level at the hero; pitch range only 25..47 deg (lower it would cut the turntable); Death = leans 53 deg propped on its dish rim, the buckled leg hangs limp; no braces between the legs
+mon_bell_hanging | bell | F | 8524 | 15 | 3.45 | PASS | (H4) legs longer / heavier than life (0.7 m out of the mouth) so they show under the bell from the game camera; the lip rim reads white rather than faint; shroud collar and the ringer's trunk are simple; in Death the legs slide out of the lying bell without a visible rope
+mon_fiend_wing | fiend | E | 5988 | 19 | 3.87 | PASS | (H3) glass is opaque; the crack net covers the whole wing (dimmer aft) - much emissive area; spars banded like a snake; body tiny and simple; the cinder comes back by swelling at the tail tip (bone scale); the corpse keeps glowing
+mon_fiend_maw | fiend | B | 6192 | 25 | 4.49 | PASS | (H2) firebox only 0.2 m deep (boolean cavity + glowing block); body cracks coloured, not emissive; slits are bars on the door
+mon_forge_eye | forge | F | 7046 | 10 | 3.28 | PASS | (H4) the eye looks 40 deg up, not level; lever = mast + arm with the hanging weight + cross-bar for the chains: 2.4 m to its top, not squat; the Idle crack shows its glow from the front, not from the game camera; Death keeps the lid shut (glow hidden) and only tilts the stump 9 deg
+mon_forge_hound | forge | B | 3528 | 28 | 1.53 | PASS | (H2) clinker yokes boxy; trap head thin from the side; rod legs thin; leap IK stretch 0.17 m (as the hound proof)
+mon_hush_ribwalker | hush | C | 1832 | 18 | 0.83 | PASS | (H1) Death flattens to low hoops rather than a flat line; ribs are simple tapering blades
+mon_hush_beast | hush | B | 4935 | 24 | 2.23 | PASS | (H2) crazing of the chalk look rather visible; long thin triangles round the hole; Spawn scales the bone `hip` (uniform)
+mon_hush_serpent | hush | D | 1752 | 13 | 1.47 | PASS | plain by brief (one chalk look); the needle-eye is small; Idle / Walk / Run turn the whole corkscrew 360 degrees per loop (unchecked in the engine)
+mon_hush_wing | hush | E | 4704 | 25 | 2.75 | PASS | (H3) plain by brief (one chalk look, no face); 2.5 m wide x 2.1 m long (kite, not a square diamond); Death / Spawn scale the bone `body` non-uniformly (closes to a white line that stays on the ground) - unchecked in the engine; ribbons are flat strips

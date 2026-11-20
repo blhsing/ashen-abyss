@@ -94,6 +94,8 @@ public partial class PauseMenu : UiPanel
 
         _resume = MenuKit.Btn("繼續旅途", Resume, MenuTone.Primary, UiTheme.Fs(26), 0f);
         col.AddChild(_resume);
+        _pilot = MenuKit.Btn("AI 代打：開啟", TogglePilot, MenuTone.Normal, UiTheme.Fs(UiTheme.FsBody), 0f);       // AiPilot.cs (F8)
+        col.AddChild(_pilot);
         col.AddChild(MenuKit.Btn("設定", OpenSettings, MenuTone.Normal, UiTheme.Fs(UiTheme.FsBody), 0f));
         col.AddChild(MenuKit.Btn("返回標題畫面", ToTitle, MenuTone.Normal, UiTheme.Fs(UiTheme.FsBody), 0f));
         col.AddChild(MenuKit.Btn("離開遊戲", QuitGame, MenuTone.Normal, UiTheme.Fs(UiTheme.FsBody), 0f));
@@ -134,6 +136,7 @@ public partial class PauseMenu : UiPanel
         if (_content == null) return;
         _content.Visible = true;
         UpdateInfo();
+        SyncPilot();
         MenuKit.Quiet();
         _content.Modulate = new Color(1, 1, 1, 0);
         CreateTween().TweenProperty(_content, "modulate:a", 1f, 0.16f);
@@ -220,6 +223,22 @@ public partial class PauseMenu : UiPanel
         MenuKit.CloseSound();
         var ui = Game.I?.Ui;
         if (ui != null) ui.Close(Id);
+    }
+
+    /// <summary>AI 代打 on or off (same as F8), then back to the game.</summary>
+    private void TogglePilot()
+    {
+        var ui = Game.I?.Ui;
+        if (ui != null) ui.Close(Id);
+        Callable.From(() => Log.Guard("pilot", () => AiPilot.Toggle("pause menu"))).CallDeferred();
+    }
+
+    private Button _pilot;
+
+    private void SyncPilot()
+    {
+        if (_pilot == null || !IsInstanceValid(_pilot)) return;
+        _pilot.Text = AiPilot.Active ? "AI 代打：關閉（F8）" : "AI 代打：開啟（F8）";
     }
 
     private void OpenSettings()

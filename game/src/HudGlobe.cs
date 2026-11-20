@@ -126,13 +126,15 @@ void fragment() {
 ";
 
     private const string VignetteCode = @"shader_type canvas_item;
+// [gfx 0.3] The warning lives in the outer band of the frame only: the middle 56 % x 50 % of the picture is never
+// touched, the tint rises towards the edge and is capped, so a heavy blow or low life can never hide the fight.
 uniform float strength = 0.0;
-uniform vec4 tint : source_color = vec4(0.55, 0.0, 0.0, 1.0);
+uniform vec4 tint : source_color = vec4(0.5, 0.0, 0.0, 1.0);
 void fragment() {
-	vec2 p = (UV - vec2(0.5, 0.5)) * 2.0;
-	float d = length(p * vec2(0.92, 1.0));
-	float v = smoothstep(0.55, 1.35, d);
-	COLOR = vec4(tint.rgb, clamp(v * strength, 0.0, 1.0));
+	vec2 q = abs(UV - vec2(0.5, 0.5)) * 2.0;
+	float d = length(max(q - vec2(0.56, 0.5), vec2(0.0)) / vec2(0.44, 0.5));
+	float v = smoothstep(0.0, 1.0, d);
+	COLOR = vec4(tint.rgb, clamp(v * v * strength, 0.0, 0.55));
 }
 ";
 

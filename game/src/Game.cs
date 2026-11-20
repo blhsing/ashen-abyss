@@ -66,8 +66,12 @@ public partial class Game : Node
     public bool Harness => _args.Count > 0;
     /// <summary>The self-playing test hero (--bot), if enabled.</summary>
     public TestBot Bot;
+    /// <summary>Demo mode (DemoMode.cs): nothing is written — no autosave, no area / level-up / menu / quit saves.</summary>
+    public bool NoSave;
+    /// <summary>Demo mode: the loading card shows these instead of the area name, its subtitle and a tip (null = the usual text).</summary>
+    public string CardTitle, CardSub, CardTip;
 
-    public const int HarnessSlot = 0;       // --new characters live in slot0.json, which the menu (slots 1..8) never lists
+    public const int HarnessSlot = 0;      // --new characters live in slot0.json, which the menu (slots 1..8) never lists
     private static readonly StringName HeroPosGlobal = "hero_pos";      // [shader_globals] in project.godot
 
     // ── boot / window ──
@@ -81,7 +85,8 @@ public partial class Game : Node
         "textscale", "menu", "uido", "uiclick", "uikeys", "hover", "uidir", "gfx-tour",
         "portrait-stats", "portrait-off", "portrait-scale", "portrait-model",       // inventory hero portrait (HeroPortrait3D)
         "bestiary", "no-bestiary", "spawn", "spawn-aggro",                             // monster roster (Bestiary.cs, Populate.HarnessSpawns)
-        "gptest", "gpexpect", "gpthen", "gpclasses", "gpcancel", "gpout",                                             // gameplay harness (GameplayTest.cs): click-to-attack, save resume
+        "gptest", "gpexpect", "gpthen", "gpclasses", "gpcancel", "gpout", "gpcases", "gpslots", "gpold", "gpresume",                                             // gameplay harness (GameplayTest.cs): click-to-attack, save resume
+        "demo", "demo-idle", "demo-secs", "demo-log", "pilot-at",                      // demo mode (DemoMode.cs) and the AI pilot (AiPilot.cs)
     };
     private bool _forceWindow, _windowPlaced, _quitting;
     private bool? _cfgFullscreen;
@@ -224,6 +229,7 @@ public partial class Game : Node
         });
         Log.Guard("boot", BuildOverlay);
         Log.Guard("boot", () => AddChild(new Cursors { Name = "Cursors" }));        // contextual mouse cursor (ticks itself)
+        Log.Guard("boot", () => AddChild(new AiPilot { Name = "AiPilot" }));        // AI 代打: F8 / pause menu (AiPilot.cs)
 
         ApplySettings();
         if (Arg("mute")) Log.Guard("boot", () => Audio?.Mute(true));
@@ -286,6 +292,7 @@ public partial class Game : Node
 
     private void StartFromArgs()
     {
+        if (Arg("gpresume")) { LevelState.Enabled = true; Log.Info("test", "--gpresume: exact save resume switched on for this run"); }
         if (Arg("suite"))
         {
             // a scripted suite creates its own characters; the bot node hosts it
@@ -323,6 +330,7 @@ public partial class Game : Node
             Log.Info("test", "TestBot enabled");
         }
         if (Arg("gptest")) AddChild(new GameplayTest { Name = "GameplayTest" });      // gameplay harness (bot off)
+        if (Arg("demo") && Hero == null) Callable.From(() => DemoMode.Start(false)).CallDeferred();     // --demo: 展示模式 straight from the title
     }
 
     // ═════════════════════════ settings / window ═════════════════════════
@@ -434,7 +442,7 @@ public partial class Game : Node
     /// <summary>Opens the pause menu while the window is in the background (called on focus loss and every frame).</summary>
     private void PauseForFocusLoss()
     {
-        if (_appFocused || State != GameState.Play || Player == null || Ui == null) return;
+        if (_appFocused || State != GameState.Play || Player == null || Ui == null || DemoMode.Active) return;   // the demo ends itself instead
         if (Ui.IsOpen("pause") || Ui.IsOpen("death") || Ui.IsOpen("settings")) return;
         Ui.Open("pause");
         Log.Info("game", "pause menu opened because the game window is in the background");
@@ -643,7 +651,7 @@ public partial class Game : Node
         Log.Guard("quest", () => Quests.Attach(Hero));
         if (slot >= 1 && slot <= SaveSystem.SlotCount && Cfg.LastSlot != slot) { Cfg.LastSlot = slot; Cfg.Save(); }
 
-        CloseMenu();
+        if (DemoMode.Active) HideMenu(); else CloseMenu();      // the demo keeps the title screen for its return
         Log.Guard("ui", () => Ui?.CloseAll());
         PauseLocks = 0;
 
@@ -739,6 +747,7 @@ public partial class Game : Node
                     UiLayer.MoveChild(m, Ui.GetIndex());        // panels (settings) open above the menu
             });
         }
+        else if (_menu is CanvasItem shown && !shown.Visible) shown.Visible = true;      // back from the demo: the same title screen
         Log.Guard("audio", () => { Audio?.SetCombat(0f); Audio?.PlayMusic("menu_theme"); });
         if (_hClock < 0) StartHarnessClock("menu");
     }
@@ -747,6 +756,23 @@ public partial class Game : Node
     {
         if (_menu != null && IsInstanceValid(_menu)) _menu.QueueFree();
         _menu = null;
+    }
+
+    /// <summary>Demo mode: the title screen stays (hidden; it gates its own backdrop) and comes back as it was.</summary>
+    private void HideMenu()
+    {
+        if (_menu is CanvasItem ci && IsInstanceValid(ci)) ci.Visible = false;
+    }
+
+    /// <summary>
+    /// Demo mode (DemoMode.cs): plays an in-memory character (never saved) in <paramref name="area"/>, with no quest gating,
+    /// no intro and no town-portal memory. Replaces the current demo character, if any.
+    /// </summary>
+    public void DemoSession(SaveData d, string area)
+    {
+        if (d == null) return;
+        _hArea = area; _hAreaUsed = false;
+        BeginSession(-1, d, false);
     }
 
     /// <summary>Saves and returns to the title screen.</summary>
@@ -1293,15 +1319,15 @@ public partial class Game : Node
         int tip = Rng.R.Next(Tips.Length);
         if (tip == _lastTip) tip = (tip + 1) % Tips.Length;
         _lastTip = tip;
-        if (_ovTip != null) _ovTip.Text = Tips[tip];
+        if (_ovTip != null) _ovTip.Text = CardTip ?? Tips[tip];
         if (instant) _ovAlpha = 1f;
         SetOverlayAlpha(_ovAlpha);
     }
 
     private void SetOverlayText(string areaId)
     {
-        if (_ovTitle != null) _ovTitle.Text = ZoneDb.AreaName(areaId);
-        if (_ovSub != null) _ovSub.Text = AreaSubtitle(areaId);
+        if (_ovTitle != null) _ovTitle.Text = CardTitle ?? ZoneDb.AreaName(areaId);
+        if (_ovSub != null) _ovSub.Text = CardSub ?? AreaSubtitle(areaId);
     }
 
     private void SetOverlayAlpha(float a)
@@ -1316,7 +1342,7 @@ public partial class Game : Node
 
     public void SaveNow(string reason)
     {
-        if (Hero == null) return;
+        if (Hero == null || NoSave) return;          // demo mode writes nothing
         _saveReq = null;
         _autosaveT = 0;
         Log.Guard("save", CaptureResume);

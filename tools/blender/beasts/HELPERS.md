@@ -1,7 +1,7 @@
 # Beast helpers - how to build creatures with this kit (read fully before you start)
 
-You build game-ready NON-HUMANOID monsters for 燼淵 Ashen Abyss (dark-fantasy ARPG, Godot 4.7.2, top-down camera: pitch 52 deg,
-24 m away - a 1 m creature is about 85 px tall on a 1080p screen, so SILHOUETTE, big shapes, palette and motion matter
+You build game-ready NON-HUMANOID monsters for 燼淵 Ashen Abyss (dark-fantasy ARPG, Godot 4.7.2, top-down camera: pitch 48 deg,
+15.6 m away at zoom 1 - a 1 m creature is about 120 px tall on a 1080p screen, so SILHOUETTE, big shapes, palette and motion matter
 most; micro detail comes from the baked looks). Mandatory rules: `Y:\tools\AGENT_RULES.md` (Blender ONLY through the
 launcher below, background mode, never a window on the user's desktop, no scratch files in `Y:\`).
 
@@ -71,3 +71,37 @@ launcher below, background mode, never a window on the user's desktop, no scratc
 - Death must end on the ground (`floor=`, `settle=`), Spawn may start below it (`under_ok=True`).
 - Report honestly at the end (the table, deviations from brief or contract, what you could not check). Your final
   message is read by the lead artist, keep it compact.
+
+## Lessons from the first two helpers (23 creatures) - read them, they cost hours
+- NEVER patch a spec with a script that opens it with 'w' directly (one helper truncated his spec to zero bytes): use the
+  Edit tool, or write `<file>.new` and `os.replace` it. Never write Python through bash heredocs.
+- The audit grows its attachment tree from SKINNED geometry; a creature made only of rigid parts gets the largest rigid
+  piece as root, which gives nonsense hosts. Make the main body a skinned part (weights 100 % on one bone:
+  `B.wbones(part, ['body'])` then `C.skin(part, look)`) so it is the root.
+- The audit only looks 6 cm for a host and judges "inside" by the nearest triangle's normal: attach points 3-5 cm inside
+  the host surface; faceted hosts (`M.rock`, boxes) near their edges give false "detaches" - use real overlap.
+- Parts that are hidden by bone scale or that fall off (a thread, a dropped cinder, a lid) are added with `free=True`.
+  A bone scaled to 0.001 hides its parts in a clip (`p.scl(bone, 0.001)`); remember the REST pose still shows them.
+- Looks are baked in the REST pose in object space: build the rest pose in the state that should carry the light /
+  pattern (e.g. wings spread, lid shut) and animate away from it.
+- Emission: strength 1.0-1.6. Everything above blows out to flat white in the renders and in the game (the game clamps
+  `emis_` energy to 1 .. 2.2 and adds a pulse; non-`emis_` slots with an emission texture glow without the pulse).
+  Thin glowing lines read much brighter than you expect; dead bodies keep their emission, so keep it modest.
+- `bshots.py` frames tiles and strips with a 1.2 margin (the sheet composer keeps the central 86 %): do not crop tighter.
+- `bverify.py` foot-drift check: a contact point lower than 1.2 cm above its lowest height counts as planted. Put gait
+  phases and duty on the frame grid (multiples of 1 / frames) and lift swinging feet more than 1.2 cm on their first frame.
+- A full 360 degree turn inside a looping clip is fine (keys every frame; the loop is closed with the same quaternion).
+- Death must END on the ground: `C.clip('Death', dur, fn, floor=<first child bone of root>, settle=(u0, u1))`.
+- Judge `<model>_game.png` (400 px = 3.3 m on dark ground, the real size on a 1080p screen): several first-round creatures were specks;
+  exaggerate the defining shape or (last resort, report it) build up to 1.4 x brief size.
+
+## Flyers and floaters (rigs E / F)
+- The hover height is INSIDE the model: the rest pose and every clip keep the body at its flying height above the origin
+  (flyers 1.4-1.8 m to the body centre, small floaters as the brief says); `Flyer(C, h)` / `Rigid(C, bone, hover=h)` write
+  `fly_height` and `hover_in_model: true` into the meta. Idle must not touch the ground (verify checks min y > 5 cm),
+  Death falls and ends as a corpse on z = 0, Spawn drops in from above (or as the brief says).
+- Turrets (speed 0) stand on the ground: Walk and Run are copies of Idle (`Rigid.copy_clip('Idle', 'Walk', 'walk_speed', 0.0)`
+  and the same for Run); `hover` stays unset; Death = collapses / goes dark on the spot; Spawn = unfolds / rises.
+- Wings are thin: closed slabs only (`RE.membrane`, `P.sheet_solid`). Insect wings that buzz use `buzz=True` (they simply
+  alternate up / down every frame - at 30 fps that reads as a blur) and should be small, pale and semi-matte.
+- Walk / Run of a flyer have no feet: `walk_speed` / `run_speed` are nominal (run = bestiary speed / scale).

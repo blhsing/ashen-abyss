@@ -1923,7 +1923,7 @@ public partial class SkillTreeUi : UiPanel
 
     private static void IconAt(Control c, Texture2D tex, Vector2 p, float half, Color col)
     {
-        if (tex != null) c.DrawTextureRect(tex, new Rect2(p.X - half, p.Y - half, half * 2f, half * 2f), false, col);
+        if (tex != null) c.DrawTextureRect(tex, new Rect2(p.X - half, p.Y - half, half * 2f, half * 2f), false, Icons.Tint(tex, col));
     }
 
     // layer 0: everything opaque that sits under the glow
@@ -2353,7 +2353,7 @@ public partial class SkillTreeUi : UiPanel
             if (n.Skill != null)
             {
                 Color ic = Palette.Element(n.Skill.Element).Lerp(Colors.White, 0.4f);
-                if (n.Icon != null) c.DrawTextureRect(n.Icon, r.Grow(-8f * k), false, ic);
+                if (n.Icon != null) c.DrawTextureRect(n.Icon, r.Grow(-8f * k), false, Icons.Tint(n.Icon, ic));
                 else TxtC(c, _fTitle, r.Position.X + r.Size.X * 0.5f, Mid(_fTitle, ZName, r.Position.Y + r.Size.Y * 0.5f), n.Skill.Name.Substring(0, 1), ZName, ic, r.Size.X * 2f);
             }
             // the key cap sits right under its slot; the strip's height includes this line (see Relayout)
@@ -2381,7 +2381,7 @@ public partial class SkillTreeUi : UiPanel
             {
                 var r = p.Rect;
                 Color ic = Palette.Element(p.Skill.Element).Lerp(Colors.White, 0.4f);
-                if (p.Icon != null) c.DrawTextureRect(p.Icon, r.Grow(-7f * k), false, ic);
+                if (p.Icon != null) c.DrawTextureRect(p.Icon, r.Grow(-7f * k), false, Icons.Tint(p.Icon, ic));
                 else TxtC(c, _fTitle, r.Position.X + r.Size.X * 0.5f, Mid(_fTitle, ZName, r.Position.Y + r.Size.Y * 0.5f), p.Skill.Name.Substring(0, 1), ZName, ic, r.Size.X * 2f);
             }
         }

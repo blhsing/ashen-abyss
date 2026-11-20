@@ -294,13 +294,32 @@ def k_cglass(N, p):
     halo = N.mapr(cr, 0.0, cw * 6, 1.0, 0.0)
     amt = N.mapr(N.noise(_c(p, 'patch', 5.0), 3, 0.6, vec=N.mapping(N.coord(), loc=(3.3, 1.7, 6.1))), 0.32, 0.6)
     em = N.math('MULTIPLY', N.math('ADD', line, N.math('MULTIPLY', N.math('POWER', halo, 2.0), _c(p, 'halo', 0.3))), amt, clamp=True)
+    em = N.math('MULTIPLY', em, _c(p, 'gain', 1.0))
     r['color'] = N.mix(N.math('MULTIPLY', em, 0.7), r['color'], tuple(x * 0.6 for x in e))
     r['emit'] = (e, _c(p, 'strength', 2.0))
     r['emask'] = em
     return r
 
 
-L.KINDS.update(cglass=k_cglass)
+def k_tipglow(N, p):
+    """any look (`base` = its kind) that smoulders towards its far end: emission grows with the distance from `center`
+    (object space) between r0 and r1, broken up by noise - singed feather tips, static on wing edges, hot blade ends"""
+    r = L.KINDS[p['base']](N, p)
+    e = _c(p, 'emit', (1.0, 0.4, 0.06))
+    vm = N.new('ShaderNodeVectorMath', operation='DISTANCE')
+    N.set(vm.inputs[0], N.coord())
+    N.set(vm.inputs[1], tuple(float(x) for x in p['center']))
+    m = N.mapr(vm.outputs['Value'], p['r0'], p['r1'])
+    m = N.math('MULTIPLY', m, N.mapr(N.noise(_c(p, 'glow_scale', 26.0), 3, 0.65, vec=N.mapping(N.coord(), loc=(9.1, 3.3, 6.7))), 0.42, 0.72))
+    m = N.math('MULTIPLY', m, _c(p, 'gain', 1.0))
+    r['color'] = N.mix(N.math('MULTIPLY', m, 0.7), r['color'], tuple(x * 0.6 for x in e))
+    r['emit'] = (e, _c(p, 'strength', 1.2))
+    r['emask'] = m
+    return r
+
+
+L.KINDS.update(cglass=k_cglass, tipglow=k_tipglow)
+L.GRIME.update(tipglow=((0.02, 0.016, 0.012), 0.5))
 L.GRIME.update(cglass=((0.03, 0.03, 0.03), 0.4))
 L.KINDS.update(chitin=k_chitin, scales=k_scales, slime=k_slime, bfur=k_bfur, membrane=k_membrane, chalk=k_chalk,
                bark=k_bark, glow=k_glow)

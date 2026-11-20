@@ -221,7 +221,7 @@ public partial class HudBuffs : Control
             var r = new Rect2(x, 0f, IconSize, IconSize);
             bool hot = i == _hover;
             DrawRect(r, well);
-            if (en.Tex != null) DrawTextureRect(en.Tex, r.Grow(-4f), false, en.Tint);
+            if (en.Tex != null) DrawTextureRect(en.Tex, r.Grow(-4f), false, Icons.Tint(en.Tex, en.Tint));
             Color frame = en.Bad ? new Color(0.85f, 0.25f, 0.2f, hot ? 1f : 0.85f) : new Color(UiTheme.Gold, hot ? 1f : 0.6f);
             if (_frameArt != null)
                 UiArt.Sprite(this, _frameArt, r.Grow(2f), en.Bad ? new Color(1f, 0.5f, 0.45f) : hot ? Colors.White : new Color(0.88f, 0.86f, 0.84f));

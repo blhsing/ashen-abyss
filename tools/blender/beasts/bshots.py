@@ -2,7 +2,7 @@
   bb.ps1 bshots.py "<id|model> ... [--src=<dir of the .glb>] [--out=<work dir>] [--tile] [--game] [--strip] [--dbg] [--webp]"
 default = tile + game + strip + dbg.  Outputs (work dir = out\\shots unless --out):
   <model>_tile.png   3/4 view, Idle           (family sheets are composed from these with Y:\\tools\\sheet.ps1)
-  <model>_game.png   the game camera at true 1080p pixel size (52 deg down, 24 m; 512 px = 6.1 m)
+  <model>_game.png   the game camera at true 1080p pixel size on dark ground (48 deg down, 15.6 m; 400 px = 3.31 m); _game2 = Run
   <model>_s0..s8.png strip tiles: Walk x3, Run x3, Attack1 hit, Attack2 hit, Death end  (bstrip.ps1 labels them)
   <model>_dbg1.jpg   Idle 2, Walk 4, Run 4, Hit 2;  <model>_dbg2.jpg  Attack1 3, Attack2 3, Death 3, Spawn 3
   <model>_webp\\f_*.png  frames for make_webp.py (all clips in a row; the floor scrolls at the stated speed)"""
@@ -58,7 +58,60 @@ def floor(speed_node=True):
     b.inputs["Roughness"].default_value = 0.95
     me.materials.append(m)
     sc.collection.objects.link(fl)
-    return fl, mp
+    return fl, mp, ck
+
+
+def dark(on, ck, state={}):
+    """the dark ground and dim light of the real regions (the game view is rendered like this): emissive accents and
+    silhouettes have to carry the creature"""
+    sc = bpy.context.scene
+    if on:
+        state['c'] = (tuple(ck.inputs['Color1'].default_value), tuple(ck.inputs['Color2'].default_value))
+        ck.inputs['Color1'].default_value = (0.010, 0.010, 0.012, 1)
+        ck.inputs['Color2'].default_value = (0.015, 0.015, 0.018, 1)
+        state['l'] = {o.name: o.data.energy for o in sc.objects if o.type == 'LIGHT'}
+        for o in sc.objects:
+            if o.type == 'LIGHT':
+                o.data.energy *= (1.0 if o.name == 'creature_light' else 0.38)
+        state['w'] = []
+        for n in sc.world.node_tree.nodes:
+            if n.type == 'BACKGROUND' and n.name != 'stage_flat':
+                state['w'].append((n, n.inputs[1].default_value))
+                n.inputs[1].default_value *= 0.38
+    else:
+        ck.inputs['Color1'].default_value, ck.inputs['Color2'].default_value = state['c']
+        for o in sc.objects:
+            if o.type == 'LIGHT' and o.name in state['l']:
+                o.data.energy = state['l'][o.name]
+        for n, v in state['w']:
+            n.inputs[1].default_value = v
+
+
+def spectral_preview(mat):
+    """`spectral_*` materials are drawn by the game's ghost shader (additive, brightest at grazing angles, the colour
+    is 0.6 x emission + (0.25, 0.35, 0.4), energy 0.7): rebuild that for the preview renders"""
+    nt = mat.node_tree
+    col = (0.85, 0.95, 1.0, 1.0)
+    for n in list(nt.nodes):
+        nt.nodes.remove(n)
+    out = nt.nodes.new('ShaderNodeOutputMaterial')
+    lw = nt.nodes.new('ShaderNodeLayerWeight'); lw.inputs['Blend'].default_value = 0.42
+    pw = nt.nodes.new('ShaderNodeMath'); pw.operation = 'POWER'; pw.inputs[1].default_value = 1.6
+    nt.links.new(lw.outputs['Facing'], pw.inputs[0])
+    ma = nt.nodes.new('ShaderNodeMath'); ma.operation = 'MULTIPLY_ADD'; ma.inputs[1].default_value = 0.9 * 0.7 * 0.8 * 0.9; ma.inputs[2].default_value = 0.18 * 0.7 * 0.8 * 0.9
+    nt.links.new(pw.outputs[0], ma.inputs[0])
+    em = nt.nodes.new('ShaderNodeEmission'); em.inputs[0].default_value = col
+    nt.links.new(ma.outputs[0], em.inputs[1])
+    tr = nt.nodes.new('ShaderNodeBsdfTransparent')
+    ad = nt.nodes.new('ShaderNodeAddShader')
+    nt.links.new(tr.outputs[0], ad.inputs[0]); nt.links.new(em.outputs[0], ad.inputs[1])
+    nt.links.new(ad.outputs[0], out.inputs[0])
+    mat.use_backface_culling = False
+    for k, v in (('surface_render_method', 'BLENDED'), ('blend_method', 'BLEND')):
+        try:
+            setattr(mat, k, v)
+        except Exception:
+            pass
 
 
 def scroll(mp, dist):
@@ -118,15 +171,32 @@ def one(model):
     M.reset_scene()
     sc = ST.setup_render(700, 700, 16)
     ST.setup_stage(floor=False, key=3.4, rim=3.5, fill=0.6, hdri_strength=0.3)
-    fl, mp = floor()
+    fl, mp, ck = floor()
     scroll(mp, 0.0)
     arm, meshes = ST.import_creature(path)
+    for o in meshes:
+        for m in o.data.materials:
+            if m is not None and m.name.lower().startswith('spectral'):
+                spectral_preview(m)
+        if any(m is not None and m.name.lower().startswith('spectral') for m in o.data.materials):
+            pass
     acts = actions_of(arm)
     meta = {}
     mpth = os.path.join(META, model + ".meta.json")
     if os.path.isfile(mpth):
         meta = json.load(open(mpth, encoding='utf8'))
     dur = {k: (a.frame_range[1] - a.frame_range[0]) / 30.0 for k, a in acts.items()}
+    lt = meta.get('light')
+    if lt:      # the soft light the game hangs on this creature (rigs_bf_meta.json 'light'): shown in the previews too
+        ld = bpy.data.lights.new('creature_light', 'POINT')
+        ld.color = tuple(lt['color']); ld.energy = 55.0 * lt['energy'] * lt['range']; ld.shadow_soft_size = 0.25
+        try:
+            ld.use_shadow = False
+        except Exception:
+            pass
+        lo = bpy.data.objects.new('creature_light', ld)
+        lo.location = (0, 0, lt['height'])
+        bpy.context.scene.collection.objects.link(lo)
     cam = ST.make_camera()
     hit1 = meta.get('attack1_hit_time', dur.get('Attack1', 1) * 0.5)
     hit2 = meta.get('attack2_hit_time', dur.get('Attack2', 1) * 0.5)
@@ -152,7 +222,7 @@ def one(model):
     if 'tile' in want:
         pose(arm, acts['Idle'], 0.0)
         sc.render.resolution_x = sc.render.resolution_y = 700
-        ST.frame(cam, meshes, YAW_TILE, PITCH_TILE, lens=70.0, margin=1.02, pts=P_idle)
+        ST.frame(cam, meshes, YAW_TILE, PITCH_TILE, lens=70.0, margin=1.2, pts=P_idle)       # sheet.ps1 keeps the central 86 %
         ST.render(os.path.join(OUT, model + "_tile.png"))
     for f in flags:
         if f.startswith('--view='):      # --view=name:yaw:pitch:tx:ty:tz:dist[:clip:time]
@@ -164,17 +234,25 @@ def one(model):
             ST.render(os.path.join(OUT, "%s_v_%s.png" % (model, q[0])))
     if 'game' in want:
         pose(arm, acts['Idle'], 0.0)
-        # the game camera (pitch 52 deg, 24 m, FOV 30 deg at 1080p = 84 px per metre): this 512 px tile shows 6.1 m, so
-        # the creature has the pixel size it has on a 1080p screen
-        sc.render.resolution_x = sc.render.resolution_y = 512
-        ST.aim(cam, (0, 0, 0.6), 25.0, 52.0, 24.0, lens=141.0)
+        # the game camera (CameraRig.cs: pitch 48 deg, 15.6 m at zoom 1, vertical FOV 32 deg -> 121 px per metre at 1080p)
+        # on dark ground in dim light: this 400 px tile shows 3.31 m, so the creature has its real pixel size on screen
+        sc.render.resolution_x = sc.render.resolution_y = 400
+        dark(True, ck)
+        ST.aim(cam, (0, 0, 0.75), 25.0, 48.0, 15.6, lens=169.5)
         ST.render(os.path.join(OUT, model + "_game.png"))
+        if 'Run' in acts:
+            pose(arm, acts['Run'], dur['Run'] * 0.3)
+            ST.render(os.path.join(OUT, model + "_game2.png"))
+        dark(False, ck)
     if 'strip' in want:
         sc.render.resolution_x = sc.render.resolution_y = 460
-        ST.frame(cam, meshes, YAW_SIDE, PITCH_SIDE, lens=70.0, margin=1.0, pts=P_all)
         shots = [('Walk', 0.0, ws), ('Walk', dur['Walk'] / 3, ws), ('Walk', dur['Walk'] * 2 / 3, ws),
                  ('Run', 0.0, rs), ('Run', dur['Run'] / 3, rs), ('Run', dur['Run'] * 2 / 3, rs),
                  ('Attack1', hit1, 0), ('Attack2', hit2, 0), ('Death', dur['Death'], 0)]
+        # framed on exactly the nine poses shown; margin 1.2 because sheet.ps1 keeps the central 86 % of each tile
+        P_strip = np.vstack([pts_at(c, t)[::5] for c, t, v in shots])
+        P_strip = P_strip[P_strip[:, 2] > -0.02]
+        ST.frame(cam, meshes, YAW_SIDE, PITCH_SIDE, lens=70.0, margin=1.2, pts=P_strip)
         for i, (clip, t, v) in enumerate(shots):
             pose(arm, acts[clip], t)
             scroll(mp, v * t)

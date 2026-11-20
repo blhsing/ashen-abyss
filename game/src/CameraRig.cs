@@ -242,6 +242,7 @@ void fragment() {
 
             Place();
             ApplyShake(dt);
+            UpdateFocusCut(dt);
 
             // the automatic render scale follows what the lens is asked to draw
             ulong now = Time.GetTicksUsec();
@@ -251,6 +252,34 @@ void fragment() {
             if (game != null && game.State == Game.GameState.Play) Gfx.Govern(real, GetViewport(), game.Cfg);
         }
         catch (Exception e) { Log.Error("camera", "camera update failed", e); }
+    }
+
+    private static readonly StringName FocusGlobal = "focus_pos";      // [shader_globals] in project.godot
+    private Vector3 _cutAt;
+    private float _cutW;
+
+    /// <summary>
+    /// The enemy under the cursor or being attacked is cut free of tall scenery the way the hero is: its position and
+    /// a 0..1 weight go to the global shader uniform focus_pos (read by env_prop and env_wall). The weight eases in
+    /// and out, and the point glides between neighbouring targets instead of jumping.
+    /// </summary>
+    private void UpdateFocusCut(float dt)
+    {
+        Actor want = null;
+        var g = Game.I;
+        var p = g != null && g.State == Game.GameState.Play ? g.Player : null;
+        if (p != null && IsInstanceValid(p) && p.IsInsideTree() && !p.Dead) want = p.AttackTarget ?? p.Hover;
+        if (want != null && (!IsInstanceValid(want) || !want.IsInsideTree() || want.Dead)) want = null;
+        if (want != null)
+        {
+            var at = want.GlobalPosition;
+            if (_cutW < 0.02f || at.DistanceSquaredTo(_cutAt) > 36f) _cutAt = at;
+            else _cutAt = _cutAt.Lerp(at, 1f - Mathf.Exp(-14f * dt));
+        }
+        float w = Mathf.MoveToward(_cutW, want != null ? 1f : 0f, dt * (want != null ? 5f : 2.5f));
+        if (w <= 0f && _cutW <= 0f) return;
+        _cutW = w;
+        RenderingServer.GlobalShaderParameterSet(FocusGlobal, new Vector4(_cutAt.X, _cutAt.Y, _cutAt.Z, _cutW));
     }
 
     private bool TargetPoint(out Vector3 p)

@@ -34,7 +34,7 @@ public partial class Hud : Control
     private readonly Button _skillBtn, _paragonBtn;
     private readonly StringBuilder _sb = new(256);
 
-    private float _clock, _slow, _bossT;
+    private float _clock, _slow, _bossT, _bossBand;
     private float _vig = -1f, _hitPulse, _lowPhase;
     private Color _flashCol;
     private float _flashT = 1f, _flashLife = 1f, _flashPeak;
@@ -50,6 +50,9 @@ public partial class Hud : Control
     public bool PointerOnLabel => _world != null && _world.PointerObj != null;
     /// <summary>The object whose loot label or prompt the pointer rests on, or null (read by the mouse cursor, Cursors.cs).</summary>
     public Interactable PointerObj => _world?.PointerObj;
+    /// <summary>展示模式 (DemoMode.cs): only the world layer (names, bars, damage, loot labels), the boss frame and the notices show.</summary>
+    public bool Lean;
+    private bool _leanShown;
 
     public Hud()
     {
@@ -205,8 +208,11 @@ public partial class Hud : Control
         _remind.OffsetBottom = -remindBottom;
         _remind.OffsetTop = -remindBottom - UiTheme.Px(44f);
 
-        // toasts start under the boss frame; subtitles stand above the reminders
-        _notices.ToastTop = 22f + HudBossBar.FullHeight + 10f;
+        // toasts run down the upper left, starting a little below the band of the boss frame; subtitles stand above
+        // the reminders
+        _bossBand = HudBossBar.FullHeight;
+        _notices.ToastTop = 22f + _bossBand + 10f;
+        _notices.ToastLeft = 36f;
         _notices.SubtitleBottom = remindBottom + UiTheme.Px(44f) + 22f;
         _notices.Remeasure();
     }
@@ -248,9 +254,10 @@ public partial class Hud : Control
         _notices.Warn(text);
     }
 
-    /// <summary>A line that floats under the boss bar for a few seconds; repeats of the same text are counted.</summary>
+    /// <summary>A line that floats in the toast lane (upper left) for a few seconds; repeats of the same text are counted.</summary>
     public void Toast(string text, Color c)
     {
+        if (Lean) return;                       // 展示模式: no toast lane
         _notices.AddToast(text, c);
     }
 
@@ -324,12 +331,17 @@ public partial class Hud : Control
         try { _notices.Tick(dt, g != null && g.State == Game.GameState.Play); }
         catch (Exception e) { UiSafe.Report("hud notices", e); }
 
-        bool covered = false, panelOpen = false;
+        bool covered = false, panelOpen = false, deathOpen = false;
         // a conversation owns the lower third of the screen: the bar and the corner step aside for it as well
-        try { if (ui != null) { panelOpen = ui.AnyOpen; covered = ui.FullscreenOpen || ui.IsOpen("death") || ui.IsOpen("dialogue"); } }
+        try { if (ui != null) { panelOpen = ui.AnyOpen; deathOpen = ui.IsOpen("death"); covered = ui.FullscreenOpen || deathOpen || ui.IsOpen("dialogue"); } }
         catch (Exception e) { UiSafe.Report("hud ui state", e); }
+        // nothing of the HUD may glow through the death veil: notices (toasts, title card, warnings) hide while it is up
+        // (their timers keep running underneath) and the red flash of the fatal blow ends
+        if (_notices.Visible == deathOpen) _notices.Visible = !deathOpen;
+        if (deathOpen && _flashT < _flashLife) { _flashT = _flashLife; _flash.Visible = false; }
 
         bool chrome = play && !covered;
+        _notices.BossBottom = chrome && _boss.Visible ? 22f + _bossBand : 0f;       // an area title card stands below it
         if (_chrome.Visible != chrome) _chrome.Visible = chrome;
         if (_world.Visible != chrome) _world.Visible = chrome;
         if (!chrome)
@@ -366,6 +378,10 @@ public partial class Hud : Control
         {
             bool interactive = !panelOpen && !p.Dead && !g.Paused && GetViewport().GuiGetHoveredControl() == null;
             bool allLoot = ui != null ? ui.ShowAllLoot : Input.IsKeyPressed(Key.Alt);
+            // [ui, 0.3.0 pause] loot labels yielding to the HUD regions (QA item) is written but was only checked by
+            // reading, never seen in a run with a label next to the tracker: switched off for the release. Without this
+            // call the world layer has no keep-out rectangles and behaves exactly as before. Re-enable after a test run.
+            if (LabelsYieldToHud) KeepOutHud();
             _world.Tick(p, dt, interactive, allLoot, _boss.Shown);
         }
         catch (Exception e) { UiSafe.Report("hud world layer", e); }
@@ -376,6 +392,9 @@ public partial class Hud : Control
             _slow = 0.25f;
             try { PollSlow(g, p, hero, lv); } catch (Exception e) { UiSafe.Report("hud corner", e); }
         }
+        if (Lean != _leanShown) { _leanShown = Lean; _bar.Visible = !Lean; _buffs.Visible = !Lean; _corner.Visible = !Lean; }
+        if (Lean) { if (_buffs.Visible) _buffs.Visible = false; if (_bar.Visible) _bar.Visible = false; if (_corner.Visible) _corner.Visible = false; }
+        if (Lean && _remind.Visible) _remind.Visible = false;
         if (_remind.Visible)
         {
             float a = 0.8f + 0.2f * Mathf.Sin(_clock * 3.2f);
@@ -392,10 +411,42 @@ public partial class Hud : Control
         float hit = _world.TakeHeroHit();
         if (hit > 0.03f) _hitPulse = Mathf.Max(_hitPulse, Mathf.Clamp(hit * 3.5f, 0.2f, 0.75f));
         _hitPulse = Mathf.Max(0f, _hitPulse - dt * 1.8f);
-        float strength = low * (0.55f + 0.2f * Mathf.Sin(_lowPhase)) + _hitPulse;
-        if (p.Dead) strength = Mathf.Max(strength, 0.65f);
-        SetVignette(Mathf.Min(1f, strength));
+        // [gfx 0.3] toned down: the shader keeps the tint in the outer band of the frame and caps it at 0.55
+        float strength = low * (0.36f + 0.12f * Mathf.Sin(_lowPhase)) + _hitPulse * 0.6f;
+        if (p.Dead) strength = Mathf.Max(strength, 0.5f);
+        SetVignette(Mathf.Min(0.55f, strength));
     }
+
+    /// <summary>
+    /// The HUD regions loot labels and prompts yield to, handed to the world layer every frame: the minimap / area /
+    /// tracker / objective column, the bottom cluster (globes, action bar, buffs, reminders) and the boss or target frame.
+    /// </summary>
+    /// <summary>Off until the keep-out behaviour has been seen working in a run (see the call in _Process).</summary>
+    private static readonly bool LabelsYieldToHud = false;
+
+    private void KeepOutHud()
+    {
+        _world.ClearKeepOut();
+        Vector2 o = _world.GetGlobalPosition();
+        // the minimap itself (the column is wider than the map), then the column's text block under it: area name and
+        // info, quest tracker, objective and its bar
+        _world.KeepOut(Shifted(_map.GetGlobalRect(), o));
+        Rect2 col = _corner.GetGlobalRect();
+        float textTop = _areaName.GetGlobalRect().Position.Y;
+        _world.KeepOut(Shifted(new Rect2(col.Position.X, textTop, col.Size.X, col.End.Y - textTop), o));
+        _world.KeepOut(Shifted(_bar.GetGlobalRect(), o));
+        if (_buffs.Visible) _world.KeepOut(Shifted(_buffs.GetGlobalRect(), o));
+        if (_skillBtn.IsVisibleInTree()) _world.KeepOut(Shifted(_skillBtn.GetGlobalRect(), o));
+        if (_paragonBtn.IsVisibleInTree()) _world.KeepOut(Shifted(_paragonBtn.GetGlobalRect(), o));
+        if (_boss.Visible)
+        {
+            // the frame's control keeps its nominal height; the name, bar and stagger meter reach down to _bossBand
+            Rect2 b = _boss.GetGlobalRect();
+            _world.KeepOut(Shifted(new Rect2(b.Position, b.Size.X, Mathf.Max(b.Size.Y, _bossBand)), o));
+        }
+    }
+
+    private static Rect2 Shifted(Rect2 r, Vector2 by) => new(r.Position - by, r.Size);
 
     private void TickFlash(float dt)
     {
@@ -488,7 +539,11 @@ public partial class Hud : Control
         if (lv != null)
         {
             obj = lv.ObjectiveText ?? "";
-            done = lv.ObjectiveDone;
+            // the level's phase tells a met goal with the boss still standing (Boss: the line names that next step and
+            // must not wear the check mark) from a finished place (Cleared); town and overworld are None
+            var phase = lv.Phase;
+            done = phase == Level.DungeonPhase.Cleared;
+            next = phase == Level.DungeonPhase.Boss;
             if (lv.IsRift)
             {
                 int sec = Mathf.Max(0, Mathf.CeilToInt(lv.RiftTimeLeft));
@@ -496,11 +551,7 @@ public partial class Hud : Control
                 obj = obj.Length > 0 ? $"{obj}　{time}" : $"裂隙將於 {time} 後閉合";
                 prog = Mathf.Clamp(lv.RiftProgress, 0f, 1f);
             }
-            else if (obj.Length > 0 && !done) prog = Mathf.Clamp(lv.ObjectiveProgress, 0f, 1f);
-            // "done" also covers a dungeon whose goal is met while its boss still stands: the line then names the next
-            // step (defeat the boss) and must not wear the check mark of a finished task
-            var bm = lv.BossMon;
-            if (done && bm != null && IsInstanceValid(bm) && !bm.Dead) { done = false; next = true; }
+            else if (obj.Length > 0 && !done && !next) prog = Mathf.Clamp(lv.ObjectiveProgress, 0f, 1f);
             if (done && obj.Length > 0) obj = "✓ " + obj;
             else if (next && obj.Length > 0) obj = "◆ " + obj;
         }

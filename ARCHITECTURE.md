@@ -232,6 +232,8 @@ public static class LevelBuilder {      // everything visible that is not an act
 `icehall`、`icecave`、`wetcave`、`brasshall`、`sandtomb`、`cathedral`、`forge`、`lavacave`、`rift`。
 位於鏡頭與英雄之間的牆壁和高大場景物件不可遮住戰鬥畫面：使用全域著色器 uniform
 `hero_pos`（vec3，由 `Level` 每幀設定），在遮擋物上挖出一個邊緣柔和的透視圓。
+游標所指或正在攻擊的敵人也以同樣方式處理：`focus_pos`（vec4，xyz＋0..1 權重，由 `CameraRig` 每幀設定；
+兩個 uniform 都宣告於 `project.godot` 的 `[shader_globals]`）。
 ```csharp
 public sealed class MapMarker { public string Kind, Label; public Vector2 Pos; public bool Visible = true; public object Ref; }
 public partial class Level : Node3D {

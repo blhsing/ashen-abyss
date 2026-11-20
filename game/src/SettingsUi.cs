@@ -346,6 +346,7 @@ public sealed class SettingsView
             (K("Alt"), "按住：顯示所有掉落物標籤"),
             (K("Esc"), "關閉視窗；無視窗時開啟暫停選單"),
             (K("PrtSc", "F12"), "擷取畫面"),
+            (K("F8"), "AI 代打：開啟／關閉（點擊地面或移動鍵即可接管）"),
         }));
         col.AddChild(groups);
 

@@ -18,6 +18,19 @@ public partial class TestBot : Node
 {
     public int Kills, Elites, Bosses, ItemsFound, Deaths, Areas, Casts, Unstuck;
 
+    /// <summary>
+    /// AI 代打 (AiPilot.cs), set before the bot enters the tree: it plays the player's real save along the main quest —
+    /// no teleports, travel only the ways a player has (on foot, gates, waypoints, the town portal), panels the player
+    /// opened are left alone, and when it is stuck or keeps dying it hands control back.
+    /// </summary>
+    public AiPilot Pilot;
+    /// <summary>展示模式 (DemoMode.cs), set before the bot enters the tree: fights, loots and cycles skills; never leaves the area.</summary>
+    public bool Demo;
+    /// <summary>InputEvent.Device of the bot's synthetic key events, so the AI pilot and the demo can tell them from the player's.</summary>
+    public const int BotDevice = 0x5B07;
+    /// <summary>True once the main quest has nothing left (directed play has finished the campaign).</summary>
+    public bool CampaignOver => _campaignOver;
+
     private int _errors;
     private double _clock, _summaryT, _lastThink;
     private float _thinkT, _deadT, _uiT;
@@ -115,6 +128,8 @@ public partial class TestBot : Node
                 _tourI = -1;                       // the area the run starts in comes first
                 _focus = true;
             }
+            if (Pilot != null) { _campaign = true; _focus = true; _allSkills = false; _bossRush = false; _tour = null; }
+            if (Demo) { _allSkills = true; _campaign = false; _focus = false; _bossRush = false; _tour = null; }
         }
         Log.Info("bot", _suite != null ? "TestBot ready: running a scripted suite"
             : $"TestBot ready: it fights, loots, explores and travels on its own (focus={_focus} campaign={_campaign} allskills={_allSkills})");
@@ -172,6 +187,20 @@ public partial class TestBot : Node
     }
 
     internal void FightStop() => ReleaseAll();
+
+    /// <summary>AI pilot, stuck: what a player tries first — a few steps with the movement keys, then a dodge roll.</summary>
+    internal void Wiggle()
+    {
+        Key[] dirs = { Key.W, Key.A, Key.S, Key.D };
+        GetViewport()?.GuiReleaseFocus();
+        Game.I?.Player?.Stop();
+        Hold(dirs[Rng.R.Next(4)], 0.8f);
+        Hold(dirs[Rng.R.Next(4)], 0.5f);
+        Hold(Key.Space, 0.1f);
+        _targetId = 0;
+        AbandonGoal(World.Grid);
+        _nudgeUntil = _clock + 1.2;
+    }
 
     internal void ResetStats()
     {
@@ -281,7 +310,11 @@ public partial class TestBot : Node
                 Log.Info("bot", $"died in {_area} (death {Deaths})");
             }
             _deadT += real;
-            if (_deadT >= 3f) { _deadT = 0; Log.Info("bot", "respawning"); g.Respawn(); }
+            if (_deadT >= 3f)
+            {
+                _deadT = 0; Log.Info("bot", "respawning"); g.Respawn();
+                Pilot?.OnDeath();
+            }
             return;
         }
         _wasDead = false;
@@ -290,6 +323,13 @@ public partial class TestBot : Node
         {
             ReleaseAll();
             _uiT += real;
+            if (Pilot != null)
+            {
+                // the player's own panels (and the pause menu) are left alone; what the bot's walk opened is read, then closed
+                if (_uiT >= 1.5f && Pilot.MayClosePanels()) { _uiT = 0; g.Ui.CloseAll(); }
+                return;
+            }
+            if (Demo) { g.Ui.CloseAll(); return; }
             if (_uiT >= 1.5f && g.AppFocused) { _uiT = 0; g.Ui.CloseAll(); }   // a player who Alt-Tabbed away is not here to close the pause menu       // dialogues, shops, the map: read for a moment, then move on
             return;
         }
@@ -323,23 +363,23 @@ public partial class TestBot : Node
         if (_allSkills && _clock - _rotT > 14.0 && !p.Busy) { _rotT = _clock; RotateBar(hero); }
 
         // housekeeping, also in the middle of a long fight: wear upgrades, clear the bag, spend skill points
-        if (_clock - _bagT > 4.0) { _bagT = _clock; ManageBag(hero); }
+        if (_clock - _bagT > 4.0) { _bagT = _clock; ManageBag(hero, Pilot == null || Pilot.MayTidyBag()); }
         if (_clock - _buildT > 8.0)
         {
             _buildT = _clock;
             int pts = hero.SkillPoints;
             if (pts > 0 && pts != _idlePoints && !_allSkills)
             {
-                Game.AutoBuild(hero);
+                if (Pilot != null) AiPilot.SpendPoints(hero); else Game.AutoBuild(hero);
                 _idlePoints = hero.SkillPoints;      // whatever could not be spent is not retried until the total changes
             }
         }
 
         // survival first
         float life = p.LifeFrac;
-        if (life < 0.5f && p.Potions > 0 && _clock - _lastPotion > 1.5) { _lastPotion = _clock; Tap(Key.Q); }
+        if (life < (Pilot != null ? 0.62f : 0.5f) && p.Potions > 0 && _clock - _lastPotion > 1.5) { _lastPotion = _clock; Tap(Key.Q); }
         var target = PickTarget(me, grid);
-        if (target != null && life < 0.35f && p.EvadeCd <= 0f && !p.Busy && _clock - _lastEvade > 1.0 && me.DistanceTo(target.Pos2) < 7f)
+        if (target != null && life < (Pilot != null ? 0.45f : 0.35f) && p.EvadeCd <= 0f && !p.Busy && _clock - _lastEvade > 1.0 && me.DistanceTo(target.Pos2) < 7f)
         {
             _lastEvade = _clock;
             StopChannel();
@@ -363,7 +403,11 @@ public partial class TestBot : Node
         _targetId = 0;
 
         if (_clock < _nudgeUntil) { _doing = "side-step"; return; }
-        if (_focus && level != null && grid != null)
+        // the AI pilot, beaten twice: it gains a level or two in the region's open world before the quest again
+        bool grind = Pilot != null && Pilot.Grinding;
+        if (grind) _focusNote = "grind";
+        if (grind && level != null && Pilot.GrindStep(g, level)) { _focusNote = "grind (travel)"; WatchStuck(p, level, grid, me); return; }
+        if (_focus && level != null && grid != null && !grind)
         {
             bool handled = false;
             try { handled = Focus(g, p, hero, level, grid, me); }
@@ -382,7 +426,7 @@ public partial class TestBot : Node
     private static void Send(Key k, bool down)
     {
         if (k == Key.None) return;
-        Input.ParseInputEvent(new InputEventKey { Keycode = k, PhysicalKeycode = k, Pressed = down });
+        Input.ParseInputEvent(new InputEventKey { Keycode = k, PhysicalKeycode = k, Pressed = down, Device = BotDevice });
     }
 
     private void Hold(Key k, float seconds)
@@ -693,6 +737,7 @@ public partial class TestBot : Node
             if (id != _useId && _used.TryGetValue(id, out double until) && until > _clock) continue;
             int pr = Priority(it, hero);
             if (pr <= 0) continue;
+            if (Demo && it.Item == null && it.AutoRadius <= 0f && !Has(it.Kind ?? "", "chest") && !Has(it.Kind ?? "", "shrine") && pr != 1) continue;   // the demo only loots and smashes
             float score = d - pr * 2.5f - (id == _useId ? 4f : 0f);
             if (score < bestScore) { bestScore = score; best = it; }
         }
@@ -744,7 +789,7 @@ public partial class TestBot : Node
     private static float Worth(Item it) => it.Power * (1f + 0.2f * (int)it.Rarity) + it.Upgrade * 5f;
 
     /// <summary>Wears anything better than what is equipped, then salvages or sells the rest before the bag fills up.</summary>
-    private void ManageBag(Hero hero)
+    private void ManageBag(Hero hero, bool tidy = true)
     {
         var bag = hero.D.Bag;
         for (int i = bag.Count - 1; i >= 0; i--)
@@ -753,9 +798,10 @@ public partial class TestBot : Node
             var it = bag[i];
             if (it == null || !it.IsEquip || hero.WhyCantEquip(it) != null) continue;
             var cur = hero.Compared(it);             // null = there is an empty slot for it
-            if (cur == null || Worth(it) > Worth(cur) * 1.03f) hero.Equip(it);
+            if (cur == null || Worth(it) > Worth(cur) * 1.03f) { if (Pilot != null) Pilot.Equipped(it, cur); hero.Equip(it); }
         }
-        if (bag.Count >= 28)
+        // the AI pilot sells and salvages only in town (where the merchant and the smith are), and sooner, so the bag never fills
+        if (tidy && bag.Count >= (Pilot != null ? 24 : 28))
         {
             int before = bag.Count;
             for (int i = bag.Count - 1; i >= 0; i--)
@@ -818,6 +864,7 @@ public partial class TestBot : Node
 
     private void TravelTo(Game g, string area, string from)
     {
+        if (Pilot != null) { Pilot.Travel(g, area, from); _stuckSince = _clock; return; }     // only the ways a player has
         if (_clock - _travelT < 4.0) return;
         _travelT = _clock;
         Log.Info("bot", $"focus: travelling {from ?? "-"} → {area}");
@@ -1059,6 +1106,15 @@ public partial class TestBot : Node
         // going round in circles: a minute within a few metres without a cast, a kill or a goal reached
         if (Casts != _lingerCasts || Kills != _lingerKills || me.DistanceTo(_lingerPos) > 9f || level == null || level.IsTown)
         { _lingerCasts = Casts; _lingerKills = Kills; _lingerPos = me; _lingerSince = _clock; }
+        else if (_clock - _lingerSince > 60.0 && Pilot != null)
+        {
+            Unstuck++;
+            Log.Warn("bot", $"pilot: going nowhere near ({me.X:0.0}, {me.Y:0.0}) in {_area} for a minute while '{_doing}' ({_focusNote})");
+            AbandonGoal(grid);
+            _lingerPos = me; _lingerSince = _clock; _stuckPos = me; _stuckSince = _clock; _nudges = 0;
+            Pilot.OnStuck("going nowhere");
+            return;
+        }
         else if (_clock - _lingerSince > 60.0)
         {
             Unstuck++;
@@ -1085,6 +1141,14 @@ public partial class TestBot : Node
                 _moveAt = _clock; _moveTo = q;
                 _nudgeUntil = _clock + 1.3;          // let the side-step happen before the goal is ordered again
             }
+        }
+        else if (still > 40.0 && Pilot != null)
+        {
+            Unstuck++;
+            Log.Warn("bot", $"pilot: stuck at ({me.X:0.0}, {me.Y:0.0}) in {_area} while '{_doing}'");
+            AbandonGoal(grid);
+            _stuckPos = me; _stuckSince = _clock; _nudges = 0;
+            Pilot.OnStuck("stuck");
         }
         else if (still > 40.0)
         {
@@ -1144,7 +1208,7 @@ public partial class TestBot : Node
     {
         if (grid == null || level == null) { _doing = "idle"; return; }
         double budget = level.IsTown ? 25.0 : level.IsRift ? 900.0 : 420.0;
-        if (_focus) _leaveSince = -1;           // directed play decides when and how to leave
+        if (_focus || Demo) _leaveSince = -1;   // directed play decides when and how to leave; the demo never leaves
         else if (_leaveSince < 0 && _clock - _areaSince > budget) BeginLeave("time is up");
 
         if (_leaveSince < 0)
@@ -1158,7 +1222,7 @@ public partial class TestBot : Node
             }
             if (_goalKind == null && !PickGoal(level, grid, me))
             {
-                if (_focus) { _doing = "idle (nothing left here)"; return; }
+                if (_focus || Demo) { _doing = "idle (nothing left here)"; return; }
                 BeginLeave("nothing left to explore");
             }
             if (_goalKind != null)

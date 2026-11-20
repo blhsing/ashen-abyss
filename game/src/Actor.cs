@@ -235,6 +235,7 @@ public partial class Actor : Node3D
                 _dotTick = 0f;
                 for (int i = Dots.Count - 1; i >= 0 && !Dead; i--)
                 {
+                    if (i >= Dots.Count) continue;          // a tick that saved a life (harness god mode) may have cleared the list (roster, 2026-11-20)
                     var d = Dots[i];
                     TakeHit(new Hit { Source = d.Source, Amount = d.Dps * 0.5f, El = d.El, Dot = true, Minion = d.Minion, NoReact = true });
                 }

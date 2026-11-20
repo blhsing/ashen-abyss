@@ -442,9 +442,10 @@ public sealed partial class TestSuite
         p.EvadeCd = 0f;
         p.QueueEvade();
         yield return 0.12f;
-        bool rolled = m.Current == "Roll" && p.Busy;
+        string evadeClip = p.Form != 0 ? "Roll" : Player.EvadeAnimOf(p.Hero.Class).clip;      // [gfx 0.3, item 5] robed heroes step-dash instead of rolling
+        bool rolled = m.Current == evadeClip && p.Busy;
         yield return 0.7f;
-        Check(rolled && m.Current == idle, $"anim {tag}: evading plays 'Roll', then idles again", $"during={rolled} after={m.Current}");
+        Check(rolled && m.Current == idle, $"anim {tag}: evading plays '{evadeClip}', then idles again", $"during={rolled} after={m.Current}");
 
         // every skill: the cast shows its clip, then the hero returns to idle (or keeps running), never frozen in the last frame
         p.Teleport(arena);

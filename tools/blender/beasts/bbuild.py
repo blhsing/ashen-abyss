@@ -9,7 +9,7 @@ args = sys.argv[sys.argv.index('--') + 1:] if '--' in sys.argv else []
 flags = [a for a in args if a.startswith('--')]
 ids = [a[4:] if a.startswith('mon_') else a for a in args if not a.startswith('--')]
 bake = '--nobake' not in flags
-mods = ['spec_b', 'spec_c', 'spec_d', 'spec_e', 'spec_f']
+mods = ['spec_b', 'spec_c', 'spec_d', 'spec_d2', 'spec_e', 'spec_f']
 for f in flags:
     if f.startswith('--path='):
         sys.path.insert(0, f[7:])

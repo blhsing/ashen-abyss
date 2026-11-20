@@ -84,8 +84,31 @@ public partial class Monster
 
     // ───────────────────────── setup ─────────────────────────
 
+    // ── the faint glow some creature files ask for (rigs_bf_meta.json "light"), at most a few at once ──
+    private OmniLight3D _glowLight;
+    private static readonly List<OmniLight3D> GlowLights = new();
+    private const int MaxGlowLights = 8;
+
+    private void GlowSetup()
+    {
+        if (Model == null || Faction != Faction.Monster) return;
+        var li = CharModel.CreatureLight(Model.FileId);
+        if (li == null) return;
+        GlowLights.RemoveAll(l => l == null || !IsInstanceValid(l) || l.IsQueuedForDeletion());
+        if (GlowLights.Count >= MaxGlowLights) return;
+        var (c, energy, range, height) = li.Value;
+        float s = Model.Scale.X;
+        // a child of the model: it hides with it (asleep far away, burrowed, roosting) and its height scales with it
+        _glowLight = new OmniLight3D { LightColor = c, LightEnergy = energy * 0.8f, OmniRange = range * s, OmniAttenuation = 1.6f, ShadowEnabled = false, LightSpecular = 0.1f, Position = new Vector3(0, height, 0), Name = "glow" };
+        Model.AddChild(_glowLight);
+        GlowLights.Add(_glowLight);
+    }
+
+    private void GlowOff() { if (_glowLight != null && IsInstanceValid(_glowLight)) { GlowLights.Remove(_glowLight); _glowLight.QueueFree(); } _glowLight = null; }
+
     private void AiSetup()
     {
+        Log.Guard("monster-ai", GlowSetup);
         var d = Def;
         _ai = d.Traits != MonTrait.None || d.AI > MonAI.Boss || d.Id == "shroud_eggsac";
         if (!_ai || Faction != Faction.Monster) { _ai = _ai && Faction == Faction.Monster; return; }
@@ -137,6 +160,7 @@ public partial class Monster
         if (_swarm) SwarmTick(dt, now);
         if (_bur == 1 && _aggro) BurrowRipple(dt);
         if (Def.AI == MonAI.Stalker) StalkerVisibility(dt, now);
+        if (_glowLight != null) _glowLight.Visible = !Stealthed && !AiHidden && !_dormant;
         if (Def.AI == MonAI.Shieldbearer && _guardBroken && now >= _guardBrokenUntil) { _guardBroken = false; _backHits = 0; }
         if (_grabbed != null) GrabHold(dt);
         if (now >= _tick05)
@@ -535,6 +559,7 @@ public partial class Monster
 
     private void AiOnDeath(Hit h)
     {
+        GlowOff();
         if (!_ai && Now >= _maskUntil) { RecordRemains(); return; }
         bool expiry = h.Source == null && h.Amount <= 0f;
         if (_busyCancel != null) { var c = _busyCancel; _busyCancel = null; try { c(); } catch (Exception e) { Log.Error("monster-ai", "channel cleanup at death failed", e); } }

@@ -49,7 +49,10 @@ public partial class Player : Actor
     // attack order: an enemy was clicked out of reach → run up to it (A*, re-planned as it moves), then strike
     private int _chSlot = -1;
     private Actor _chTarget;
-    private float _chRepath, _chStuck, _chBest, _chStart, _chT;
+    private float _chRepath, _chStuck, _chBest, _chStart, _chT, _chLimit;
+    private int _chTried;                // un-sticking steps tried since the hero last got anywhere
+    private Vector2 _sideDir;
+    private readonly List<Vector2I> _avoid = new();   // cells whose small props pinned the hero during this run-up
     private Vector2 _chGoal, _chLast;
     // the enemy the button that is held down keeps attacking after the first blow, even when the cursor slips off it
     private int _keepSlot = -1;
@@ -59,8 +62,10 @@ public partial class Player : Actor
     /// <summary>Chase statistics for the test harness: started, struck on arrival, cancelled (by reason).</summary>
     public int ChaseStarts, ChaseHits;
     public string LastChaseEnd = "";
+    /// <summary>Test harness: whether the target was in sight (a clear shot) when the last run-up ended in a blow.</summary>
+    public bool LastStrikeSight;
     /// <summary>Test harness: the run-up state in one line.</summary>
-    public string ChaseDebug => $"target={(_chTarget as Monster)?.Def?.Id ?? "-"} keep={(_keepTarget as Monster)?.Def?.Id ?? "-"} act={_act} move={_hasMove} path={_pathI}/{_path.Count} stuck={_chStuck:0.0} t={_chT:0.0} best={_chBest:0.0} unreach={(_unreachable as Monster)?.Def?.Id ?? "-"}";
+    public string ChaseDebug => $"target={(_chTarget as Monster)?.Def?.Id ?? "-"} tried={_chTried} limit={_chLimit:0} keep={(_keepTarget as Monster)?.Def?.Id ?? "-"} act={_act} move={_hasMove} path={_pathI}/{_path.Count} stuck={_chStuck:0.0} t={_chT:0.0} best={_chBest:0.0} unreach={(_unreachable as Monster)?.Def?.Id ?? "-"}";
     /// <summary>The enemy the hero is running at or attacking right now (null when none). For the HUD and cursor.</summary>
     public Actor AttackTarget => ValidTarget(_chTarget) ? _chTarget : ValidTarget(_keepTarget) && Held(_keepSlot) ? _keepTarget : null;
     /// <summary>What a left click would do right now (None while the UI has the mouse). Set in UpdateAim; read by the cursor.</summary>
@@ -385,7 +390,8 @@ public partial class Player : Actor
         else if (wish != Vector2.Zero) vel = wish.Normalized() * MoveSpeed;
         else if (_hasMove)
         {
-            while (_pathI < _path.Count && Pos2.DistanceTo(_path[_pathI]) < 0.35f) _pathI++;
+            // a waypoint on the way counts as passed a little sooner than the last one (a cell centre may hold a small prop)
+            while (_pathI < _path.Count && Pos2.DistanceTo(_path[_pathI]) < (_pathI < _path.Count - 1 ? 0.7f : 0.35f)) _pathI++;
             if (_pathI >= _path.Count) _hasMove = false;
             else vel = (_path[_pathI] - Pos2).Normalized() * MoveSpeed;
         }
@@ -394,7 +400,12 @@ public partial class Player : Actor
         {
             var moved = Move(vel * dt);
             if (_act != Act.Channel) FaceDir(vel, 1f - Mathf.Exp(-18f * dt));
-            if (moved.Length() < MoveSpeed * dt * 0.15f && _hasMove) { _repath -= dt; if (_repath <= -0.3f) _hasMove = false; }
+            if (moved.Length() < MoveSpeed * dt * 0.15f && _hasMove)
+            {
+                // pushed back by a prop standing on the waypoint itself: take the next one
+                if (_pathI < _path.Count - 1 && Pos2.DistanceTo(_path[_pathI]) < 1.6f) _pathI++;
+                else { _repath -= dt; if (_repath <= -0.3f) _hasMove = false; }
+            }
             if (_act == Act.Free)
             {
                 // the clip whose stride fits the speed (walk when slowed, jog, sprint when hasted or in wolf form), feet matched to the ground
@@ -433,13 +444,21 @@ public partial class Player : Actor
 
     public CharModel ActiveModel => Form != 0 && _forms[Form] != null ? _forms[Form] : Model;
 
+    /// <summary>
+    /// [gfx 0.3, item 5] The clip an evade plays and its rate. Everyone rolls, timed so the tumble is complete when the
+    /// 0.32 s dash ends; the astromancer and the soulbinder, whose robes are a rigid bell, lunge forward instead
+    /// (Shield_Dash: the body stays upright and leans into the step).
+    /// </summary>
+    public static (string clip, float rate) EvadeAnimOf(ClassId c) =>
+        c is ClassId.Astromancer or ClassId.Soulbinder ? ("Shield_Dash", 1.6f) : ("Roll", 2.5f);
+
     public void SetMove(Vector2 target, bool keepPending)
     {
         var grid = World.Grid;
         if (!keepPending) EndChase("move");
         _path.Clear(); _pathI = 0;
-        if (grid == null || grid.LineWalk(Pos2, target)) _path.Add(grid?.NearestWalk(target) ?? target);
-        else _path.AddRange(grid.Path(Pos2, target));
+        if (grid == null || grid.LineWalkWide(Pos2, grid.NearestWalk(target), Radius)) _path.Add(grid?.NearestWalk(target) ?? target);
+        else _path.AddRange(grid.Path(Pos2, target, Radius));
         _hasMove = _path.Count > 0;
         _repath = 0.25f;
     }
@@ -565,26 +584,31 @@ public partial class Player : Actor
         _goUse = null;
         if (same) return;
         _chSlot = slot; _chTarget = t;
-        _chBest = _chStart = Pos2.DistanceTo(t.Pos2); _chStuck = 0f; _chT = 0f; _chLast = Pos2;
+        _avoid.Clear();
+        _chBest = _chStart = Pos2.DistanceTo(t.Pos2); _chStuck = 0f; _chT = 0f; _chLast = Pos2; _chLimit = 12f; _chTried = 0;
         ChaseStarts++;
         if (!PlanChase(t)) { GiveUp(t, "no path"); return; }
         if (Log.Verbose) Log.Debug("hero", $"run-up to {(t as Monster)?.Def?.Id ?? t.Name} ({_chBest:0.0} m) for slot {slot}");
     }
 
     /// <summary>A* route to the target (straight when the way is clear). False when there is no way there.</summary>
-    private bool PlanChase(Actor t)
+    private bool PlanChase(Actor t, bool forceAStar = false)
     {
         _chRepath = 0.3f; _chGoal = t.Pos2;
         var grid = World.Grid;
         _path.Clear(); _pathI = 0;
-        if (grid == null || grid.LineWalk(Pos2, t.Pos2)) _path.Add(t.Pos2);
+        if (grid == null || !forceAStar && _avoid.Count == 0 && grid.LineWalkWide(Pos2, t.Pos2, Radius)) _path.Add(t.Pos2);
         else
         {
-            var route = grid.Path(Pos2, t.Pos2);
+            var route = _avoid.Count > 0 ? grid.PathAvoiding(Pos2, t.Pos2, Radius, _avoid) : grid.Path(Pos2, t.Pos2, Radius);
+            if (route.Count == 0 && _avoid.Count > 0) route = grid.Path(Pos2, t.Pos2, Radius);
             if (route.Count == 0) { _hasMove = false; return false; }
             _path.AddRange(route);
         }
         _hasMove = true; _repath = 0.25f;
+        // time allowed for the whole route: a detour round a cliff may take a while, but not for ever
+        float len = 0f; Vector2 cur = Pos2; foreach (var q in _path) { len += cur.DistanceTo(q); cur = q; }
+        if (_chT <= 0f) _chLimit = Mathf.Max(12f, 4f + len / Mathf.Max(2f, MoveSpeed) * 1.6f);      // set once, from the first route
         return true;
     }
 
@@ -603,6 +627,7 @@ public partial class Player : Actor
             if (why != null) { WarnOnce(why); EndChase("cannot cast: " + why); return false; }
             int slot = _chSlot;
             EndChase(null);
+            LastStrikeSight = World.Grid == null || World.Grid.LineShot(Pos2, t.Pos2);
             ChaseHits++; LastChaseEnd = "struck";
             _keepSlot = slot; _keepTarget = t;
             BeginCast(d, slot, t.Pos2, t);
@@ -610,15 +635,83 @@ public partial class Player : Actor
         }
         float dist = Pos2.DistanceTo(t.Pos2);
         // progress: the hero must get somewhere (0.5 m every 1.5 s: not pinned against a wall, a pit edge or a crowd), and
-        // a detour round a wall may lead away for a while but not for ever (12 s without getting closer than at the start)
+        // a detour round a wall may lead away for a while but not for ever (the route time ×1.6 + 4 s, at least 12 s)
         _chT += dt;
         if (dist < _chBest) _chBest = dist;
-        if (Pos2.DistanceTo(_chLast) > 0.5f) { _chLast = Pos2; _chStuck = 0f; }
-        else if (!(Rooted && !Unstoppable)) { _chStuck += dt; if (_chStuck > 1.5f) { GiveUp(t, "stuck"); return false; } }
-        if (_chT > 12f && _chBest > _chStart - 0.5f) { GiveUp(t, "no progress"); return false; }
+        if (Pos2.DistanceTo(_chLast) > 0.5f) { _chLast = Pos2; _chStuck = 0f; _chTried = 0; }
+        else if (!(Rooted && !Unstoppable))
+        {
+            _chStuck += dt;
+            // pinned (a wall corner, a rock, a body in the way): a melee blow that reaches already lands from here;
+            // otherwise take the cell-by-cell route, then a step aside, before giving up
+            if (_chStuck > 0.3f && d.Kind == SkillKind.Melee && dist <= d.Radius + t.Radius - 0.1f)
+            {
+                string why = WhyCant(d);
+                if (why == null)
+                {
+                    int slot = _chSlot;
+                    EndChase(null);
+                    LastStrikeSight = World.Grid == null || World.Grid.LineShot(Pos2, t.Pos2);
+                    ChaseHits++; LastChaseEnd = "struck";
+                    _keepSlot = slot; _keepTarget = t;
+                    BeginCast(d, slot, t.Pos2, t);
+                    return true;
+                }
+            }
+            if (_chStuck > 0.35f && _chTried == 0) NoteProps();
+            if (_chStuck > 0.35f && _chTried == 0) { _chTried = 1; if (!PlanChase(t, true)) { GiveUp(t, "no path"); return false; } }
+            else if (_chStuck > 0.7f && _chTried == 1) { _chTried = 2; SideStep(t); }
+            else if (_chStuck > 1.1f && _chTried == 2) { _chTried = 3; SideStep(t); }
+            if (_chStuck > 1.5f) { GiveUp(t, "stuck"); return false; }
+        }
+        if (_chT > _chLimit && _chBest > _chStart - 0.5f) { GiveUp(t, "no progress"); return false; }
         _chRepath -= dt;
-        if (_chRepath <= 0f && (!_hasMove || t.Pos2.DistanceTo(_chGoal) > 0.75f) && !PlanChase(t)) GiveUp(t, "no path");
+        if (_chRepath <= 0f && (!_hasMove || t.Pos2.DistanceTo(_chGoal) > 0.75f) && !PlanChase(t, _chTried > 0)) GiveUp(t, "no path");
         return false;
+    }
+
+    /// <summary>Pinned: the cells round the hero that hold a (small) prop are kept out of the next routes of this run-up.</summary>
+    private void NoteProps()
+    {
+        var g = World.Grid;
+        if (g == null) return;
+        var c = g.CellOf(Pos2);
+        for (int dy = -1; dy <= 1; dy++)
+            for (int dx = -1; dx <= 1; dx++)
+            {
+                var q = new Vector2I(c.X + dx, c.Y + dy);
+                if (g.Walk(q.X, q.Y) && !g.Clear(q.X, q.Y) && !_avoid.Contains(q)) _avoid.Add(q);
+            }
+    }
+
+    /// <summary>Un-sticking: a short step in the free direction that leads most toward the target, then the route again.</summary>
+    private void SideStep(Actor t)
+    {
+        var grid = World.Grid;
+        if (grid == null) return;
+        // toward the next point of the route (not the target itself: on a detour that may be the wrong way)
+        Vector2 aim = _pathI < _path.Count ? _path[_pathI] : t.Pos2;
+        Vector2 toT = (aim - Pos2).Normalized(), best = Pos2; float bs = -1e9f;
+        Vector2 bestDir = Vector2.Zero;
+        for (int k = 0; k < 16; k++)
+        {
+            Vector2 dir = Vector2.Right.Rotated(k * Mathf.Tau / 16f);
+            if (_chTried >= 3 && dir.Dot(_sideDir) > 0.85f) continue;     // the second try goes another way
+            // walk it in small steps, as the body really would (props and walls push it about)
+            Vector2 q = Pos2;
+            for (int s2 = 0; s2 < 8; s2++) q = grid.ResolveCircle(q + dir * 0.2f, Radius, q);
+            float moved = q.DistanceTo(Pos2);
+            if (moved < 0.6f) continue;
+            float s = moved + dir.Dot(toT) * 0.8f;
+            if (s > bs) { bs = s; best = q; bestDir = dir; }
+        }
+        if (bs <= -1e8f) return;
+        _sideDir = bestDir;
+        _path.Clear(); _pathI = 0;
+        _path.Add(best);
+        var route = grid.Path(best, t.Pos2, Radius);
+        if (route.Count > 0) _path.AddRange(route); else _path.Add(t.Pos2);
+        _hasMove = true; _chRepath = 0.6f; _repath = 0.25f;
     }
 
     private void GiveUp(Actor t, string why)
@@ -627,7 +720,15 @@ public partial class Player : Actor
         _keepTarget = null;
         _unreachable = t; _unreachableT = 2.5f;
         WarnOnce("無法抵達");
-        Log.Info("hero", $"run-up to {(t as Monster)?.Def?.Id ?? t?.Name ?? "?"} given up: {why}");
+        var g = World.Grid;
+        string around = "";
+        if (g != null && why == "stuck")
+        {
+            var c = g.CellOf(Pos2);
+            for (int dy = -1; dy <= 1; dy++) { for (int dx = -1; dx <= 1; dx++) around += g.Get(c.X + dx, c.Y + dy) + (g.Solid(c.X + dx, c.Y + dy) ? "s" : "") + (g.Clear(c.X + dx, c.Y + dy) ? "" : "o"); around += "/"; }
+            around = $" at ({Pos2.X:0.00},{Pos2.Y:0.00}) cell={c} next={(_pathI < _path.Count ? _path[_pathI].ToString("0.0") : "-")} path={_pathI}/{_path.Count} cells[{around}]";
+        }
+        Log.Info("hero", $"run-up to {(t as Monster)?.Def?.Id ?? t?.Name ?? "?"} given up: {why}{around}");
     }
 
     /// <summary>Ends the run-up (null reason = silently, a new order replaces it). The hero stops where he is.</summary>
@@ -797,7 +898,13 @@ public partial class Player : Actor
         EvadeCd = EvadeMax;
         FaceDir(dir);
         ClearCc();
-        ActiveModel.Play("Roll", 1.9f, 0.05f, true);
+        // [gfx 0.3, item 5] The Roll clip is 1.47 s long and turns the body over between 0.2 s and 0.8 s of it. At rate 1.9 the
+        // 0.32 s dash ended 0.61 s into the clip, with the hero upside down in mid-tumble, and the blend back to standing
+        // swung the body like a plank (the "45° lean" seen on the robed astromancer). At 2.5 the tumble is over (0.8 s) as
+        // the dash ends, so the hero comes out of it on their feet. The two heroes in long robes do not tumble at all (see
+        // EvadeAnimOf): their skirt is one rigid bell, and a bell turning head over heels is the plank the eye saw.
+        var (evadeClip, evadeRate) = Form != 0 ? ("Roll", 2.5f) : EvadeAnimOf(Hero.Class);
+        ActiveModel.Play(evadeClip, evadeRate, 0.05f, true);
         Snd.At("evade", GlobalPosition, 0.7f);
         Fx.Dust(GlobalPosition);
         StartDash(to, 0.32f, 0f, true, null, () => Exec.OnEvadeEnd(from, to));

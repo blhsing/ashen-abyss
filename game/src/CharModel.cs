@@ -895,7 +895,18 @@ public partial class CharModel : Node3D
         return set;
     }
 
-    private sealed class MetaEntry { public float Walk, Run, Hit1, Hit2; }
+    private sealed class MetaEntry { public float Walk, Run, Hit1, Hit2; public Color? LightColor; public float LightEnergy, LightRange, LightHeight; }
+
+    /// <summary>
+    /// The glow a creature file asks for (rigs_bf_meta.json "light": color linear RGB, energy, range m, height m above the
+    /// origin in model space). Null for models without the entry.
+    /// </summary>
+    public static (Color c, float energy, float range, float height)? CreatureLight(string fileId)
+    {
+        var m = CreatureMeta(fileId);
+        if (m?.LightColor == null || m.LightEnergy <= 0f || m.LightRange <= 0f) return null;
+        return (m.LightColor.Value, m.LightEnergy, m.LightRange, m.LightHeight);
+    }
     private static Dictionary<string, MetaEntry> _meta;
 
     /// <summary>
@@ -905,6 +916,7 @@ public partial class CharModel : Node3D
     /// </summary>
     private static MetaEntry CreatureMeta(string fileId)
     {
+        if (_meta == null && !Bestiary.Live) return null;
         if (_meta == null)
         {
             _meta = new Dictionary<string, MetaEntry>();
@@ -923,7 +935,19 @@ public partial class CharModel : Node3D
                         entries = root.EnumerateObject().Select(p => (p.Name, p.Value)).ToList();
                     float F(System.Text.Json.JsonElement e, string k) => e.ValueKind == System.Text.Json.JsonValueKind.Object && e.TryGetProperty(k, out var v) && v.ValueKind == System.Text.Json.JsonValueKind.Number ? (float)v.GetDouble() : 0f;
                     foreach (var (id, e) in entries)
-                        if (!string.IsNullOrEmpty(id)) _meta[id] = new MetaEntry { Walk = F(e, "walk_speed"), Run = F(e, "run_speed"), Hit1 = F(e, "attack1_hit_time"), Hit2 = F(e, "attack2_hit_time") };
+                    {
+                        if (string.IsNullOrEmpty(id)) continue;
+                        var me = new MetaEntry { Walk = F(e, "walk_speed"), Run = F(e, "run_speed"), Hit1 = F(e, "attack1_hit_time"), Hit2 = F(e, "attack2_hit_time") };
+                        if (e.ValueKind == System.Text.Json.JsonValueKind.Object && e.TryGetProperty("light", out var li) && li.ValueKind == System.Text.Json.JsonValueKind.Object)
+                        {
+                            float r = 1f, g = 1f, b = 1f;
+                            if (li.TryGetProperty("color", out var col) && col.ValueKind == System.Text.Json.JsonValueKind.Array && col.GetArrayLength() >= 3)
+                            { r = (float)col[0].GetDouble(); g = (float)col[1].GetDouble(); b = (float)col[2].GetDouble(); }
+                            me.LightColor = new Color(r, g, b);
+                            me.LightEnergy = F(li, "energy"); me.LightRange = F(li, "range"); me.LightHeight = F(li, "height");
+                        }
+                        _meta[id] = me;
+                    }
                     Log.Info("model", $"rigs_bf_meta.json: {_meta.Count} creatures");
                 }
             }

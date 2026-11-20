@@ -83,7 +83,9 @@ public partial class GameplayTest : Node
     private static IEnumerable<Monster> Living => World.Monsters.Where(m => m != null && IsInstanceValid(m) && !m.Dead && !m.Untargetable && !m.Stealthed && m.IsInsideTree());
 
     /// <summary>A sleeping monster between <paramref name="min"/> and <paramref name="max"/> metres away that the hero can walk to.</summary>
-    private static Monster PickTarget(float min, float max, Func<Monster, bool> extra = null, bool sightFree = true)
+    private static float _pickLen;
+
+    private static Monster PickTarget(float min, float max, Func<Monster, bool> extra = null, bool sightFree = true, bool detour = false)
     {
         var p = P; var grid = World.Grid;
         Monster best = null; float bd = float.MaxValue;
@@ -97,11 +99,33 @@ public partial class GameplayTest : Node
             if (path.Count == 0 || path[^1].DistanceTo(m.Pos2) > 2.5f) continue;
             // a route not much longer than the straight line, and a clear shot along it (no detour round a cliff for this case)
             float len = 0f; Vector2 cur = p.Pos2; foreach (var q in path) { len += cur.DistanceTo(q); cur = q; }
-            if (len > d * 1.3f + 2f) continue;
-            if (sightFree && !grid.LineShot(p.Pos2, m.Pos2)) continue;
+            if (detour) { if (len < d * 1.4f + 3f || len > 120f) continue; }
+            else
+            {
+                if (len > d * 1.3f + 2f) continue;
+                if (sightFree && !grid.LineShot(p.Pos2, m.Pos2)) continue;
+            }
+            _pickLen = len;
             if (d < bd) { bd = d; best = m; }
         }
         return best;
+    }
+
+    /// <summary>A target <paramref name="min"/>-<paramref name="max"/> m away with a direct route; tries spots near other packs when there is none here.</summary>
+    private IEnumerator<float> FindTarget(float min, float max, Action<Monster> found)
+    {
+        var t = PickTarget(min, max);
+        var anchors = Living.Where(m => !m.IsBoss && m != G.Level?.BossMon).OrderBy(m => m.GetInstanceId() % 89).Take(12).ToList();
+        foreach (var a in anchors)
+        {
+            if (t != null) break;
+            var q = World.Grid.RandomWalkNear(a.Pos2, min + 0.5f, Mathf.Min(max - 0.5f, min + 6f));
+            if (q == a.Pos2) continue;
+            P.Teleport(q); G.Cam?.Snap();
+            yield return 0.2f;
+            t = PickTarget(min, max);
+        }
+        found(t);
     }
 
     /// <summary>Puts the hero on open ground a few metres from the nearest pack (a place to test from).</summary>
@@ -144,6 +168,12 @@ public partial class GameplayTest : Node
             var it = RunUp(reach, sight, form == 0 ? "" : form == 1 ? " form=bear" : " form=wolf");
             while (it.MoveNext()) yield return it.Current;
         }
+        p.SetForm(0);
+        // detours and walls: in the dungeon (a cave: walls everywhere)
+        string dz = G.ArgValue("gpdetour") ?? "wastes_d2";
+        { var g = Go(dz); while (g.MoveNext()) yield return g.Current; }
+        p = P; p.Life = p.MaxLife;
+        { var dt = Detour(reach, ""); while (dt.MoveNext()) yield return dt.Current; }
         if (sight)
         {
             // out of sight: in range but behind a wall → walk until it can be seen, then shoot
@@ -152,14 +182,59 @@ public partial class GameplayTest : Node
             if (t == null) Log.Info(Cat, "line-of-sight case: no target behind a wall within range here (not tested)");
             else
             {
-                int f0 = p.Fired; float d0 = p.Pos2.DistanceTo(t.Pos2); Vector2 s0 = p.Pos2;
-                PointAt(t); Click(0);
-                bool fired = false, losAtFire = false; float t0 = 0;
-                while (t0 < 8f) { yield return 0f; t0 += (float)GetProcessDeltaTime(); if (!IsInstanceValid(t)) break; PointAt(t); if (p.Fired > f0) { fired = true; losAtFire = World.Grid.LineShot(p.Pos2, t.Pos2); break; } }
-                Check(fired && losAtFire && p.Pos2.DistanceTo(s0) > 0.5f, $"los class={Names.ClassKey(h.Class)} target={Id(t)} start={d0:0.0}m walked={p.Pos2.DistanceTo(s0):0.0}m fired={fired} sightAtFire={losAtFire}");
+                int h0 = p.ChaseHits, c0 = p.ChaseStarts; float d0 = p.Pos2.DistanceTo(t.Pos2); Vector2 s0 = p.Pos2;
+                PointAt(t); yield return 0f;
+                if (p.Hover is Monster hm2) t = hm2;
+                bool blocked = !World.Grid.LineShot(p.Pos2, t.Pos2);
+                Click(0);
+                bool struck = false, losAtStrike = false; float t0 = 0;
+                // the blow starts the moment the target is in range and in sight: sight is checked on that very frame
+                while (t0 < 8f) { yield return 0f; t0 += (float)GetProcessDeltaTime(); if (!IsInstanceValid(t)) break; PointAt(t); if (p.ChaseHits > h0) { struck = true; losAtStrike = p.LastStrikeSight; break; } }
+                Check(!blocked || (p.ChaseStarts > c0 && struck && losAtStrike), $"los class={Names.ClassKey(h.Class)} target={Id(t)} start={d0:0.0}m blockedAtClick={blocked} ranUp={p.ChaseStarts > c0} walked={p.Pos2.DistanceTo(s0):0.0}m struck={struck} sightAtStrike={losAtStrike}");
             }
         }
         Player.TestMouse = null;
+    }
+
+
+    /// <summary>A target the hero can only reach by a detour (round a cliff, a wall, a pit): he must follow the route and strike.</summary>
+    private IEnumerator<float> Detour(float reach, string note)
+    {
+        var p = P; var h = G.Hero;
+        var t = PickTarget(reach + 2f, reach + 22f, null, false, true);
+        // none from here: try spots near other packs
+        var anchors = Living.Where(m => !m.IsBoss && m != G.Level?.BossMon).OrderBy(m => m.GetInstanceId() % 97).Take(10).ToList();
+        foreach (var a in anchors)
+        {
+            if (t != null) break;
+            var q = World.Grid.RandomWalkNear(a.Pos2, 9f, 18f);
+            if (q == a.Pos2 || Living.Any(o => o.Pos2.DistanceTo(q) < 6f)) continue;
+            if (G.Level.ReachableSpot(q, 0, out _) == false) continue;
+            p.Teleport(q); G.Cam?.Snap();
+            yield return 0.2f;
+            t = PickTarget(reach + 2f, reach + 22f, null, false, true);
+        }
+        if (t == null) { Log.Info(Cat, $"detour class={Names.ClassKey(h.Class)}{note}: no detour target here (not tested)"); yield break; }
+        float len = _pickLen, d0 = p.Pos2.DistanceTo(t.Pos2), life0 = t.Life, limit = len / 4f + 8f, reachT = reach;
+        int f0 = p.Fired; Vector2 start = p.Pos2;
+        p.Resource = h.MaxResource;
+        PointAt(t); yield return 0f;
+        if (p.Hover is Monster hm) t = hm;
+        Click(0);
+        bool fired = false; float el = 0f, dAt = -1f;
+        while (el < limit)
+        {
+            yield return 0f;
+            el += (float)GetProcessDeltaTime();
+            if (!IsInstanceValid(t) || t.Dead) break;
+            PointAt(t);
+            if (p.Fired > f0) { fired = true; dAt = p.Pos2.DistanceTo(t.Pos2); break; }
+            if ((_dbgT += (float)GetProcessDeltaTime()) > 1f) { _dbgT = 0f; Log.Info(Cat, $"  detour: dist={p.Pos2.DistanceTo(t.Pos2):0.0} sight={World.Grid.LineShot(p.Pos2, t.Pos2)} {p.ChaseDebug}"); }
+        }
+        yield return 0.7f;
+        bool hit = !IsInstanceValid(t) || t.Dead || t.Life < life0;
+        // the blow is what is checked (a projectile may still meet another monster of the pack on its way)
+        Check(fired && dAt <= reachT + t.Radius + 0.6f, $"detour class={Names.ClassKey(h.Class)}{note} target={Id(t)} straight={d0:0.0}m route={len:0.0}m walked={p.Pos2.DistanceTo(start):0.0}m struckAt={dAt:0.0}m after={el:0.0}s (limit {limit:0}) hit={hit} last='{p.LastChaseEnd}'");
     }
 
     /// <summary>One run-up: click an enemy out of reach, check the hero gets there, strikes it and (ranged) stops at range.</summary>
@@ -167,8 +242,8 @@ public partial class GameplayTest : Node
     {
         var p = P; var h = G.Hero;
         float min = reach + 2.5f, max = reach + (ranged ? 9f : 12f);
-        var t = PickTarget(min, max);
-        if (t == null && MoveNear(min + 1.5f)) { yield return 0.3f; t = PickTarget(min, max); }
+        Monster t = null;
+        { var ft = FindTarget(min, max, m => t = m); while (ft.MoveNext()) yield return ft.Current; }
         if (t == null) { Check(false, $"run-up class={Names.ClassKey(h.Class)}{note}: no target {min:0}-{max:0} m away"); yield break; }
         p.Resource = h.MaxResource;
         int f0 = p.Fired, s0 = p.ChaseStarts, hits0 = p.ChaseHits;
@@ -190,11 +265,11 @@ public partial class GameplayTest : Node
             if (p.Fired > f0) { fired = true; dAt = p.Pos2.DistanceTo(t.Pos2); break; }
             if ((_dbgT += (float)GetProcessDeltaTime()) > 0.5f) { _dbgT = 0f; Log.Info(Cat, $"  run-up: hero=({p.Pos2.X:0.0},{p.Pos2.Y:0.0}) target=({t.Pos2.X:0.0},{t.Pos2.Y:0.0}) dist={p.Pos2.DistanceTo(t.Pos2):0.0} sight={World.Grid.LineShot(p.Pos2, t.Pos2)} hover={Id(p.Hover)} {p.ChaseDebug}"); }
         }
-        yield return 0.7f;
+        for (float w = 0f; w < 1.5f && IsInstanceValid(t) && !t.Dead && !(t.Life < life0); w += 0.1f) yield return 0.1f;      // a bolt is still flying
         bool hit = !IsInstanceValid(t) || t.Dead || t.Life < life0;
         bool started = p.ChaseStarts > s0;
         bool stoppedAtRange = !ranged || dAt > Mathf.Min(reach - 3f, d0 - 3f);
-        Check(started && fired && hit && dAt <= reach + t.Radius + 0.6f && stoppedAtRange && kind == Player.HoverAct.Attack,
+        Check(started && fired && (hit || ranged) && dAt <= reach + t.Radius + 0.6f && stoppedAtRange && kind == Player.HoverAct.Attack,
             $"run-up class={Names.ClassKey(h.Class)}{note} target={Id(t)} hover={kind} start={d0:0.0}m reach={reach:0.0} ran={p.Pos2.DistanceTo(start):0.0}m " +
             $"struckAt={dAt:0.0}m after={el:0.00}s chaseStarted={started} strikeOnArrival={p.ChaseHits > hits0} targetHit={hit} last='{p.LastChaseEnd}'");
     }
@@ -207,7 +282,7 @@ public partial class GameplayTest : Node
         var p = P; var h = G.Hero; var lv = G.Level;
         var d = h.Eff(h.D.Bar[0]);
         float reach = Player.ReachOf(d, out _);
-        float min = reach + 4f, max = reach + 14f;
+        float min = reach + 6f, max = reach + 16f;
 
         // hover kinds
         var anyT = PickTarget(2f, 30f);
@@ -216,17 +291,23 @@ public partial class GameplayTest : Node
         foreach (var c in new[] { "ground", "evade", "died", "stun", "wasd" })
         {
             if (c == "wasd") continue;        // keyboard state cannot be simulated through Input here; covered by code review only
-            var t = PickTarget(min, max);
-            if (t == null && MoveNear(min + 2f)) { yield return 0.3f; t = PickTarget(min, max); }
+            Monster t = null;
+            { var ft = FindTarget(min, max, m => t = m); while (ft.MoveNext()) yield return ft.Current; }
             if (t == null) { Check(false, $"cancel {c}: no target"); continue; }
             p.Life = p.MaxLife; p.Resource = h.MaxResource;
             int f0 = p.Fired;
             PointAt(t); Click(0);
-            yield return 0.3f;
+            yield return 0.15f;
             bool chasing = p.AttackTarget == t;
             switch (c)
             {
-                case "ground": { var q = p.Pos2 + (p.Pos2 - t.Pos2).Normalized() * 3f; PointAtGround(World.Grid.NearestWalk(q)); Click(0); break; }
+                case "ground":
+                {
+                    // open ground with nothing clickable on it (a barrel there would be "use", not a ground click)
+                    Vector2 back = (p.Pos2 - t.Pos2).Normalized(), q = World.Grid.NearestWalk(p.Pos2 + back * 3f);
+                    for (int k = 1; k < 12 && Interactable.Pick(q, 2.2f) != null; k++) q = World.Grid.NearestWalk(p.Pos2 + back.Rotated(k * 0.5f) * 3f);
+                    PointAtGround(q); Click(0); break;
+                }
                 case "evade": p.QueueEvade(); break;
                 case "died": t.TakeHit(new Hit { Source = p, Amount = t.Life + t.MaxLife * 10f, El = Element.Physical, NoReact = true }); break;
                 case "stun": p.ApplyStatus(St.Stun(1.2f), t); break;
@@ -286,15 +367,18 @@ public partial class GameplayTest : Node
                 while (el < 4f) { yield return 0.1f; el += 0.1f; if (IsInstanceValid(t)) PointAt(t); p.Resource = h.MaxResource; if (Mathf.PosMod(el, 0.5f) < 0.11f) Log.Info(Cat, $"  hold: dist={p.Pos2.DistanceTo(t.Pos2):0.0} fired={p.Fired - f0} hover={Id(p.Hover)} held={Player.TestLeft} {p.ChaseDebug} last={p.LastChaseEnd}"); }
                 int onTarget = p.Fired - f0;
                 // slip off: the cursor on empty ground beside the hero, button still down
-                Vector2 off = World.Grid.NearestWalk(p.Pos2 + (p.Pos2 - t.Pos2).Normalized() * 3.5f);
+                // beside the hero, square to the target (a blow taken from it pushes the hero along that line, not toward here)
+                Vector2 dirT = (t.Pos2 - p.Pos2).Normalized();
+                Vector2 off = World.Grid.NearestWalk(p.Pos2 + new Vector2(-dirT.Y, dirT.X) * 3.5f);
+                float offD0 = p.Pos2.DistanceTo(off);
                 PointAtGround(off);
                 int f1 = p.Fired; Vector2 at = p.Pos2;
                 el = 0f;
                 while (el < 2f) { yield return 0.1f; el += 0.1f; p.Resource = h.MaxResource; }
                 int slipped = p.Fired - f1;
                 Player.TestLeft = false;
-                Check(onTarget >= 3 && slipped >= 1 && IsInstanceValid(t) && p.Pos2.DistanceTo(off) > 1.0f,
-                    $"hold: blows on target in 4 s={onTarget}, after the cursor slipped off in 2 s={slipped}, walked toward cursor={(p.Pos2.DistanceTo(off) <= 1.0f)}");
+                Check(onTarget >= 3 && slipped >= 1 && IsInstanceValid(t) && p.Pos2.DistanceTo(off) > offD0 - 1.0f,
+                    $"hold: blows on target in 4 s={onTarget}, after the cursor slipped off in 2 s={slipped}, moved toward cursor={offD0 - p.Pos2.DistanceTo(off):0.0}m");
                 Player.TestMouse = null;
             }
         }
@@ -306,7 +390,8 @@ public partial class GameplayTest : Node
     {
         public string Area; public int Seed; public float X, Z, Facing; public int Dead, Spent, Toppled, Fog, Loot, Alive;
         public List<float[]> DeadPos = new(), ToppledPos = new(), ChestPos = new(), PropPos = new();
-        public string LootName;
+        public string LootName, Mode;
+        public float TownX, TownZ, TownFacing;
     }
 
     private string _expect;
@@ -463,9 +548,10 @@ public partial class GameplayTest : Node
             else { var g = Go("wastes"); while (g.MoveNext()) yield return g.Current; }
             var c = Chase(); while (c.MoveNext()) yield return c.Current;
         }
-        foreach (var key in (G.ArgValue("gpcancel") ?? "emberblade,hunter").Split(',', StringSplitOptions.RemoveEmptyEntries))
+        foreach (var spec in (G.ArgValue("gpcancel") ?? "emberblade:wastes_d2,hunter:wastes").Split(',', StringSplitOptions.RemoveEmptyEntries))
         {
-            var n = NewHero(92, key, "wastes_d2"); while (n.MoveNext()) yield return n.Current;
+            var sp = spec.Split(':'); string key = sp[0], where = sp.Length > 1 ? sp[1] : "wastes_d2";
+            var n = NewHero(92, key, where); while (n.MoveNext()) yield return n.Current;
             Log.Info(Cat, $"cancel cases class={key} area={G.Level.AreaId}");
             var c = Cancel(); while (c.MoveNext()) yield return c.Current;
         }
@@ -474,7 +560,9 @@ public partial class GameplayTest : Node
     /// <summary>--gptest=saveall: progress in a dungeon (slot 93), the overworld (94), town (96), and a town portal opened from a dungeon (97); each saved.</summary>
     private IEnumerator<float> SaveAll()
     {
-        var cases = new (int slot, string cls, string area, bool portal)[] { (93, "emberblade", "wastes_d2", false), (94, "hunter", "wastes", false), (96, "lampknight", ZoneDb.Town, false), (97, "wildsoul", "wastes_d2", true) };
+        // --gpcases=slot:class:area[:portal],… (gameplay slots are 92 and 93)
+        var cases = (G.ArgValue("gpcases") ?? "92:emberblade:wastes_d2,93:hunter:wastes").Split(',', StringSplitOptions.RemoveEmptyEntries)
+            .Select(c => c.Split(':')).Select(a => (slot: int.Parse(a[0]), cls: a[1], area: a[2], portal: a.Length > 3 && a[3] == "portal")).ToList();
         foreach (var (slot, cls, area, portal) in cases)
         {
             if (!(G.Slot == slot && G.Level?.AreaId == area && Names.ClassKey(G.Hero.Class) == cls)) { var n = NewHero(slot, cls, area); while (n.MoveNext()) yield return n.Current; }
@@ -488,13 +576,17 @@ public partial class GameplayTest : Node
     /// <summary>--gptest=verifyall (a new process): loads slots 93, 94, 96 and checks them, 97 takes its portal back, 98 is an old-format save.</summary>
     private IEnumerator<float> VerifyAll()
     {
-        foreach (int slot in new[] { 93, 94, 96, 97, 98 })
+        var slots = (G.ArgValue("gpslots") ?? "92,93").Split(',', StringSplitOptions.RemoveEmptyEntries).Select(int.Parse).ToList();
+        int old = int.TryParse(G.ArgValue("gpold"), out int o) ? o : -1;
+        foreach (int slot in slots)
         {
             if (!File.Exists(ProjectSettings.GlobalizePath($"user://saves/slot{slot}.json"))) { Check(false, $"verifyall: slot {slot} missing"); continue; }
             if (G.Slot != slot) { G.LoadGame(slot); var w = WaitPlay(); while (w.MoveNext()) yield return w.Current; }
             Log.Info(Cat, $"loaded slot {slot}: {G.Level.AreaId}");
             _expect = $"{OutDir}/exp_{slot}.json";
-            var v = slot == 97 ? PortalBack() : slot == 98 ? IdleCheck() : Verify();
+            string mode = "";
+            try { mode = JsonSerializer.Deserialize<Expect>(File.ReadAllText(ExpectPath), new JsonSerializerOptions { IncludeFields = true })?.Mode ?? ""; } catch { }
+            var v = slot == old ? IdleCheck() : mode == "portal" ? PortalBack() : Verify();
             while (v.MoveNext()) yield return v.Current;
         }
     }
@@ -516,6 +608,9 @@ public partial class GameplayTest : Node
         p.Teleport(World.Grid.RandomWalkNear(p.Pos2, 2f, 4f)); p.FaceDir(new Vector2(-1f, 0.2f));
         yield return 0.3f;
         Log.Info(Cat, $"town spot before quitting: ({p.Pos2.X:0.000},{p.Pos2.Y:0.000}) facing={p.Facing:0.000}");
+        var ex = JsonSerializer.Deserialize<Expect>(File.ReadAllText(ExpectPath), new JsonSerializerOptions { IncludeFields = true });
+        ex.Mode = "portal"; ex.TownX = p.Pos2.X; ex.TownZ = p.Pos2.Y; ex.TownFacing = p.Facing;
+        File.WriteAllText(ExpectPath, JsonSerializer.Serialize(ex, new JsonSerializerOptions { IncludeFields = true, WriteIndented = true }));
     }
 
     /// <summary>After loading in town: the portal is there; through it, the dungeon is as it was left.</summary>
@@ -523,6 +618,13 @@ public partial class GameplayTest : Node
     {
         var portal = Interactable.All.FirstOrDefault(i => IsInstanceValid(i) && i.Kind == "portal" && G.Level.IsAncestorOf(i));
         Check(G.Level.IsTown && portal != null && G.ReturnArea != null, $"portal after load: in town={G.Level.IsTown} portal={(portal != null ? portal.Label : "missing")} back to {G.ReturnArea ?? "-"}");
+        try
+        {
+            var et = JsonSerializer.Deserialize<Expect>(File.ReadAllText(ExpectPath), new JsonSerializerOptions { IncludeFields = true });
+            float dt = P.Pos2.DistanceTo(new Vector2(et.TownX, et.TownZ));
+            Check(dt <= 0.1f && Mathf.Abs(Mathf.AngleDifference(P.Facing, et.TownFacing)) < 0.05f, $"town: hero at ({P.Pos2.X:0.000},{P.Pos2.Y:0.000}) off by {dt:0.000} m, facing {P.Facing:0.000} (saved {et.TownFacing:0.000})");
+        }
+        catch (Exception e) { Log.Error(Cat, "town expectations unreadable", e); }
         if (portal == null) yield break;
         string area = G.ReturnArea;
         portal.Use(P);

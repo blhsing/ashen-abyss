@@ -16,7 +16,7 @@ SPECS = {
     'mon_hauler_hod': dict(
         family='hauler', scale=1.8, poses='bomber', emis=(1.0, 0.42, 0.08),
         body=dict(GIANT), props=dict(GIANT_PROPS, hunch=22),
-        parts=[dict(p='hod', bone='spine_02'), dict(p='brand_ring')] + LOIN,
+        parts=[dict(p='hod', bone='spine_01'), dict(p='brand_ring')] + LOIN,
         weapons=[dict(w='log')],
         notes="Hod-bearer: giant with a wicker-and-timber hod on his back rising a body-height above the head, stacked with tree "
               "trunks; a trunk ready in the right hand (wpn_log); emis_ brand ring."),
@@ -24,7 +24,7 @@ SPECS = {
         family='hauler', scale=1.75, poses=["Idle_Loop:0.3", "Melee_Hook:0.5", "Walk_Loop:0.3"], emis=(1.0, 0.55, 0.15),
         body=dict(GIANT, hide=['lowerarm_r', 'hand_r']), props=dict(GIANT_PROPS),
         looks={'glow': {'strength': 1.4, 'mottle': 0.6, 'crust': 0.6}, 'patch': {'color': (0.11, 0.08, 0.055)}},
-        parts=[dict(p='cage_back'), dict(p='tong_arm', side='r', length=1.25, glow=None, look='rust'),
+        parts=[dict(p='cage_back', bone='spine_02'), dict(p='tong_arm', side='r', length=1.25, glow=None, look='rust'),
                dict(p='shell', look='patch', regions=('upperarm_r', 'clavicle_r'), offset=0.02, sink=False),
                dict(p='brand_ring')] + LOIN,
         notes="Warmth-collector: giant with a domed open-weave wicker cage on his back (a heap of stolen bundles, faint emis_ glow between them) and the right arm wrapped in "
@@ -85,8 +85,9 @@ SPECS.update({
         family='hush', scale=1.55, poses='brute', float=0.0,
         body=dict(type='flesh', decimate=0.62, look='chalk', eyes=None, melt=7,
                   hide=['head', 'neck', 'hands', 'spine_02', 'spine_03', 'clavicle_l', 'clavicle_r']),
-        props=dict(bulk=1.3, shoulders=1.16, chest=1.12, arm=1.2, arm_len=1.15, hunch=18, leg=1.1),
-        parts=[dict(p='mute_torso'), dict(p='mute_hands')],
+        props=dict(bulk=1.3, shoulders=1.16, chest=1.12, arm=1.3, arm_len=1.15, hunch=10, leg=1.1),
+        parts=[dict(p='mute_chest'), dict(p='mute_hands', size=0.42)],
         notes="The Mute: a wide sloping chalk-white giant with no head (the shoulders rise into a smooth dome), long arms ending in "
-              "flat mitten-hands the size of shields, one round hole clean through the chest (a real tunnel). Dry cracked chalk. No emissive."),
+              "flat mitten-hands the size of shields, one ROUND hole clean through the slab of the chest (a see-through tunnel with pale walls; the "
+              "chest is narrower than the shoulder joints so the arms hang free from big shoulder masses). Dry cracked chalk. No emissive."),
 })

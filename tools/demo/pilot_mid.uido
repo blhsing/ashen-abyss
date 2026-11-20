@@ -1,0 +1,27 @@
+# AI pilot on a mid-campaign save (slot 96). Run with --blur-at=120 --focus-at=130 (simulated Alt-Tab).
+waitplay
+wait 5
+log TEST: F8 turns the pilot on
+key F8
+wait 132
+shot Y:\shots\demo\pilot_mid_alttab
+log TEST: after the simulated Alt-Tab the pause menu must still be open (the pilot leaves it); the player resumes
+click @繼續旅途
+wait 105
+log TEST: I opens the inventory (pilot must stay on and wait)
+key I
+wait 4
+shot Y:\shots\demo\pilot_mid_inventory
+key I
+wait 230
+shot Y:\shots\demo\pilot_mid_play
+log TEST: W takes over
+key W
+wait 4
+log TEST: F8 on again
+key F8
+wait 20
+log TEST: a movement click takes over
+click 700,380
+wait 5
+quit

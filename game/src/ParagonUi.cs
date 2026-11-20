@@ -1317,25 +1317,38 @@ public partial class ParagonUi : UiPanel
                     var gate = ToScreen(NodeWorld(st, st.Def.Gates[d]));
                     bool hot = _hovGateBoard == b && _hovGateDir == d;
                     var c = new Color(Palette.Gold, hot ? 0.95f : 0.35f + 0.3f * pulse);
-                    DrawLine(gate, gate + new Vector2(dx, dy) * cell * 1.5f, c, lw);
-                    if (!rect.Intersects(view)) continue;
-                    if (_aBoard != null)
+                    // The board-sized ghost frame is drawn only while the pointer is in the slot. At rest it read as a stray
+                    // empty panel (cut off by the top bar whenever the slot lay above the board, its prompt out of sight in
+                    // the middle of it). What always shows is the stub from the lit gate and a small plaque carrying the
+                    // prompt right where the new board would begin, clear of this board's frame and title line.
+                    var dir = new Vector2(dx, dy);
+                    float plateW = gateW + 28f, plateH = _fontTitle.GetAscent(fsGate) + _fontTitle.GetDescent(fsGate) + 10f;
+                    float plateHalf = (dy != 0 ? plateH : plateW) * 0.5f;
+                    var centre = gate + dir * (cell * 2.7f + plateHalf);
+                    var plate = new Rect2(centre.X - plateW * 0.5f, centre.Y - plateH * 0.5f, plateW, plateH);
+                    DrawLine(gate, gateFits ? centre - dir * (plateHalf + 4f) : gate + dir * cell * 1.5f, c, lw);
+                    if (hot && rect.Intersects(view))
                     {
-                        // the ghost of a board's frame, where one may be attached: it breathes, and stands out under the pointer
-                        var ghost = rect.Grow(cell * 0.5f);
-                        DrawRect(ghost.Grow(-5f), new Color(Palette.Gold, hot ? 0.07f : 0.028f));
-                        UiArt.Nine(_ci, _aBoard, ghost, new Color(1f, 0.92f, 0.74f, hot ? 0.95f : 0.3f + 0.25f * pulse));
+                        if (_aBoard != null)
+                        {
+                            // under the pointer: the outline of the board that may be attached here
+                            var ghost = rect.Grow(cell * 0.5f);
+                            DrawRect(ghost.Grow(-5f), new Color(Palette.Gold, 0.05f));
+                            UiArt.Nine(_ci, _aBoard, ghost, new Color(1f, 0.92f, 0.74f, 0.7f));
+                        }
+                        else
+                        {
+                            DrawRect(rect, new Color(Palette.Gold, 0.07f));
+                            var p0 = rect.Position; var p1 = new Vector2(rect.End.X, p0.Y); var p2 = rect.End; var p3 = new Vector2(p0.X, rect.End.Y);
+                            DrawDashedLine(p0, p1, c, 2f, 12f); DrawDashedLine(p1, p2, c, 2f, 12f);
+                            DrawDashedLine(p2, p3, c, 2f, 12f); DrawDashedLine(p3, p0, c, 2f, 12f);
+                        }
                     }
-                    else
-                    {
-                        DrawRect(rect, new Color(Palette.Gold, hot ? 0.09f : 0.035f));
-                        var p0 = rect.Position; var p1 = new Vector2(rect.End.X, p0.Y); var p2 = rect.End; var p3 = new Vector2(p0.X, rect.End.Y);
-                        DrawDashedLine(p0, p1, c, 2f, 12f); DrawDashedLine(p1, p2, c, 2f, 12f);
-                        DrawDashedLine(p2, p3, c, 2f, 12f); DrawDashedLine(p3, p0, c, 2f, 12f);
-                    }
-                    if (!gateFits) continue;        // zoomed out too far for readable text: the dashed frame and the tooltip remain
-                    var mid = rect.Position + rect.Size * 0.5f;
-                    DrawString(_fontTitle, new Vector2(rect.Position.X, mid.Y + gateDrop), GatePrompt, HorizontalAlignment.Center, rect.Size.X, fsGate, c);
+                    if (!gateFits || !plate.Grow(8f).Intersects(view)) continue;        // zoomed out too far for readable text: the stub and the tooltip remain
+                    if (_aPlaque != null) UiArt.Nine(_ci, _aPlaque, plate.Grow(5f), PlaqueMod);
+                    else DrawRect(plate, PlateCol);
+                    DrawString(_fontTitle, new Vector2(plate.Position.X, centre.Y + gateDrop), GatePrompt, HorizontalAlignment.Center, plateW, fsGate,
+                        new Color(Palette.Gold, hot ? 0.98f : 0.66f + 0.3f * pulse));      // on its plaque the prompt stays readable through the whole pulse
                 }
 
         // ── links between facing gates of neighbouring boards ──

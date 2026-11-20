@@ -77,7 +77,7 @@ public static class Fx
 
     private static Texture2D _dot, _noise, _puff, _shard, _streak;
     private static Mesh _quad, _quadXY, _sphere, _cyl, _shaft, _plate, _spike, _flameQuad, _flameFieldQuad;
-    private static Material _mRing, _mTele, _mZone, _mSlash, _mFlash, _mBeam, _mPillar, _mWave, _mSwirl, _mShaft, _mShaftHostile, _mIron, _mFlame, _mFlameField;
+    private static Material _mRing, _mTele, _mZone, _mSlash, _mFlash, _mBeam, _mPillar, _mWave, _mSwirl, _mVeil, _mShaft, _mShaftHostile, _mIron, _mFlame, _mFlameField;
     private static Texture2D _cShrink, _cShrinkLate, _cGrow, _cPop, _cFlame;
     private static Texture2D _rFlame, _rSmoke, _rSmokeThin, _rDark, _rDust, _rMist, _rHaze, _rAsh, _rChip, _rHeal, _rGold, _rFaint;
 
@@ -868,7 +868,74 @@ public static class Fx
     /// A standing portal: a swirling disc that turns to face the camera, motes spiralling up around it, a glow on
     /// the ground and a light. The caller parents it at ground level; <paramref name="radius"/> is half its width.
     /// </summary>
-    public static Node3D Portal(Color c, float radius)
+    /// <summary>
+    /// The veil of a gateway: a sheet of rising light that exactly fills an opening <paramref name="width"/> ×
+    /// <paramref name="height"/> metres standing on the node's origin (the plane is local XY, seen from both sides),
+    /// its light spilling over the threshold, motes climbing through it. There is nothing round in it: the gate is the
+    /// portal. <paramref name="gain"/>: about 0.6 for a way onward, 0.45 for the dimmer way back.
+    /// </summary>
+    public static Node3D Veil(Color c, float width, float height, float gain = 0.6f)
+    {
+        var root = new Node3D { Name = "FxVeil" };
+        try
+        {
+            if (!Ensure()) return root;
+            width = Mathf.Clamp(width, 0.6f, 8f); height = Mathf.Clamp(height, 0.8f, 8f);
+            _mVeil ??= ShaderMat("fx_veil", NoiseTex);          // loaded on first use: nothing of the veil is touched while the gateways are switched off
+            var sheet = MeshNode(_quadXY, _mVeil);
+            sheet.Scale = new Vector3(width * 0.5f, height * 0.5f, 1f);
+            sheet.Position = new Vector3(0f, height * 0.5f, 0f);
+            sheet.ExtraCullMargin = 0.5f;
+            Set(sheet, PTint, c); Set(sheet, PGain, gain); Set(sheet, PFade, 1f); Set(sheet, PHalf, new Vector2(width * 0.5f, height * 0.5f));
+            root.AddChild(sheet);
+
+            // the light that spills over the threshold, in front and behind
+            var pool = MeshNode(_quad, _mZone);
+            pool.Scale = new Vector3(width * 0.66f, 1f, 1.55f);
+            pool.Position = new Vector3(0f, 0.04f, 0f);
+            Set(pool, PTint, c); Set(pool, PEdge, c); Set(pool, PFade, 0.5f * gain); Set(pool, PHostile, 0f); Set(pool, PSeed, Rng.F()); Set(pool, PRadius, width * 0.66f); Set(pool, PKind, 6f);
+            root.AddChild(pool);
+
+            var motes = Loop(VeilPm(c, width), Look.Dot, Mathf.Clamp((int)(6f + width * 5f), 6, 22), 2.2f, width + 3f);
+            motes.Position = new Vector3(0f, 0.15f, 0f);
+            motes.Preprocess = 2f;
+            root.AddChild(motes);
+
+            root.AddChild(new OmniLight3D
+            {
+                LightColor = LightTint(c), LightEnergy = 1.4f * gain, OmniRange = width * 1.6f + 3.5f, OmniAttenuation = 1.3f, ShadowEnabled = false,
+                LightSpecular = 0.25f, DistanceFadeEnabled = true, DistanceFadeBegin = 55f, DistanceFadeLength = 10f,
+                Position = new Vector3(0f, height * 0.45f, 0.5f),
+            });
+        }
+        catch (Exception e) { Fail(nameof(Veil), e); }
+        return root;
+    }
+
+    private static readonly Dictionary<ulong, ParticleProcessMaterial> _veilPm = new();
+
+    /// <summary>Motes that rise through the opening of a gateway: a thin slab of them, as wide as the veil.</summary>
+    private static ParticleProcessMaterial VeilPm(Color c, float width)
+    {
+        int wb = Mathf.Clamp(Mathf.RoundToInt(width * 4f), 2, 40);
+        ulong key = ((ulong)c.ToRgba32() << 8) | (uint)wb;
+        ParticleProcessMaterial m;
+        lock (_veilPm) { if (_veilPm.TryGetValue(key, out m)) return m; }
+        m = Base(Vector3.Up, 6f, 0.5f, 1.25f, new Vector3(0f, 0.25f, 0f), 0.04f, 0.1f, ColorRamp(c), _cPop);
+        Box(m, new Vector3(wb * 0.25f * 0.46f, 0.1f, 0.07f));
+        m.Color = Bright;
+        lock (_veilPm) _veilPm[key] = m;
+        return m;
+    }
+
+    public static Node3D Portal(Color c, float radius) => Portal(c, radius, true);
+
+    /// <summary>
+    /// The swirl of a portal. <paramref name="onGround"/>: the node's origin is the ground under it (the swirl stands
+    /// on it, 2 × radius wide and 2.5 × radius tall, with a pool of light at its foot) — attach it at ground level.
+    /// Otherwise the swirl is centred on the origin and has no pool (a small vortex held in the air).
+    /// </summary>
+    public static Node3D Portal(Color c, float radius, bool onGround)
     {
         var root = new Node3D { Name = "FxPortal" };
         try
@@ -880,7 +947,7 @@ public static class Fx
             var disc = MeshNode(_quadXY, _mSwirl);
             Vector3 full = new(radius, tall, 1f);
             disc.Scale = full * 0.05f;
-            disc.Position = new Vector3(0f, tall + 0.12f, 0f);
+            disc.Position = new Vector3(0f, onGround ? tall + 0.12f : 0f, 0f);
             disc.ExtraCullMargin = radius * 2f;      // turned toward the camera in the shader, so cull generously
             // in the palette of the world: a pale blue-white core that keeps the caller's hue, well under the fires
             c = c.Lerp(new Color(0.6f, 0.72f, 1f), 0.3f);
@@ -889,11 +956,14 @@ public static class Fx
             var grow = NewAnim(FnGrow, disc, 0.5f);
             grow.V0 = full; grow.Always = true;
 
-            var pool = MeshNode(_quad, _mZone);
-            pool.Scale = new Vector3(radius * 1.15f, 1f, radius * 1.15f);
-            pool.Position = new Vector3(0f, 0.05f, 0f);
-            Set(pool, PTint, c); Set(pool, PEdge, c); Set(pool, PFade, 0.42f); Set(pool, PHostile, 0f); Set(pool, PSeed, Rng.F()); Set(pool, PRadius, radius * 1.15f); Set(pool, PKind, 6f);
-            root.AddChild(pool);
+            if (onGround)
+            {
+                var pool = MeshNode(_quad, _mZone);
+                pool.Scale = new Vector3(radius * 1.15f, 1f, radius * 1.15f);
+                pool.Position = new Vector3(0f, 0.05f, 0f);
+                Set(pool, PTint, c); Set(pool, PEdge, c); Set(pool, PFade, 0.42f); Set(pool, PHostile, 0f); Set(pool, PSeed, Rng.F()); Set(pool, PRadius, radius * 1.15f); Set(pool, PKind, 6f);
+                root.AddChild(pool);
+            }
 
             var motes = Loop(PortalPm(c, radius), Look.Dot, Mathf.Clamp((int)(10f + radius * 8f), 10, 30), 1.3f, radius + 3f);
             motes.Position = new Vector3(0f, 0.1f, 0f);
@@ -904,7 +974,7 @@ public static class Fx
             {
                 LightColor = LightTint(c), LightEnergy = 1.6f, OmniRange = radius * 4f + 3f, OmniAttenuation = 1.3f, ShadowEnabled = false,
                 LightSpecular = 0.25f, DistanceFadeEnabled = true, DistanceFadeBegin = 55f, DistanceFadeLength = 10f,
-                Position = new Vector3(0f, tall, 0f),
+                Position = new Vector3(0f, onGround ? tall : 0f, 0f),
             });
         }
         catch (Exception e) { Fail(nameof(Portal), e); }

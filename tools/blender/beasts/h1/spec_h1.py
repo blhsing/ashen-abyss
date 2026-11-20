@@ -1008,10 +1008,11 @@ def sexton_digger(bake=True):
     std_meta(C, 'sexton', 1.05, 4.4)
     A = RC.Arth(C, legs, pivot=(0, 0.05, 0.2))
     C.look('shell', 'chitin', 'bone_shell', color=(0.02, 0.018, 0.017), color2=(0.05, 0.04, 0.03), rough=0.34, dust=0.95,
-           dust_color=(0.13, 0.10, 0.07), edge=0.5, ridge=40.0, ridge_h=1.4)
-    C.look('limb', 'chitin', 'bone_shell', color=(0.03, 0.024, 0.02), rough=0.34, pit=170.0, dust=0.5, dust_color=(0.13, 0.10, 0.07), axis=(1, 0, 0))
+           dust_color=(0.28, 0.23, 0.17), edge=0.5, ridge=40.0, ridge_h=1.4)
+    C.look('limb', 'chitin', 'bone_shell', color=(0.05, 0.038, 0.03), edge_color=(0.34, 0.26, 0.17), rough=0.34, pit=170.0, dust=0.7,
+           dust_color=(0.27, 0.22, 0.16), axis=(1, 0, 0))
     C.look('belly', 'chitin', 'bone_shell', color=(0.05, 0.035, 0.025), rough=0.45, ridge=30.0, ridge_h=1.6, dust=0.0)
-    C.look('soil', 'mud', 'bone_shell', color=(0.06, 0.046, 0.032), dry=(0.13, 0.105, 0.075), dry_amt=0.6)
+    C.look('soil', 'mud', 'bone_shell', color=(0.10, 0.08, 0.058), dry=(0.30, 0.25, 0.19), dry_amt=0.8)
     C.look('iron', 'metal', 'metal_handle', color=(0.18, 0.17, 0.16), rust=(0.20, 0.09, 0.035), rust2=(0.07, 0.035, 0.02), amount=0.8, rough=0.55)
     # ---- body: belly (the host of the legs), ridged wing-case, wide thorax shield over a stub of a head
     core(C, P.blob((0, 0.0, 0.15), 0.21, 0.36, 0.075, n=14, m=7), 'body', 'belly')

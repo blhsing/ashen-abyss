@@ -304,3 +304,138 @@ wildsoul) with `gfx_luma.ps1` → `white(>90%)` under about 1 %, and the town po
 town → 7 regions → town, read `vram=` in the log, then default `TrimEnabled` to true; (3) quiet-machine 4K 高
 measurement of all 20 themes with the governor (check `who_runs.ps1` first); (4) re-shoot fight frames, copy one or
 two per theme from `fin4\` / the re-shoot into `Y:\shots\gfx\final\`; (5) final report.
+
+## 20 Nov — graphics pass for 0.3 (list of ten; shots in `Y:\shots\gfx\v03\`)
+Tools: `EnvProbe` got per-stop placement and staged moments (header lists them): `label=area@behind:tree:2`
+(hero just north of the n-th nearest prop slot of a category; consecutive stops in one area do not reload it),
+`--gfx-evade`, `--gfx-run` / `--gfx-runspeed`, `--gfx-life`, `--gfx-hug`, `--gfx-fov`, `--gfx-burst`.
+`Y:\tools\gfx_tmp\v03\`: `q.sh` (one queued run; waits while the user plays), `sheet.ps1` (contact sheet / crop),
+`edit70..75.pl` (the patches as applied), staged shader copies. Test slot 98; saves moved to `saves_test_backup`.
+Baseline tour (same seed 4242, emberblade lv30, 23 stops): `v03\before\`, after: `v03\after\`.
+Run queue: 5-8 other `run.ps1` jobs were waiting all evening; one run of mine came back in 10-20 minutes.
+
+**State of the tree (all compile; see "verified" per item below, updated as runs come back):**
+1. *Hero hidden by scenery* — `env_prop.gdshader` / `env_wall.gdshader`: `see_through()` now takes the figure's feet and
+   has two parts: the wide disc round the line lens → chest (above stump height, as before but with narrow dither
+   bands: 0.74 R..R, 0.45 m in height, 0.45-1.1 m in front) and the figure's own outline — the ray lens → fragment is
+   followed to the upright plane the figure stands in, and whatever lands within 0.5 m (soft to 0.82 m) of the body
+   segment feet..head is cut down to the ground, however close in front it stands. Props only do the outline part
+   when they are tall (`prop_height` × instance scale ≥ 1.35..2.1 m), so crates and graves are never holed.
+   The same test runs a second time for the enemy under the cursor / being attacked: new global uniform
+   `focus_pos` (vec4, `project.godot [shader_globals]`; xyz + 0..1 weight) set by `CameraRig.UpdateFocusCut`
+   from `Player.AttackTarget ?? Player.Hover`, radius × 0.7.
+2. *Black shapes* — props: `lum_floor` (soft-knee lift of near-black albedo to 0.75 × `WallLumMin`), `sky_fill`
+   (0.6 × ambient again on up-facing rock, outdoors) and `sky_rim` (fresnel³ sheen in the moon colour, 0.022 linear
+   × moon strength) for natural non-plant props and for triplanar rock walls (`EnvMats.SkyFill/SkyRim`).
+   Lid over solid rock indoors (`env_cap.gdshader`, `EnvMats.Lid`, `EnvWalls.BuildLids`): unshaded wall-top texture
+   at the level of an unlit wall top (ambient + fill × `LidShade` 0.3 × `LidGain` 1.6), blotched by world noise,
+   sinking to 22 % over ~9 m of depth into the mass (depth map = `WallD`, one texel per metre); the textured tops
+   now fade to `LidShade` instead of black so there is no trench where the lid begins. Outdoor lids stay black.
+3. *Boss inside the hero* — radii already scaled (`Radius = Def.Radius × scale`); nothing enforced them against the
+   hero while a boss casts. `Monster.BodyBlock` (marked `[gfx 0.3, item 3]`, roster engineer told): bodies with
+   radius ≥ 0.85 m carry the hero out to 0.9 × radius + hero radius at ≤ 9 m/s.
+4. *Low-life / heavy-hit red* — `HudShaders.Vignette` + `Hud.cs`: rounded-box falloff that leaves the middle
+   56 % × 50 % of the frame untouched, alpha capped at 0.55, strength low × (0.36 ± 0.12) + hit × 0.6.
+6. *Cathedral floor* — `cathedral.RoomFloor` `marble_checker` → `worn_marble` (floors compared in `gfx_tmp\v03\floors.jpg`).
+7. *Street lamp* — the "tilt" is the 32° lens (posts near the lower corners lean outward); the white pixels were the
+   blended glass panes burnt out by the lamp's own omni light a hand away (and dithered by the near-lens fade).
+   `EnvProps.Convert`: blended surfaces of light props become an unshaded warm film (torch colour, alpha 0.26);
+   dissolving prop fragments now lose albedo, specular and emission (`solid`).
+8. *Palm trunks* — same shader work as 1: narrow dither bands, and partly cut fragments sink to 30 % albedo without
+   highlights instead of sparkling through FSR's sharpening.
+9. *Paragon stray frame* — it was the board-sized ghost of an empty slot beyond a lit gate, cut off by the top bar.
+   The ghost is now drawn only under the pointer; at rest the slot is a stub from the gate and a small plaque
+   with the prompt (`ParagonUi.DrawAll`).
+
+**Later the same evening (22:30-23:00) — changes after the first after-tour, and how the checks are run now**
+- Props are opened only when the instance is ≥ 2 m tall (binary, no half-dithered boulders); trees keep their trunk:
+  `disc_from` (0.3 dead trees / pines, 0.55 quiver trees, 0.6 bare trunks) × height is where the wide disc starts, the
+  trunk below it is cut only where it covers a figure. `SkyFillShare` 0.6 → 0.42 (abyss rock read pale blue),
+  `LidGain` 1.6 → 2.4 (the lid was there but at 1-2 % sRGB; ×5 boosted proof: `gfx_tmp\v03\dungB_boost.png`).
+- Street lamp, second cause: the cage of `lamp_post` / `lantern_wood` (opaque material) is 0.2-0.3 m from the prop's
+  own omni light, which falls off with the square of the distance: burnt to white pixels. `flame_guard` (1.6 m) in
+  env_prop scales albedo and specular by (distance to that light / guard)², cancelling the falloff inside the guard.
+- EnvProbe stop options (`label=area@opt+opt`): `class:<key>[:level[:paragon]]`, `bot`, `at:`, `fx`, `hud:`, `fov:`,
+  `life:`, `hug:`, `evade:`, `run:`, `clips:`, `ui:<panel>`, `poi:` — a whole verification (tour, boss, effect gallery,
+  8-class bot sweep, evade analysis, clip viewer, paragon panel) is ONE process: `gfx_tmp\v03\master.sh <out> <log>`.
+  Reason: the run lock was held by a 25-minute headless suite and 6-8 jobs waited; two of my runs gave up after
+  `run.ps1`'s 25-minute limit. `perf.sh <out> <log>` = 4K 高 with governor over all 20 themes, logs `who_runs` before/after.
+- Background jobs of mine while this is written: `master.sh` and `perf.sh` (bash, each waits in `run.ps1` for the lock,
+  retries up to 5 times). Stop: kill the `powershell … run.ps1 … --slot=98` processes (only those). Resume: run the
+  two scripts again; outputs `gfx_tmp\v03\master1.txt`, `perf1.txt`, shots `shots\gfx\v03\after\` and `perf\`.
+- 23:30 — the master run lost its place twice: `run.ps1` gives up after 25 minutes at the lock and a retry joins the
+  back of the queue (9-10 jobs waiting, headless suites of 10-25 minutes among them). `gfx_tmp\v03\run_patient.ps1` is
+  a copy of `run.ps1` that differs only in waiting 120 minutes for the SAME machine-wide lock (`master_p.sh`,
+  `perf_p.sh` use it; logs `master2.txt`, `perf2.txt`). Whichever waiter of mine starts first runs; the duplicate
+  waiters (`powershell … run*.ps1 … --slot=98`) are killed by hand as soon as one has run.
+- Evade (item 5): `anim_lib.glb` parsed with `gfx_tmp\v03\glbanim.pl`: clip `Roll` is 1.467 s; the pelvis is turned
+  59° at 0.30 s, 175° (upside down) at 0.53 s, back to 40° at 0.80 s, 20° from 0.90 s. `Player.TryEvade` played it at
+  rate 1.9 over a 0.32 s dash: the dash ended at clip time 0.61 s (160°, mid-tumble) and the 0.12-0.2 s blend to
+  idle / run swung the upside-down body back like a plank. Rate now 2.5 (clip time 0.80 s at the end of the dash).
+  Marked `[gfx 0.3, item 5]` in Player.cs (gameplay engineer's file; one constant and a comment).
+- Lid: `LidShade` is now the one level of wall tops and lid (0.72, tops no longer fade to black; lid = same texture,
+  unlit, at ambient + fill × 0.72, sinking to 20 % over ~7 m of depth); `FlameGuard` 3.0 m.
+
+**00:30 (21 Nov) — first full master run back (23:40, 174 shots, 0 errors): what it showed, what changed after it**
+- 1 / 8 verified: mire trunks, wastes boulders, abyss rock, sands palms — hero visible in every stop; trunks beside
+  the hero are solid columns again (no grain), a trunk in front opens only round the figure. `v03\pairs\01_*.jpg`,
+  `08_sands_palms.jpg`, `review\sands_side.jpg`.
+- 2 rock form verified (`pairs\02_abyss_rock.jpg`). Lid: measured 0.8-1.5 % sRGB with ambient + fill alone (floor in
+  the hero's fire: 14 %) → `LidGain` 2.6 as an unlit lift shared by the indoor wall tops (new `WallFlags.Top`,
+  env_wall `self_lit`) and the lid (env_cap `lid_gain`), full within 8 m of the hero, a third of it beyond 22 m.
+  NOT yet seen at this gain (run `master3` queued).
+- 3 not verified: the probe's hero was put into a boss that sleeps behind its sealed door (`Level.SetBoss` switches
+  the boss's processing off until the fight is engaged) — nothing ran. The probe now provokes it first (`hug`).
+- 4 verified in `after\bossA_1.png`, `abyssR0_1.png`: red only in the outer band.
+- 5 clip viewer (`review\clips_zoom.png`): Roll at 1.9 on the astromancer = plank at 45° (0.08 s), horizontal bell
+  (0.2 s), upside down (0.32 s = end of dash). Robed heroes (astromancer, soulbinder) now use `Shield_Dash` at 1.6
+  (`Player.EvadeAnimOf`, also used by TestSuite.Anims' evade check); everyone else rolls at 2.5. The staged evade of
+  the first run hit a stun (monsters round the hero) and never rolled: re-staged in town in `master3`.
+- 6 verified (`pairs\06_cathedral_floor.jpg`). 7: cage no longer white (`review\lamp_after_crop.png`), `FlameGuard`
+  3.0 → 2.2 (it had gone almost black). 9 verified (`after\paragon_1.png`); prompt alpha raised afterwards.
+- 10: gallery `review\fx_gallery.jpg` (crypt + town: zones, telegraphs, beams, projectiles, portal all load and
+  read); 8-class bot sweep in crypt_d1, 10 frames each (`review\fx8_<class>.jpg`, `fx8_luma.txt`): white(>90 %)
+  mean 0.08-0.42 % per class, worst frame 1.41 % (pactbinder's 6 m fire field) → fire-zone cracks 1.9 → 1.45 and
+  white-hot share 0.9 → 0.55 in fx_zone. Slash: thin warm arc, readable (`after\fx8_emberblade_5.png`).
+  Frame rate, 4K 高 + governor, all 20 themes, 23:47-23:50, lock held (no other game run), voice generation
+  (voxcpm) and a Godot import running: 52-111 fps (`v03\perf\perf.txt`); the governor left the preset's 0.67
+  in 16 of 20 themes (mire 0.58, sands 0.62, abyss 0.62, sanctum 0.66). 15 Nov under load: 36-56 fps at 0.50.
+- 11 (new, from the lead): portals inside a doorway block. Cause: `WorldObjects.Exit/Entrance` built an arch (two
+  posts and a 3.7 m lintel, object-space triplanar smeared along it: "stacked timber") and hung `Fx.Portal` 1.35-
+  1.45 m up, although Fx.Portal already lifts its swirl by its own height: the swirl sat half inside the lintel and
+  its ground pool floated at 1.4 m. Patch staged in `gfx_tmp\v03\edit90.pl` (applied only after the "before" run
+  `master3` has built): open ring of standing stones (`PortalRing`), swirl on the ground, `PortalSpot` moves the
+  portal up to 3 m to stand clear of walls / blocking props, `Fx.Portal(c, r, onGround)`, `Surface(set, uv, world)`.
+
+## 21 Nov, 01:00 — PAUSED for the 0.3.0 release: state per item (whole project compiles, `check.ps1` 0 errors)
+No background job of mine is left (queued runs stopped, `slot98*` moved to `saves_test_backup`).
+| # | item | state in the tree | seen on screen |
+|---|---|---|---|
+| 1 | hero hidden by trees / boulders / rock | IN (env_prop, env_wall: figure outline cut + wide disc; props under 2 m never cut; trees keep their trunks) | yes — `v03\pairs\01_*.jpg`, 23:40 run |
+| 1b | cut round the hero's target (`focus_pos`, CameraRig) | IN | only with a held test point (`ent_before\focA_1`, `focB_1`: renders, no artefacts); NOT with a real hovered monster |
+| 2 | black rock / void beyond dungeon walls | IN (lum_floor, sky fill 0.42, sky rim; lid + indoor wall tops textured) | rock yes (`pairs\02_abyss_rock.jpg`); lid seen at gain 1.0 (≈1 % sRGB, too dark) and 2.6 (≈7 %, `ent_before\lidA_1.png`, a little strong) — **shipped value 1.9 lies between the two and was not itself rendered** |
+| 3 | boss inside the hero | IN (`Monster.BodyBlock`, roster engineer agreed) | yes — 00:37 run: hero put on 賽倫 is at 1.58 m within 0.25 s (touch distance 1.71 m), `ent_before\bossB_2.png` |
+| 4 | red screen at low life / heavy hit | IN (HudShaders.Vignette, Hud.cs) | yes — `after\bossA_1.png`, `abyssR0_1.png` |
+| 5 | astromancer "plank" | IN: cause = evade. Roll rate 1.9 → 2.5 for all; astromancer + soulbinder use `Shield_Dash` 1.6 (`Player.EvadeAnimOf`; TestSuite.Anims follows it) | pose log yes (Roll back to 18° at the end of the dash; Shield_Dash 16-30° throughout); frames `ent_before\rollA_*`, `rollE_*`, `rollS_*` shot but only the clip viewer sheet was looked at |
+| 6 | cathedral checkerboard | IN (`worn_marble`) | yes — `pairs\06_cathedral_floor.jpg` |
+| 7 | street lamp | IN (flame guard, warm glass film) | yes at guard 3.0 (`review\lamp_after_crop.png`); shipped 2.2 (1.9× brighter cage) not re-shot |
+| 8 | grainy palm trunks | IN (same shader as 1) | yes — `pairs\08_sands_palms.jpg`, `review\sands_side.jpg` |
+| 9 | paragon stray frame | IN (plaque at the gate; ghost only under the pointer) | yes — `after\paragon_1.png` |
+| 10 | effects at level B, frame rate | fire-zone cracks toned down; everything else left as re-graded | gallery + 8-class sweep yes (white>90 %: class means 0.08-0.42 %, worst frame 1.41 % before / 1.07 % after the fire change); 4K 高 52-111 fps (`v03\perf\perf.txt`) with voice generation + an import running |
+| 11 | portal inside the gate | **SWITCHED OFF** — `WorldObjects.BuiltGateways = false`: exits, entrances, conjured portals and the rift stone are built exactly as in 0.2.0 (arch + round swirl). | new gate: NEVER rendered |
+
+**Item 11, where it stands.** Written and compiling, behind the switch: `Gateways.cs` (seven themed gates from the
+level's own graded materials: masonry+keystone, timber with through beam / braces / iron bands, battered sandstone
+pylons, rimed stone with icicles, gabled grave gate, gothic with pointed gable, basalt columns under obsidian; ember
+inlays), `Fx.Veil` + `shaders/fx_veil.gdshader` (rectangular veil filling the opening, ground spill, rising motes;
+loaded only on first use), `WorldObjects.Gateway / PortalSpot / FreeAround`, `WallFlags.Stand` (no indoor floor cut
+for landmarks). Before-shots of all 7 regions, town, 2 dungeons, 2 dungeon entrances: `v03\ent_before\ent*.png`
+(sheet `review\ent_before_a.jpg`). To resume: run `gfx_tmp\v03\tour.sh Y:/shots/gfx/v03/ent_after <log> "<the
+ent* stops of master3>" --gfx-gates`, look at every gate (shader compiles? veil fills the opening? jamb obstacles do
+not trap the arrival spot? indoor gates whole?), then set `BuiltGateways = true`. Conjured portals (`Portal()`) stay
+round by design but should then stand on the ground (the flag also does that) — say so to the lead.
+**Also open:** frame-rate figure in a truly quiet window (never had one: 6-10 jobs queued all night); `final\` is
+still empty; the README gallery was shot before these changes.
+**Files of others touched (small, marked `[gfx 0.3 …]`):** Monster.cs (BodyBlock), Player.cs (evade clip/rate),
+TestSuite.Anims.cs (evade check), Hud.cs + HudGlobe.cs (vignette), WorldObjects.cs (gateway code behind the switch),
+ParagonUi.cs (item 9), project.godot (`focus_pos` global), ARCHITECTURE.md (one sentence).

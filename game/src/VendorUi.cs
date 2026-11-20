@@ -535,7 +535,7 @@ public partial class VendorUi : UiPanel
         if (tex == null) return p;
         var t = new TextureRect
         {
-            Texture = tex, Modulate = new Color(UiTheme.Text, 0.85f), MouseFilter = MouseFilterEnum.Ignore,
+            Texture = tex, Modulate = Icons.Tint(tex, new Color(UiTheme.Text, 0.85f)), MouseFilter = MouseFilterEnum.Ignore,
             ExpandMode = TextureRect.ExpandModeEnum.IgnoreSize, StretchMode = TextureRect.StretchModeEnum.KeepAspectCentered,
         };
         p.AddChild(t);

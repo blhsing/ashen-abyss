@@ -309,18 +309,16 @@ class Rearer:
         p.rot('head', x=pitch, z=yaw, y=roll)
 
     def tailwave(self, p, u, amp, n=1.0, waves=1.2, ph=0.0, grow=0.6, lift=0.0):
-        """lateral undulation running from the body to the tail tip; the first tail bone counter-turns so the wave
-        has no net swing; amp in degrees per joint"""
+        """lateral undulation running from the body BACK to the tail tip (as in serpentine travel); the first tail
+        bone counter-turns so the tail keeps its mean heading; amp in degrees per joint"""
         m = len(self.tail)
         tot = 0.0
         for i, b in enumerate(self.tail):
             s = i / max(m - 1, 1)
-            a = amp * (1 - grow + grow * s) * math.sin(2 * math.pi * (n * u + waves * s + ph))
-            if i == 0:
-                a0 = a
+            a = amp * (1 - grow + grow * s) * math.sin(2 * math.pi * (n * u - waves * s + ph))
             p.rot(b, z=a, x=-lift * s)
             tot += a * (m - i) / m
-        p.rot(self.tail[0], z=-tot * 0.5)
+        p.rot(self.tail[0], z=-tot * 0.7)
 
     def reach(self, clip, pt=None):
         return self.C.reach(clip, 'head', self.top if pt is None else pt)
@@ -417,9 +415,12 @@ class Rearer:
 # ================================================================================================ looper
 class Looper:
     """inchworm: the rear end (head of s1) and the front end (tail of sN) are placed on targets; the chain between
-    them is a circular arc of the chain's fixed length"""
+    them humps up. The end links keep their own pitch (flat on the ground by default), so nothing digs into the floor:
+    link pitch phi(t) = th_r (1-t)^2 + th_f t^2 + A sin(2 pi t) + B sin(pi t); A and B are solved so the ends meet
+    the targets (A = height of the hump, B = the slope when one end is lifted)."""
+    A_MAX = 2.5
 
-    def __init__(self, C, lift_r=0.0):
+    def __init__(self, C):
         self.C = C
         rg = C.rg
         self.seg = sorted([n for n in rg.names if n.startswith('s') and n[1:].isdigit()], key=lambda n: int(n[1:]))
@@ -435,63 +436,84 @@ class Looper:
         self.fr.home = V(0, -self.L * 0.42, self.z)
         self.rr.home = V(0, self.L * 0.42, self.z)
         C.legs = [self.fr, self.rr]
-        # contact points for the verifier: the ends of the chain (axis points)
-        self.fr.c = self.front0.copy(); self.rr.c = self.rear0.copy()
         self.top = rg.T('head') if self.has_head else self.front0
+        self._t = np.arange(self.n) / (self.n - 1.0)
+        self._s2 = np.sin(2 * np.pi * self._t)
+        self._s1 = np.sin(np.pi * self._t)
+        self.min_span = self.span_at(self.A_MAX)
 
-    def _delta(self, d):
-        """joint angle (rad) that makes a chain of n links of length ls span the chord d"""
-        n, ls = self.n, self.ls
-        d = min(d, n * ls * 0.9995)
-        lo, hi = 1e-6, 2 * math.pi / n * 0.98
+    def span_at(self, A):
+        return float(self.ls * np.cos(A * self._s2).sum())
 
-        def chord(dl):
-            return ls * abs(math.sin(n * dl / 2) / math.sin(dl / 2))
-        if d <= chord(hi):
-            return hi
-        for _ in range(50):
-            mid = (lo + hi) / 2
-            if chord(mid) > d:
-                lo = mid
-            else:
-                hi = mid
-        return (lo + hi) / 2
+    def _solve(self, dh, dz, th_r=0.0, th_f=0.0):
+        """-> (link pitches phi (rad, + = nose up), error m)"""
+        t = self._t
+        base = th_r * (1 - t) ** 2 + th_f * t ** 2
+        s1, s2, ls = self._s1, self._s2, self.ls
 
-    def place(self, p, rear, front, roll=0.0, yaw=0.0, skew=0.0, flat=0.0):
-        """rear / front: world targets of the two ends (bone axis). roll turns the plane of the loop about the
-        chord (90 = the loop lies on its side); skew shifts curvature towards the front (+) or rear (-);
-        flat 0..1 flattens the arc into an S (less height)"""
-        rear = np.asarray(rear, dtype=float); front = np.asarray(front, dtype=float)
+        def a_for(Bc):
+            b = base + Bc * s1
+            g = lambda A: float(np.cos(b + A * s2).sum()) * ls - dh
+            if g(0.0) <= 0.0:
+                return 0.0
+            if g(self.A_MAX) >= 0.0:
+                return self.A_MAX
+            lo, hi = 0.0, self.A_MAX
+            for _ in range(26):
+                mid = (lo + hi) / 2
+                if g(mid) > 0:
+                    lo = mid
+                else:
+                    hi = mid
+            return (lo + hi) / 2
+
+        def h(Bc):
+            A = a_for(Bc)
+            return float(np.sin(base + Bc * s1 + A * s2).sum()) * ls - dz, A
+        lo, hi = -1.5, 1.5
+        hl, _ = h(lo); hh, _ = h(hi)
+        if hl >= 0:
+            Bc = lo
+        elif hh <= 0:
+            Bc = hi
+        else:
+            for _ in range(24):
+                mid = (lo + hi) / 2
+                if h(mid)[0] < 0:
+                    lo = mid
+                else:
+                    hi = mid
+            Bc = (lo + hi) / 2
+        A = a_for(Bc)
+        ph = base + Bc * s1 + A * s2
+        e = math.hypot(float(np.cos(ph).sum()) * ls - dh, float(np.sin(ph).sum()) * ls - dz)
+        return ph, e
+
+    def place(self, p, rear, front, roll=0.0, yaw=0.0, pitch_r=0.0, pitch_f=0.0, drag=True):
+        """rear / front: targets of the two ends (bone axis, armature space). pitch_r / pitch_f = pitch of the end links
+        in degrees (+ = nose up; 0 = flat). roll turns the loop about the chord (90 = the hump lies on its side);
+        yaw turns the whole animal about its rear end. drag: a target further than the body is long pulls the
+        rear end after it"""
+        rear = np.asarray(rear, dtype=float).copy(); front = np.asarray(front, dtype=float)
         ch = front - rear
         d = float(np.linalg.norm(ch))
-        self.err = max(0.0, d - self.L)
-        p.err = max(p.err, self.err)
-        dl = self._delta(d)
-        n = self.n
-        w = np.ones(n - 1)
-        if skew:
-            w = 1 + skew * np.linspace(-1, 1, n - 1)
-        # direction angles of the links relative to the chord (symmetric arc), then per-joint turns
-        turns = dl * w * (n - 1) / w.sum()
-        ang = np.zeros(n)
-        ang[0] = 0.0
-        for i in range(1, n):
-            ang[i] = ang[i - 1] - turns[i - 1]
-        # chord of this (possibly skewed) arc in its own frame -> rotate so it matches the wanted chord
-        py = -np.cos(ang).sum() * self.ls; pz = np.sin(ang).sum() * self.ls
-        a_arc = math.atan2(pz, -py)
-        d_arc = math.hypot(py, pz)
-        el = math.atan2(ch[2], math.hypot(ch[0], ch[1]))
-        az = math.degrees(math.atan2(-ch[0], -ch[1])) if (abs(ch[0]) + abs(ch[1])) > 1e-9 else 0.0   # yaw of the chord from -Y towards... +X is negative
-        a0 = el - a_arc
+        if d > 0.985 * self.L:
+            if drag:
+                rear = front - ch / d * (0.985 * self.L)
+                ch = front - rear
+            else:
+                p.err = max(p.err, d - self.L)
+        dh = math.hypot(ch[0], ch[1])
+        ph, e = self._solve(dh, float(ch[2]), math.radians(pitch_r), math.radians(pitch_f))
+        if e > 0.01:
+            p.err = max(p.err, e)
+        az = math.degrees(math.atan2(-ch[0], -ch[1])) if dh > 1e-9 else 0.0
         b0 = self.seg[0]
-        R = rz(-az + yaw) @ ry(roll) @ rx(-math.degrees(a0))
-        p.setR(b0, R)
+        p.setR(b0, rz(-az + yaw) @ ry(roll) @ rx(-math.degrees(ph[0])))
         p.move(b0, rear - self.rear0)
-        for i in range(1, n):
-            p.rot(self.seg[i], x=math.degrees(turns[i - 1]))
-        # exact fix of the chord length error introduced by the skew (rarely needed)
-        return math.degrees(dl)
+        for i in range(1, self.n):
+            p.rot(self.seg[i], x=math.degrees(ph[i - 1] - ph[i]))
+        return ph
 
     def targets(self, u, S, duty, lift, lift_r=None, phase_r=0.5):
         self.fr.phase = 0.0; self.rr.phase = phase_r
@@ -499,30 +521,41 @@ class Looper:
         Pr, swr, _ = gait_foot(self.rr, u, S, duty, lift if lift_r is None else lift_r)
         return Pf, Pr, swf, swr
 
-    def set_homes(self, S, duty, phase_r=0.5, slack=0.97, lift=0.0, lift_r=None):
-        """choose the home distance so the largest span of the cycle is slack * chain length"""
-        worst = -9.0; least = 9.0
+    def set_homes(self, S, duty, phase_r=0.5, slack=0.97, lift=0.0, lift_r=None, n=240):
+        """distance between the homes of the two ends such that the longest span of the cycle is slack x body length.
+        -> (home distance, shortest span of the cycle)"""
         self.fr.home = V(0, 0, self.z); self.rr.home = V(0, 0, self.z)
-        for i in range(240):
-            Pf, Pr, _, _ = self.targets(i / 240.0, S, duty, lift, lift_r, phase_r)
-            e = float(np.linalg.norm(Pr - Pf)) * (1.0 if Pr[1] >= Pf[1] else -1.0)
-            worst = max(worst, e); least = min(least, e)
-        h = slack * self.L - worst
+        D = []
+        for i in range(n):
+            Pf, Pr, _, _ = self.targets(i / float(n), S, duty, lift, lift_r, phase_r)
+            D.append((Pr[1] - Pf[1], Pr[2] - Pf[2]))
+        D = np.array(D)
+        lo, hi = 0.0, 2 * self.L
+        for _ in range(40):
+            mid = (lo + hi) / 2
+            if np.hypot(mid + D[:, 0], D[:, 1]).max() > slack * self.L:
+                hi = mid
+            else:
+                lo = mid
+        h = lo
         self.fr.home = V(0, -h / 2, self.z); self.rr.home = V(0, h / 2, self.z)
-        return h, h + least
+        return h, float(np.hypot(h + D[:, 0], D[:, 1]).min()), float((h + D[:, 0]).min())
 
-    def gait(self, name, v, T, duty, lift=0.02, lift_r=None, phase_r=0.5, head=0.0, sway=0.0, extra=None, slack=0.97):
+    def gait(self, name, v, T, duty, lift=0.04, lift_r=None, phase_r=0.5, head=0.0, sway=0.0, nose=0.0, extra=None, slack=0.97):
+        """inchworm travel. The ends are planted for `duty` of the cycle each, half a cycle apart (duty 0.5 = classic
+        inchworm; < 0.5 = bounding loops with both ends in the air in between). nose = pitch of the front link while
+        it swings (degrees, + = up). Put duty on the frame grid (k / frames)."""
         T = max(2, round(T * B.FPS)) / B.FPS
         S = v * duty * T
-        h, mn = self.set_homes(S, duty, phase_r, slack, lift, lift_r)
-        if mn < 0.12 * self.L:
-            B.log("NOTE %s %s: looper span gets as short as %.2f of its length (stride %.2f)" % (self.C.id, name, mn / self.L, S))
+        h, mn, mny = self.set_homes(S, duty, phase_r, slack, lift, lift_r)
+        if mn < self.min_span or mny < 0:
+            B.log("NOTE %s %s: looper span gets as short as %.2f m (tightest loop %.2f m, stride %.2f m)" % (self.C.id, name, mn, self.min_span, S))
         homes = (self.fr.home.copy(), self.rr.home.copy())
 
         def fn(p, u):
             self.fr.home, self.rr.home = homes[0].copy(), homes[1].copy()
             Pf, Pr, swf, swr = self.targets(u, S, duty, lift, lift_r, phase_r)
-            self.place(p, Pr, Pf, yaw=sway * osc(u, 1))
+            self.place(p, Pr, Pf, yaw=sway * osc(u, 1), pitch_f=nose * swf, drag=False)
             if self.has_head:
                 p.rot('head', x=head * swf)
             if extra:

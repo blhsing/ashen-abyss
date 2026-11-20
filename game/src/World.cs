@@ -112,6 +112,15 @@ public sealed class NavGrid
         Vector2 step = to - from;
         float stepLen = step.Length();
         var c0 = CellOf(to);
+        var cf0 = CellOf(from);
+        if (!Walk(cf0.X, cf0.Y))
+        {
+            // already inside a blocked cell (pushed there by a prop beside a wall): any step that ends on walkable ground,
+            // or that leads toward the nearest one, is allowed, so nobody is frozen in place for ever
+            if (Walk(c0.X, c0.Y)) return to;
+            Vector2 free = Center(NearestWalkCell(cf0, 3));
+            return to.DistanceSquaredTo(free) < from.DistanceSquaredTo(free) ? to : from + (free - from).LimitLength(Mathf.Max(stepLen, 0.05f));
+        }
         if (!Walk(c0.X, c0.Y))
         {
             // slide along one axis if possible
@@ -149,12 +158,18 @@ public sealed class NavGrid
                             {
                                 var tan = new Vector2(-n.Y, n.X);
                                 float side = step.Dot(tan) >= -1e-4f * stepLen ? 1f : -1f;      // keep going round the side it is already on
+                                // round the side that is open: a prop against a wall must be passed on its free side
+                                Vector2 probe = to + tan * side * Mathf.Max(stepLen * 0.85f, r + 0.3f);
+                                if (!WalkAt(probe) && WalkAt(to - tan * side * Mathf.Max(stepLen * 0.85f, r + 0.3f))) side = -side;
                                 to += tan * side * stepLen * 0.85f;
                             }
                         }
                     }
                 }
         }
+        // the push-outs must not end inside a wall or a pit (from there no step would ever be allowed)
+        var ce = CellOf(to);
+        if (!Walk(ce.X, ce.Y)) return from;
         return to;
     }
 
@@ -176,6 +191,32 @@ public sealed class NavGrid
 
     /// <summary>True when an actor can walk straight from a to b (no wall, pit or big prop in between).</summary>
     public bool LineWalk(Vector2 a, Vector2 b) => Trace(a, b, false, true);
+    /// <summary>
+    /// True when a body of radius <paramref name="r"/> can walk straight from a to b: like LineWalk, but sampled every
+    /// 0.25 m and also along both edges of the body, so a line that grazes a wall corner or a big prop (which the
+    /// centre-line test steps over) is not taken as clear. Used for the hero's click-to-move and run-ups.
+    /// </summary>
+    public bool LineWalkWide(Vector2 a, Vector2 b, float r)
+    {
+        Vector2 d = b - a;
+        float dist = d.Length();
+        if (dist < 1e-4f) return WalkAt(b);
+        Vector2 n = new Vector2(-d.Y, d.X) / dist * r;
+        var start = CellOf(a);
+        int steps = Mathf.Max(1, Mathf.CeilToInt(dist / 0.25f));
+        for (int i = 1; i <= steps; i++)
+        {
+            Vector2 p = a.Lerp(b, i / (float)steps);
+            for (int k = -1; k <= 1; k++)
+            {
+                var c = CellOf(p + n * k);
+                if (Get(c.X, c.Y) != Floor) return false;
+                if (_solid != null && c != start && _solid[c.Y * W + c.X]) return false;
+            }
+        }
+        return true;
+    }
+
     /// <summary>True when a projectile or spell can travel from a to b (pits do not block).</summary>
     public bool LineShot(Vector2 a, Vector2 b) => Trace(a, b, true);
 
@@ -213,7 +254,23 @@ public sealed class NavGrid
 
     private readonly List<Vector2> _path = new();
     /// <summary>A* path as world points (already string-pulled). Empty if unreachable.</summary>
-    public List<Vector2> Path(Vector2 from, Vector2 to)
+    public List<Vector2> Path(Vector2 from, Vector2 to) => Path(from, to, 0f);
+
+    /// <summary>A* path; with <paramref name="width"/> &gt; 0 the string pulling only skips corners a body that wide clears (LineWalkWide).</summary>
+    /// <summary>
+    /// A* path that also keeps out of the given cells (cells with a small prop that pinched a body against a wall: the
+    /// planner normally walks through them). The cells are blocked only for this one search.
+    /// </summary>
+    public List<Vector2> PathAvoiding(Vector2 from, Vector2 to, float width, List<Vector2I> avoid)
+    {
+        if (_astar == null || avoid == null || avoid.Count == 0) return Path(from, to, width);
+        var set = new List<Vector2I>();
+        foreach (var c in avoid) if (In(c.X, c.Y) && !_astar.IsPointSolid(c)) { _astar.SetPointSolid(c, true); set.Add(c); }
+        try { return Path(from, to, width); }
+        finally { foreach (var c in set) _astar.SetPointSolid(c, false); }
+    }
+
+    public List<Vector2> Path(Vector2 from, Vector2 to, float width)
     {
         _path.Clear();
         if (_astar == null) return _path;
@@ -242,7 +299,7 @@ public sealed class NavGrid
         while (i < pts.Count)
         {
             int far = i;
-            for (int j = pts.Count - 1; j > i; j--) if (LineWalk(cur, pts[j])) { far = j; break; }
+            for (int j = pts.Count - 1; j > i; j--) if (width > 0f ? LineWalkWide(cur, pts[j], width) : LineWalk(cur, pts[j])) { far = j; break; }
             _path.Add(pts[far]);
             cur = pts[far];
             i = far + 1;

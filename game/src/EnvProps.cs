@@ -36,6 +36,8 @@ internal readonly record struct LightKind(float Scale, int Stand, float Flame, f
 /// </summary>
 internal static class EnvProps
 {
+    /// <summary>Within this many metres of its own light a light prop answers as if the light stood this far away (env_prop: flame_guard).</summary>
+    public const float FlameGuard = 2.2f;
     /// <summary>Energy of a standard torch (OmniLight3D); individual light kinds scale it.</summary>
     public const float TorchEnergy = 3.4f;
 
@@ -96,6 +98,7 @@ internal static class EnvProps
     };
 
     private static readonly string[] PlantPrefixes = { "fern", "reed", "swamp_plant", "broadleaf", "dry_bush", "dead_bush" };
+    private static readonly string[] TreePrefixes = { "dead_tree", "dead_pine", "dead_trunk", "dead_quiver", "quiver_tree" };
     private static readonly string[] NaturalPrefixes =
     {
         "rock", "boulder", "cliff", "spire", "shard", "basalt", "dead_", "fallen_log", "stump", "roots", "root_piece", "branch", "quiver",
@@ -315,8 +318,50 @@ internal static class EnvProps
                 m.SetShaderParameter("top_color", t.TopColor);
                 m.SetShaderParameter("top_amount", def.Natural ? t.TopAmount : t.TopAmount * 0.4f);
                 m.SetShaderParameter("sway", def.Plant ? 0.035f : 0f);
+                // the see-through cut only opens props that can hide a figure: the shader multiplies this height by the
+                // instance scale (the mesh node's own scale is taken out here, it is part of the instance transform)
+                float nodeScale = def.Parts.Count > 0 ? def.Parts[0].Local.Basis.Y.Length() : 1f;
+                m.SetShaderParameter("prop_height", def.Height / Mathf.Max(nodeScale, 1e-4f));
+                // trees: the wide see-through disc opens the crown only; the trunk stands (it used to dissolve into a
+                // grainy column whenever the hero walked past) and is cut just where it covers a figure
+                if (HasPrefix(def.Name, TreePrefixes))
+                    m.SetShaderParameter("disc_from", def.Name.Contains("quiver", StringComparison.Ordinal) ? 0.55f : def.Name.StartsWith("dead_trunk", StringComparison.Ordinal) ? 0.6f : 0.3f);
+                // props were never levelled like the ground and walls: near-black stone and iron is lifted to the foot of
+                // the theme's wall band, and rock under the sky gets the sky's share of the ambient and a faint sheen
+                m.SetShaderParameter("lum_floor", t.WallLumMin * EnvMats.PropLumFloor);
+                if (def.Natural && !def.Plant)
+                {
+                    m.SetShaderParameter("sky_fill", EnvMats.SkyFill(t));
+                    m.SetShaderParameter("sky_rim", EnvMats.SkyRim(t));
+                }
+                if (def.Flames != null && def.Flames.Length > 0)
+                {
+                    // where PlaceLight hangs this prop's own light: the middle of its flames, a quarter metre (world) higher
+                    var at = Vector3.Zero;
+                    int nf = Math.Min(def.Flames.Length, 7);
+                    for (int i = 0; i < nf; i++) at += def.Flames[i];
+                    at /= nf;
+                    float ks = LightKinds.TryGetValue(def.Name, out var lk) ? lk.Scale : BaseScale(def.Name);
+                    at += Vector3.Up * (0.25f / Mathf.Max(ks, 0.1f));
+                    if (def.Parts.Count > 0) at = def.Parts[0].Local.AffineInverse() * at;
+                    m.SetShaderParameter("flame_local", at);
+                    m.SetShaderParameter("flame_guard", FlameGuard);
+                }
                 conv = m;
             }
+        }
+        else if (src is BaseMaterial3D glass && def.Flames != null)
+        {
+            // Lantern glass: the lamp's own light stands a hand away from the panes and burnt them to white pixels (the
+            // blended panes also take no part in anti-aliasing). They carry a thin warm film of the flame's colour
+            // instead and take no light; the flame card and its halo inside do the glowing.
+            var tc = _theme.TorchColor;
+            conv = new StandardMaterial3D
+            {
+                ResourceName = glass.ResourceName + "_warm", ShadingMode = BaseMaterial3D.ShadingModeEnum.Unshaded,
+                Transparency = BaseMaterial3D.TransparencyEnum.Alpha, CullMode = BaseMaterial3D.CullModeEnum.Disabled,
+                AlbedoColor = new Color(Mathf.Min(tc.R * 0.92f, 1f), Mathf.Min(tc.G * 0.66f, 1f), Mathf.Min(tc.B * 0.4f, 1f), 0.26f),
+            };
         }
         Converted[key] = conv;
         return conv;

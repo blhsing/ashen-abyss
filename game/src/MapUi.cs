@@ -1753,14 +1753,18 @@ public partial class MapUi : UiPanel
         string obj = lv.ObjectiveText;
         if (string.IsNullOrEmpty(obj) && lv.Dungeon != null && lv.Dungeon.Goal != DungeonGoal.None) obj = ZoneDb.GoalText[(int)lv.Dungeon.Goal];
         bool hasObj = !string.IsNullOrEmpty(obj);
-        _objDone = lv.ObjectiveDone;
-        _objProgress = _objDone ? 1f : Mathf.Clamp(lv.IsRift && lv.ObjectiveProgress <= 0f ? lv.RiftProgress : lv.ObjectiveProgress, 0f, 1f);
+        // ObjectiveDone is already true while the boss still stands: the phase tells that step (Boss) from a finished
+        // place (Cleared). The boss step names the next task in gold, without the done mark and without the met goal's bar.
+        var phase = lv.Phase;
+        bool bossNext = phase == Level.DungeonPhase.Boss;
+        _objDone = phase == Level.DungeonPhase.Cleared;
+        _objProgress = _objDone || bossNext ? 1f : Mathf.Clamp(lv.IsRift && lv.ObjectiveProgress <= 0f ? lv.RiftProgress : lv.ObjectiveProgress, 0f, 1f);
         _objHead.Visible = _objText.Visible = hasObj;
-        _objBar.Visible = hasObj && !lv.IsTown;
+        _objBar.Visible = hasObj && !lv.IsTown && (lv.IsRift || !bossNext);
         if (hasObj)
         {
             _objText.Text = _objDone ? obj + "（已完成）" : obj;
-            _objText.AddThemeColorOverride("font_color", _objDone ? Palette.Good : UiTheme.Text);
+            _objText.AddThemeColorOverride("font_color", _objDone ? Palette.Good : bossNext ? UiTheme.Gold : UiTheme.Text);
         }
 
         var r = lv.Region;

@@ -20,8 +20,8 @@ SPECS = {
         family='coldfire', scale=1.55, poses='brute', emis=(0.45, 0.8, 1.0),
         body=dict(HIDDEN),
         props=dict(shoulders=1.12, arm_len=1.08),
-        looks={},
-        parts=[dict(p='brazier_hulk')],
+        looks={}, dress={'frost': 0.3},
+        parts=[dict(p='brazier_hulk2')],
         notes="Brazier-hulk: a dead beacon's iron brazier basket worn as a ribcage by a hulking body of blue ice that grew up through "
               "it -- the frozen fire glows through the black bars (emis_), erupts from the basket top as a crown of glass tongues "
               "where a head would be, the brazier's three legs stick out of the back; arms are rough ice columns ending in fused "
@@ -50,12 +50,11 @@ SPECS = {
               "arms each twisted together from three limbs.  A walking parasol."),
     'mon_ash_colossus': dict(
         family='ash', scale=1.9, poses='brute', emis=(1.0, 0.22, 0.06), budget=22000, jpeg=(84, 82, 88),
-        body=dict(type='flesh', decimate=0.4, look='ashcrust', eyes=None, melt=3, hide=['head', 'neck']),
+        body=dict(type='flesh', decimate=0.4, look='ashmass', eyes=None, melt=3, hide=['head', 'neck']),
         props=dict(bulk=1.42, shoulders=1.18, chest=1.08, hips=1.05, leg=1.3, arm=1.2, hunch=14, belly=0.15),
         looks={},
         parts=[
-            dict(p='drift_mass'),
-            dict(p='cracks', look='spark', regions=('thighs', 'upperarms', 'forearms'), count=6, seed=5, width=0.011),
+            dict(p='drift_mass2'),
         ],
         notes="Drift-colossus: a drift that stood up -- a slope-shouldered mass with no neck whose surface is made of half-emerged "
               "ash-casts (faces, backs, reaching arms pressed outward), fists that are knots of fused bodies, dull emis_ sparks in "
@@ -64,7 +63,7 @@ SPECS = {
         family='wax', scale=1.5, poses='brute', emis=(1.0, 0.72, 0.30),
         body=dict(HIDDEN),
         props=dict(arm_len=1.08),
-        looks={'tallow': {'soot': 0.3}},
+        looks={'tallow': {'color': (0.46, 0.40, 0.26), 'soot': 0.4}},
         parts=[dict(p='tallow_mound'), dict(p='flame3', h=0.13, r=0.03, sweep=(0.0, 0.12, 0.0), bone='spine_03')],
         notes="Tallow-mound: sealed chandlers who ran together -- a slumped cone of wax taller than a door (pelvis-rigid below the "
               "hips, no legs shown) with heads, shoulders and praying hands half-sunk in its surface, a comb of dead wicks down the "

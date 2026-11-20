@@ -150,12 +150,13 @@ public partial class Monster : Actor
         if (Faction == Faction.Monster && dp > 46f && !IsBoss)           // asleep far from the hero: no AI, no animation work
         {
             int far = dp < 60f ? 1 : 2;
-            if (_sleep != far) { _sleep = far; Model.Visible = far == 1 && !AiHidden; Model.SetAsleep(true); }
+            if (_sleep != far) { _sleep = far; Model.Visible = far == 1 && !AiHidden; Model.SetAsleep(true); GlowOff(); }
             return;
         }
-        if (_sleep != 0) { _sleep = 0; Model.Visible = !AiHidden; Model.SetAsleep(false); }
+        if (_sleep != 0) { _sleep = 0; Model.Visible = !AiHidden; Model.SetAsleep(false); if (_glowLight == null) Log.Guard("monster-ai", GlowSetup); }
         TickStatuses(dt);
         if (Dead) return;
+        if (Radius >= BodyBlockMin && Faction == Faction.Monster) BodyBlock(p, dp, dt);      // [gfx 0.3, item 3] giants and bosses are solid bodies
         float facing0 = Facing;
         AiTickAlways(dt);
         if (Dead) return;
@@ -341,7 +342,7 @@ public partial class Monster : Actor
         }
         else _blocked = 0f;
         Model.Locomote(sp, 0.2f, Def.Walk, Def.Run);           // the gait that fits the speed, feet matched to the ground
-        AnimCheck.Moving(Model, _animProbe, dt, false, Def.Id);
+        if (!Model.IsPrimitive) AnimCheck.Moving(Model, _animProbe, dt, false, Def.Id);     // a primitive cloud or post has no clips by design
     }
 
     private Vector2 SeparationPush()
@@ -370,6 +371,24 @@ public partial class Monster : Actor
             if (len < min && len > 0.001f) push += d / len * (min - len) / min * 2f;
         }
         return push;
+    }
+
+    // ── [gfx 0.3, item 3] body blocking (added by the graphics engineer; roster engineer: yours to keep, tune or move) ──
+    // Collision radii already scale with the model (Radius = Def.Radius × scale, 1.26 m for 寂滅大導師・賽倫), but the
+    // only code that used them against the hero was SeparationPush, which moves the MONSTER and only while it walks
+    // or idles. A boss that is casting never stepped aside and nothing kept the hero out of it, so the two models
+    // stood inside each other. Big bodies now carry the hero out to their surface, whatever state they are in.
+    private const float BodyBlockMin = 0.85f;        // giants, bosses, grown mini-bosses; ordinary monsters still part softly
+
+    private void BodyBlock(Player p, float dist, float dt)
+    {
+        if (p.Dead || AiNoSeparation) return;
+        float min = Radius * 0.9f + p.Radius;
+        if (dist >= min) return;
+        Vector2 d = p.Pos2 - Pos2;
+        Vector2 n = dist > 0.02f ? d / dist : (Forward.LengthSquared() > 0.01f ? Forward : new Vector2(0f, 1f));
+        // at most 9 m/s: walking into the body simply stops; a blink that lands inside is carried out in a moment
+        p.Move(n * Mathf.Min(min - dist, 9f * dt));
     }
 
     private void Separate(float dt)
