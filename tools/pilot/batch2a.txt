@@ -1,0 +1,9 @@
+18:28:50 emberblade mire_boss lv13
+  114.401 INF [pilot] TEST RESULT mode=boss class=emberblade end=boss killed t=215s level=14 deaths=0 area=mire_boss campaignDone=False bossesKilled=1 telegraphed threats=111 dodged=107 taken=4 (boss 107/103/4) dmgTelegraphed=95 otherHits=467 dmgOther=1422 dodgeWalks=172 rolls=20 defensives=1
+18:35:57 emberblade sands_boss lv28
+  102.730 INF [pilot] TEST FIGHT boss=boss_sand_tyrant area=sands_boss killed=True secs=111 deaths=0 heroLevel=29 threats=85 dodged=75 taken=10 dmgTelegraphed=832 dmgOther=221 life=1142
+18:41:39 emberblade sanctum_boss lv35
+  139.585 INF [pilot] TEST FIGHT boss=boss_grand_hush area=sanctum_boss killed=True secs=181 deaths=0 heroLevel=36 threats=77 dodged=69 taken=8 dmgTelegraphed=585 dmgOther=1688 life=1901
+18:47:55 emberblade abyss_boss lv42
+  136.830 INF [pilot] TEST RESULT mode=boss class=emberblade end=boss killed t=256s level=43 deaths=0 area=abyss_boss campaignDone=True bossesKilled=1 telegraphed threats=181 dodged=175 taken=6 (boss 176/170/6) dmgTelegraphed=611 otherHits=130 dmgOther=2980 dodgeWalks=223 rolls=23 defensives=0
+batch done

@@ -1,0 +1,106 @@
+{
+ "base": "bow",
+ "prefix": "wpn",
+ "atlas_px": 1024,
+ "area_m2": 0.6789,
+ "notes": "",
+ "entries": [
+  {
+   "id": "wpn_bow_v1",
+   "kind": "weapon",
+   "base": "bow",
+   "file": "res://assets/gear/weapons/wpn_bow_v1.glb",
+   "mount": "hand_l",
+   "grip2": [
+    -0.16,
+    0.0,
+    0.0
+   ],
+   "length": 1.364,
+   "variant": 1,
+   "hands": 2,
+   "grip": "both",
+   "tris": 2608,
+   "emissive": false,
+   "bbox": [
+    [
+     -0.1356,
+     -0.0206,
+     -0.682
+    ],
+    [
+     0.0281,
+     0.0206,
+     0.682
+    ]
+   ],
+   "textures": "wpn_bow",
+   "atlas_px": 1024
+  },
+  {
+   "id": "wpn_bow_v2",
+   "kind": "weapon",
+   "base": "bow",
+   "file": "res://assets/gear/weapons/wpn_bow_v2.glb",
+   "mount": "hand_l",
+   "grip2": [
+    -0.16,
+    0.0,
+    0.0
+   ],
+   "length": 1.668,
+   "variant": 2,
+   "hands": 2,
+   "grip": "both",
+   "tris": 1976,
+   "emissive": false,
+   "bbox": [
+    [
+     -0.1724,
+     -0.026,
+     -0.8342
+    ],
+    [
+     0.0335,
+     0.026,
+     0.8342
+    ]
+   ],
+   "textures": "wpn_bow",
+   "atlas_px": 1024
+  },
+  {
+   "id": "wpn_bow_v3",
+   "kind": "weapon",
+   "base": "bow",
+   "file": "res://assets/gear/weapons/wpn_bow_v3.glb",
+   "mount": "hand_l",
+   "grip2": [
+    -0.16,
+    0.0,
+    0.0
+   ],
+   "length": 1.784,
+   "variant": 3,
+   "hands": 2,
+   "grip": "both",
+   "tris": 2284,
+   "emissive": true,
+   "bbox": [
+    [
+     -0.1902,
+     -0.0228,
+     -0.9022
+    ],
+    [
+     0.0756,
+     0.0228,
+     0.882
+    ]
+   ],
+   "textures": "wpn_bow",
+   "atlas_px": 1024
+  }
+ ],
+ "built": "2026-11-21 20:26:40"
+}

@@ -339,13 +339,25 @@ public partial class DemoMode : Node
     {
         var d = h.D;
         int power = Math.Clamp(d.Level * 10 + 40, 10, ItemDb.MaxPower);
-        ItemKind[] kinds = { ItemKind.Weapon, ItemKind.Helm, ItemKind.Chest, ItemKind.Gloves, ItemKind.Pants, ItemKind.Boots, ItemKind.Amulet, ItemKind.Ring, ItemKind.Ring };
-        EquipSlot[] slots = { EquipSlot.Weapon, EquipSlot.Helm, EquipSlot.Chest, EquipSlot.Gloves, EquipSlot.Pants, EquipSlot.Boots, EquipSlot.Amulet, EquipSlot.Ring1, EquipSlot.Ring2 };
+        ItemKind[] kinds = { ItemKind.Helm, ItemKind.Chest, ItemKind.Gloves, ItemKind.Pants, ItemKind.Boots, ItemKind.Amulet, ItemKind.Ring, ItemKind.Ring };
+        EquipSlot[] slots = { EquipSlot.Helm, EquipSlot.Chest, EquipSlot.Gloves, EquipSlot.Pants, EquipSlot.Boots, EquipSlot.Amulet, EquipSlot.Ring1, EquipSlot.Ring2 };
         int legend = 0;
+        // the hands: of the styles this class can show (two-hand, dual-wield, one-hand + off-hand), the one the show has used
+        // least so far, so a demo run passes through every kind of loadout
+        var styles = ItemDb.HandStyles(d.Class);
+        int least = styles.Min(s => StyleShown.GetValueOrDefault(s));
+        var pickFrom = styles.Where(s => StyleShown.GetValueOrDefault(s) == least).ToList();
+        string style = pickFrom[_rng.Next(pickFrom.Count)];
+        StyleShown[style] = StyleShown.GetValueOrDefault(style) + 1;
+        bool first = true;
+        var (mh, oh) = ItemDb.RollHands(d.Class, power, style,
+            () => { var r = first ? (_rng.NextDouble() < 0.5 ? Rarity.Unique : Rarity.Legendary) : _rng.NextDouble() < 0.5 ? Rarity.Rare : Rarity.Legendary; first = false; return r; }, _rng);
+        foreach (var w in new[] { mh, oh }) if (w != null) { w.ReqLevel = Math.Min(w.ReqLevel, d.Level); if (w.Rarity >= Rarity.Legendary) legend++; }
+        d.Equip[(int)EquipSlot.MainHand] = mh;
+        d.Equip[(int)EquipSlot.OffHand] = oh;
         for (int i = 0; i < kinds.Length; i++)
         {
-            Rarity r = i == 0 ? (_rng.NextDouble() < 0.5 ? Rarity.Unique : Rarity.Legendary)
-                : _rng.NextDouble() switch { < 0.35 => Rarity.Rare, < 0.75 => Rarity.Legendary, _ => Rarity.Unique };
+            Rarity r = _rng.NextDouble() switch { < 0.35 => Rarity.Rare, < 0.75 => Rarity.Legendary, _ => Rarity.Unique };
             Item it;
             try { it = ItemDb.Generate(power, r, d.Class, kinds[i], _rng); }
             catch (Exception) { it = ItemDb.Generate(power, Rarity.Rare, d.Class, kinds[i], _rng); }
@@ -355,8 +367,11 @@ public partial class DemoMode : Node
             if (it.Rarity >= Rarity.Legendary) legend++;
         }
         h.Recalc();
-        Log.Info("demo", $"gear: {legend}/9 legendary or unique, weapon {d.Equip[(int)EquipSlot.Weapon]?.Name} ({d.Equip[(int)EquipSlot.Weapon]?.Rarity}); life={h.MaxLife:0}");
+        Log.Info("demo", $"gear: {legend}/{8 + (oh != null ? 2 : 1)} legendary or unique, style {style}: main {mh?.Base} {mh?.Name} ({mh?.Rarity}), off {oh?.Base ?? "-"} {oh?.Name}; life={h.MaxLife:0}");
     }
+
+    /// <summary>How often each hand style (2h / dual / off / 1h) has been shown in this run of the demo.</summary>
+    private static readonly Dictionary<string, int> StyleShown = new();
 
     /// <summary>The new level is up: place the hero for the show, wake the place, name it in the caption.</summary>
     private void Stage(Game g, Level lv)

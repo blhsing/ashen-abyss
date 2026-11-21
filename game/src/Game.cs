@@ -86,7 +86,8 @@ public partial class Game : Node
         "portrait-stats", "portrait-off", "portrait-scale", "portrait-model",       // inventory hero portrait (HeroPortrait3D)
         "bestiary", "no-bestiary", "spawn", "spawn-aggro",                             // monster roster (Bestiary.cs, Populate.HarnessSpawns)
         "gptest", "gpexpect", "gpthen", "gpclasses", "gpcancel", "gpout", "gpcases", "gpslots", "gpold", "gpresume",                                             // gameplay harness (GameplayTest.cs): click-to-attack, save resume
-        "demo", "demo-idle", "demo-secs", "demo-log", "pilot-at",                      // demo mode (DemoMode.cs) and the AI pilot (AiPilot.cs)
+        "demo", "demo-idle", "demo-secs", "demo-log", "pilot-at", "pilot-test",                      // demo mode (DemoMode.cs) and the AI pilot (AiPilot.cs)
+        "gear-off", "gear-baked", "gear-ph", "gear-dir", "icon3d-off",                 // modular gear and 3D item icons (GearVisual.cs, ItemIcon3D.cs)
     };
     private bool _forceWindow, _windowPlaced, _quitting;
     private bool? _cfgFullscreen;
@@ -637,7 +638,7 @@ public partial class Game : Node
         _autosaveT = 0;
 
         ApplyHarnessToSave(d);
-        try { Hero = new Hero(d); }
+        try { Hero = new Hero(d); Hero.PreloadSetModels(); }      // RENDER: every saved set's models loaded and pinned (instant swaps)
         catch (Exception e)
         {
             Log.Error("game", "building the hero failed", e);
@@ -1358,7 +1359,9 @@ public partial class Game : Node
     /// </summary>
     private void CaptureResume()
     {
-        if (!LevelState.Enabled) { Hero.D.Resume = null; Hero.D.Portal = null; Hero.D.Fog?.Clear(); return; }
+        // MAP-QUEST: the explored maps of the town and the overworld regions (whose layout never changes for a character)
+        // are kept in every save, also while the exact resume is off, so quest pins of explored places survive a reload
+        if (!LevelState.Enabled) { Hero.D.Resume = null; Hero.D.Portal = null; KeepStableFog(Hero.D); return; }
         var d = Hero.D;
         var lv = Level != null && IsInstanceValid(Level) ? Level : null;
         var pl = Player != null && IsInstanceValid(Player) ? Player : null;
@@ -1379,6 +1382,20 @@ public partial class Game : Node
         }
     }
 
+    /// <summary>The explored maps of the town and the overworld regions into the save (seed-checked when read back).</summary>
+    private void KeepStableFog(SaveData d)
+    {
+        RememberSeen();
+        d.Fog ??= new();
+        d.Fog.Clear();
+        foreach (var kv in _seen)
+        {
+            bool stable = kv.Key == ZoneDb.Town || ZoneDb.Region(kv.Key) != null;
+            if (!stable || kv.Value.seen == null) continue;
+            d.Fog[kv.Key] = new FogRec { Seed = kv.Value.seed, Len = kv.Value.seen.Length, Bits = LevelState.PackBits(kv.Value.seen) };
+        }
+    }
+
     /// <summary>
     /// A save of format 2 or later: wake exactly where the game was left (its area, layout and spot) with the town portal
     /// that was open. False for older saves and for places that cannot be rebuilt (named encounter arenas): those wake
@@ -1387,10 +1404,10 @@ public partial class Game : Node
     private bool TakeResume(SaveData d)
     {
         _resume = null;
-        if (!LevelState.Enabled) return false;              // feature off: wake the old way
-        if (d.Fog != null)
+        if (d.Fog != null)                                  // explored maps (absent in old saves): merged when the same layout is built
             foreach (var kv in d.Fog)
                 if (kv.Value?.Bits != null && kv.Value.Len > 0) _seen[kv.Key] = (kv.Value.Seed, LevelState.UnpackBits(kv.Value.Bits, kv.Value.Len));
+        if (!LevelState.Enabled) return false;              // feature off: wake the old way
         var s = d.Resume;
         if (s == null || string.IsNullOrEmpty(s.Area) || s.Seed == 0) { Log.Info("save", $"no resume state (format {d.Version}): waking in {d.Area} the old way"); return false; }
         if (s.Area.StartsWith("rift~") || !IsKnownArea(s.Area)) { Log.Info("save", $"resume state for {s.Area} cannot be rebuilt: waking the old way"); return false; }
@@ -1862,9 +1879,18 @@ public partial class Game : Node
     {
         var d = h.D;
         int power = Math.Clamp(d.Level * 10 + d.Tier * 30, 10, ItemDb.MaxPower);
-        ItemKind[] kinds = { ItemKind.Weapon, ItemKind.Helm, ItemKind.Chest, ItemKind.Gloves, ItemKind.Pants, ItemKind.Boots, ItemKind.Amulet, ItemKind.Ring, ItemKind.Ring };
-        EquipSlot[] slots = { EquipSlot.Weapon, EquipSlot.Helm, EquipSlot.Chest, EquipSlot.Gloves, EquipSlot.Pants, EquipSlot.Boots, EquipSlot.Amulet, EquipSlot.Ring1, EquipSlot.Ring2 };
+        ItemKind[] kinds = { ItemKind.Helm, ItemKind.Chest, ItemKind.Gloves, ItemKind.Pants, ItemKind.Boots, ItemKind.Amulet, ItemKind.Ring, ItemKind.Ring };
+        EquipSlot[] slots = { EquipSlot.Helm, EquipSlot.Chest, EquipSlot.Gloves, EquipSlot.Pants, EquipSlot.Boots, EquipSlot.Amulet, EquipSlot.Ring1, EquipSlot.Ring2 };
         var rng = new Random(d.Seed ^ 0x5EED);
+        // the hands (SYSTEMS, modular gear): one of the class's styles — two-hand, dual-wield or one-hand + off-hand
+        // --hands=2h|dual|off|1h picks the style (when the class has it); otherwise one at random
+        var styles = ItemDb.HandStyles(d.Class);
+        string want = (I?.ArgValue("hands") ?? "").Trim().ToLowerInvariant();
+        string style = styles.Contains(want) ? want : styles[rng.Next(styles.Count)];
+        if (want.Length > 0 && want != style) Log.Info("test", $"--hands={want}: {Names.ClassKey(d.Class)} cannot hold that; using {style}");
+        var (mh, oh) = ItemDb.RollHands(d.Class, power, style, () => Rarity.Rare, rng);
+        foreach (var w in new[] { mh, oh }) if (w != null) w.ReqLevel = Math.Min(w.ReqLevel, d.Level);
+        d.Equip[(int)EquipSlot.MainHand] = mh; d.Equip[(int)EquipSlot.OffHand] = oh;
         for (int i = 0; i < kinds.Length; i++)
         {
             var it = ItemDb.Generate(power, Rarity.Rare, d.Class, kinds[i], rng);
@@ -1872,7 +1898,7 @@ public partial class Game : Node
             d.Equip[(int)slots[i]] = it;
         }
         h.Recalc();
-        Log.Info("test", $"--gear: nine rare items of power {power} equipped; life={h.MaxLife:0} armor={h.Armor:0} weapon={h.WeaponMin:0}-{h.WeaponMax:0}");
+        Log.Info("test", $"--gear: rare items of power {power} equipped (main {d.Equip[(int)EquipSlot.MainHand]?.Base}, off {d.Equip[(int)EquipSlot.OffHand]?.Base ?? "-"}); life={h.MaxLife:0} armor={h.Armor:0} weapon={h.WeaponMin:0}-{h.WeaponMax:0}");
     }
 
     /// <summary>

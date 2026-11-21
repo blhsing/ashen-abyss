@@ -1,0 +1,109 @@
+{
+ "base": "polearm",
+ "prefix": "wpn",
+ "atlas_px": 1024,
+ "area_m2": 1.0762,
+ "notes": "",
+ "entries": [
+  {
+   "id": "wpn_polearm_v1",
+   "kind": "weapon",
+   "base": "polearm",
+   "file": "res://assets/gear/weapons/wpn_polearm_v1.glb",
+   "mount": "hand_r",
+   "grip2": [
+    0.0,
+    0.0,
+    -0.45
+   ],
+   "length": 2.03,
+   "variant": 1,
+   "hands": 2,
+   "grip": "both",
+   "tris": 4440,
+   "emissive": false,
+   "bbox": [
+    [
+     -0.0247,
+     -0.0239,
+     -0.8017
+    ],
+    [
+     0.0542,
+     0.0239,
+     1.228
+    ]
+   ],
+   "textures": "wpn_polearm",
+   "atlas_px": 1024,
+   "hint": "long weapon: the hero scripts hold staves with charlib grip(tilt=46) @ R('X', 30) (kit_cst.staff_grip) so they stand upright"
+  },
+  {
+   "id": "wpn_polearm_v2",
+   "kind": "weapon",
+   "base": "polearm",
+   "file": "res://assets/gear/weapons/wpn_polearm_v2.glb",
+   "mount": "hand_r",
+   "grip2": [
+    0.0,
+    0.0,
+    -0.45
+   ],
+   "length": 2.26,
+   "variant": 2,
+   "hands": 2,
+   "grip": "both",
+   "tris": 3462,
+   "emissive": false,
+   "bbox": [
+    [
+     -0.0835,
+     -0.0205,
+     -0.885
+    ],
+    [
+     0.0813,
+     0.0205,
+     1.375
+    ]
+   ],
+   "textures": "wpn_polearm",
+   "atlas_px": 1024,
+   "hint": "long weapon: the hero scripts hold staves with charlib grip(tilt=46) @ R('X', 30) (kit_cst.staff_grip) so they stand upright"
+  },
+  {
+   "id": "wpn_polearm_v3",
+   "kind": "weapon",
+   "base": "polearm",
+   "file": "res://assets/gear/weapons/wpn_polearm_v3.glb",
+   "mount": "hand_r",
+   "grip2": [
+    0.0,
+    0.0,
+    -0.45
+   ],
+   "length": 2.35,
+   "variant": 3,
+   "hands": 2,
+   "grip": "both",
+   "tris": 3702,
+   "emissive": true,
+   "bbox": [
+    [
+     -0.1113,
+     -0.0222,
+     -0.895
+    ],
+    [
+     0.095,
+     0.0222,
+     1.455
+    ]
+   ],
+   "textures": "wpn_polearm",
+   "atlas_px": 1024,
+   "hint": "long weapon: the hero scripts hold staves with charlib grip(tilt=46) @ R('X', 30) (kit_cst.staff_grip) so they stand upright"
+  }
+ ],
+ "built": "2026-11-21 20:26:12"
+}

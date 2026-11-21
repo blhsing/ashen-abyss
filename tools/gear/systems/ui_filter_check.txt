@@ -1,0 +1,19 @@
+# SYSTEMS: the bag filter scrolls inside the doll's height at every text size
+wait 3
+give set
+xp 400000
+open inventory
+wait 2
+key F
+wait 0.8
+click @全部非升級
+wait 0.8
+shot sys_filter_textscale_standard
+scale 1
+wait 1
+shot sys_filter_textscale_big
+scale 2
+wait 1
+shot sys_filter_textscale_large
+scale 0
+quit

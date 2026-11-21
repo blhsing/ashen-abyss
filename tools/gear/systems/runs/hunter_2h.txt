@@ -1,0 +1,230 @@
+Godot Engine v4.7.2.stable.mono.official.ed1daf0bf - https://godotengine.org
+
+    0.021 INF [boot] ==== 燼淵 Ashen Abyss 0.3.0 ====
+    0.033 INF [boot] time=2026-11-21 18:57:56 +08:00 os=Windows 10.0.26300 locale=en_US
+    0.036 INF [boot] cpu=AMD RYZEN AI MAX+ 395 w/ Radeon 8060S threads=32 ram=64663MB
+    0.063 INF [boot] gpu= vendor= api= method=forward_plus
+    0.065 INF [boot] engine=4.7.2-stable (official) dotnet=10.0.14 debug=True
+    0.066 INF [boot] exe=%USERPROFILE%/AppData/Local/Programs/Godot_4.7.2_mono/Godot_v4.7.2-stable_mono_win64/Godot_v4.7.2-stable_mono_win64.exe userdir=%USERPROFILE%/AppData/Roaming/AshenAbyss
+    0.069 INF [boot] args=[] userargs=[--mute --new=hunter --slot=92 --area=wastes --level=14 --gear --hands=2h --bot --quit-at=75]
+    0.108 INF [boot] switches: --mute --new=hunter --slot=92 --area=wastes --level=14 --gear --hands=2h --bot --quit-at=75
+    0.591 INF [cfg] settings loaded quality=2 scale=0 fullscreen=True
+    0.613 INF [cfg] window → exclusive fullscreen
+    0.619 INF [input] PrtSc keyboard hook installed
+    0.624 INF [boot] window icon: Y:/game/assets/icons/app_icon.png
+    0.830 INF [ui] fonts ready: serif=True serifBold=True sans=True sansBold=True cinzel=True system=True (plain rasterised, no MSDF; oversampling follows the stretched viewport)
+    0.833 INF [ui] text scale from settings: 0 (×1.00), minimum font 20 px
+    0.849 INF [uiart] interface art: style A, 115 pieces
+    0.892 INF [ui] theme built
+    0.916 INF [audio] bus layout: Master (limiter) ← Music, Sfx, Amb, Voice, Ui; 6 buses, mix rate 44100 Hz
+    0.926 INF [audio] manifest read: 167 sound groups, 375 files listed
+    0.941 INF [audio] volumes dB: master=-1.8 music=-6.2 sfx=-1.8 voice=0.0 amb=-3.9
+    0.943 INF [audio] master muted
+    0.944 INF [audio] audio ready: 28 positional voices, 6 interface voices, up to 10 loops
+    1.228 INF [ui] panels registered: inventory, skills, paragon, map, quests, vendor, dialogue, pause, settings, death, tier, rift
+    1.235 INF [uiart] texture set x1 for a 64x64 window (scale 0.03)
+    1.253 INF [cursor] cursor art: 10 pictures, sizes 32/40/48/64/96 px
+    1.270 INF [cursor] size 32 px (start: window 64x64 display x1.00 text x1.00 -> wants 32 px)
+    1.283 INF [cfg] window → exclusive fullscreen
+    1.291 INF [gfx] quality=2(高) target=64x64 scale=1.00(auto) internal=64x64 upscaler=none taa=True ssaa=Disabled shadows=dir2048x1/pos2048 soft=SoftLow omniShadows=2 mist=64^2x64 ssao=True ssil=False ssr=False sdfgi=False
+    1.292 INF [audio] volumes dB: master=-1.8 music=-6.2 sfx=-1.8 voice=0.0 amb=-3.9
+    1.419 INF [test] harness: shots at [] s → Pictures\AshenAbyss; quit at 75 s (seconds after the menu or the first level is on screen)
+    1.422 INF [game] new game: slot=92 name=試煉者 class=hunter hardcore=False
+    1.470 INF [test] --level: hero level 14
+    1.476 INF [paragon] listening for rift clears
+    1.492 INF [paragon] boards built for 影獵手: 7 boards, 612 nodes
+    1.495 INF [paragon] state ready for 影獵手: boards=1 lit=0 earned=0 glyphs=0 tries=0
+    1.508 INF [test] auto build lv14 hunter: bar=[hu_shot, hu_pierce, hu_smoke, hu_dash, hu_trap, hu_flurry] spec=- points left=0
+    1.515 INF [test] --gear: rare items of power 140 equipped (main crossbow, off -); life=633 armor=428 weapon=49-82
+    1.524 INF [quest] main_wastes started (將熄的火盆): 與守燈長老艾爾溫交談
+    1.528 INF [quest] attached: 試煉者 area=town active=[main_wastes@0] done=0/21 keys=0 campaign=False maxTier=1 renown=-
+    1.531 INF [area] travel → wastes entry=- from=- force=True returning=False
+    1.533 INF [game] state Boot → Loading
+    1.557 INF [bot] TestBot ready: it fights, loots, explores and travels on its own (focus=False campaign=False allskills=False)
+    1.559 INF [test] TestBot enabled
+    1.559 INF [boot] boot finished in 1487 ms, state=Loading
+    1.602 INF [area] building wastes entry=- seed=861608265 tier=0 heroLevel=14
+    1.729 INF [gen] Overworld 'wastes' theme=wastes seed=861608265 size=110x110 walkable=5183 rooms=0 pois[altar=3 chest=6 entrance=3 event=3 exit=1 shrine=2 start=1 stronghold=1 waypoint=1] spawns=67[champions=5 elite=6 pack=50 stronghold=6] monsters=309 props=1036 blocking=429 attempts=1 97.6ms
+    1.733 INF [level] build area=wastes kind=Overworld theme=wastes size=110 seed=861608265 grid=110x110 mlvl=14 tier=0 entry=- pois=21 spawns=67 props=1036
+    1.764 INF [env] building theme='wastes' kind=Overworld grid=110x110 seed=861608265 slots=1036 quality=2 apron=12
+    1.826 INF [env] texture manifest: 80 sets
+    2.299 INF [env] model manifest: flame points for 14 light props
+    6.325 INF [env] sky manifest: 8 skies
+    6.333 INF [env] environment 'wastes': sky 'dusk' x0.01, ambient x0.95, far fog 0.70 from 21 m, mist 0.035/m to 2.2 m, exposure 1.05, saturation 0.80, contrast 1.00, grade 0.05
+    6.368 INF [env] built 'wastes' in 4623 ms [globals=0 theme=7 terrain=150 pits=10 walls=2081 props=2161 filllights=2 scatter=19 commit=102 lights=10 environment=35 weather=26] meshes=312 tris=11773388 propInstances=3130 propBatches=1292 lights=21 flames=25
+    6.371 INF [level] wastes: 1 prop(s) in the narrow passage at (107,21) are walk-through now
+    6.371 INF [level] wastes: 1 prop(s) in the narrow passage at (143,27) are walk-through now
+    6.372 INF [level] wastes: 1 prop(s) in the narrow passage at (155,35) are walk-through now
+    6.373 INF [level] wastes: 1 prop(s) in the narrow passage at (161,37) are walk-through now
+    6.373 INF [level] wastes: 1 prop(s) in the narrow passage at (195,43) are walk-through now
+    6.374 INF [level] wastes: 1 prop(s) in the narrow passage at (199,47) are walk-through now
+    6.374 INF [level] wastes: 1 prop(s) in the narrow passage at (91,51) are walk-through now
+    6.375 INF [level] wastes: 1 prop(s) in the narrow passage at (55,57) are walk-through now
+    6.375 INF [level] wastes: 1 prop(s) in the narrow passage at (147,57) are walk-through now
+    6.376 INF [level] wastes: 1 prop(s) in the narrow passage at (23,67) are walk-through now
+    6.377 INF [level] wastes: 1 prop(s) in the narrow passage at (27,69) are walk-through now
+    6.377 INF [level] wastes: 1 prop(s) in the narrow passage at (55,81) are walk-through now
+    6.378 INF [level] wastes: 1 prop(s) in the narrow passage at (121,81) are walk-through now
+    6.378 INF [level] wastes: 1 prop(s) in the narrow passage at (193,87) are walk-through now
+    6.378 INF [level] wastes: 1 prop(s) in the narrow passage at (29,89) are walk-through now
+    6.379 INF [level] wastes: 1 prop(s) in the narrow passage at (41,89) are walk-through now
+    6.379 INF [level] wastes: 1 prop(s) in the narrow passage at (65,89) are walk-through now
+    6.379 INF [level] wastes: 1 prop(s) in the narrow passage at (87,89) are walk-through now
+    6.380 INF [level] wastes: 1 prop(s) in the narrow passage at (71,91) are walk-through now
+    6.380 INF [level] wastes: 1 prop(s) in the narrow passage at (115,91) are walk-through now
+    6.380 INF [level] wastes: 1 prop(s) in the narrow passage at (199,91) are walk-through now
+    6.381 INF [level] wastes: 1 prop(s) in the narrow passage at (143,107) are walk-through now
+    6.381 INF [level] wastes: 1 prop(s) in the narrow passage at (137,111) are walk-through now
+    6.382 INF [level] wastes: 1 prop(s) in the narrow passage at (107,113) are walk-through now
+    6.382 INF [level] wastes: 1 prop(s) in the narrow passage at (83,121) are walk-through now
+    6.382 INF [level] wastes: 1 prop(s) in the narrow passage at (165,121) are walk-through now
+    6.383 INF [level] wastes: 1 prop(s) in the narrow passage at (173,123) are walk-through now
+    6.383 INF [level] wastes: 1 prop(s) in the narrow passage at (31,129) are walk-through now
+    6.383 INF [level] wastes: 1 prop(s) in the narrow passage at (29,139) are walk-through now
+    6.384 INF [level] wastes: 1 prop(s) in the narrow passage at (153,139) are walk-through now
+    6.384 INF [level] wastes: 1 prop(s) in the narrow passage at (73,145) are walk-through now
+    6.385 INF [level] wastes: 1 prop(s) in the narrow passage at (157,145) are walk-through now
+    6.385 INF [level] wastes: 1 prop(s) in the narrow passage at (91,147) are walk-through now
+    6.386 INF [level] wastes: 1 prop(s) in the narrow passage at (55,151) are walk-through now
+    6.386 INF [level] wastes: 1 prop(s) in the narrow passage at (79,153) are walk-through now
+    6.387 INF [level] wastes: 1 prop(s) in the narrow passage at (85,157) are walk-through now
+    6.387 INF [level] wastes: 1 prop(s) in the narrow passage at (89,157) are walk-through now
+    6.388 INF [level] wastes: 1 prop(s) in the narrow passage at (97,163) are walk-through now
+    6.388 INF [level] wastes: 1 prop(s) in the narrow passage at (201,163) are walk-through now
+    6.389 INF [level] wastes: 1 prop(s) in the narrow passage at (199,167) are walk-through now
+    6.389 INF [level] wastes: 1 prop(s) in the narrow passage at (19,173) are walk-through now
+    6.390 INF [level] wastes: 1 prop(s) in the narrow passage at (89,175) are walk-through now
+    6.390 INF [level] wastes: 1 prop(s) in the narrow passage at (199,175) are walk-through now
+    6.390 INF [level] wastes: 1 prop(s) in the narrow passage at (19,177) are walk-through now
+    6.391 INF [level] wastes: 1 prop(s) in the narrow passage at (163,185) are walk-through now
+    6.392 INF [level] wastes: 1 prop(s) in the narrow passage at (17,189) are walk-through now
+    6.392 INF [level] wastes: 1 prop(s) in the narrow passage at (151,197) are walk-through now
+    6.393 INF [level] wastes: 1 prop(s) in the narrow passage at (157,199) are walk-through now
+    6.393 INF [level] wastes: 1 prop(s) in the narrow passage at (19,201) are walk-through now
+    6.394 INF [level] wastes: 1 prop(s) in the narrow passage at (89,201) are walk-through now
+    6.394 INF [level] wastes: 1 prop(s) in the narrow passage at (95,203) are walk-through now
+    6.395 INF [level] wastes: 1 prop(s) in the narrow passage at (99,205) are walk-through now
+    6.395 INF [level] wastes: 52 narrow passage cell(s) cleared of colliding props
+    7.372 INF [model] animation source anim_lib.glb: 85 animations, skeleton path 'Armature/Skeleton3D'
+    7.375 INF [model] animations: A_TPose Chest_Open ClimbUp_1m Consume Crouch_Fwd Crouch_Fwd_Loop Crouch_Idle Crouch_Idle_Loop Dance Dance_Loop Death01 Driving Driving_Loop Farm_Harvest Farm_PlantSeed Farm_Watering Fixing_Kneeling Hit_Chest Hit_Head Hit_Knockback Idle Idle_FoldArms Idle_FoldArms_Loop Idle_Lantern Idle_Lantern_Loop Idle_Loop Idle_No Idle_No_Loop Idle_Rail Idle_Rail_Call Idle_Rail_Loop Idle_Shield Idle_Shield_Break Idle_Shield_Loop Idle_Talking Idle_Talking_Loop Idle_TalkingPhone Idle_TalkingPhone_Loop Idle_Torch Idle_Torch_Loop Interact Jog_Fwd Jog_Fwd_Loop Jump Jump_Land Jump_Loop Jump_Start LayToIdle Melee_Hook Melee_Hook_Rec NinjaJump_Idle NinjaJump_Idle_Loop NinjaJump_Land NinjaJump_Start OverhandThrow PickUp_Table Pistol_Aim_Down Pistol_Aim_Neutral Pistol_Aim_Up Pistol_Idle Pistol_Idle_Loop Pistol_Reload Pistol_Shoot Punch_Cross Punch_Jab Push Push_Loop Roll Shield_Dash Shield_OneShot Sitting_Enter Sitting_Exit Sitting_Idle Sitting_Idle_Loop Sitting_Talking Sitting_Talking_Loop Slide Slide_Exit Slide_Loop Slide_Start Spell_Simple_Enter Spell_Simple_Exit Spell_Simple_Idle Spell_Simple_Idle_Loop Spell_Simple_Shoot Sprint Sprint_Loop Swim_Fwd Swim_Fwd_Loop Swim_Idle Swim_Idle_Loop Sword_Attack Sword_Block Sword_Dash Sword_Heavy_Combo Sword_Idle Sword_Idle_Loop Sword_Regular_A Sword_Regular_A_Rec Sword_Regular_B Sword_Regular_B_Rec Sword_Regular_C Sword_Regular_Combo TreeChopping TreeChopping_Loop Walk Walk_Carry Walk_Carry_Loop Walk_Formal Walk_Formal_Loop Walk_Loop Yes Zombie_Idle Zombie_Idle_Loop Zombie_Scratch Zombie_Walk_Fwd Zombie_Walk_Fwd_Loop
+    9.421 INF [fx] effect resources ready (budget: 70 one-shot emitters, 12 flash lights, 10 soft lights)
+    9.492 INF [census] area=wastes mlvl=14 monsters=334 packs=69 champions=23 elites=7 hidden=0 types=5: cult_caster=4 husk=160 husk_bloated=16 skeleton=105 skeleton_thrower=49
+    9.494 INF [populate] area=wastes monsters=334 events=3 npcs=0 stronghold=49 objective=None:0
+    9.496 INF [level] wastes: 1 prop(s) in the narrow passage at (165,31) are walk-through now
+    9.497 INF [level] wastes: 1 prop(s) in the narrow passage at (125,53) are walk-through now
+    9.497 INF [level] wastes: 1 prop(s) in the narrow passage at (59,85) are walk-through now
+    9.498 INF [level] wastes: 1 prop(s) in the narrow passage at (207,121) are walk-through now
+    9.498 INF [level] wastes: 1 prop(s) in the narrow passage at (51,125) are walk-through now
+    9.499 INF [level] wastes: 5 narrow passage cell(s) cleared of colliding props
+    9.502 INF [level] ready area=wastes monsters=334 interactables=18 markers=20 goal=None objective='' door=open boss=-
+    9.960 INF [gear] gear_manifest_armor.json: 5 entries
+    9.963 INF [gear] gear_manifest_weapons.json: 24 entries
+   10.721 INF [gear] hero_hunter: modular stance=Ranged [arm_hunter_helm_t4, arm_hunter_chest_t4, arm_hunter_gloves_t4, arm_hunter_pants_t4, arm_hunter_boots_t4, wpn_crossbow_v2@hand_r] in 769.4 ms
+   10.724 INF [audio] music → wastes over 2.0s
+   10.725 INF [audio] ambience → amb_wastes over 2.0s
+   10.726 INF [bot] entered wastes (area 1)
+   10.761 INF [named] layer ready: 68 definitions (Rare 28, Stronghold 7, Dungeon 14, Region 7, World 4, Pinnacle 8), scripted=61
+   10.768 INF [boss] sh_wastes ready: moves=3 level=14 life=493 dmg=123
+   10.787 INF [named] spawned sh_wastes (斷燈哨長・莫葛) kind=Stronghold base=husk_bloated model=mon_husk_bloated level=14 life=15769 dmg=77 at=(156,75) arena=(151,77) r=20 brain=kit script=Mog mechs=[vent,rupture,tower,ember]
+   10.787 INF [named] stronghold 斷燈哨站: leader replaced by sh_wastes
+   10.789 INF [named] rare rare_wastes_oldhowl: not out this visit (roll 0.85)
+   10.791 INF [named] rare rare_wastes_nightwatch: not out this visit (roll 0.85)
+   10.794 INF [named] rare rare_wastes_ashbride: not out this visit (roll 0.63)
+   11.229 INF [named] spawned rare_wastes_gallowsfather (絞林之父) kind=Rare base=char_hangtree model=mon_rotspawn level=14 life=8213 dmg=69 at=(33,169) arena=(33,169) r=14 brain=base-ai script=GallowsFather mechs=[noose]
+   11.231 INF [named] rare_wastes_gallowsfather: base type 'char_hangtree' is not in the roster yet; stand-in 'rotspawn' (model mon_rotspawn)
+   11.232 INF [named] rare rare_wastes_gallowsfather is out at (33,169) rule=grove
+   11.235 INF [named] world boss wb_barrowbearer: not yet (region crypt not open)
+   11.239 INF [quest] first visit: wastes
+   11.240 INF [quest] side_wastes_elites started (哨站欠下的命): 在灰燼荒原擊殺菁英怪物
+   11.241 INF [quest] side_wastes_cellar started (地窖裡的貨): 肅清荒棄地窖
+   11.315 INF [save] slot 92 saved: 試煉者 lv14 影獵手 area=wastes bytes=9024
+   11.316 INF [save] save reason=quest slot=92 ok=True area=wastes playtime=0s
+   11.322 INF [levelstate] placed area=wastes seed=861608265 mlvl=14 monsters=335 objects=18 roster=011c3251 props=(143.00,71.00) (155.00,87.00) (141.00,83.00)
+   11.326 INF [save] slot 92 saved: 試煉者 lv14 影獵手 area=wastes bytes=9024
+   11.327 INF [save] save reason=area slot=92 ok=True area=wastes playtime=0s
+   11.328 INF [area] entered wastes (灰燼荒原) in 9728 ms: seed=861608265 monsters=335 objects=18 monsterLevel=14
+   11.356 INF [audio] music 'wastes' started (base + combat tracks, crossfaded by combat intensity)
+   11.366 INF [audio] ambience 'amb_wastes' started
+   11.555 INF [game] state Loading → Play
+   11.556 INF [test] harness clock started (play on screen)
+   11.623 INF [hud] paragon points read from Hero.ParagonPoints
+   13.128 INF [audio] sound bank warm: 167 groups, 347 files in memory
+   13.567 INF [audio] music 'wastes': crossfade to the combat track (intensity 0.67)
+   16.548 INF [perf] fps=145 frame=7.8ms worst=138.0ms slowestProcess=6.1ms area=wastes monsters=330 minions=0 objects=19 nodes=4860 draws=0 prims=0 vram=0MB mem=1353MB scale=1.00 q=2 errors=0
+   16.549 INF [perf] game code per frame: whole tree=0.00ms | monsters=0.40ms (awake 36: 0.24ms, separation 0.12ms) player=0.24ms shots+zones=0.08ms level=0.01ms bot=0.03ms
+   19.285 INF [paragon] state ready for 影獵手: boards=1 lit=0 earned=0 glyphs=0 tries=0
+   19.287 INF [paragon] state ready for 影獵手: boards=1 lit=0 earned=0 glyphs=0 tries=0
+   19.291 INF [gear] hero_hunter: modular stance=Ranged [arm_hunter_helm_t4, arm_hunter_chest_t4, arm_hunter_gloves_t4, arm_hunter_pants_t4, arm_hunter_boots_t4, wpn_crossbow_v2@hand_r] in 1.4 ms
+   21.125 INF [bot] summary t=10s game=10s area=wastes doing=fight skeleton kills=8 elites=0 bosses=0 level=14 life=100% items=1 gold=99 deaths=0 areas=1 casts=13 unstuck=0 monsters=327 errors=0 warnings=0 botErrors=0
+   21.550 INF [perf] fps=145 frame=6.9ms worst=14.0ms slowestProcess=6.6ms area=wastes monsters=327 minions=0 objects=18 nodes=4803 draws=0 prims=0 vram=0MB mem=1353MB scale=1.00 q=2 errors=0
+   21.552 INF [perf] game code per frame: whole tree=0.00ms | monsters=0.23ms (awake 39: 0.12ms, separation 0.03ms) player=0.12ms shots+zones=0.08ms level=0.00ms bot=0.02ms
+   23.380 INF [paragon] state ready for 影獵手: boards=1 lit=0 earned=0 glyphs=0 tries=0
+   23.383 INF [paragon] state ready for 影獵手: boards=1 lit=0 earned=0 glyphs=0 tries=0
+   26.551 INF [perf] fps=142 frame=6.9ms worst=11.0ms slowestProcess=10.5ms area=wastes monsters=320 minions=0 objects=18 nodes=4778 draws=0 prims=0 vram=0MB mem=1353MB scale=1.00 q=2 errors=0
+   26.554 INF [perf] game code per frame: whole tree=0.00ms | monsters=0.34ms (awake 40: 0.22ms, separation 0.13ms) player=0.14ms shots+zones=0.13ms level=0.00ms bot=0.01ms
+   31.114 INF [bot] summary t=20s game=20s area=wastes doing=fight skeleton kills=18 elites=0 bosses=0 level=14 life=100% items=1 gold=99 deaths=0 areas=1 casts=30 unstuck=0 monsters=317 errors=0 warnings=0 botErrors=0
+   31.554 INF [perf] fps=132 frame=7.3ms worst=72.0ms slowestProcess=10.0ms area=wastes monsters=317 minions=0 objects=18 nodes=4740 draws=0 prims=0 vram=0MB mem=1353MB scale=1.00 q=2 errors=0
+   31.559 INF [perf] game code per frame: whole tree=0.00ms | monsters=0.53ms (awake 49: 0.35ms, separation 0.09ms) player=0.20ms shots+zones=0.22ms level=0.01ms bot=0.01ms
+   35.214 INF [audio] music 'wastes': crossfade back to the base track
+   35.720 INF [audio] music 'wastes': crossfade to the combat track (intensity 0.83)
+   36.559 INF [perf] fps=145 frame=6.9ms worst=14.0ms slowestProcess=10.0ms area=wastes monsters=315 minions=0 objects=18 nodes=4718 draws=0 prims=0 vram=0MB mem=1353MB scale=1.00 q=2 errors=0
+   36.559 INF [perf] game code per frame: whole tree=0.00ms | monsters=0.43ms (awake 54: 0.30ms, separation 0.14ms) player=0.15ms shots+zones=0.18ms level=0.01ms bot=0.01ms
+   41.129 INF [bot] summary t=30s game=30s area=wastes doing=fight cult_caster kills=25 elites=0 bosses=0 level=14 life=100% items=1 gold=233 deaths=0 areas=1 casts=50 unstuck=0 monsters=310 errors=0 warnings=0 botErrors=0
+   41.561 INF [perf] fps=145 frame=6.9ms worst=12.0ms slowestProcess=6.7ms area=wastes monsters=309 minions=0 objects=19 nodes=4670 draws=0 prims=0 vram=0MB mem=1353MB scale=1.00 q=2 errors=0
+   41.564 INF [perf] game code per frame: whole tree=0.00ms | monsters=0.38ms (awake 51: 0.27ms, separation 0.12ms) player=0.13ms shots+zones=0.14ms level=0.00ms bot=0.01ms
+   43.871 INF [event] RitualEvent started in wastes
+   46.568 INF [perf] fps=145 frame=7.0ms worst=52.0ms slowestProcess=6.7ms area=wastes monsters=307 minions=0 objects=20 nodes=4653 draws=0 prims=0 vram=0MB mem=1352MB scale=1.00 q=2 errors=0
+   46.570 INF [perf] game code per frame: whole tree=0.00ms | monsters=0.44ms (awake 55: 0.35ms, separation 0.15ms) player=0.11ms shots+zones=0.14ms level=0.01ms bot=0.01ms
+   46.645 INF [hazard] hazard clock attached to the scene tree
+   50.212 INF [loot] Legendary drop: 破綻之鋼紋長劍 [Weapon power 143] at (161.7, 164.5)
+   50.226 INF [event] RitualEvent completed in wastes
+   50.227 INF [quest] region event finished in wastes (#1, renown granted)
+   50.227 INF [renown] wastes +30 (區域事件) → 30
+   50.231 INF [save] slot 92 saved: 試煉者 lv14 影獵手 area=wastes bytes=9679
+   50.232 INF [save] save reason=renown slot=92 ok=True area=wastes playtime=39s
+   51.135 INF [bot] summary t=40s game=40s area=wastes doing=use loot kills=29 elites=1 bosses=0 level=14 life=96% items=1 gold=233 deaths=0 areas=1 casts=71 unstuck=0 monsters=306 errors=0 warnings=0 botErrors=0
+   51.573 INF [perf] fps=145 frame=6.9ms worst=20.0ms slowestProcess=8.5ms area=wastes monsters=306 minions=0 objects=23 nodes=4653 draws=0 prims=0 vram=0MB mem=1357MB scale=1.00 q=2 errors=0
+   51.574 INF [perf] game code per frame: whole tree=0.00ms | monsters=0.27ms (awake 56: 0.18ms, separation 0.05ms) player=0.11ms shots+zones=0.14ms level=0.02ms bot=0.01ms
+   51.685 INF [audio] voice 'hero_hunter_legendary' has no recording, using a timed stand-in
+   51.686 INF [loot] picked up Legendary: 破綻之鋼紋長劍 [Weapon power 143] bag=2/40
+   51.943 INF [paragon] state ready for 影獵手: boards=1 lit=0 earned=0 glyphs=0 tries=0
+   51.944 INF [paragon] state ready for 影獵手: boards=1 lit=0 earned=0 glyphs=0 tries=0
+   51.945 INF [paragon] state ready for 影獵手: boards=1 lit=0 earned=0 glyphs=0 tries=0
+   51.946 INF [paragon] state ready for 影獵手: boards=1 lit=0 earned=0 glyphs=0 tries=0
+   52.344 INF [audio] music 'wastes': crossfade back to the base track
+   52.848 INF [audio] music 'wastes': crossfade to the combat track (intensity 1.00)
+   56.578 INF [perf] fps=145 frame=7.0ms worst=15.0ms slowestProcess=7.0ms area=wastes monsters=300 minions=0 objects=22 nodes=4618 draws=0 prims=0 vram=0MB mem=1358MB scale=1.00 q=2 errors=0
+   56.580 INF [perf] game code per frame: whole tree=0.00ms | monsters=0.50ms (awake 58: 0.38ms, separation 0.20ms) player=0.16ms shots+zones=0.12ms level=0.00ms bot=0.01ms
+   60.148 INF [paragon] state ready for 影獵手: boards=1 lit=0 earned=0 glyphs=0 tries=0
+   60.149 INF [paragon] state ready for 影獵手: boards=1 lit=0 earned=0 glyphs=0 tries=0
+   61.134 INF [bot] summary t=50s game=50s area=wastes doing=fight husk kills=35 elites=1 bosses=0 level=14 life=100% items=4 gold=463 deaths=0 areas=1 casts=88 unstuck=0 monsters=300 errors=0 warnings=0 botErrors=0
+   61.580 INF [perf] fps=145 frame=7.0ms worst=38.0ms slowestProcess=7.0ms area=wastes monsters=295 minions=0 objects=22 nodes=4593 draws=0 prims=0 vram=0MB mem=1354MB scale=1.00 q=2 errors=0
+   61.581 INF [perf] game code per frame: whole tree=0.00ms | monsters=0.49ms (awake 51: 0.38ms, separation 0.19ms) player=0.12ms shots+zones=0.11ms level=0.01ms bot=0.01ms
+   66.582 INF [perf] fps=145 frame=6.9ms worst=8.0ms slowestProcess=7.1ms area=wastes monsters=290 minions=0 objects=20 nodes=4516 draws=0 prims=0 vram=0MB mem=1353MB scale=1.00 q=2 errors=0
+   66.583 INF [perf] game code per frame: whole tree=0.00ms | monsters=0.33ms (awake 49: 0.23ms, separation 0.11ms) player=0.11ms shots+zones=0.08ms level=0.00ms bot=0.01ms
+   71.140 INF [bot] summary t=60s game=60s area=wastes doing=fight husk kills=48 elites=1 bosses=0 level=14 life=88% items=4 gold=651 deaths=0 areas=1 casts=106 unstuck=0 monsters=287 errors=0 warnings=0 botErrors=0
+   71.583 INF [perf] fps=144 frame=6.9ms worst=10.0ms slowestProcess=10.5ms area=wastes monsters=287 minions=0 objects=20 nodes=4479 draws=0 prims=0 vram=0MB mem=1353MB scale=1.00 q=2 errors=0
+   71.584 INF [perf] game code per frame: whole tree=0.00ms | monsters=0.31ms (awake 38: 0.17ms, separation 0.05ms) player=0.16ms shots+zones=0.13ms level=0.00ms bot=0.01ms
+   76.536 INF [paragon] state ready for 影獵手: boards=1 lit=0 earned=0 glyphs=0 tries=0
+   76.538 INF [paragon] state ready for 影獵手: boards=1 lit=0 earned=0 glyphs=0 tries=0
+   76.589 INF [perf] fps=142 frame=6.9ms worst=39.0ms slowestProcess=38.1ms area=wastes monsters=282 minions=0 objects=21 nodes=4459 draws=0 prims=0 vram=0MB mem=1353MB scale=1.00 q=2 errors=0
+   76.590 INF [perf] game code per frame: whole tree=0.00ms | monsters=0.29ms (awake 38: 0.20ms, separation 0.09ms) player=0.12ms shots+zones=0.14ms level=0.00ms bot=0.01ms
+   81.139 INF [bot] summary t=70s game=70s area=wastes doing=fight skeleton_thrower kills=57 elites=1 bosses=0 level=14 life=100% items=5 gold=750 deaths=0 areas=1 casts=126 unstuck=0 monsters=278 errors=0 warnings=0 botErrors=0
+   81.592 INF [perf] fps=145 frame=6.9ms worst=8.0ms slowestProcess=5.6ms area=wastes monsters=278 minions=0 objects=22 nodes=4443 draws=0 prims=0 vram=0MB mem=1353MB scale=1.00 q=2 errors=0
+   81.594 INF [perf] game code per frame: whole tree=0.00ms | monsters=0.23ms (awake 37: 0.14ms, separation 0.06ms) player=0.11ms shots+zones=0.13ms level=0.00ms bot=0.01ms
+   83.546 INF [audio] music 'wastes': crossfade back to the base track
+   84.051 INF [audio] music 'wastes': crossfade to the combat track (intensity 1.00)
+   84.734 INF [paragon] state ready for 影獵手: boards=1 lit=0 earned=0 glyphs=0 tries=0
+   84.736 INF [paragon] state ready for 影獵手: boards=1 lit=0 earned=0 glyphs=0 tries=0
+   86.546 INF [test] harness quit at 75.01 s
+   86.550 INF [game] quitting
+   86.558 INF [save] slot 92 saved: 試煉者 lv14 影獵手 area=wastes bytes=12207
+   86.559 INF [save] save reason=quit slot=92 ok=True area=wastes playtime=75s
+   86.562 INF [bot] final summary t=75s game=75s area=wastes doing=fight husk kills=61 elites=1 bosses=0 level=14 life=97% items=6 gold=750 deaths=0 areas=1 casts=137 unstuck=0 monsters=274 errors=0 warnings=0 botErrors=0
+   86.565 INF [bot] final progress: waypoints=[town] renown=[wastes:30] quests done=0/3 skillpts bonus=0 potion cap=4 altars=0 codex=0 tier=0/1 riftBest=0 paragon=0 playtime=75s
+   86.568 INF [bot] final skills [hunter lv14] cast/hits/damage: hu_dash:c9/h16/d2050 hu_pierce:c26/h49/d11381 hu_shot:c88/h100/d5363 hu_smoke:c3/h0/d0 hu_trap:c11/h7/d1850
+   86.570 INF [bot] final balance: ttk normal=1.0s(n=59) champion=3.5s(n=1) elite=-s(n=0) boss=-s(n=0) | taken 375/min in 21 hits (life 790; 0.48 life bars/min) god-saves=0 | kills/min 48.8 | never cast: [hu_flurry] cast but never hit: []
+   86.571 INF [anim] anim-check: hero moved 20.5s — 0.0s without a locomotion clip, 0.0s with frozen legs; hero stood 2.1s — 0.0s in a run clip or none; monsters moved 79.6s — 0.0s without a locomotion clip, 0.0s with frozen legs; models without a skeleton or animation: 0
+   86.571 INF [input] keyboard hook saw 312 key events, 0 of them PrtSc
+   86.573 INF [boot] shutdown errors=0 warnings=0 uptime=87s
+   86.602 INF [level] unloaded area=wastes

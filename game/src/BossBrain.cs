@@ -350,6 +350,10 @@ public sealed class BossBrain
     internal float ArenaR => _arenaR;
     internal Vector2 AimPoint => _aim;
     internal bool Acting => _lock > 0f || _roaring;
+    // AI pilot (AiPilotCombat.cs): how soon the boss can start its next special or basic attack (read only)
+    internal float SpecialIn => _roaring ? 9f : Mathf.Max(0f, _lock) + Mathf.Max(0f, _gcd);
+    internal float BasicIn => _roaring ? 9f : Mathf.Max(Mathf.Max(0f, _lock), _basicCd);
+    internal float BasicReach => _kit.Basic.Radius * 0.72f;
     internal float Damage { get => _dmg; set => _dmg = value; }
     internal bool Scripted => _script != null;
     internal void SetArena(Vector2 centre, float radius) { _arena = centre; _arenaR = radius; _arenaFixed = true; }

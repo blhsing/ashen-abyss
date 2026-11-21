@@ -1,0 +1,4 @@
+exit= seconds=4
+log: C:\Users\blhsi\AppData\Roaming\AshenAbyss\logs\game_20261121_211331.log  lines=416  ERR=0  WRN=5
+    2.119 WRN [suite] FAIL sets: one-hand + shield ↔ two-hand, and the skill bar follows the set — main=polearm off= bar2=lk_strike
+    2.121 INF [suite] DONE suite=items pass=147 fail=1 errors=0 warnings=5

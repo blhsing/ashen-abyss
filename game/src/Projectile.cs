@@ -26,6 +26,17 @@ public partial class Projectile : Node3D
     public SkillDef MinionSkill;
     private static readonly List<Actor> Tmp = new();
 
+    // AI pilot (DangerMap.cs): the shots in flight and where they are heading
+    public static readonly List<Projectile> Live = new();
+    public override void _EnterTree() => Live.Add(this);
+    public override void _ExitTree() => Live.Remove(this);
+    public bool HostileShot => _m != null && MinionOwner == null;
+    public Vector2 Ground => Pos2;
+    public Vector2 Heading => _dir;
+    public float Speed => _speed;
+    public float RangeLeft => _left;
+    public float HitRadius => _radius;
+
     private Vector2 Pos2 => new(GlobalPosition.X, GlobalPosition.Z);
     /// <summary>True for the hero's shots (read by the bestiary's shield-bearers and absorbers and by the named layer).</summary>
     public bool FromPlayer => _p != null;

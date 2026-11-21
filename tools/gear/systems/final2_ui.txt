@@ -1,0 +1,12 @@
+exit= seconds=27
+log: C:\Users\blhsi\AppData\Roaming\AshenAbyss\logs\game_20261121_211353.log  lines=202  ERR=0  WRN=1
+   11.822 INF [sets] saved set 1 '裝備組 1': 1f806392c575,40f451f317b3,1088fa97014d,73a346cbc832,1a38272b60c2,51de6a33bccc,26ed27e4172c,d80846b004c4,94d7d3b8bbf4,-
+   11.823 INF [sets] saved set 2 '裝備組 2': e863b877f73a,40f451f317b3,1088fa97014d,73a346cbc832,1a38272b60c2,51de6a33bccc,26ed27e4172c,d80846b004c4,94d7d3b8bbf4,d12fc2cd732c
+   11.825 INF [sets] loaded set 1 '雙手': moved 2, from stash 0, missing 0; main=sword2 off=
+   11.829 INF [sets] test sets prepared: 2h, dual
+   14.773 WRN [uitest] target '@裝備組#2': only 1 matches
+   16.511 INF [sets] loaded set 2 '雙持': moved 2, from stash 0, missing 0; main=axe1 off=mace1
+   16.511 INF [sets] switch to set 2 (key, in combat, field); missing 0
+   19.923 INF [sets] loaded set 1 '雙手': moved 2, from stash 0, missing 0; main=sword2 off=
+   19.926 INF [sets] switch to set 1 (key, in combat, field); missing 0
+F2-DONE

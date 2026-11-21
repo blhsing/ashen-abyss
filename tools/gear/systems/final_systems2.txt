@@ -1,0 +1,4 @@
+exit= seconds=40
+log: C:\Users\blhsi\AppData\Roaming\AshenAbyss\logs\game_20261121_201758.log  lines=1174  ERR=0  WRN=1
+   36.975 INF [suite] DONE suite=systems pass=187 fail=0 errors=0 warnings=1
+SYS-DONE

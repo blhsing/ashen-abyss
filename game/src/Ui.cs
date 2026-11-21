@@ -51,6 +51,8 @@ public partial class Ui : Control
 
     // modal dialog
     private Control _modal;
+    /// <summary>True while a confirmation or message dialog is up (panels' own hotkeys stay quiet).</summary>
+    public bool ModalOpen => _modal != null;
     private Action _modalYes;
     private Action<string> _modalText;
     private LineEdit _modalEdit;
@@ -507,6 +509,8 @@ public partial class Ui : Control
         }
         if (g.State != Game.GameState.Play || g.Player == null || g.Hero == null || _modal != null) return false;
         if (IsOpen("dialogue") || IsOpen("death")) return false;
+        // gear sets (SYSTEMS): F1–F6 load a set, E swaps back (rebindable); live with the inventory open too
+        if ((_open.Count == 0 || IsOpen("inventory")) && !g.Player.Dead && GearSets.HandleKey(key)) return true;
 
         string id = key switch
         {
@@ -1197,6 +1201,7 @@ internal sealed class UiScript
             case "scale": UiTheme.ApplyTextScale((int)Num(arg, 0)); _wait = 0.1; break;
             case "hud": HudCmd(g, arg); break;
             case "give": Give(g, arg); break;
+            case "sets": GearSets.PrepareDemo(g.Hero); break;       // SYSTEMS: one gear set per hand style of the class
             case "gold": if (g.Hero != null) { g.Hero.D.Gold = (long)Num(arg, 100000); g.Hero.Notify(); } break;
             case "mats": if (g.Hero != null) { int n = (int)Num(arg, 500); g.Hero.D.Scrap = n; g.Hero.D.Dust = n; g.Hero.D.Cores = n; g.Hero.Notify(); } break;
             case "xp": g.Hero?.AddXp((float)Num(arg, 1000)); break;

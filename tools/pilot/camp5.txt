@@ -1,0 +1,16 @@
+21:13:56 campaign emberblade
+ 1771.657 INF [pilot] TEST FIGHT boss=boss_gravedigger area=wastes_boss killed=True secs=109 deaths=0 heroLevel=5 threats=87 dodged=87 taken=0 dmgTelegraphed=0 dmgOther=182 life=304
+ 1771.657 INF [pilot] TEST FIGHT boss=sh_wastes area=wastes killed=True secs=77 deaths=0 heroLevel=3 threats=38 dodged=38 taken=0 dmgTelegraphed=0 dmgOther=108 life=202
+ 1771.658 INF [pilot] TEST FIGHT boss=boss_bishop area=crypt_boss killed=True secs=309 deaths=0 heroLevel=12 threats=189 dodged=182 taken=7 dmgTelegraphed=197 dmgOther=1598 life=770
+ 1771.658 INF [pilot] TEST FIGHT boss=sh_crypt area=crypt killed=True secs=486 deaths=0 heroLevel=10 threats=299 dodged=283 taken=16 dmgTelegraphed=557 dmgOther=5876 life=657
+ 1771.658 INF [pilot] TEST FIGHT boss=sh_mire area=mire killed=True secs=306 deaths=0 heroLevel=14 threats=266 dodged=249 taken=17 dmgTelegraphed=373 dmgOther=1534 life=990
+ 1771.659 INF [pilot] TEST FIGHT boss=boss_mire_mother area=mire_boss killed=True secs=145 deaths=0 heroLevel=17 threats=97 dodged=97 taken=0 dmgTelegraphed=0 dmgOther=453 life=1065
+ 1771.659 INF [pilot] TEST FIGHT boss=sh_frost area=frost killed=True secs=211 deaths=1 heroLevel=19 threats=166 dodged=150 taken=16 dmgTelegraphed=820 dmgOther=3065 life=1293
+ 1771.660 INF [pilot] TEST FIGHT boss=boss_rimelord area=frost_boss killed=True secs=97 deaths=0 heroLevel=20 threats=56 dodged=56 taken=0 dmgTelegraphed=0 dmgOther=229 life=1343
+ 1771.660 INF [pilot] TEST FIGHT boss=sh_sands area=sands killed=True secs=115 deaths=0 heroLevel=26 threats=78 dodged=78 taken=0 dmgTelegraphed=0 dmgOther=3907 life=1712
+ 1771.661 INF [pilot] TEST FIGHT boss=boss_grand_hush area=sanctum_boss killed=True secs=129 deaths=0 heroLevel=37 threats=50 dodged=49 taken=1 dmgTelegraphed=43 dmgOther=724 life=2537
+ 1771.661 INF [pilot] TEST FIGHT boss=boss_sand_tyrant area=sands_boss killed=True secs=151 deaths=0 heroLevel=29 threats=110 dodged=105 taken=5 dmgTelegraphed=319 dmgOther=152 life=1866
+ 1771.661 INF [pilot] TEST FIGHT boss=sh_sanctum area=sanctum killed=True secs=76 deaths=0 heroLevel=34 threats=41 dodged=41 taken=0 dmgTelegraphed=0 dmgOther=402 life=2368
+ 1771.662 INF [pilot] TEST FIGHT boss=boss_osaros area=abyss_boss killed=True secs=185 deaths=0 heroLevel=45 threats=152 dodged=140 taken=12 dmgTelegraphed=1687 dmgOther=1724 life=3325
+ 1771.662 INF [pilot] TEST FIGHT boss=sh_abyss area=abyss killed=True secs=106 deaths=0 heroLevel=41 threats=58 dodged=55 taken=3 dmgTelegraphed=130 dmgOther=2164 life=2765
+21:44:16 campaign hunter

@@ -160,7 +160,43 @@ public partial class Player : Actor
         UpdateWeaponTier();
     }
 
-    private void UpdateWeaponTier() => Model?.SetWeaponTier(WeaponTierOf(Hero.Weapon));
+    /// <summary>The model shows the hero's equipment: armour pieces, weapons in hand and the stance (GearVisual.cs); the old weapon tier otherwise.</summary>
+    private void UpdateWeaponTier()
+    {
+        if (Model == null) return;
+        if (!Model.GearManaged) { Model.SetWeaponTier(WeaponTierOf(Hero.Weapon)); return; }
+        // a gear-set swap changes several slots (one Hero.Changed each): the model is rebuilt once, at the end of this
+        // frame, before it is drawn — never once per slot. The very first loadout is built at once.
+        if (Model.Gear == null) { Model.SetGear(GearSet.FromHero(Hero)); PrebuildSets(); return; }
+        if (_gearQueued) return;
+        _gearQueued = true;
+        Callable.From(FlushGear).CallDeferred();
+    }
+
+    private bool _gearQueued;
+    private void FlushGear()
+    {
+        _gearQueued = false;
+        if (Model == null || !IsInstanceValid(Model) || Hero == null) return;
+        Model.SetGear(GearSet.FromHero(Hero));
+        PrebuildSets();
+    }
+
+    private string _setsSig;
+    /// <summary>The pieces of every saved gear set are built hidden on the model, so a swap only shows and hides them.</summary>
+    private void PrebuildSets()
+    {
+        try
+        {
+            var sets = new System.Collections.Generic.List<GearSet>();
+            for (int k = 0; k < Hero.SetCount; k++) if (!Hero.SetAt(k).Empty) sets.Add(GearSet.FromItems(Hero.Class, Hero.SetLayout(k, true)));
+            string sig = string.Join(";", sets.Select(s => s.Signature));
+            if (sig == _setsSig) return;
+            _setsSig = sig;
+            Model.PrebuildGear(sets);
+        }
+        catch (Exception e) { Log.Error("gear", "pre-building the gear sets failed", e); }
+    }
 
     /// <summary>Which weapon mesh (wpn_1/2/3) a weapon shows on the model: legendary 3, rare or power 250+ 2, else (and bare hands) 1.</summary>
     public static int WeaponTierOf(Item w) => w == null ? 1 : w.Rarity >= Rarity.Legendary ? 3 : w.Rarity >= Rarity.Rare || w.Power >= 250 ? 2 : 1;
@@ -433,7 +469,7 @@ public partial class Player : Actor
     /// <summary>Test harness: evade on the next frame, as if Space had been pressed.</summary>
     public void QueueEvade() => _pressEvade = true;
 
-    private string IdleAnim => IdleAnimOf(Hero.Class, Form);
+    private string IdleAnim => Form == 0 && Model?.Gear != null ? Model.StanceIdle : IdleAnimOf(Hero.Class, Form);
 
     /// <summary>The idle clip a class stands in; a shape-shifted form (form != 0) idles like a beast.</summary>
     public static string IdleAnimOf(ClassId c, int form = 0) => form != 0 ? "Zombie_Idle_Loop" : c switch
@@ -779,6 +815,7 @@ public partial class Player : Actor
         string anim = d.Anim;
         if (d.AnimAlt != null) { int i = _nth.GetValueOrDefault(d.Id + "#a"); anim = d.AnimAlt[i % d.AnimAlt.Length]; _nth[d.Id + "#a"] = i + 1; }
         if (Form == 1 && d.Form == 0) anim = "Melee_Hook"; else if (Form == 2 && d.Form == 0) anim = "Zombie_Scratch";
+        if (Form == 0 && Model?.Gear != null) anim = Stances.Remap(Model.Stance, anim, Model.Gear);      // no shield bash without a shield, fists when unarmed
         ActiveModel.PlayAttack(anim, d.AnimSpeed * asp, _contactT, 0.06f);        // the swing is lined up with the contact frame
         if (d.Sfx != null && d.Kind != SkillKind.Leap) Snd.At(d.Sfx, GlobalPosition, 0.8f);
         InCombat = Mathf.Max(InCombat, 4f);

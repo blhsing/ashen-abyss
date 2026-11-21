@@ -1,0 +1,109 @@
+{
+ "base": "staff",
+ "prefix": "wpn",
+ "atlas_px": 1024,
+ "area_m2": 0.9,
+ "notes": "",
+ "entries": [
+  {
+   "id": "wpn_staff_v1",
+   "kind": "weapon",
+   "base": "staff",
+   "file": "res://assets/gear/weapons/wpn_staff_v1.glb",
+   "mount": "hand_r",
+   "grip2": [
+    0.0,
+    0.0,
+    0.3
+   ],
+   "length": 1.886,
+   "variant": 1,
+   "hands": 2,
+   "grip": "both",
+   "tris": 3144,
+   "emissive": false,
+   "bbox": [
+    [
+     -0.0723,
+     -0.0286,
+     -0.8614
+    ],
+    [
+     0.0704,
+     0.0288,
+     1.0246
+    ]
+   ],
+   "textures": "wpn_staff",
+   "atlas_px": 1024,
+   "hint": "long weapon: the hero scripts hold staves with charlib grip(tilt=46) @ R('X', 30) (kit_cst.staff_grip) so they stand upright"
+  },
+  {
+   "id": "wpn_staff_v2",
+   "kind": "weapon",
+   "base": "staff",
+   "file": "res://assets/gear/weapons/wpn_staff_v2.glb",
+   "mount": "hand_r",
+   "grip2": [
+    0.0,
+    0.0,
+    0.3
+   ],
+   "length": 1.971,
+   "variant": 2,
+   "hands": 2,
+   "grip": "both",
+   "tris": 2370,
+   "emissive": false,
+   "bbox": [
+    [
+     -0.1061,
+     -0.0332,
+     -0.9
+    ],
+    [
+     0.1061,
+     0.0332,
+     1.0707
+    ]
+   ],
+   "textures": "wpn_staff",
+   "atlas_px": 1024,
+   "hint": "long weapon: the hero scripts hold staves with charlib grip(tilt=46) @ R('X', 30) (kit_cst.staff_grip) so they stand upright"
+  },
+  {
+   "id": "wpn_staff_v3",
+   "kind": "weapon",
+   "base": "staff",
+   "file": "res://assets/gear/weapons/wpn_staff_v3.glb",
+   "mount": "hand_r",
+   "grip2": [
+    0.0,
+    0.0,
+    0.3
+   ],
+   "length": 2.055,
+   "variant": 3,
+   "hands": 2,
+   "grip": "both",
+   "tris": 3250,
+   "emissive": true,
+   "bbox": [
+    [
+     -0.1174,
+     -0.0801,
+     -0.905
+    ],
+    [
+     0.1174,
+     0.0801,
+     1.1504
+    ]
+   ],
+   "textures": "wpn_staff",
+   "atlas_px": 1024,
+   "hint": "long weapon: the hero scripts hold staves with charlib grip(tilt=46) @ R('X', 30) (kit_cst.staff_grip) so they stand upright"
+  }
+ ],
+ "built": "2026-11-21 18:42:14"
+}

@@ -129,6 +129,7 @@ public partial class TestBot : Node
                 _focus = true;
             }
             if (Pilot != null) { _campaign = true; _focus = true; _allSkills = false; _bossRush = false; _tour = null; }
+            if (Pilot != null && Pilot.BossTest) { _campaign = false; _bossRush = g.Arg("bossrush"); }      // --pilot-test=boss: this area's boss only
             if (Demo) { _allSkills = true; _campaign = false; _focus = false; _bossRush = false; _tour = null; }
         }
         Log.Info("bot", _suite != null ? "TestBot ready: running a scripted suite"
@@ -314,6 +315,7 @@ public partial class TestBot : Node
             {
                 _deadT = 0; Log.Info("bot", "respawning"); g.Respawn();
                 Pilot?.OnDeath();
+                if (Pilot != null) PilotRespawned();
             }
             return;
         }
@@ -336,6 +338,7 @@ public partial class TestBot : Node
         _uiT = 0;
         if (g.Paused) return;
 
+        if (Pilot != null && PilotReflex(g, p, real)) return;      // AI pilot: dodging, potions (AiPilotCombat.cs)
         _thinkT -= real;
         if (_thinkT > 0) return;
         _thinkT = 0.12f;
@@ -377,9 +380,10 @@ public partial class TestBot : Node
 
         // survival first
         float life = p.LifeFrac;
-        if (life < (Pilot != null ? 0.62f : 0.5f) && p.Potions > 0 && _clock - _lastPotion > 1.5) { _lastPotion = _clock; Tap(Key.Q); }
+        if (Pilot == null && life < 0.5f && p.Potions > 0 && _clock - _lastPotion > 1.5) { _lastPotion = _clock; Tap(Key.Q); }
         var target = PickTarget(me, grid);
-        if (target != null && life < (Pilot != null ? 0.45f : 0.35f) && p.EvadeCd <= 0f && !p.Busy && _clock - _lastEvade > 1.0 && me.DistanceTo(target.Pos2) < 7f)
+        if (Pilot != null && (PilotAfterRespawn(p, me) || PilotRetreat(p, me) || PilotFrostDiscipline(p, me))) return;
+        if (Pilot == null && target != null && life < 0.35f && p.EvadeCd <= 0f && !p.Busy && _clock - _lastEvade > 1.0 && me.DistanceTo(target.Pos2) < 7f)
         {
             _lastEvade = _clock;
             StopChannel();
@@ -390,6 +394,9 @@ public partial class TestBot : Node
 
         // directed play walks past monsters that have not noticed the hero
         if (target != null && _focus && !target.Aggro && me.DistanceTo(target.Pos2) > 9f && target != level?.BossMon) target = null;
+        if (Pilot != null && target != null && PilotLeaveAlone(target, level)) target = null;      // optional world bosses and named rares are not picked fights
+        if (Pilot != null) { target = PilotArenaTarget(target, me); if (PilotBackToArena(p, me)) return; }      // boss leash (AiPilotCombat.cs)
+        if (Pilot != null && Pilot.Errand(g, p, level, target)) { _stuckSince = _clock; _doing = "errand"; return; }      // town shopping, rest before a boss (AiPilotPlan.cs)
         if (target != null)
         {
             // between packs: grab the loot at the hero's feet before running to the next monster
@@ -594,12 +601,15 @@ public partial class TestBot : Node
         }
         if (p.Busy) return;
 
+        var basic = hero.Eff(hero.D.Bar[0]) ?? hero.Eff(hero.D.Bar[1]);
+        float want = basic == null ? 2.5f : Reach(basic, t);
+        if (Pilot != null && PilotPosition(p, hero, t, me, dist, los, want, true)) return;     // AI pilot: kiting (AiPilotCombat.cs)
+
         for (int k = 0; k < SlotOrder.Length; k++)
             if (TryUse(p, hero, SlotOrder[k], t, me, dist, los)) return;
 
-        var basic = hero.Eff(hero.D.Bar[0]) ?? hero.Eff(hero.D.Bar[1]);
-        float want = basic == null ? 2.5f : Reach(basic, t);
-        if (dist > want || !los) MoveTo(p, tp, 0.35);
+        if (Pilot != null) PilotPosition(p, hero, t, me, dist, los, want, false);
+        else if (dist > want || !los) MoveTo(p, tp, 0.35);
         else if (_moving) { p.Stop(); _moving = false; }
     }
 
@@ -619,6 +629,7 @@ public partial class TestBot : Node
         if (id == null) return false;
         var d = hero.Eff(id);
         if (d == null || hero.Rank(id) <= 0 || p.WhyCant(d) != null) return false;
+        if (Pilot != null && !PilotMayCast(p, hero, d)) return false;      // AI pilot: no long swing just before the boss strikes (AiPilotCombat.cs)
         Vector2 tp = t.Pos2;
         switch (d.Kind)
         {
@@ -798,7 +809,8 @@ public partial class TestBot : Node
             var it = bag[i];
             if (it == null || !it.IsEquip || hero.WhyCantEquip(it) != null) continue;
             var cur = hero.Compared(it);             // null = there is an empty slot for it
-            if (cur == null || Worth(it) > Worth(cur) * 1.03f) { if (Pilot != null) Pilot.Equipped(it, cur); hero.Equip(it); }
+            // hands: a two-hand weapon is weighed against main + off hand, an off-hand never displaces a two-hand weapon
+            if (GearEval.IsUpgrade(hero, it)) { if (Pilot != null) Pilot.Equipped(it, cur); hero.Equip(it); }      // the shared evaluator (simulated swap)
         }
         // the AI pilot sells and salvages only in town (where the merchant and the smith are), and sooner, so the bag never fills
         if (tidy && bag.Count >= (Pilot != null ? 24 : 28))
@@ -809,6 +821,7 @@ public partial class TestBot : Node
                 if (i >= bag.Count) continue;
                 var it = bag[i];
                 if (it == null) { bag.RemoveAt(i); continue; }
+                if (hero.IsProtected(it)) continue;      // 鎖定 by the player or in a gear set: never sold or salvaged
                 if (!it.IsEquip) { if (bag.Count >= 34) hero.Sell(it); continue; }
                 int keepFrom = bag.Count >= 39 ? 99 : bag.Count >= 36 ? (int)Rarity.Unique : (int)Rarity.Legendary;
                 if ((int)it.Rarity >= keepFrom) continue;
@@ -857,7 +870,7 @@ public partial class TestBot : Node
         {
             if (!q.Main) continue;
             if (level?.Region != null && q.Region == level.Region.Id) { pick = q; break; }
-            pick ??= q;
+            if (pick == null || AiPilot.Active && AiPilot.RegionRank(q.Region) < AiPilot.RegionRank(pick.Region)) pick = q;      // the pilot takes the open regions in its own order (AiPilotPlan.cs)
         }
         return pick == null ? (null, null) : (pick, Quests.CurrentStep(pick));
     }

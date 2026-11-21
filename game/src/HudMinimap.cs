@@ -221,7 +221,7 @@ public partial class HudMinimap : Control
             for (int i = 0; i < marks.Count; i++)
             {
                 var m = marks[i];
-                if (m == null || !m.Visible) continue;
+                if (m == null || !m.Visible || QuestMarks.Covers(m)) continue;      // dungeon objectives: quest pins only
                 MarkStyle st = StyleOf(m);
                 // the way toward the current story step is drawn in gold and stays on the rim when far away
                 bool goal = _questArea != null && (m.Kind == "exit" || m.Kind == "entrance")
@@ -263,6 +263,8 @@ public partial class HudMinimap : Control
             Rhomb(c + q, 3.8f, m.Tier == MonTier.Boss ? new Color(1f, 0.3f, 0.2f) : new Color(1f, 0.62f, 0.2f));
         }
 
+        DrawQuestPins(c, k, limit);
+
         // the hero: an arrow that points where they face (facing 0 looks toward +Z, which is down on the map)
         var dir = new Vector2(Mathf.Sin(_facing), Mathf.Cos(_facing));
         var side = new Vector2(-dir.Y, dir.X);
@@ -271,6 +273,62 @@ public partial class HudMinimap : Control
         _arrow[0] = c + dir * 8f; _arrow[1] = c - dir * 4.5f + side * 4.6f; _arrow[2] = c - dir * 4.5f - side * 4.6f;
         _over.DrawColoredPolygon(_arrow, new Color(1f, 0.9f, 0.62f));
     }
+
+    private struct EdgePin { public QuestMark M; public float Ang; public int Count; }
+    private readonly List<EdgePin> _edges = new();
+
+    /// <summary>
+    /// Quest and mission targets whose spot has been explored (QuestMarks.cs): a pin at the target, or on the rim with an
+    /// arrow toward it when it is out of range (kept inside the ring by its own reach; one per direction, main quest
+    /// first, with a "×n" badge when several share it; the main quest's pulses). Side targets first, the main quest on
+    /// top. Sizes follow the UI size setting.
+    /// </summary>
+    private void DrawQuestPins(Vector2 c, float k, float limit)
+    {
+        IReadOnlyList<QuestMark> list;
+        try { list = QuestMarks.Of(_level); }
+        catch (Exception e) { UiSafe.Report("minimap quest pins", e); return; }
+        if (list.Count == 0) return;
+        float s = Mathf.Clamp(UiTheme.TextScale, 1f, 1.3f);
+        float r = 15f * s, er = 13.5f * s;
+        float usable = Diameter * 0.5f * RingR;
+        float edgeDist = usable - QuestGlyph.EdgeReach(er) - 4f;             // the arrow's tip stays inside the ring
+        float inRange = limit;
+
+        _edges.Clear();
+        for (int pass = 1; pass >= 0; pass--)
+            for (int i = 0; i < list.Count; i++)
+            {
+                var m = list[i];
+                if (!m.Known || m.Main != (pass == 1)) continue;
+                Vector2 q = (m.Pos - _hero) * k;
+                if (Fits(q, inRange, usable, r)) continue;
+                float ang = Mathf.Atan2(q.Y, q.X);
+                int at = -1;
+                for (int j = 0; j < _edges.Count; j++) if (Mathf.Abs(Mathf.AngleDifference(_edges[j].Ang, ang)) < 0.42f) { at = j; break; }
+                if (at >= 0) { var ep = _edges[at]; ep.Count++; _edges[at] = ep; continue; }
+                _edges.Add(new EdgePin { M = m, Ang = ang, Count = 1 });
+            }
+        float pulse = (Time.GetTicksMsec() % 1600UL) / 1600f;
+        for (int j = _edges.Count - 1; j >= 0; j--)             // side ones first, the main quest's on top
+        {
+            var ep = _edges[j];
+            var dir = new Vector2(MathF.Cos(ep.Ang), MathF.Sin(ep.Ang));
+            QuestGlyph.Edge(_over, ep.M.Kind, QuestMarks.ColorOf(ep.M), c + dir * edgeDist, dir, er, 0.95f, ep.M.Main ? pulse : -1f, ep.Count);
+        }
+        for (int pass = 0; pass < 2; pass++)
+            for (int i = 0; i < list.Count; i++)
+            {
+                var m = list[i];
+                if (!m.Known || m.Main != (pass == 1)) continue;
+                Vector2 q = (m.Pos - _hero) * k;
+                if (Fits(q, inRange, usable, r)) QuestGlyph.Pin(_over, m.Kind, QuestMarks.ColorOf(m), c + q, r);
+            }
+    }
+
+    /// <summary>A pin at offset q fits inside the ring: its tip within range and its whole head inside the inner edge.</summary>
+    private static bool Fits(Vector2 q, float range, float usable, float r) =>
+        q.Length() <= range && (q + new Vector2(0f, -r * 1.55f)).Length() <= usable - r * 1.2f;
 
     private void Rhomb(Vector2 p, float r, Color col)
     {

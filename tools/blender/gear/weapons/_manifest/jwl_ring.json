@@ -1,0 +1,97 @@
+{
+ "base": "ring",
+ "prefix": "jwl",
+ "atlas_px": 512,
+ "area_m2": 0.0732,
+ "notes": "",
+ "entries": [
+  {
+   "id": "jwl_ring_v1",
+   "kind": "jewel",
+   "base": "ring",
+   "file": "res://assets/gear/weapons/jwl_ring_v1.glb",
+   "mount": "none",
+   "grip2": null,
+   "length": 0.118,
+   "variant": 1,
+   "hands": 0,
+   "grip": "none",
+   "tris": 676,
+   "emissive": false,
+   "bbox": [
+    [
+     -0.0505,
+     -0.0133,
+     -0.0502
+    ],
+    [
+     0.0505,
+     0.0133,
+     0.0676
+    ]
+   ],
+   "textures": "jwl_ring",
+   "atlas_px": 512,
+   "display_scale": 4.5
+  },
+  {
+   "id": "jwl_ring_v2",
+   "kind": "jewel",
+   "base": "ring",
+   "file": "res://assets/gear/weapons/jwl_ring_v2.glb",
+   "mount": "none",
+   "grip2": null,
+   "length": 0.123,
+   "variant": 2,
+   "hands": 0,
+   "grip": "none",
+   "tris": 2044,
+   "emissive": false,
+   "bbox": [
+    [
+     -0.0503,
+     -0.025,
+     -0.0503
+    ],
+    [
+     0.0503,
+     0.025,
+     0.073
+    ]
+   ],
+   "textures": "jwl_ring",
+   "atlas_px": 512,
+   "display_scale": 4.5
+  },
+  {
+   "id": "jwl_ring_v3",
+   "kind": "jewel",
+   "base": "ring",
+   "file": "res://assets/gear/weapons/jwl_ring_v3.glb",
+   "mount": "none",
+   "grip2": null,
+   "length": 0.15,
+   "variant": 3,
+   "hands": 0,
+   "grip": "none",
+   "tris": 3228,
+   "emissive": true,
+   "bbox": [
+    [
+     -0.0534,
+     -0.0257,
+     -0.0534
+    ],
+    [
+     0.0534,
+     0.0257,
+     0.097
+    ]
+   ],
+   "textures": "jwl_ring",
+   "atlas_px": 512,
+   "display_scale": 4.5
+  }
+ ],
+ "built": "2026-11-21 19:03:52"
+}

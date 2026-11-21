@@ -88,14 +88,16 @@ public sealed class SkillExec
         dir = dir.LengthSquared() < 0.01f ? P.Forward : dir.Normalized();
         Vector2 aim = pos + dir * Mathf.Min(pos.DistanceTo(point), d.Range > 0 ? d.Range : 999f);
         float coef = Coef(d);
+        // dual-wield: each attack swings the other hand (multi-hit swings alternate hit by hit); one weapon: always the main hand
+        int hand0 = d.Coef > 0 ? H.NextStrike() : H.StrikeHand;
 
         switch (d.Kind)
         {
             case SkillKind.Melee:
                 for (int i = 0; i < d.Hits; i++)
                 {
-                    int n = i;
-                    After(i * d.HitInterval / H.AttackSpeedMul, () => MeleeHit(d, P.Forward, coef, mul, forceCrit, n == 0));
+                    int n = i, hand = (hand0 + i) % 2;
+                    After(i * d.HitInterval / H.AttackSpeedMul, () => { H.StrikeHand = H.DualWielding ? hand : 0; MeleeHit(d, P.Forward, coef, mul, forceCrit, n == 0); });
                 }
                 break;
             case SkillKind.Nova:

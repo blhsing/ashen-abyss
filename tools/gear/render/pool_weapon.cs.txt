@@ -1,0 +1,11 @@
+    private void AttachWeapon(WeaponPick w, bool main, GearSet g, List<MeshInstance3D> fresh, List<string> report)
+    {
+        if (w == null) return;
+        string id = GearCatalog.ResolveWeapon(w);
+        if (id == null && !Modular && ShowBaked(w, main, g.Class)) { report.Add($"baked {w.Base} v{w.Variant}"); if (main) SetupIK(w, null, "hand_r", g); return; }
+        var p = GetPiece(WeaponKey(w, id, main), () => BuildWeaponPiece(w, id, main));
+        if (p == null) return;
+        ShowPiece(p, fresh);
+        report.Add($"{p.What}@{p.Mount}");
+        if (main) SetupIK(w, id, p.Mount, g, p.Grip, p.Model);
+    }

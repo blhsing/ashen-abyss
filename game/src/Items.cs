@@ -27,9 +27,19 @@ public sealed class Item
     public string Aspect;        // legendary power id
     public float AspectRoll;     // 0..1 position inside the aspect's value range
     public string Unique;        // unique item id
-    public float DmgMin, DmgMax, Aps = 1f;   // weapons
-    public int Armor;                         // armour pieces
-    public int WeaponClass = -1;              // ClassId for weapons, -1 = any
+    public float DmgMin, DmgMax, Aps = 1f;   // weapons: damage of one hit, attacks per second of the base
+    public int Armor;                         // armour pieces (and shields)
+    public int WeaponClass = -1;              // class lock (class-bound uniques), -1 = any class whose loadout allows the base
+    /// <summary>Base id. Weapons and off-hands: a GearBase id (sword1 … lantern, CONTRACT §2). Armour: helm, chest, gloves,
+    /// pants, boots. Jewellery: ring, amulet. Gems: the gem kind (ruby …). Null only in a save not yet migrated.</summary>
+    public string Base;
+    /// <summary>Model id (CONTRACT §4/§5): wpn_&lt;base&gt;_v1..v3, arm_&lt;class&gt;_&lt;slot&gt;_t1..t4 (the class it was made for;
+    /// use <see cref="ItemDb.LookFor"/> for the wearer), jwl_ring_v1..3, jwl_amulet_v1..3, gem_&lt;kind&gt;.</summary>
+    public string Look;
+    /// <summary>The base's own stats (a shield's block, a dagger's crit …): rolled once, never enchanted or tempered.</summary>
+    public List<Affix> Implicits = new();
+    /// <summary>Locked (鎖定) by the player: never marked, recycled, sold or discarded by any bulk action (bag filters, smith, AI pilot).</summary>
+    public bool Locked;
     public int Upgrade;                       // masterworking rank 0..12; ranks 4, 8 and 12 boost one affix by 25%
     public int TemperLeft = 5;                // remaining tempering attempts
     public int Sockets;
@@ -43,6 +53,41 @@ public sealed class Item
     /// <summary>Effective value of one of this item's affixes after masterworking.</summary>
     public float Eff(Affix a) => a.Stat == Stat.SkillRanks ? a.Value : a.Value * (AffixMul + a.Bonus);
     public bool IsEquip => Kind != ItemKind.Gem;
+    /// <summary>The weapon / off-hand base, or null for armour, jewellery and gems.</summary>
+    [System.Text.Json.Serialization.JsonIgnore] public GearBase Gb => ItemDb.BaseOf(Base);
+    /// <summary>Hands the item takes: 2 for a two-hand weapon, 1 for a one-hand weapon or an off-hand, 0 for anything else.</summary>
+    [System.Text.Json.Serialization.JsonIgnore] public int Hands => Kind == ItemKind.OffHand ? 1 : Kind == ItemKind.Weapon ? (Gb?.Hands ?? 2) : 0;
+    [System.Text.Json.Serialization.JsonIgnore] public bool TwoHand => Hands == 2;
+    /// <summary>Chance to block of a shield (its implicit), else 0.</summary>
+    [System.Text.Json.Serialization.JsonIgnore] public float BlockChance { get { foreach (var a in Implicits) if (a.Stat == Stat.Block) return Eff(a); return 0f; } }
+}
+
+/// <summary>
+/// A weapon or off-hand base (CONTRACT §2): how it is held, how fast it swings, how wide its damage spreads, the stats
+/// it carries by itself and (off-hands) the affix families it may roll.
+/// </summary>
+public sealed class GearBase
+{
+    public string Id, Name;              // contract id and zh-TW type name
+    public int Hands = 1;                // 1 or 2 (off-hands: 1)
+    public bool Off;                     // off-hand only: shield, focus, totem, grimoire, lantern
+    public float Aps = 1f;               // attacks per second
+    public float Spread = 0.2f;          // one hit rolls avg × (1 − Spread … 1 + Spread)
+    public string Icon;                  // raster icon family used until ItemIcon3D replaces it
+    public string[] Names;               // five names by power tier
+    public (Stat s, float lo, float hi)[] Implicit = Array.Empty<(Stat, float, float)>();
+    public Stat[] Affixes;               // off-hands: the stats they may roll (weapons use the shared weapon pools)
+    public string HandsName => Off ? "副手" : Hands == 2 ? "雙手" : "單手";
+}
+
+/// <summary>What one class may hold (CONTRACT §3), its starting weapon and the attack speed its animations are timed to.</summary>
+public sealed class ClassGear
+{
+    public string[] TwoHand, MainHand, OffHand, Dual;   // Dual: one-hand bases it may also hold in the off hand
+    public string Starter, StarterOff;                  // new hero's weapon (and second fist for the forgebody)
+    public string Legacy, LegacyOff;                    // 0.1–0.3 save: the class's old weapon becomes Legacy (+ LegacyOff companion)
+    public float RefAps;                                // the old class weapon's speed: Aps / RefAps scales every swing
+    public bool CanDual => Dual.Length > 0;
 }
 
 public sealed class AspectDef
@@ -57,6 +102,7 @@ public sealed class AspectDef
 public sealed class UniqueDef
 {
     public string Id, Name, Desc, Flavor, Icon;
+    public string Base, Look;        // weapon uniques: the base they are forged on; Look: a fixed model id (else by rarity)
     public ItemKind Kind;
     public int Class = -1;
     public (Stat s, float lo, float hi)[] Affixes;
@@ -74,9 +120,121 @@ public static class ItemDb
 {
     public const int MaxPower = 600;
     public const int MaxUpgrade = 12;
-    private static readonly ItemKind[] Offense = { ItemKind.Weapon, ItemKind.Gloves, ItemKind.Ring, ItemKind.Amulet };
-    private static readonly ItemKind[] Defense = { ItemKind.Helm, ItemKind.Chest, ItemKind.Pants, ItemKind.Boots, ItemKind.Amulet };
-    private static readonly ItemKind[] AnyKind = { ItemKind.Weapon, ItemKind.Helm, ItemKind.Chest, ItemKind.Gloves, ItemKind.Pants, ItemKind.Boots, ItemKind.Amulet, ItemKind.Ring };
+    // Off-hands roll only the stats their base lists (GearBase.Affixes, see Fits); they are in these lists for legendary powers.
+    private static readonly ItemKind[] Offense = { ItemKind.Weapon, ItemKind.Gloves, ItemKind.Ring, ItemKind.Amulet, ItemKind.OffHand };
+    private static readonly ItemKind[] Defense = { ItemKind.Helm, ItemKind.Chest, ItemKind.Pants, ItemKind.Boots, ItemKind.Amulet, ItemKind.OffHand };
+    private static readonly ItemKind[] AnyKind = { ItemKind.Weapon, ItemKind.Helm, ItemKind.Chest, ItemKind.Gloves, ItemKind.Pants, ItemKind.Boots, ItemKind.Amulet, ItemKind.Ring, ItemKind.OffHand };
+
+    // ───────────────────────── weapon and off-hand bases ─────────────────────────
+    // Speed and spread give each base its feel; damage per second is the same for every base of one hand count
+    // (a slow base hits harder per swing). Two-hand: full damage, affixes ×1.5. One-hand: 90% damage; it pairs with an
+    // off-hand (which adds its own stats) or, for dual-wield classes, a second one-hand weapon (+10% speed, hands alternate).
+    public const float OneHandDps = 0.9f, TwoHandAffixMul = 1.5f, DualSpeed = 1.1f;
+    private static readonly Stat[] Attrs = { Stat.Str, Stat.Int, Stat.Dex, Stat.Wil };
+    private static Stat[] OffStats(params Stat[] s) => Attrs.Concat(s).ToArray();
+
+    public static readonly List<GearBase> GearBases = new()
+    {
+        // one-hand
+        new() { Id = "sword1", Name = "劍", Aps = 1.2f, Spread = 0.2f, Icon = "greatsword", Names = new[] { "鐵劍", "鋼紋長劍", "守衛佩劍", "灰鑄戰劍", "燼紋誓劍" }, Implicit = new[] { (Stat.CritDmg, 5f, 25f) } },
+        new() { Id = "axe1", Name = "斧", Aps = 1.1f, Spread = 0.3f, Icon = "greatsword", Names = new[] { "伐木手斧", "鐵戰斧", "掠奪者之斧", "灰鑄戰斧", "燼牙斧" }, Implicit = new[] { (Stat.DmgVuln, 5f, 25f) } },
+        new() { Id = "mace1", Name = "錘", Aps = 1.0f, Spread = 0.25f, Icon = "club", Names = new[] { "包鐵棍", "鐵釘錘", "凸緣戰錘", "灰鑄釘錘", "燼心錘" }, Implicit = new[] { (Stat.DmgOverpower, 8f, 40f) } },
+        new() { Id = "dagger", Name = "匕首", Aps = 1.4f, Spread = 0.15f, Icon = "greatsword", Names = new[] { "剝皮小刀", "鋼匕首", "夜行短刃", "灰鑄刺刃", "影牙匕首" }, Implicit = new[] { (Stat.CritChance, 1f, 4f) } },
+        new() { Id = "wand", Name = "魔杖", Aps = 1.3f, Spread = 0.2f, Icon = "staff", Names = new[] { "白蠟短杖", "星紋魔杖", "骨刻魔杖", "霜銀魔杖", "淵語魔杖" }, Implicit = new[] { (Stat.ResourceGen, 3f, 12f) } },
+        new() { Id = "scythe1", Name = "鐮刃", Aps = 1.15f, Spread = 0.3f, Icon = "scythe", Names = new[] { "收割鐮", "骨柄鐮刃", "送葬鐮刃", "灰鑄鐮刃", "寂夜鐮刃" }, Implicit = new[] { (Stat.LifeOnHit, 1f, 14f) } },
+        new() { Id = "flail", Name = "連枷", Aps = 1.05f, Spread = 0.4f, Icon = "club", Names = new[] { "打穀連枷", "鐵鏈連枷", "刺球連枷", "灰鑄連枷", "鳴鐘連枷" }, Implicit = new[] { (Stat.DmgCC, 5f, 25f) } },
+        new() { Id = "fist", Name = "拳刃", Aps = 1.45f, Spread = 0.15f, Icon = "gauntlet", Names = new[] { "纏布拳刃", "鐵指虎", "鍛爐拳刃", "灰鑄拳鎧", "日爐遺拳" }, Implicit = new[] { (Stat.AttackSpeed, 2f, 6f) } },
+        new() { Id = "sceptre", Name = "權杖", Aps = 1.1f, Spread = 0.2f, Icon = "club", Names = new[] { "黃銅權杖", "銀頂權杖", "刻紋權杖", "燼晶權杖", "灰冠權杖" }, Implicit = new[] { (Stat.Cdr, 2f, 6f) } },
+        // two-hand
+        new() { Id = "sword2", Name = "巨劍", Hands = 2, Aps = 0.95f, Spread = 0.2f, Icon = "greatsword", Names = new[] { "鐵製巨劍", "鋼紋巨劍", "守衛大劍", "灰鑄斬劍", "燼火裁決者" }, Implicit = new[] { (Stat.CritDmg, 10f, 50f) } },
+        new() { Id = "axe2", Name = "巨斧", Hands = 2, Aps = 0.9f, Spread = 0.3f, Icon = "greatsword", Names = new[] { "劈柴巨斧", "鐵刃巨斧", "劊子手巨斧", "灰鑄巨斧", "燼裂巨斧" }, Implicit = new[] { (Stat.DmgVuln, 10f, 50f) } },
+        new() { Id = "mace2", Name = "巨錘", Hands = 2, Aps = 0.8f, Spread = 0.25f, Icon = "club", Names = new[] { "枯木戰棍", "鐵箍巨錘", "荒靈戰棍", "灰鑄巨錘", "古林之心" }, Implicit = new[] { (Stat.DmgOverpower, 16f, 80f) } },
+        new() { Id = "staff", Name = "法杖", Hands = 2, Aps = 1.0f, Spread = 0.15f, Icon = "staff", Names = new[] { "白蠟法杖", "星紋杖", "觀星者長杖", "霜銀長杖", "天穹之杖" }, Implicit = new[] { (Stat.DmgCore, 8f, 40f) } },
+        new() { Id = "polearm", Name = "長柄刀", Hands = 2, Aps = 0.95f, Spread = 0.25f, Icon = "greatsword", Names = new[] { "鐵刃長柄刀", "鋼紋偃月刀", "守塔長柄刀", "灰鑄長柄刀", "燼燈長柄刀" }, Implicit = new[] { (Stat.DmgElite, 8f, 40f) } },
+        new() { Id = "scythe2", Name = "巨鐮", Hands = 2, Aps = 0.95f, Spread = 0.3f, Icon = "scythe", Names = new[] { "送葬鐮", "骨柄鐮杖", "縛魂鐮", "灰鑄喪鐮", "寂夜長鐮" }, Implicit = new[] { (Stat.LifeOnHit, 2f, 28f) } },
+        new() { Id = "bow", Name = "長弓", Hands = 2, Aps = 1.15f, Spread = 0.15f, Icon = "crossbow", Names = new[] { "紫杉長弓", "角弓", "夜梟長弓", "灰鑄戰弓", "星落長弓" }, Implicit = new[] { (Stat.DmgBasic, 8f, 40f) } },
+        new() { Id = "crossbow", Name = "弩", Hands = 2, Aps = 1.0f, Spread = 0.25f, Icon = "crossbow", Names = new[] { "獵弩", "複合弩", "夜梟連弩", "灰鑄重弩", "影牙重弩" }, Implicit = new[] { (Stat.CritDmg, 10f, 50f) } },
+        // off-hand
+        new() { Id = "shield", Name = "盾", Off = true, Icon = "swordshield", Names = new[] { "木製圓盾", "鐵邊盾", "守望者鳶盾", "灰鑄塔盾", "不熄之誓" }, Implicit = new[] { (Stat.Block, 14f, 24f) },
+            Affixes = OffStats(Stat.Armor, Stat.MaxLife, Stat.LifePct, Stat.ResAll, Stat.DmgReduction, Stat.Thorns, Stat.Block, Stat.LifeRegen, Stat.BarrierPct, Stat.Healing) },
+        new() { Id = "focus", Name = "法器", Off = true, Icon = "staff", Names = new[] { "裂紋水晶", "星紋法球", "觀星者法器", "霜銀法球", "天穹之核" }, Implicit = new[] { (Stat.DmgAll, 6f, 15f) },
+            Affixes = OffStats(Stat.DmgFire, Stat.DmgFrost, Stat.DmgLightning, Stat.CritChance, Stat.Cdr, Stat.ResourceCost, Stat.MaxResource, Stat.DmgCore, Stat.LuckyHit, Stat.BarrierPct) },
+        new() { Id = "totem", Name = "圖騰", Off = true, Icon = "club", Names = new[] { "獸骨圖騰", "枯木圖騰", "荒靈圖騰", "灰鑄圖騰", "古林圖騰" }, Implicit = new[] { (Stat.DmgAll, 6f, 15f) },
+            Affixes = OffStats(Stat.DmgPoison, Stat.DmgPhysical, Stat.DmgLightning, Stat.LifeRegen, Stat.MinionDmg, Stat.Cdr, Stat.ResourceGen, Stat.DmgOverpower, Stat.MaxLife) },
+        new() { Id = "grimoire", Name = "魔典", Off = true, Icon = "grimoire", Names = new[] { "學徒咒典", "縛鏈咒典", "契印魔典", "灰鑄魔典", "淵語之書" }, Implicit = new[] { (Stat.DmgAll, 6f, 15f) },
+            Affixes = OffStats(Stat.DmgShadow, Stat.DmgFire, Stat.DmgDot, Stat.MinionDmg, Stat.ResourceGen, Stat.Cdr, Stat.MaxResource, Stat.DmgCore, Stat.DmgVuln) },
+        new() { Id = "lantern", Name = "燈", Off = true, Icon = "swordshield", Names = new[] { "鐵皮提燈", "引燈者提燈", "守夜燈", "灰鑄聖燈", "不熄之燈" }, Implicit = new[] { (Stat.BarrierPct, 4f, 14f), (Stat.DmgFire, 4f, 12f) },
+            Affixes = OffStats(Stat.DmgFire, Stat.Healing, Stat.BarrierPct, Stat.ResAll, Stat.ResShadow, Stat.LifeRegen, Stat.Cdr, Stat.DmgCC, Stat.MaxResource) },
+    };
+    private static readonly Dictionary<string, GearBase> BaseById = GearBases.ToDictionary(b => b.Id);
+    public static GearBase BaseOf(string id) => id != null && BaseById.TryGetValue(id, out var b) ? b : null;
+
+    // CONTRACT §3, in ClassId order. RefAps is the speed of the class's old (0.1–0.3) weapon, which its animations are timed to.
+    private static readonly ClassGear[] Loadouts =
+    {
+        new() { TwoHand = new[] { "sword2", "axe2", "mace2", "polearm" }, MainHand = new[] { "sword1", "axe1", "mace1" }, OffHand = Array.Empty<string>(), Dual = new[] { "sword1", "axe1", "mace1" },
+            Starter = "sword2", Legacy = "sword2", RefAps = 0.95f },
+        new() { TwoHand = new[] { "staff" }, MainHand = new[] { "wand", "dagger", "sceptre" }, OffHand = new[] { "focus" }, Dual = Array.Empty<string>(),
+            Starter = "staff", Legacy = "staff", RefAps = 1.0f },
+        new() { TwoHand = new[] { "bow", "crossbow" }, MainHand = new[] { "sword1", "dagger" }, OffHand = Array.Empty<string>(), Dual = new[] { "sword1", "dagger" },
+            Starter = "crossbow", Legacy = "crossbow", RefAps = 1.25f },
+        new() { TwoHand = new[] { "scythe2", "sword2" }, MainHand = new[] { "scythe1", "sword1", "dagger", "wand" }, OffHand = new[] { "shield", "focus" }, Dual = Array.Empty<string>(),
+            Starter = "scythe2", Legacy = "scythe2", RefAps = 1.0f },
+        new() { TwoHand = new[] { "staff", "mace2", "axe2" }, MainHand = new[] { "mace1", "axe1", "dagger" }, OffHand = new[] { "totem" }, Dual = Array.Empty<string>(),
+            Starter = "mace2", Legacy = "mace2", RefAps = 1.0f },
+        new() { TwoHand = new[] { "mace2", "axe2" }, MainHand = new[] { "fist" }, OffHand = Array.Empty<string>(), Dual = new[] { "fist" },
+            Starter = "fist", StarterOff = "fist", Legacy = "fist", LegacyOff = "fist", RefAps = 1.35f },
+        new() { TwoHand = new[] { "sword2", "mace2", "polearm" }, MainHand = new[] { "sword1", "mace1", "flail" }, OffHand = new[] { "shield", "lantern" }, Dual = Array.Empty<string>(),
+            Starter = "sword1", Legacy = "sword1", LegacyOff = "shield", RefAps = 1.1f },
+        new() { TwoHand = new[] { "staff", "scythe2" }, MainHand = new[] { "wand", "dagger", "sceptre" }, OffHand = new[] { "grimoire", "focus" }, Dual = Array.Empty<string>(),
+            Starter = "wand", Legacy = "wand", LegacyOff = "grimoire", RefAps = 1.05f },
+    };
+    public static ClassGear Loadout(ClassId c) => Loadouts[Math.Clamp((int)c, 0, Loadouts.Length - 1)];
+
+    /// <summary>True when the class may hold this base in that hand (EquipSlot.MainHand or EquipSlot.OffHand).</summary>
+    public static bool Allows(ClassId c, string baseId, EquipSlot hand)
+    {
+        var g = Loadout(c);
+        if (hand == EquipSlot.OffHand) return Array.IndexOf(g.OffHand, baseId) >= 0 || Array.IndexOf(g.Dual, baseId) >= 0;
+        return Array.IndexOf(g.TwoHand, baseId) >= 0 || Array.IndexOf(g.MainHand, baseId) >= 0;
+    }
+
+    /// <summary>
+    /// Can this class use the item at all? False only for a weapon or off-hand whose base the class cannot hold in either
+    /// hand, or another class's bound unique. Armour, jewellery and gems: always true. (Level is not considered.)
+    /// </summary>
+    public static bool UsableBy(Item it, ClassId c)
+    {
+        if (it == null || !it.IsEquip) return true;
+        if (it.Kind == ItemKind.Weapon && it.WeaponClass >= 0 && it.WeaponClass != (int)c) return false;
+        if (it.Kind is ItemKind.Weapon or ItemKind.OffHand)
+            return BaseOf(it.Base) == null || Allows(c, it.Base, EquipSlot.MainHand) || Allows(c, it.Base, EquipSlot.OffHand);
+        return true;
+    }
+
+    /// <summary>How the class holds this weapon / off-hand: 雙手武器, 主手, 主手／可雙持, 副手 — or null when it cannot.</summary>
+    public static string HowHeld(Item it, ClassId c)
+    {
+        if (it == null || it.Kind is not (ItemKind.Weapon or ItemKind.OffHand) || !UsableBy(it, c)) return null;
+        if (it.Kind == ItemKind.OffHand) return "副手";
+        if (it.TwoHand) return "雙手武器";
+        bool main = Allows(c, it.Base, EquipSlot.MainHand), off = Allows(c, it.Base, EquipSlot.OffHand);
+        return main && off ? "主手／可雙持" : main ? "主手" : "副手";
+    }
+
+    /// <summary>The class's weapon eligibility as text lines (class intro, character sheet): 雙手 / 單手 (可雙持) / 副手.</summary>
+    public static string[] LoadoutLines(ClassId c)
+    {
+        var g = Loadout(c);
+        string Names_(IEnumerable<string> ids) { var l = ids.Select(id => BaseOf(id)?.Name ?? id).ToList(); return l.Count == 0 ? "—" : string.Join("、", l); }
+        string one = Names_(g.MainHand);
+        if (g.CanDual) one += g.Dual.SequenceEqual(g.MainHand) ? "（可雙持）" : $"（可雙持：{Names_(g.Dual)}）";
+        return new[] { "雙手：" + Names_(g.TwoHand), "單手：" + one, "副手：" + Names_(g.OffHand) };
+    }
+
+    /// <summary>Every weapon base the class may wield (two-hand first), and its off-hand bases.</summary>
+    public static IEnumerable<string> WeaponBasesOf(ClassId c) => Loadout(c).TwoHand.Concat(Loadout(c).MainHand);
+    public static string[] OffBasesOf(ClassId c) => Loadout(c).OffHand;
 
     // base item names by tier (low → high power) and icon
     private static readonly Dictionary<ItemKind, (string[] names, string icon)> Bases = new()
@@ -90,7 +248,8 @@ public static class ItemDb
         [ItemKind.Ring] = (new[] { "銅戒", "銀戒", "刻紋金戒", "燼晶指環", "灰冠王印戒" }, "ring"),
     };
 
-    private static readonly string[][] WeaponNames =
+    // 0.1–0.3: one weapon type per class (index = ClassId). Kept for migrating old saves and for the old raster icons.
+    private static readonly string[][] LegacyWeaponNames =
     {
         new[] { "鐵製巨劍", "鋼紋巨劍", "守衛大劍", "灰鑄斬劍", "燼火裁決者" },
         new[] { "白蠟法杖", "星紋杖", "觀星者長杖", "霜銀權杖", "天穹之杖" },
@@ -103,7 +262,6 @@ public static class ItemDb
     };
     public static readonly string[] WeaponIcons = { "greatsword", "staff", "crossbow", "scythe", "club", "gauntlet", "swordshield", "grimoire" };
     public static readonly string[] WeaponTypeNames = { "巨劍", "法杖", "手弩", "鐮杖", "圖騰戰棍", "拳甲", "劍盾", "咒典" };
-    private static readonly float[] WeaponAps = { 0.95f, 1.0f, 1.25f, 1.0f, 1.0f, 1.35f, 1.1f, 1.05f };
 
     // affix pools: stat, low value, high value (at max power), allowed kinds
     public sealed record Pool(Stat S, float Lo, float Hi, ItemKind[] Kinds, float Weight = 1f);
@@ -132,7 +290,15 @@ public static class ItemDb
         new(Stat.ResourceCost, 2, 11, new[] { ItemKind.Boots, ItemKind.Amulet }, 0.6f), new(Stat.Cdr, 2, 10.5f, new[] { ItemKind.Helm, ItemKind.Amulet }),
         new(Stat.MoveSpeed, 4, 16, new[] { ItemKind.Boots, ItemKind.Amulet }, 1.2f), new(Stat.GoldFind, 5, 32, new[] { ItemKind.Ring, ItemKind.Amulet, ItemKind.Boots }, 0.4f),
         new(Stat.MagicFind, 4, 24, new[] { ItemKind.Ring, ItemKind.Amulet, ItemKind.Helm }, 0.4f), new(Stat.XpGain, 3, 12, new[] { ItemKind.Helm, ItemKind.Amulet }, 0.25f),
+        new(Stat.Block, 2, 9, new[] { ItemKind.OffHand }, 0.8f),
     };
+
+    /// <summary>May this pool roll on this item? Off-hands take only their base's stat list; everything else the pool's kinds.</summary>
+    public static bool Fits(Pool p, Item it)
+    {
+        if (it.Kind == ItemKind.OffHand) { var b = it.Gb; return b?.Affixes != null && Array.IndexOf(b.Affixes, p.S) >= 0; }
+        return p.Kinds.Contains(it.Kind);
+    }
 
     private static readonly string[] MagicPrefix = { "堅實的", "銳利的", "餘溫的", "寒霜的", "迅捷的", "沉重的", "靜默的", "守望的", "飢渴的", "蒼白的", "殘響的", "灰染的" };
     private static readonly string[] RareA = { "灰誓", "殘燈", "霜語", "燼心", "夜梟", "骨鳴", "寂影", "餘暉", "荒原", "墓風", "裂焰", "星骸", "蝕月", "孤火", "鐵淚", "亡歌" };
@@ -164,16 +330,16 @@ public static class ItemDb
 
     public static readonly List<UniqueDef> Uniques = new()
     {
-        new() { Id = "u_regret", Name = "灰冠王的遺憾", Kind = ItemKind.Weapon, Class = 0, Icon = "greatsword",
+        new() { Id = "u_regret", Name = "灰冠王的遺憾", Kind = ItemKind.Weapon, Class = 0, Base = "sword2", Icon = "greatsword",
             Desc = "裂地斬的衝擊波會折返一次，折返時造成 60% 傷害。", Flavor = "他曾舉此劍向日爐起誓。日爐熄滅之後，誓言只剩重量。",
             Affixes = new[] { (Stat.DmgCore, 40f, 70f), (Stat.Str, 40f, 70f), (Stat.CritDmg, 30f, 60f), (Stat.DmgFire, 30f, 55f) } },
-        new() { Id = "u_stargazer", Name = "觀星者之眼", Kind = ItemKind.Weapon, Class = 1, Icon = "staff",
+        new() { Id = "u_stargazer", Name = "觀星者之眼", Kind = ItemKind.Weapon, Class = 1, Base = "staff", Icon = "staff",
             Desc = "連鎖閃電額外跳躍 3 次，且每次跳躍有 25% 機率召喚落雷。", Flavor = "天上早已沒有星星。她仍然每夜仰望。",
             Affixes = new[] { (Stat.DmgLightning, 40f, 70f), (Stat.Int, 40f, 70f), (Stat.CritChance, 4f, 8f), (Stat.MaxResource, 12f, 24f) } },
-        new() { Id = "u_owlbeak", Name = "夜梟之喙", Kind = ItemKind.Weapon, Class = 2, Icon = "crossbow",
+        new() { Id = "u_owlbeak", Name = "夜梟之喙", Kind = ItemKind.Weapon, Class = 2, Base = "crossbow", Icon = "crossbow",
             Desc = "每第 4 發連射必定爆擊並穿透所有敵人。", Flavor = "聽見弦響的人，通常已經來不及回頭。",
             Affixes = new[] { (Stat.DmgBasic, 45f, 80f), (Stat.Dex, 40f, 70f), (Stat.AttackSpeed, 8f, 15f), (Stat.CritDmg, 30f, 60f) } },
-        new() { Id = "u_reaper", Name = "寂夜收割者", Kind = ItemKind.Weapon, Class = 3, Icon = "scythe",
+        new() { Id = "u_reaper", Name = "寂夜收割者", Kind = ItemKind.Weapon, Class = 3, Base = "scythe2", Icon = "scythe",
             Desc = "你的僕從擊殺敵人時，你恢復 3% 生命並獲得 5 點魂能。", Flavor = "鐮刃不沾血，只帶走聲音。",
             Affixes = new[] { (Stat.MinionDmg, 45f, 80f), (Stat.Wil, 40f, 70f), (Stat.DmgShadow, 30f, 55f), (Stat.LifePct, 6f, 12f) } },
         new() { Id = "u_snuffer", Name = "熄燈者面甲", Kind = ItemKind.Helm, Icon = "helm",
@@ -223,44 +389,52 @@ public static class ItemDb
 
     private static int Tier(int power) => Math.Clamp(power / 125, 0, 4);
 
-    /// <summary>Rolls an item. <paramref name="cls"/> biases weapons and affixes toward the player's class.</summary>
-    public static Item Generate(int power, Rarity rarity, ClassId cls, ItemKind? kind = null, Random rng = null)
+    /// <summary>
+    /// Rolls an item. <paramref name="cls"/> picks a weapon or off-hand base the class can hold and biases affixes toward
+    /// the class. <paramref name="baseId"/> forces a base (weapons / off-hands); an off-hand asked for a class without
+    /// off-hands becomes a one-hand weapon.
+    /// </summary>
+    public static Item Generate(int power, Rarity rarity, ClassId cls, ItemKind? kind = null, Random rng = null, string baseId = null)
     {
         rng ??= Rng.R;
         power = Math.Clamp(power, 5, MaxPower);
-        var k = kind ?? RollKind(rng);
+        var k = kind ?? RollKind(cls, rng);
+        if (k == ItemKind.OffHand && OffBasesOf(cls).Length == 0 && BaseOf(baseId)?.Off != true) k = ItemKind.Weapon;
         if (rarity == Rarity.Unique)
         {
-            var cands = Uniques.Where(u => (u.Class < 0 || u.Class == (int)cls) && (kind == null || u.Kind == kind)).ToList();
-            if (cands.Count > 0) return MakeUnique(Rng.Pick(cands, rng), power, rng);
+            var cands = Uniques.Where(u => (u.Class < 0 || u.Class == (int)cls) && (kind == null || u.Kind == k)).ToList();
+            if (cands.Count > 0) return MakeUnique(Rng.Pick(cands, rng), power, rng, cls);
             rarity = Rarity.Legendary;
         }
 
         var it = new Item { Kind = k, Rarity = rarity, Power = power, ReqLevel = Math.Clamp(power / 10 - 2, 1, 50) };
-        FillBase(it, cls, rng);
+        FillBase(it, cls, rng, baseId);
         int n = rarity switch { Rarity.Common => 0, Rarity.Magic => rng.Next(1, 3), Rarity.Rare => 3, _ => 4 };
         RollAffixes(it, n, cls, rng);
 
         if (rarity == Rarity.Legendary)
         {
             var asp = Aspects.Where(a => a.Kinds.Contains(k) && (a.Class < 0 || a.Class == (int)cls)).ToList();
+            if (asp.Count == 0) asp = Aspects.Where(a => a.Class < 0).ToList();
             var a2 = Rng.Pick(asp, rng);
             it.Aspect = a2.Id;
             it.AspectRoll = (float)rng.NextDouble();
         }
-        if (k is ItemKind.Weapon or ItemKind.Helm or ItemKind.Chest or ItemKind.Pants or ItemKind.Amulet or ItemKind.Ring)
+        if (k is ItemKind.Weapon or ItemKind.OffHand or ItemKind.Helm or ItemKind.Chest or ItemKind.Pants or ItemKind.Amulet or ItemKind.Ring)
         {
             double socketChance = rarity >= Rarity.Rare ? 0.35 : 0.15;
-            if (rng.NextDouble() < socketChance) it.Sockets = (k == ItemKind.Weapon || k == ItemKind.Chest) && rng.NextDouble() < 0.3 ? 2 : 1;
+            if (rng.NextDouble() < socketChance) it.Sockets = ((k == ItemKind.Weapon && it.TwoHand) || k == ItemKind.Chest) && rng.NextDouble() < 0.3 ? 2 : 1;
         }
         NameItem(it, rng);
+        it.Look = RollLook(it, cls);
         it.Value = SellValue(it);
         return it;
     }
 
-    private static ItemKind RollKind(Random rng)
+    private static ItemKind RollKind(ClassId cls, Random rng)
     {
-        // weapons a little more common than any single armour slot
+        // weapons a little more common than any single armour slot; off-hands only for classes that hold one
+        // (dual-wield classes find more weapons instead: their second hand is a weapon)
         int r = rng.Next(100);
         if (r < 18) return ItemKind.Weapon;
         if (r < 30) return ItemKind.Helm;
@@ -268,31 +442,69 @@ public static class ItemDb
         if (r < 56) return ItemKind.Gloves;
         if (r < 68) return ItemKind.Pants;
         if (r < 80) return ItemKind.Boots;
-        if (r < 88) return ItemKind.Amulet;
+        if (r < 86) return OffBasesOf(cls).Length > 0 ? ItemKind.OffHand : Loadout(cls).CanDual ? ItemKind.Weapon : ItemKind.Amulet;
+        if (r < 92) return ItemKind.Amulet;
         return ItemKind.Ring;
     }
 
-    private static void FillBase(Item it, ClassId cls, Random rng)
+    /// <summary>A base the class can hold: half the time a two-hand weapon, half a one-hand one (or the forced id).</summary>
+    public static string PickWeaponBase(ClassId cls, Random rng)
+    {
+        var g = Loadout(cls);
+        bool two = g.MainHand.Length == 0 || (g.TwoHand.Length > 0 && rng.NextDouble() < 0.5);
+        var list = two ? g.TwoHand : g.MainHand;
+        return list[rng.Next(list.Length)];
+    }
+
+    private static void FillBase(Item it, ClassId cls, Random rng, string baseId = null)
     {
         int t = Tier(it.Power);
-        if (it.Kind == ItemKind.Weapon)
+        if (it.Kind is ItemKind.Weapon or ItemKind.OffHand)
         {
-            int wc = (int)cls;
-            it.WeaponClass = wc;
-            it.Name = WeaponNames[wc][t];
-            it.Icon = WeaponIcons[wc];
-            it.Aps = WeaponAps[wc];
-            float avg = WeaponAvg(it.Power) / it.Aps * (0.94f + 0.12f * (float)rng.NextDouble());
-            it.DmgMin = MathF.Round(avg * 0.8f);
-            it.DmgMax = MathF.Round(avg * 1.2f);
+            var b = BaseOf(baseId);
+            if (b == null || b.Off != (it.Kind == ItemKind.OffHand))
+            {
+                if (it.Kind == ItemKind.Weapon) b = BaseOf(PickWeaponBase(cls, rng));
+                else { var offs = OffBasesOf(cls); b = BaseOf(offs.Length > 0 ? offs[rng.Next(offs.Length)] : "shield"); }
+            }
+            it.Base = b.Id;
+            it.WeaponClass = -1;
+            it.Name = b.Names[t];
+            it.Icon = b.Icon;
+            it.Aps = b.Off ? 1f : b.Aps;
+            if (!b.Off)
+            {
+                // one hit: the hand's share of damage per second at this power, divided by the swings per second
+                float dps = WeaponAvg(it.Power) * (b.Hands == 2 ? 1f : OneHandDps);
+                float avg = dps / b.Aps * (0.94f + 0.12f * (float)rng.NextDouble());
+                it.DmgMin = MathF.Round(avg * (1f - b.Spread));
+                it.DmgMax = MathF.Max(it.DmgMin + 1, MathF.Round(avg * (1f + b.Spread)));
+            }
+            else if (b.Id == "shield")
+                it.Armor = (int)MathF.Round((8 + it.Power * 0.9f) * 0.55f * (0.92f + 0.16f * (float)rng.NextDouble()));
+            RollImplicits(it, b, rng);
         }
         else
         {
             var b = Bases[it.Kind];
             it.Name = b.names[t];
             it.Icon = b.icon;
+            it.Base = b.icon;          // helm, chest, gloves, pants, boots, amulet, ring
             float k = it.Kind switch { ItemKind.Chest => 1f, ItemKind.Pants => 0.72f, ItemKind.Helm => 0.6f, ItemKind.Gloves => 0.42f, ItemKind.Boots => 0.42f, _ => 0f };
             it.Armor = (int)MathF.Round((8 + it.Power * 0.9f) * k * (0.92f + 0.16f * (float)rng.NextDouble()));
+        }
+    }
+
+    /// <summary>The base's own stats, sized by item power (90–100% of the range at that power).</summary>
+    public static void RollImplicits(Item it, GearBase b, Random rng)
+    {
+        it.Implicits = new List<Affix>();
+        if (b == null) return;
+        foreach (var (s, lo, hi) in b.Implicit)
+        {
+            float v = (lo + (hi - lo) * (it.Power / (float)MaxPower)) * (0.9f + 0.1f * (float)rng.NextDouble());
+            v = StatInfo.IsPct(s) ? MathF.Round(v * 10f) / 10f : MathF.Max(1, MathF.Round(v));
+            it.Implicits.Add(new Affix { Stat = s, Value = v });
         }
     }
 
@@ -301,10 +513,11 @@ public static class ItemDb
     private static void RollAffixes(Item it, int n, ClassId cls, Random rng, HashSet<Stat> exclude = null)
     {
         var main = Names.MainStat(cls);
-        var pool = Pools.Where(p => p.Kinds.Contains(it.Kind) && it.Affixes.All(a => a.Stat != p.S) && (exclude == null || !exclude.Contains(p.S))).ToList();
+        var pool = Pools.Where(p => Fits(p, it) && it.Affixes.All(a => a.Stat != p.S) && (exclude == null || !exclude.Contains(p.S))).ToList();
         for (int i = 0; i < n && pool.Count > 0; i++)
         {
             float total = pool.Sum(p => Weight(p, main, cls));
+            if (total <= 0f) break;
             float r = (float)rng.NextDouble() * total;
             Pool pick = pool[^1];
             foreach (var p in pool) { r -= Weight(p, main, cls); if (r <= 0) { pick = p; break; } }
@@ -323,10 +536,14 @@ public static class ItemDb
         return w;
     }
 
+    /// <summary>Affix size multiplier of the item: two-hand weapons carry ×1.5 (the genre's larger two-hand budget).</summary>
+    public static float AffixBudget(Item it) => it.Kind == ItemKind.Weapon && it.TwoHand ? TwoHandAffixMul : 1f;
+
     public static Affix RollAffix(Pool p, Item it, Random rng)
     {
         float span = p.Lo + (p.Hi - p.Lo) * (it.Power / (float)MaxPower);
         float v = span * (0.72f + 0.28f * (float)rng.NextDouble());
+        if (p.S != Stat.SkillRanks) v *= AffixBudget(it);
         bool greater = it.Rarity >= Rarity.Legendary && it.Power >= 300 && rng.NextDouble() < 0.08;
         if (greater) v *= 1.5f;
         v = StatInfo.IsPct(p.S) ? MathF.Round(v * 10f) / 10f : MathF.Max(1, MathF.Round(v));
@@ -344,11 +561,16 @@ public static class ItemDb
         }
     }
 
-    private static Item MakeUnique(UniqueDef u, int power, Random rng)
+    private static Item MakeUnique(UniqueDef u, int power, Random rng, ClassId cls)
     {
         var it = new Item { Kind = u.Kind, Rarity = Rarity.Unique, Power = power, ReqLevel = Math.Clamp(power / 10 - 2, 1, 50), Unique = u.Id };
-        FillBase(it, u.Class >= 0 ? (ClassId)u.Class : ClassId.Emberblade, rng);
-        if (u.Kind == ItemKind.Weapon) { it.DmgMin = MathF.Round(it.DmgMin * 1.12f); it.DmgMax = MathF.Round(it.DmgMax * 1.12f); }
+        var maker = u.Class >= 0 ? (ClassId)u.Class : cls;
+        FillBase(it, maker, rng, u.Base);
+        if (u.Kind == ItemKind.Weapon)
+        {
+            it.DmgMin = MathF.Round(it.DmgMin * 1.12f); it.DmgMax = MathF.Round(it.DmgMax * 1.12f);
+            it.WeaponClass = u.Class;           // class-bound uniques stay bound
+        }
         it.Name = u.Name;
         it.Icon = u.Icon;
         float scale = 0.35f + 0.65f * power / MaxPower;
@@ -358,6 +580,7 @@ public static class ItemDb
             v = StatInfo.IsPct(s) ? MathF.Round(v * 10f) / 10f : MathF.Max(1, MathF.Round(v));
             it.Affixes.Add(new Affix { Stat = s, Value = v });
         }
+        it.Look = u.Look ?? RollLook(it, maker);
         it.Value = SellValue(it);
         return it;
     }
@@ -365,7 +588,9 @@ public static class ItemDb
     public static Item MakeGem(string gemId)
     {
         var g = Gem(gemId);
-        return new Item { Kind = ItemKind.Gem, GemId = g.Id, Name = g.Name, Icon = g.Icon, Rarity = (Rarity)Math.Min(g.Tier, 2), Value = 40 * g.Tier * g.Tier, Power = g.Tier };
+        string kind = g.Icon != null && g.Icon.StartsWith("gem_") ? g.Icon[4..] : g.Id.TrimEnd('1', '2', '3');
+        return new Item { Kind = ItemKind.Gem, GemId = g.Id, Name = g.Name, Icon = g.Icon, Rarity = (Rarity)Math.Min(g.Tier, 2), Value = 40 * g.Tier * g.Tier, Power = g.Tier,
+            Base = kind, Look = "gem_" + kind };
     }
 
     public static Item RandomGem(int level, Random rng = null)
@@ -379,14 +604,196 @@ public static class ItemDb
     public static int SellValue(Item it)
     {
         float m = it.Rarity switch { Rarity.Common => 1f, Rarity.Magic => 2f, Rarity.Rare => 4f, Rarity.Legendary => 10f, _ => 16f };
-        return (int)(m * (6 + it.Power * 0.6f));
+        return (int)(m * (6 + it.Power * 0.6f) * (it.TwoHand ? 1.15f : 1f));
     }
 
-    /// <summary>Starting weapon for a new character.</summary>
-    public static Item Starter(ClassId cls)
+    /// <summary>Starting weapon for a new character: the class's starter base (one-hand or two-hand), plain.</summary>
+    public static Item Starter(ClassId cls) => Generate(10, Rarity.Common, cls, ItemKind.Weapon, null, Loadout(cls).Starter);
+
+    /// <summary>The second starting weapon (the forgebody's other fist), or null.</summary>
+    public static Item StarterOff(ClassId cls)
     {
-        var it = Generate(10, Rarity.Common, cls, ItemKind.Weapon);
+        var id = Loadout(cls).StarterOff;
+        var b = BaseOf(id);
+        return b == null ? null : Generate(10, Rarity.Common, cls, b.Off ? ItemKind.OffHand : ItemKind.Weapon, null, id);
+    }
+
+    // ───────────────────────── loadout styles (demo, AI pilot, --gear) ─────────────────────────
+
+    /// <summary>Weapon styles a class can show: "2h" two-hand, "dual" two one-hand weapons, "off" one-hand + off-hand, "1h" a lone one-hand weapon.</summary>
+    public static List<string> HandStyles(ClassId cls)
+    {
+        var g = Loadout(cls);
+        var l = new List<string>(3);
+        if (g.TwoHand.Length > 0) l.Add("2h");
+        if (g.CanDual) l.Add("dual");
+        if (g.OffHand.Length > 0 && g.MainHand.Length > 0) l.Add("off");
+        if (l.Count == 0 && g.MainHand.Length > 0) l.Add("1h");
+        return l;
+    }
+
+    /// <summary>
+    /// Rolls the hands for a style (see <see cref="HandStyles"/>; an unknown or impossible style falls back to the
+    /// class's first). <paramref name="rarity"/> is asked once per piece. Returns main hand and off hand (null for 2h / 1h).
+    /// </summary>
+    public static (Item main, Item off) RollHands(ClassId cls, int power, string style, Func<Rarity> rarity, Random rng)
+    {
+        var g = Loadout(cls);
+        var styles = HandStyles(cls);
+        if (style == null || !styles.Contains(style)) style = styles.Count > 0 ? styles[0] : "1h";
+        Item Make(ItemKind k, string b)
+        {
+            var r = rarity();
+            Item it;
+            try { it = Generate(power, r, cls, k, rng, b); }
+            catch (Exception) { it = Generate(power, Rarity.Rare, cls, k, rng, b); }
+            // a unique may land on another base or kind: keep it only when it fits the requested hand
+            if (it.Kind != k || (b != null && it.Base != b && !(k == ItemKind.Weapon && it.TwoHand == (BaseOf(b)?.Hands == 2))))
+                it = Generate(power, r == Rarity.Unique ? Rarity.Legendary : r, cls, k, rng, b);
+            return it;
+        }
+        switch (style)
+        {
+            case "2h": return (Make(ItemKind.Weapon, g.TwoHand[rng.Next(g.TwoHand.Length)]), null);
+            case "dual": return (Make(ItemKind.Weapon, g.Dual[rng.Next(g.Dual.Length)]), Make(ItemKind.Weapon, g.Dual[rng.Next(g.Dual.Length)]));
+            case "off": return (Make(ItemKind.Weapon, g.MainHand[rng.Next(g.MainHand.Length)]), Make(ItemKind.OffHand, g.OffHand[rng.Next(g.OffHand.Length)]));
+            default: return (Make(ItemKind.Weapon, g.MainHand[rng.Next(g.MainHand.Length)]), null);
+        }
+    }
+
+    // ───────────────────────── looks (model ids, CONTRACT §4 / §5) ─────────────────────────
+
+    private static readonly Dictionary<ItemKind, string> ArmorSlotKey = new()
+    {
+        [ItemKind.Helm] = "helm", [ItemKind.Chest] = "chest", [ItemKind.Gloves] = "gloves", [ItemKind.Pants] = "pants", [ItemKind.Boots] = "boots",
+    };
+
+    /// <summary>A stable 0..1 number per item (its uid), so a recomputed look never changes.</summary>
+    private static float Hash01(string s)
+    {
+        uint h = 2166136261;
+        foreach (char c in s ?? "") { h ^= c; h *= 16777619; }
+        return (h % 10000) / 10000f;
+    }
+
+    /// <summary>Picks <paramref name="lo"/> or the next variant; the higher one grows likelier with item power.</summary>
+    private static int Band(Item it, int lo) => Hash01(it.Uid) < it.Power / (float)MaxPower ? lo + 1 : lo;
+
+    /// <summary>
+    /// The model id of an item (made for class <paramref name="cls"/>). Weapons, off-hands and jewellery: v1 crude
+    /// (common / magic, low power), v2 forged (common / magic at higher power, rare), v3 ornate (legendary, unique).
+    /// Armour: t1/t2 common and magic, t2/t3 rare, t3/t4 legendary and unique — higher variant likelier with power.
+    /// </summary>
+    public static string RollLook(Item it, ClassId cls)
+    {
+        if (it == null) return null;
+        switch (it.Kind)
+        {
+            case ItemKind.Gem: return it.Look ?? "gem_" + (it.Base ?? "ruby");
+            case ItemKind.Weapon:
+            case ItemKind.OffHand:
+            case ItemKind.Ring:
+            case ItemKind.Amulet:
+            {
+                int v = it.Rarity >= Rarity.Legendary ? 3 : it.Rarity == Rarity.Rare ? 2 : Band(it, 1);
+                string pre = it.Kind == ItemKind.Ring ? "jwl_ring" : it.Kind == ItemKind.Amulet ? "jwl_amulet" : "wpn_" + (it.Base ?? Loadout(cls).Starter);
+                return $"{pre}_v{v}";
+            }
+            default:
+            {
+                if (!ArmorSlotKey.TryGetValue(it.Kind, out var slot)) return null;
+                int t = it.Rarity >= Rarity.Legendary ? Band(it, 3) : it.Rarity == Rarity.Rare ? Band(it, 2) : Band(it, 1);
+                return $"arm_{Names.ClassKey(cls)}_{slot}_t{t}";
+            }
+        }
+    }
+
+    /// <summary>
+    /// The model id to show on <paramref name="wearer"/>: armour looks are cut per class body, so the class part of the id
+    /// is swapped for the wearer's; everything else is returned as stored.
+    /// </summary>
+    public static string LookFor(Item it, ClassId wearer)
+    {
+        if (it == null) return null;
+        var look = it.Look ?? RollLook(it, wearer);
+        if (look == null || !look.StartsWith("arm_")) return look;
+        int a = look.IndexOf('_', 4);
+        return a < 0 ? look : "arm_" + Names.ClassKey(wearer) + look[a..];
+    }
+
+    // ───────────────────────── 0.1–0.3 saves ─────────────────────────
+
+    /// <summary>
+    /// Brings an item from a 0.1–0.3 save up to date in place (idempotent). A weapon without a base becomes the default
+    /// base of the class it was made for: same affixes, gems, aspect, upgrades; the damage of one hit is rescaled by
+    /// old speed / new speed so its damage per second is exactly what it was. Returns true when anything changed.
+    /// </summary>
+    public static bool Migrate(Item it, ClassId owner)
+    {
+        if (it == null) return false;
+        bool changed = false;
+        it.Affixes ??= new(); it.Gems ??= new(); it.Implicits ??= new();
+        if (it.Kind == ItemKind.Weapon && BaseOf(it.Base) == null)
+        {
+            int wc = it.WeaponClass >= 0 && it.WeaponClass < Names.ClassCount ? it.WeaponClass : (int)owner;
+            var g = Loadout((ClassId)wc);
+            var u = it.Unique != null ? UniqueOf(it.Unique) : null;
+            var b = BaseOf(u?.Base) ?? BaseOf(g.Legacy);
+            // 0.1–0.3 swung every weapon at its class's pace (RefAps, the value every old weapon of the class stored as Aps):
+            // one old hit per beat = one new hit × newAps / RefAps beats
+            float oldAps = g.RefAps;
+            float f = oldAps / b.Aps;
+            it.DmgMin *= f; it.DmgMax *= f;
+            it.Aps = b.Aps;
+            it.Base = b.Id;
+            // the old per-class base name inside the item's name becomes the new base's name of the same tier
+            if (it.Unique == null)
+            {
+                string oldName = LegacyWeaponNames[wc][Tier(it.Power)], newName = b.Names[Tier(it.Power)];
+                if (oldName != newName && it.Name != null && it.Name.Contains(oldName)) it.Name = it.Name.Replace(oldName, newName);
+            }
+            it.WeaponClass = u != null && u.Class >= 0 ? u.Class : -1;
+            changed = true;
+        }
+        if (it.Base == null)
+        {
+            if (it.Kind == ItemKind.Gem && it.GemId != null) it.Base = Gem(it.GemId)?.Icon is string gi && gi.StartsWith("gem_") ? gi[4..] : it.GemId.TrimEnd('1', '2', '3');
+            else if (Bases.TryGetValue(it.Kind, out var ab)) it.Base = ab.icon;
+            changed = true;
+        }
+        if (it.Look == null)
+        {
+            int wc = it.WeaponClass >= 0 && it.WeaponClass < Names.ClassCount ? it.WeaponClass : (int)owner;
+            it.Look = RollLook(it, (ClassId)wc);
+            changed = true;
+        }
+        return changed;
+    }
+
+    /// <summary>The plain companion piece a 0.1–0.3 weapon came with (the lamp knight's shield, the pactbinder's grimoire,
+    /// the forgebody's other fist), made at the weapon's power so the hero still looks and plays as before.</summary>
+    public static Item LegacyCompanion(Item weapon, ClassId cls)
+    {
+        var id = Loadout(cls).LegacyOff;
+        var b = BaseOf(id);
+        if (b == null || weapon == null) return null;
+        var rng = new Random(weapon.Uid.GetHashCode());
+        var it = Generate(weapon.Power, Rarity.Common, cls, b.Off ? ItemKind.OffHand : ItemKind.Weapon, rng, id);
+        it.ReqLevel = Math.Min(it.ReqLevel, weapon.ReqLevel);
+        // the other fist of the old pair hits exactly as hard as the first (masterworking baked in), so alternating never loses damage
+        if (!b.Off && weapon.Gb != null) { float up = weapon.BaseMul; it.DmgMin = weapon.DmgMin * up; it.DmgMax = weapon.DmgMax * up; it.Aps = weapon.Aps; }
+        it.Value = SellValue(it);
         return it;
+    }
+
+    /// <summary>Index of the 0.1–0.3 per-class weapon family (greatsword … grimoire) closest to the item's base: old icons and loot meshes.</summary>
+    public static int LegacyFamily(Item it)
+    {
+        if (it == null) return 0;
+        if (it.WeaponClass >= 0 && it.WeaponClass < WeaponIcons.Length && BaseOf(it.Base) == null) return it.WeaponClass;
+        var icon = BaseOf(it.Base)?.Icon ?? it.Icon;
+        int i = Array.IndexOf(WeaponIcons, icon);
+        return i < 0 ? 0 : i;
     }
 
     // ─────────────────── crafting (blacksmith / occultist) ───────────────────
@@ -398,7 +805,7 @@ public static class ItemDb
 
     public static (int scrap, int dust, int cores) SalvageYield(Item it)
     {
-        int baseAmt = 1 + it.Power / 80;
+        int baseAmt = 1 + it.Power / 80 + (it.TwoHand ? 1 : 0);       // a two-hand weapon is more metal
         return it.Rarity switch
         {
             Rarity.Common => (baseAmt, 0, 0),
@@ -416,7 +823,7 @@ public static class ItemDb
     {
         rng ??= Rng.R;
         var main = Names.MainStat(cls);
-        var pool = Pools.Where(p => p.Kinds.Contains(it.Kind) && it.Affixes.All(a => a.Stat != p.S)).ToList();
+        var pool = Pools.Where(p => Fits(p, it) && it.Affixes.All(a => a.Stat != p.S)).ToList();
         if (pool.Count == 0) return null;
         float total = pool.Sum(p => Weight(p, main, cls));
         float r = (float)rng.NextDouble() * total;
@@ -440,7 +847,10 @@ public static class ItemText
 
     private static string Hex(Godot.Color c) => c.ToHtml(false);
 
-    public static string Tooltip(Item it, Item equipped = null, int playerLevel = 99, bool showCompare = true)
+    /// <param name="alsoReplaced">a second worn item this one would also take off (a two-hand weapon clears the off hand;
+    /// an off-hand clears a two-hand weapon): its affixes count as lost and its name is shown.</param>
+    /// <param name="judge">the hero to judge the item for (GearEval): adds the 升級／相近／較差 line under the type line.</param>
+    public static string Tooltip(Item it, Item equipped = null, int playerLevel = 99, bool showCompare = true, Item alsoReplaced = null, Hero judge = null)
     {
         var sb = new StringBuilder();
         var rc = Palette.Rarity(it.Rarity);
@@ -456,23 +866,124 @@ public static class ItemText
             return sb.ToString();
         }
 
-        string kind = it.Kind == ItemKind.Weapon && it.WeaponClass >= 0 ? ItemDb.WeaponTypeNames[it.WeaponClass] : Names.Kind(it.Kind);
-        sb.Append($"[color=#{Hex(rc)}]{Names.Rarity(it.Rarity)}{kind}[/color]   [color=#{Hex(Palette.TextDim)}]物品強度 {it.Power}[/color]\n");
+        var gb = it.Gb;
+        var me = judge ?? Game.I?.Hero;
+        bool hand = it.Kind is ItemKind.Weapon or ItemKind.OffHand;
+        // weapon-class compatibility: a red banner first when the hero's class cannot use it at all
+        if (hand && me != null && !ItemDb.UsableBy(it, me.Class))
+            sb.Append($"[color=#{Hex(Palette.Bad)}]⊘ 你的職業無法使用[/color]\n");
+        string kind = gb != null ? gb.Name : it.Kind == ItemKind.Weapon && it.WeaponClass >= 0 ? ItemDb.WeaponTypeNames[it.WeaponClass] : Names.Kind(it.Kind);
+        // type and hands: 「巨斧・雙手武器」, 「斧・單手（可雙持）」, 「盾・副手」
+        bool dualOk = gb != null && !gb.Off && gb.Hands == 1 && me != null && ItemDb.Allows(me.Class, gb.Id, EquipSlot.OffHand);
+        string hands = gb == null ? "" : gb.Off ? "・副手" : gb.Hands == 2 ? "・雙手武器" : dualOk ? "・單手（可雙持）" : "・單手";
+        sb.Append($"[color=#{Hex(rc)}]{Names.Rarity(it.Rarity)}{kind}[/color][color=#{Hex(Palette.TextDim)}]{hands}　物品強度 {it.Power}[/color]\n");
+        if (it.Kind == ItemKind.Weapon && it.WeaponClass >= 0 && it.WeaponClass < Names.ClassCount)
+            sb.Append($"[color=#{Hex(Palette.TextDim)}]僅限{Names.Class((ClassId)it.WeaponClass)}[/color]\n");
+        if (hand)
+        {
+            // 可用職業: the classes that can hold it bright (the hero's own in gold), the others dim and struck through
+            var names = new List<string>(Names.ClassCount);
+            for (int c = 0; c < Names.ClassCount; c++)
+            {
+                var cls = (ClassId)c;
+                bool ok = ItemDb.UsableBy(it, cls);
+                bool mine = me != null && me.Class == cls;
+                names.Add(ok ? (mine ? $"[b][color=#{Hex(Palette.Gold)}]{Names.Class(cls)}[/color][/b]" : $"[color=#{Hex(Palette.Text)}]{Names.Class(cls)}[/color]")
+                    : $"[s][color=#{Hex(Palette.TextDim)}]{Names.Class(cls)}[/color][/s]");
+            }
+            sb.Append($"[color=#{Hex(Palette.TextDim)}]可用職業：[/color]{string.Join("　", names)}\n");
+            string how = me != null ? ItemDb.HowHeld(it, me.Class) : null;
+            if (how != null) sb.Append($"[color=#{Hex(Palette.TextDim)}]{Names.Class(me.Class)}：{how}[/color]\n");
+        }
+        if (judge != null && it.IsEquip && !judge.IsEquipped(it))
+        {
+            var jj = GearEval.Judge(judge, it);
+            string line = jj.Verdict == GearVerdict.Unusable && hand ? "" : GearEval.Line(jj);      // the red banner above already says it
+            if (line.Length > 0) sb.Append(line).Append('\n');
+        }
+        if (it.Locked) sb.Append($"[color=#{Hex(Palette.Gold)}]已鎖定：不會被批次標記、回收或丟棄[/color]\n");
+        if (me != null)
+        {
+            var sets = me.SetsOf(it);
+            if (sets.Count > 0) sb.Append($"[color=#{Hex(new Godot.Color(0.55f, 0.8f, 0.95f))}]裝備組：{string.Join("、", sets.Select(me.SetName))}（受保護，不會被批次處理）[/color]\n");
+        }
 
+        bool cmp = showCompare && (equipped != null || alsoReplaced != null);
         if (it.Kind == ItemKind.Weapon)
         {
+            // this weapon alone: damage per second, one hit, swings per second — each with its delta against the worn weapon
+            bool vs = showCompare && equipped != null && equipped.Kind == ItemKind.Weapon;
             float dps = it.AvgDmg * it.Aps;
-            sb.Append($"\n[font_size={UiTheme.Fs(FigureSize)}]{dps:0.0}[/font_size] 每秒傷害");
-            if (showCompare && equipped != null) sb.Append(Delta(dps - equipped.AvgDmg * equipped.Aps, "0.0"));
+            sb.Append($"\n[font_size={UiTheme.Fs(FigureSize)}]{dps:0.0}[/font_size] 每秒傷害（此武器）");
+            if (vs) sb.Append(Delta(dps - equipped.AvgDmg * equipped.Aps, "0.0"));
             float up = it.BaseMul;
-            sb.Append($"\n[color=#{Hex(Palette.TextDim)}]傷害 {it.DmgMin * up:0}–{it.DmgMax * up:0}　每秒攻擊 {it.Aps:0.00}[/color]\n");
+            sb.Append($"\n每擊傷害 {it.DmgMin * up:0}–{it.DmgMax * up:0}");
+            if (vs) sb.Append(Delta((it.DmgMin + it.DmgMax) * 0.5f * up - (equipped.DmgMin + equipped.DmgMax) * 0.5f * equipped.BaseMul, "0"));
+            sb.Append($"　每秒攻擊 {it.Aps:0.00}");
+            if (vs) sb.Append(Delta(it.Aps - equipped.Aps, "0.00"));
+            sb.Append('\n');
+            // the hero's resulting setup when the hands change shape (dual-wield on or off, two-hand for a pair)
+            if (me != null && it.IsEquip && !me.IsEquipped(it) && ItemDb.UsableBy(it, me.Class))
+            {
+                try
+                {
+                    var sim = GearEval.Simulate(me, it);
+                    if (sim.DualWielding || me.DualWielding || (it.TwoHand && me.OffHand != null))
+                    {
+                        string what = sim.DualWielding ? "雙持後" : it.TwoHand ? "改為雙手" : "改為單持";
+                        float pct = me.Aps > 0f ? (sim.Aps / me.Aps - 1f) * 100f : 0f;
+                        sb.Append($"[color=#{Hex(Palette.TextDim)}]{what}：每秒攻擊 {sim.Aps:0.00}（{(pct >= 0 ? "+" : "−")}{MathF.Abs(pct):0}%）　每擊 {sim.WeaponMin:0}–{sim.WeaponMax:0}[/color]\n");
+                    }
+                }
+                catch (Exception e) { Log.Error("ui", $"weapon setup preview failed for {it.Name}", e); }
+            }
+            // the base's rules in plain words
+            string rule = it.TwoHand ? $"雙手武器：詞綴強度 ×{ItemDb.TwoHandAffixMul:0.#}，無法使用副手"
+                : $"單手武器：傷害為雙手的 {ItemDb.OneHandDps * 100f:0}%，可搭配副手{(dualOk ? "或雙持" : "")}";
+            sb.Append($"[color=#{Hex(Palette.TextDim)}]{rule}[/color]\n");
+            if (dualOk) sb.Append($"[color=#{Hex(Palette.TextDim)}]雙持：兩手輪流攻擊，攻速 +{(ItemDb.DualSpeed - 1f) * 100f:0}%[/color]\n");
+        }
+        else if (it.Kind == ItemKind.OffHand && it.Armor <= 0)
+        {
+            // a focus, totem, grimoire or lantern: its main stat is its first implicit, shown big
+            var main = it.Implicits?.FirstOrDefault();
+            if (main != null)
+            {
+                float v = it.Eff(main);
+                sb.Append($"\n[font_size={UiTheme.Fs(FigureSize)}]{(StatInfo.IsPct(main.Stat) ? $"{v:0.#}%" : $"{v:0}")}[/font_size] {StatInfo.Name(main.Stat)}");
+                if (showCompare && equipped != null && equipped.Kind == ItemKind.OffHand)
+                {
+                    var o = equipped.Implicits?.FirstOrDefault(x => x.Stat == main.Stat);
+                    sb.Append(Delta(v - (o == null ? 0f : equipped.Eff(o)), "0.#"));
+                }
+                sb.Append('\n');
+            }
+            sb.Append($"[color=#{Hex(Palette.TextDim)}]副手：搭配單手武器；裝上雙手武器時會卸下[/color]\n");
         }
         else if (it.Armor > 0)
         {
             sb.Append($"\n[font_size={UiTheme.Fs(FigureSize)}]{it.Armor * it.BaseMul:0}[/font_size] 護甲");
             if (showCompare && equipped != null) sb.Append(Delta(it.Armor * it.BaseMul - equipped.Armor * equipped.BaseMul, "0"));
+            float block = it.BlockChance;
+            if (block > 0)
+            {
+                sb.Append($"　[font_size={UiTheme.Fs(FigureSize)}]{block:0.#}%[/font_size] 格擋");
+                if (showCompare && equipped != null && equipped.Kind == ItemKind.OffHand) sb.Append(Delta(block - equipped.BlockChance, "0.#", "%"));
+            }
             sb.Append('\n');
+            if (block > 0) sb.Append($"[color=#{Hex(Palette.TextDim)}]盾・副手：被格擋的攻擊傷害減半；裝上雙手武器時會卸下[/color]\n");
         }
+        if (it.Implicits != null && it.Implicits.Count > 0)
+        {
+            sb.Append('\n');
+            foreach (var a in it.Implicits) sb.Append($"[color=#{Hex(Palette.TextDim)}]◇[/color] {StatInfo.Format(a.Stat, it.Eff(a))}\n");
+        }
+
+        // what the worn piece(s) give, summed per stat, for the deltas and the "lost" lines
+        var worn = new Dictionary<Stat, float>();
+        if (cmp)
+            foreach (var w in new[] { equipped, alsoReplaced })
+                if (w != null) foreach (var o in w.Affixes) worn[o.Stat] = worn.GetValueOrDefault(o.Stat) + w.Eff(o);
 
         sb.Append('\n');
         foreach (var a in it.Affixes)
@@ -480,18 +991,19 @@ public static class ItemText
             float v = it.Eff(a);
             string star = a.Tempered ? $"[color=#{Hex(Palette.Gold)}]⚒[/color] " : a.Greater ? $"[color=#{Hex(Palette.Ember)}]✦[/color] " : "◆ ";
             sb.Append($"{star}{StatInfo.Format(a.Stat, v)}");
-            if (showCompare && equipped != null)
+            if (cmp)
             {
-                var o = equipped.Affixes.FirstOrDefault(x => x.Stat == a.Stat);
-                float ov = o == null ? 0 : equipped.Eff(o);
+                float ov = worn.GetValueOrDefault(a.Stat);
                 if (MathF.Abs(v - ov) > 0.05f) sb.Append(Delta(v - ov, StatInfo.IsPct(a.Stat) ? "0.#" : "0", StatInfo.IsPct(a.Stat) ? "%" : ""));
             }
             sb.Append('\n');
         }
-        if (showCompare && equipped != null)
+        if (cmp)
         {
-            foreach (var o in equipped.Affixes.Where(o => it.Affixes.All(a => a.Stat != o.Stat)))
-                sb.Append($"[color=#{Hex(Palette.Bad)}]　失去 {StatInfo.Format(o.Stat, equipped.Eff(o))}[/color]\n");
+            foreach (var kv in worn.Where(kv => it.Affixes.All(a => a.Stat != kv.Key)))
+                sb.Append($"[color=#{Hex(Palette.Bad)}]　失去 {StatInfo.Format(kv.Key, kv.Value)}[/color]\n");
+            if (alsoReplaced != null)
+                sb.Append($"[color=#{Hex(Palette.Bad)}]　同時卸下：{alsoReplaced.Name}[/color]\n");
         }
 
         if (it.Aspect != null)

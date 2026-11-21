@@ -22,6 +22,7 @@ public sealed class SettingsView
     private readonly MenuSeg _tabs;
     private readonly List<Control> _pages = new();
     private MenuSeg _display, _vsync, _quality, _scaleMode, _dmgNum, _shake, _subs, _loot, _textScale, _cursor;
+    private MenuSeg _gearWeight;        // SYSTEMS: 裝備比較 weighting for GearEval
     private HSlider _scale, _bright;
     private Label _brightGlyph;
     private Label _scaleValue;
@@ -284,6 +285,9 @@ public sealed class SettingsView
         // 滑鼠游標: the forged cursors that follow what is under the pointer, or the operating system's own (Cursors.cs applies it at once)
         _cursor = new MenuSeg(new[] { "遊戲", "系統" }, i => { Cfg.SystemCursor = i == 1; Commit("systemCursor=" + Cfg.SystemCursor); }, UiTheme.Fs(FsOption), UiTheme.Px(150f));
         col.AddChild(Row("滑鼠游標", "遊戲：游標會隨指向的敵人、人物、物品而變化；系統：使用作業系統的游標", _cursor.Root));
+        // 裝備比較 (SYSTEMS, GearEval): how attack and defence are weighed when an item is judged 升級 / 相近 / 較差
+        _gearWeight = new MenuSeg(new[] { "平衡", "偏重攻擊", "偏重防禦" }, i => { Cfg.GearWeight = i; GearEval.Invalidate(); Commit("gearWeight=" + Cfg.GearWeight); }, UiTheme.Fs(FsOption), UiTheme.Px(150f));
+        col.AddChild(Row("裝備比較", "判斷升級或較差時，攻擊與防禦的比重：平衡各半，偏重攻擊 3 比 1，偏重防禦 1 比 3", _gearWeight.Root));
         return col;
     }
 
@@ -349,6 +353,55 @@ public sealed class SettingsView
             (K("F8"), "AI 代打：開啟／關閉（點擊地面或移動鍵即可接管）"),
         }));
         col.AddChild(groups);
+
+        // SYSTEMS: the bag's hotkeys while the inventory is open (marks, locks, filter)
+        col.AddChild(MenuKit.Spacer(0, 2));
+        var bagGroups = MenuKit.HBox(36);
+        bagGroups.AddChild(KeyGroup("行囊（物品欄開啟時）", new[]
+        {
+            (K("滑鼠左鍵"), "裝備；寶石：選取後點擊裝備鑲嵌"),
+            (K("Alt", "滑鼠左鍵"), "單手武器裝備在副手（可雙持的職業）"),
+            (K("Ctrl", "滑鼠左鍵"), "丟在地上"),
+            (K("Shift", "滑鼠左鍵"), "標記／取消回收"),
+        }));
+        bagGroups.AddChild(KeyGroup("標記與篩選", new[]
+        {
+            (K("R", "X"), "指向物品時：標記回收／標記丟棄"),
+            (K("L"), "指向物品時：鎖定或解除鎖定"),
+            (K("F"), "開啟或關閉行囊篩選"),
+            (K("Shift", "R"), "篩選出的物品全部標記回收（Shift＋X：丟棄）"),
+            (K("C"), "清除標記（篩選時只清除篩選出的）"),
+        }));
+        col.AddChild(bagGroups);
+
+        // SYSTEMS: gear-set keys, rebindable here (click a key, then press the new one; Esc cancels)
+        col.AddChild(MenuKit.Spacer(0, 2));
+        col.AddChild(MenuKit.Text("裝備組（點擊按鍵即可重新設定）", UiTheme.Fs(FsGroup), MenuKit.Gold, MenuKit.TitleFont));
+        col.AddChild(MenuKit.Rule(new Color(MenuKit.Line, 0.7f)));
+        var setGrid = new GridContainer { Columns = 2 };
+        setGrid.AddThemeConstantOverride("h_separation", 36);
+        setGrid.AddThemeConstantOverride("v_separation", 4);
+        for (int i = 0; i < 7; i++)
+        {
+            int k = i;
+            var row = MenuKit.HBox(12);
+            Button b = null;
+            b = MenuKit.Btn(GearSets.KeyName(i), () =>
+            {
+                b.Text = "按下新按鍵…";
+                var cap = new KeyCapture();
+                cap.OnKey = key => { string why = GearSets.Rebind(k, key); b.Text = GearSets.KeyName(k); if (why != null) { b.Text = GearSets.KeyName(k) + "（" + why + "）"; Snd.Ui("ui_error"); } };
+                cap.OnCancel = () => b.Text = GearSets.KeyName(k);
+                b.AddChild(cap);
+            }, MenuTone.Normal, UiTheme.Fs(FsKeyText), UiTheme.Px(120f));
+            row.AddChild(b);
+            var l = MenuKit.Wrap(i < 6 ? $"載入裝備組 {i + 1}" : "快速切換（最近使用的兩組；戰鬥中共用 1.5 秒冷卻）", UiTheme.Fs(FsKeyText), MenuKit.Ash, 0f, MenuKit.UiFont);
+            l.VerticalAlignment = VerticalAlignment.Center;
+            row.AddChild(l);
+            setGrid.AddChild(row);
+        }
+        setGrid.AddChild(MenuKit.Btn("還原預設（F1–F6、E）", () => { GearSets.ResetKeys(); Log.Info("cfg", "gear-set keys reset"); }, MenuTone.Normal, UiTheme.Fs(FsKeyText), UiTheme.Px(200f)));
+        col.AddChild(setGrid);
 
         col.AddChild(MenuKit.Spacer(0, 2));
         col.AddChild(MenuKit.Text("檔案位置", UiTheme.Fs(FsGroup), MenuKit.Gold, MenuKit.TitleFont));
@@ -498,6 +551,7 @@ public sealed class SettingsView
             _subs.Select(c.Subtitles ? 0 : 1);
             _loot.Select(c.ShowAllLoot ? 0 : 1);
             _cursor.Select(c.SystemCursor ? 1 : 0);
+            _gearWeight?.Select(Math.Clamp(c.GearWeight, 0, 2));
         }
         finally { _refreshing = false; }
     }
@@ -556,7 +610,7 @@ public sealed class SettingsView
         c.Master = d.Master; c.Music = d.Music; c.Sfx = d.Sfx; c.Voice = d.Voice; c.Ambience = d.Ambience;
         c.Fullscreen = d.Fullscreen; c.VSync = d.VSync; c.DamageNumbers = d.DamageNumbers; c.ScreenShake = d.ScreenShake;
         c.Subtitles = d.Subtitles; c.ShowAllLoot = d.ShowAllLoot; c.Quality = d.Quality; c.RenderScale = d.RenderScale;
-        c.UiTextScale = d.UiTextScale; c.Brightness = d.Brightness; c.SystemCursor = d.SystemCursor;
+        c.UiTextScale = d.UiTextScale; c.Brightness = d.Brightness; c.SystemCursor = d.SystemCursor; c.GearWeight = d.GearWeight;
         // LastSlot is not a preference and stays as it is
         try { UiTheme.ApplyTextScale(c.UiTextScale); }
         catch (Exception e) { Log.Error("cfg", "resetting the text size failed", e); }

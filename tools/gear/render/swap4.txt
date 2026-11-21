@@ -1,0 +1,8 @@
+exit= seconds=53
+log: C:\Users\blhsi\AppData\Roaming\AshenAbyss\logs\game_20261121_230231.log  lines=358  ERR=0  WRN=1
+/c/Users/blhsi/AppData/Roaming/AshenAbyss/logs/game_20261121_230231.log
+   49.214 INF [suite] gear set swap (real sets): 12 swaps in combat, 10 rebuilds, frames waiting for files 0; pieces pre-built hidden 14; worst frame after a swap 18.1 ms, mean 16.5 ms; F2→DualWield:17ms E→TwoHandMelee:18ms F3→OneHandShield:17ms E→TwoHandMelee:17ms F1→TwoHandMelee:17ms F2→DualWield:18ms E→TwoHandMelee:18ms F3→OneHandShield:17ms E→TwoHandMelee:17ms F1→TwoHandMelee:18ms F3→OneHandShield:17ms F2→DualWield:17ms
+   49.216 WRN [suite] FAIL gear: one rebuild per set swap — 10/12
+   49.218 INF [suite] DONE suite=gear pass=60 fail=1 errors=0 warnings=1
+   49.219 INF [suite]   failure 1: gear: one rebuild per set swap — 10/12
+SW4

@@ -1,0 +1,362 @@
+    // ───────────────────────── generation ─────────────────────────
+
+    private static int Tier(int power) => Math.Clamp(power / 125, 0, 4);
+
+    /// <summary>
+    /// Rolls an item. <paramref name="cls"/> picks a weapon or off-hand base the class can hold and biases affixes toward
+    /// the class. <paramref name="baseId"/> forces a base (weapons / off-hands); an off-hand asked for a class without
+    /// off-hands becomes a one-hand weapon.
+    /// </summary>
+    public static Item Generate(int power, Rarity rarity, ClassId cls, ItemKind? kind = null, Random rng = null, string baseId = null)
+    {
+        rng ??= Rng.R;
+        power = Math.Clamp(power, 5, MaxPower);
+        var k = kind ?? RollKind(cls, rng);
+        if (k == ItemKind.OffHand && OffBasesOf(cls).Length == 0 && BaseOf(baseId)?.Off != true) k = ItemKind.Weapon;
+        if (rarity == Rarity.Unique)
+        {
+            var cands = Uniques.Where(u => (u.Class < 0 || u.Class == (int)cls) && (kind == null || u.Kind == k)).ToList();
+            if (cands.Count > 0) return MakeUnique(Rng.Pick(cands, rng), power, rng, cls);
+            rarity = Rarity.Legendary;
+        }
+
+        var it = new Item { Kind = k, Rarity = rarity, Power = power, ReqLevel = Math.Clamp(power / 10 - 2, 1, 50) };
+        FillBase(it, cls, rng, baseId);
+        int n = rarity switch { Rarity.Common => 0, Rarity.Magic => rng.Next(1, 3), Rarity.Rare => 3, _ => 4 };
+        RollAffixes(it, n, cls, rng);
+
+        if (rarity == Rarity.Legendary)
+        {
+            var asp = Aspects.Where(a => a.Kinds.Contains(k) && (a.Class < 0 || a.Class == (int)cls)).ToList();
+            if (asp.Count == 0) asp = Aspects.Where(a => a.Class < 0).ToList();
+            var a2 = Rng.Pick(asp, rng);
+            it.Aspect = a2.Id;
+            it.AspectRoll = (float)rng.NextDouble();
+        }
+        if (k is ItemKind.Weapon or ItemKind.OffHand or ItemKind.Helm or ItemKind.Chest or ItemKind.Pants or ItemKind.Amulet or ItemKind.Ring)
+        {
+            double socketChance = rarity >= Rarity.Rare ? 0.35 : 0.15;
+            if (rng.NextDouble() < socketChance) it.Sockets = ((k == ItemKind.Weapon && it.TwoHand) || k == ItemKind.Chest) && rng.NextDouble() < 0.3 ? 2 : 1;
+        }
+        NameItem(it, rng);
+        it.Look = RollLook(it, cls);
+        it.Value = SellValue(it);
+        return it;
+    }
+
+    private static ItemKind RollKind(ClassId cls, Random rng)
+    {
+        // weapons a little more common than any single armour slot; off-hands only for classes that hold one
+        // (dual-wield classes find more weapons instead: their second hand is a weapon)
+        int r = rng.Next(100);
+        if (r < 18) return ItemKind.Weapon;
+        if (r < 30) return ItemKind.Helm;
+        if (r < 44) return ItemKind.Chest;
+        if (r < 56) return ItemKind.Gloves;
+        if (r < 68) return ItemKind.Pants;
+        if (r < 80) return ItemKind.Boots;
+        if (r < 86) return OffBasesOf(cls).Length > 0 ? ItemKind.OffHand : Loadout(cls).CanDual ? ItemKind.Weapon : ItemKind.Amulet;
+        if (r < 92) return ItemKind.Amulet;
+        return ItemKind.Ring;
+    }
+
+    /// <summary>A base the class can hold: half the time a two-hand weapon, half a one-hand one (or the forced id).</summary>
+    public static string PickWeaponBase(ClassId cls, Random rng)
+    {
+        var g = Loadout(cls);
+        bool two = g.MainHand.Length == 0 || (g.TwoHand.Length > 0 && rng.NextDouble() < 0.5);
+        var list = two ? g.TwoHand : g.MainHand;
+        return list[rng.Next(list.Length)];
+    }
+
+    private static void FillBase(Item it, ClassId cls, Random rng, string baseId = null)
+    {
+        int t = Tier(it.Power);
+        if (it.Kind is ItemKind.Weapon or ItemKind.OffHand)
+        {
+            var b = BaseOf(baseId);
+            if (b == null || b.Off != (it.Kind == ItemKind.OffHand))
+            {
+                if (it.Kind == ItemKind.Weapon) b = BaseOf(PickWeaponBase(cls, rng));
+                else { var offs = OffBasesOf(cls); b = BaseOf(offs.Length > 0 ? offs[rng.Next(offs.Length)] : "shield"); }
+            }
+            it.Base = b.Id;
+            it.WeaponClass = -1;
+            it.Name = b.Names[t];
+            it.Icon = b.Icon;
+            it.Aps = b.Off ? 1f : b.Aps;
+            if (!b.Off)
+            {
+                // one hit: the hand's share of damage per second at this power, divided by the swings per second
+                float dps = WeaponAvg(it.Power) * (b.Hands == 2 ? 1f : OneHandDps);
+                float avg = dps / b.Aps * (0.94f + 0.12f * (float)rng.NextDouble());
+                it.DmgMin = MathF.Round(avg * (1f - b.Spread));
+                it.DmgMax = MathF.Max(it.DmgMin + 1, MathF.Round(avg * (1f + b.Spread)));
+            }
+            else if (b.Id == "shield")
+                it.Armor = (int)MathF.Round((8 + it.Power * 0.9f) * 0.55f * (0.92f + 0.16f * (float)rng.NextDouble()));
+            RollImplicits(it, b, rng);
+        }
+        else
+        {
+            var b = Bases[it.Kind];
+            it.Name = b.names[t];
+            it.Icon = b.icon;
+            it.Base = b.icon;          // helm, chest, gloves, pants, boots, amulet, ring
+            float k = it.Kind switch { ItemKind.Chest => 1f, ItemKind.Pants => 0.72f, ItemKind.Helm => 0.6f, ItemKind.Gloves => 0.42f, ItemKind.Boots => 0.42f, _ => 0f };
+            it.Armor = (int)MathF.Round((8 + it.Power * 0.9f) * k * (0.92f + 0.16f * (float)rng.NextDouble()));
+        }
+    }
+
+    /// <summary>The base's own stats, sized by item power (90–100% of the range at that power).</summary>
+    public static void RollImplicits(Item it, GearBase b, Random rng)
+    {
+        it.Implicits = new List<Affix>();
+        if (b == null) return;
+        foreach (var (s, lo, hi) in b.Implicit)
+        {
+            float v = (lo + (hi - lo) * (it.Power / (float)MaxPower)) * (0.9f + 0.1f * (float)rng.NextDouble());
+            v = StatInfo.IsPct(s) ? MathF.Round(v * 10f) / 10f : MathF.Max(1, MathF.Round(v));
+            it.Implicits.Add(new Affix { Stat = s, Value = v });
+        }
+    }
+
+    public static float WeaponAvg(int power) => 5f + power * 0.42f;
+
+    private static void RollAffixes(Item it, int n, ClassId cls, Random rng, HashSet<Stat> exclude = null)
+    {
+        var main = Names.MainStat(cls);
+        var pool = Pools.Where(p => Fits(p, it) && it.Affixes.All(a => a.Stat != p.S) && (exclude == null || !exclude.Contains(p.S))).ToList();
+        for (int i = 0; i < n && pool.Count > 0; i++)
+        {
+            float total = pool.Sum(p => Weight(p, main, cls));
+            if (total <= 0f) break;
+            float r = (float)rng.NextDouble() * total;
+            Pool pick = pool[^1];
+            foreach (var p in pool) { r -= Weight(p, main, cls); if (r <= 0) { pick = p; break; } }
+            pool.Remove(pick);
+            it.Affixes.Add(RollAffix(pick, it, rng));
+        }
+    }
+
+    public static float Weight(Pool p, Stat main, ClassId cls)
+    {
+        float w = p.Weight;
+        if (p.S == main) w *= 4f;                                    // the class's own attribute shows up far more often
+        else if (p.S is Stat.Str or Stat.Int or Stat.Dex or Stat.Wil) w *= 0.35f;
+        if (p.S == Stat.MinionDmg && cls != ClassId.Soulbinder && cls != ClassId.Pactbinder && cls != ClassId.Wildsoul) w = 0f;
+        if (p.S == Stat.DmgOverpower && cls != ClassId.Emberblade && cls != ClassId.Forgebody && cls != ClassId.Wildsoul && cls != ClassId.Lampknight) w *= 0.3f;
+        return w;
+    }
+
+    /// <summary>Affix size multiplier of the item: two-hand weapons carry ×1.5 (the genre's larger two-hand budget).</summary>
+    public static float AffixBudget(Item it) => it.Kind == ItemKind.Weapon && it.TwoHand ? TwoHandAffixMul : 1f;
+
+    public static Affix RollAffix(Pool p, Item it, Random rng)
+    {
+        float span = p.Lo + (p.Hi - p.Lo) * (it.Power / (float)MaxPower);
+        float v = span * (0.72f + 0.28f * (float)rng.NextDouble());
+        if (p.S != Stat.SkillRanks) v *= AffixBudget(it);
+        bool greater = it.Rarity >= Rarity.Legendary && it.Power >= 300 && rng.NextDouble() < 0.08;
+        if (greater) v *= 1.5f;
+        v = StatInfo.IsPct(p.S) ? MathF.Round(v * 10f) / 10f : MathF.Max(1, MathF.Round(v));
+        return new Affix { Stat = p.S, Value = v, Greater = greater };
+    }
+
+    private static void NameItem(Item it, Random rng)
+    {
+        string baseName = it.Name;
+        switch (it.Rarity)
+        {
+            case Rarity.Magic: it.Name = Rng.Pick(MagicPrefix, rng) + baseName; break;
+            case Rarity.Rare: it.Name = Rng.Pick(RareA, rng) + Rng.Pick(RareB, rng) + "・" + baseName; break;
+            case Rarity.Legendary: it.Name = Aspect(it.Aspect).Name + "之" + baseName; break;
+        }
+    }
+
+    private static Item MakeUnique(UniqueDef u, int power, Random rng, ClassId cls)
+    {
+        var it = new Item { Kind = u.Kind, Rarity = Rarity.Unique, Power = power, ReqLevel = Math.Clamp(power / 10 - 2, 1, 50), Unique = u.Id };
+        var maker = u.Class >= 0 ? (ClassId)u.Class : cls;
+        FillBase(it, maker, rng, u.Base);
+        if (u.Kind == ItemKind.Weapon)
+        {
+            it.DmgMin = MathF.Round(it.DmgMin * 1.12f); it.DmgMax = MathF.Round(it.DmgMax * 1.12f);
+            it.WeaponClass = u.Class;           // class-bound uniques stay bound
+        }
+        it.Name = u.Name;
+        it.Icon = u.Icon;
+        float scale = 0.35f + 0.65f * power / MaxPower;
+        foreach (var (s, lo, hi) in u.Affixes)
+        {
+            float v = (lo + (hi - lo) * (float)rng.NextDouble()) * (s == Stat.SkillRanks ? 1f : scale);
+            v = StatInfo.IsPct(s) ? MathF.Round(v * 10f) / 10f : MathF.Max(1, MathF.Round(v));
+            it.Affixes.Add(new Affix { Stat = s, Value = v });
+        }
+        it.Look = u.Look ?? RollLook(it, maker);
+        it.Value = SellValue(it);
+        return it;
+    }
+
+    public static Item MakeGem(string gemId)
+    {
+        var g = Gem(gemId);
+        string kind = g.Icon != null && g.Icon.StartsWith("gem_") ? g.Icon[4..] : g.Id.TrimEnd('1', '2', '3');
+        return new Item { Kind = ItemKind.Gem, GemId = g.Id, Name = g.Name, Icon = g.Icon, Rarity = (Rarity)Math.Min(g.Tier, 2), Value = 40 * g.Tier * g.Tier, Power = g.Tier,
+            Base = kind, Look = "gem_" + kind };
+    }
+
+    public static Item RandomGem(int level, Random rng = null)
+    {
+        rng ??= Rng.R;
+        int tier = level < 15 ? 1 : (level < 32 ? (rng.NextDouble() < 0.3 ? 2 : 1) : (rng.NextDouble() < 0.25 ? 3 : 2));
+        var c = Gems.Where(g => g.Tier == tier).ToList();
+        return MakeGem(Rng.Pick(c, rng).Id);
+    }
+
+    public static int SellValue(Item it)
+    {
+        float m = it.Rarity switch { Rarity.Common => 1f, Rarity.Magic => 2f, Rarity.Rare => 4f, Rarity.Legendary => 10f, _ => 16f };
+        return (int)(m * (6 + it.Power * 0.6f));
+    }
+
+    /// <summary>Starting weapon for a new character: the class's starter base (one-hand or two-hand), plain.</summary>
+    public static Item Starter(ClassId cls) => Generate(10, Rarity.Common, cls, ItemKind.Weapon, null, Loadout(cls).Starter);
+
+    /// <summary>The second starting weapon (the forgebody's other fist), or null.</summary>
+    public static Item StarterOff(ClassId cls)
+    {
+        var id = Loadout(cls).StarterOff;
+        var b = BaseOf(id);
+        return b == null ? null : Generate(10, Rarity.Common, cls, b.Off ? ItemKind.OffHand : ItemKind.Weapon, null, id);
+    }
+
+    // ───────────────────────── looks (model ids, CONTRACT §4 / §5) ─────────────────────────
+
+    private static readonly Dictionary<ItemKind, string> ArmorSlotKey = new()
+    {
+        [ItemKind.Helm] = "helm", [ItemKind.Chest] = "chest", [ItemKind.Gloves] = "gloves", [ItemKind.Pants] = "pants", [ItemKind.Boots] = "boots",
+    };
+
+    /// <summary>A stable 0..1 number per item (its uid), so a recomputed look never changes.</summary>
+    private static float Hash01(string s)
+    {
+        uint h = 2166136261;
+        foreach (char c in s ?? "") { h ^= c; h *= 16777619; }
+        return (h % 10000) / 10000f;
+    }
+
+    /// <summary>Picks <paramref name="lo"/> or the next variant; the higher one grows likelier with item power.</summary>
+    private static int Band(Item it, int lo) => Hash01(it.Uid) < it.Power / (float)MaxPower ? lo + 1 : lo;
+
+    /// <summary>
+    /// The model id of an item (made for class <paramref name="cls"/>). Weapons, off-hands and jewellery: v1 crude
+    /// (common / magic, low power), v2 forged (common / magic at higher power, rare), v3 ornate (legendary, unique).
+    /// Armour: t1/t2 common and magic, t2/t3 rare, t3/t4 legendary and unique — higher variant likelier with power.
+    /// </summary>
+    public static string RollLook(Item it, ClassId cls)
+    {
+        if (it == null) return null;
+        switch (it.Kind)
+        {
+            case ItemKind.Gem: return it.Look ?? "gem_" + (it.Base ?? "ruby");
+            case ItemKind.Weapon:
+            case ItemKind.OffHand:
+            case ItemKind.Ring:
+            case ItemKind.Amulet:
+            {
+                int v = it.Rarity >= Rarity.Legendary ? 3 : it.Rarity == Rarity.Rare ? 2 : Band(it, 1);
+                string pre = it.Kind == ItemKind.Ring ? "jwl_ring" : it.Kind == ItemKind.Amulet ? "jwl_amulet" : "wpn_" + (it.Base ?? Loadout(cls).Starter);
+                return $"{pre}_v{v}";
+            }
+            default:
+            {
+                if (!ArmorSlotKey.TryGetValue(it.Kind, out var slot)) return null;
+                int t = it.Rarity >= Rarity.Legendary ? Band(it, 3) : it.Rarity == Rarity.Rare ? Band(it, 2) : Band(it, 1);
+                return $"arm_{Names.ClassKey(cls)}_{slot}_t{t}";
+            }
+        }
+    }
+
+    /// <summary>
+    /// The model id to show on <paramref name="wearer"/>: armour looks are cut per class body, so the class part of the id
+    /// is swapped for the wearer's; everything else is returned as stored.
+    /// </summary>
+    public static string LookFor(Item it, ClassId wearer)
+    {
+        if (it == null) return null;
+        var look = it.Look ?? RollLook(it, wearer);
+        if (look == null || !look.StartsWith("arm_")) return look;
+        int a = look.IndexOf('_', 4);
+        return a < 0 ? look : "arm_" + Names.ClassKey(wearer) + look[a..];
+    }
+
+    // ───────────────────────── 0.1–0.3 saves ─────────────────────────
+
+    /// <summary>
+    /// Brings an item from a 0.1–0.3 save up to date in place (idempotent). A weapon without a base becomes the default
+    /// base of the class it was made for: same affixes, gems, aspect, upgrades; the damage of one hit is rescaled by
+    /// old speed / new speed so its damage per second is exactly what it was. Returns true when anything changed.
+    /// </summary>
+    public static bool Migrate(Item it, ClassId owner)
+    {
+        if (it == null) return false;
+        bool changed = false;
+        it.Affixes ??= new(); it.Gems ??= new(); it.Implicits ??= new();
+        if (it.Kind == ItemKind.Weapon && BaseOf(it.Base) == null)
+        {
+            int wc = it.WeaponClass >= 0 && it.WeaponClass < Names.ClassCount ? it.WeaponClass : (int)owner;
+            var g = Loadout((ClassId)wc);
+            var u = it.Unique != null ? UniqueOf(it.Unique) : null;
+            var b = BaseOf(u?.Base) ?? BaseOf(g.Legacy);
+            float oldAps = it.Aps > 0.05f ? it.Aps : g.RefAps;
+            float f = oldAps / b.Aps;
+            it.DmgMin *= f; it.DmgMax *= f;
+            it.Aps = b.Aps;
+            it.Base = b.Id;
+            // the old per-class base name inside the item's name becomes the new base's name of the same tier
+            if (it.Unique == null)
+            {
+                string oldName = LegacyWeaponNames[wc][Tier(it.Power)], newName = b.Names[Tier(it.Power)];
+                if (oldName != newName && it.Name != null && it.Name.Contains(oldName)) it.Name = it.Name.Replace(oldName, newName);
+            }
+            it.WeaponClass = u != null && u.Class >= 0 ? u.Class : -1;
+            changed = true;
+        }
+        if (it.Base == null)
+        {
+            if (it.Kind == ItemKind.Gem && it.GemId != null) it.Base = Gem(it.GemId)?.Icon is string gi && gi.StartsWith("gem_") ? gi[4..] : it.GemId.TrimEnd('1', '2', '3');
+            else if (Bases.TryGetValue(it.Kind, out var ab)) it.Base = ab.icon;
+            changed = true;
+        }
+        if (it.Look == null)
+        {
+            int wc = it.WeaponClass >= 0 && it.WeaponClass < Names.ClassCount ? it.WeaponClass : (int)owner;
+            it.Look = RollLook(it, (ClassId)wc);
+            changed = true;
+        }
+        return changed;
+    }
+
+    /// <summary>The plain companion piece a 0.1–0.3 weapon came with (the lamp knight's shield, the pactbinder's grimoire,
+    /// the forgebody's other fist), made at the weapon's power so the hero still looks and plays as before.</summary>
+    public static Item LegacyCompanion(Item weapon, ClassId cls)
+    {
+        var id = Loadout(cls).LegacyOff;
+        var b = BaseOf(id);
+        if (b == null || weapon == null) return null;
+        var rng = new Random(weapon.Uid.GetHashCode());
+        var it = Generate(weapon.Power, Rarity.Common, cls, b.Off ? ItemKind.OffHand : ItemKind.Weapon, rng, id);
+        it.ReqLevel = Math.Min(it.ReqLevel, weapon.ReqLevel);
+        return it;
+    }
+
+    /// <summary>Index of the 0.1–0.3 per-class weapon family (greatsword … grimoire) closest to the item's base: old icons and loot meshes.</summary>
+    public static int LegacyFamily(Item it)
+    {
+        if (it == null) return 0;
+        if (it.WeaponClass >= 0 && it.WeaponClass < WeaponIcons.Length && BaseOf(it.Base) == null) return it.WeaponClass;
+        var icon = BaseOf(it.Base)?.Icon ?? it.Icon;
+        int i = Array.IndexOf(WeaponIcons, icon);
+        return i < 0 ? 0 : i;
+    }

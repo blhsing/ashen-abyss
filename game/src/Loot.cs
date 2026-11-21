@@ -1,6 +1,7 @@
 using Godot;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace AshenAbyss;
@@ -217,7 +218,7 @@ public static class Loot
         // many levels old gets a new one from the next named kill, and often from an elite: a hunter who had found none in four
         // levels did 17 damage a second and could not finish the first boss.
         ItemKind? firstKind = null;
-        var held = hero.D.Equip[(int)EquipSlot.Weapon];
+        var held = hero.Weapon;
         int heroLevel = Math.Max(level, hero.D.Level);       // monsters of an area keep the level the hero had on arrival
         if ((held == null || held.Power < heroLevel * 6) && (boss || mini || (elite && Rng.Chance(0.5f))))
         {
@@ -279,8 +280,38 @@ public static class Loot
         hero ??= Game.I?.Hero;
         var rarity = RollRarity(odds, level, floor, hero);
         var it = ItemDb.Generate(PowerFor(level, strong), rarity, cls, kind);
+        // one weapon or off-hand in ten is forged for another class's hands (worth selling or salvaging, marked ⊘)
+        if (kind == null && it.Kind is ItemKind.Weapon or ItemKind.OffHand && it.Unique == null && Rng.Chance(ForeignShare)) it = Foreign(it, cls) ?? it;
         // an item the world hands to this hero is never beyond the hero's reach
         if (hero != null && it.IsEquip && it.ReqLevel > hero.D.Level) it.ReqLevel = Math.Max(1, hero.D.Level);
+        return it;
+    }
+
+    /// <summary>Share of weapon / off-hand drops made on another class's base.</summary>
+    public const float ForeignShare = 0.1f;
+
+    /// <summary>The same roll (power, rarity, affixes for <paramref name="cls"/>) on a base from another class's loadout; null when that changes nothing.</summary>
+    private static Item Foreign(Item it, ClassId cls)
+    {
+        // a base no hand of this class can hold (an off-hand for an off-hand, else a weapon)
+        bool off = it.Kind == ItemKind.OffHand;
+        var alien = ItemDb.GearBases.Where(x => x.Off == off && !ItemDb.Allows(cls, x.Id, EquipSlot.MainHand) && !ItemDb.Allows(cls, x.Id, EquipSlot.OffHand)).ToList();
+        if (alien.Count == 0) { off = false; alien = ItemDb.GearBases.Where(x => !x.Off && !ItemDb.Allows(cls, x.Id, EquipSlot.MainHand) && !ItemDb.Allows(cls, x.Id, EquipSlot.OffHand)).ToList(); }
+        if (alien.Count == 0) return null;
+        var f = ItemDb.Generate(it.Power, it.Rarity, cls, off ? ItemKind.OffHand : ItemKind.Weapon, null, Rng.Pick(alien).Id);
+        f.ReqLevel = it.ReqLevel;
+        return f;
+    }
+
+    /// <summary>As <see cref="Make"/>, on a chosen weapon / off-hand base (vendors' shelves). A unique roll becomes legendary.</summary>
+    private static Item MakeBase(int level, Odds odds, ClassId cls, ItemKind kind, string baseId, Hero hero)
+    {
+        level = Math.Max(1, level);
+        hero ??= Game.I?.Hero;
+        var rarity = RollRarity(odds, level, Rarity.Common, hero);
+        if (rarity == Rarity.Unique) rarity = Rarity.Legendary;
+        var it = ItemDb.Generate(PowerFor(level, false), rarity, cls, kind, null, baseId);
+        if (hero != null && it.ReqLevel > hero.D.Level) it.ReqLevel = Math.Max(1, hero.D.Level);
         return it;
     }
 
@@ -373,10 +404,14 @@ public static class Loot
             return null;
         }
 
+        // a weapon or off-hand the hero's class cannot use: ⊘ before the name, the rarity colour dimmed (still readable)
+        var looker = Game.I?.Hero;
+        bool noUse = looker != null && it.Kind is ItemKind.Weapon or ItemKind.OffHand && !ItemDb.UsableBy(it, looker.Class);
         var node = new Interactable
         {
             Kind = "loot", Item = it, LootRarity = it.Rarity,
-            Label = it.Name, LabelColor = Palette.Rarity(it.Rarity),
+            Label = noUse ? "⊘ " + it.Name : it.Name,
+            LabelColor = noUse ? Palette.Rarity(it.Rarity).Lerp(Palette.TextDim, 0.55f) : Palette.Rarity(it.Rarity),
             AlwaysLabel = Always(it), ShowLabel = false, CanUse = false,
             LabelHeight = 0.7f, UseRange = 2.4f,
         };
@@ -384,8 +419,11 @@ public static class Loot
 
         bool jewel = it.Kind == ItemKind.Ring || it.Kind == ItemKind.Amulet;
         float scale = jewel ? 1.55f : it.Kind == ItemKind.Gem ? 1.2f : VisScale;
-        var vis = new MeshInstance3D { Mesh = MeshFor(MeshKey(it)), CastShadow = GeometryInstance3D.ShadowCastingSetting.Off, Scale = Vector3.One * scale };
-        if (it.Kind == ItemKind.Gem) { var gm = GemMaterial(it); if (gm != null) vis.MaterialOverride = gm; }
+        var mi = new MeshInstance3D { Mesh = MeshFor(MeshKey(it)), CastShadow = GeometryInstance3D.ShadowCastingSetting.Off };
+        if (it.Kind == ItemKind.Gem) { var gm = GemMaterial(it); if (gm != null) mi.MaterialOverride = gm; }
+        // RENDER: the item's own 3D model lying on the ground when it has one (GearVisual.cs; the loot mesh until it is loaded)
+        Node3D vis = GearCatalog.GroundModel(it, mi, VisScale / scale) ?? mi;
+        vis.Scale = Vector3.One * scale;
         node.AddChild(vis);
         root.AddChild(node);
 
@@ -784,16 +822,26 @@ public static class Loot
     {
         var list = new List<(Item item, int price)>(10);
         int lvl = Math.Max(1, h.D.Level);
-        // one weapon for the class, one of every other slot, two wildcards
-        var kinds = new List<ItemKind>(10) { ItemKind.Weapon };
+        // the class's arms first: one two-hand and one one-hand weapon of bases it can hold, an off-hand piece when the class
+        // carries one (a dual-wielder gets a second one-hand weapon instead), then one of every other slot and two wildcards
+        var g = ItemDb.Loadout(h.Class);
+        var shelf = new List<(ItemKind kind, string baseId)>(12);
+        if (g.TwoHand.Length > 0) shelf.Add((ItemKind.Weapon, Rng.Pick(g.TwoHand)));
+        if (g.MainHand.Length > 0) shelf.Add((ItemKind.Weapon, Rng.Pick(g.MainHand)));
+        if (g.OffHand.Length > 0) shelf.Add((ItemKind.OffHand, Rng.Pick(g.OffHand)));
+        else if (g.CanDual) shelf.Add((ItemKind.Weapon, Rng.Pick(g.Dual)));
         var pool = (ItemKind[])ArmorKinds.Clone();
         for (int i = pool.Length - 1; i > 0; i--) { int j = Rng.R.Next(i + 1); (pool[i], pool[j]) = (pool[j], pool[i]); }
-        kinds.AddRange(pool);
-        kinds.Add(Rng.Chance(0.4f) ? ItemKind.Weapon : Rng.Pick(ArmorKinds));
-        kinds.Add(Rng.Pick(ArmorKinds));
-        foreach (var k in kinds)
+        foreach (var k in pool) shelf.Add((k, null));
+        shelf.Add((Rng.Chance(0.4f) ? ItemKind.Weapon : Rng.Pick(ArmorKinds), null));
+        // and one or two weapons from other classes' racks (hidden behind 只顯示本職業可用 unless the hero asks)
+        var alien = ItemDb.GearBases.Where(b => !b.Off && !ItemDb.Allows(h.Class, b.Id, EquipSlot.MainHand) && !ItemDb.Allows(h.Class, b.Id, EquipSlot.OffHand)).ToList();
+        for (int i = 0, n = Rng.Range(1, 2); i < n && alien.Count > 0; i++) shelf.Add((ItemKind.Weapon, Rng.Pick(alien).Id));
+        shelf.Add((Rng.Pick(ArmorKinds), null));
+        foreach (var (k, b) in shelf)
         {
-            var it = Make(Math.Max(1, lvl + Rng.Range(-2, 1)), OddsVendor, h.Class, k, Rarity.Common, false, h);
+            var it = b == null ? Make(Math.Max(1, lvl + Rng.Range(-2, 1)), OddsVendor, h.Class, k, Rarity.Common, false, h)
+                : MakeBase(Math.Max(1, lvl + Rng.Range(-2, 1)), OddsVendor, h.Class, k, b, h);
             list.Add((it, VendorPrice(it)));
         }
         return list;
@@ -805,7 +853,7 @@ public static class Loot
         int lvl = Math.Max(1, h?.D.Level ?? 1);
         float k = kind switch
         {
-            ItemKind.Amulet => 1.9f, ItemKind.Weapon => 1.7f, ItemKind.Ring => 1.6f, ItemKind.Chest => 1.25f,
+            ItemKind.Amulet => 1.9f, ItemKind.Weapon => 1.7f, ItemKind.Ring => 1.6f, ItemKind.OffHand => 1.4f, ItemKind.Chest => 1.25f,
             ItemKind.Helm or ItemKind.Pants => 1.05f, ItemKind.Gem => 0.8f, _ => 0.9f
         };
         float raw = (70f + lvl * 34f + lvl * lvl * 0.9f) * k * (1f + 0.25f * Tier());
@@ -1200,7 +1248,7 @@ public static class Loot
     }
 
     private static int MeshKey(Item it) =>
-        it.Kind == ItemKind.Weapon ? KeyWeapon + Math.Clamp(it.WeaponClass, 0, Names.ClassCount - 1) : (int)it.Kind;
+        it.Kind is ItemKind.Weapon or ItemKind.OffHand ? KeyWeapon + ItemDb.LegacyFamily(it) : (int)it.Kind;
 
     private static Mesh MeshFor(int key)
     {

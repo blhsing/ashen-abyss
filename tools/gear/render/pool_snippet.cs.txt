@@ -1,0 +1,222 @@
+    private void ClearGear()
+    {
+        foreach (var mi in _gearMeshes) _meshes.Remove(mi);
+        _gearMeshes.Clear(); _gearWeapons.Clear();
+        foreach (var n in _gearNodes)
+            if (IsInstanceValid(n)) { n.GetParent()?.RemoveChild(n); n.QueueFree(); }
+        _gearNodes.Clear();
+        // pooled pieces are only hidden: the next loadout (a gear-set swap) shows them again without building anything
+        foreach (var p in _shown) foreach (var r in p.Roots) if (IsInstanceValid(r)) r.Visible = false;
+        _shown.Clear();
+        _ik = null;
+        foreach (var mi in _body) if (IsInstanceValid(mi)) mi.Visible = true;
+        _hiddenBy.Clear();
+        foreach (var w in _weapons) w.Visible = false;
+    }
+
+    // ── pooled pieces: every armour piece and weapon built for this model stays under its skeleton, hidden when not worn ──
+    private sealed class Piece
+    {
+        public readonly List<Node3D> Roots = new();
+        public readonly List<MeshInstance3D> Meshes = new();
+        public string[] Hides = Array.Empty<string>();
+        public bool Weapon;
+        public string Mount, What, Id;
+        public Transform3D Grip;
+        public Node Model;
+        public ulong Used;
+    }
+    private readonly Dictionary<string, Piece> _pieces = new();
+    private readonly List<Piece> _shown = new();
+    private readonly Queue<(string key, Func<Piece> build)> _prebuild = new();
+    private ulong _pieceClock;
+    private const int MaxPieces = 40;            // three or four full sets of seven pieces, and what is worn
+    /// <summary>True while the model has gear work to do over the next frames (a loadout waiting for files, pieces being pre-built).</summary>
+    private bool GearBusy => _pendingGear != null || _prebuild.Count > 0;
+
+    private static string ArmorKey(string id) => "arm:" + id;
+    private static string WeaponKey(WeaponPick w, string id, bool main) => $"wpn:{id ?? "prim_" + w.Base + w.Variant}@{GearCatalog.MountFor(id, w.Base, main)}";
+
+    private Piece BuildArmorPiece(string id, string slot)
+    {
+        var inst = GearCatalog.Instantiate(id);
+        if (inst == null) return null;
+        var srcSk = FindSkeleton(inst);
+        var piece = new Piece { Id = id, What = id, Hides = GearCatalog.HidesFor(id, inst, slot) };
+        int n = 0;
+        foreach (var mi in Walk(inst).OfType<MeshInstance3D>().ToList())
+        {
+            if (mi.Mesh == null) continue;
+            BoneAttachment3D ba = null;
+            var rel = Transform3D.Identity;
+            for (Node p = mi; p != null && p != inst; p = p.GetParent())
+            {
+                if (p is BoneAttachment3D b) { ba = b; break; }
+                if (p is Node3D p3) rel = p3.Transform * rel;
+            }
+            string key = id + "/" + mi.Name;
+            mi.GetParent().RemoveChild(mi);
+            mi.Owner = null;
+            foreach (var c in mi.GetChildren().ToList()) { mi.RemoveChild(c); c.QueueFree(); }
+            mi.Name = "gear_" + id + "_" + n;
+            if (mi.Skin != null)
+            {
+                Skeleton.AddChild(mi);
+                mi.Transform = Transform3D.Identity;
+                mi.Skeleton = new NodePath("..");
+                mi.Skin = GearCatalog.RemapSkin(key, mi.Skin, srcSk, Skeleton);
+                piece.Roots.Add(mi);
+            }
+            else if (ba != null && Skeleton.FindBone(ba.BoneName) >= 0)
+            {
+                var att = new BoneAttachment3D { BoneName = ba.BoneName, Name = "gear_att_" + ba.BoneName };
+                Skeleton.AddChild(att);
+                att.AddChild(mi);
+                mi.Transform = rel;
+                piece.Roots.Add(att);
+            }
+            else
+            {
+                Skeleton.AddChild(mi);
+                mi.Transform = rel;
+                piece.Roots.Add(mi);
+            }
+            piece.Meshes.Add(mi);
+            n++;
+        }
+        inst.Free();
+        if (n == 0) return null;
+        FinishPiece(piece);
+        return piece;
+    }
+
+    private Piece BuildWeaponPiece(WeaponPick w, string id, bool main)
+    {
+        Node3D model = id != null ? GearCatalog.Instantiate(id) : null;
+        string mount = GearCatalog.MountFor(id, w.Base, main);
+        string what = id;
+        if (model == null) { model = GearPlaceholders.Weapon(w.Base, w.Variant); what = $"{w.Base} v{w.Variant} (primitive)"; }
+        if (model == null) return null;
+        string bone = mount == "forearm_l" ? "lowerarm_l" : mount;
+        if (Skeleton.FindBone(bone) < 0) { Log.Warn("gear", $"{ModelId} has no bone '{bone}' for {what}"); model.Free(); return null; }
+        var att = new BoneAttachment3D { Name = "Gear_" + (id ?? w.Base) + "_" + mount, BoneName = bone };
+        Skeleton.AddChild(att);
+        var grip = GearGrips.For(w.Base, mount, Skeleton);
+        var holder = new Node3D { Name = "Grip", Transform = grip };
+        att.AddChild(holder);
+        holder.AddChild(model);
+        foreach (var ap in Walk(model).OfType<AnimationPlayer>().ToList()) ap.QueueFree();
+        var piece = new Piece { Id = id, Weapon = true, Mount = mount, What = what, Grip = grip, Model = model };
+        piece.Roots.Add(att);
+        int k = 0;
+        foreach (var mi in Walk(model).OfType<MeshInstance3D>())
+        {
+            mi.Name = $"gear_{id ?? "prim_" + w.Base}_{mount}_{k++}";
+            piece.Meshes.Add(mi);
+        }
+        FinishPiece(piece);
+        return piece;
+    }
+
+    /// <summary>A new piece: materials converted once, hidden until worn.</summary>
+    private void FinishPiece(Piece p)
+    {
+        foreach (var mi in p.Meshes)
+        {
+            ConvertMaterials(mi);
+            mi.CastShadow = GeometryInstance3D.ShadowCastingSetting.On;
+            mi.ExtraCullMargin = 1.5f;
+            if (Modular) mi.LodBias = 100f;
+        }
+        foreach (var r in p.Roots) r.Visible = false;
+    }
+
+    private Piece GetPiece(string key, Func<Piece> build)
+    {
+        if (!_pieces.TryGetValue(key, out var p) || p.Roots.Any(r => !IsInstanceValid(r)))
+        {
+            p = build();
+            if (p == null) return null;
+            _pieces[key] = p;
+            TrimPieces();
+        }
+        p.Used = ++_pieceClock;
+        return p;
+    }
+
+    private void TrimPieces()
+    {
+        while (_pieces.Count > MaxPieces)
+        {
+            var old = _pieces.Where(kv => !_shown.Contains(kv.Value)).OrderBy(kv => kv.Value.Used).FirstOrDefault();
+            if (old.Value == null) return;
+            foreach (var r in old.Value.Roots) if (IsInstanceValid(r)) { r.GetParent()?.RemoveChild(r); r.QueueFree(); }
+            _pieces.Remove(old.Key);
+        }
+    }
+
+    private void ShowPiece(Piece p, List<MeshInstance3D> fresh)
+    {
+        foreach (var r in p.Roots) r.Visible = true;
+        fresh.AddRange(p.Meshes);
+        if (p.Weapon) _gearWeapons.AddRange(p.Meshes);
+        foreach (var h in p.Hides) HideRegion(h);
+        _shown.Add(p);
+    }
+
+    /// <summary>
+    /// Builds (hidden, one piece per frame, once its file is loaded) every armour piece and weapon of these loadouts, so
+    /// that switching to any of them only shows and hides nodes. Player calls it with the hero's saved gear sets.
+    /// </summary>
+    public void PrebuildGear(IEnumerable<GearSet> sets)
+    {
+        if (!GearManaged || Skeleton == null) return;
+        foreach (var g in sets ?? Enumerable.Empty<GearSet>())
+        {
+            if (g == null) continue;
+            if (Modular)
+                foreach (var a in g.Armor)
+                {
+                    string id = GearCatalog.ResolveArmor(g.Class, a);
+                    if (id == null || _pieces.ContainsKey(ArmorKey(id))) continue;
+                    string slot = a.Slot;
+                    _prebuild.Enqueue((ArmorKey(id), () => BuildArmorPiece(id, slot)));
+                }
+            foreach (var (w, main) in new[] { (g.Main, true), (g.Off, false) })
+            {
+                if (w == null) continue;
+                string id = GearCatalog.ResolveWeapon(w);
+                if (id == null && !Modular && _weapons.Count > 0) continue;         // baked hero: its own weapon meshes, nothing to build
+                string key = WeaponKey(w, id, main);
+                if (!_pieces.ContainsKey(key)) _prebuild.Enqueue((key, () => BuildWeaponPiece(w, id, main)));
+            }
+        }
+        if (_prebuild.Count > 0) SetProcess(true);
+    }
+
+    /// <summary>One pre-built piece per frame (a piece whose file is still loading waits its turn).</summary>
+    private void TickPrebuild()
+    {
+        int n = _prebuild.Count;
+        while (n-- > 0)
+        {
+            var (key, build) = _prebuild.Dequeue();
+            if (_pieces.ContainsKey(key)) continue;
+            string id = key.StartsWith("arm:") ? key[4..] : !key.StartsWith("wpn:prim_") ? key[4..key.IndexOf('@')] : null;
+            if (id != null && !GearCatalog.Prefetch(id)) { _prebuild.Enqueue((key, build)); continue; }
+            GetPiece(key, build);
+            PrebuiltPieces++;
+            return;
+        }
+    }
+
+    /// <summary>How many pieces were pre-built hidden (the gear-set test reports it).</summary>
+    public static int PrebuiltPieces;
+
+    private bool AttachArmor(string id, ArmorPick pick, List<MeshInstance3D> fresh)
+    {
+        var p = GetPiece(ArmorKey(id), () => BuildArmorPiece(id, pick.Slot));
+        if (p == null) return false;
+        ShowPiece(p, fresh);
+        return true;
+    }

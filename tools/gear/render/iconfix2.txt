@@ -1,0 +1,4 @@
+exit= seconds=34
+log: C:\Users\blhsi\AppData\Roaming\AshenAbyss\logs\game_20261121_195716.log  lines=189  ERR=0  WRN=0
+sheet: Y:\shots\gear\BEST_icons64_sheet.png
+D2

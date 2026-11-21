@@ -1,0 +1,22 @@
+# SYSTEMS: 可用武器 in the class introduction, three text sizes, lamp knight and forgebody
+wait 4
+scale 0
+menu class:lampknight
+wait 3
+shot sys_classintro_lampknight_scale0
+scale 1
+wait 1.2
+shot sys_classintro_lampknight_scale1
+scale 2
+wait 1.2
+shot sys_classintro_lampknight_scale2
+menu class:forgebody
+wait 3
+shot sys_classintro_forgebody_scale2
+scale 1
+wait 1.2
+shot sys_classintro_forgebody_scale1
+scale 0
+wait 1.2
+shot sys_classintro_forgebody_scale0
+quit

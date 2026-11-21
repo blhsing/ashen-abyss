@@ -1,0 +1,168 @@
+== off: /c/Users/blhsi/AppData/Roaming/AshenAbyss/logs/game_20261121_185219.log
+   17.329 INF [perf] fps=46 frame=20.7ms worst=138.0ms slowestProcess=85.5ms area=sands monsters=357 minions=0 objects=22 nodes=5114 draws=505 prims=658533 vram=1828MB mem=339MB scale=1.00 q=2 errors=0
+   17.331 INF [perf] game code per frame: whole tree=47.54ms | monsters=2.67ms (awake 68: 2.40ms, separation 1.82ms) player=0.80ms shots+zones=0.02ms level=0.02ms bot=0.10ms
+   22.337 INF [perf] fps=57 frame=18.0ms worst=63.0ms slowestProcess=43.8ms area=sands monsters=348 minions=0 objects=32 nodes=4975 draws=330 prims=430904 vram=1823MB mem=336MB scale=1.00 q=2 errors=0
+   22.338 INF [perf] game code per frame: whole tree=11.80ms | monsters=1.95ms (awake 54: 1.70ms, separation 1.07ms) player=0.34ms shots+zones=0.05ms level=0.02ms bot=0.05ms
+   27.345 INF [perf] fps=59 frame=16.7ms worst=34.0ms slowestProcess=31.3ms area=sands monsters=344 minions=0 objects=34 nodes=5043 draws=388 prims=404852 vram=1821MB mem=338MB scale=1.00 q=2 errors=0
+   27.347 INF [perf] game code per frame: whole tree=8.64ms | monsters=1.12ms (awake 49: 0.92ms, separation 0.64ms) player=0.30ms shots+zones=0.04ms level=0.01ms bot=0.04ms
+   32.348 INF [perf] fps=60 frame=16.7ms worst=24.0ms slowestProcess=17.7ms area=sands monsters=343 minions=0 objects=34 nodes=5016 draws=444 prims=468886 vram=1821MB mem=337MB scale=1.00 q=2 errors=0
+   32.349 INF [perf] game code per frame: whole tree=8.15ms | monsters=0.99ms (awake 43: 0.78ms, separation 0.51ms) player=0.23ms shots+zones=0.04ms level=0.01ms bot=0.03ms
+   37.353 INF [perf] fps=60 frame=16.7ms worst=49.0ms slowestProcess=27.0ms area=sands monsters=343 minions=0 objects=34 nodes=4979 draws=423 prims=518531 vram=1821MB mem=335MB scale=1.00 q=2 errors=0
+   37.354 INF [perf] game code per frame: whole tree=8.46ms | monsters=1.57ms (awake 35: 1.37ms, separation 0.96ms) player=0.22ms shots+zones=0.04ms level=0.01ms bot=0.03ms
+   46.945 INF [perf] fps=60 frame=17.6ms worst=250.0ms slowestProcess=27.5ms area=mire_boss monsters=153 minions=1 objects=36 nodes=2334 draws=253 prims=231225 vram=2642MB mem=331MB scale=1.00 q=2 errors=0
+   46.947 INF [perf] game code per frame: whole tree=21.91ms | monsters=0.67ms (awake 29: 0.54ms, separation 0.33ms) player=1.59ms shots+zones=0.05ms level=0.02ms bot=0.03ms
+   51.951 INF [perf] fps=56 frame=16.9ms worst=106.0ms slowestProcess=105.4ms area=mire_boss monsters=151 minions=1 objects=44 nodes=2331 draws=231 prims=242048 vram=2641MB mem=332MB scale=1.00 q=2 errors=0
+   51.951 INF [perf] game code per frame: whole tree=4.12ms | monsters=0.56ms (awake 23: 0.48ms, separation 0.04ms) player=0.13ms shots+zones=0.13ms level=0.01ms bot=0.01ms
+   56.955 INF [perf] fps=60 frame=16.7ms worst=30.0ms slowestProcess=29.4ms area=mire_boss monsters=152 minions=1 objects=53 nodes=2400 draws=286 prims=218891 vram=2642MB mem=333MB scale=1.00 q=2 errors=0
+   56.956 INF [perf] game code per frame: whole tree=5.10ms | monsters=0.44ms (awake 25: 0.35ms, separation 0.17ms) player=0.17ms shots+zones=0.15ms level=0.01ms bot=0.02ms
+   61.960 INF [perf] fps=60 frame=16.7ms worst=20.0ms slowestProcess=19.5ms area=mire_boss monsters=154 minions=1 objects=57 nodes=2459 draws=364 prims=281198 vram=2643MB mem=333MB scale=1.00 q=2 errors=0
+   61.963 INF [perf] game code per frame: whole tree=3.86ms | monsters=0.34ms (awake 26: 0.27ms, separation 0.13ms) player=0.12ms shots+zones=0.13ms level=0.01ms bot=0.02ms
+   66.965 INF [perf] fps=60 frame=16.7ms worst=25.0ms slowestProcess=24.3ms area=mire_boss monsters=157 minions=0 objects=55 nodes=2512 draws=397 prims=288085 vram=2645MB mem=335MB scale=1.00 q=2 errors=0
+   66.966 INF [perf] game code per frame: whole tree=4.23ms | monsters=0.42ms (awake 33: 0.35ms, separation 0.20ms) player=0.12ms shots+zones=0.10ms level=0.01ms bot=0.02ms
+   76.425 INF [perf] fps=60 frame=18.9ms worst=250.0ms slowestProcess=26.0ms area=crypt monsters=338 minions=0 objects=20 nodes=5028 draws=270 prims=429373 vram=3627MB mem=372MB scale=1.00 q=2 errors=0
+   76.428 INF [perf] game code per frame: whole tree=25.29ms | monsters=0.87ms (awake 56: 0.67ms, separation 0.43ms) player=0.32ms shots+zones=0.07ms level=0.01ms bot=0.03ms
+   81.429 INF [perf] fps=60 frame=16.7ms worst=38.0ms slowestProcess=20.9ms area=crypt monsters=338 minions=0 objects=22 nodes=4974 draws=316 prims=562021 vram=3616MB mem=356MB scale=1.00 q=2 errors=0
+   81.431 INF [perf] game code per frame: whole tree=7.11ms | monsters=0.56ms (awake 61: 0.38ms, separation 0.11ms) player=0.25ms shots+zones=0.15ms level=0.01ms bot=0.08ms
+   86.435 INF [perf] fps=60 frame=16.7ms worst=20.0ms slowestProcess=20.1ms area=crypt monsters=331 minions=0 objects=23 nodes=5067 draws=343 prims=496720 vram=3617MB mem=359MB scale=1.00 q=2 errors=0
+   86.438 INF [perf] game code per frame: whole tree=6.10ms | monsters=0.80ms (awake 65: 0.68ms, separation 0.46ms) player=0.18ms shots+zones=0.07ms level=0.01ms bot=0.06ms
+   91.441 INF [perf] fps=60 frame=16.7ms worst=29.0ms slowestProcess=28.9ms area=crypt monsters=327 minions=0 objects=29 nodes=4947 draws=219 prims=370153 vram=3612MB mem=356MB scale=1.00 q=2 errors=0
+   91.443 INF [perf] game code per frame: whole tree=5.49ms | monsters=0.39ms (awake 57: 0.25ms, separation 0.08ms) player=0.18ms shots+zones=0.16ms level=0.01ms bot=0.03ms
+   96.445 INF [perf] fps=60 frame=16.7ms worst=31.0ms slowestProcess=30.4ms area=crypt monsters=321 minions=0 objects=31 nodes=4924 draws=292 prims=452674 vram=3610MB mem=355MB scale=1.00 q=2 errors=0
+   96.447 INF [perf] game code per frame: whole tree=6.89ms | monsters=0.47ms (awake 51: 0.29ms, separation 0.10ms) player=0.25ms shots+zones=0.21ms level=0.01ms bot=0.04ms
+  103.602 INF [perf] fps=60 frame=16.6ms worst=39.0ms slowestProcess=17.9ms area=rift~arena:sh_sanctum monsters=13 minions=0 objects=1 nodes=681 draws=220 prims=107937 vram=3845MB mem=323MB scale=1.00 q=2 errors=0
+  103.603 INF [perf] game code per frame: whole tree=10.82ms | monsters=0.22ms (awake 22: 0.12ms, separation 0.01ms) player=0.21ms shots+zones=0.09ms level=0.01ms bot=0.11ms
+  108.609 INF [perf] fps=60 frame=16.7ms worst=48.0ms slowestProcess=28.3ms area=rift~arena:sh_sanctum monsters=13 minions=0 objects=9 nodes=693 draws=240 prims=156687 vram=3845MB mem=324MB scale=1.00 q=2 errors=0
+  108.611 INF [perf] game code per frame: whole tree=1.41ms | monsters=0.03ms (awake 1: 0.02ms, separation 0.00ms) player=0.11ms shots+zones=0.00ms level=0.01ms bot=0.03ms
+  113.614 INF [perf] fps=60 frame=16.7ms worst=47.0ms slowestProcess=21.4ms area=rift~arena:sh_sanctum monsters=9 minions=0 objects=1 nodes=589 draws=120 prims=71327 vram=3844MB mem=322MB scale=1.00 q=2 errors=0
+  113.615 INF [perf] game code per frame: whole tree=1.39ms | monsters=0.03ms (awake 2: 0.02ms, separation 0.00ms) player=0.12ms shots+zones=0.00ms level=0.01ms bot=0.06ms
+  118.616 INF [perf] fps=60 frame=16.7ms worst=35.0ms slowestProcess=17.3ms area=rift~arena:sh_sanctum monsters=9 minions=0 objects=1 nodes=600 draws=121 prims=75619 vram=3844MB mem=323MB scale=1.00 q=2 errors=0
+  118.617 INF [perf] game code per frame: whole tree=1.83ms | monsters=0.08ms (awake 8: 0.08ms, separation 0.01ms) player=0.10ms shots+zones=0.01ms level=0.01ms bot=0.03ms
+  123.624 INF [perf] fps=60 frame=16.7ms worst=29.0ms slowestProcess=18.0ms area=rift~arena:sh_sanctum monsters=7 minions=0 objects=2 nodes=682 draws=285 prims=166841 vram=3847MB mem=326MB scale=1.00 q=2 errors=0
+  123.625 INF [perf] game code per frame: whole tree=1.71ms | monsters=0.08ms (awake 11: 0.08ms, separation 0.01ms) player=0.11ms shots+zones=0.02ms level=0.01ms bot=0.03ms
+  132.214 INF [perf] fps=60 frame=16.7ms worst=49.0ms slowestProcess=19.4ms area=frost_boss monsters=92 minions=0 objects=29 nodes=1621 draws=196 prims=205072 vram=4339MB mem=348MB scale=1.00 q=2 errors=0
+  132.217 INF [perf] game code per frame: whole tree=14.07ms | monsters=0.23ms (awake 8: 0.18ms, separation 0.05ms) player=0.12ms shots+zones=0.02ms level=0.03ms bot=0.01ms
+  137.219 INF [perf] fps=60 frame=16.7ms worst=21.0ms slowestProcess=18.3ms area=frost_boss monsters=92 minions=0 objects=32 nodes=1650 draws=241 prims=188792 vram=4338MB mem=349MB scale=1.00 q=2 errors=0
+  137.221 INF [perf] game code per frame: whole tree=3.54ms | monsters=0.28ms (awake 10: 0.21ms, separation 0.08ms) player=0.17ms shots+zones=0.03ms level=0.01ms bot=0.02ms
+  142.225 INF [perf] fps=60 frame=16.7ms worst=19.0ms slowestProcess=17.4ms area=frost_boss monsters=99 minions=0 objects=40 nodes=1732 draws=415 prims=380560 vram=4342MB mem=350MB scale=1.00 q=2 errors=0
+  142.227 INF [perf] game code per frame: whole tree=3.72ms | monsters=0.43ms (awake 16: 0.37ms, separation 0.22ms) player=0.14ms shots+zones=0.01ms level=0.01ms bot=0.01ms
+  147.230 INF [perf] fps=58 frame=16.8ms worst=48.0ms slowestProcess=48.2ms area=frost_boss monsters=99 minions=0 objects=40 nodes=1748 draws=422 prims=372102 vram=4342MB mem=351MB scale=1.00 q=2 errors=0
+  147.231 INF [perf] game code per frame: whole tree=3.76ms | monsters=0.46ms (awake 18: 0.40ms, separation 0.25ms) player=0.13ms shots+zones=0.00ms level=0.01ms bot=0.02ms
+  152.234 INF [perf] fps=60 frame=16.7ms worst=19.0ms slowestProcess=17.8ms area=frost_boss monsters=100 minions=0 objects=40 nodes=1743 draws=476 prims=428571 vram=4343MB mem=351MB scale=1.00 q=2 errors=0
+  152.237 INF [perf] game code per frame: whole tree=4.38ms | monsters=0.50ms (awake 18: 0.44ms, separation 0.27ms) player=0.15ms shots+zones=0.00ms level=0.01ms bot=0.02ms
+  159.242 INF [perf] fps=60 frame=16.7ms worst=45.0ms slowestProcess=17.4ms area=rift~arena:rare_crypt_namelessking monsters=9 minions=1 objects=1 nodes=637 draws=334 prims=236306 vram=4513MB mem=335MB scale=1.00 q=2 errors=0
+  159.243 INF [perf] game code per frame: whole tree=9.55ms | monsters=0.46ms (awake 15: 0.41ms, separation 0.23ms) player=0.16ms shots+zones=0.00ms level=0.01ms bot=0.04ms
+  164.247 INF [perf] fps=61 frame=16.8ms worst=43.0ms slowestProcess=33.8ms area=rift~arena:rare_crypt_namelessking monsters=1 minions=4 objects=1 nodes=585 draws=139 prims=136572 vram=4512MB mem=334MB scale=1.00 q=2 errors=0
+  164.250 INF [perf] game code per frame: whole tree=2.32ms | monsters=0.12ms (awake 5: 0.11ms, separation 0.02ms) player=0.18ms shots+zones=0.01ms level=0.01ms bot=0.03ms
+== on: 
+done
+== on: game_20261121_185927.log
+   18.989 INF [gear] hero_soulbinder: modular stance=TwoHandStaff [arm_soulbinder_helm_t4, arm_soulbinder_chest_t4, arm_soulbinder_gloves_t4, arm_soulbinder_pants_t4, arm_soulbinder_boots_t4, wpn_scythe2_v2@hand_r] in 717.9 ms
+   25.933 INF [perf] fps=51 frame=23.1ms worst=250.0ms slowestProcess=83.0ms area=town monsters=2 minions=1 objects=21 nodes=1261 draws=565 prims=677985 vram=2520MB mem=304MB scale=1.00 q=2 errors=0
+   25.934 INF [perf] game code per frame: whole tree=77.10ms | monsters=0.88ms (awake 12: 0.77ms, separation 0.08ms) player=4.03ms shots+zones=0.04ms level=0.04ms bot=0.21ms
+   30.937 INF [perf] fps=59 frame=16.7ms worst=44.0ms slowestProcess=43.1ms area=town monsters=10 minions=1 objects=29 nodes=1355 draws=803 prims=932107 vram=2529MB mem=305MB scale=1.00 q=2 errors=0
+   30.939 INF [perf] game code per frame: whole tree=3.11ms | monsters=0.12ms (awake 5: 0.12ms, separation 0.02ms) player=0.12ms shots+zones=0.06ms level=0.03ms bot=0.03ms
+   35.942 INF [perf] fps=60 frame=16.7ms worst=38.0ms slowestProcess=27.0ms area=town monsters=11 minions=1 objects=32 nodes=1534 draws=1022 prims=1065303 vram=2535MB mem=310MB scale=1.00 q=2 errors=0
+   35.943 INF [perf] game code per frame: whole tree=4.08ms | monsters=0.20ms (awake 10: 0.19ms, separation 0.04ms) player=0.16ms shots+zones=0.06ms level=0.03ms bot=0.02ms
+   40.947 INF [perf] fps=60 frame=16.7ms worst=31.0ms slowestProcess=18.0ms area=town monsters=0 minions=3 objects=23 nodes=1197 draws=510 prims=655344 vram=2525MB mem=304MB scale=1.00 q=2 errors=0
+   40.948 INF [perf] game code per frame: whole tree=3.53ms | monsters=0.15ms (awake 6: 0.14ms, separation 0.03ms) player=0.21ms shots+zones=0.01ms level=0.03ms bot=0.02ms
+   45.951 INF [perf] fps=60 frame=16.7ms worst=26.0ms slowestProcess=17.9ms area=town monsters=0 minions=6 objects=26 nodes=1297 draws=691 prims=885302 vram=2531MB mem=306MB scale=1.00 q=2 errors=0
+   45.954 INF [perf] game code per frame: whole tree=3.60ms | monsters=0.17ms (awake 9: 0.16ms, separation 0.02ms) player=0.22ms shots+zones=0.01ms level=0.03ms bot=0.11ms
+   52.815 INF [gear] hero_hunter: modular stance=DualWield [arm_hunter_helm_t4, arm_hunter_chest_t4, arm_hunter_gloves_t4, arm_hunter_pants_t4, arm_hunter_boots_t4, wpn_sword1_v3@hand_r, wpn_sword1_v2@hand_l] in 878.5 ms
+   57.447 INF [perf] fps=60 frame=17.2ms worst=74.0ms slowestProcess=24.6ms area=mire_d2 monsters=137 minions=0 objects=40 nodes=2207 draws=385 prims=411099 vram=3392MB mem=334MB scale=1.00 q=2 errors=0
+   57.450 INF [perf] game code per frame: whole tree=30.90ms | monsters=1.12ms (awake 42: 1.01ms, separation 0.65ms) player=0.33ms shots+zones=0.15ms level=0.01ms bot=0.09ms
+   62.454 INF [perf] fps=58 frame=17.7ms worst=220.0ms slowestProcess=21.9ms area=mire_d2 monsters=139 minions=0 objects=56 nodes=2384 draws=371 prims=318623 vram=3393MB mem=336MB scale=1.00 q=2 errors=0
+   62.455 INF [perf] game code per frame: whole tree=10.73ms | monsters=1.62ms (awake 40: 1.50ms, separation 0.38ms) player=0.36ms shots+zones=0.20ms level=0.01ms bot=0.10ms
+   63.614 INF [gear] hero_hunter: modular stance=DualWield [arm_hunter_helm_t4, arm_hunter_chest_t4, arm_hunter_gloves_t4, arm_hunter_pants_t4, arm_hunter_boots_t4, wpn_sword1_v3@hand_r, wpn_sword1_v2@hand_l] in 3.2 ms
+   67.458 INF [perf] fps=60 frame=16.8ms worst=36.0ms slowestProcess=20.9ms area=mire_d2 monsters=140 minions=0 objects=48 nodes=2306 draws=334 prims=276513 vram=3395MB mem=336MB scale=1.00 q=2 errors=0
+   67.460 INF [perf] game code per frame: whole tree=8.81ms | monsters=1.29ms (awake 43: 1.19ms, separation 0.72ms) player=0.26ms shots+zones=0.00ms level=0.01ms bot=0.06ms
+   67.841 INF [gear] hero_hunter: modular stance=DualWield [arm_hunter_helm_t4, arm_hunter_chest_t4, arm_hunter_gloves_t4, arm_hunter_pants_t4, arm_hunter_boots_t4, wpn_sword1_v3@hand_r, wpn_sword1_v2@hand_l] in 82.1 ms
+   71.879 INF [gear] hero_hunter: modular stance=DualWield [arm_hunter_helm_t4, arm_hunter_chest_t4, arm_hunter_gloves_t4, arm_hunter_pants_t4, arm_hunter_boots_t4, wpn_sword1_v3@hand_r, wpn_sword1_v2@hand_l] in 5.7 ms
+   72.461 INF [perf] fps=59 frame=17.1ms worst=113.0ms slowestProcess=41.8ms area=mire_d2 monsters=149 minions=0 objects=34 nodes=2239 draws=337 prims=475086 vram=3393MB mem=323MB scale=1.00 q=2 errors=0
+   72.464 INF [perf] game code per frame: whole tree=9.50ms | monsters=1.07ms (awake 37: 0.93ms, separation 0.51ms) player=0.30ms shots+zones=0.02ms level=0.02ms bot=0.47ms
+   77.466 INF [perf] fps=60 frame=16.6ms worst=41.0ms slowestProcess=18.1ms area=mire_d2 monsters=140 minions=0 objects=43 nodes=2240 draws=297 prims=249982 vram=3392MB mem=322MB scale=1.00 q=2 errors=0
+   77.468 INF [perf] game code per frame: whole tree=8.56ms | monsters=0.63ms (awake 45: 0.53ms, separation 0.21ms) player=0.25ms shots+zones=0.07ms level=0.01ms bot=0.12ms
+   81.143 INF [gear] hero_astromancer: modular stance=OneHandCaster [helm:none, arm_astromancer_chest_t4, gloves:none, arm_astromancer_pants_t4, arm_astromancer_boots_t4, wpn_wand_v2@hand_r, wpn_focus_v2@hand_l] in 727.6 ms
+   86.287 INF [perf] fps=47 frame=18.5ms worst=250.0ms slowestProcess=18.3ms area=rift~arena:db_abyss_d1 monsters=2 minions=0 objects=3 nodes=710 draws=299 prims=328332 vram=3933MB mem=321MB scale=1.00 q=2 errors=0
+   86.287 INF [perf] game code per frame: whole tree=18.77ms | monsters=0.21ms (awake 13: 0.18ms, separation 0.04ms) player=0.21ms shots+zones=0.03ms level=0.01ms bot=0.04ms
+   92.093 INF [perf] fps=47 frame=17.4ms worst=250.0ms slowestProcess=18.9ms area=rift~arena:db_abyss_d1 monsters=7 minions=0 objects=6 nodes=735 draws=274 prims=296624 vram=4064MB mem=322MB scale=1.00 q=2 errors=0
+   92.095 INF [perf] game code per frame: whole tree=5.47ms | monsters=0.03ms (awake 0: 0.03ms, separation 0.00ms) player=0.15ms shots+zones=0.00ms level=0.01ms bot=0.03ms
+   97.098 INF [perf] fps=60 frame=16.7ms worst=19.0ms slowestProcess=18.6ms area=rift~arena:db_abyss_d1 monsters=1 minions=0 objects=1 nodes=599 draws=120 prims=129979 vram=4060MB mem=320MB scale=1.00 q=2 errors=0
+   97.099 INF [perf] game code per frame: whole tree=1.91ms | monsters=0.01ms (awake 0: 0.00ms, separation 0.00ms) player=0.20ms shots+zones=0.01ms level=0.02ms bot=0.05ms
+  102.620 INF [perf] fps=60 frame=17.6ms worst=250.0ms slowestProcess=18.7ms area=rift~arena:db_abyss_d1 monsters=1 minions=0 objects=1 nodes=631 draws=147 prims=128356 vram=4147MB mem=321MB scale=1.00 q=2 errors=0
+  102.621 INF [perf] game code per frame: whole tree=4.87ms | monsters=0.10ms (awake 3: 0.09ms, separation 0.02ms) player=0.13ms shots+zones=0.04ms level=0.01ms bot=0.02ms
+  107.624 INF [perf] fps=60 frame=16.7ms worst=36.0ms slowestProcess=18.6ms area=rift~arena:db_abyss_d1 monsters=1 minions=0 objects=1 nodes=609 draws=197 prims=167787 vram=4148MB mem=323MB scale=1.00 q=2 errors=0
+  107.625 INF [perf] game code per frame: whole tree=1.97ms | monsters=0.07ms (awake 1: 0.06ms, separation 0.01ms) player=0.14ms shots+zones=0.01ms level=0.01ms bot=0.05ms
+  112.299 INF [gear] hero_pactbinder: modular stance=TwoHandStaff [arm_pactbinder_helm_t4, arm_pactbinder_chest_t4, arm_pactbinder_gloves_t4, arm_pactbinder_pants_t4, arm_pactbinder_boots_t4, wpn_staff_v2@hand_r] in 493.3 ms
+  115.550 INF [perf] fps=60 frame=16.9ms worst=97.0ms slowestProcess=17.9ms area=wastes_boss monsters=60 minions=0 objects=14 nodes=1468 draws=505 prims=987977 vram=4660MB mem=343MB scale=1.00 q=2 errors=0
+  115.551 INF [perf] game code per frame: whole tree=11.54ms | monsters=0.22ms (awake 17: 0.21ms, separation 0.06ms) player=0.13ms shots+zones=0.02ms level=0.02ms bot=0.02ms
+  120.556 INF [perf] fps=60 frame=16.7ms worst=51.0ms slowestProcess=18.0ms area=wastes_boss monsters=68 minions=0 objects=14 nodes=1470 draws=467 prims=1053999 vram=4661MB mem=344MB scale=1.00 q=2 errors=0
+  120.557 INF [perf] game code per frame: whole tree=2.86ms | monsters=0.17ms (awake 20: 0.14ms, separation 0.03ms) player=0.14ms shots+zones=0.03ms level=0.01ms bot=0.02ms
+  125.561 INF [perf] fps=60 frame=16.7ms worst=31.0ms slowestProcess=17.9ms area=wastes_boss monsters=61 minions=0 objects=25 nodes=1568 draws=488 prims=933874 vram=4657MB mem=320MB scale=1.00 q=2 errors=0
+  125.561 INF [perf] game code per frame: whole tree=2.85ms | monsters=0.32ms (awake 25: 0.28ms, separation 0.09ms) player=0.11ms shots+zones=0.02ms level=0.01ms bot=0.01ms
+  130.566 INF [perf] fps=59 frame=16.8ms worst=62.0ms slowestProcess=19.0ms area=wastes_boss monsters=63 minions=0 objects=27 nodes=1590 draws=594 prims=1115249 vram=4657MB mem=321MB scale=1.00 q=2 errors=0
+  130.569 INF [perf] game code per frame: whole tree=3.83ms | monsters=0.48ms (awake 25: 0.45ms, separation 0.09ms) player=0.17ms shots+zones=0.02ms level=0.01ms bot=0.01ms
+  135.572 INF [perf] fps=60 frame=16.7ms worst=35.0ms slowestProcess=22.6ms area=wastes_boss monsters=61 minions=0 objects=30 nodes=1589 draws=508 prims=1052545 vram=4656MB mem=321MB scale=1.00 q=2 errors=0
+  135.575 INF [perf] game code per frame: whole tree=3.61ms | monsters=0.25ms (awake 23: 0.21ms, separation 0.06ms) player=0.19ms shots+zones=0.02ms level=0.01ms bot=0.03ms
+  139.011 INF [gear] hero_emberblade: modular stance=DualWield [arm_emberblade_helm_t4, arm_emberblade_chest_t4, arm_emberblade_gloves_t4, arm_emberblade_pants_t4, arm_emberblade_boots_t4, wpn_axe1_v2@hand_r, wpn_sword1_v2@hand_l] in 269.3 ms
+  142.059 INF [perf] fps=60 frame=17.4ms worst=250.0ms slowestProcess=18.6ms area=rift~arena:rare_crypt_namelessking monsters=8 minions=0 objects=2 nodes=631 draws=277 prims=284200 vram=4986MB mem=320MB scale=1.00 q=2 errors=0
+  142.060 INF [perf] game code per frame: whole tree=6.80ms | monsters=0.11ms (awake 11: 0.10ms, separation 0.03ms) player=0.09ms shots+zones=0.01ms level=0.01ms bot=0.01ms
+  147.067 INF [perf] fps=60 frame=16.7ms worst=26.0ms slowestProcess=25.4ms area=rift~arena:rare_crypt_namelessking monsters=1 minions=0 objects=2 nodes=564 draws=139 prims=167574 vram=4983MB mem=319MB scale=1.00 q=2 errors=0
+  147.068 INF [perf] game code per frame: whole tree=1.06ms | monsters=0.04ms (awake 3: 0.04ms, separation 0.00ms) player=0.07ms shots+zones=0.00ms level=0.01ms bot=0.01ms
+  150.622 INF [gear] hero_emberblade: modular stance=DualWield [arm_emberblade_helm_t4, arm_emberblade_chest_t4, arm_emberblade_gloves_t4, arm_emberblade_pants_t4, arm_emberblade_boots_t4, wpn_axe1_v2@hand_r, wpn_sword1_v2@hand_l] in 2.0 ms
+  152.070 INF [perf] fps=60 frame=16.6ms worst=21.0ms slowestProcess=17.9ms area=rift~arena:rare_crypt_namelessking monsters=4 minions=0 objects=8 nodes=665 draws=233 prims=203418 vram=4987MB mem=322MB scale=1.00 q=2 errors=0
+  152.071 INF [perf] game code per frame: whole tree=1.50ms | monsters=0.10ms (awake 6: 0.10ms, separation 0.01ms) player=0.09ms shots+zones=0.01ms level=0.01ms bot=0.03ms
+  157.074 INF [perf] fps=60 frame=16.7ms worst=25.0ms slowestProcess=25.0ms area=rift~arena:rare_crypt_namelessking monsters=2 minions=0 objects=7 nodes=640 draws=202 prims=252126 vram=4987MB mem=321MB scale=1.00 q=2 errors=0
+  157.075 INF [perf] game code per frame: whole tree=1.34ms | monsters=0.06ms (awake 2: 0.05ms, separation 0.00ms) player=0.08ms shots+zones=0.00ms level=0.01ms bot=0.03ms
+  162.078 INF [perf] fps=60 frame=16.7ms worst=26.0ms slowestProcess=25.6ms area=rift~arena:rare_crypt_namelessking monsters=8 minions=0 objects=19 nodes=796 draws=381 prims=379440 vram=4993MB mem=323MB scale=1.00 q=2 errors=0
+  162.081 INF [perf] game code per frame: whole tree=1.18ms | monsters=0.05ms (awake 4: 0.05ms, separation 0.01ms) player=0.09ms shots+zones=0.00ms level=0.01ms bot=0.00ms
+  167.468 INF [gear] hero_wildsoul: modular stance=OneHandCaster [arm_wildsoul_helm_t4, arm_wildsoul_chest_t4, arm_wildsoul_gloves_t4, arm_wildsoul_pants_t4, arm_wildsoul_boots_t4, wpn_dagger_v2@hand_r, wpn_totem_v2@hand_l] in 632.8 ms
+  169.378 INF [perf] fps=60 frame=16.9ms worst=51.0ms slowestProcess=34.2ms area=wastes_d2 monsters=164 minions=0 objects=32 nodes=2470 draws=716 prims=806185 vram=5318MB mem=337MB scale=1.00 q=2 errors=0
+  169.379 INF [perf] game code per frame: whole tree=10.72ms | monsters=0.59ms (awake 36: 0.56ms, separation 0.37ms) player=0.11ms shots+zones=0.01ms level=0.01ms bot=0.03ms
+  174.393 INF [perf] fps=60 frame=17.2ms worst=33.0ms slowestProcess=32.7ms area=wastes_d2 monsters=141 minions=0 objects=38 nodes=2374 draws=343 prims=372000 vram=5310MB mem=333MB scale=1.00 q=2 errors=0
+  174.394 INF [perf] game code per frame: whole tree=10.27ms | monsters=1.29ms (awake 67: 1.19ms, separation 0.68ms) player=0.25ms shots+zones=0.02ms level=0.01ms bot=0.04ms
+== on2: game_20261121_192122.log
+    8.864 INF [gear] hero_emberblade: modular stance=TwoHandMelee [arm_emberblade_helm_t2, arm_emberblade_chest_t3, arm_emberblade_gloves_t3, arm_emberblade_pants_t4, arm_emberblade_boots_t4, wpn_sword2_v3@hand_r] in 496.0 ms
+   14.512 INF [perf] fps=60 frame=19.0ms worst=209.0ms slowestProcess=18.5ms area=frost_d2 monsters=162 minions=0 objects=55 nodes=2542 draws=329 prims=370466 vram=1497MB mem=318MB scale=1.00 q=2 errors=0
+   14.514 INF [perf] game code per frame: whole tree=31.35ms | monsters=1.16ms (awake 79: 1.03ms, separation 0.52ms) player=0.79ms shots+zones=0.01ms level=0.02ms bot=0.13ms
+   19.514 INF [perf] fps=60 frame=17.6ms worst=171.0ms slowestProcess=18.2ms area=frost_d2 monsters=161 minions=0 objects=63 nodes=2554 draws=328 prims=330026 vram=1515MB mem=319MB scale=1.00 q=2 errors=0
+   19.514 INF [perf] game code per frame: whole tree=6.45ms | monsters=0.68ms (awake 81: 0.63ms, separation 0.23ms) player=0.15ms shots+zones=0.00ms level=0.01ms bot=0.03ms
+   24.518 INF [perf] fps=60 frame=16.7ms worst=28.0ms slowestProcess=18.1ms area=frost_d2 monsters=158 minions=0 objects=64 nodes=2531 draws=252 prims=218733 vram=1514MB mem=310MB scale=1.00 q=2 errors=0
+   24.520 INF [perf] game code per frame: whole tree=4.47ms | monsters=0.47ms (awake 81: 0.43ms, separation 0.10ms) player=0.11ms shots+zones=0.00ms level=0.01ms bot=0.01ms
+   29.524 INF [perf] fps=60 frame=16.7ms worst=19.0ms slowestProcess=17.9ms area=frost_d2 monsters=157 minions=0 objects=53 nodes=2403 draws=170 prims=194697 vram=1513MB mem=311MB scale=1.00 q=2 errors=0
+   29.524 INF [perf] game code per frame: whole tree=3.68ms | monsters=0.27ms (awake 66: 0.22ms, separation 0.00ms) player=0.13ms shots+zones=0.00ms level=0.01ms bot=0.01ms
+   29.952 INF [gear] hero_emberblade: modular stance=TwoHandMelee [arm_emberblade_helm_t2, arm_emberblade_chest_t3, arm_emberblade_gloves_t2, arm_emberblade_pants_t4, arm_emberblade_boots_t4, wpn_sword2_v3@hand_r] in 2.5 ms
+   34.530 INF [perf] fps=60 frame=16.7ms worst=53.0ms slowestProcess=52.8ms area=frost_d2 monsters=154 minions=0 objects=59 nodes=2482 draws=237 prims=256464 vram=1537MB mem=313MB scale=1.00 q=2 errors=0
+   34.531 INF [perf] game code per frame: whole tree=4.30ms | monsters=0.54ms (awake 86: 0.50ms, separation 0.02ms) player=0.11ms shots+zones=0.00ms level=0.01ms bot=0.09ms
+   37.212 INF [gear] hero_lampknight: modular stance=OneHandCaster [arm_lampknight_helm_t3, arm_lampknight_chest_t3, arm_lampknight_gloves_t3, arm_lampknight_pants_t4, arm_lampknight_boots_t2, wpn_mace1_v3@hand_r, wpn_lantern_v3@hand_l] in 448.0 ms
+   41.853 INF [perf] fps=60 frame=17.3ms worst=250.0ms slowestProcess=41.1ms area=rift~arena:rare_crypt_hundredtears monsters=8 minions=0 objects=1 nodes=625 draws=325 prims=294178 vram=2069MB mem=296MB scale=1.00 q=2 errors=0
+   41.854 INF [perf] game code per frame: whole tree=9.80ms | monsters=0.11ms (awake 18: 0.10ms, separation 0.02ms) player=0.18ms shots+zones=0.01ms level=0.01ms bot=0.02ms
+   46.858 INF [perf] fps=60 frame=16.7ms worst=31.0ms slowestProcess=30.9ms area=rift~arena:rare_crypt_hundredtears monsters=5 minions=0 objects=10 nodes=687 draws=240 prims=306355 vram=2083MB mem=297MB scale=1.00 q=2 errors=0
+   46.859 INF [perf] game code per frame: whole tree=1.10ms | monsters=0.03ms (awake 2: 0.02ms, separation 0.00ms) player=0.06ms shots+zones=0.00ms level=0.01ms bot=0.01ms
+   51.863 INF [perf] fps=60 frame=16.7ms worst=18.0ms slowestProcess=18.1ms area=rift~arena:rare_crypt_hundredtears monsters=7 minions=0 objects=14 nodes=731 draws=310 prims=329373 vram=2089MB mem=298MB scale=1.00 q=2 errors=0
+   51.864 INF [perf] game code per frame: whole tree=0.97ms | monsters=0.03ms (awake 2: 0.03ms, separation 0.00ms) player=0.07ms shots+zones=0.00ms level=0.01ms bot=0.01ms
+   56.868 INF [perf] fps=60 frame=16.7ms worst=19.0ms slowestProcess=17.5ms area=rift~arena:rare_crypt_hundredtears monsters=11 minions=0 objects=13 nodes=763 draws=348 prims=306224 vram=2091MB mem=299MB scale=1.00 q=2 errors=0
+   56.870 INF [perf] game code per frame: whole tree=1.13ms | monsters=0.05ms (awake 3: 0.04ms, separation 0.00ms) player=0.05ms shots+zones=0.01ms level=0.01ms bot=0.02ms
+   61.873 INF [perf] fps=60 frame=16.7ms worst=19.0ms slowestProcess=17.4ms area=rift~arena:rare_crypt_hundredtears monsters=1 minions=0 objects=9 nodes=659 draws=199 prims=195571 vram=2086MB mem=297MB scale=1.00 q=2 errors=0
+   61.874 INF [perf] game code per frame: whole tree=1.20ms | monsters=0.05ms (awake 5: 0.04ms, separation 0.00ms) player=0.06ms shots+zones=0.00ms level=0.01ms bot=0.02ms
+   67.750 INF [gear] hero_forgebody: modular stance=Fists [arm_forgebody_helm_t4, arm_forgebody_chest_t4, arm_forgebody_gloves_t4, arm_forgebody_pants_t4, arm_forgebody_boots_t4, wpn_fist_v3@hand_r, wpn_fist_v3@hand_l] in 376.3 ms
+   70.784 INF [perf] fps=60 frame=16.8ms worst=56.0ms slowestProcess=20.9ms area=frost monsters=405 minions=0 objects=26 nodes=5462 draws=413 prims=541242 vram=2901MB mem=366MB scale=1.00 q=2 errors=0
+   70.785 INF [perf] game code per frame: whole tree=17.58ms | monsters=1.07ms (awake 31: 0.94ms, separation 0.76ms) player=0.20ms shots+zones=0.00ms level=0.01ms bot=0.02ms
+   75.788 INF [perf] fps=60 frame=16.7ms worst=19.0ms slowestProcess=18.1ms area=frost monsters=395 minions=0 objects=18 nodes=5225 draws=200 prims=263923 vram=2895MB mem=362MB scale=1.00 q=2 errors=0
+   75.791 INF [perf] game code per frame: whole tree=6.76ms | monsters=0.53ms (awake 32: 0.29ms, separation 0.13ms) player=0.26ms shots+zones=0.00ms level=0.01ms bot=0.03ms
+   80.792 INF [perf] fps=60 frame=16.8ms worst=23.0ms slowestProcess=18.0ms area=frost monsters=389 minions=0 objects=26 nodes=5282 draws=254 prims=352334 vram=2902MB mem=367MB scale=1.00 q=2 errors=0
+   80.794 INF [perf] game code per frame: whole tree=8.09ms | monsters=0.72ms (awake 58: 0.48ms, separation 0.23ms) player=0.29ms shots+zones=0.00ms level=0.01ms bot=0.04ms
+   85.797 INF [perf] fps=60 frame=16.7ms worst=24.0ms slowestProcess=24.0ms area=frost monsters=389 minions=0 objects=26 nodes=5276 draws=326 prims=392632 vram=2904MB mem=364MB scale=1.00 q=2 errors=0
+   85.798 INF [perf] game code per frame: whole tree=8.29ms | monsters=1.30ms (awake 113: 1.17ms, separation 0.72ms) player=0.18ms shots+zones=0.02ms level=0.01ms bot=0.03ms
+   90.801 INF [perf] fps=60 frame=16.7ms worst=22.0ms slowestProcess=18.8ms area=frost monsters=389 minions=0 objects=26 nodes=5271 draws=297 prims=390490 vram=2904MB mem=364MB scale=1.00 q=2 errors=0
+   90.804 INF [perf] game code per frame: whole tree=8.75ms | monsters=1.34ms (awake 114: 1.21ms, separation 0.78ms) player=0.19ms shots+zones=0.02ms level=0.01ms bot=0.03ms
+  100.003 INF [gear] hero_pactbinder: modular stance=TwoHandStaff [arm_pactbinder_helm_t4, arm_pactbinder_chest_t4, arm_pactbinder_gloves_t4, arm_pactbinder_pants_t4, arm_pactbinder_boots_t4, wpn_staff_v3@hand_r] in 431.9 ms
+  102.416 INF [perf] fps=60 frame=17.4ms worst=250.0ms slowestProcess=18.4ms area=town monsters=14 minions=1 objects=17 nodes=1324 draws=1394 prims=2085743 vram=4282MB mem=335MB scale=1.00 q=2 errors=0
+  102.416 INF [perf] game code per frame: whole tree=28.82ms | monsters=0.87ms (awake 76: 0.80ms, separation 0.47ms) player=1.51ms shots+zones=0.01ms level=0.02ms bot=0.03ms
+  107.419 INF [perf] fps=60 frame=16.7ms worst=26.0ms slowestProcess=25.7ms area=town monsters=20 minions=1 objects=26 nodes=1426 draws=1286 prims=1940669 vram=4282MB mem=336MB scale=1.00 q=2 errors=0
+  107.422 INF [perf] game code per frame: whole tree=2.84ms | monsters=0.25ms (awake 20: 0.24ms, separation 0.07ms) player=0.09ms shots+zones=0.01ms level=0.02ms bot=0.00ms
+  112.424 INF [perf] fps=60 frame=16.7ms worst=30.0ms slowestProcess=18.1ms area=town monsters=6 minions=1 objects=30 nodes=1422 draws=906 prims=1067580 vram=4097MB mem=325MB scale=1.00 q=2 errors=0
+  112.425 INF [perf] game code per frame: whole tree=3.14ms | monsters=0.23ms (awake 16: 0.22ms, separation 0.06ms) player=0.10ms shots+zones=0.00ms level=0.02ms bot=0.01ms
+  117.429 INF [perf] fps=60 frame=16.7ms worst=20.0ms slowestProcess=18.0ms area=town monsters=3 minions=1 objects=30 nodes=1302 draws=666 prims=711162 vram=4090MB mem=323MB scale=1.00 q=2 errors=0
+  117.431 INF [perf] game code per frame: whole tree=1.70ms | monsters=0.07ms (awake 5: 0.06ms, separation 0.00ms) player=0.06ms shots+zones=0.01ms level=0.02ms bot=0.01ms
+  122.435 INF [perf] fps=60 frame=16.7ms worst=23.0ms slowestProcess=18.8ms area=town monsters=3 minions=0 objects=44 nodes=1461 draws=806 prims=767204 vram=4104MB mem=326MB scale=1.00 q=2 errors=0
+  122.436 INF [perf] game code per frame: whole tree=2.36ms | monsters=0.10ms (awake 6: 0.09ms, separation 0.01ms) player=0.09ms shots+zones=0.02ms level=0.02ms bot=0.02ms

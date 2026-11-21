@@ -29,7 +29,7 @@ public sealed partial class SaveData
     public List<int> Talents = new();                  // paragon board nodes
     public Dictionary<string, int> Glyphs = new();     // glyph id → level
     public Dictionary<string, string> Sockets = new(); // board socket → glyph id
-    public Item[] Equip = new Item[9];
+    public Item[] Equip = new Item[SaveSystem.EquipSlots];      // by EquipSlot; 0 = MainHand (the old Weapon), 9 = OffHand
     public List<Item> Bag = new();
     public List<Item> Stash = new();
     public Dictionary<string, float> Codex = new();    // aspect id → best roll found
@@ -122,16 +122,56 @@ public static class SaveSystem
         d.Skills ??= new(); d.Ups ??= new(); d.Talents ??= new(); d.Bag ??= new(); d.Stash ??= new(); d.Codex ??= new();
         d.Quests ??= new(); d.Waypoints ??= new() { "town" }; d.Flags ??= new(); d.Glyphs ??= new(); d.Sockets ??= new();
         d.Enchants ??= new(); d.Renown ??= new();
+        d.GearSets ??= new(); d.Discards ??= new(); d.Junk ??= new();      // modular gear: gear sets and bag marks (absent before 0.4)
         d.Fog ??= new();
         if (d.Resume != null && (string.IsNullOrEmpty(d.Resume.Area) || d.Resume.Area != d.Area)) d.Resume = null;   // not where the save says the hero is: wake as before
         if (d.Resume != null) { d.Resume.Cds ??= new(); d.Resume.DeadMons ??= new(); d.Resume.Spent ??= new(); d.Resume.Loot ??= new(); d.Resume.Gold ??= new(); d.Resume.Shards ??= new(); d.Resume.Chests ??= new(); d.Resume.Loot.RemoveAll(l => l == null || l.It == null); }
         if (d.Bar == null || d.Bar.Length != 6) d.Bar = new string[6];
-        if (d.Equip == null || d.Equip.Length != 9) { var e = new Item[9]; if (d.Equip != null) Array.Copy(d.Equip, e, Math.Min(9, d.Equip.Length)); d.Equip = e; }
+        if (d.Equip == null || d.Equip.Length != EquipSlots) { var e = new Item[EquipSlots]; if (d.Equip != null) Array.Copy(d.Equip, e, Math.Min(EquipSlots, d.Equip.Length)); d.Equip = e; }
         d.Level = Math.Clamp(d.Level, 1, Balance.LevelCap);
         d.Bag.RemoveAll(i => i == null); d.Stash.RemoveAll(i => i == null);
-        foreach (var it in d.Bag.Concat(d.Stash).Concat(d.Equip.Where(i => i != null))) { it.Affixes ??= new(); it.Gems ??= new(); }
+        foreach (var it in d.Bag.Concat(d.Stash).Concat(d.Equip.Where(i => i != null))) { it.Affixes ??= new(); it.Gems ??= new(); it.Implicits ??= new(); }
+        MigrateGear(d);
+    }
+
+    /// <summary>Equipment slots in a save: 9 up to 0.3 (the old Weapon slot is index 0 = MainHand), 10 since (OffHand appended).</summary>
+    public const int EquipSlots = 10;
+
+    /// <summary>
+    /// 0.1–0.3 → modular gear (idempotent). Every weapon without a base gets its class's legacy base with the same damage
+    /// per second (ItemDb.Migrate); armour, jewellery and gems get their base and look ids. When the worn weapon was the
+    /// lamp knight's sword-and-shield, the pactbinder's grimoire or the forgebody's pair of fists, a plain companion piece
+    /// of the same power goes into the empty off hand so the hero keeps what the old weapon showed.
+    /// </summary>
+    public static int MigrateGear(SaveData d)
+    {
+        int n = 0;
+        var main = d.Equip[(int)EquipSlot.MainHand];
+        bool mainWasOld = main != null && main.Kind == ItemKind.Weapon && ItemDb.BaseOf(main.Base) == null;
+        foreach (var it in d.Bag.Concat(d.Stash).Concat(d.Equip.Where(i => i != null))) if (ItemDb.Migrate(it, d.Class)) n++;
+        if (d.Resume?.Loot != null) foreach (var l in d.Resume.Loot) if (ItemDb.Migrate(l.It, d.Class)) n++;
+        // a main-hand item that cannot be there any more (an off-hand piece) moves to the off hand
+        if (main != null && main.Kind == ItemKind.OffHand && d.Equip[(int)EquipSlot.OffHand] == null) { d.Equip[(int)EquipSlot.OffHand] = main; d.Equip[(int)EquipSlot.MainHand] = null; }
+        if (mainWasOld && d.Equip[(int)EquipSlot.OffHand] == null && main.WeaponClass < 0)
+        {
+            var comp = ItemDb.LegacyCompanion(main, d.Class);
+            if (comp != null) { d.Equip[(int)EquipSlot.OffHand] = comp; n++; }
+        }
+        if (n > 0) Log.Info("save", $"gear migration: {n} item(s) brought to the modular-gear format for {d.Name} ({Names.Class(d.Class)}); main hand {main?.Base}, off hand {d.Equip[(int)EquipSlot.OffHand]?.Base}");
+        return n;
         if (string.IsNullOrEmpty(d.Area)) d.Area = "town";
     }
+
+    /// <summary>A save read from JSON text exactly as a slot is loaded (repair and gear migration included); null when unreadable. Touches no file.</summary>
+    public static SaveData FromJson(string json)
+    {
+        var d = JsonSerializer.Deserialize<SaveData>(json, Opt);
+        if (d != null) Repair(d);
+        return d;
+    }
+
+    /// <summary>JSON text of a save as a slot would hold it (no file written).</summary>
+    public static string ToJson(SaveData d) => JsonSerializer.Serialize(d, Opt);
 
     public static List<SlotInfo> List()
     {
@@ -193,6 +233,8 @@ public sealed class Settings
     public float Brightness = 1f;       // 亮度 0.8 … 1.3: exposure of the 3D picture on top of the level grading (applied by Gfx.TuneEnvironment); 1 = the dark look the game is graded for
     public int UiTextScale = 0;         // 介面文字大小：0 標準 (×1.0), 1 大 (×1.15), 2 特大 (×1.3) — applied by UiTheme.ApplyTextScale
     public bool SystemCursor = false;   // 滑鼠游標：false 遊戲 (the forged cursors, Cursors.cs), true 系統 (the operating system's own pointer)
+    public int GearWeight = 0;          // 裝備比較：0 平衡 (50/50), 1 偏重攻擊 (75/25), 2 偏重防禦 (25/75) — GearEval
+    public string[] SetKeys = { "F1", "F2", "F3", "F4", "F5", "F6", "E" };   // 裝備組 1–6 and 快速切換 (GearSets; Godot Key names)
 
     private static readonly JsonSerializerOptions Opt = new() { IncludeFields = true, WriteIndented = true };
     private static string FilePath => ProjectSettings.GlobalizePath("user://settings.json");

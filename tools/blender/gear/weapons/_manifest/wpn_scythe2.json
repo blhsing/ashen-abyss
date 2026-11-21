@@ -1,0 +1,109 @@
+{
+ "base": "scythe2",
+ "prefix": "wpn",
+ "atlas_px": 1024,
+ "area_m2": 1.191,
+ "notes": "",
+ "entries": [
+  {
+   "id": "wpn_scythe2_v1",
+   "kind": "weapon",
+   "base": "scythe2",
+   "file": "res://assets/gear/weapons/wpn_scythe2_v1.glb",
+   "mount": "hand_r",
+   "grip2": [
+    0.0,
+    0.0,
+    -0.42
+   ],
+   "length": 1.79,
+   "variant": 1,
+   "hands": 2,
+   "grip": "both",
+   "tris": 3290,
+   "emissive": false,
+   "bbox": [
+    [
+     -0.0369,
+     -0.0218,
+     -0.8607
+    ],
+    [
+     0.64,
+     0.0219,
+     0.9294
+    ]
+   ],
+   "textures": "wpn_scythe2",
+   "atlas_px": 1024,
+   "hint": "long weapon: the hero scripts hold staves with charlib grip(tilt=46) @ R('X', 30) (kit_cst.staff_grip) so they stand upright"
+  },
+  {
+   "id": "wpn_scythe2_v2",
+   "kind": "weapon",
+   "base": "scythe2",
+   "file": "res://assets/gear/weapons/wpn_scythe2_v2.glb",
+   "mount": "hand_r",
+   "grip2": [
+    0.0,
+    0.0,
+    -0.42
+   ],
+   "length": 1.887,
+   "variant": 2,
+   "hands": 2,
+   "grip": "both",
+   "tris": 3296,
+   "emissive": false,
+   "bbox": [
+    [
+     -0.0986,
+     -0.0224,
+     -0.905
+    ],
+    [
+     0.64,
+     0.0224,
+     0.9819
+    ]
+   ],
+   "textures": "wpn_scythe2",
+   "atlas_px": 1024,
+   "hint": "long weapon: the hero scripts hold staves with charlib grip(tilt=46) @ R('X', 30) (kit_cst.staff_grip) so they stand upright"
+  },
+  {
+   "id": "wpn_scythe2_v3",
+   "kind": "weapon",
+   "base": "scythe2",
+   "file": "res://assets/gear/weapons/wpn_scythe2_v3.glb",
+   "mount": "hand_r",
+   "grip2": [
+    0.0,
+    0.0,
+    -0.42
+   ],
+   "length": 2.022,
+   "variant": 3,
+   "hands": 2,
+   "grip": "both",
+   "tris": 5646,
+   "emissive": true,
+   "bbox": [
+    [
+     -0.1335,
+     -0.0497,
+     -0.9602
+    ],
+    [
+     0.748,
+     0.0497,
+     1.0622
+    ]
+   ],
+   "textures": "wpn_scythe2",
+   "atlas_px": 1024,
+   "hint": "long weapon: the hero scripts hold staves with charlib grip(tilt=46) @ R('X', 30) (kit_cst.staff_grip) so they stand upright"
+  }
+ ],
+ "built": "2026-11-21 20:26:25"
+}

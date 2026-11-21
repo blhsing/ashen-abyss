@@ -1,0 +1,49 @@
+exit= seconds=135
+log: C:\Users\blhsi\AppData\Roaming\AshenAbyss\logs\game_20261121_191444.log  lines=1065  ERR=0  WRN=1
+--- distinct warnings ---
+   1 x [icons] icon 'gems' has no raster art: vector fallback
+--- last lines ---
+  129.228 INF [game] quitting
+  129.230 INF [save] slot 94 saved: ??? lv30 ???? area=town bytes=6689
+  129.231 INF [save] save reason=quit slot=94 ok=True area=town playtime=3s
+  129.235 INF [anim] anim-check: hero moved 0.0s - 0.0s without a locomotion clip, 0.0s with frozen legs; hero stood 66.6s - 0.0s in a run clip or none; monsters moved 0.0s - 0.0s without a locomotion clip, 0.0s with frozen legs; models without a skeleton or a ƒ?Ý
+  129.235 INF [input] keyboard hook saw 0 key events, 0 of them PrtSc
+  129.236 INF [boot] shutdown errors=0 warnings=1 uptime=129s
+--- engine output: distinct problem lines (8 total) ---
+   1 x ERROR: Pages in use exist at exit in PagedAllocator: N33RendererSceneRenderImplementation22RenderForwardClustered32GeometryInstanceForwardClusteredE
+   1 x ERROR: Pages in use exist at exit in PagedAllocator: N33RendererSceneRenderImplementation22RenderForwardClustered32GeometryInstanceSurfaceDataCacheE
+   1 x at: ~ShaderRD (servers/rendering/renderer_rd/shader_rd.cpp:1236)
+   1 x ERROR: 2 shaders of type SceneForwardClusteredShaderRD were never freed
+   1 x ERROR: 5 RID allocations of type 'N10RendererRD15MaterialStorage8MaterialE' were leaked at exit.
+   1 x ERROR: 4 RID allocations of type 'N10RendererRD11MeshStorage4MeshE' were leaked at exit.
+   1 x ERROR: 4 RID allocations of type 'N17RendererSceneCull8InstanceE' were leaked at exit.
+   1 x ERROR: 2 RID allocations of type 'N10RendererRD15MaterialStorage6ShaderE' were leaked at exit.
+LOG /c/Users/blhsi/AppData/Roaming/AshenAbyss/logs/game_20261121_191444.log
+   22.514 INF [suite] gear shot emberblade_bare: modular stance=Unarmed [] idle=Idle_Loop
+   25.016 INF [suite] gear shot emberblade_partial: modular stance=TwoHandMelee [arm_emberblade_chest_t4, arm_emberblade_pants_t4, wpn_sword2_v1@hand_r] idle=Sword_Idle
+   27.385 INF [suite] gear shot emberblade_full: modular stance=TwoHandMelee [arm_emberblade_helm_t4, arm_emberblade_chest_t4, arm_emberblade_gloves_t4, arm_emberblade_pants_t4, arm_emberblade_boots_t4, wpn_sword2_v3@hand_r] idle=Sword_Idle
+   34.710 INF [suite] gear shot astromancer_bare: modular stance=Unarmed [] idle=Idle_Loop
+   37.078 INF [suite] gear shot astromancer_partial: modular stance=TwoHandStaff [arm_astromancer_chest_t4, arm_astromancer_pants_t4, wpn_staff_v1@hand_r] idle=Idle_Loop
+   39.465 INF [suite] gear shot astromancer_full: modular stance=TwoHandStaff [helm:none, arm_astromancer_chest_t4, gloves:none, arm_astromancer_pants_t4, arm_astromancer_boots_t4, wpn_staff_v3@hand_r] idle=Idle_Loop
+   46.793 INF [suite] gear shot hunter_bare: modular stance=Unarmed [] idle=Idle_Loop
+   49.178 INF [suite] gear shot hunter_partial: modular stance=Ranged [arm_hunter_chest_t4, arm_hunter_pants_t4, wpn_crossbow_v1@hand_r] idle=Pistol_Idle_Loop
+   51.580 INF [suite] gear shot hunter_full: modular stance=Ranged [arm_hunter_helm_t4, arm_hunter_chest_t4, arm_hunter_gloves_t4, arm_hunter_pants_t4, arm_hunter_boots_t4, wpn_crossbow_v3@hand_r] idle=Pistol_Idle_Loop
+   58.955 INF [suite] gear shot soulbinder_bare: modular stance=Unarmed [] idle=Idle_Loop
+   61.342 INF [suite] gear shot soulbinder_partial: modular stance=TwoHandStaff [arm_soulbinder_chest_t4, arm_soulbinder_pants_t4, wpn_scythe2_v1@hand_r] idle=Idle_Loop
+   63.726 INF [suite] gear shot soulbinder_full: modular stance=TwoHandStaff [arm_soulbinder_helm_t4, arm_soulbinder_chest_t4, arm_soulbinder_gloves_t4, arm_soulbinder_pants_t4, arm_soulbinder_boots_t4, wpn_scythe2_v3@hand_r] idle=Idle_Loop
+   71.067 INF [suite] gear shot wildsoul_bare: modular stance=Unarmed [] idle=Idle_Loop
+   73.453 INF [suite] gear shot wildsoul_partial: modular stance=TwoHandMelee [arm_wildsoul_chest_t4, arm_wildsoul_pants_t4, wpn_mace2_v1@hand_r] idle=Sword_Idle
+   75.838 INF [suite] gear shot wildsoul_full: modular stance=TwoHandMelee [arm_wildsoul_helm_t4, arm_wildsoul_chest_t4, arm_wildsoul_gloves_t4, arm_wildsoul_pants_t4, arm_wildsoul_boots_t4, wpn_mace2_v3@hand_r] idle=Sword_Idle
+   83.164 INF [suite] gear shot forgebody_bare: modular stance=Unarmed [] idle=Idle_Loop
+   85.549 INF [suite] gear shot forgebody_partial: modular stance=Fists [arm_forgebody_chest_t4, arm_forgebody_pants_t4, wpn_fist_v1@hand_r] idle=Idle_Loop
+   87.967 INF [suite] gear shot forgebody_full: modular stance=Fists [arm_forgebody_helm_t4, arm_forgebody_chest_t4, arm_forgebody_gloves_t4, arm_forgebody_pants_t4, arm_forgebody_boots_t4, wpn_fist_v3@hand_r, wpn_fist_v3@hand_l] idle=Idle_Loop
+   95.290 INF [suite] gear shot lampknight_bare: modular stance=Unarmed [] idle=Idle_Loop
+   97.710 INF [suite] gear shot lampknight_partial: modular stance=OneHand [arm_lampknight_chest_t2, arm_lampknight_pants_t2, wpn_sword1_v1@hand_r] idle=Sword_Idle
+  100.096 INF [suite] gear shot lampknight_full: modular stance=OneHandShield [arm_lampknight_helm_t4, arm_lampknight_chest_t4, arm_lampknight_gloves_t4, arm_lampknight_pants_t4, arm_lampknight_boots_t4, wpn_sword1_v3@hand_r, wpn_shield_v3@forearm_l] idle=Idle
+  107.453 INF [suite] gear shot pactbinder_bare: modular stance=Unarmed [] idle=Idle_Loop
+  109.856 INF [suite] gear shot pactbinder_partial: modular stance=OneHandCaster [arm_pactbinder_chest_t4, arm_pactbinder_pants_t4, wpn_wand_v1@hand_r] idle=Idle_Loop
+  112.258 INF [suite] gear shot pactbinder_full: modular stance=OneHandCaster [arm_pactbinder_helm_t4, arm_pactbinder_chest_t4, arm_pactbinder_gloves_t4, arm_pactbinder_pants_t4, arm_pactbinder_boots_t4, wpn_wand_v3@hand_r, wpn_grimoire_v3@hand_l] idle=Idle_Lo
+  125.356 INF [suite] gear loot: 9 items dropped, 9 shown as their own 3D model
+  129.225 INF [suite] gear perf: 24 re-dresses, worst 3.1 ms (item generation included); vram 4826 â†’ 4858 MB; meshes on the hero 1 report modular stance=OneHandShield [arm_lampknight_chest_t4, arm_lampknight_gloves_t4, wpn_mace1_v3@hand_r, wpn_shield_v3@fore
+  129.227 INF [suite] DONE suite=gear pass=86 fail=0 errors=0 warnings=1
+ALLDONE

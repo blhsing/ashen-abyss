@@ -1470,56 +1470,56 @@ public static class MenuKit
     {
         new()
         {
-            Role = "重甲近戰 · 巨劍", Weapon = "巨劍", Difficulty = 1, Flourish = "Sword_Attack",
+            Role = "重甲近戰 · 巨劍", Weapon = "巨劍、巨斧、巨錘、長柄刀，或雙持單手武器", Difficulty = 1, Flourish = "Sword_Attack",
             ResourceNote = "攻擊累積，脫離戰鬥後逐漸消散。",
             DifficultyNote = "皮厚、直接、容錯高。適合初次踏入瑟蘭的持燼者。",
             Suggestions = new[] { "卡倫", "布蕾妲", "鐸恩", "瑟琳" },
         },
         new()
         {
-            Role = "遠程施法 · 火、霜、雷", Weapon = "法杖", Difficulty = 2, Flourish = "Spell_Simple_Shoot",
+            Role = "遠程施法 · 火、霜、雷", Weapon = "法杖，或魔杖、匕首、權杖配法器", Difficulty = 2, Flourish = "Spell_Simple_Shoot",
             ResourceNote = "隨時間穩定恢復。",
             DifficultyNote = "火力驚人但身軀脆弱，需要拿捏距離與冷卻。",
             Suggestions = new[] { "諾薇", "艾恩", "瑟菲爾", "歐琳" },
         },
         new()
         {
-            Role = "游擊射手 · 手弩與短刃", Weapon = "手弩與短刃", Difficulty = 2, Flourish = "Pistol_Shoot",
+            Role = "游擊射手 · 弓弩與短刃", Weapon = "長弓、弩，或雙持劍與匕首", Difficulty = 2, Flourish = "Pistol_Shoot",
             ResourceNote = "恢復迅速；命中累積連擊點，用以強化殺招。",
             DifficultyNote = "仰賴走位與連擊點的節奏，停下腳步就是破綻。",
             Suggestions = new[] { "凱絲", "洛珂", "緹雅", "渡鴉" },
         },
         new()
         {
-            Role = "召喚 · 骸骨僕從與暗影", Weapon = "鐮杖", Difficulty = 1, Flourish = "Spell_Simple_Shoot",
+            Role = "召喚 · 骸骨僕從與暗影", Weapon = "巨鐮、巨劍，或單手武器配盾或法器", Difficulty = 1, Flourish = "Spell_Simple_Shoot",
             ResourceNote = "緩慢恢復；倒下的敵人留下殘魂，可供汲取與引爆。",
             DifficultyNote = "僕從為你擋下刀刃，讓你從容施咒。",
             Suggestions = new[] { "墨瑞", "希妲", "薩菈", "骨語者" },
         },
         new()
         {
-            Role = "蛻形 · 熊靈、狼靈與風暴", Weapon = "圖騰戰棍", Difficulty = 2, Flourish = "Melee_Hook",
+            Role = "蛻形 · 熊靈、狼靈與風暴", Weapon = "法杖、巨錘、巨斧，或單手武器配圖騰", Difficulty = 2, Flourish = "Melee_Hook",
             ResourceNote = "以基本攻擊累積，用於蛻形後的重擊。",
             DifficultyNote = "在熊靈、狼靈與人形之間切換，需要熟悉各形態的時機。",
             Suggestions = new[] { "烏恩", "苔莎", "柯爾", "白蹄" },
         },
         new()
         {
-            Role = "徒手武者 · 拳、掌與氣焰", Weapon = "拳套", Difficulty = 3, Flourish = "Punch_Cross",
+            Role = "拳刃武者 · 拳、掌與氣焰", Weapon = "雙持拳刃，或巨錘、巨斧", Difficulty = 3, Flourish = "Punch_Cross",
             ResourceNote = "以拳腳累積，再一口氣宣洩。",
             DifficultyNote = "貼身搏擊、出手極快——沒有兵刃，也沒有退路。",
             Suggestions = new[] { "鐵嵐", "赫岩", "拓", "燎" },
         },
         new()
         {
-            Role = "劍盾聖衛 · 光環與屏障", Weapon = "長劍與盾", Difficulty = 1, Flourish = "Sword_Block",
+            Role = "劍盾聖衛 · 光環與屏障", Weapon = "劍、錘、連枷配盾或燈，或雙手巨劍、巨錘、長柄刀", Difficulty = 1, Flourish = "Sword_Block",
             ResourceNote = "以劍盾交擊累積，化為燼光庇護與審判。",
             DifficultyNote = "屏障與治療兼備，穩紮穩打。",
             Suggestions = new[] { "葛蕾", "羅恩", "伊芙", "守夜人" },
         },
         new()
         {
-            Role = "契約術士 · 燼魔與咒焰", Weapon = "魔杖與魔典", Difficulty = 3, Flourish = "Spell_Simple_Shoot",
+            Role = "契約術士 · 燼魔與咒焰", Weapon = "魔杖、匕首、權杖配魔典或法器，或法杖、巨鐮", Difficulty = 3, Flourish = "Spell_Simple_Shoot",
             ResourceNote = "隨時間恢復；施法累積契印，用以號令契約魔。",
             DifficultyNote = "同時經營咒力與契印，還得指揮契約魔的位置。",
             Suggestions = new[] { "維克", "莎緹", "厄珞", "燼語" },

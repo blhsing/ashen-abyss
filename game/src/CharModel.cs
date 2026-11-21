@@ -131,6 +131,9 @@ public partial class CharModel : Node3D
 
     private PackedScene Resolve()
     {
+        // a hero with a base body is assembled from it and its gear (GearVisual.cs); otherwise today's baked hero
+        var modular = ResolveModular();
+        if (modular != null) return modular;
         var scene = Try(ModelId);
         if (scene != null) return scene;
         IsStandIn = true;
@@ -161,6 +164,7 @@ public partial class CharModel : Node3D
         _inst = scene.Instantiate<Node3D>();
         AddChild(_inst);
         Skeleton = FindSkeleton(_inst);
+        PrepareModular();
         // a creature on its own rig brings its own clips (Idle, Walk, Run, Attack1, Attack2, Hit, Death, Spawn)
         if (!IsPlaceholder && Bestiary.Live) _clips = OwnClips(FileId, _inst, Skeleton);
         foreach (var mi in Walk(_inst).OfType<MeshInstance3D>())
@@ -667,6 +671,7 @@ public partial class CharModel : Node3D
         _rim = c;
         float k = ModelId != null && ModelId.StartsWith("hero_", StringComparison.Ordinal) ? 0.25f : 0.8f;
         SetInst(PRim, new Vector3(c.R * k, c.G * k, c.B * k));
+        ApplyWeaponGlow();
     }
     public void SetFrozen(float f) { if (Mathf.Abs(_frozen - f) > 0.01f) { _frozen = f; SetInst(PFrozen, f); } }
 
@@ -685,13 +690,13 @@ public partial class CharModel : Node3D
 
     public void SetWeaponTier(int tier)
     {
-        if (_weapons.Count == 0) return;
+        if (_weapons.Count == 0 || Gear != null) return;       // a hero showing its gear (SetGear) picks its own weapon meshes
         bool any = _weapons.Any(w => w.Name.ToString().StartsWith($"wpn_{tier}"));
         if (!any) tier = 1;
         foreach (var w in _weapons) w.Visible = w.Name.ToString().StartsWith($"wpn_{tier}");
     }
 
-    public void ShowWeapons(bool show) { if (!show) foreach (var w in _weapons) w.Visible = false; }
+    public void ShowWeapons(bool show) { if (!show) { foreach (var w in _weapons) w.Visible = false; ShowGearWeapons(false); } }
 
     /// <summary>World position of a bone (e.g. the right hand) for effects; falls back to chest height.</summary>
     public Vector3 BonePos(string bone)
@@ -1198,11 +1203,12 @@ public partial class CharModel : Node3D
     }
 
     // only the hit flash and the ash dissolve need per-frame work; the model sleeps otherwise
-    public override void _Ready() => SetProcess(_flash > 0f || _dissolving || _restoreIn > 0f);
+    public override void _Ready() => SetProcess(_flash > 0f || _dissolving || _restoreIn > 0f || GearBusy);
 
     public override void _Process(double delta)
     {
         float dt = (float)delta;
+        if (GearBusy) TickGear();            // a new loadout waiting for its model files (GearVisual.cs)
         if (_flash > 0f)
         {
             _flash = Mathf.Max(0f, _flash - dt * 13f);        // about 75 ms from full
@@ -1218,6 +1224,6 @@ public partial class CharModel : Node3D
             _restoreIn -= dt;
             if (_restoreIn <= 0f && Anim != null && IsInstanceValid(Anim)) Anim.SpeedScale = _restoreRate;
         }
-        if (_flash <= 0f && !(_dissolving && _dissolve < 1f) && _restoreIn <= 0f) SetProcess(false);
+        if (_flash <= 0f && !(_dissolving && _dissolve < 1f) && _restoreIn <= 0f && !GearBusy) SetProcess(false);
     }
 }

@@ -1,0 +1,18 @@
+18:52:50 hunter wastes_boss lv5
+   85.908 INF [pilot] TEST FIGHT boss=boss_gravedigger area=wastes_boss killed=True secs=131 deaths=0 heroLevel=5 threats=82 dodged=82 taken=0 dmgTelegraphed=0 dmgOther=208 life=495
+18:58:24 hunter frost_boss lv10
+   91.664 INF [pilot] TEST FIGHT boss=boss_rimelord area=frost_boss killed=True secs=134 deaths=0 heroLevel=10 threats=90 dodged=87 taken=3 dmgTelegraphed=95 dmgOther=107 life=578
+19:04:37 hunter crypt_boss lv11
+  131.270 INF [pilot] TEST RESULT mode=boss class=hunter end=boss killed t=249s level=12 deaths=0 area=crypt_boss campaignDone=False bossesKilled=1 telegraphed threats=85 dodged=85 taken=0 (boss 69/69/0) dmgTelegraphed=0 otherHits=20 dmgOther=504 dodgeWalks=159 rolls=15 defensives=0
+19:08:05 hunter mire_boss lv13
+  181.403 INF [pilot] TEST RESULT mode=boss class=hunter end=boss killed t=351s level=14 deaths=0 area=mire_boss campaignDone=False bossesKilled=1 telegraphed threats=118 dodged=115 taken=3 (boss 107/104/3) dmgTelegraphed=114 otherHits=274 dmgOther=986 dodgeWalks=308 rolls=29 defensives=0
+19:13:57 hunter sands_boss lv28
+  162.535 INF [pilot] TEST FIGHT boss=boss_sand_tyrant area=sands_boss killed=True secs=185 deaths=0 heroLevel=29 threats=67 dodged=67 taken=0 dmgTelegraphed=0 dmgOther=0 life=1422
+19:20:19 hunter sanctum_boss lv35
+  184.916 INF [pilot] TEST RESULT mode=boss class=hunter end=boss killed t=357s level=36 deaths=0 area=sanctum_boss campaignDone=False bossesKilled=1 telegraphed threats=129 dodged=128 taken=1 (boss 116/115/1) dmgTelegraphed=55 otherHits=29 dmgOther=2312 dodgeWalks=404 rolls=29 defensives=6
+19:28:00 hunter abyss_boss lv42
+  252.724 INF [pilot] TEST RESULT mode=boss class=hunter end=boss killed t=487s level=44 deaths=0 area=abyss_boss campaignDone=True bossesKilled=1 telegraphed threats=289 dodged=275 taken=14 (boss 279/265/14) dmgTelegraphed=2955 otherHits=351 dmgOther=9091 dodgeWalks=378 rolls=42 defensives=8
+19:34:37 astromancer wastes_boss lv5
+  137.046 INF [pilot] TEST RESULT mode=boss class=astromancer end=boss killed t=261s level=6 deaths=0 area=wastes_boss campaignDone=False bossesKilled=1 telegraphed threats=116 dodged=116 taken=0 (boss 116/116/0) dmgTelegraphed=0 otherHits=29 dmgOther=363 dodgeWalks=120 rolls=3 defensives=0
+19:38:05 astromancer frost_boss lv10
+batch done (stopped early by AI-PILOT for the campaigns)

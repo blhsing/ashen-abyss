@@ -1,0 +1,11 @@
+build ok
+exit= seconds=39
+log: C:\Users\blhsi\AppData\Roaming\AshenAbyss\logs\game_20261121_192854.log  lines=268  ERR=0  WRN=0
+--- last lines ---
+   32.674 INF [save] slot 94 saved: ??? lv30 ??? area=wastes bytes=9396
+   32.674 INF [save] save reason=quit slot=94 ok=True area=wastes playtime=6s
+   33.126 INF [shot] screenshot saved: Y:\shots\gear\final\f_ground_loot.png
+   33.130 INF [anim] anim-check: hero moved 0.0s - 0.0s without a locomotion clip, 0.0s with frozen legs; hero stood 10.0s - 0.0s in a run clip or none; monsters moved 0.0s - 0.0s without a locomotion clip, 0.0s with frozen legs; models without a skeleton or a ƒ?Ý
+   33.130 INF [input] keyboard hook saw 0 key events, 0 of them PrtSc
+   33.131 INF [boot] shutdown errors=0 warnings=0 uptime=33s
+LEAKDONE

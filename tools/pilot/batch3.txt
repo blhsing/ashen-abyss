@@ -1,0 +1,21 @@
+23:03:20 soulbinder frost_boss lv10
+  165.435 INF [pilot] TEST FIGHT boss=boss_rimelord area=frost_boss killed=True secs=131 deaths=0 heroLevel=11 threats=67 dodged=67 taken=0 dmgTelegraphed=0 dmgOther=53 life=635
+23:06:48 soulbinder abyss_boss lv42
+  135.722 INF [pilot] TEST FIGHT boss=boss_osaros area=abyss_boss killed=True secs=190 deaths=0 heroLevel=43 threats=110 dodged=110 taken=0 dmgTelegraphed=0 dmgOther=1381 life=2453
+23:09:35 wildsoul frost_boss lv10
+  181.503 INF [pilot] TEST FIGHT boss=boss_rimelord area=frost_boss killed=True secs=280 deaths=1 heroLevel=10 threats=180 dodged=167 taken=13 dmgTelegraphed=652 dmgOther=1207 life=459
+23:12:59 wildsoul abyss_boss lv42
+  458.508 INF [pilot] TEST FIGHT boss=boss_osaros area=abyss_boss killed=False secs=671 deaths=0 heroLevel=42 threats=957 dodged=911 taken=46 dmgTelegraphed=17838 dmgOther=13600 life=2617
+23:21:15 forgebody frost_boss lv10
+  209.047 INF [pilot] TEST FIGHT boss=boss_rimelord area=frost_boss killed=True secs=152 deaths=0 heroLevel=11 threats=83 dodged=81 taken=2 dmgTelegraphed=94 dmgOther=454 life=613
+23:25:20 forgebody abyss_boss lv42
+  457.671 INF [pilot] TEST RESULT mode=boss class=forgebody end=time limit t=900s level=42 deaths=1 area=abyss_boss campaignDone=False bossesKilled=0 telegraphed threats=840 dodged=799 taken=41 (boss 825/785/40) dmgTelegraphed=6575 otherHits=278 dmgOther=14150 dodgeWalks=1179 rolls=91 defensives=26
+23:33:19 lampknight frost_boss lv10
+  124.189 INF [pilot] TEST RESULT mode=boss class=lampknight end=boss killed t=238s level=11 deaths=0 area=frost_boss campaignDone=False bossesKilled=1 telegraphed threats=95 dodged=86 taken=9 (boss 64/62/2) dmgTelegraphed=314 otherHits=84 dmgOther=1235 dodgeWalks=152 rolls=21 defensives=0
+23:35:55 lampknight abyss_boss lv42
+  456.172 INF [pilot] TEST FIGHT boss=boss_osaros area=abyss_boss killed=False secs=774 deaths=0 heroLevel=42 threats=858 dodged=835 taken=23 dmgTelegraphed=7622 dmgOther=16648 life=1948
+23:44:02 pactbinder frost_boss lv10
+  129.770 INF [pilot] TEST FIGHT boss=boss_rimelord area=frost_boss killed=True secs=106 deaths=0 heroLevel=11 threats=54 dodged=54 taken=0 dmgTelegraphed=0 dmgOther=103 life=627
+23:46:45 pactbinder abyss_boss lv42
+  253.370 INF [pilot] TEST RESULT mode=boss class=pactbinder end=boss killed t=490s level=43 deaths=0 area=abyss_boss campaignDone=True bossesKilled=1 telegraphed threats=155 dodged=148 taken=7 (boss 150/143/7) dmgTelegraphed=1133 otherHits=237 dmgOther=3085 dodgeWalks=154 rolls=21 defensives=2
+batch done

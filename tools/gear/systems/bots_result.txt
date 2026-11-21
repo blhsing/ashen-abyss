@@ -1,0 +1,49 @@
+=== emberblade 2h : ERR=0 
+    1.103 INF [test] --gear: rare items of power 140 equipped (main mace2, off -); life=499 armor=611 weapon=58-96
+   87.441 INF [bot] final summary t=74s game=74s area=wastes doing=fight skeleton_thrower kills=65 elites=1 bosses=0 level=14 life=100% items=8 gold=667 deaths=0 areas=1 casts=55 unstuck=0 monsters=338 errors=0 warnings=0 botError
+=== emberblade dual : ERR=0 
+    0.670 INF [test] --gear: rare items of power 140 equipped (main sword1, off sword1); life=1004 armor=527 weapon=39-59
+   81.102 INF [bot] final summary t=74s game=73s area=wastes doing=fight husk kills=62 elites=2 bosses=0 level=14 life=70% items=7 gold=723 deaths=0 areas=1 casts=94 unstuck=0 monsters=296 errors=0 warnings=0 botErrors=0
+=== astromancer 2h : ERR=0 
+    1.126 INF [test] --gear: rare items of power 140 equipped (main staff, off -); life=776 armor=556 weapon=56-76
+   84.747 INF [bot] final summary t=75s game=75s area=wastes doing=fight cult_caster kills=56 elites=1 bosses=0 level=14 life=100% items=4 gold=607 deaths=0 areas=1 casts=153 unstuck=0 monsters=320 errors=0 warnings=0 botErrors=0
+=== astromancer off : ERR=0 
+    1.041 INF [test] --gear: rare items of power 140 equipped (main dagger, off focus); life=864 armor=528 weapon=34-47
+   86.030 INF [bot] final summary t=75s game=75s area=wastes doing=fight skeleton kills=35 elites=0 bosses=0 level=14 life=99% items=2 gold=268 deaths=0 areas=1 casts=190 unstuck=0 monsters=311 errors=0 warnings=0 botErrors=0
+=== hunter 2h : ERR=0 
+    1.515 INF [test] --gear: rare items of power 140 equipped (main crossbow, off -); life=633 armor=428 weapon=49-82
+   86.562 INF [bot] final summary t=75s game=75s area=wastes doing=fight husk kills=61 elites=1 bosses=0 level=14 life=97% items=6 gold=750 deaths=0 areas=1 casts=137 unstuck=0 monsters=274 errors=0 warnings=0 botErrors=0
+=== hunter dual : ERR=0 
+    1.299 INF [test] --gear: rare items of power 140 equipped (main dagger, off sword1); life=751 armor=472 weapon=37-52
+   86.928 INF [bot] final summary t=75s game=74s area=wastes doing=fight husk kills=63 elites=1 bosses=0 level=14 life=100% items=4 gold=673 deaths=0 areas=1 casts=152 unstuck=0 monsters=289 errors=0 warnings=0 botErrors=0
+=== soulbinder 2h : ERR=0 
+    0.595 INF [test] --gear: rare items of power 140 equipped (main scythe2, off -); life=655 armor=641 weapon=48-89
+   81.171 INF [bot] final summary t=75s game=75s area=wastes doing=fight skeleton_thrower kills=53 elites=1 bosses=0 level=14 life=100% items=6 gold=785 deaths=0 areas=1 casts=87 unstuck=0 monsters=317 errors=0 warnings=0 botError
+=== soulbinder off : ERR=0 
+    0.677 INF [test] --gear: rare items of power 140 equipped (main wand, off shield); life=613 armor=529 weapon=35-53
+   81.354 INF [bot] final summary t=75s game=75s area=wastes doing=fight skeleton_thrower kills=69 elites=3 bosses=0 level=14 life=100% items=4 gold=637 deaths=0 areas=1 casts=153 unstuck=0 monsters=300 errors=0 warnings=0 botErro
+=== wildsoul 2h : ERR=0 
+    0.742 INF [test] --gear: rare items of power 140 equipped (main staff, off -); life=762 armor=486 weapon=52-70
+   82.060 INF [bot] final summary t=73s game=72s area=wastes doing=fight husk kills=70 elites=5 bosses=0 level=14 life=100% items=6 gold=1075 deaths=0 areas=1 casts=91 unstuck=0 monsters=285 errors=0 warnings=0 botErrors=0
+=== wildsoul off : ERR=0 
+    0.508 INF [test] --gear: rare items of power 140 equipped (main axe1, off totem); life=618 armor=442 weapon=38-71
+   81.633 INF [bot] final summary t=74s game=73s area=wastes doing=fight skeleton kills=43 elites=0 bosses=0 level=14 life=99% items=5 gold=468 deaths=0 areas=1 casts=57 unstuck=0 monsters=339 errors=0 warnings=0 botErrors=0
+=== forgebody 2h : ERR=0 
+    0.522 INF [test] --gear: rare items of power 140 equipped (main mace2, off -); life=617 armor=447 weapon=52-87
+   82.423 INF [bot] final summary t=73s game=73s area=wastes doing=fight skeleton kills=81 elites=5 bosses=0 level=14 life=99% items=7 gold=1246 deaths=0 areas=1 casts=95 unstuck=0 monsters=281 errors=0 warnings=0 botErrors=0
+=== forgebody dual : ERR=0 
+    0.574 INF [test] --gear: rare items of power 140 equipped (main fist, off fist); life=634 armor=669 weapon=35-47
+   81.360 INF [bot] final summary t=72s game=72s area=wastes doing=fight skeleton kills=55 elites=1 bosses=0 level=14 life=100% items=2 gold=655 deaths=0 areas=1 casts=154 unstuck=0 monsters=332 errors=0 warnings=0 botErrors=0
+=== lampknight 2h : ERR=0 
+    0.707 INF [test] --gear: rare items of power 140 equipped (main sword2, off -); life=581 armor=524 weapon=51-77
+   82.593 INF [bot] final summary t=74s game=74s area=wastes doing=explore marker:chest kills=70 elites=7 bosses=0 level=14 life=100% items=9 gold=919 deaths=0 areas=1 casts=93 unstuck=0 monsters=309 errors=0 warnings=0 botErrors=
+=== lampknight off : ERR=0 
+    0.915 INF [test] --gear: rare items of power 140 equipped (main mace1, off shield); life=924 armor=670 weapon=45-74
+   85.905 INF [bot] final summary t=73s game=73s area=wastes doing=fight rare_wastes_gallowsfather kills=43 elites=3 bosses=0 level=14 life=100% items=3 gold=480 deaths=0 areas=1 casts=120 unstuck=0 monsters=328 errors=0 warnings=
+=== pactbinder 2h : ERR=0 
+    0.435 INF [test] --gear: rare items of power 140 equipped (main staff, off -); life=771 armor=443 weapon=52-71
+   81.892 INF [bot] final summary t=75s game=75s area=wastes doing=fight rare_wastes_gallowsfather kills=91 elites=5 bosses=0 level=14 life=100% items=8 gold=760 deaths=0 areas=1 casts=108 unstuck=0 monsters=265 errors=0 warnings=
+=== pactbinder off : ERR=0 
+    1.633 INF [test] --gear: rare items of power 140 equipped (main dagger, off focus); life=663 armor=577 weapon=34-47
+   85.865 INF [bot] final summary t=75s game=75s area=wastes doing=use gold kills=66 elites=4 bosses=0 level=14 life=100% items=10 gold=753 deaths=0 areas=1 casts=109 unstuck=0 monsters=321 errors=0 warnings=0 botErrors=0
+DONE

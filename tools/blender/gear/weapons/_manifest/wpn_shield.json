@@ -1,0 +1,97 @@
+{
+ "base": "shield",
+ "prefix": "wpn",
+ "atlas_px": 1024,
+ "area_m2": 3.4059,
+ "notes": "",
+ "entries": [
+  {
+   "id": "wpn_shield_v1",
+   "kind": "weapon",
+   "base": "shield",
+   "file": "res://assets/gear/weapons/wpn_shield_v1.glb",
+   "mount": "forearm_l",
+   "grip2": null,
+   "length": 0.559,
+   "variant": 1,
+   "hands": 1,
+   "grip": "l",
+   "tris": 1654,
+   "emissive": false,
+   "bbox": [
+    [
+     -0.189,
+     -0.0579,
+     -0.3094
+    ],
+    [
+     0.359,
+     0.144,
+     0.2494
+    ]
+   ],
+   "textures": "wpn_shield",
+   "atlas_px": 1024,
+   "hint": "origin = forearm strap centre on the forearm axis; +X elbow->hand, +Y face (outward), +Z up; hand bar at x=+0.258 y=-0.031"
+  },
+  {
+   "id": "wpn_shield_v2",
+   "kind": "weapon",
+   "base": "shield",
+   "file": "res://assets/gear/weapons/wpn_shield_v2.glb",
+   "mount": "forearm_l",
+   "grip2": null,
+   "length": 0.671,
+   "variant": 2,
+   "hands": 1,
+   "grip": "l",
+   "tris": 2262,
+   "emissive": false,
+   "bbox": [
+    [
+     -0.1478,
+     -0.0579,
+     -0.4052
+    ],
+    [
+     0.3182,
+     0.102,
+     0.2658
+    ]
+   ],
+   "textures": "wpn_shield",
+   "atlas_px": 1024,
+   "hint": "origin = forearm strap centre on the forearm axis; +X elbow->hand, +Y face (outward), +Z up; hand bar at x=+0.258 y=-0.031"
+  },
+  {
+   "id": "wpn_shield_v3",
+   "kind": "weapon",
+   "base": "shield",
+   "file": "res://assets/gear/weapons/wpn_shield_v3.glb",
+   "mount": "forearm_l",
+   "grip2": null,
+   "length": 0.966,
+   "variant": 3,
+   "hands": 1,
+   "grip": "l",
+   "tris": 3090,
+   "emissive": true,
+   "bbox": [
+    [
+     -0.1625,
+     -0.0579,
+     -0.592
+    ],
+    [
+     0.3325,
+     0.105,
+     0.3741
+    ]
+   ],
+   "textures": "wpn_shield",
+   "atlas_px": 1024,
+   "hint": "origin = forearm strap centre on the forearm axis; +X elbow->hand, +Y face (outward), +Z up; hand bar at x=+0.258 y=-0.031"
+  }
+ ],
+ "built": "2026-11-21 20:27:28"
+}

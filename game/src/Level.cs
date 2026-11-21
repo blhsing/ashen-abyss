@@ -675,6 +675,9 @@ public partial class Level : Node3D
 
     private void SlowTick(Player p)
     {
+        // markers on monsters (bosses, named hunts, marked elites) follow them as they roam
+        for (int i = 0; i < Markers.Count; i++)
+            if (Markers[i].Ref is Monster mm && IsInstanceValid(mm) && !mm.Dead && mm.IsInsideTree()) Markers[i].Pos = mm.Pos2;
         for (int i = _hidden.Count - 1; i >= 0; i--)
             if (SeenAt(_hidden[i].Pos)) { _hidden[i].Visible = true; _hidden.RemoveAt(i); _dirty = true; }
 

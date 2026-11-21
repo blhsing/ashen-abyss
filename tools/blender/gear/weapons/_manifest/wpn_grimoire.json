@@ -1,0 +1,94 @@
+{
+ "base": "grimoire",
+ "prefix": "wpn",
+ "atlas_px": 1024,
+ "area_m2": 1.5012,
+ "notes": "",
+ "entries": [
+  {
+   "id": "wpn_grimoire_v1",
+   "kind": "weapon",
+   "base": "grimoire",
+   "file": "res://assets/gear/weapons/wpn_grimoire_v1.glb",
+   "mount": "hand_l",
+   "grip2": null,
+   "length": 0.319,
+   "variant": 1,
+   "hands": 1,
+   "grip": "l",
+   "tris": 2136,
+   "emissive": false,
+   "bbox": [
+    [
+     -0.0103,
+     -0.0261,
+     -0.1055
+    ],
+    [
+     0.2263,
+     0.0306,
+     0.213
+    ]
+   ],
+   "textures": "wpn_grimoire",
+   "atlas_px": 1024
+  },
+  {
+   "id": "wpn_grimoire_v2",
+   "kind": "weapon",
+   "base": "grimoire",
+   "file": "res://assets/gear/weapons/wpn_grimoire_v2.glb",
+   "mount": "hand_l",
+   "grip2": null,
+   "length": 0.256,
+   "variant": 2,
+   "hands": 1,
+   "grip": "l",
+   "tris": 2004,
+   "emissive": false,
+   "bbox": [
+    [
+     -0.0125,
+     -0.0405,
+     -0.125
+    ],
+    [
+     0.244,
+     0.0405,
+     0.125
+    ]
+   ],
+   "textures": "wpn_grimoire",
+   "atlas_px": 1024
+  },
+  {
+   "id": "wpn_grimoire_v3",
+   "kind": "weapon",
+   "base": "grimoire",
+   "file": "res://assets/gear/weapons/wpn_grimoire_v3.glb",
+   "mount": "hand_l",
+   "grip2": null,
+   "length": 0.398,
+   "variant": 3,
+   "hands": 1,
+   "grip": "l",
+   "tris": 4044,
+   "emissive": true,
+   "bbox": [
+    [
+     -0.0125,
+     -0.0603,
+     -0.199
+    ],
+    [
+     0.301,
+     0.0603,
+     0.199
+    ]
+   ],
+   "textures": "wpn_grimoire",
+   "atlas_px": 1024
+  }
+ ],
+ "built": "2026-11-21 20:28:30"
+}

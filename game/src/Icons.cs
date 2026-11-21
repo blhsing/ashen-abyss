@@ -185,6 +185,9 @@ public static class Icons
     /// <summary>True for full-colour raster art (do not colourise it); false for a white vector glyph meant to be tinted.</summary>
     public static bool IsRaster(Texture2D t) => t != null && RasterSet.Contains(t);
 
+    /// <summary>Marks a full-colour picture made elsewhere (the 3D item icons) so it is not colourised like a glyph.</summary>
+    public static void MarkRaster(Texture2D t) { if (t != null) RasterSet.Add(t); }
+
     /// <summary>
     /// The Modulate to use for an icon: a vector glyph takes <paramref name="wanted"/> as it is; raster art keeps its
     /// own colours and only follows the brightness and alpha of the wanted colour (so dimmed / locked states still dim).
@@ -214,9 +217,9 @@ public static class Icons
         }
         if (!string.IsNullOrEmpty(it.Unique)) return "item/" + it.Unique;
         int tier = Math.Clamp(it.Power / 125, 0, 4) + 1;          // same five base tiers as ItemDb's base names
-        if (it.Kind == ItemKind.Weapon)
+        if (it.Kind is ItemKind.Weapon or ItemKind.OffHand)      // OffHand: SYSTEMS, modular gear (base icon family in it.Icon)
         {
-            string type = it.WeaponClass >= 0 && it.WeaponClass < ItemDb.WeaponIcons.Length ? ItemDb.WeaponIcons[it.WeaponClass] : it.Icon;
+            string type = it.Kind == ItemKind.Weapon && it.WeaponClass >= 0 && it.WeaponClass < ItemDb.WeaponIcons.Length ? ItemDb.WeaponIcons[it.WeaponClass] : it.Icon;
             return string.IsNullOrEmpty(type) ? null : $"item/wpn_{type}_{tier}";
         }
         string key = KindKey(it.Kind, -1);
@@ -295,7 +298,20 @@ public static class Icons
     /// <summary>True when the name resolves to a real SVG (directly, through an alias or as a path).</summary>
     public static bool Has(string name) => !string.IsNullOrWhiteSpace(name) && Resolve(name) != null;
 
+    /// <summary>
+    /// The icon of an item: the picture rendered from its own 3D model (ItemIcon3D, CONTRACT §7) when the model exists,
+    /// else the raster icon. Every item icon of the game (inventory, vendor, stash, tooltips, compare) comes from here.
+    /// </summary>
     public static Texture2D ForItem(Item it)
+    {
+        if (it == null) return Placeholder("?");
+        try { var t3 = ItemIcon3D.Get(it, 128); if (t3 != null) return t3; }
+        catch (Exception e) { Log.Error("icons", "3D item icon failed", e); }
+        return ForItemRaster(it);
+    }
+
+    /// <summary>The raster (or vector) icon of an item, without the 3D picture.</summary>
+    public static Texture2D ForItemRaster(Item it)
     {
         if (it == null) return Placeholder("?");
         try

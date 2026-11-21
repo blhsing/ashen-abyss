@@ -1,0 +1,5610 @@
+{
+ "version": 1,
+ "generated": "2026-11-21 21:04",
+ "author": "ART-A",
+ "note": "hides = body region tokens (see armor/REGIONS.md); token T hides the base-body mesh body_T, or T for hair / beard / brows / wrap_loin / wrap_chest",
+ "regions": {
+  "head": "body_head",
+  "neck": "body_neck",
+  "torso": "body_torso",
+  "upper_arms": "body_upper_arms",
+  "forearms": "body_forearms",
+  "hands": "body_hands",
+  "hips": "body_hips",
+  "thighs": "body_thighs",
+  "shins": "body_shins",
+  "feet": "body_feet",
+  "hair": "hair",
+  "beard": "beard",
+  "brows": "brows",
+  "wrap_loin": "wrap_loin",
+  "wrap_chest": "wrap_chest"
+ },
+ "slot_owns": {
+  "helm": [
+   "hair",
+   "beard",
+   "brows",
+   "head"
+  ],
+  "chest": [
+   "torso",
+   "upper_arms",
+   "neck",
+   "wrap_chest"
+  ],
+  "gloves": [
+   "hands",
+   "forearms"
+  ],
+  "pants": [
+   "hips",
+   "thighs",
+   "shins",
+   "wrap_loin"
+  ],
+  "boots": [
+   "feet",
+   "shins"
+  ]
+ },
+ "bodies": [
+  {
+   "id": "hero_emberblade_base",
+   "kind": "body",
+   "class_key": "emberblade",
+   "file": "res://assets/chars/hero_emberblade_base.glb",
+   "sex": "male",
+   "triangles": 17720,
+   "regions": {
+    "beard": "beard",
+    "feet": "body_feet",
+    "forearms": "body_forearms",
+    "hands": "body_hands",
+    "head": "body_head",
+    "hips": "body_hips",
+    "neck": "body_neck",
+    "shins": "body_shins",
+    "thighs": "body_thighs",
+    "torso": "body_torso",
+    "upper_arms": "body_upper_arms",
+    "brows": "brows",
+    "hair": "hair",
+    "wrap_loin": "wrap_loin"
+   },
+   "textures": {
+    "cloth": 512,
+    "skin": 2048,
+    "hair": 512
+   }
+  },
+  {
+   "id": "hero_astromancer_base",
+   "kind": "body",
+   "class_key": "astromancer",
+   "file": "res://assets/chars/hero_astromancer_base.glb",
+   "sex": "female",
+   "triangles": 20234,
+   "regions": {
+    "feet": "body_feet",
+    "forearms": "body_forearms",
+    "hands": "body_hands",
+    "head": "body_head",
+    "hips": "body_hips",
+    "neck": "body_neck",
+    "shins": "body_shins",
+    "thighs": "body_thighs",
+    "torso": "body_torso",
+    "upper_arms": "body_upper_arms",
+    "brows": "brows",
+    "hair": "hair",
+    "wrap_chest": "wrap_chest",
+    "wrap_loin": "wrap_loin"
+   },
+   "textures": {
+    "cloth": 512,
+    "skin": 2048,
+    "hair": 1024
+   }
+  },
+  {
+   "id": "hero_hunter_base",
+   "kind": "body",
+   "class_key": "hunter",
+   "file": "res://assets/chars/hero_hunter_base.glb",
+   "sex": "female",
+   "triangles": 20612,
+   "regions": {
+    "feet": "body_feet",
+    "forearms": "body_forearms",
+    "hands": "body_hands",
+    "head": "body_head",
+    "hips": "body_hips",
+    "neck": "body_neck",
+    "shins": "body_shins",
+    "thighs": "body_thighs",
+    "torso": "body_torso",
+    "upper_arms": "body_upper_arms",
+    "brows": "brows",
+    "hair": "hair",
+    "wrap_chest": "wrap_chest",
+    "wrap_loin": "wrap_loin"
+   },
+   "textures": {
+    "cloth": 512,
+    "skin": 2048,
+    "hair": 1024
+   }
+  },
+  {
+   "id": "hero_soulbinder_base",
+   "kind": "body",
+   "class_key": "soulbinder",
+   "file": "res://assets/chars/hero_soulbinder_base.glb",
+   "sex": "male",
+   "triangles": 15856,
+   "regions": {
+    "feet": "body_feet",
+    "forearms": "body_forearms",
+    "hands": "body_hands",
+    "head": "body_head",
+    "hips": "body_hips",
+    "neck": "body_neck",
+    "shins": "body_shins",
+    "thighs": "body_thighs",
+    "torso": "body_torso",
+    "upper_arms": "body_upper_arms",
+    "brows": "brows",
+    "wrap_loin": "wrap_loin"
+   },
+   "textures": {
+    "cloth": 512,
+    "skin": 2048,
+    "hair": 512
+   }
+  },
+  {
+   "id": "hero_wildsoul_base",
+   "kind": "body",
+   "class_key": "wildsoul",
+   "file": "res://assets/chars/hero_wildsoul_base.glb",
+   "sex": "male",
+   "triangles": 19804,
+   "regions": {
+    "beard": "beard",
+    "feet": "body_feet",
+    "forearms": "body_forearms",
+    "hands": "body_hands",
+    "head": "body_head",
+    "hips": "body_hips",
+    "neck": "body_neck",
+    "shins": "body_shins",
+    "thighs": "body_thighs",
+    "torso": "body_torso",
+    "upper_arms": "body_upper_arms",
+    "brows": "brows",
+    "hair": "hair",
+    "wrap_loin": "wrap_loin"
+   },
+   "textures": {
+    "cloth": 512,
+    "skin": 2048,
+    "hair": 1024
+   }
+  },
+  {
+   "id": "hero_forgebody_base",
+   "kind": "body",
+   "class_key": "forgebody",
+   "file": "res://assets/chars/hero_forgebody_base.glb",
+   "sex": "male",
+   "triangles": 16906,
+   "regions": {
+    "feet": "body_feet",
+    "forearms": "body_forearms",
+    "hands": "body_hands",
+    "head": "body_head",
+    "hips": "body_hips",
+    "neck": "body_neck",
+    "shins": "body_shins",
+    "thighs": "body_thighs",
+    "torso": "body_torso",
+    "upper_arms": "body_upper_arms",
+    "brows": "brows",
+    "hair": "hair",
+    "wrap_loin": "wrap_loin"
+   },
+   "textures": {
+    "cloth": 512,
+    "skin": 2048,
+    "hair": 512
+   }
+  },
+  {
+   "id": "hero_lampknight_base",
+   "kind": "body",
+   "class_key": "lampknight",
+   "file": "res://assets/chars/hero_lampknight_base.glb",
+   "sex": "female",
+   "triangles": 18637,
+   "regions": {
+    "feet": "body_feet",
+    "forearms": "body_forearms",
+    "hands": "body_hands",
+    "head": "body_head",
+    "hips": "body_hips",
+    "neck": "body_neck",
+    "shins": "body_shins",
+    "thighs": "body_thighs",
+    "torso": "body_torso",
+    "upper_arms": "body_upper_arms",
+    "brows": "brows",
+    "hair": "hair",
+    "wrap_chest": "wrap_chest",
+    "wrap_loin": "wrap_loin"
+   },
+   "textures": {
+    "cloth": 512,
+    "skin": 2048,
+    "hair": 512
+   }
+  },
+  {
+   "id": "hero_pactbinder_base",
+   "kind": "body",
+   "class_key": "pactbinder",
+   "file": "res://assets/chars/hero_pactbinder_base.glb",
+   "sex": "male",
+   "triangles": 17157,
+   "regions": {
+    "feet": "body_feet",
+    "forearms": "body_forearms",
+    "hands": "body_hands",
+    "head": "body_head",
+    "hips": "body_hips",
+    "neck": "body_neck",
+    "shins": "body_shins",
+    "thighs": "body_thighs",
+    "torso": "body_torso",
+    "upper_arms": "body_upper_arms",
+    "brows": "brows",
+    "hair": "hair",
+    "wrap_loin": "wrap_loin"
+   },
+   "textures": {
+    "cloth": 512,
+    "skin": 2048,
+    "hair": 512
+   }
+  }
+ ],
+ "entries": [
+  {
+   "id": "arm_emberblade_helm_t1",
+   "kind": "armor",
+   "class": "Emberblade",
+   "class_key": "emberblade",
+   "slot": "helm",
+   "look": "t1",
+   "file": "res://assets/gear/armor/arm_emberblade_helm_t1.glb",
+   "hides": [
+    "hair"
+   ],
+   "meshes": [
+    "arm_emberblade_helm_t1"
+   ],
+   "triangles": 3363,
+   "materials": [
+    "gear_arm_emberblade_helm_t1"
+   ],
+   "shared_textures": [],
+   "bbox": [
+    [
+     -0.108,
+     -0.134,
+     1.539
+    ],
+    [
+     0.109,
+     0.112,
+     1.819
+    ]
+   ]
+  },
+  {
+   "id": "arm_emberblade_helm_t2",
+   "kind": "armor",
+   "class": "Emberblade",
+   "class_key": "emberblade",
+   "slot": "helm",
+   "look": "t2",
+   "file": "res://assets/gear/armor/arm_emberblade_helm_t2.glb",
+   "hides": [
+    "hair"
+   ],
+   "meshes": [
+    "arm_emberblade_helm_t2"
+   ],
+   "triangles": 2540,
+   "materials": [
+    "gear_arm_emberblade_helm_t2"
+   ],
+   "shared_textures": [],
+   "bbox": [
+    [
+     -0.113,
+     -0.165,
+     1.511
+    ],
+    [
+     0.113,
+     0.122,
+     1.919
+    ]
+   ]
+  },
+  {
+   "id": "arm_emberblade_helm_t3",
+   "kind": "armor",
+   "class": "Emberblade",
+   "class_key": "emberblade",
+   "slot": "helm",
+   "look": "t3",
+   "file": "res://assets/gear/armor/arm_emberblade_helm_t3.glb",
+   "hides": [
+    "hair"
+   ],
+   "meshes": [
+    "arm_emberblade_helm_t3",
+    "arm_emberblade_helm_t3_emis"
+   ],
+   "triangles": 4368,
+   "materials": [
+    "gear_arm_emberblade_helm_t3",
+    "emis_arm_emberblade_helm_t3"
+   ],
+   "shared_textures": [],
+   "bbox": [
+    [
+     -0.12,
+     -0.152,
+     1.511
+    ],
+    [
+     0.12,
+     0.293,
+     1.921
+    ]
+   ]
+  },
+  {
+   "id": "arm_emberblade_helm_t4",
+   "kind": "armor",
+   "class": "Emberblade",
+   "class_key": "emberblade",
+   "slot": "helm",
+   "look": "t4",
+   "file": "res://assets/gear/armor/arm_emberblade_helm_t4.glb",
+   "hides": [
+    "hair"
+   ],
+   "meshes": [
+    "arm_emberblade_helm_t4"
+   ],
+   "triangles": 1152,
+   "materials": [
+    "metal_hero_emberblade",
+    "emis_hero_emberblade"
+   ],
+   "shared_textures": [
+    "../../chars/hero_emberblade_emis_g.png",
+    "../../chars/hero_emberblade_metal_c.jpg",
+    "../../chars/hero_emberblade_metal_n.jpg",
+    "../../chars/hero_emberblade_metal_orm.jpg"
+   ],
+   "bbox": [
+    [
+     -0.141,
+     -0.211,
+     1.536
+    ],
+    [
+     0.141,
+     0.145,
+     1.905
+    ]
+   ]
+  },
+  {
+   "id": "arm_emberblade_chest_t1",
+   "kind": "armor",
+   "class": "Emberblade",
+   "class_key": "emberblade",
+   "slot": "chest",
+   "look": "t1",
+   "file": "res://assets/gear/armor/arm_emberblade_chest_t1.glb",
+   "hides": [
+    "torso",
+    "upper_arms"
+   ],
+   "meshes": [
+    "arm_emberblade_chest_t1",
+    "arm_emberblade_chest_t1_skin"
+   ],
+   "triangles": 8416,
+   "materials": [
+    "gear_arm_emberblade_chest_t1",
+    "skin_hero_emberblade_base"
+   ],
+   "shared_textures": [
+    "../../chars/hero_emberblade_base_skin_c.jpg",
+    "../../chars/hero_emberblade_base_skin_n.jpg",
+    "../../chars/hero_emberblade_base_skin_orm.jpg"
+   ],
+   "bbox": [
+    [
+     -0.498,
+     -0.154,
+     0.762
+    ],
+    [
+     0.498,
+     0.199,
+     1.555
+    ]
+   ]
+  },
+  {
+   "id": "arm_emberblade_chest_t2",
+   "kind": "armor",
+   "class": "Emberblade",
+   "class_key": "emberblade",
+   "slot": "chest",
+   "look": "t2",
+   "file": "res://assets/gear/armor/arm_emberblade_chest_t2.glb",
+   "hides": [
+    "torso",
+    "upper_arms"
+   ],
+   "meshes": [
+    "arm_emberblade_chest_t2",
+    "arm_emberblade_chest_t2_skin"
+   ],
+   "triangles": 8176,
+   "materials": [
+    "gear_arm_emberblade_chest_t2",
+    "skin_hero_emberblade_base"
+   ],
+   "shared_textures": [
+    "../../chars/hero_emberblade_base_skin_c.jpg",
+    "../../chars/hero_emberblade_base_skin_n.jpg",
+    "../../chars/hero_emberblade_base_skin_orm.jpg"
+   ],
+   "bbox": [
+    [
+     -0.498,
+     -0.163,
+     0.6
+    ],
+    [
+     0.498,
+     0.196,
+     1.554
+    ]
+   ]
+  },
+  {
+   "id": "arm_emberblade_chest_t3",
+   "kind": "armor",
+   "class": "Emberblade",
+   "class_key": "emberblade",
+   "slot": "chest",
+   "look": "t3",
+   "file": "res://assets/gear/armor/arm_emberblade_chest_t3.glb",
+   "hides": [
+    "torso",
+    "upper_arms"
+   ],
+   "meshes": [
+    "arm_emberblade_chest_t3",
+    "arm_emberblade_chest_t3_skin"
+   ],
+   "triangles": 7972,
+   "materials": [
+    "gear_arm_emberblade_chest_t3",
+    "skin_hero_emberblade_base"
+   ],
+   "shared_textures": [
+    "../../chars/hero_emberblade_base_skin_c.jpg",
+    "../../chars/hero_emberblade_base_skin_n.jpg",
+    "../../chars/hero_emberblade_base_skin_orm.jpg"
+   ],
+   "bbox": [
+    [
+     -0.498,
+     -0.16,
+     0.68
+    ],
+    [
+     0.498,
+     0.266,
+     1.569
+    ]
+   ]
+  },
+  {
+   "id": "arm_emberblade_chest_t4",
+   "kind": "armor",
+   "class": "Emberblade",
+   "class_key": "emberblade",
+   "slot": "chest",
+   "look": "t4",
+   "file": "res://assets/gear/armor/arm_emberblade_chest_t4.glb",
+   "hides": [
+    "torso",
+    "upper_arms",
+    "neck"
+   ],
+   "meshes": [
+    "arm_emberblade_chest_t4",
+    "arm_emberblade_chest_t4_skin"
+   ],
+   "triangles": 13676,
+   "materials": [
+    "cloth_hero_emberblade",
+    "leather_hero_emberblade",
+    "metal_hero_emberblade",
+    "skin_hero_emberblade_base"
+   ],
+   "shared_textures": [
+    "../../chars/hero_emberblade_base_skin_c.jpg",
+    "../../chars/hero_emberblade_base_skin_n.jpg",
+    "../../chars/hero_emberblade_base_skin_orm.jpg",
+    "../../chars/hero_emberblade_cloth_c.jpg",
+    "../../chars/hero_emberblade_cloth_n.jpg",
+    "../../chars/hero_emberblade_cloth_orm.jpg",
+    "../../chars/hero_emberblade_leather_c.jpg",
+    "../../chars/hero_emberblade_leather_n.jpg",
+    "../../chars/hero_emberblade_leather_orm.jpg",
+    "../../chars/hero_emberblade_metal_c.jpg",
+    "../../chars/hero_emberblade_metal_n.jpg",
+    "../../chars/hero_emberblade_metal_orm.jpg"
+   ],
+   "bbox": [
+    [
+     -0.498,
+     -0.198,
+     0.445
+    ],
+    [
+     0.498,
+     0.302,
+     1.619
+    ]
+   ]
+  },
+  {
+   "id": "arm_emberblade_gloves_t1",
+   "kind": "armor",
+   "class": "Emberblade",
+   "class_key": "emberblade",
+   "slot": "gloves",
+   "look": "t1",
+   "file": "res://assets/gear/armor/arm_emberblade_gloves_t1.glb",
+   "hides": [
+    "forearms"
+   ],
+   "meshes": [
+    "arm_emberblade_gloves_t1",
+    "arm_emberblade_gloves_t1_skin"
+   ],
+   "triangles": 1557,
+   "materials": [
+    "gear_arm_emberblade_gloves_t1",
+    "skin_hero_emberblade_base"
+   ],
+   "shared_textures": [
+    "../../chars/hero_emberblade_base_skin_c.jpg",
+    "../../chars/hero_emberblade_base_skin_n.jpg",
+    "../../chars/hero_emberblade_base_skin_orm.jpg"
+   ],
+   "bbox": [
+    [
+     -0.852,
+     0.008,
+     1.349
+    ],
+    [
+     0.852,
+     0.15,
+     1.506
+    ]
+   ]
+  },
+  {
+   "id": "arm_emberblade_gloves_t2",
+   "kind": "armor",
+   "class": "Emberblade",
+   "class_key": "emberblade",
+   "slot": "gloves",
+   "look": "t2",
+   "file": "res://assets/gear/armor/arm_emberblade_gloves_t2.glb",
+   "hides": [
+    "hands",
+    "forearms"
+   ],
+   "meshes": [
+    "arm_emberblade_gloves_t2",
+    "arm_emberblade_gloves_t2_skin"
+   ],
+   "triangles": 4684,
+   "materials": [
+    "gear_arm_emberblade_gloves_t2",
+    "skin_hero_emberblade_base"
+   ],
+   "shared_textures": [
+    "../../chars/hero_emberblade_base_skin_c.jpg",
+    "../../chars/hero_emberblade_base_skin_n.jpg",
+    "../../chars/hero_emberblade_base_skin_orm.jpg"
+   ],
+   "bbox": [
+    [
+     -0.985,
+     -0.037,
+     1.346
+    ],
+    [
+     0.985,
+     0.141,
+     1.504
+    ]
+   ]
+  },
+  {
+   "id": "arm_emberblade_gloves_t3",
+   "kind": "armor",
+   "class": "Emberblade",
+   "class_key": "emberblade",
+   "slot": "gloves",
+   "look": "t3",
+   "file": "res://assets/gear/armor/arm_emberblade_gloves_t3.glb",
+   "hides": [
+    "hands",
+    "forearms"
+   ],
+   "meshes": [
+    "arm_emberblade_gloves_t3",
+    "arm_emberblade_gloves_t3_skin"
+   ],
+   "triangles": 4990,
+   "materials": [
+    "gear_arm_emberblade_gloves_t3",
+    "skin_hero_emberblade_base"
+   ],
+   "shared_textures": [
+    "../../chars/hero_emberblade_base_skin_c.jpg",
+    "../../chars/hero_emberblade_base_skin_n.jpg",
+    "../../chars/hero_emberblade_base_skin_orm.jpg"
+   ],
+   "bbox": [
+    [
+     -0.985,
+     -0.036,
+     1.342
+    ],
+    [
+     0.985,
+     0.165,
+     1.52
+    ]
+   ]
+  },
+  {
+   "id": "arm_emberblade_gloves_t4",
+   "kind": "armor",
+   "class": "Emberblade",
+   "class_key": "emberblade",
+   "slot": "gloves",
+   "look": "t4",
+   "file": "res://assets/gear/armor/arm_emberblade_gloves_t4.glb",
+   "hides": [
+    "hands",
+    "forearms"
+   ],
+   "meshes": [
+    "arm_emberblade_gloves_t4",
+    "arm_emberblade_gloves_t4_skin"
+   ],
+   "triangles": 4918,
+   "materials": [
+    "metal_hero_emberblade",
+    "skin_hero_emberblade_base"
+   ],
+   "shared_textures": [
+    "../../chars/hero_emberblade_base_skin_c.jpg",
+    "../../chars/hero_emberblade_base_skin_n.jpg",
+    "../../chars/hero_emberblade_base_skin_orm.jpg",
+    "../../chars/hero_emberblade_metal_c.jpg",
+    "../../chars/hero_emberblade_metal_n.jpg",
+    "../../chars/hero_emberblade_metal_orm.jpg"
+   ],
+   "bbox": [
+    [
+     -0.985,
+     -0.036,
+     1.344
+    ],
+    [
+     0.985,
+     0.158,
+     1.527
+    ]
+   ]
+  },
+  {
+   "id": "arm_emberblade_pants_t1",
+   "kind": "armor",
+   "class": "Emberblade",
+   "class_key": "emberblade",
+   "slot": "pants",
+   "look": "t1",
+   "file": "res://assets/gear/armor/arm_emberblade_pants_t1.glb",
+   "hides": [
+    "hips",
+    "thighs",
+    "shins",
+    "wrap_loin"
+   ],
+   "meshes": [
+    "arm_emberblade_pants_t1",
+    "arm_emberblade_pants_t1_skin"
+   ],
+   "triangles": 2717,
+   "materials": [
+    "gear_arm_emberblade_pants_t1",
+    "skin_hero_emberblade_base"
+   ],
+   "shared_textures": [
+    "../../chars/hero_emberblade_base_skin_c.jpg",
+    "../../chars/hero_emberblade_base_skin_n.jpg",
+    "../../chars/hero_emberblade_base_skin_orm.jpg"
+   ],
+   "bbox": [
+    [
+     -0.181,
+     -0.117,
+     0.09
+    ],
+    [
+     0.181,
+     0.167,
+     1.03
+    ]
+   ]
+  },
+  {
+   "id": "arm_emberblade_pants_t2",
+   "kind": "armor",
+   "class": "Emberblade",
+   "class_key": "emberblade",
+   "slot": "pants",
+   "look": "t2",
+   "file": "res://assets/gear/armor/arm_emberblade_pants_t2.glb",
+   "hides": [
+    "hips",
+    "thighs",
+    "shins",
+    "wrap_loin"
+   ],
+   "meshes": [
+    "arm_emberblade_pants_t2",
+    "arm_emberblade_pants_t2_skin"
+   ],
+   "triangles": 3376,
+   "materials": [
+    "gear_arm_emberblade_pants_t2",
+    "skin_hero_emberblade_base"
+   ],
+   "shared_textures": [
+    "../../chars/hero_emberblade_base_skin_c.jpg",
+    "../../chars/hero_emberblade_base_skin_n.jpg",
+    "../../chars/hero_emberblade_base_skin_orm.jpg"
+   ],
+   "bbox": [
+    [
+     -0.18,
+     -0.118,
+     0.09
+    ],
+    [
+     0.18,
+     0.164,
+     1.03
+    ]
+   ]
+  },
+  {
+   "id": "arm_emberblade_pants_t3",
+   "kind": "armor",
+   "class": "Emberblade",
+   "class_key": "emberblade",
+   "slot": "pants",
+   "look": "t3",
+   "file": "res://assets/gear/armor/arm_emberblade_pants_t3.glb",
+   "hides": [
+    "hips",
+    "thighs",
+    "shins",
+    "wrap_loin"
+   ],
+   "meshes": [
+    "arm_emberblade_pants_t3",
+    "arm_emberblade_pants_t3_skin"
+   ],
+   "triangles": 3018,
+   "materials": [
+    "gear_arm_emberblade_pants_t3",
+    "skin_hero_emberblade_base"
+   ],
+   "shared_textures": [
+    "../../chars/hero_emberblade_base_skin_c.jpg",
+    "../../chars/hero_emberblade_base_skin_n.jpg",
+    "../../chars/hero_emberblade_base_skin_orm.jpg"
+   ],
+   "bbox": [
+    [
+     -0.185,
+     -0.123,
+     0.09
+    ],
+    [
+     0.185,
+     0.161,
+     1.03
+    ]
+   ]
+  },
+  {
+   "id": "arm_emberblade_pants_t4",
+   "kind": "armor",
+   "class": "Emberblade",
+   "class_key": "emberblade",
+   "slot": "pants",
+   "look": "t4",
+   "file": "res://assets/gear/armor/arm_emberblade_pants_t4.glb",
+   "hides": [
+    "hips",
+    "thighs",
+    "shins",
+    "wrap_loin"
+   ],
+   "meshes": [
+    "arm_emberblade_pants_t4",
+    "arm_emberblade_pants_t4_skin"
+   ],
+   "triangles": 3480,
+   "materials": [
+    "metal_hero_emberblade",
+    "skin_hero_emberblade_base"
+   ],
+   "shared_textures": [
+    "../../chars/hero_emberblade_base_skin_c.jpg",
+    "../../chars/hero_emberblade_base_skin_n.jpg",
+    "../../chars/hero_emberblade_base_skin_orm.jpg",
+    "../../chars/hero_emberblade_metal_c.jpg",
+    "../../chars/hero_emberblade_metal_n.jpg",
+    "../../chars/hero_emberblade_metal_orm.jpg"
+   ],
+   "bbox": [
+    [
+     -0.215,
+     -0.132,
+     0.09
+    ],
+    [
+     0.215,
+     0.162,
+     1.03
+    ]
+   ]
+  },
+  {
+   "id": "arm_emberblade_boots_t1",
+   "kind": "armor",
+   "class": "Emberblade",
+   "class_key": "emberblade",
+   "slot": "boots",
+   "look": "t1",
+   "file": "res://assets/gear/armor/arm_emberblade_boots_t1.glb",
+   "hides": [
+    "feet"
+   ],
+   "meshes": [
+    "arm_emberblade_boots_t1"
+   ],
+   "triangles": 2565,
+   "materials": [
+    "gear_arm_emberblade_boots_t1"
+   ],
+   "shared_textures": [],
+   "bbox": [
+    [
+     -0.172,
+     -0.22,
+     -0.012
+    ],
+    [
+     0.172,
+     0.113,
+     0.216
+    ]
+   ]
+  },
+  {
+   "id": "arm_emberblade_boots_t2",
+   "kind": "armor",
+   "class": "Emberblade",
+   "class_key": "emberblade",
+   "slot": "boots",
+   "look": "t2",
+   "file": "res://assets/gear/armor/arm_emberblade_boots_t2.glb",
+   "hides": [
+    "feet",
+    "shins"
+   ],
+   "meshes": [
+    "arm_emberblade_boots_t2",
+    "arm_emberblade_boots_t2_skin"
+   ],
+   "triangles": 4050,
+   "materials": [
+    "gear_arm_emberblade_boots_t2",
+    "skin_hero_emberblade_base"
+   ],
+   "shared_textures": [
+    "../../chars/hero_emberblade_base_skin_c.jpg",
+    "../../chars/hero_emberblade_base_skin_n.jpg",
+    "../../chars/hero_emberblade_base_skin_orm.jpg"
+   ],
+   "bbox": [
+    [
+     -0.186,
+     -0.221,
+     -0.012
+    ],
+    [
+     0.186,
+     0.141,
+     0.466
+    ]
+   ]
+  },
+  {
+   "id": "arm_emberblade_boots_t3",
+   "kind": "armor",
+   "class": "Emberblade",
+   "class_key": "emberblade",
+   "slot": "boots",
+   "look": "t3",
+   "file": "res://assets/gear/armor/arm_emberblade_boots_t3.glb",
+   "hides": [
+    "feet",
+    "shins"
+   ],
+   "meshes": [
+    "arm_emberblade_boots_t3",
+    "arm_emberblade_boots_t3_skin"
+   ],
+   "triangles": 3062,
+   "materials": [
+    "gear_arm_emberblade_boots_t3",
+    "skin_hero_emberblade_base"
+   ],
+   "shared_textures": [
+    "../../chars/hero_emberblade_base_skin_c.jpg",
+    "../../chars/hero_emberblade_base_skin_n.jpg",
+    "../../chars/hero_emberblade_base_skin_orm.jpg"
+   ],
+   "bbox": [
+    [
+     -0.19,
+     -0.223,
+     -0.012
+    ],
+    [
+     0.19,
+     0.14,
+     0.466
+    ]
+   ]
+  },
+  {
+   "id": "arm_emberblade_boots_t4",
+   "kind": "armor",
+   "class": "Emberblade",
+   "class_key": "emberblade",
+   "slot": "boots",
+   "look": "t4",
+   "file": "res://assets/gear/armor/arm_emberblade_boots_t4.glb",
+   "hides": [
+    "feet",
+    "shins"
+   ],
+   "meshes": [
+    "arm_emberblade_boots_t4",
+    "arm_emberblade_boots_t4_skin"
+   ],
+   "triangles": 4055,
+   "materials": [
+    "metal_hero_emberblade",
+    "skin_hero_emberblade_base"
+   ],
+   "shared_textures": [
+    "../../chars/hero_emberblade_base_skin_c.jpg",
+    "../../chars/hero_emberblade_base_skin_n.jpg",
+    "../../chars/hero_emberblade_base_skin_orm.jpg",
+    "../../chars/hero_emberblade_metal_c.jpg",
+    "../../chars/hero_emberblade_metal_n.jpg",
+    "../../chars/hero_emberblade_metal_orm.jpg"
+   ],
+   "bbox": [
+    [
+     -0.187,
+     -0.208,
+     -0.016
+    ],
+    [
+     0.187,
+     0.141,
+     0.494
+    ]
+   ]
+  },
+  {
+   "id": "arm_astromancer_helm_t1",
+   "kind": "armor",
+   "class": "Astromancer",
+   "class_key": "astromancer",
+   "slot": "helm",
+   "look": "t1",
+   "file": "res://assets/gear/armor/arm_astromancer_helm_t1.glb",
+   "hides": [
+    "hair"
+   ],
+   "meshes": [
+    "arm_astromancer_helm_t1"
+   ],
+   "triangles": 3944,
+   "materials": [
+    "gear_arm_astromancer_helm_t1"
+   ],
+   "shared_textures": [],
+   "bbox": [
+    [
+     -0.25,
+     -0.159,
+     1.288
+    ],
+    [
+     0.25,
+     0.163,
+     1.83
+    ]
+   ]
+  },
+  {
+   "id": "arm_astromancer_helm_t2",
+   "kind": "armor",
+   "class": "Astromancer",
+   "class_key": "astromancer",
+   "slot": "helm",
+   "look": "t2",
+   "file": "res://assets/gear/armor/arm_astromancer_helm_t2.glb",
+   "hides": [
+    "hair"
+   ],
+   "meshes": [
+    "arm_astromancer_helm_t2"
+   ],
+   "triangles": 3134,
+   "materials": [
+    "gear_arm_astromancer_helm_t2"
+   ],
+   "shared_textures": [],
+   "bbox": [
+    [
+     -0.144,
+     -0.121,
+     1.422
+    ],
+    [
+     0.144,
+     0.152,
+     1.793
+    ]
+   ]
+  },
+  {
+   "id": "arm_astromancer_helm_t3",
+   "kind": "armor",
+   "class": "Astromancer",
+   "class_key": "astromancer",
+   "slot": "helm",
+   "look": "t3",
+   "file": "res://assets/gear/armor/arm_astromancer_helm_t3.glb",
+   "hides": [
+    "hair"
+   ],
+   "meshes": [
+    "arm_astromancer_helm_t3",
+    "arm_astromancer_helm_t3_emis"
+   ],
+   "triangles": 2452,
+   "materials": [
+    "gear_arm_astromancer_helm_t3",
+    "emis_arm_astromancer_helm_t3"
+   ],
+   "shared_textures": [],
+   "bbox": [
+    [
+     -0.115,
+     -0.113,
+     1.385
+    ],
+    [
+     0.117,
+     0.17,
+     1.967
+    ]
+   ]
+  },
+  {
+   "id": "arm_astromancer_helm_t4",
+   "kind": "armor",
+   "class": "Astromancer",
+   "class_key": "astromancer",
+   "slot": "helm",
+   "look": "t4",
+   "file": "res://assets/gear/armor/arm_astromancer_helm_t4.glb",
+   "hides": [],
+   "meshes": [
+    "arm_astromancer_helm_t4",
+    "arm_astromancer_helm_t4_emis"
+   ],
+   "triangles": 572,
+   "materials": [
+    "gear_arm_astromancer_helm_t4",
+    "emis_arm_astromancer_helm_t4"
+   ],
+   "shared_textures": [],
+   "bbox": [
+    [
+     -0.096,
+     -0.141,
+     1.693
+    ],
+    [
+     0.097,
+     -0.005,
+     1.793
+    ]
+   ]
+  },
+  {
+   "id": "arm_astromancer_chest_t1",
+   "kind": "armor",
+   "class": "Astromancer",
+   "class_key": "astromancer",
+   "slot": "chest",
+   "look": "t1",
+   "file": "res://assets/gear/armor/arm_astromancer_chest_t1.glb",
+   "hides": [
+    "torso",
+    "upper_arms",
+    "wrap_chest"
+   ],
+   "meshes": [
+    "arm_astromancer_chest_t1",
+    "arm_astromancer_chest_t1_skin"
+   ],
+   "triangles": 5479,
+   "materials": [
+    "gear_arm_astromancer_chest_t1",
+    "skin_hero_astromancer_base"
+   ],
+   "shared_textures": [
+    "../../chars/hero_astromancer_base_skin_c.jpg",
+    "../../chars/hero_astromancer_base_skin_n.jpg",
+    "../../chars/hero_astromancer_base_skin_orm.jpg"
+   ],
+   "bbox": [
+    [
+     -0.495,
+     -0.199,
+     0.455
+    ],
+    [
+     0.495,
+     0.212,
+     1.52
+    ]
+   ]
+  },
+  {
+   "id": "arm_astromancer_chest_t2",
+   "kind": "armor",
+   "class": "Astromancer",
+   "class_key": "astromancer",
+   "slot": "chest",
+   "look": "t2",
+   "file": "res://assets/gear/armor/arm_astromancer_chest_t2.glb",
+   "hides": [
+    "torso",
+    "upper_arms",
+    "wrap_chest"
+   ],
+   "meshes": [
+    "arm_astromancer_chest_t2",
+    "arm_astromancer_chest_t2_skin"
+   ],
+   "triangles": 5267,
+   "materials": [
+    "gear_arm_astromancer_chest_t2",
+    "skin_hero_astromancer_base"
+   ],
+   "shared_textures": [
+    "../../chars/hero_astromancer_base_skin_c.jpg",
+    "../../chars/hero_astromancer_base_skin_n.jpg",
+    "../../chars/hero_astromancer_base_skin_orm.jpg"
+   ],
+   "bbox": [
+    [
+     -0.708,
+     -0.188,
+     0.135
+    ],
+    [
+     0.708,
+     0.219,
+     1.52
+    ]
+   ]
+  },
+  {
+   "id": "arm_astromancer_chest_t3",
+   "kind": "armor",
+   "class": "Astromancer",
+   "class_key": "astromancer",
+   "slot": "chest",
+   "look": "t3",
+   "file": "res://assets/gear/armor/arm_astromancer_chest_t3.glb",
+   "hides": [
+    "torso",
+    "upper_arms",
+    "wrap_chest"
+   ],
+   "meshes": [
+    "arm_astromancer_chest_t3",
+    "arm_astromancer_chest_t3_emis"
+   ],
+   "triangles": 9778,
+   "materials": [
+    "gear_arm_astromancer_chest_t3",
+    "emis_arm_astromancer_chest_t3"
+   ],
+   "shared_textures": [],
+   "bbox": [
+    [
+     -0.648,
+     -0.185,
+     0.125
+    ],
+    [
+     0.648,
+     0.204,
+     1.556
+    ]
+   ]
+  },
+  {
+   "id": "arm_astromancer_chest_t4",
+   "kind": "armor",
+   "class": "Astromancer",
+   "class_key": "astromancer",
+   "slot": "chest",
+   "look": "t4",
+   "file": "res://assets/gear/armor/arm_astromancer_chest_t4.glb",
+   "hides": [
+    "torso",
+    "upper_arms",
+    "wrap_chest"
+   ],
+   "meshes": [
+    "arm_astromancer_chest_t4",
+    "arm_astromancer_chest_t4_skin"
+   ],
+   "triangles": 9218,
+   "materials": [
+    "cloth_hero_astromancer",
+    "leather_hero_astromancer",
+    "metal_hero_astromancer",
+    "emis_hero_astromancer",
+    "skin_hero_astromancer_base"
+   ],
+   "shared_textures": [
+    "../../chars/hero_astromancer_base_skin_c.jpg",
+    "../../chars/hero_astromancer_base_skin_n.jpg",
+    "../../chars/hero_astromancer_base_skin_orm.jpg",
+    "../../chars/hero_astromancer_cloth_c.jpg",
+    "../../chars/hero_astromancer_cloth_n.jpg",
+    "../../chars/hero_astromancer_cloth_orm.jpg",
+    "../../chars/hero_astromancer_emis_g.png",
+    "../../chars/hero_astromancer_leather_c.jpg",
+    "../../chars/hero_astromancer_leather_n.jpg",
+    "../../chars/hero_astromancer_leather_orm.jpg",
+    "../../chars/hero_astromancer_metal_c.jpg",
+    "../../chars/hero_astromancer_metal_n.jpg",
+    "../../chars/hero_astromancer_metal_orm.jpg"
+   ],
+   "bbox": [
+    [
+     -0.708,
+     -0.203,
+     0.206
+    ],
+    [
+     0.708,
+     0.308,
+     1.797
+    ]
+   ]
+  },
+  {
+   "id": "arm_astromancer_gloves_t1",
+   "kind": "armor",
+   "class": "Astromancer",
+   "class_key": "astromancer",
+   "slot": "gloves",
+   "look": "t1",
+   "file": "res://assets/gear/armor/arm_astromancer_gloves_t1.glb",
+   "hides": [
+    "hands",
+    "forearms"
+   ],
+   "meshes": [
+    "arm_astromancer_gloves_t1",
+    "arm_astromancer_gloves_t1_skin"
+   ],
+   "triangles": 4454,
+   "materials": [
+    "gear_arm_astromancer_gloves_t1",
+    "skin_hero_astromancer_base"
+   ],
+   "shared_textures": [
+    "../../chars/hero_astromancer_base_skin_c.jpg",
+    "../../chars/hero_astromancer_base_skin_n.jpg",
+    "../../chars/hero_astromancer_base_skin_orm.jpg"
+   ],
+   "bbox": [
+    [
+     -0.983,
+     -0.031,
+     1.351
+    ],
+    [
+     0.983,
+     0.121,
+     1.494
+    ]
+   ]
+  },
+  {
+   "id": "arm_astromancer_gloves_t2",
+   "kind": "armor",
+   "class": "Astromancer",
+   "class_key": "astromancer",
+   "slot": "gloves",
+   "look": "t2",
+   "file": "res://assets/gear/armor/arm_astromancer_gloves_t2.glb",
+   "hides": [
+    "hands"
+   ],
+   "meshes": [
+    "arm_astromancer_gloves_t2"
+   ],
+   "triangles": 3392,
+   "materials": [
+    "gear_arm_astromancer_gloves_t2"
+   ],
+   "shared_textures": [],
+   "bbox": [
+    [
+     -0.987,
+     -0.035,
+     1.347
+    ],
+    [
+     0.987,
+     0.126,
+     1.474
+    ]
+   ]
+  },
+  {
+   "id": "arm_astromancer_gloves_t3",
+   "kind": "armor",
+   "class": "Astromancer",
+   "class_key": "astromancer",
+   "slot": "gloves",
+   "look": "t3",
+   "file": "res://assets/gear/armor/arm_astromancer_gloves_t3.glb",
+   "hides": [
+    "hands",
+    "forearms"
+   ],
+   "meshes": [
+    "arm_astromancer_gloves_t3",
+    "arm_astromancer_gloves_t3_skin"
+   ],
+   "triangles": 4774,
+   "materials": [
+    "gear_arm_astromancer_gloves_t3",
+    "skin_hero_astromancer_base"
+   ],
+   "shared_textures": [
+    "../../chars/hero_astromancer_base_skin_c.jpg",
+    "../../chars/hero_astromancer_base_skin_n.jpg",
+    "../../chars/hero_astromancer_base_skin_orm.jpg"
+   ],
+   "bbox": [
+    [
+     -0.987,
+     -0.035,
+     1.347
+    ],
+    [
+     0.987,
+     0.126,
+     1.492
+    ]
+   ]
+  },
+  {
+   "id": "arm_astromancer_gloves_t4",
+   "kind": "armor",
+   "class": "Astromancer",
+   "class_key": "astromancer",
+   "slot": "gloves",
+   "look": "t4",
+   "file": "res://assets/gear/armor/arm_astromancer_gloves_t4.glb",
+   "hides": [],
+   "meshes": [
+    "arm_astromancer_gloves_t4",
+    "arm_astromancer_gloves_t4_emis"
+   ],
+   "triangles": 2744,
+   "materials": [
+    "gear_arm_astromancer_gloves_t4",
+    "emis_arm_astromancer_gloves_t4"
+   ],
+   "shared_textures": [],
+   "bbox": [
+    [
+     -0.881,
+     0.022,
+     1.404
+    ],
+    [
+     0.881,
+     0.115,
+     1.479
+    ]
+   ]
+  },
+  {
+   "id": "arm_astromancer_pants_t1",
+   "kind": "armor",
+   "class": "Astromancer",
+   "class_key": "astromancer",
+   "slot": "pants",
+   "look": "t1",
+   "file": "res://assets/gear/armor/arm_astromancer_pants_t1.glb",
+   "hides": [
+    "hips",
+    "thighs",
+    "shins",
+    "wrap_loin"
+   ],
+   "meshes": [
+    "arm_astromancer_pants_t1",
+    "arm_astromancer_pants_t1_skin"
+   ],
+   "triangles": 2539,
+   "materials": [
+    "gear_arm_astromancer_pants_t1",
+    "skin_hero_astromancer_base"
+   ],
+   "shared_textures": [
+    "../../chars/hero_astromancer_base_skin_c.jpg",
+    "../../chars/hero_astromancer_base_skin_n.jpg",
+    "../../chars/hero_astromancer_base_skin_orm.jpg"
+   ],
+   "bbox": [
+    [
+     -0.191,
+     -0.141,
+     0.098
+    ],
+    [
+     0.19,
+     0.164,
+     1.021
+    ]
+   ]
+  },
+  {
+   "id": "arm_astromancer_pants_t2",
+   "kind": "armor",
+   "class": "Astromancer",
+   "class_key": "astromancer",
+   "slot": "pants",
+   "look": "t2",
+   "file": "res://assets/gear/armor/arm_astromancer_pants_t2.glb",
+   "hides": [
+    "hips",
+    "thighs",
+    "shins",
+    "wrap_loin"
+   ],
+   "meshes": [
+    "arm_astromancer_pants_t2",
+    "arm_astromancer_pants_t2_skin"
+   ],
+   "triangles": 2372,
+   "materials": [
+    "gear_arm_astromancer_pants_t2",
+    "skin_hero_astromancer_base"
+   ],
+   "shared_textures": [
+    "../../chars/hero_astromancer_base_skin_c.jpg",
+    "../../chars/hero_astromancer_base_skin_n.jpg",
+    "../../chars/hero_astromancer_base_skin_orm.jpg"
+   ],
+   "bbox": [
+    [
+     -0.189,
+     -0.14,
+     0.098
+    ],
+    [
+     0.19,
+     0.165,
+     1.021
+    ]
+   ]
+  },
+  {
+   "id": "arm_astromancer_pants_t3",
+   "kind": "armor",
+   "class": "Astromancer",
+   "class_key": "astromancer",
+   "slot": "pants",
+   "look": "t3",
+   "file": "res://assets/gear/armor/arm_astromancer_pants_t3.glb",
+   "hides": [
+    "hips",
+    "thighs",
+    "shins",
+    "wrap_loin"
+   ],
+   "meshes": [
+    "arm_astromancer_pants_t3",
+    "arm_astromancer_pants_t3_skin"
+   ],
+   "triangles": 2868,
+   "materials": [
+    "gear_arm_astromancer_pants_t3",
+    "skin_hero_astromancer_base"
+   ],
+   "shared_textures": [
+    "../../chars/hero_astromancer_base_skin_c.jpg",
+    "../../chars/hero_astromancer_base_skin_n.jpg",
+    "../../chars/hero_astromancer_base_skin_orm.jpg"
+   ],
+   "bbox": [
+    [
+     -0.191,
+     -0.141,
+     0.098
+    ],
+    [
+     0.192,
+     0.164,
+     1.021
+    ]
+   ]
+  },
+  {
+   "id": "arm_astromancer_pants_t4",
+   "kind": "armor",
+   "class": "Astromancer",
+   "class_key": "astromancer",
+   "slot": "pants",
+   "look": "t4",
+   "file": "res://assets/gear/armor/arm_astromancer_pants_t4.glb",
+   "hides": [],
+   "meshes": [
+    "arm_astromancer_pants_t4"
+   ],
+   "triangles": 498,
+   "materials": [
+    "cloth_hero_astromancer"
+   ],
+   "shared_textures": [
+    "../../chars/hero_astromancer_cloth_c.jpg",
+    "../../chars/hero_astromancer_cloth_n.jpg",
+    "../../chars/hero_astromancer_cloth_orm.jpg"
+   ],
+   "bbox": [
+    [
+     -0.238,
+     -0.185,
+     0.079
+    ],
+    [
+     0.244,
+     0.248,
+     1.06
+    ]
+   ]
+  },
+  {
+   "id": "arm_astromancer_boots_t1",
+   "kind": "armor",
+   "class": "Astromancer",
+   "class_key": "astromancer",
+   "slot": "boots",
+   "look": "t1",
+   "file": "res://assets/gear/armor/arm_astromancer_boots_t1.glb",
+   "hides": [
+    "feet"
+   ],
+   "meshes": [
+    "arm_astromancer_boots_t1",
+    "arm_astromancer_boots_t1_skin"
+   ],
+   "triangles": 2007,
+   "materials": [
+    "gear_arm_astromancer_boots_t1",
+    "skin_hero_astromancer_base"
+   ],
+   "shared_textures": [
+    "../../chars/hero_astromancer_base_skin_c.jpg",
+    "../../chars/hero_astromancer_base_skin_n.jpg",
+    "../../chars/hero_astromancer_base_skin_orm.jpg"
+   ],
+   "bbox": [
+    [
+     -0.171,
+     -0.218,
+     -0.008
+    ],
+    [
+     0.171,
+     0.112,
+     0.262
+    ]
+   ]
+  },
+  {
+   "id": "arm_astromancer_boots_t2",
+   "kind": "armor",
+   "class": "Astromancer",
+   "class_key": "astromancer",
+   "slot": "boots",
+   "look": "t2",
+   "file": "res://assets/gear/armor/arm_astromancer_boots_t2.glb",
+   "hides": [
+    "feet"
+   ],
+   "meshes": [
+    "arm_astromancer_boots_t2",
+    "arm_astromancer_boots_t2_skin"
+   ],
+   "triangles": 2172,
+   "materials": [
+    "gear_arm_astromancer_boots_t2",
+    "skin_hero_astromancer_base"
+   ],
+   "shared_textures": [
+    "../../chars/hero_astromancer_base_skin_c.jpg",
+    "../../chars/hero_astromancer_base_skin_n.jpg",
+    "../../chars/hero_astromancer_base_skin_orm.jpg"
+   ],
+   "bbox": [
+    [
+     -0.171,
+     -0.218,
+     -0.008
+    ],
+    [
+     0.171,
+     0.113,
+     0.209
+    ]
+   ]
+  },
+  {
+   "id": "arm_astromancer_boots_t3",
+   "kind": "armor",
+   "class": "Astromancer",
+   "class_key": "astromancer",
+   "slot": "boots",
+   "look": "t3",
+   "file": "res://assets/gear/armor/arm_astromancer_boots_t3.glb",
+   "hides": [
+    "feet",
+    "shins"
+   ],
+   "meshes": [
+    "arm_astromancer_boots_t3",
+    "arm_astromancer_boots_t3_skin"
+   ],
+   "triangles": 3772,
+   "materials": [
+    "gear_arm_astromancer_boots_t3",
+    "skin_hero_astromancer_base"
+   ],
+   "shared_textures": [
+    "../../chars/hero_astromancer_base_skin_c.jpg",
+    "../../chars/hero_astromancer_base_skin_n.jpg",
+    "../../chars/hero_astromancer_base_skin_orm.jpg"
+   ],
+   "bbox": [
+    [
+     -0.182,
+     -0.218,
+     -0.008
+    ],
+    [
+     0.182,
+     0.149,
+     0.484
+    ]
+   ]
+  },
+  {
+   "id": "arm_astromancer_boots_t4",
+   "kind": "armor",
+   "class": "Astromancer",
+   "class_key": "astromancer",
+   "slot": "boots",
+   "look": "t4",
+   "file": "res://assets/gear/armor/arm_astromancer_boots_t4.glb",
+   "hides": [
+    "feet",
+    "shins"
+   ],
+   "meshes": [
+    "arm_astromancer_boots_t4",
+    "arm_astromancer_boots_t4_skin"
+   ],
+   "triangles": 2556,
+   "materials": [
+    "leather_hero_astromancer",
+    "skin_hero_astromancer_base"
+   ],
+   "shared_textures": [
+    "../../chars/hero_astromancer_base_skin_c.jpg",
+    "../../chars/hero_astromancer_base_skin_n.jpg",
+    "../../chars/hero_astromancer_base_skin_orm.jpg",
+    "../../chars/hero_astromancer_leather_c.jpg",
+    "../../chars/hero_astromancer_leather_n.jpg",
+    "../../chars/hero_astromancer_leather_orm.jpg"
+   ],
+   "bbox": [
+    [
+     -0.171,
+     -0.197,
+     -0.008
+    ],
+    [
+     0.171,
+     0.126,
+     0.484
+    ]
+   ]
+  },
+  {
+   "id": "arm_hunter_helm_t4",
+   "kind": "armor",
+   "class": "Hunter",
+   "class_key": "hunter",
+   "slot": "helm",
+   "look": "t4",
+   "file": "res://assets/gear/armor/arm_hunter_helm_t4.glb",
+   "hides": [
+    "hair",
+    "head"
+   ],
+   "meshes": [
+    "arm_hunter_helm_t4"
+   ],
+   "triangles": 4646,
+   "materials": [
+    "cloth_hero_hunter"
+   ],
+   "shared_textures": [
+    "../../chars/hero_hunter_cloth_c.jpg",
+    "../../chars/hero_hunter_cloth_n.jpg",
+    "../../chars/hero_hunter_cloth_orm.jpg"
+   ],
+   "bbox": [
+    [
+     -0.171,
+     -0.2,
+     1.43
+    ],
+    [
+     0.171,
+     0.186,
+     1.9
+    ]
+   ]
+  },
+  {
+   "id": "arm_hunter_chest_t4",
+   "kind": "armor",
+   "class": "Hunter",
+   "class_key": "hunter",
+   "slot": "chest",
+   "look": "t4",
+   "file": "res://assets/gear/armor/arm_hunter_chest_t4.glb",
+   "hides": [
+    "torso",
+    "upper_arms",
+    "neck",
+    "wrap_chest"
+   ],
+   "meshes": [
+    "arm_hunter_chest_t4",
+    "arm_hunter_chest_t4_skin"
+   ],
+   "triangles": 11599,
+   "materials": [
+    "cloth_hero_hunter",
+    "leather_hero_hunter",
+    "metal_hero_hunter",
+    "emis_hero_hunter",
+    "skin_hero_hunter_base"
+   ],
+   "shared_textures": [
+    "../../chars/hero_hunter_base_skin_c.jpg",
+    "../../chars/hero_hunter_base_skin_n.jpg",
+    "../../chars/hero_hunter_base_skin_orm.jpg",
+    "../../chars/hero_hunter_cloth_c.jpg",
+    "../../chars/hero_hunter_cloth_n.jpg",
+    "../../chars/hero_hunter_cloth_orm.jpg",
+    "../../chars/hero_hunter_emis_g.png",
+    "../../chars/hero_hunter_leather_c.jpg",
+    "../../chars/hero_hunter_leather_n.jpg",
+    "../../chars/hero_hunter_leather_orm.jpg",
+    "../../chars/hero_hunter_metal_c.jpg",
+    "../../chars/hero_hunter_metal_n.jpg",
+    "../../chars/hero_hunter_metal_orm.jpg"
+   ],
+   "bbox": [
+    [
+     -0.712,
+     -0.197,
+     0.765
+    ],
+    [
+     0.712,
+     0.253,
+     1.586
+    ]
+   ]
+  },
+  {
+   "id": "arm_hunter_gloves_t4",
+   "kind": "armor",
+   "class": "Hunter",
+   "class_key": "hunter",
+   "slot": "gloves",
+   "look": "t4",
+   "file": "res://assets/gear/armor/arm_hunter_gloves_t4.glb",
+   "hides": [
+    "hands",
+    "forearms"
+   ],
+   "meshes": [
+    "arm_hunter_gloves_t4",
+    "arm_hunter_gloves_t4_skin"
+   ],
+   "triangles": 4526,
+   "materials": [
+    "leather_hero_hunter",
+    "metal_hero_hunter",
+    "skin_hero_hunter_base"
+   ],
+   "shared_textures": [
+    "../../chars/hero_hunter_base_skin_c.jpg",
+    "../../chars/hero_hunter_base_skin_n.jpg",
+    "../../chars/hero_hunter_base_skin_orm.jpg",
+    "../../chars/hero_hunter_leather_c.jpg",
+    "../../chars/hero_hunter_leather_n.jpg",
+    "../../chars/hero_hunter_leather_orm.jpg",
+    "../../chars/hero_hunter_metal_c.jpg",
+    "../../chars/hero_hunter_metal_n.jpg",
+    "../../chars/hero_hunter_metal_orm.jpg"
+   ],
+   "bbox": [
+    [
+     -0.986,
+     -0.035,
+     1.347
+    ],
+    [
+     0.986,
+     0.127,
+     1.505
+    ]
+   ]
+  },
+  {
+   "id": "arm_hunter_pants_t4",
+   "kind": "armor",
+   "class": "Hunter",
+   "class_key": "hunter",
+   "slot": "pants",
+   "look": "t4",
+   "file": "res://assets/gear/armor/arm_hunter_pants_t4.glb",
+   "hides": [
+    "hips",
+    "thighs",
+    "wrap_loin"
+   ],
+   "meshes": [
+    "arm_hunter_pants_t4"
+   ],
+   "triangles": 1800,
+   "materials": [
+    "cloth_hero_hunter",
+    "leather_hero_hunter"
+   ],
+   "shared_textures": [
+    "../../chars/hero_hunter_cloth_c.jpg",
+    "../../chars/hero_hunter_cloth_n.jpg",
+    "../../chars/hero_hunter_cloth_orm.jpg",
+    "../../chars/hero_hunter_leather_c.jpg",
+    "../../chars/hero_hunter_leather_n.jpg",
+    "../../chars/hero_hunter_leather_orm.jpg"
+   ],
+   "bbox": [
+    [
+     -0.19,
+     -0.138,
+     0.422
+    ],
+    [
+     0.19,
+     0.162,
+     1.034
+    ]
+   ]
+  },
+  {
+   "id": "arm_hunter_boots_t4",
+   "kind": "armor",
+   "class": "Hunter",
+   "class_key": "hunter",
+   "slot": "boots",
+   "look": "t4",
+   "file": "res://assets/gear/armor/arm_hunter_boots_t4.glb",
+   "hides": [
+    "feet",
+    "shins"
+   ],
+   "meshes": [
+    "arm_hunter_boots_t4",
+    "arm_hunter_boots_t4_skin"
+   ],
+   "triangles": 2664,
+   "materials": [
+    "leather_hero_hunter",
+    "skin_hero_hunter_base"
+   ],
+   "shared_textures": [
+    "../../chars/hero_hunter_base_skin_c.jpg",
+    "../../chars/hero_hunter_base_skin_n.jpg",
+    "../../chars/hero_hunter_base_skin_orm.jpg",
+    "../../chars/hero_hunter_leather_c.jpg",
+    "../../chars/hero_hunter_leather_n.jpg",
+    "../../chars/hero_hunter_leather_orm.jpg"
+   ],
+   "bbox": [
+    [
+     -0.174,
+     -0.216,
+     -0.008
+    ],
+    [
+     0.174,
+     0.136,
+     0.484
+    ]
+   ]
+  },
+  {
+   "id": "arm_soulbinder_helm_t1",
+   "kind": "armor",
+   "class": "Soulbinder",
+   "class_key": "soulbinder",
+   "slot": "helm",
+   "look": "t1",
+   "file": "res://assets/gear/armor/arm_soulbinder_helm_t1.glb",
+   "hides": [],
+   "meshes": [
+    "arm_soulbinder_helm_t1"
+   ],
+   "triangles": 1263,
+   "materials": [
+    "gear_arm_soulbinder_helm_t1"
+   ],
+   "shared_textures": [],
+   "bbox": [
+    [
+     -0.093,
+     -0.127,
+     1.538
+    ],
+    [
+     0.094,
+     0.119,
+     1.79
+    ]
+   ]
+  },
+  {
+   "id": "arm_soulbinder_helm_t2",
+   "kind": "armor",
+   "class": "Soulbinder",
+   "class_key": "soulbinder",
+   "slot": "helm",
+   "look": "t2",
+   "file": "res://assets/gear/armor/arm_soulbinder_helm_t2.glb",
+   "hides": [],
+   "meshes": [
+    "arm_soulbinder_helm_t2"
+   ],
+   "triangles": 1876,
+   "materials": [
+    "gear_arm_soulbinder_helm_t2"
+   ],
+   "shared_textures": [],
+   "bbox": [
+    [
+     -0.22,
+     -0.22,
+     1.455
+    ],
+    [
+     0.22,
+     0.205,
+     1.876
+    ]
+   ]
+  },
+  {
+   "id": "arm_soulbinder_helm_t3",
+   "kind": "armor",
+   "class": "Soulbinder",
+   "class_key": "soulbinder",
+   "slot": "helm",
+   "look": "t3",
+   "file": "res://assets/gear/armor/arm_soulbinder_helm_t3.glb",
+   "hides": [],
+   "meshes": [
+    "arm_soulbinder_helm_t3",
+    "arm_soulbinder_helm_t3_emis"
+   ],
+   "triangles": 3846,
+   "materials": [
+    "gear_arm_soulbinder_helm_t3",
+    "emis_arm_soulbinder_helm_t3"
+   ],
+   "shared_textures": [],
+   "bbox": [
+    [
+     -0.171,
+     -0.228,
+     1.455
+    ],
+    [
+     0.171,
+     0.186,
+     1.9
+    ]
+   ]
+  },
+  {
+   "id": "arm_soulbinder_helm_t4",
+   "kind": "armor",
+   "class": "Soulbinder",
+   "class_key": "soulbinder",
+   "slot": "helm",
+   "look": "t4",
+   "file": "res://assets/gear/armor/arm_soulbinder_helm_t4.glb",
+   "hides": [
+    "brows"
+   ],
+   "meshes": [
+    "arm_soulbinder_helm_t4"
+   ],
+   "triangles": 3442,
+   "materials": [
+    "cloth_hero_soulbinder",
+    "bone_hero_soulbinder",
+    "emis_hero_soulbinder"
+   ],
+   "shared_textures": [
+    "../../chars/hero_soulbinder_bone_c.jpg",
+    "../../chars/hero_soulbinder_bone_n.jpg",
+    "../../chars/hero_soulbinder_bone_orm.jpg",
+    "../../chars/hero_soulbinder_cloth_c.jpg",
+    "../../chars/hero_soulbinder_cloth_n.jpg",
+    "../../chars/hero_soulbinder_cloth_orm.jpg",
+    "../../chars/hero_soulbinder_emis_g.png"
+   ],
+   "bbox": [
+    [
+     -0.303,
+     -0.205,
+     1.455
+    ],
+    [
+     0.303,
+     0.205,
+     2.129
+    ]
+   ]
+  },
+  {
+   "id": "arm_soulbinder_chest_t1",
+   "kind": "armor",
+   "class": "Soulbinder",
+   "class_key": "soulbinder",
+   "slot": "chest",
+   "look": "t1",
+   "file": "res://assets/gear/armor/arm_soulbinder_chest_t1.glb",
+   "hides": [
+    "torso"
+   ],
+   "meshes": [
+    "arm_soulbinder_chest_t1",
+    "arm_soulbinder_chest_t1_skin"
+   ],
+   "triangles": 6198,
+   "materials": [
+    "gear_arm_soulbinder_chest_t1",
+    "skin_hero_soulbinder_base"
+   ],
+   "shared_textures": [
+    "../../chars/hero_soulbinder_base_skin_c.jpg",
+    "../../chars/hero_soulbinder_base_skin_n.jpg",
+    "../../chars/hero_soulbinder_base_skin_orm.jpg"
+   ],
+   "bbox": [
+    [
+     -0.366,
+     -0.157,
+     0.622
+    ],
+    [
+     0.247,
+     0.177,
+     1.541
+    ]
+   ]
+  },
+  {
+   "id": "arm_soulbinder_chest_t2",
+   "kind": "armor",
+   "class": "Soulbinder",
+   "class_key": "soulbinder",
+   "slot": "chest",
+   "look": "t2",
+   "file": "res://assets/gear/armor/arm_soulbinder_chest_t2.glb",
+   "hides": [
+    "torso",
+    "upper_arms",
+    "neck"
+   ],
+   "meshes": [
+    "arm_soulbinder_chest_t2",
+    "arm_soulbinder_chest_t2_emis",
+    "arm_soulbinder_chest_t2_skin"
+   ],
+   "triangles": 6044,
+   "materials": [
+    "gear_arm_soulbinder_chest_t2",
+    "emis_arm_soulbinder_chest_t2",
+    "skin_hero_soulbinder_base"
+   ],
+   "shared_textures": [
+    "../../chars/hero_soulbinder_base_skin_c.jpg",
+    "../../chars/hero_soulbinder_base_skin_n.jpg",
+    "../../chars/hero_soulbinder_base_skin_orm.jpg"
+   ],
+   "bbox": [
+    [
+     -0.643,
+     -0.17,
+     0.32
+    ],
+    [
+     0.643,
+     0.204,
+     1.597
+    ]
+   ]
+  },
+  {
+   "id": "arm_soulbinder_chest_t3",
+   "kind": "armor",
+   "class": "Soulbinder",
+   "class_key": "soulbinder",
+   "slot": "chest",
+   "look": "t3",
+   "file": "res://assets/gear/armor/arm_soulbinder_chest_t3.glb",
+   "hides": [
+    "torso",
+    "upper_arms",
+    "neck"
+   ],
+   "meshes": [
+    "arm_soulbinder_chest_t3",
+    "arm_soulbinder_chest_t3_emis",
+    "arm_soulbinder_chest_t3_skin"
+   ],
+   "triangles": 8969,
+   "materials": [
+    "gear_arm_soulbinder_chest_t3",
+    "emis_arm_soulbinder_chest_t3",
+    "skin_hero_soulbinder_base"
+   ],
+   "shared_textures": [
+    "../../chars/hero_soulbinder_base_skin_c.jpg",
+    "../../chars/hero_soulbinder_base_skin_n.jpg",
+    "../../chars/hero_soulbinder_base_skin_orm.jpg"
+   ],
+   "bbox": [
+    [
+     -0.649,
+     -0.176,
+     0.429
+    ],
+    [
+     0.649,
+     0.197,
+     1.597
+    ]
+   ]
+  },
+  {
+   "id": "arm_soulbinder_chest_t4",
+   "kind": "armor",
+   "class": "Soulbinder",
+   "class_key": "soulbinder",
+   "slot": "chest",
+   "look": "t4",
+   "file": "res://assets/gear/armor/arm_soulbinder_chest_t4.glb",
+   "hides": [
+    "torso",
+    "upper_arms"
+   ],
+   "meshes": [
+    "arm_soulbinder_chest_t4",
+    "arm_soulbinder_chest_t4_skin"
+   ],
+   "triangles": 10865,
+   "materials": [
+    "cloth_hero_soulbinder",
+    "leather_hero_soulbinder",
+    "bone_hero_soulbinder",
+    "emis_hero_soulbinder",
+    "skin_hero_soulbinder_base"
+   ],
+   "shared_textures": [
+    "../../chars/hero_soulbinder_base_skin_c.jpg",
+    "../../chars/hero_soulbinder_base_skin_n.jpg",
+    "../../chars/hero_soulbinder_base_skin_orm.jpg",
+    "../../chars/hero_soulbinder_bone_c.jpg",
+    "../../chars/hero_soulbinder_bone_n.jpg",
+    "../../chars/hero_soulbinder_bone_orm.jpg",
+    "../../chars/hero_soulbinder_cloth_c.jpg",
+    "../../chars/hero_soulbinder_cloth_n.jpg",
+    "../../chars/hero_soulbinder_cloth_orm.jpg",
+    "../../chars/hero_soulbinder_emis_g.png",
+    "../../chars/hero_soulbinder_leather_c.jpg",
+    "../../chars/hero_soulbinder_leather_n.jpg",
+    "../../chars/hero_soulbinder_leather_orm.jpg"
+   ],
+   "bbox": [
+    [
+     -0.498,
+     -0.221,
+     0.138
+    ],
+    [
+     0.498,
+     0.312,
+     1.809
+    ]
+   ]
+  },
+  {
+   "id": "arm_soulbinder_gloves_t1",
+   "kind": "armor",
+   "class": "Soulbinder",
+   "class_key": "soulbinder",
+   "slot": "gloves",
+   "look": "t1",
+   "file": "res://assets/gear/armor/arm_soulbinder_gloves_t1.glb",
+   "hides": [
+    "forearms"
+   ],
+   "meshes": [
+    "arm_soulbinder_gloves_t1",
+    "arm_soulbinder_gloves_t1_skin"
+   ],
+   "triangles": 1253,
+   "materials": [
+    "gear_arm_soulbinder_gloves_t1",
+    "skin_hero_soulbinder_base"
+   ],
+   "shared_textures": [
+    "../../chars/hero_soulbinder_base_skin_c.jpg",
+    "../../chars/hero_soulbinder_base_skin_n.jpg",
+    "../../chars/hero_soulbinder_base_skin_orm.jpg"
+   ],
+   "bbox": [
+    [
+     -0.852,
+     0.012,
+     1.364
+    ],
+    [
+     0.852,
+     0.134,
+     1.494
+    ]
+   ]
+  },
+  {
+   "id": "arm_soulbinder_gloves_t2",
+   "kind": "armor",
+   "class": "Soulbinder",
+   "class_key": "soulbinder",
+   "slot": "gloves",
+   "look": "t2",
+   "file": "res://assets/gear/armor/arm_soulbinder_gloves_t2.glb",
+   "hides": [
+    "hands"
+   ],
+   "meshes": [
+    "arm_soulbinder_gloves_t2",
+    "arm_soulbinder_gloves_t2_skin"
+   ],
+   "triangles": 4626,
+   "materials": [
+    "gear_arm_soulbinder_gloves_t2",
+    "skin_hero_soulbinder_base"
+   ],
+   "shared_textures": [
+    "../../chars/hero_soulbinder_base_skin_c.jpg",
+    "../../chars/hero_soulbinder_base_skin_n.jpg",
+    "../../chars/hero_soulbinder_base_skin_orm.jpg"
+   ],
+   "bbox": [
+    [
+     -0.981,
+     -0.028,
+     1.351
+    ],
+    [
+     0.981,
+     0.132,
+     1.487
+    ]
+   ]
+  },
+  {
+   "id": "arm_soulbinder_gloves_t3",
+   "kind": "armor",
+   "class": "Soulbinder",
+   "class_key": "soulbinder",
+   "slot": "gloves",
+   "look": "t3",
+   "file": "res://assets/gear/armor/arm_soulbinder_gloves_t3.glb",
+   "hides": [
+    "hands",
+    "forearms"
+   ],
+   "meshes": [
+    "arm_soulbinder_gloves_t3",
+    "arm_soulbinder_gloves_t3_skin"
+   ],
+   "triangles": 5200,
+   "materials": [
+    "gear_arm_soulbinder_gloves_t3",
+    "skin_hero_soulbinder_base"
+   ],
+   "shared_textures": [
+    "../../chars/hero_soulbinder_base_skin_c.jpg",
+    "../../chars/hero_soulbinder_base_skin_n.jpg",
+    "../../chars/hero_soulbinder_base_skin_orm.jpg"
+   ],
+   "bbox": [
+    [
+     -0.985,
+     -0.033,
+     1.346
+    ],
+    [
+     0.985,
+     0.133,
+     1.511
+    ]
+   ]
+  },
+  {
+   "id": "arm_soulbinder_gloves_t4",
+   "kind": "armor",
+   "class": "Soulbinder",
+   "class_key": "soulbinder",
+   "slot": "gloves",
+   "look": "t4",
+   "file": "res://assets/gear/armor/arm_soulbinder_gloves_t4.glb",
+   "hides": [
+    "forearms"
+   ],
+   "meshes": [
+    "arm_soulbinder_gloves_t4",
+    "arm_soulbinder_gloves_t4_skin"
+   ],
+   "triangles": 1418,
+   "materials": [
+    "cloth_hero_soulbinder",
+    "leather_hero_soulbinder",
+    "skin_hero_soulbinder_base"
+   ],
+   "shared_textures": [
+    "../../chars/hero_soulbinder_base_skin_c.jpg",
+    "../../chars/hero_soulbinder_base_skin_n.jpg",
+    "../../chars/hero_soulbinder_base_skin_orm.jpg",
+    "../../chars/hero_soulbinder_cloth_c.jpg",
+    "../../chars/hero_soulbinder_cloth_n.jpg",
+    "../../chars/hero_soulbinder_cloth_orm.jpg",
+    "../../chars/hero_soulbinder_leather_c.jpg",
+    "../../chars/hero_soulbinder_leather_n.jpg",
+    "../../chars/hero_soulbinder_leather_orm.jpg"
+   ],
+   "bbox": [
+    [
+     -0.755,
+     0.012,
+     1.363
+    ],
+    [
+     0.755,
+     0.14,
+     1.503
+    ]
+   ]
+  },
+  {
+   "id": "arm_soulbinder_pants_t1",
+   "kind": "armor",
+   "class": "Soulbinder",
+   "class_key": "soulbinder",
+   "slot": "pants",
+   "look": "t1",
+   "file": "res://assets/gear/armor/arm_soulbinder_pants_t1.glb",
+   "hides": [
+    "hips",
+    "thighs",
+    "wrap_loin"
+   ],
+   "meshes": [
+    "arm_soulbinder_pants_t1",
+    "arm_soulbinder_pants_t1_skin"
+   ],
+   "triangles": 1941,
+   "materials": [
+    "gear_arm_soulbinder_pants_t1",
+    "skin_hero_soulbinder_base"
+   ],
+   "shared_textures": [
+    "../../chars/hero_soulbinder_base_skin_c.jpg",
+    "../../chars/hero_soulbinder_base_skin_n.jpg",
+    "../../chars/hero_soulbinder_base_skin_orm.jpg"
+   ],
+   "bbox": [
+    [
+     -0.18,
+     -0.117,
+     0.32
+    ],
+    [
+     0.177,
+     0.163,
+     1.03
+    ]
+   ]
+  },
+  {
+   "id": "arm_soulbinder_pants_t2",
+   "kind": "armor",
+   "class": "Soulbinder",
+   "class_key": "soulbinder",
+   "slot": "pants",
+   "look": "t2",
+   "file": "res://assets/gear/armor/arm_soulbinder_pants_t2.glb",
+   "hides": [
+    "hips",
+    "thighs",
+    "shins",
+    "wrap_loin"
+   ],
+   "meshes": [
+    "arm_soulbinder_pants_t2",
+    "arm_soulbinder_pants_t2_skin"
+   ],
+   "triangles": 2589,
+   "materials": [
+    "gear_arm_soulbinder_pants_t2",
+    "skin_hero_soulbinder_base"
+   ],
+   "shared_textures": [
+    "../../chars/hero_soulbinder_base_skin_c.jpg",
+    "../../chars/hero_soulbinder_base_skin_n.jpg",
+    "../../chars/hero_soulbinder_base_skin_orm.jpg"
+   ],
+   "bbox": [
+    [
+     -0.179,
+     -0.119,
+     0.09
+    ],
+    [
+     0.181,
+     0.164,
+     1.03
+    ]
+   ]
+  },
+  {
+   "id": "arm_soulbinder_pants_t3",
+   "kind": "armor",
+   "class": "Soulbinder",
+   "class_key": "soulbinder",
+   "slot": "pants",
+   "look": "t3",
+   "file": "res://assets/gear/armor/arm_soulbinder_pants_t3.glb",
+   "hides": [
+    "hips",
+    "thighs",
+    "shins",
+    "wrap_loin"
+   ],
+   "meshes": [
+    "arm_soulbinder_pants_t3",
+    "arm_soulbinder_pants_t3_skin"
+   ],
+   "triangles": 3297,
+   "materials": [
+    "gear_arm_soulbinder_pants_t3",
+    "skin_hero_soulbinder_base"
+   ],
+   "shared_textures": [
+    "../../chars/hero_soulbinder_base_skin_c.jpg",
+    "../../chars/hero_soulbinder_base_skin_n.jpg",
+    "../../chars/hero_soulbinder_base_skin_orm.jpg"
+   ],
+   "bbox": [
+    [
+     -0.179,
+     -0.124,
+     0.09
+    ],
+    [
+     0.203,
+     0.164,
+     1.03
+    ]
+   ]
+  },
+  {
+   "id": "arm_soulbinder_pants_t4",
+   "kind": "armor",
+   "class": "Soulbinder",
+   "class_key": "soulbinder",
+   "slot": "pants",
+   "look": "t4",
+   "file": "res://assets/gear/armor/arm_soulbinder_pants_t4.glb",
+   "hides": [
+    "hips",
+    "thighs",
+    "shins",
+    "wrap_loin"
+   ],
+   "meshes": [
+    "arm_soulbinder_pants_t4",
+    "arm_soulbinder_pants_t4_skin"
+   ],
+   "triangles": 2320,
+   "materials": [
+    "cloth_hero_soulbinder",
+    "skin_hero_soulbinder_base"
+   ],
+   "shared_textures": [
+    "../../chars/hero_soulbinder_base_skin_c.jpg",
+    "../../chars/hero_soulbinder_base_skin_n.jpg",
+    "../../chars/hero_soulbinder_base_skin_orm.jpg",
+    "../../chars/hero_soulbinder_cloth_c.jpg",
+    "../../chars/hero_soulbinder_cloth_n.jpg",
+    "../../chars/hero_soulbinder_cloth_orm.jpg"
+   ],
+   "bbox": [
+    [
+     -0.177,
+     -0.116,
+     0.09
+    ],
+    [
+     0.177,
+     0.162,
+     1.03
+    ]
+   ]
+  },
+  {
+   "id": "arm_soulbinder_boots_t1",
+   "kind": "armor",
+   "class": "Soulbinder",
+   "class_key": "soulbinder",
+   "slot": "boots",
+   "look": "t1",
+   "file": "res://assets/gear/armor/arm_soulbinder_boots_t1.glb",
+   "hides": [
+    "feet"
+   ],
+   "meshes": [
+    "arm_soulbinder_boots_t1",
+    "arm_soulbinder_boots_t1_skin"
+   ],
+   "triangles": 2781,
+   "materials": [
+    "gear_arm_soulbinder_boots_t1",
+    "skin_hero_soulbinder_base"
+   ],
+   "shared_textures": [
+    "../../chars/hero_soulbinder_base_skin_c.jpg",
+    "../../chars/hero_soulbinder_base_skin_n.jpg",
+    "../../chars/hero_soulbinder_base_skin_orm.jpg"
+   ],
+   "bbox": [
+    [
+     -0.171,
+     -0.22,
+     -0.01
+    ],
+    [
+     0.171,
+     0.109,
+     0.188
+    ]
+   ]
+  },
+  {
+   "id": "arm_soulbinder_boots_t2",
+   "kind": "armor",
+   "class": "Soulbinder",
+   "class_key": "soulbinder",
+   "slot": "boots",
+   "look": "t2",
+   "file": "res://assets/gear/armor/arm_soulbinder_boots_t2.glb",
+   "hides": [
+    "feet",
+    "shins"
+   ],
+   "meshes": [
+    "arm_soulbinder_boots_t2",
+    "arm_soulbinder_boots_t2_skin"
+   ],
+   "triangles": 3306,
+   "materials": [
+    "gear_arm_soulbinder_boots_t2",
+    "skin_hero_soulbinder_base"
+   ],
+   "shared_textures": [
+    "../../chars/hero_soulbinder_base_skin_c.jpg",
+    "../../chars/hero_soulbinder_base_skin_n.jpg",
+    "../../chars/hero_soulbinder_base_skin_orm.jpg"
+   ],
+   "bbox": [
+    [
+     -0.172,
+     -0.221,
+     -0.01
+    ],
+    [
+     0.172,
+     0.132,
+     0.466
+    ]
+   ]
+  },
+  {
+   "id": "arm_soulbinder_boots_t3",
+   "kind": "armor",
+   "class": "Soulbinder",
+   "class_key": "soulbinder",
+   "slot": "boots",
+   "look": "t3",
+   "file": "res://assets/gear/armor/arm_soulbinder_boots_t3.glb",
+   "hides": [
+    "feet",
+    "shins"
+   ],
+   "meshes": [
+    "arm_soulbinder_boots_t3",
+    "arm_soulbinder_boots_t3_skin"
+   ],
+   "triangles": 4056,
+   "materials": [
+    "gear_arm_soulbinder_boots_t3",
+    "skin_hero_soulbinder_base"
+   ],
+   "shared_textures": [
+    "../../chars/hero_soulbinder_base_skin_c.jpg",
+    "../../chars/hero_soulbinder_base_skin_n.jpg",
+    "../../chars/hero_soulbinder_base_skin_orm.jpg"
+   ],
+   "bbox": [
+    [
+     -0.189,
+     -0.221,
+     -0.01
+    ],
+    [
+     0.189,
+     0.144,
+     0.466
+    ]
+   ]
+  },
+  {
+   "id": "arm_soulbinder_boots_t4",
+   "kind": "armor",
+   "class": "Soulbinder",
+   "class_key": "soulbinder",
+   "slot": "boots",
+   "look": "t4",
+   "file": "res://assets/gear/armor/arm_soulbinder_boots_t4.glb",
+   "hides": [
+    "feet",
+    "shins"
+   ],
+   "meshes": [
+    "arm_soulbinder_boots_t4",
+    "arm_soulbinder_boots_t4_skin"
+   ],
+   "triangles": 2916,
+   "materials": [
+    "leather_hero_soulbinder",
+    "skin_hero_soulbinder_base"
+   ],
+   "shared_textures": [
+    "../../chars/hero_soulbinder_base_skin_c.jpg",
+    "../../chars/hero_soulbinder_base_skin_n.jpg",
+    "../../chars/hero_soulbinder_base_skin_orm.jpg",
+    "../../chars/hero_soulbinder_leather_c.jpg",
+    "../../chars/hero_soulbinder_leather_n.jpg",
+    "../../chars/hero_soulbinder_leather_orm.jpg"
+   ],
+   "bbox": [
+    [
+     -0.173,
+     -0.198,
+     -0.01
+    ],
+    [
+     0.173,
+     0.132,
+     0.466
+    ]
+   ]
+  },
+  {
+   "id": "arm_wildsoul_helm_t1",
+   "kind": "armor",
+   "class": "Wildsoul",
+   "class_key": "wildsoul",
+   "slot": "helm",
+   "look": "t1",
+   "file": "res://assets/gear/armor/arm_wildsoul_helm_t1.glb",
+   "hides": [],
+   "meshes": [
+    "arm_wildsoul_helm_t1"
+   ],
+   "triangles": 590,
+   "materials": [
+    "gear_arm_wildsoul_helm_t1"
+   ],
+   "shared_textures": [],
+   "bbox": [
+    [
+     -0.105,
+     -0.132,
+     1.585
+    ],
+    [
+     0.242,
+     0.145,
+     1.892
+    ]
+   ]
+  },
+  {
+   "id": "arm_wildsoul_helm_t2",
+   "kind": "armor",
+   "class": "Wildsoul",
+   "class_key": "wildsoul",
+   "slot": "helm",
+   "look": "t2",
+   "file": "res://assets/gear/armor/arm_wildsoul_helm_t2.glb",
+   "hides": [
+    "hair"
+   ],
+   "meshes": [
+    "arm_wildsoul_helm_t2"
+   ],
+   "triangles": 1875,
+   "materials": [
+    "gear_arm_wildsoul_helm_t2"
+   ],
+   "shared_textures": [],
+   "bbox": [
+    [
+     -0.132,
+     -0.15,
+     1.568
+    ],
+    [
+     0.121,
+     0.12,
+     1.838
+    ]
+   ]
+  },
+  {
+   "id": "arm_wildsoul_helm_t3",
+   "kind": "armor",
+   "class": "Wildsoul",
+   "class_key": "wildsoul",
+   "slot": "helm",
+   "look": "t3",
+   "file": "res://assets/gear/armor/arm_wildsoul_helm_t3.glb",
+   "hides": [
+    "hair"
+   ],
+   "meshes": [
+    "arm_wildsoul_helm_t3",
+    "arm_wildsoul_helm_t3_emis"
+   ],
+   "triangles": 3479,
+   "materials": [
+    "gear_arm_wildsoul_helm_t3",
+    "emis_arm_wildsoul_helm_t3"
+   ],
+   "shared_textures": [],
+   "bbox": [
+    [
+     -0.262,
+     -0.252,
+     1.415
+    ],
+    [
+     0.262,
+     0.229,
+     2.227
+    ]
+   ]
+  },
+  {
+   "id": "arm_wildsoul_helm_t4",
+   "kind": "armor",
+   "class": "Wildsoul",
+   "class_key": "wildsoul",
+   "slot": "helm",
+   "look": "t4",
+   "file": "res://assets/gear/armor/arm_wildsoul_helm_t4.glb",
+   "hides": [
+    "hair"
+   ],
+   "meshes": [
+    "arm_wildsoul_helm_t4"
+   ],
+   "triangles": 3060,
+   "materials": [
+    "cloth_hero_wildsoul",
+    "leather_hero_wildsoul",
+    "bone_hero_wildsoul",
+    "emis_hero_wildsoul"
+   ],
+   "shared_textures": [
+    "../../chars/hero_wildsoul_bone_c.jpg",
+    "../../chars/hero_wildsoul_bone_n.jpg",
+    "../../chars/hero_wildsoul_bone_orm.jpg",
+    "../../chars/hero_wildsoul_cloth_c.jpg",
+    "../../chars/hero_wildsoul_cloth_n.jpg",
+    "../../chars/hero_wildsoul_cloth_orm.jpg",
+    "../../chars/hero_wildsoul_emis_g.png",
+    "../../chars/hero_wildsoul_leather_c.jpg",
+    "../../chars/hero_wildsoul_leather_n.jpg",
+    "../../chars/hero_wildsoul_leather_orm.jpg"
+   ],
+   "bbox": [
+    [
+     -0.223,
+     -0.271,
+     1.425
+    ],
+    [
+     0.21,
+     0.226,
+     1.993
+    ]
+   ]
+  },
+  {
+   "id": "arm_wildsoul_chest_t1",
+   "kind": "armor",
+   "class": "Wildsoul",
+   "class_key": "wildsoul",
+   "slot": "chest",
+   "look": "t1",
+   "file": "res://assets/gear/armor/arm_wildsoul_chest_t1.glb",
+   "hides": [
+    "torso"
+   ],
+   "meshes": [
+    "arm_wildsoul_chest_t1",
+    "arm_wildsoul_chest_t1_skin"
+   ],
+   "triangles": 5519,
+   "materials": [
+    "gear_arm_wildsoul_chest_t1",
+    "skin_hero_wildsoul_base"
+   ],
+   "shared_textures": [
+    "../../chars/hero_wildsoul_base_skin_c.jpg",
+    "../../chars/hero_wildsoul_base_skin_n.jpg",
+    "../../chars/hero_wildsoul_base_skin_orm.jpg"
+   ],
+   "bbox": [
+    [
+     -0.228,
+     -0.172,
+     0.637
+    ],
+    [
+     0.402,
+     0.223,
+     1.569
+    ]
+   ]
+  },
+  {
+   "id": "arm_wildsoul_chest_t2",
+   "kind": "armor",
+   "class": "Wildsoul",
+   "class_key": "wildsoul",
+   "slot": "chest",
+   "look": "t2",
+   "file": "res://assets/gear/armor/arm_wildsoul_chest_t2.glb",
+   "hides": [
+    "torso"
+   ],
+   "meshes": [
+    "arm_wildsoul_chest_t2",
+    "arm_wildsoul_chest_t2_skin"
+   ],
+   "triangles": 4918,
+   "materials": [
+    "gear_arm_wildsoul_chest_t2",
+    "skin_hero_wildsoul_base"
+   ],
+   "shared_textures": [
+    "../../chars/hero_wildsoul_base_skin_c.jpg",
+    "../../chars/hero_wildsoul_base_skin_n.jpg",
+    "../../chars/hero_wildsoul_base_skin_orm.jpg"
+   ],
+   "bbox": [
+    [
+     -0.228,
+     -0.167,
+     0.728
+    ],
+    [
+     0.229,
+     0.192,
+     1.554
+    ]
+   ]
+  },
+  {
+   "id": "arm_wildsoul_chest_t3",
+   "kind": "armor",
+   "class": "Wildsoul",
+   "class_key": "wildsoul",
+   "slot": "chest",
+   "look": "t3",
+   "file": "res://assets/gear/armor/arm_wildsoul_chest_t3.glb",
+   "hides": [
+    "torso"
+   ],
+   "meshes": [
+    "arm_wildsoul_chest_t3",
+    "arm_wildsoul_chest_t3_emis",
+    "arm_wildsoul_chest_t3_skin"
+   ],
+   "triangles": 8524,
+   "materials": [
+    "gear_arm_wildsoul_chest_t3",
+    "emis_arm_wildsoul_chest_t3",
+    "skin_hero_wildsoul_base"
+   ],
+   "shared_textures": [
+    "../../chars/hero_wildsoul_base_skin_c.jpg",
+    "../../chars/hero_wildsoul_base_skin_n.jpg",
+    "../../chars/hero_wildsoul_base_skin_orm.jpg"
+   ],
+   "bbox": [
+    [
+     -0.45,
+     -0.199,
+     0.48
+    ],
+    [
+     0.449,
+     0.272,
+     1.566
+    ]
+   ]
+  },
+  {
+   "id": "arm_wildsoul_chest_t4",
+   "kind": "armor",
+   "class": "Wildsoul",
+   "class_key": "wildsoul",
+   "slot": "chest",
+   "look": "t4",
+   "file": "res://assets/gear/armor/arm_wildsoul_chest_t4.glb",
+   "hides": [
+    "torso",
+    "upper_arms",
+    "neck"
+   ],
+   "meshes": [
+    "arm_wildsoul_chest_t4",
+    "arm_wildsoul_chest_t4_skin"
+   ],
+   "triangles": 12957,
+   "materials": [
+    "cloth_hero_wildsoul",
+    "leather_hero_wildsoul",
+    "bone_hero_wildsoul",
+    "emis_hero_wildsoul",
+    "skin_hero_wildsoul_base"
+   ],
+   "shared_textures": [
+    "../../chars/hero_wildsoul_base_skin_c.jpg",
+    "../../chars/hero_wildsoul_base_skin_n.jpg",
+    "../../chars/hero_wildsoul_base_skin_orm.jpg",
+    "../../chars/hero_wildsoul_bone_c.jpg",
+    "../../chars/hero_wildsoul_bone_n.jpg",
+    "../../chars/hero_wildsoul_bone_orm.jpg",
+    "../../chars/hero_wildsoul_cloth_c.jpg",
+    "../../chars/hero_wildsoul_cloth_n.jpg",
+    "../../chars/hero_wildsoul_cloth_orm.jpg",
+    "../../chars/hero_wildsoul_emis_g.png",
+    "../../chars/hero_wildsoul_leather_c.jpg",
+    "../../chars/hero_wildsoul_leather_n.jpg",
+    "../../chars/hero_wildsoul_leather_orm.jpg"
+   ],
+   "bbox": [
+    [
+     -0.498,
+     -0.22,
+     0.509
+    ],
+    [
+     0.498,
+     0.314,
+     1.766
+    ]
+   ]
+  },
+  {
+   "id": "arm_wildsoul_gloves_t1",
+   "kind": "armor",
+   "class": "Wildsoul",
+   "class_key": "wildsoul",
+   "slot": "gloves",
+   "look": "t1",
+   "file": "res://assets/gear/armor/arm_wildsoul_gloves_t1.glb",
+   "hides": [
+    "forearms"
+   ],
+   "meshes": [
+    "arm_wildsoul_gloves_t1",
+    "arm_wildsoul_gloves_t1_skin"
+   ],
+   "triangles": 2094,
+   "materials": [
+    "gear_arm_wildsoul_gloves_t1",
+    "skin_hero_wildsoul_base"
+   ],
+   "shared_textures": [
+    "../../chars/hero_wildsoul_base_skin_c.jpg",
+    "../../chars/hero_wildsoul_base_skin_n.jpg",
+    "../../chars/hero_wildsoul_base_skin_orm.jpg"
+   ],
+   "bbox": [
+    [
+     -0.754,
+     0.014,
+     1.352
+    ],
+    [
+     0.754,
+     0.143,
+     1.501
+    ]
+   ]
+  },
+  {
+   "id": "arm_wildsoul_gloves_t2",
+   "kind": "armor",
+   "class": "Wildsoul",
+   "class_key": "wildsoul",
+   "slot": "gloves",
+   "look": "t2",
+   "file": "res://assets/gear/armor/arm_wildsoul_gloves_t2.glb",
+   "hides": [
+    "forearms"
+   ],
+   "meshes": [
+    "arm_wildsoul_gloves_t2",
+    "arm_wildsoul_gloves_t2_skin"
+   ],
+   "triangles": 2806,
+   "materials": [
+    "gear_arm_wildsoul_gloves_t2",
+    "skin_hero_wildsoul_base"
+   ],
+   "shared_textures": [
+    "../../chars/hero_wildsoul_base_skin_c.jpg",
+    "../../chars/hero_wildsoul_base_skin_n.jpg",
+    "../../chars/hero_wildsoul_base_skin_orm.jpg"
+   ],
+   "bbox": [
+    [
+     -0.754,
+     0.009,
+     1.339
+    ],
+    [
+     0.754,
+     0.156,
+     1.518
+    ]
+   ]
+  },
+  {
+   "id": "arm_wildsoul_gloves_t3",
+   "kind": "armor",
+   "class": "Wildsoul",
+   "class_key": "wildsoul",
+   "slot": "gloves",
+   "look": "t3",
+   "file": "res://assets/gear/armor/arm_wildsoul_gloves_t3.glb",
+   "hides": [
+    "forearms"
+   ],
+   "meshes": [
+    "arm_wildsoul_gloves_t3",
+    "arm_wildsoul_gloves_t3_emis",
+    "arm_wildsoul_gloves_t3_skin"
+   ],
+   "triangles": 1936,
+   "materials": [
+    "gear_arm_wildsoul_gloves_t3",
+    "emis_arm_wildsoul_gloves_t3",
+    "skin_hero_wildsoul_base"
+   ],
+   "shared_textures": [
+    "../../chars/hero_wildsoul_base_skin_c.jpg",
+    "../../chars/hero_wildsoul_base_skin_n.jpg",
+    "../../chars/hero_wildsoul_base_skin_orm.jpg"
+   ],
+   "bbox": [
+    [
+     -0.754,
+     0.002,
+     1.344
+    ],
+    [
+     0.754,
+     0.162,
+     1.523
+    ]
+   ]
+  },
+  {
+   "id": "arm_wildsoul_gloves_t4",
+   "kind": "armor",
+   "class": "Wildsoul",
+   "class_key": "wildsoul",
+   "slot": "gloves",
+   "look": "t4",
+   "file": "res://assets/gear/armor/arm_wildsoul_gloves_t4.glb",
+   "hides": [
+    "forearms"
+   ],
+   "meshes": [
+    "arm_wildsoul_gloves_t4",
+    "arm_wildsoul_gloves_t4_skin"
+   ],
+   "triangles": 1822,
+   "materials": [
+    "cloth_hero_wildsoul",
+    "leather_hero_wildsoul",
+    "emis_hero_wildsoul",
+    "skin_hero_wildsoul_base"
+   ],
+   "shared_textures": [
+    "../../chars/hero_wildsoul_base_skin_c.jpg",
+    "../../chars/hero_wildsoul_base_skin_n.jpg",
+    "../../chars/hero_wildsoul_base_skin_orm.jpg",
+    "../../chars/hero_wildsoul_cloth_c.jpg",
+    "../../chars/hero_wildsoul_cloth_n.jpg",
+    "../../chars/hero_wildsoul_cloth_orm.jpg",
+    "../../chars/hero_wildsoul_emis_g.png",
+    "../../chars/hero_wildsoul_leather_c.jpg",
+    "../../chars/hero_wildsoul_leather_n.jpg",
+    "../../chars/hero_wildsoul_leather_orm.jpg"
+   ],
+   "bbox": [
+    [
+     -0.844,
+     -0.006,
+     1.341
+    ],
+    [
+     0.844,
+     0.168,
+     1.536
+    ]
+   ]
+  },
+  {
+   "id": "arm_wildsoul_pants_t1",
+   "kind": "armor",
+   "class": "Wildsoul",
+   "class_key": "wildsoul",
+   "slot": "pants",
+   "look": "t1",
+   "file": "res://assets/gear/armor/arm_wildsoul_pants_t1.glb",
+   "hides": [
+    "hips",
+    "thighs",
+    "wrap_loin"
+   ],
+   "meshes": [
+    "arm_wildsoul_pants_t1",
+    "arm_wildsoul_pants_t1_skin"
+   ],
+   "triangles": 2212,
+   "materials": [
+    "gear_arm_wildsoul_pants_t1",
+    "skin_hero_wildsoul_base"
+   ],
+   "shared_textures": [
+    "../../chars/hero_wildsoul_base_skin_c.jpg",
+    "../../chars/hero_wildsoul_base_skin_n.jpg",
+    "../../chars/hero_wildsoul_base_skin_orm.jpg"
+   ],
+   "bbox": [
+    [
+     -0.187,
+     -0.124,
+     0.412
+    ],
+    [
+     0.18,
+     0.166,
+     1.03
+    ]
+   ]
+  },
+  {
+   "id": "arm_wildsoul_pants_t2",
+   "kind": "armor",
+   "class": "Wildsoul",
+   "class_key": "wildsoul",
+   "slot": "pants",
+   "look": "t2",
+   "file": "res://assets/gear/armor/arm_wildsoul_pants_t2.glb",
+   "hides": [
+    "hips",
+    "thighs",
+    "shins",
+    "wrap_loin"
+   ],
+   "meshes": [
+    "arm_wildsoul_pants_t2",
+    "arm_wildsoul_pants_t2_skin"
+   ],
+   "triangles": 3298,
+   "materials": [
+    "gear_arm_wildsoul_pants_t2",
+    "skin_hero_wildsoul_base"
+   ],
+   "shared_textures": [
+    "../../chars/hero_wildsoul_base_skin_c.jpg",
+    "../../chars/hero_wildsoul_base_skin_n.jpg",
+    "../../chars/hero_wildsoul_base_skin_orm.jpg"
+   ],
+   "bbox": [
+    [
+     -0.184,
+     -0.132,
+     0.09
+    ],
+    [
+     0.195,
+     0.168,
+     1.03
+    ]
+   ]
+  },
+  {
+   "id": "arm_wildsoul_pants_t3",
+   "kind": "armor",
+   "class": "Wildsoul",
+   "class_key": "wildsoul",
+   "slot": "pants",
+   "look": "t3",
+   "file": "res://assets/gear/armor/arm_wildsoul_pants_t3.glb",
+   "hides": [
+    "hips",
+    "thighs",
+    "shins",
+    "wrap_loin"
+   ],
+   "meshes": [
+    "arm_wildsoul_pants_t3",
+    "arm_wildsoul_pants_t3_skin"
+   ],
+   "triangles": 3730,
+   "materials": [
+    "gear_arm_wildsoul_pants_t3",
+    "skin_hero_wildsoul_base"
+   ],
+   "shared_textures": [
+    "../../chars/hero_wildsoul_base_skin_c.jpg",
+    "../../chars/hero_wildsoul_base_skin_n.jpg",
+    "../../chars/hero_wildsoul_base_skin_orm.jpg"
+   ],
+   "bbox": [
+    [
+     -0.2,
+     -0.118,
+     0.09
+    ],
+    [
+     0.178,
+     0.169,
+     1.03
+    ]
+   ]
+  },
+  {
+   "id": "arm_wildsoul_pants_t4",
+   "kind": "armor",
+   "class": "Wildsoul",
+   "class_key": "wildsoul",
+   "slot": "pants",
+   "look": "t4",
+   "file": "res://assets/gear/armor/arm_wildsoul_pants_t4.glb",
+   "hides": [
+    "hips",
+    "thighs",
+    "wrap_loin"
+   ],
+   "meshes": [
+    "arm_wildsoul_pants_t4",
+    "arm_wildsoul_pants_t4_skin"
+   ],
+   "triangles": 1331,
+   "materials": [
+    "cloth_hero_wildsoul",
+    "skin_hero_wildsoul_base"
+   ],
+   "shared_textures": [
+    "../../chars/hero_wildsoul_base_skin_c.jpg",
+    "../../chars/hero_wildsoul_base_skin_n.jpg",
+    "../../chars/hero_wildsoul_base_skin_orm.jpg",
+    "../../chars/hero_wildsoul_cloth_c.jpg",
+    "../../chars/hero_wildsoul_cloth_n.jpg",
+    "../../chars/hero_wildsoul_cloth_orm.jpg"
+   ],
+   "bbox": [
+    [
+     -0.178,
+     -0.117,
+     0.341
+    ],
+    [
+     0.178,
+     0.168,
+     1.05
+    ]
+   ]
+  },
+  {
+   "id": "arm_wildsoul_boots_t1",
+   "kind": "armor",
+   "class": "Wildsoul",
+   "class_key": "wildsoul",
+   "slot": "boots",
+   "look": "t1",
+   "file": "res://assets/gear/armor/arm_wildsoul_boots_t1.glb",
+   "hides": [
+    "feet"
+   ],
+   "meshes": [
+    "arm_wildsoul_boots_t1",
+    "arm_wildsoul_boots_t1_skin"
+   ],
+   "triangles": 3424,
+   "materials": [
+    "gear_arm_wildsoul_boots_t1",
+    "skin_hero_wildsoul_base"
+   ],
+   "shared_textures": [
+    "../../chars/hero_wildsoul_base_skin_c.jpg",
+    "../../chars/hero_wildsoul_base_skin_n.jpg",
+    "../../chars/hero_wildsoul_base_skin_orm.jpg"
+   ],
+   "bbox": [
+    [
+     -0.171,
+     -0.22,
+     -0.01
+    ],
+    [
+     0.184,
+     0.134,
+     0.329
+    ]
+   ]
+  },
+  {
+   "id": "arm_wildsoul_boots_t2",
+   "kind": "armor",
+   "class": "Wildsoul",
+   "class_key": "wildsoul",
+   "slot": "boots",
+   "look": "t2",
+   "file": "res://assets/gear/armor/arm_wildsoul_boots_t2.glb",
+   "hides": [
+    "feet",
+    "shins"
+   ],
+   "meshes": [
+    "arm_wildsoul_boots_t2",
+    "arm_wildsoul_boots_t2_skin"
+   ],
+   "triangles": 4525,
+   "materials": [
+    "gear_arm_wildsoul_boots_t2",
+    "skin_hero_wildsoul_base"
+   ],
+   "shared_textures": [
+    "../../chars/hero_wildsoul_base_skin_c.jpg",
+    "../../chars/hero_wildsoul_base_skin_n.jpg",
+    "../../chars/hero_wildsoul_base_skin_orm.jpg"
+   ],
+   "bbox": [
+    [
+     -0.196,
+     -0.221,
+     -0.01
+    ],
+    [
+     0.194,
+     0.152,
+     0.466
+    ]
+   ]
+  },
+  {
+   "id": "arm_wildsoul_boots_t3",
+   "kind": "armor",
+   "class": "Wildsoul",
+   "class_key": "wildsoul",
+   "slot": "boots",
+   "look": "t3",
+   "file": "res://assets/gear/armor/arm_wildsoul_boots_t3.glb",
+   "hides": [
+    "feet",
+    "shins"
+   ],
+   "meshes": [
+    "arm_wildsoul_boots_t3",
+    "arm_wildsoul_boots_t3_skin"
+   ],
+   "triangles": 4617,
+   "materials": [
+    "gear_arm_wildsoul_boots_t3",
+    "skin_hero_wildsoul_base"
+   ],
+   "shared_textures": [
+    "../../chars/hero_wildsoul_base_skin_c.jpg",
+    "../../chars/hero_wildsoul_base_skin_n.jpg",
+    "../../chars/hero_wildsoul_base_skin_orm.jpg"
+   ],
+   "bbox": [
+    [
+     -0.222,
+     -0.221,
+     -0.01
+    ],
+    [
+     0.223,
+     0.154,
+     0.489
+    ]
+   ]
+  },
+  {
+   "id": "arm_wildsoul_boots_t4",
+   "kind": "armor",
+   "class": "Wildsoul",
+   "class_key": "wildsoul",
+   "slot": "boots",
+   "look": "t4",
+   "file": "res://assets/gear/armor/arm_wildsoul_boots_t4.glb",
+   "hides": [
+    "feet",
+    "shins"
+   ],
+   "meshes": [
+    "arm_wildsoul_boots_t4",
+    "arm_wildsoul_boots_t4_skin"
+   ],
+   "triangles": 4210,
+   "materials": [
+    "cloth_hero_wildsoul",
+    "leather_hero_wildsoul",
+    "skin_hero_wildsoul_base"
+   ],
+   "shared_textures": [
+    "../../chars/hero_wildsoul_base_skin_c.jpg",
+    "../../chars/hero_wildsoul_base_skin_n.jpg",
+    "../../chars/hero_wildsoul_base_skin_orm.jpg",
+    "../../chars/hero_wildsoul_cloth_c.jpg",
+    "../../chars/hero_wildsoul_cloth_n.jpg",
+    "../../chars/hero_wildsoul_cloth_orm.jpg",
+    "../../chars/hero_wildsoul_leather_c.jpg",
+    "../../chars/hero_wildsoul_leather_n.jpg",
+    "../../chars/hero_wildsoul_leather_orm.jpg"
+   ],
+   "bbox": [
+    [
+     -0.22,
+     -0.202,
+     -0.01
+    ],
+    [
+     0.229,
+     0.162,
+     0.466
+    ]
+   ]
+  },
+  {
+   "id": "arm_forgebody_helm_t1",
+   "kind": "armor",
+   "class": "Forgebody",
+   "class_key": "forgebody",
+   "slot": "helm",
+   "look": "t1",
+   "file": "res://assets/gear/armor/arm_forgebody_helm_t1.glb",
+   "hides": [],
+   "meshes": [
+    "arm_forgebody_helm_t1"
+   ],
+   "triangles": 399,
+   "materials": [
+    "gear_arm_forgebody_helm_t1"
+   ],
+   "shared_textures": [],
+   "bbox": [
+    [
+     -0.106,
+     -0.112,
+     1.621
+    ],
+    [
+     0.074,
+     0.087,
+     1.771
+    ]
+   ]
+  },
+  {
+   "id": "arm_forgebody_helm_t2",
+   "kind": "armor",
+   "class": "Forgebody",
+   "class_key": "forgebody",
+   "slot": "helm",
+   "look": "t2",
+   "file": "res://assets/gear/armor/arm_forgebody_helm_t2.glb",
+   "hides": [
+    "hair"
+   ],
+   "meshes": [
+    "arm_forgebody_helm_t2"
+   ],
+   "triangles": 1116,
+   "materials": [
+    "gear_arm_forgebody_helm_t2"
+   ],
+   "shared_textures": [],
+   "bbox": [
+    [
+     -0.096,
+     -0.13,
+     1.623
+    ],
+    [
+     0.096,
+     0.116,
+     1.857
+    ]
+   ]
+  },
+  {
+   "id": "arm_forgebody_helm_t3",
+   "kind": "armor",
+   "class": "Forgebody",
+   "class_key": "forgebody",
+   "slot": "helm",
+   "look": "t3",
+   "file": "res://assets/gear/armor/arm_forgebody_helm_t3.glb",
+   "hides": [],
+   "meshes": [
+    "arm_forgebody_helm_t3",
+    "arm_forgebody_helm_t3_emis"
+   ],
+   "triangles": 336,
+   "materials": [
+    "gear_arm_forgebody_helm_t3",
+    "emis_arm_forgebody_helm_t3"
+   ],
+   "shared_textures": [],
+   "bbox": [
+    [
+     -0.084,
+     -0.129,
+     1.713
+    ],
+    [
+     0.084,
+     0.014,
+     1.769
+    ]
+   ]
+  },
+  {
+   "id": "arm_forgebody_helm_t4",
+   "kind": "armor",
+   "class": "Forgebody",
+   "class_key": "forgebody",
+   "slot": "helm",
+   "look": "t4",
+   "file": "res://assets/gear/armor/arm_forgebody_helm_t4.glb",
+   "hides": [],
+   "meshes": [
+    "arm_forgebody_helm_t4"
+   ],
+   "triangles": 532,
+   "materials": [
+    "cloth_hero_forgebody"
+   ],
+   "shared_textures": [
+    "../../chars/hero_forgebody_cloth_c.jpg",
+    "../../chars/hero_forgebody_cloth_n.jpg",
+    "../../chars/hero_forgebody_cloth_orm.jpg"
+   ],
+   "bbox": [
+    [
+     -0.084,
+     -0.117,
+     1.444
+    ],
+    [
+     0.085,
+     0.142,
+     1.76
+    ]
+   ]
+  },
+  {
+   "id": "arm_forgebody_chest_t1",
+   "kind": "armor",
+   "class": "Forgebody",
+   "class_key": "forgebody",
+   "slot": "chest",
+   "look": "t1",
+   "file": "res://assets/gear/armor/arm_forgebody_chest_t1.glb",
+   "hides": [],
+   "meshes": [
+    "arm_forgebody_chest_t1"
+   ],
+   "triangles": 4634,
+   "materials": [
+    "gear_arm_forgebody_chest_t1"
+   ],
+   "shared_textures": [],
+   "bbox": [
+    [
+     -0.231,
+     -0.158,
+     0.718
+    ],
+    [
+     0.226,
+     0.19,
+     1.53
+    ]
+   ]
+  },
+  {
+   "id": "arm_forgebody_chest_t2",
+   "kind": "armor",
+   "class": "Forgebody",
+   "class_key": "forgebody",
+   "slot": "chest",
+   "look": "t2",
+   "file": "res://assets/gear/armor/arm_forgebody_chest_t2.glb",
+   "hides": [
+    "torso"
+   ],
+   "meshes": [
+    "arm_forgebody_chest_t2",
+    "arm_forgebody_chest_t2_skin"
+   ],
+   "triangles": 4181,
+   "materials": [
+    "gear_arm_forgebody_chest_t2",
+    "skin_hero_forgebody_base"
+   ],
+   "shared_textures": [
+    "../../chars/hero_forgebody_base_skin_c.jpg",
+    "../../chars/hero_forgebody_base_skin_n.jpg",
+    "../../chars/hero_forgebody_base_skin_orm.jpg"
+   ],
+   "bbox": [
+    [
+     -0.228,
+     -0.193,
+     0.715
+    ],
+    [
+     0.228,
+     0.197,
+     1.572
+    ]
+   ]
+  },
+  {
+   "id": "arm_forgebody_chest_t3",
+   "kind": "armor",
+   "class": "Forgebody",
+   "class_key": "forgebody",
+   "slot": "chest",
+   "look": "t3",
+   "file": "res://assets/gear/armor/arm_forgebody_chest_t3.glb",
+   "hides": [
+    "torso"
+   ],
+   "meshes": [
+    "arm_forgebody_chest_t3",
+    "arm_forgebody_chest_t3_emis",
+    "arm_forgebody_chest_t3_skin"
+   ],
+   "triangles": 7984,
+   "materials": [
+    "gear_arm_forgebody_chest_t3",
+    "emis_arm_forgebody_chest_t3",
+    "skin_hero_forgebody_base"
+   ],
+   "shared_textures": [
+    "../../chars/hero_forgebody_base_skin_c.jpg",
+    "../../chars/hero_forgebody_base_skin_n.jpg",
+    "../../chars/hero_forgebody_base_skin_orm.jpg"
+   ],
+   "bbox": [
+    [
+     -0.266,
+     -0.155,
+     0.665
+    ],
+    [
+     0.355,
+     0.207,
+     1.639
+    ]
+   ]
+  },
+  {
+   "id": "arm_forgebody_chest_t4",
+   "kind": "armor",
+   "class": "Forgebody",
+   "class_key": "forgebody",
+   "slot": "chest",
+   "look": "t4",
+   "file": "res://assets/gear/armor/arm_forgebody_chest_t4.glb",
+   "hides": [
+    "torso"
+   ],
+   "meshes": [
+    "arm_forgebody_chest_t4",
+    "arm_forgebody_chest_t4_skin"
+   ],
+   "triangles": 8421,
+   "materials": [
+    "cloth_hero_forgebody",
+    "metal_hero_forgebody",
+    "emis_hero_forgebody",
+    "skin_hero_forgebody_base"
+   ],
+   "shared_textures": [
+    "../../chars/hero_forgebody_base_skin_c.jpg",
+    "../../chars/hero_forgebody_base_skin_n.jpg",
+    "../../chars/hero_forgebody_base_skin_orm.jpg",
+    "../../chars/hero_forgebody_cloth_c.jpg",
+    "../../chars/hero_forgebody_cloth_n.jpg",
+    "../../chars/hero_forgebody_cloth_orm.jpg",
+    "../../chars/hero_forgebody_emis_g.png",
+    "../../chars/hero_forgebody_metal_c.jpg",
+    "../../chars/hero_forgebody_metal_n.jpg",
+    "../../chars/hero_forgebody_metal_orm.jpg"
+   ],
+   "bbox": [
+    [
+     -0.483,
+     -0.187,
+     0.599
+    ],
+    [
+     0.498,
+     0.208,
+     1.63
+    ]
+   ]
+  },
+  {
+   "id": "arm_forgebody_gloves_t1",
+   "kind": "armor",
+   "class": "Forgebody",
+   "class_key": "forgebody",
+   "slot": "gloves",
+   "look": "t1",
+   "file": "res://assets/gear/armor/arm_forgebody_gloves_t1.glb",
+   "hides": [
+    "forearms"
+   ],
+   "meshes": [
+    "arm_forgebody_gloves_t1",
+    "arm_forgebody_gloves_t1_skin"
+   ],
+   "triangles": 1148,
+   "materials": [
+    "gear_arm_forgebody_gloves_t1",
+    "skin_hero_forgebody_base"
+   ],
+   "shared_textures": [
+    "../../chars/hero_forgebody_base_skin_c.jpg",
+    "../../chars/hero_forgebody_base_skin_n.jpg",
+    "../../chars/hero_forgebody_base_skin_orm.jpg"
+   ],
+   "bbox": [
+    [
+     -0.852,
+     0.008,
+     1.35
+    ],
+    [
+     0.852,
+     0.147,
+     1.507
+    ]
+   ]
+  },
+  {
+   "id": "arm_forgebody_gloves_t2",
+   "kind": "armor",
+   "class": "Forgebody",
+   "class_key": "forgebody",
+   "slot": "gloves",
+   "look": "t2",
+   "file": "res://assets/gear/armor/arm_forgebody_gloves_t2.glb",
+   "hides": [
+    "forearms"
+   ],
+   "meshes": [
+    "arm_forgebody_gloves_t2",
+    "arm_forgebody_gloves_t2_skin"
+   ],
+   "triangles": 2150,
+   "materials": [
+    "gear_arm_forgebody_gloves_t2",
+    "skin_hero_forgebody_base"
+   ],
+   "shared_textures": [
+    "../../chars/hero_forgebody_base_skin_c.jpg",
+    "../../chars/hero_forgebody_base_skin_n.jpg",
+    "../../chars/hero_forgebody_base_skin_orm.jpg"
+   ],
+   "bbox": [
+    [
+     -0.852,
+     0.008,
+     1.343
+    ],
+    [
+     0.852,
+     0.157,
+     1.51
+    ]
+   ]
+  },
+  {
+   "id": "arm_forgebody_gloves_t3",
+   "kind": "armor",
+   "class": "Forgebody",
+   "class_key": "forgebody",
+   "slot": "gloves",
+   "look": "t3",
+   "file": "res://assets/gear/armor/arm_forgebody_gloves_t3.glb",
+   "hides": [
+    "forearms"
+   ],
+   "meshes": [
+    "arm_forgebody_gloves_t3",
+    "arm_forgebody_gloves_t3_skin"
+   ],
+   "triangles": 2476,
+   "materials": [
+    "gear_arm_forgebody_gloves_t3",
+    "skin_hero_forgebody_base"
+   ],
+   "shared_textures": [
+    "../../chars/hero_forgebody_base_skin_c.jpg",
+    "../../chars/hero_forgebody_base_skin_n.jpg",
+    "../../chars/hero_forgebody_base_skin_orm.jpg"
+   ],
+   "bbox": [
+    [
+     -0.852,
+     0.005,
+     1.337
+    ],
+    [
+     0.852,
+     0.16,
+     1.515
+    ]
+   ]
+  },
+  {
+   "id": "arm_forgebody_gloves_t4",
+   "kind": "armor",
+   "class": "Forgebody",
+   "class_key": "forgebody",
+   "slot": "gloves",
+   "look": "t4",
+   "file": "res://assets/gear/armor/arm_forgebody_gloves_t4.glb",
+   "hides": [
+    "forearms"
+   ],
+   "meshes": [
+    "arm_forgebody_gloves_t4",
+    "arm_forgebody_gloves_t4_skin"
+   ],
+   "triangles": 1772,
+   "materials": [
+    "cloth_hero_forgebody",
+    "leather_hero_forgebody",
+    "skin_hero_forgebody_base"
+   ],
+   "shared_textures": [
+    "../../chars/hero_forgebody_base_skin_c.jpg",
+    "../../chars/hero_forgebody_base_skin_n.jpg",
+    "../../chars/hero_forgebody_base_skin_orm.jpg",
+    "../../chars/hero_forgebody_cloth_c.jpg",
+    "../../chars/hero_forgebody_cloth_n.jpg",
+    "../../chars/hero_forgebody_cloth_orm.jpg",
+    "../../chars/hero_forgebody_leather_c.jpg",
+    "../../chars/hero_forgebody_leather_n.jpg",
+    "../../chars/hero_forgebody_leather_orm.jpg"
+   ],
+   "bbox": [
+    [
+     -0.844,
+     0.007,
+     1.347
+    ],
+    [
+     0.844,
+     0.154,
+     1.516
+    ]
+   ]
+  },
+  {
+   "id": "arm_forgebody_pants_t1",
+   "kind": "armor",
+   "class": "Forgebody",
+   "class_key": "forgebody",
+   "slot": "pants",
+   "look": "t1",
+   "file": "res://assets/gear/armor/arm_forgebody_pants_t1.glb",
+   "hides": [
+    "hips",
+    "thighs",
+    "wrap_loin"
+   ],
+   "meshes": [
+    "arm_forgebody_pants_t1",
+    "arm_forgebody_pants_t1_skin"
+   ],
+   "triangles": 1878,
+   "materials": [
+    "gear_arm_forgebody_pants_t1",
+    "skin_hero_forgebody_base"
+   ],
+   "shared_textures": [
+    "../../chars/hero_forgebody_base_skin_c.jpg",
+    "../../chars/hero_forgebody_base_skin_n.jpg",
+    "../../chars/hero_forgebody_base_skin_orm.jpg"
+   ],
+   "bbox": [
+    [
+     -0.189,
+     -0.129,
+     0.412
+    ],
+    [
+     0.191,
+     0.168,
+     1.03
+    ]
+   ]
+  },
+  {
+   "id": "arm_forgebody_pants_t2",
+   "kind": "armor",
+   "class": "Forgebody",
+   "class_key": "forgebody",
+   "slot": "pants",
+   "look": "t2",
+   "file": "res://assets/gear/armor/arm_forgebody_pants_t2.glb",
+   "hides": [
+    "hips",
+    "thighs",
+    "shins",
+    "wrap_loin"
+   ],
+   "meshes": [
+    "arm_forgebody_pants_t2",
+    "arm_forgebody_pants_t2_skin"
+   ],
+   "triangles": 2624,
+   "materials": [
+    "gear_arm_forgebody_pants_t2",
+    "skin_hero_forgebody_base"
+   ],
+   "shared_textures": [
+    "../../chars/hero_forgebody_base_skin_c.jpg",
+    "../../chars/hero_forgebody_base_skin_n.jpg",
+    "../../chars/hero_forgebody_base_skin_orm.jpg"
+   ],
+   "bbox": [
+    [
+     -0.201,
+     -0.142,
+     0.09
+    ],
+    [
+     0.206,
+     0.169,
+     1.03
+    ]
+   ]
+  },
+  {
+   "id": "arm_forgebody_pants_t3",
+   "kind": "armor",
+   "class": "Forgebody",
+   "class_key": "forgebody",
+   "slot": "pants",
+   "look": "t3",
+   "file": "res://assets/gear/armor/arm_forgebody_pants_t3.glb",
+   "hides": [
+    "hips",
+    "thighs",
+    "shins",
+    "wrap_loin"
+   ],
+   "meshes": [
+    "arm_forgebody_pants_t3",
+    "arm_forgebody_pants_t3_skin"
+   ],
+   "triangles": 3448,
+   "materials": [
+    "gear_arm_forgebody_pants_t3",
+    "skin_hero_forgebody_base"
+   ],
+   "shared_textures": [
+    "../../chars/hero_forgebody_base_skin_c.jpg",
+    "../../chars/hero_forgebody_base_skin_n.jpg",
+    "../../chars/hero_forgebody_base_skin_orm.jpg"
+   ],
+   "bbox": [
+    [
+     -0.194,
+     -0.166,
+     0.09
+    ],
+    [
+     0.191,
+     0.166,
+     1.03
+    ]
+   ]
+  },
+  {
+   "id": "arm_forgebody_pants_t4",
+   "kind": "armor",
+   "class": "Forgebody",
+   "class_key": "forgebody",
+   "slot": "pants",
+   "look": "t4",
+   "file": "res://assets/gear/armor/arm_forgebody_pants_t4.glb",
+   "hides": [
+    "hips",
+    "thighs",
+    "shins",
+    "wrap_loin"
+   ],
+   "meshes": [
+    "arm_forgebody_pants_t4",
+    "arm_forgebody_pants_t4_skin"
+   ],
+   "triangles": 3248,
+   "materials": [
+    "cloth_hero_forgebody",
+    "skin_hero_forgebody_base"
+   ],
+   "shared_textures": [
+    "../../chars/hero_forgebody_base_skin_c.jpg",
+    "../../chars/hero_forgebody_base_skin_n.jpg",
+    "../../chars/hero_forgebody_base_skin_orm.jpg",
+    "../../chars/hero_forgebody_cloth_c.jpg",
+    "../../chars/hero_forgebody_cloth_n.jpg",
+    "../../chars/hero_forgebody_cloth_orm.jpg"
+   ],
+   "bbox": [
+    [
+     -0.212,
+     -0.121,
+     0.09
+    ],
+    [
+     0.212,
+     0.174,
+     1.045
+    ]
+   ]
+  },
+  {
+   "id": "arm_forgebody_boots_t1",
+   "kind": "armor",
+   "class": "Forgebody",
+   "class_key": "forgebody",
+   "slot": "boots",
+   "look": "t1",
+   "file": "res://assets/gear/armor/arm_forgebody_boots_t1.glb",
+   "hides": [
+    "feet",
+    "shins"
+   ],
+   "meshes": [
+    "arm_forgebody_boots_t1",
+    "arm_forgebody_boots_t1_skin"
+   ],
+   "triangles": 3212,
+   "materials": [
+    "gear_arm_forgebody_boots_t1",
+    "skin_hero_forgebody_base"
+   ],
+   "shared_textures": [
+    "../../chars/hero_forgebody_base_skin_c.jpg",
+    "../../chars/hero_forgebody_base_skin_n.jpg",
+    "../../chars/hero_forgebody_base_skin_orm.jpg"
+   ],
+   "bbox": [
+    [
+     -0.17,
+     -0.219,
+     -0.012
+    ],
+    [
+     0.17,
+     0.12,
+     0.466
+    ]
+   ]
+  },
+  {
+   "id": "arm_forgebody_boots_t2",
+   "kind": "armor",
+   "class": "Forgebody",
+   "class_key": "forgebody",
+   "slot": "boots",
+   "look": "t2",
+   "file": "res://assets/gear/armor/arm_forgebody_boots_t2.glb",
+   "hides": [
+    "feet",
+    "shins"
+   ],
+   "meshes": [
+    "arm_forgebody_boots_t2",
+    "arm_forgebody_boots_t2_skin"
+   ],
+   "triangles": 3840,
+   "materials": [
+    "gear_arm_forgebody_boots_t2",
+    "skin_hero_forgebody_base"
+   ],
+   "shared_textures": [
+    "../../chars/hero_forgebody_base_skin_c.jpg",
+    "../../chars/hero_forgebody_base_skin_n.jpg",
+    "../../chars/hero_forgebody_base_skin_orm.jpg"
+   ],
+   "bbox": [
+    [
+     -0.183,
+     -0.219,
+     -0.012
+    ],
+    [
+     0.183,
+     0.132,
+     0.466
+    ]
+   ]
+  },
+  {
+   "id": "arm_forgebody_boots_t3",
+   "kind": "armor",
+   "class": "Forgebody",
+   "class_key": "forgebody",
+   "slot": "boots",
+   "look": "t3",
+   "file": "res://assets/gear/armor/arm_forgebody_boots_t3.glb",
+   "hides": [
+    "feet",
+    "shins"
+   ],
+   "meshes": [
+    "arm_forgebody_boots_t3",
+    "arm_forgebody_boots_t3_skin"
+   ],
+   "triangles": 3970,
+   "materials": [
+    "gear_arm_forgebody_boots_t3",
+    "skin_hero_forgebody_base"
+   ],
+   "shared_textures": [
+    "../../chars/hero_forgebody_base_skin_c.jpg",
+    "../../chars/hero_forgebody_base_skin_n.jpg",
+    "../../chars/hero_forgebody_base_skin_orm.jpg"
+   ],
+   "bbox": [
+    [
+     -0.185,
+     -0.219,
+     -0.012
+    ],
+    [
+     0.185,
+     0.14,
+     0.466
+    ]
+   ]
+  },
+  {
+   "id": "arm_forgebody_boots_t4",
+   "kind": "armor",
+   "class": "Forgebody",
+   "class_key": "forgebody",
+   "slot": "boots",
+   "look": "t4",
+   "file": "res://assets/gear/armor/arm_forgebody_boots_t4.glb",
+   "hides": [
+    "feet",
+    "shins"
+   ],
+   "meshes": [
+    "arm_forgebody_boots_t4",
+    "arm_forgebody_boots_t4_skin"
+   ],
+   "triangles": 3798,
+   "materials": [
+    "cloth_hero_forgebody",
+    "leather_hero_forgebody",
+    "skin_hero_forgebody_base"
+   ],
+   "shared_textures": [
+    "../../chars/hero_forgebody_base_skin_c.jpg",
+    "../../chars/hero_forgebody_base_skin_n.jpg",
+    "../../chars/hero_forgebody_base_skin_orm.jpg",
+    "../../chars/hero_forgebody_cloth_c.jpg",
+    "../../chars/hero_forgebody_cloth_n.jpg",
+    "../../chars/hero_forgebody_cloth_orm.jpg",
+    "../../chars/hero_forgebody_leather_c.jpg",
+    "../../chars/hero_forgebody_leather_n.jpg",
+    "../../chars/hero_forgebody_leather_orm.jpg"
+   ],
+   "bbox": [
+    [
+     -0.185,
+     -0.196,
+     -0.01
+    ],
+    [
+     0.185,
+     0.123,
+     0.466
+    ]
+   ]
+  },
+  {
+   "id": "arm_lampknight_helm_t1",
+   "kind": "armor",
+   "class": "Lampknight",
+   "class_key": "lampknight",
+   "slot": "helm",
+   "look": "t1",
+   "file": "res://assets/gear/armor/arm_lampknight_helm_t1.glb",
+   "hides": [
+    "hair"
+   ],
+   "meshes": [
+    "arm_lampknight_helm_t1"
+   ],
+   "triangles": 1748,
+   "materials": [
+    "gear_arm_lampknight_helm_t1"
+   ],
+   "shared_textures": [],
+   "bbox": [
+    [
+     -0.174,
+     -0.206,
+     1.546
+    ],
+    [
+     0.174,
+     0.186,
+     1.866
+    ]
+   ]
+  },
+  {
+   "id": "arm_lampknight_helm_t2",
+   "kind": "armor",
+   "class": "Lampknight",
+   "class_key": "lampknight",
+   "slot": "helm",
+   "look": "t2",
+   "file": "res://assets/gear/armor/arm_lampknight_helm_t2.glb",
+   "hides": [
+    "hair"
+   ],
+   "meshes": [
+    "arm_lampknight_helm_t2"
+   ],
+   "triangles": 3456,
+   "materials": [
+    "gear_arm_lampknight_helm_t2"
+   ],
+   "shared_textures": [],
+   "bbox": [
+    [
+     -0.115,
+     -0.146,
+     1.501
+    ],
+    [
+     0.115,
+     0.123,
+     1.85
+    ]
+   ]
+  },
+  {
+   "id": "arm_lampknight_helm_t3",
+   "kind": "armor",
+   "class": "Lampknight",
+   "class_key": "lampknight",
+   "slot": "helm",
+   "look": "t3",
+   "file": "res://assets/gear/armor/arm_lampknight_helm_t3.glb",
+   "hides": [
+    "hair"
+   ],
+   "meshes": [
+    "arm_lampknight_helm_t3"
+   ],
+   "triangles": 4488,
+   "materials": [
+    "gear_arm_lampknight_helm_t3"
+   ],
+   "shared_textures": [],
+   "bbox": [
+    [
+     -0.12,
+     -0.14,
+     1.507
+    ],
+    [
+     0.12,
+     0.261,
+     1.919
+    ]
+   ]
+  },
+  {
+   "id": "arm_lampknight_helm_t4",
+   "kind": "armor",
+   "class": "Lampknight",
+   "class_key": "lampknight",
+   "slot": "helm",
+   "look": "t4",
+   "file": "res://assets/gear/armor/arm_lampknight_helm_t4.glb",
+   "hides": [
+    "hair"
+   ],
+   "meshes": [
+    "arm_lampknight_helm_t4"
+   ],
+   "triangles": 2802,
+   "materials": [
+    "metal_hero_lampknight"
+   ],
+   "shared_textures": [
+    "../../chars/hero_lampknight_metal_c.jpg",
+    "../../chars/hero_lampknight_metal_n.jpg",
+    "../../chars/hero_lampknight_metal_orm.jpg"
+   ],
+   "bbox": [
+    [
+     -0.123,
+     -0.151,
+     1.514
+    ],
+    [
+     0.123,
+     0.129,
+     1.856
+    ]
+   ]
+  },
+  {
+   "id": "arm_lampknight_chest_t1",
+   "kind": "armor",
+   "class": "Lampknight",
+   "class_key": "lampknight",
+   "slot": "chest",
+   "look": "t1",
+   "file": "res://assets/gear/armor/arm_lampknight_chest_t1.glb",
+   "hides": [
+    "torso",
+    "upper_arms",
+    "wrap_chest"
+   ],
+   "meshes": [
+    "arm_lampknight_chest_t1",
+    "arm_lampknight_chest_t1_skin"
+   ],
+   "triangles": 6109,
+   "materials": [
+    "gear_arm_lampknight_chest_t1",
+    "skin_hero_lampknight_base"
+   ],
+   "shared_textures": [
+    "../../chars/hero_lampknight_base_skin_c.jpg",
+    "../../chars/hero_lampknight_base_skin_n.jpg",
+    "../../chars/hero_lampknight_base_skin_orm.jpg"
+   ],
+   "bbox": [
+    [
+     -0.495,
+     -0.175,
+     0.799
+    ],
+    [
+     0.495,
+     0.19,
+     1.549
+    ]
+   ]
+  },
+  {
+   "id": "arm_lampknight_chest_t2",
+   "kind": "armor",
+   "class": "Lampknight",
+   "class_key": "lampknight",
+   "slot": "chest",
+   "look": "t2",
+   "file": "res://assets/gear/armor/arm_lampknight_chest_t2.glb",
+   "hides": [
+    "torso",
+    "upper_arms",
+    "wrap_chest"
+   ],
+   "meshes": [
+    "arm_lampknight_chest_t2",
+    "arm_lampknight_chest_t2_skin"
+   ],
+   "triangles": 7092,
+   "materials": [
+    "gear_arm_lampknight_chest_t2",
+    "skin_hero_lampknight_base"
+   ],
+   "shared_textures": [
+    "../../chars/hero_lampknight_base_skin_c.jpg",
+    "../../chars/hero_lampknight_base_skin_n.jpg",
+    "../../chars/hero_lampknight_base_skin_orm.jpg"
+   ],
+   "bbox": [
+    [
+     -0.579,
+     -0.176,
+     0.56
+    ],
+    [
+     0.579,
+     0.198,
+     1.549
+    ]
+   ]
+  },
+  {
+   "id": "arm_lampknight_chest_t3",
+   "kind": "armor",
+   "class": "Lampknight",
+   "class_key": "lampknight",
+   "slot": "chest",
+   "look": "t3",
+   "file": "res://assets/gear/armor/arm_lampknight_chest_t3.glb",
+   "hides": [
+    "torso",
+    "upper_arms",
+    "wrap_chest"
+   ],
+   "meshes": [
+    "arm_lampknight_chest_t3",
+    "arm_lampknight_chest_t3_skin"
+   ],
+   "triangles": 11079,
+   "materials": [
+    "gear_arm_lampknight_chest_t3",
+    "skin_hero_lampknight_base"
+   ],
+   "shared_textures": [
+    "../../chars/hero_lampknight_base_skin_c.jpg",
+    "../../chars/hero_lampknight_base_skin_n.jpg",
+    "../../chars/hero_lampknight_base_skin_orm.jpg"
+   ],
+   "bbox": [
+    [
+     -0.519,
+     -0.214,
+     0.44
+    ],
+    [
+     0.519,
+     0.292,
+     1.573
+    ]
+   ]
+  },
+  {
+   "id": "arm_lampknight_chest_t4",
+   "kind": "armor",
+   "class": "Lampknight",
+   "class_key": "lampknight",
+   "slot": "chest",
+   "look": "t4",
+   "file": "res://assets/gear/armor/arm_lampknight_chest_t4.glb",
+   "hides": [
+    "torso",
+    "upper_arms",
+    "wrap_chest"
+   ],
+   "meshes": [
+    "arm_lampknight_chest_t4",
+    "arm_lampknight_chest_t4_skin"
+   ],
+   "triangles": 14193,
+   "materials": [
+    "cloth_hero_lampknight",
+    "leather_hero_lampknight",
+    "metal_hero_lampknight",
+    "emis_hero_lampknight",
+    "skin_hero_lampknight_base"
+   ],
+   "shared_textures": [
+    "../../chars/hero_lampknight_base_skin_c.jpg",
+    "../../chars/hero_lampknight_base_skin_n.jpg",
+    "../../chars/hero_lampknight_base_skin_orm.jpg",
+    "../../chars/hero_lampknight_cloth_c.jpg",
+    "../../chars/hero_lampknight_cloth_n.jpg",
+    "../../chars/hero_lampknight_cloth_orm.jpg",
+    "../../chars/hero_lampknight_emis_g.png",
+    "../../chars/hero_lampknight_leather_c.jpg",
+    "../../chars/hero_lampknight_leather_n.jpg",
+    "../../chars/hero_lampknight_leather_orm.jpg",
+    "../../chars/hero_lampknight_metal_c.jpg",
+    "../../chars/hero_lampknight_metal_n.jpg",
+    "../../chars/hero_lampknight_metal_orm.jpg"
+   ],
+   "bbox": [
+    [
+     -0.519,
+     -0.216,
+     0.382
+    ],
+    [
+     0.519,
+     0.268,
+     1.996
+    ]
+   ]
+  },
+  {
+   "id": "arm_lampknight_gloves_t1",
+   "kind": "armor",
+   "class": "Lampknight",
+   "class_key": "lampknight",
+   "slot": "gloves",
+   "look": "t1",
+   "file": "res://assets/gear/armor/arm_lampknight_gloves_t1.glb",
+   "hides": [
+    "forearms"
+   ],
+   "meshes": [
+    "arm_lampknight_gloves_t1",
+    "arm_lampknight_gloves_t1_skin"
+   ],
+   "triangles": 1373,
+   "materials": [
+    "gear_arm_lampknight_gloves_t1",
+    "skin_hero_lampknight_base"
+   ],
+   "shared_textures": [
+    "../../chars/hero_lampknight_base_skin_c.jpg",
+    "../../chars/hero_lampknight_base_skin_n.jpg",
+    "../../chars/hero_lampknight_base_skin_orm.jpg"
+   ],
+   "bbox": [
+    [
+     -0.826,
+     0.012,
+     1.384
+    ],
+    [
+     0.826,
+     0.115,
+     1.492
+    ]
+   ]
+  },
+  {
+   "id": "arm_lampknight_gloves_t2",
+   "kind": "armor",
+   "class": "Lampknight",
+   "class_key": "lampknight",
+   "slot": "gloves",
+   "look": "t2",
+   "file": "res://assets/gear/armor/arm_lampknight_gloves_t2.glb",
+   "hides": [
+    "hands",
+    "forearms"
+   ],
+   "meshes": [
+    "arm_lampknight_gloves_t2",
+    "arm_lampknight_gloves_t2_skin"
+   ],
+   "triangles": 4364,
+   "materials": [
+    "gear_arm_lampknight_gloves_t2",
+    "skin_hero_lampknight_base"
+   ],
+   "shared_textures": [
+    "../../chars/hero_lampknight_base_skin_c.jpg",
+    "../../chars/hero_lampknight_base_skin_n.jpg",
+    "../../chars/hero_lampknight_base_skin_orm.jpg"
+   ],
+   "bbox": [
+    [
+     -0.993,
+     -0.041,
+     1.341
+    ],
+    [
+     0.993,
+     0.137,
+     1.506
+    ]
+   ]
+  },
+  {
+   "id": "arm_lampknight_gloves_t3",
+   "kind": "armor",
+   "class": "Lampknight",
+   "class_key": "lampknight",
+   "slot": "gloves",
+   "look": "t3",
+   "file": "res://assets/gear/armor/arm_lampknight_gloves_t3.glb",
+   "hides": [
+    "hands",
+    "forearms"
+   ],
+   "meshes": [
+    "arm_lampknight_gloves_t3",
+    "arm_lampknight_gloves_t3_skin"
+   ],
+   "triangles": 4876,
+   "materials": [
+    "gear_arm_lampknight_gloves_t3",
+    "skin_hero_lampknight_base"
+   ],
+   "shared_textures": [
+    "../../chars/hero_lampknight_base_skin_c.jpg",
+    "../../chars/hero_lampknight_base_skin_n.jpg",
+    "../../chars/hero_lampknight_base_skin_orm.jpg"
+   ],
+   "bbox": [
+    [
+     -0.987,
+     -0.035,
+     1.347
+    ],
+    [
+     0.987,
+     0.162,
+     1.513
+    ]
+   ]
+  },
+  {
+   "id": "arm_lampknight_gloves_t4",
+   "kind": "armor",
+   "class": "Lampknight",
+   "class_key": "lampknight",
+   "slot": "gloves",
+   "look": "t4",
+   "file": "res://assets/gear/armor/arm_lampknight_gloves_t4.glb",
+   "hides": [
+    "hands",
+    "forearms"
+   ],
+   "meshes": [
+    "arm_lampknight_gloves_t4",
+    "arm_lampknight_gloves_t4_skin"
+   ],
+   "triangles": 4254,
+   "materials": [
+    "leather_hero_lampknight",
+    "metal_hero_lampknight",
+    "skin_hero_lampknight_base"
+   ],
+   "shared_textures": [
+    "../../chars/hero_lampknight_base_skin_c.jpg",
+    "../../chars/hero_lampknight_base_skin_n.jpg",
+    "../../chars/hero_lampknight_base_skin_orm.jpg",
+    "../../chars/hero_lampknight_leather_c.jpg",
+    "../../chars/hero_lampknight_leather_n.jpg",
+    "../../chars/hero_lampknight_leather_orm.jpg",
+    "../../chars/hero_lampknight_metal_c.jpg",
+    "../../chars/hero_lampknight_metal_n.jpg",
+    "../../chars/hero_lampknight_metal_orm.jpg"
+   ],
+   "bbox": [
+    [
+     -0.986,
+     -0.034,
+     1.347
+    ],
+    [
+     0.986,
+     0.148,
+     1.507
+    ]
+   ]
+  },
+  {
+   "id": "arm_lampknight_pants_t1",
+   "kind": "armor",
+   "class": "Lampknight",
+   "class_key": "lampknight",
+   "slot": "pants",
+   "look": "t1",
+   "file": "res://assets/gear/armor/arm_lampknight_pants_t1.glb",
+   "hides": [
+    "hips",
+    "thighs",
+    "shins",
+    "wrap_loin"
+   ],
+   "meshes": [
+    "arm_lampknight_pants_t1",
+    "arm_lampknight_pants_t1_skin"
+   ],
+   "triangles": 2653,
+   "materials": [
+    "gear_arm_lampknight_pants_t1",
+    "skin_hero_lampknight_base"
+   ],
+   "shared_textures": [
+    "../../chars/hero_lampknight_base_skin_c.jpg",
+    "../../chars/hero_lampknight_base_skin_n.jpg",
+    "../../chars/hero_lampknight_base_skin_orm.jpg"
+   ],
+   "bbox": [
+    [
+     -0.192,
+     -0.14,
+     0.098
+    ],
+    [
+     0.195,
+     0.168,
+     1.021
+    ]
+   ]
+  },
+  {
+   "id": "arm_lampknight_pants_t2",
+   "kind": "armor",
+   "class": "Lampknight",
+   "class_key": "lampknight",
+   "slot": "pants",
+   "look": "t2",
+   "file": "res://assets/gear/armor/arm_lampknight_pants_t2.glb",
+   "hides": [
+    "hips",
+    "thighs",
+    "shins",
+    "wrap_loin"
+   ],
+   "meshes": [
+    "arm_lampknight_pants_t2",
+    "arm_lampknight_pants_t2_skin"
+   ],
+   "triangles": 2576,
+   "materials": [
+    "gear_arm_lampknight_pants_t2",
+    "skin_hero_lampknight_base"
+   ],
+   "shared_textures": [
+    "../../chars/hero_lampknight_base_skin_c.jpg",
+    "../../chars/hero_lampknight_base_skin_n.jpg",
+    "../../chars/hero_lampknight_base_skin_orm.jpg"
+   ],
+   "bbox": [
+    [
+     -0.191,
+     -0.142,
+     0.098
+    ],
+    [
+     0.192,
+     0.165,
+     1.021
+    ]
+   ]
+  },
+  {
+   "id": "arm_lampknight_pants_t3",
+   "kind": "armor",
+   "class": "Lampknight",
+   "class_key": "lampknight",
+   "slot": "pants",
+   "look": "t3",
+   "file": "res://assets/gear/armor/arm_lampknight_pants_t3.glb",
+   "hides": [
+    "hips",
+    "thighs",
+    "shins",
+    "wrap_loin"
+   ],
+   "meshes": [
+    "arm_lampknight_pants_t3",
+    "arm_lampknight_pants_t3_skin"
+   ],
+   "triangles": 2876,
+   "materials": [
+    "gear_arm_lampknight_pants_t3",
+    "skin_hero_lampknight_base"
+   ],
+   "shared_textures": [
+    "../../chars/hero_lampknight_base_skin_c.jpg",
+    "../../chars/hero_lampknight_base_skin_n.jpg",
+    "../../chars/hero_lampknight_base_skin_orm.jpg"
+   ],
+   "bbox": [
+    [
+     -0.198,
+     -0.154,
+     0.098
+    ],
+    [
+     0.198,
+     0.163,
+     1.021
+    ]
+   ]
+  },
+  {
+   "id": "arm_lampknight_pants_t4",
+   "kind": "armor",
+   "class": "Lampknight",
+   "class_key": "lampknight",
+   "slot": "pants",
+   "look": "t4",
+   "file": "res://assets/gear/armor/arm_lampknight_pants_t4.glb",
+   "hides": [
+    "thighs"
+   ],
+   "meshes": [
+    "arm_lampknight_pants_t4",
+    "arm_lampknight_pants_t4_skin"
+   ],
+   "triangles": 2048,
+   "materials": [
+    "cloth_hero_lampknight",
+    "metal_hero_lampknight",
+    "skin_hero_lampknight_base"
+   ],
+   "shared_textures": [
+    "../../chars/hero_lampknight_base_skin_c.jpg",
+    "../../chars/hero_lampknight_base_skin_n.jpg",
+    "../../chars/hero_lampknight_base_skin_orm.jpg",
+    "../../chars/hero_lampknight_cloth_c.jpg",
+    "../../chars/hero_lampknight_cloth_n.jpg",
+    "../../chars/hero_lampknight_cloth_orm.jpg",
+    "../../chars/hero_lampknight_metal_c.jpg",
+    "../../chars/hero_lampknight_metal_n.jpg",
+    "../../chars/hero_lampknight_metal_orm.jpg"
+   ],
+   "bbox": [
+    [
+     -0.186,
+     -0.132,
+     0.422
+    ],
+    [
+     0.186,
+     0.126,
+     0.838
+    ]
+   ]
+  },
+  {
+   "id": "arm_lampknight_boots_t1",
+   "kind": "armor",
+   "class": "Lampknight",
+   "class_key": "lampknight",
+   "slot": "boots",
+   "look": "t1",
+   "file": "res://assets/gear/armor/arm_lampknight_boots_t1.glb",
+   "hides": [
+    "feet",
+    "shins"
+   ],
+   "meshes": [
+    "arm_lampknight_boots_t1",
+    "arm_lampknight_boots_t1_skin"
+   ],
+   "triangles": 2627,
+   "materials": [
+    "gear_arm_lampknight_boots_t1",
+    "skin_hero_lampknight_base"
+   ],
+   "shared_textures": [
+    "../../chars/hero_lampknight_base_skin_c.jpg",
+    "../../chars/hero_lampknight_base_skin_n.jpg",
+    "../../chars/hero_lampknight_base_skin_orm.jpg"
+   ],
+   "bbox": [
+    [
+     -0.171,
+     -0.218,
+     -0.008
+    ],
+    [
+     0.171,
+     0.126,
+     0.484
+    ]
+   ]
+  },
+  {
+   "id": "arm_lampknight_boots_t2",
+   "kind": "armor",
+   "class": "Lampknight",
+   "class_key": "lampknight",
+   "slot": "boots",
+   "look": "t2",
+   "file": "res://assets/gear/armor/arm_lampknight_boots_t2.glb",
+   "hides": [
+    "feet",
+    "shins"
+   ],
+   "meshes": [
+    "arm_lampknight_boots_t2",
+    "arm_lampknight_boots_t2_skin"
+   ],
+   "triangles": 2830,
+   "materials": [
+    "gear_arm_lampknight_boots_t2",
+    "skin_hero_lampknight_base"
+   ],
+   "shared_textures": [
+    "../../chars/hero_lampknight_base_skin_c.jpg",
+    "../../chars/hero_lampknight_base_skin_n.jpg",
+    "../../chars/hero_lampknight_base_skin_orm.jpg"
+   ],
+   "bbox": [
+    [
+     -0.173,
+     -0.218,
+     -0.008
+    ],
+    [
+     0.173,
+     0.131,
+     0.484
+    ]
+   ]
+  },
+  {
+   "id": "arm_lampknight_boots_t3",
+   "kind": "armor",
+   "class": "Lampknight",
+   "class_key": "lampknight",
+   "slot": "boots",
+   "look": "t3",
+   "file": "res://assets/gear/armor/arm_lampknight_boots_t3.glb",
+   "hides": [
+    "feet",
+    "shins"
+   ],
+   "meshes": [
+    "arm_lampknight_boots_t3",
+    "arm_lampknight_boots_t3_skin"
+   ],
+   "triangles": 2795,
+   "materials": [
+    "gear_arm_lampknight_boots_t3",
+    "skin_hero_lampknight_base"
+   ],
+   "shared_textures": [
+    "../../chars/hero_lampknight_base_skin_c.jpg",
+    "../../chars/hero_lampknight_base_skin_n.jpg",
+    "../../chars/hero_lampknight_base_skin_orm.jpg"
+   ],
+   "bbox": [
+    [
+     -0.174,
+     -0.221,
+     -0.008
+    ],
+    [
+     0.174,
+     0.141,
+     0.484
+    ]
+   ]
+  },
+  {
+   "id": "arm_lampknight_boots_t4",
+   "kind": "armor",
+   "class": "Lampknight",
+   "class_key": "lampknight",
+   "slot": "boots",
+   "look": "t4",
+   "file": "res://assets/gear/armor/arm_lampknight_boots_t4.glb",
+   "hides": [
+    "feet",
+    "shins"
+   ],
+   "meshes": [
+    "arm_lampknight_boots_t4",
+    "arm_lampknight_boots_t4_skin"
+   ],
+   "triangles": 2752,
+   "materials": [
+    "metal_hero_lampknight",
+    "skin_hero_lampknight_base"
+   ],
+   "shared_textures": [
+    "../../chars/hero_lampknight_base_skin_c.jpg",
+    "../../chars/hero_lampknight_base_skin_n.jpg",
+    "../../chars/hero_lampknight_base_skin_orm.jpg",
+    "../../chars/hero_lampknight_metal_c.jpg",
+    "../../chars/hero_lampknight_metal_n.jpg",
+    "../../chars/hero_lampknight_metal_orm.jpg"
+   ],
+   "bbox": [
+    [
+     -0.174,
+     -0.221,
+     -0.008
+    ],
+    [
+     0.174,
+     0.139,
+     0.484
+    ]
+   ]
+  },
+  {
+   "id": "arm_pactbinder_helm_t1",
+   "kind": "armor",
+   "class": "Pactbinder",
+   "class_key": "pactbinder",
+   "slot": "helm",
+   "look": "t1",
+   "file": "res://assets/gear/armor/arm_pactbinder_helm_t1.glb",
+   "hides": [
+    "hair"
+   ],
+   "meshes": [
+    "arm_pactbinder_helm_t1"
+   ],
+   "triangles": 3764,
+   "materials": [
+    "gear_arm_pactbinder_helm_t1"
+   ],
+   "shared_textures": [],
+   "bbox": [
+    [
+     -0.265,
+     -0.175,
+     1.365
+    ],
+    [
+     0.264,
+     0.202,
+     1.899
+    ]
+   ]
+  },
+  {
+   "id": "arm_pactbinder_helm_t4",
+   "kind": "armor",
+   "class": "Pactbinder",
+   "class_key": "pactbinder",
+   "slot": "helm",
+   "look": "t4",
+   "file": "res://assets/gear/armor/arm_pactbinder_helm_t4.glb",
+   "hides": [],
+   "meshes": [
+    "arm_pactbinder_helm_t4"
+   ],
+   "triangles": 366,
+   "materials": [
+    "metal_hero_pactbinder",
+    "emis_hero_pactbinder"
+   ],
+   "shared_textures": [
+    "../../chars/hero_pactbinder_emis_g.png",
+    "../../chars/hero_pactbinder_metal_c.jpg",
+    "../../chars/hero_pactbinder_metal_n.jpg",
+    "../../chars/hero_pactbinder_metal_orm.jpg"
+   ],
+   "bbox": [
+    [
+     -0.093,
+     -0.131,
+     1.713
+    ],
+    [
+     0.12,
+     0.005,
+     1.903
+    ]
+   ]
+  },
+  {
+   "id": "arm_pactbinder_chest_t1",
+   "kind": "armor",
+   "class": "Pactbinder",
+   "class_key": "pactbinder",
+   "slot": "chest",
+   "look": "t1",
+   "file": "res://assets/gear/armor/arm_pactbinder_chest_t1.glb",
+   "hides": [
+    "torso"
+   ],
+   "meshes": [
+    "arm_pactbinder_chest_t1",
+    "arm_pactbinder_chest_t1_skin"
+   ],
+   "triangles": 4538,
+   "materials": [
+    "gear_arm_pactbinder_chest_t1",
+    "skin_hero_pactbinder_base"
+   ],
+   "shared_textures": [
+    "../../chars/hero_pactbinder_base_skin_c.jpg",
+    "../../chars/hero_pactbinder_base_skin_n.jpg",
+    "../../chars/hero_pactbinder_base_skin_orm.jpg"
+   ],
+   "bbox": [
+    [
+     -0.292,
+     -0.158,
+     0.693
+    ],
+    [
+     0.228,
+     0.197,
+     1.599
+    ]
+   ]
+  },
+  {
+   "id": "arm_pactbinder_chest_t4",
+   "kind": "armor",
+   "class": "Pactbinder",
+   "class_key": "pactbinder",
+   "slot": "chest",
+   "look": "t4",
+   "file": "res://assets/gear/armor/arm_pactbinder_chest_t4.glb",
+   "hides": [
+    "torso",
+    "upper_arms",
+    "neck"
+   ],
+   "meshes": [
+    "arm_pactbinder_chest_t4",
+    "arm_pactbinder_chest_t4_skin"
+   ],
+   "triangles": 10423,
+   "materials": [
+    "cloth_hero_pactbinder",
+    "leather_hero_pactbinder",
+    "metal_hero_pactbinder",
+    "emis_hero_pactbinder",
+    "skin_hero_pactbinder_base"
+   ],
+   "shared_textures": [
+    "../../chars/hero_pactbinder_base_skin_c.jpg",
+    "../../chars/hero_pactbinder_base_skin_n.jpg",
+    "../../chars/hero_pactbinder_base_skin_orm.jpg",
+    "../../chars/hero_pactbinder_cloth_c.jpg",
+    "../../chars/hero_pactbinder_cloth_n.jpg",
+    "../../chars/hero_pactbinder_cloth_orm.jpg",
+    "../../chars/hero_pactbinder_emis_g.png",
+    "../../chars/hero_pactbinder_leather_c.jpg",
+    "../../chars/hero_pactbinder_leather_n.jpg",
+    "../../chars/hero_pactbinder_leather_orm.jpg",
+    "../../chars/hero_pactbinder_metal_c.jpg",
+    "../../chars/hero_pactbinder_metal_n.jpg",
+    "../../chars/hero_pactbinder_metal_orm.jpg"
+   ],
+   "bbox": [
+    [
+     -0.68,
+     -0.203,
+     0.336
+    ],
+    [
+     0.498,
+     0.269,
+     1.597
+    ]
+   ]
+  },
+  {
+   "id": "arm_pactbinder_gloves_t1",
+   "kind": "armor",
+   "class": "Pactbinder",
+   "class_key": "pactbinder",
+   "slot": "gloves",
+   "look": "t1",
+   "file": "res://assets/gear/armor/arm_pactbinder_gloves_t1.glb",
+   "hides": [
+    "forearms"
+   ],
+   "meshes": [
+    "arm_pactbinder_gloves_t1",
+    "arm_pactbinder_gloves_t1_emis",
+    "arm_pactbinder_gloves_t1_skin"
+   ],
+   "triangles": 2188,
+   "materials": [
+    "gear_arm_pactbinder_gloves_t1",
+    "emis_arm_pactbinder_gloves_t1",
+    "skin_hero_pactbinder_base"
+   ],
+   "shared_textures": [
+    "../../chars/hero_pactbinder_base_skin_c.jpg",
+    "../../chars/hero_pactbinder_base_skin_n.jpg",
+    "../../chars/hero_pactbinder_base_skin_orm.jpg"
+   ],
+   "bbox": [
+    [
+     -0.852,
+     0.008,
+     1.356
+    ],
+    [
+     0.852,
+     0.137,
+     1.501
+    ]
+   ]
+  },
+  {
+   "id": "arm_pactbinder_gloves_t4",
+   "kind": "armor",
+   "class": "Pactbinder",
+   "class_key": "pactbinder",
+   "slot": "gloves",
+   "look": "t4",
+   "file": "res://assets/gear/armor/arm_pactbinder_gloves_t4.glb",
+   "hides": [
+    "hands",
+    "forearms"
+   ],
+   "meshes": [
+    "arm_pactbinder_gloves_t4",
+    "arm_pactbinder_gloves_t4_skin"
+   ],
+   "triangles": 5866,
+   "materials": [
+    "leather_hero_pactbinder",
+    "metal_hero_pactbinder",
+    "emis_hero_pactbinder",
+    "skin_hero_pactbinder_base"
+   ],
+   "shared_textures": [
+    "../../chars/hero_pactbinder_base_skin_c.jpg",
+    "../../chars/hero_pactbinder_base_skin_n.jpg",
+    "../../chars/hero_pactbinder_base_skin_orm.jpg",
+    "../../chars/hero_pactbinder_emis_g.png",
+    "../../chars/hero_pactbinder_leather_c.jpg",
+    "../../chars/hero_pactbinder_leather_n.jpg",
+    "../../chars/hero_pactbinder_leather_orm.jpg",
+    "../../chars/hero_pactbinder_metal_c.jpg",
+    "../../chars/hero_pactbinder_metal_n.jpg",
+    "../../chars/hero_pactbinder_metal_orm.jpg"
+   ],
+   "bbox": [
+    [
+     -0.985,
+     -0.037,
+     1.345
+    ],
+    [
+     0.984,
+     0.151,
+     1.517
+    ]
+   ]
+  },
+  {
+   "id": "arm_pactbinder_pants_t1",
+   "kind": "armor",
+   "class": "Pactbinder",
+   "class_key": "pactbinder",
+   "slot": "pants",
+   "look": "t1",
+   "file": "res://assets/gear/armor/arm_pactbinder_pants_t1.glb",
+   "hides": [
+    "hips",
+    "thighs",
+    "shins",
+    "wrap_loin"
+   ],
+   "meshes": [
+    "arm_pactbinder_pants_t1",
+    "arm_pactbinder_pants_t1_skin"
+   ],
+   "triangles": 2633,
+   "materials": [
+    "gear_arm_pactbinder_pants_t1",
+    "skin_hero_pactbinder_base"
+   ],
+   "shared_textures": [
+    "../../chars/hero_pactbinder_base_skin_c.jpg",
+    "../../chars/hero_pactbinder_base_skin_n.jpg",
+    "../../chars/hero_pactbinder_base_skin_orm.jpg"
+   ],
+   "bbox": [
+    [
+     -0.179,
+     -0.117,
+     0.09
+    ],
+    [
+     0.178,
+     0.166,
+     1.03
+    ]
+   ]
+  },
+  {
+   "id": "arm_pactbinder_pants_t4",
+   "kind": "armor",
+   "class": "Pactbinder",
+   "class_key": "pactbinder",
+   "slot": "pants",
+   "look": "t4",
+   "file": "res://assets/gear/armor/arm_pactbinder_pants_t4.glb",
+   "hides": [
+    "hips",
+    "thighs",
+    "wrap_loin"
+   ],
+   "meshes": [
+    "arm_pactbinder_pants_t4",
+    "arm_pactbinder_pants_t4_skin"
+   ],
+   "triangles": 1534,
+   "materials": [
+    "cloth_hero_pactbinder",
+    "skin_hero_pactbinder_base"
+   ],
+   "shared_textures": [
+    "../../chars/hero_pactbinder_base_skin_c.jpg",
+    "../../chars/hero_pactbinder_base_skin_n.jpg",
+    "../../chars/hero_pactbinder_base_skin_orm.jpg",
+    "../../chars/hero_pactbinder_cloth_c.jpg",
+    "../../chars/hero_pactbinder_cloth_n.jpg",
+    "../../chars/hero_pactbinder_cloth_orm.jpg"
+   ],
+   "bbox": [
+    [
+     -0.177,
+     -0.117,
+     0.412
+    ],
+    [
+     0.177,
+     0.162,
+     1.03
+    ]
+   ]
+  },
+  {
+   "id": "arm_pactbinder_boots_t1",
+   "kind": "armor",
+   "class": "Pactbinder",
+   "class_key": "pactbinder",
+   "slot": "boots",
+   "look": "t1",
+   "file": "res://assets/gear/armor/arm_pactbinder_boots_t1.glb",
+   "hides": [
+    "feet",
+    "shins"
+   ],
+   "meshes": [
+    "arm_pactbinder_boots_t1",
+    "arm_pactbinder_boots_t1_skin"
+   ],
+   "triangles": 3337,
+   "materials": [
+    "gear_arm_pactbinder_boots_t1",
+    "skin_hero_pactbinder_base"
+   ],
+   "shared_textures": [
+    "../../chars/hero_pactbinder_base_skin_c.jpg",
+    "../../chars/hero_pactbinder_base_skin_n.jpg",
+    "../../chars/hero_pactbinder_base_skin_orm.jpg"
+   ],
+   "bbox": [
+    [
+     -0.202,
+     -0.221,
+     -0.01
+    ],
+    [
+     0.172,
+     0.12,
+     0.466
+    ]
+   ]
+  },
+  {
+   "id": "arm_pactbinder_boots_t4",
+   "kind": "armor",
+   "class": "Pactbinder",
+   "class_key": "pactbinder",
+   "slot": "boots",
+   "look": "t4",
+   "file": "res://assets/gear/armor/arm_pactbinder_boots_t4.glb",
+   "hides": [
+    "feet",
+    "shins"
+   ],
+   "meshes": [
+    "arm_pactbinder_boots_t4",
+    "arm_pactbinder_boots_t4_skin"
+   ],
+   "triangles": 2906,
+   "materials": [
+    "leather_hero_pactbinder",
+    "skin_hero_pactbinder_base"
+   ],
+   "shared_textures": [
+    "../../chars/hero_pactbinder_base_skin_c.jpg",
+    "../../chars/hero_pactbinder_base_skin_n.jpg",
+    "../../chars/hero_pactbinder_base_skin_orm.jpg",
+    "../../chars/hero_pactbinder_leather_c.jpg",
+    "../../chars/hero_pactbinder_leather_n.jpg",
+    "../../chars/hero_pactbinder_leather_orm.jpg"
+   ],
+   "bbox": [
+    [
+     -0.176,
+     -0.199,
+     -0.01
+    ],
+    [
+     0.176,
+     0.133,
+     0.48
+    ]
+   ]
+  }
+ ]
+}

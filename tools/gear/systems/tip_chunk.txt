@@ -1,0 +1,75 @@
+    /// <param name="alsoReplaced">a second worn item this one would also take off (a two-hand weapon clears the off hand;
+    /// an off-hand clears a two-hand weapon): its affixes count as lost and its name is shown.</param>
+    public static string Tooltip(Item it, Item equipped = null, int playerLevel = 99, bool showCompare = true, Item alsoReplaced = null)
+    {
+        var sb = new StringBuilder();
+        var rc = Palette.Rarity(it.Rarity);
+        sb.Append($"[font_size={UiTheme.Fs(NameSize)}][color=#{Hex(rc)}]{it.Name}{(it.Upgrade > 0 ? $" +{it.Upgrade}" : "")}[/color][/font_size]\n");
+
+        if (it.Kind == ItemKind.Gem)
+        {
+            var g = ItemDb.Gem(it.GemId);
+            sb.Append($"[color=#{Hex(Palette.TextDim)}]寶石（{g.Tier} 階）[/color]\n\n");
+            sb.Append($"武器：{StatInfo.Format(g.Weapon.s, g.Weapon.v)}\n防具：{StatInfo.Format(g.Armor.s, g.Armor.v)}\n飾品：{StatInfo.Format(g.Jewel.s, g.Jewel.v)}\n");
+            sb.Append($"\n[color=#{Hex(Palette.TextDim)}]在物品欄中右鍵點擊，再選擇有空插槽的裝備進行鑲嵌。[/color]\n");
+            sb.Append($"[color=#{Hex(Palette.Gold)}]售價 {it.Value}[/color]");
+            return sb.ToString();
+        }
+
+        var gb = it.Gb;
+        string kind = gb != null ? gb.Name : it.Kind == ItemKind.Weapon && it.WeaponClass >= 0 ? ItemDb.WeaponTypeNames[it.WeaponClass] : Names.Kind(it.Kind);
+        string hands = gb == null ? "" : gb.Off ? "　副手" : gb.Hands == 2 ? "　雙手武器" : "　單手武器";
+        sb.Append($"[color=#{Hex(rc)}]{Names.Rarity(it.Rarity)}{kind}[/color][color=#{Hex(Palette.TextDim)}]{hands}　物品強度 {it.Power}[/color]\n");
+        if (it.Kind == ItemKind.Weapon && it.WeaponClass >= 0 && it.WeaponClass < Names.ClassCount)
+            sb.Append($"[color=#{Hex(Palette.TextDim)}]僅限{Names.Class((ClassId)it.WeaponClass)}[/color]\n");
+
+        bool cmp = showCompare && (equipped != null || alsoReplaced != null);
+        if (it.Kind == ItemKind.Weapon)
+        {
+            float dps = it.AvgDmg * it.Aps;
+            sb.Append($"\n[font_size={UiTheme.Fs(FigureSize)}]{dps:0.0}[/font_size] 每秒傷害");
+            if (showCompare && equipped != null && equipped.Kind == ItemKind.Weapon) sb.Append(Delta(dps - equipped.AvgDmg * equipped.Aps, "0.0"));
+            float up = it.BaseMul;
+            sb.Append($"\n[color=#{Hex(Palette.TextDim)}]每擊傷害 {it.DmgMin * up:0}–{it.DmgMax * up:0}　每秒攻擊 {it.Aps:0.00}[/color]\n");
+        }
+        else if (it.Armor > 0)
+        {
+            sb.Append($"\n[font_size={UiTheme.Fs(FigureSize)}]{it.Armor * it.BaseMul:0}[/font_size] 護甲");
+            if (showCompare && equipped != null) sb.Append(Delta(it.Armor * it.BaseMul - equipped.Armor * equipped.BaseMul, "0"));
+            float block = it.BlockChance;
+            if (block > 0) sb.Append($"　[font_size={UiTheme.Fs(FigureSize)}]{block:0.#}%[/font_size] 格擋");
+            sb.Append('\n');
+            if (block > 0) sb.Append($"[color=#{Hex(Palette.TextDim)}]格擋：受到的傷害減半[/color]\n");
+        }
+        if (it.Implicits != null && it.Implicits.Count > 0)
+        {
+            sb.Append('\n');
+            foreach (var a in it.Implicits) sb.Append($"[color=#{Hex(Palette.TextDim)}]◇[/color] {StatInfo.Format(a.Stat, it.Eff(a))}\n");
+        }
+
+        // what the worn piece(s) give, summed per stat, for the deltas and the "lost" lines
+        var worn = new Dictionary<Stat, float>();
+        if (cmp)
+            foreach (var w in new[] { equipped, alsoReplaced })
+                if (w != null) foreach (var o in w.Affixes) worn[o.Stat] = worn.GetValueOrDefault(o.Stat) + w.Eff(o);
+
+        sb.Append('\n');
+        foreach (var a in it.Affixes)
+        {
+            float v = it.Eff(a);
+            string star = a.Tempered ? $"[color=#{Hex(Palette.Gold)}]⚒[/color] " : a.Greater ? $"[color=#{Hex(Palette.Ember)}]✦[/color] " : "◆ ";
+            sb.Append($"{star}{StatInfo.Format(a.Stat, v)}");
+            if (cmp)
+            {
+                float ov = worn.GetValueOrDefault(a.Stat);
+                if (MathF.Abs(v - ov) > 0.05f) sb.Append(Delta(v - ov, StatInfo.IsPct(a.Stat) ? "0.#" : "0", StatInfo.IsPct(a.Stat) ? "%" : ""));
+            }
+            sb.Append('\n');
+        }
+        if (cmp)
+        {
+            foreach (var kv in worn.Where(kv => it.Affixes.All(a => a.Stat != kv.Key)))
+                sb.Append($"[color=#{Hex(Palette.Bad)}]　失去 {StatInfo.Format(kv.Key, kv.Value)}[/color]\n");
+            if (alsoReplaced != null)
+                sb.Append($"[color=#{Hex(Palette.Bad)}]　同時卸下：{alsoReplaced.Name}[/color]\n");
+        }

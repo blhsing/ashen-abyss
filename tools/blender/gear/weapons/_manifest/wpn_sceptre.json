@@ -1,0 +1,94 @@
+{
+ "base": "sceptre",
+ "prefix": "wpn",
+ "atlas_px": 1024,
+ "area_m2": 0.2515,
+ "notes": "",
+ "entries": [
+  {
+   "id": "wpn_sceptre_v1",
+   "kind": "weapon",
+   "base": "sceptre",
+   "file": "res://assets/gear/weapons/wpn_sceptre_v1.glb",
+   "mount": "hand_r",
+   "grip2": null,
+   "length": 0.593,
+   "variant": 1,
+   "hands": 1,
+   "grip": "r",
+   "tris": 3276,
+   "emissive": false,
+   "bbox": [
+    [
+     -0.0343,
+     -0.024,
+     -0.157
+    ],
+    [
+     0.0408,
+     0.024,
+     0.436
+    ]
+   ],
+   "textures": "wpn_sceptre",
+   "atlas_px": 1024
+  },
+  {
+   "id": "wpn_sceptre_v2",
+   "kind": "weapon",
+   "base": "sceptre",
+   "file": "res://assets/gear/weapons/wpn_sceptre_v2.glb",
+   "mount": "hand_r",
+   "grip2": null,
+   "length": 0.669,
+   "variant": 2,
+   "hands": 1,
+   "grip": "r",
+   "tris": 2414,
+   "emissive": false,
+   "bbox": [
+    [
+     -0.0289,
+     -0.0289,
+     -0.15
+    ],
+    [
+     0.0289,
+     0.0289,
+     0.5189
+    ]
+   ],
+   "textures": "wpn_sceptre",
+   "atlas_px": 1024
+  },
+  {
+   "id": "wpn_sceptre_v3",
+   "kind": "weapon",
+   "base": "sceptre",
+   "file": "res://assets/gear/weapons/wpn_sceptre_v3.glb",
+   "mount": "hand_r",
+   "grip2": null,
+   "length": 0.665,
+   "variant": 3,
+   "hands": 1,
+   "grip": "r",
+   "tris": 3320,
+   "emissive": true,
+   "bbox": [
+    [
+     -0.0812,
+     -0.0439,
+     -0.181
+    ],
+    [
+     0.0812,
+     0.0439,
+     0.4843
+    ]
+   ],
+   "textures": "wpn_sceptre",
+   "atlas_px": 1024
+  }
+ ],
+ "built": "2026-11-21 18:41:07"
+}

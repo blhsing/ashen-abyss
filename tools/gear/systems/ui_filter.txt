@@ -1,0 +1,49 @@
+# SYSTEMS: bag filter, bulk marks and hands — screenshots in Y:\shots\gear
+wait 3
+give set
+give common Helm
+give magic Boots
+give common Gloves
+give magic Pants
+give magic Ring
+give rare OffHand
+give common Weapon
+xp 400000
+wait 0.5
+open inventory
+wait 2
+shot sys_inv_lampknight_hands
+hover 1004,533
+wait 1.2
+shot sys_tooltip_verdict
+key L
+wait 0.6
+hover 1060,533
+wait 1.2
+shot sys_tooltip_verdict2
+unhover
+wait 0.3
+shot sys_locked_badge
+key F
+wait 0.8
+shot sys_filter_panel
+click @低於目前等級的普通與魔法
+wait 0.8
+shot sys_filter_preset_lowcommon
+click @全部標記回收
+wait 0.8
+shot sys_filter_marked_recycle
+click @全部非升級
+wait 0.6
+click @全部標記丟棄
+wait 0.8
+shot sys_filter_marked_discard
+key F
+wait 0.8
+shot sys_bag_badges
+click @丟棄（
+wait 0.8
+shot sys_discard_confirm
+key Escape
+wait 0.5
+quit

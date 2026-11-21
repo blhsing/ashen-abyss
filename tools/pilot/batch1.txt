@@ -1,0 +1,5 @@
+18:18:41 emberblade wastes_boss lv5
+   62.135 INF [pilot] TEST FIGHT boss=boss_gravedigger area=wastes_boss killed=True secs=92 deaths=0 heroLevel=5 threats=81 dodged=79 taken=2 dmgTelegraphed=41 dmgOther=283 life=363
+18:20:26 emberblade frost_boss lv10
+  115.740 INF [pilot] TEST FIGHT boss=boss_rimelord area=frost_boss killed=True secs=140 deaths=0 heroLevel=10 threats=108 dodged=91 taken=17 dmgTelegraphed=580 dmgOther=845 life=391
+18:24:17 emberblade crypt_boss lv11

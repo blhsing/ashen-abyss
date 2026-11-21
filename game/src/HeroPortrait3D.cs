@@ -64,6 +64,7 @@ public partial class HeroPortrait3D : Control
 
     private CharModel _model;
     private string _modelId, _idle = "", _wpnSig = "";
+    private string _ownedSig = "";                 // the gear signature whose materials the portrait owns copies of
     private readonly Dictionary<ulong, ShaderMaterial> _mats = new();       // the level's shared material → the portrait's own copy
     private Hero _hero;
     private int _class = -1;                        // shown without a Hero (SetClass)
@@ -190,6 +191,15 @@ public partial class HeroPortrait3D : Control
 
         if (_model == null || id != _modelId) BuildModel(id, cls);
         if (_model == null) return;
+        // the exact equipment (armour pieces, weapons, stance) of the hero, or of the live model when it is the one played
+        if (_model.GearManaged)
+        {
+            var gear = world != null && world.Gear != null && world.ModelId == _model.ModelId ? world.Gear
+                : _hero != null ? GearSet.FromHero(_hero) : GearSet.Starter(cls);
+            _model.SetGear(gear);
+            if (_model.GearSignature != _ownedSig) { OwnMaterials(_model); _ownedSig = _model.GearSignature; }
+            if (form == 0 && _forceId == null) idle = _model.StanceIdle;
+        }
         if (!Mathf.IsEqualApprox(_model.Scale.Y, scale)) { _model.Scale = Vector3.One * scale; _measureDirty = true; }
         if (_idle != idle)
         {
@@ -206,6 +216,7 @@ public partial class HeroPortrait3D : Control
     /// <summary>Shows the weapon meshes the hero shows in the world; returns their names (a change means new bounds).</summary>
     private string SyncWeapons(CharModel world)
     {
+        if (_model.Gear != null) return _model.GearSignature;
         var mine = new List<MeshInstance3D>();
         foreach (var mi in Meshes(_model)) if (IsWeapon(mi)) mine.Add(mi);
         if (mine.Count == 0) return "";
@@ -250,6 +261,8 @@ public partial class HeroPortrait3D : Control
         _modelId = id;
         _pivot.AddChild(m);
         OwnMaterials(m);
+        _ownedSig = m.GearSignature;
+        m.GearChanged += () => { if (IsInstanceValid(this)) _syncPending = true; };     // a loadout that waited for its files arrived
         // the same hint of the class colour on the edges that the hero carries in the world
         m.SetRim(Names.ClassColor(cls) * 0.35f);
         _idle = ""; _wpnSig = "";
@@ -297,6 +310,7 @@ public partial class HeroPortrait3D : Control
             {
                 if (mi.GetSurfaceOverrideMaterial(s) is not ShaderMaterial src || src.Shader == null) continue;
                 if (!src.Shader.ResourcePath.EndsWith("char.gdshader", StringComparison.Ordinal)) continue;
+                if (_mats.ContainsValue(src)) continue;          // already the portrait's own copy (gear changed: only new pieces need one)
                 if (!_mats.TryGetValue(src.GetInstanceId(), out var own))
                 {
                     own = (ShaderMaterial)src.Duplicate();

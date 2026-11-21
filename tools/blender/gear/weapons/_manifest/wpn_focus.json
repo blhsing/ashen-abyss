@@ -1,0 +1,94 @@
+{
+ "base": "focus",
+ "prefix": "wpn",
+ "atlas_px": 1024,
+ "area_m2": 0.2198,
+ "notes": "",
+ "entries": [
+  {
+   "id": "wpn_focus_v1",
+   "kind": "weapon",
+   "base": "focus",
+   "file": "res://assets/gear/weapons/wpn_focus_v1.glb",
+   "mount": "hand_l",
+   "grip2": null,
+   "length": 0.287,
+   "variant": 1,
+   "hands": 1,
+   "grip": "l",
+   "tris": 2030,
+   "emissive": false,
+   "bbox": [
+    [
+     -0.0496,
+     -0.0269,
+     -0.0907
+    ],
+    [
+     0.0529,
+     0.0274,
+     0.196
+    ]
+   ],
+   "textures": "wpn_focus",
+   "atlas_px": 1024
+  },
+  {
+   "id": "wpn_focus_v2",
+   "kind": "weapon",
+   "base": "focus",
+   "file": "res://assets/gear/weapons/wpn_focus_v2.glb",
+   "mount": "hand_l",
+   "grip2": null,
+   "length": 0.299,
+   "variant": 2,
+   "hands": 1,
+   "grip": "l",
+   "tris": 2234,
+   "emissive": true,
+   "bbox": [
+    [
+     -0.0495,
+     -0.0557,
+     -0.098
+    ],
+    [
+     0.0495,
+     0.0434,
+     0.201
+    ]
+   ],
+   "textures": "wpn_focus",
+   "atlas_px": 1024
+  },
+  {
+   "id": "wpn_focus_v3",
+   "kind": "weapon",
+   "base": "focus",
+   "file": "res://assets/gear/weapons/wpn_focus_v3.glb",
+   "mount": "hand_l",
+   "grip2": null,
+   "length": 0.361,
+   "variant": 3,
+   "hands": 1,
+   "grip": "l",
+   "tris": 2814,
+   "emissive": true,
+   "bbox": [
+    [
+     -0.0735,
+     -0.0408,
+     -0.112
+    ],
+    [
+     0.0719,
+     0.0404,
+     0.2486
+    ]
+   ],
+   "textures": "wpn_focus",
+   "atlas_px": 1024
+  }
+ ],
+ "built": "2026-11-21 20:27:45"
+}

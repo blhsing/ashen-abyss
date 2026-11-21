@@ -1,0 +1,94 @@
+{
+ "base": "scythe1",
+ "prefix": "wpn",
+ "atlas_px": 512,
+ "area_m2": 0.2833,
+ "notes": "",
+ "entries": [
+  {
+   "id": "wpn_scythe1_v1",
+   "kind": "weapon",
+   "base": "scythe1",
+   "file": "res://assets/gear/weapons/wpn_scythe1_v1.glb",
+   "mount": "hand_r",
+   "grip2": null,
+   "length": 0.49,
+   "variant": 1,
+   "hands": 1,
+   "grip": "r",
+   "tris": 1898,
+   "emissive": false,
+   "bbox": [
+    [
+     -0.021,
+     -0.0186,
+     -0.078
+    ],
+    [
+     0.2186,
+     0.0186,
+     0.4122
+    ]
+   ],
+   "textures": "wpn_scythe1",
+   "atlas_px": 512
+  },
+  {
+   "id": "wpn_scythe1_v2",
+   "kind": "weapon",
+   "base": "scythe1",
+   "file": "res://assets/gear/weapons/wpn_scythe1_v2.glb",
+   "mount": "hand_r",
+   "grip2": null,
+   "length": 0.663,
+   "variant": 2,
+   "hands": 1,
+   "grip": "r",
+   "tris": 1884,
+   "emissive": false,
+   "bbox": [
+    [
+     -0.0186,
+     -0.0177,
+     -0.1443
+    ],
+    [
+     0.266,
+     0.0177,
+     0.519
+    ]
+   ],
+   "textures": "wpn_scythe1",
+   "atlas_px": 512
+  },
+  {
+   "id": "wpn_scythe1_v3",
+   "kind": "weapon",
+   "base": "scythe1",
+   "file": "res://assets/gear/weapons/wpn_scythe1_v3.glb",
+   "mount": "hand_r",
+   "grip2": null,
+   "length": 0.81,
+   "variant": 3,
+   "hands": 1,
+   "grip": "r",
+   "tris": 3052,
+   "emissive": true,
+   "bbox": [
+    [
+     -0.0227,
+     -0.0208,
+     -0.2564
+    ],
+    [
+     0.2904,
+     0.0176,
+     0.5539
+    ]
+   ],
+   "textures": "wpn_scythe1",
+   "atlas_px": 512
+  }
+ ],
+ "built": "2026-11-21 20:24:21"
+}

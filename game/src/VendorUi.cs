@@ -72,6 +72,8 @@ public partial class VendorUi : UiPanel
 
     // what was sold this session can be bought back until newer sales push it out
     private static readonly List<(Item item, int price)> BuyBack = new();
+    /// <summary>The merchant's 只顯示本職業可用 switch (on by default; kept for the session).</summary>
+    private static bool OwnClassOnly = true;
     private static Hero _buyBackHero;
 
     private readonly SlotBoard _board = new();
@@ -123,6 +125,7 @@ public partial class VendorUi : UiPanel
     public override void OnOpen(object arg)
     {
         EnsureBuilt();
+        _others = null;                 // the stash hint reads the other save slots again on this visit
         string npc = arg as string;
         if (string.IsNullOrEmpty(npc)) npc = "merchant";
         else if (!Npcs.ContainsKey(npc))
@@ -550,13 +553,14 @@ public partial class VendorUi : UiPanel
     {
         var v = Column(PickW);
         v.AddChild(Section("身上的裝備"));
-        var worn = ItemUi.Grid(9);
-        for (int i = 0; i < h.D.Equip.Length; i++)
+        var worn = ItemUi.Grid(ItemUi.WornOrder.Length);
+        foreach (var slot in ItemUi.WornOrder)
         {
-            var it = h.D.Equip[i];
+            var it = h.D.Equip[(int)slot];
             if (it != null) { worn.AddChild(PickCell(it, whyNot, onPick)); continue; }
-            var slot = (EquipSlot)i;
-            worn.AddChild(ItemUi.Empty(Cell, Icons.ForKind(ItemUi.KindOf(slot), slot == EquipSlot.Weapon ? (int)h.Class : -1)));
+            var empty = ItemUi.Empty(Cell, Icons.ForKind(ItemUi.KindOf(slot), slot == EquipSlot.MainHand ? (int)h.Class : -1));
+            if (slot == EquipSlot.OffHand && h.OffHandBlocked) ItemUi.Dimmed(empty, 0.35f);     // a two-hand weapon holds both hands
+            worn.AddChild(empty);
         }
         v.AddChild(ItemUi.Well(worn));
         v.AddChild(Section($"行囊（{h.D.Bag.Count} / {Hero.BagSize}）"));
@@ -639,10 +643,23 @@ public partial class VendorUi : UiPanel
     {
         var row = Columns();
         var left = Column(PickW);
-        left.AddChild(Section("莉雅的貨物"));
+        // the shelf title and the 只顯示本職業可用 switch (on by default): off, other classes' arms show with the ⊘ mark
+        var head = new HBoxContainer();
+        head.AddThemeConstantOverride("separation", 10);
+        var sec = Section("莉雅的貨物");
+        sec.SizeFlagsHorizontal = SizeFlags.ExpandFill;
+        head.AddChild(sec);
+        var mine = ItemUi.Btn(OwnClassOnly ? "✓ 只顯示本職業可用" : "只顯示本職業可用", () => { OwnClassOnly = !OwnClassOnly; _dirty = true; }, UiTheme.FsCaption);
+        ItemUi.Tone(mine, OwnClassOnly);
+        mine.SizeFlagsVertical = SizeFlags.ShrinkCenter;
+        head.AddChild(mine);
+        left.AddChild(head);
         var stock = SafeStock("merchant", h);
+        int hidden = 0;
+        if (OwnClassOnly) { hidden = stock.Count(e => !ItemDb.UsableBy(e.item, h.Class)); stock = stock.Where(e => ItemDb.UsableBy(e.item, h.Class)).ToList(); }
         if (stock.Count == 0) left.AddChild(Note("貨架空了。等你下次回到鎮上，她會帶來新的東西。", PickW));
         else left.AddChild(StockGrid(h, stock));
+        if (hidden > 0) left.AddChild(Note($"另有 {hidden} 件其他職業的武器未顯示。", PickW));
 
         left.AddChild(Section("購回"));
         var back = ItemUi.Grid(PriceColumns(BuyBackSize, 2), 2);
@@ -666,12 +683,12 @@ public partial class VendorUi : UiPanel
     {
         var right = Column(PickW);
         right.AddChild(Section($"行囊（{h.D.Bag.Count} / {Hero.BagSize}）"));
-        right.AddChild(ItemUi.Well(ItemUi.BagGrid(_board, h, Cell, SellClick, SellClick, x => ItemUi.Dim("左鍵或右鍵：賣出　Shift＋左鍵：標記廢品"))));
+        right.AddChild(ItemUi.Well(ItemUi.BagGrid(_board, h, Cell, SellClick, SellClick, x => ItemUi.Dim("左鍵或右鍵：賣出　Shift＋左鍵：標記回收"))));
         int junk = h.JunkItems().Count;
-        var sellJunk = ItemUi.Btn(junk > 0 ? $"賣出所有廢品（{junk}）" : "賣出所有廢品", SellJunk, UiTheme.FsRow);
+        var sellJunk = ItemUi.Btn(junk > 0 ? $"賣出標記回收的物品（{junk}）" : "賣出標記回收的物品", SellJunk, UiTheme.FsRow);
         sellJunk.Disabled = junk == 0;
         right.AddChild(ToolRow(sellJunk, ItemUi.Btn("整理", SortBag, UiTheme.FsRow)));
-        right.AddChild(Note("左鍵或右鍵：賣出　Shift＋左鍵：標記廢品", PickW));
+        right.AddChild(Note("左鍵或右鍵：賣出　Shift＋左鍵：標記回收（鎖定的物品不會被批次賣出）", PickW));
         return right;
     }
 
@@ -713,9 +730,11 @@ public partial class VendorUi : UiPanel
         if (h == null || !h.InBag(it)) return;
         if (Input.IsKeyPressed(Key.Shift))
         {
-            bool junk = h.ToggleJunk(it);
+            string why = h.MarkOf(it) == BagMark.Recycle ? null : h.WhyCantMark(it, BagMark.Recycle);
+            if (why != null) { Fail(why); return; }
+            var now = h.ToggleMark(it, BagMark.Recycle);
             Snd.Ui("ui_click");
-            Say(junk ? $"已將「{it.Name}」標記為廢品。" : $"已取消「{it.Name}」的廢品標記。");
+            Say(now == BagMark.Recycle ? $"已將「{it.Name}」標記為回收。" : $"已取消「{it.Name}」的回收標記。");
             return;
         }
         if (Precious(it) || it.Gems.Count > 0)
@@ -751,8 +770,8 @@ public partial class VendorUi : UiPanel
     {
         var h = _hero;
         if (h == null) return;
-        var junk = h.JunkItems();
-        if (junk.Count == 0) { Fail("沒有標記為廢品的物品。"); return; }
+        var junk = h.RecycleItems();          // 回收 marks, locked items never (SYSTEMS bag marks)
+        if (junk.Count == 0) { Fail("沒有標記回收的物品。"); return; }
         int precious = junk.Count(Precious);
         void Go()
         {
@@ -803,7 +822,7 @@ public partial class VendorUi : UiPanel
             var icon = KindIcon(Icons.ForKind(k, weapon ? (int)h.Class : -1), 44);
             icon.SizeFlagsVertical = SizeFlags.ShrinkCenter;
             line.AddChild(icon);
-            var name = UiTheme.Label(weapon ? ItemDb.WeaponTypeNames[(int)h.Class] : Names.Kind(k), UiTheme.FsRow, UiTheme.Text);
+            var name = UiTheme.Label(Names.Kind(k), UiTheme.FsRow, UiTheme.Text);
             UiTheme.MinSize(name, 150, 0);
             name.SizeFlagsHorizontal = SizeFlags.ExpandFill;      // the price and the button keep to the right end of the plate
             name.VerticalAlignment = VerticalAlignment.Center;
@@ -860,6 +879,29 @@ public partial class VendorUi : UiPanel
 
     // ═════════════════════════ stash ═════════════════════════
 
+    // the other heroes in the save slots (name, class), read once per opening of the panel: the stash's weapon hint
+    private static List<(string name, ClassId cls)> _others;
+
+    /// <summary>For a weapon or off-hand: which of the other heroes on this computer could use it (empty for anything else).</summary>
+    private static string OthersHint(Item it)
+    {
+        if (it == null || it.Kind is not (ItemKind.Weapon or ItemKind.OffHand)) return "";
+        if (_others == null)
+        {
+            _others = new List<(string, ClassId)>();
+            try
+            {
+                int me = Game.I?.Slot ?? -1;
+                foreach (var s in SaveSystem.List())
+                    if (s.Exists && !s.Corrupt && s.Slot != me && !s.Dead) _others.Add((string.IsNullOrEmpty(s.Name) ? Names.Class(s.Class) : s.Name, s.Class));
+            }
+            catch (Exception e) { Log.Error("vendor", "listing the other heroes failed", e); }
+        }
+        if (_others.Count == 0) return "";
+        var can = _others.Where(o => ItemDb.UsableBy(it, o.cls)).Select(o => $"{o.name}（{Names.Class(o.cls)}）").ToList();
+        return ItemUi.Dim(can.Count > 0 ? "其他角色可用：" + string.Join("、", can) : "其他角色都無法使用") + "\n";
+    }
+
     private Control StashTab(Hero h)
     {
         var row = Columns();
@@ -876,7 +918,7 @@ public partial class VendorUi : UiPanel
         var grid = ItemUi.Grid(10);
         for (int i = 0; i < Hero.StashSize; i++)
         {
-            if (i < h.D.Stash.Count) grid.AddChild(ItemUi.Slot(_board, h.D.Stash[i], Cell, Withdraw, Withdraw, x => ItemUi.Dim("點擊：取回行囊")).Node);
+            if (i < h.D.Stash.Count) grid.AddChild(ItemUi.Slot(_board, h.D.Stash[i], Cell, Withdraw, Withdraw, x => OthersHint(x) + ItemUi.Dim("點擊：取回行囊")).Node);
             else grid.AddChild(ItemUi.Empty(Cell));
         }
         right.AddChild(ItemUi.Well(grid));
@@ -920,7 +962,7 @@ public partial class VendorUi : UiPanel
         left.AddChild(ItemUi.Well(ItemUi.BagGrid(_board, h, Cell, SalvageClick, SalvageClick, SalvageHint, DecorateSalvage, false)));
         left.AddChild(UiTheme.Label("快速選取", UiTheme.FsCaption, UiTheme.Dim));
         left.AddChild(ToolRow(
-            ItemUi.Btn("廢品", () => PickWhere(h.IsJunk), UiTheme.FsRow),
+            ItemUi.Btn("回收標記", () => PickWhere(h.IsJunk), UiTheme.FsRow),
             ItemUi.Btn("普通", () => PickWhere(i => i.Rarity == Rarity.Common), UiTheme.FsRow),
             ItemUi.Btn("魔法", () => PickWhere(i => i.Rarity == Rarity.Magic), UiTheme.FsRow),
             ItemUi.Btn("稀有", () => PickWhere(i => i.Rarity == Rarity.Rare), UiTheme.FsRow),
@@ -998,7 +1040,7 @@ public partial class VendorUi : UiPanel
         if (h == null) return;
         int n = 0;
         foreach (var it in h.D.Bag)
-            if (match(it) && h.WhyCantSalvage(it) == null && _picked.Add(it)) n++;
+            if (match(it) && !h.IsProtected(it) && h.WhyCantSalvage(it) == null && _picked.Add(it)) n++;     // locked (鎖定) items are never picked in bulk
         if (n == 0) Say("沒有更多符合的裝備。");
         _dirty = true;
     }

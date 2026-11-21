@@ -1,0 +1,94 @@
+{
+ "base": "flail",
+ "prefix": "wpn",
+ "atlas_px": 1024,
+ "area_m2": 0.3668,
+ "notes": "",
+ "entries": [
+  {
+   "id": "wpn_flail_v1",
+   "kind": "weapon",
+   "base": "flail",
+   "file": "res://assets/gear/weapons/wpn_flail_v1.glb",
+   "mount": "hand_r",
+   "grip2": null,
+   "length": 0.469,
+   "variant": 1,
+   "hands": 1,
+   "grip": "r",
+   "tris": 1748,
+   "emissive": false,
+   "bbox": [
+    [
+     -0.0172,
+     -0.042,
+     -0.1202
+    ],
+    [
+     0.173,
+     0.045,
+     0.3493
+    ]
+   ],
+   "textures": "wpn_flail",
+   "atlas_px": 1024
+  },
+  {
+   "id": "wpn_flail_v2",
+   "kind": "weapon",
+   "base": "flail",
+   "file": "res://assets/gear/weapons/wpn_flail_v2.glb",
+   "mount": "hand_r",
+   "grip2": null,
+   "length": 0.522,
+   "variant": 2,
+   "hands": 1,
+   "grip": "r",
+   "tris": 2326,
+   "emissive": false,
+   "bbox": [
+    [
+     -0.018,
+     -0.0522,
+     -0.138
+    ],
+    [
+     0.2061,
+     0.0568,
+     0.3836
+    ]
+   ],
+   "textures": "wpn_flail",
+   "atlas_px": 1024
+  },
+  {
+   "id": "wpn_flail_v3",
+   "kind": "weapon",
+   "base": "flail",
+   "file": "res://assets/gear/weapons/wpn_flail_v3.glb",
+   "mount": "hand_r",
+   "grip2": null,
+   "length": 0.555,
+   "variant": 3,
+   "hands": 1,
+   "grip": "r",
+   "tris": 4910,
+   "emissive": true,
+   "bbox": [
+    [
+     -0.1425,
+     -0.0534,
+     -0.18
+    ],
+    [
+     0.2154,
+     0.0534,
+     0.3753
+    ]
+   ],
+   "textures": "wpn_flail",
+   "atlas_px": 1024
+  }
+ ],
+ "built": "2026-11-21 20:24:41"
+}

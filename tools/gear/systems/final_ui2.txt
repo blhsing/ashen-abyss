@@ -1,0 +1,5 @@
+try 1: instance lock held by another game; waiting 30 s
+try 2: instance lock held by another game; waiting 30 s
+exit= seconds=26
+log: C:\Users\blhsi\AppData\Roaming\AshenAbyss\logs\game_20261121_202032.log  lines=215  ERR=0  WRN=0
+UI-DONE

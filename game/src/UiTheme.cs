@@ -1268,9 +1268,11 @@ public static class UiTheme
                 {
                     var h = Game.I?.Hero;
                     Item worn = null;
-                    if (h != null && it.IsEquip && Array.IndexOf(h.D.Equip, it) < 0) worn = h.Compared(it);
-                    bb = ItemText.Tooltip(it, worn, h?.D.Level ?? 99);
+                    Item worn2 = null;      // SYSTEMS (modular gear): the off hand's piece a two-hand weapon would also take off
+                    if (h != null && it.IsEquip && Array.IndexOf(h.D.Equip, it) < 0) { worn = h.Compared(it); worn2 = h.ComparedExtra(it); }
+                    bb = ItemText.Tooltip(it, worn, h?.D.Level ?? 99, true, worn2, h != null && it.IsEquip && Array.IndexOf(h.D.Equip, it) < 0 ? h : null);
                     if (worn != null) cmp = $"[color=#{Hex(Dim)}]目前裝備[/color]\n" + ItemText.Tooltip(worn, null, h?.D.Level ?? 99, false);
+                    if (worn2 != null) cmp = (cmp != null ? cmp + "\n\n" : "") + $"[color=#{Hex(Dim)}]目前副手[/color]\n" + ItemText.Tooltip(worn2, null, h?.D.Level ?? 99, false);
                 }
             }
             catch (Exception e) { Log.Error("ui", "item tooltip failed", e); }

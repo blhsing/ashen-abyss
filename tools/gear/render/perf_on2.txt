@@ -1,0 +1,20 @@
+exit= seconds=169
+log: C:\Users\blhsi\AppData\Roaming\AshenAbyss\logs\game_20261121_192122.log  lines=641  ERR=0  WRN=0
+--- last lines ---
+  161.660 INF [bot] bar rotation 10: [as_spark, as_fireball, as_frostnova, as_blink, as_chain, as_cataclysm]
+  163.158 INF [perf] fps=60 frame=16.7ms worst=27.0ms slowestProcess=25.6ms area=sands_d1 monsters=124 minions=0 objects=42 nodes=2148 draws=351 prims=372005 vram=5374MB mem=343MB scale=1.00 q=2 errors=0
+  163.161 INF [perf] game code per frame: whole tree=5.55ms | monsters=0.93ms (awake 34: 0.85ms, separation 0.58ms) player=0.22ms shots+zones=0.00ms level=0.01ms bot=0.01ms
+  164.275 INF [test] harness quit at 140.00 s
+  164.277 INF [game] quitting
+  164.280 INF [anim] anim-check: hero moved 31.0s - 0.0s without a locomotion clip, 0.0s with frozen legs; hero stood 16.0s - 0.0s in a run clip or none; monsters moved 345.3s - 0.0s without a locomotion clip, 0.0s with frozen legs; models without a skeleton o ƒ?Ý
+  164.280 INF [input] keyboard hook saw 0 key events, 0 of them PrtSc
+  164.281 INF [boot] shutdown errors=0 warnings=0 uptime=164s
+--- engine output: distinct problem lines (8 total) ---
+   1 x ERROR: Pages in use exist at exit in PagedAllocator: N33RendererSceneRenderImplementation22RenderForwardClustered32GeometryInstanceForwardClusteredE
+   1 x ERROR: Pages in use exist at exit in PagedAllocator: N33RendererSceneRenderImplementation22RenderForwardClustered32GeometryInstanceSurfaceDataCacheE
+   1 x at: ~ShaderRD (servers/rendering/renderer_rd/shader_rd.cpp:1236)
+   1 x ERROR: 2 shaders of type SceneForwardClusteredShaderRD were never freed
+   1 x ERROR: 6 RID allocations of type 'N10RendererRD15MaterialStorage8MaterialE' were leaked at exit.
+   1 x ERROR: 8 RID allocations of type 'N10RendererRD11MeshStorage4MeshE' were leaked at exit.
+   1 x ERROR: 48 RID allocations of type 'N17RendererSceneCull8InstanceE' were leaked at exit.
+   1 x ERROR: 2 RID allocations of type 'N10RendererRD15MaterialStorage6ShaderE' were leaked at exit.

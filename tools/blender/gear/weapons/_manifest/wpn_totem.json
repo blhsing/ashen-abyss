@@ -1,0 +1,94 @@
+{
+ "base": "totem",
+ "prefix": "wpn",
+ "atlas_px": 1024,
+ "area_m2": 0.5402,
+ "notes": "",
+ "entries": [
+  {
+   "id": "wpn_totem_v1",
+   "kind": "weapon",
+   "base": "totem",
+   "file": "res://assets/gear/weapons/wpn_totem_v1.glb",
+   "mount": "hand_l",
+   "grip2": null,
+   "length": 0.411,
+   "variant": 1,
+   "hands": 1,
+   "grip": "l",
+   "tris": 3038,
+   "emissive": false,
+   "bbox": [
+    [
+     -0.0922,
+     -0.0433,
+     -0.0981
+    ],
+    [
+     0.0937,
+     0.0433,
+     0.3133
+    ]
+   ],
+   "textures": "wpn_totem",
+   "atlas_px": 1024
+  },
+  {
+   "id": "wpn_totem_v2",
+   "kind": "weapon",
+   "base": "totem",
+   "file": "res://assets/gear/weapons/wpn_totem_v2.glb",
+   "mount": "hand_l",
+   "grip2": null,
+   "length": 0.551,
+   "variant": 2,
+   "hands": 1,
+   "grip": "l",
+   "tris": 2720,
+   "emissive": false,
+   "bbox": [
+    [
+     -0.1123,
+     -0.0565,
+     -0.09
+    ],
+    [
+     0.1123,
+     0.0565,
+     0.4606
+    ]
+   ],
+   "textures": "wpn_totem",
+   "atlas_px": 1024
+  },
+  {
+   "id": "wpn_totem_v3",
+   "kind": "weapon",
+   "base": "totem",
+   "file": "res://assets/gear/weapons/wpn_totem_v3.glb",
+   "mount": "hand_l",
+   "grip2": null,
+   "length": 0.678,
+   "variant": 3,
+   "hands": 1,
+   "grip": "l",
+   "tris": 3206,
+   "emissive": true,
+   "bbox": [
+    [
+     -0.1759,
+     -0.0652,
+     -0.09
+    ],
+    [
+     0.1759,
+     0.0652,
+     0.588
+    ]
+   ],
+   "textures": "wpn_totem",
+   "atlas_px": 1024
+  }
+ ],
+ "built": "2026-11-21 20:32:58"
+}

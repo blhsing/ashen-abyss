@@ -1,0 +1,14 @@
+# SYSTEMS: the bag filter at the largest text size (特大)
+wait 3
+give set
+xp 400000
+scale 2
+wait 0.5
+open inventory
+wait 2
+key F
+wait 0.8
+click @全部非升級
+wait 0.8
+shot sys_filter_textscale_large
+quit

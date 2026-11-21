@@ -1,0 +1,106 @@
+{
+ "base": "sword2",
+ "prefix": "wpn",
+ "atlas_px": 1024,
+ "area_m2": 0.9896,
+ "notes": "",
+ "entries": [
+  {
+   "id": "wpn_sword2_v1",
+   "kind": "weapon",
+   "base": "sword2",
+   "file": "res://assets/gear/weapons/wpn_sword2_v1.glb",
+   "mount": "hand_r",
+   "grip2": [
+    0.0,
+    0.0,
+    -0.185
+   ],
+   "length": 1.55,
+   "variant": 1,
+   "hands": 2,
+   "grip": "both",
+   "tris": 4248,
+   "emissive": false,
+   "bbox": [
+    [
+     -0.1,
+     -0.019,
+     -0.3347
+    ],
+    [
+     0.1,
+     0.019,
+     1.215
+    ]
+   ],
+   "textures": "wpn_sword2",
+   "atlas_px": 1024
+  },
+  {
+   "id": "wpn_sword2_v2",
+   "kind": "weapon",
+   "base": "sword2",
+   "file": "res://assets/gear/weapons/wpn_sword2_v2.glb",
+   "mount": "hand_r",
+   "grip2": [
+    0.0,
+    0.0,
+    -0.185
+   ],
+   "length": 1.77,
+   "variant": 2,
+   "hands": 2,
+   "grip": "both",
+   "tris": 4238,
+   "emissive": false,
+   "bbox": [
+    [
+     -0.2298,
+     -0.0574,
+     -0.368
+    ],
+    [
+     0.2298,
+     0.0574,
+     1.402
+    ]
+   ],
+   "textures": "wpn_sword2",
+   "atlas_px": 1024
+  },
+  {
+   "id": "wpn_sword2_v3",
+   "kind": "weapon",
+   "base": "sword2",
+   "file": "res://assets/gear/weapons/wpn_sword2_v3.glb",
+   "mount": "hand_r",
+   "grip2": [
+    0.0,
+    0.0,
+    -0.185
+   ],
+   "length": 1.798,
+   "variant": 3,
+   "hands": 2,
+   "grip": "both",
+   "tris": 5008,
+   "emissive": true,
+   "bbox": [
+    [
+     -0.2009,
+     -0.0243,
+     -0.366
+    ],
+    [
+     0.2009,
+     0.0243,
+     1.432
+    ]
+   ],
+   "textures": "wpn_sword2",
+   "atlas_px": 1024
+  }
+ ],
+ "built": "2026-11-21 20:25:24"
+}

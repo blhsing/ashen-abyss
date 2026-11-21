@@ -1,0 +1,8 @@
+try 1: the run lock is held by a long run; waiting
+exit= seconds=20
+log: C:\Users\blhsi\AppData\Roaming\AshenAbyss\logs\game_20261121_214359.log  lines=119  ERR=0  WRN=0
+   11.882 INF [sets] saved set 1 '裝備組 1': 576414b6ecde,1ece0b0a3674,c6d4ad110714,b6f50ecb5e57,a267894f2957,2d422fe38ddb,029743be608b,fe7ea725f686,69ff2a9ef8f4,-
+   11.883 INF [sets] saved set 2 '裝備組 2': 26c547bb9ea9,1ece0b0a3674,c6d4ad110714,b6f50ecb5e57,a267894f2957,2d422fe38ddb,029743be608b,fe7ea725f686,69ff2a9ef8f4,f5a7c734f2e0
+   11.886 INF [sets] loaded set 1 '雙手': moved 2, from stash 0, missing 0; main=sword2 off=
+   11.890 INF [sets] test sets prepared: 2h, off
+   14.970 INF [uitest] target '@裝備組' -> window 913,252 (3 matches)

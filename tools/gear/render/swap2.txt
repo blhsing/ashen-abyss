@@ -1,0 +1,34 @@
+exit= seconds=28
+log: C:\Users\blhsi\AppData\Roaming\AshenAbyss\logs\game_20261121_222653.log  lines=238  ERR=0  WRN=1
+/c/Users/blhsi/AppData/Roaming/AshenAbyss/logs/game_20261121_222653.log
+    9.768 INF [gear] hero_emberblade: modular stance=TwoHandMelee [wpn_sword2_v1@hand_r] in 13.3 ms
+   12.415 INF [sets] saved set 1 '裝備組 1': 44e5ce3ee156,577dfc23ad48,7f79d1372500,3f0bac395311,0d18365fe3b2,85d3b116f043,-,-,-,-
+   12.418 INF [sets] saved set 2 '裝備組 2': 775a205ff8b1,ceaa8fb2d961,5f8458d228ab,81a12a51feb0,e0d550585ad1,ce8c05ddd715,-,-,-,28d66a41c651
+   12.422 INF [sets] saved set 3 '裝備組 3': c5257bd3dedb,fe40f1c08d81,d5e545314cf1,3ce05f6dddcf,3ecdf905de4c,4a3a85929900,-,-,-,697421e0bbb6
+   12.427 INF [sets] loaded set 1 '裝備組 1': moved 7, from stash 0, missing 0; main=sword2 off=
+   12.431 INF [sets] switch to set 1 (key, calm, field); missing 0
+   12.775 INF [gear] hero_emberblade: modular stance=TwoHandMelee [arm_emberblade_helm_t4, arm_emberblade_chest_t4, arm_emberblade_gloves_t4, arm_emberblade_pants_t4, arm_emberblade_boots_t4, wpn_sword2_v3@hand_r] in 9.2 ms
+   15.943 INF [sets] loaded set 2 '裝備組 2': moved 7, from stash 0, missing 0; main=sword1 off=axe1
+   15.944 INF [sets] switch to set 2 (key, in combat, field); missing 0
+   15.950 INF [gear] hero_emberblade: modular stance=DualWield [arm_emberblade_helm_t2, arm_emberblade_chest_t2, arm_emberblade_gloves_t2, arm_emberblade_pants_t2, arm_emberblade_boots_t2, wpn_sword1_v2@hand_r, wpn_axe1_v2@hand_l] in 4.9 ms
+   17.477 INF [sets] loaded set 3 '裝備組 3': moved 7, from stash 0, missing 0; main=mace1 off=shield
+   17.478 INF [sets] switch to set 3 (key, in combat, field); missing 0
+   17.484 INF [gear] hero_emberblade: modular stance=OneHandShield [arm_emberblade_helm_t3, arm_emberblade_chest_t3, arm_emberblade_gloves_t3, arm_emberblade_pants_t3, arm_emberblade_boots_t3, wpn_mace1_v2@hand_r, wpn_shield_v2@forearm_l] in 5.0 ms
+   19.013 INF [sets] loaded set 1 '裝備組 1': moved 7, from stash 0, missing 0; main=sword2 off=
+   19.014 INF [sets] switch to set 1 (key, in combat, field); missing 0
+   19.018 INF [gear] hero_emberblade: modular stance=TwoHandMelee [arm_emberblade_helm_t4, arm_emberblade_chest_t4, arm_emberblade_gloves_t4, arm_emberblade_pants_t4, arm_emberblade_boots_t4, wpn_sword2_v3@hand_r] in 2.9 ms
+   20.548 INF [sets] loaded set 3 '裝備組 3': moved 7, from stash 0, missing 0; main=mace1 off=shield
+   20.548 INF [sets] switch to set 3 (key, in combat, field); missing 0
+   20.551 INF [gear] hero_emberblade: modular stance=OneHandShield [arm_emberblade_helm_t3, arm_emberblade_chest_t3, arm_emberblade_gloves_t3, arm_emberblade_pants_t3, arm_emberblade_boots_t3, wpn_mace1_v2@hand_r, wpn_shield_v2@forearm_l] in 1.9 ms
+   22.082 INF [sets] loaded set 1 '裝備組 1': moved 7, from stash 0, missing 0; main=sword2 off=
+   22.083 INF [sets] switch to set 1 (key, in combat, field); missing 0
+   22.086 INF [gear] hero_emberblade: modular stance=TwoHandMelee [arm_emberblade_helm_t4, arm_emberblade_chest_t4, arm_emberblade_gloves_t4, arm_emberblade_pants_t4, arm_emberblade_boots_t4, wpn_sword2_v3@hand_r] in 2.6 ms
+   23.620 INF [sets] loaded set 3 '裝備組 3': moved 7, from stash 0, missing 0; main=mace1 off=shield
+   23.623 INF [sets] switch to set 3 (key, in combat, field); missing 0
+   23.626 INF [gear] hero_emberblade: modular stance=OneHandShield [arm_emberblade_helm_t3, arm_emberblade_chest_t3, arm_emberblade_gloves_t3, arm_emberblade_pants_t3, arm_emberblade_boots_t3, wpn_mace1_v2@hand_r, wpn_shield_v2@forearm_l] in 2.1 ms
+   25.137 INF [suite] gear set swap (real sets): 12 swaps in combat, 6 rebuilds, frames waiting for files 0; worst frame after a swap 23.2 ms, mean 16.7 ms; F2→DualWield:19ms E→DualWield:22ms(refused) F3→OneHandShield:18ms E→OneHandShield:17ms(refused)
+   25.140 WRN [suite] FAIL gear: one rebuild per set swap — 6/12
+   25.140 INF [suite] PASS gear: preloaded sets never wait for files
+   25.142 INF [suite] DONE suite=gear pass=1 fail=1 errors=0 warnings=1
+   25.142 INF [suite]   failure 1: gear: one rebuild per set swap — 6/12
+SW2

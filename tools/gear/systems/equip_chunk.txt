@@ -1,0 +1,119 @@
+    public static EquipSlot SlotFor(ItemKind k) => k switch
+    {
+        ItemKind.Weapon => EquipSlot.MainHand, ItemKind.OffHand => EquipSlot.OffHand, ItemKind.Helm => EquipSlot.Helm, ItemKind.Chest => EquipSlot.Chest,
+        ItemKind.Gloves => EquipSlot.Gloves, ItemKind.Pants => EquipSlot.Pants, ItemKind.Boots => EquipSlot.Boots, ItemKind.Amulet => EquipSlot.Amulet, _ => EquipSlot.Ring1
+    };
+
+    /// <summary>True when the main hand holds a two-hand weapon (the off-hand slot is then blocked).</summary>
+    public bool OffHandBlocked => MainHand != null && MainHand.TwoHand;
+
+    /// <summary>Weapon damage per second of one item, for picking the weaker hand.</summary>
+    private static float Dps(Item w) => w == null ? 0f : w.AvgDmg * w.Aps;
+
+    /// <summary>
+    /// The slot a click would put this item in. Two-hand weapons and off-hands have one place each. A one-hand weapon goes
+    /// to the main hand, except for a dual-wield class already holding a one-hand weapon there: then to the empty off
+    /// hand, or over the weaker of the two. Rings fill an empty ring slot first, else replace the weaker ring.
+    /// </summary>
+    public EquipSlot TargetSlot(Item it)
+    {
+        if (it.Kind == ItemKind.Ring)
+        {
+            var r1 = D.Equip[(int)EquipSlot.Ring1]; var r2 = D.Equip[(int)EquipSlot.Ring2];
+            return r1 == null ? EquipSlot.Ring1 : r2 == null ? EquipSlot.Ring2 : (r1.Power <= r2.Power ? EquipSlot.Ring1 : EquipSlot.Ring2);
+        }
+        if (it.Kind != ItemKind.Weapon || it.TwoHand) return SlotFor(it.Kind);
+        var mh = MainHand; var oh = OffHand;
+        if (!ItemDb.Allows(Class, it.Base, EquipSlot.OffHand) || mh == null || mh.TwoHand || mh.Kind != ItemKind.Weapon) return EquipSlot.MainHand;
+        if (oh == null) return EquipSlot.OffHand;
+        if (oh.Kind != ItemKind.Weapon) return EquipSlot.MainHand;
+        return Dps(oh) < Dps(mh) ? EquipSlot.OffHand : EquipSlot.MainHand;
+    }
+
+    /// <summary>Why this item cannot go in <paramref name="slot"/> (default: where a click puts it), or null.</summary>
+    public string WhyCantEquip(Item it, EquipSlot? slot = null)
+    {
+        if (!it.IsEquip) return "無法裝備";
+        if (it.ReqLevel > D.Level) return $"需要等級 {it.ReqLevel}";
+        if (it.Kind == ItemKind.Weapon && it.WeaponClass >= 0 && it.WeaponClass != (int)Class) return $"僅限{Names.Class((ClassId)it.WeaponClass)}使用";
+        var s = slot ?? TargetSlot(it);
+        if (it.Kind is ItemKind.Weapon or ItemKind.OffHand)
+        {
+            var b = it.Gb;
+            string what = b?.Name ?? Names.Kind(it.Kind);
+            if (s is not (EquipSlot.MainHand or EquipSlot.OffHand)) return "無法裝備在這個欄位";
+            if (it.Kind == ItemKind.OffHand && s != EquipSlot.OffHand) return "副手物品只能裝備在副手";
+            if (it.TwoHand && s != EquipSlot.MainHand) return "雙手武器只能裝備在主手";
+            if (!ItemDb.Allows(Class, it.Base, EquipSlot.MainHand) && !ItemDb.Allows(Class, it.Base, EquipSlot.OffHand))
+                return $"{Names.Class(Class)}無法使用{what}";
+            if (!ItemDb.Allows(Class, it.Base, s))
+                return s == EquipSlot.OffHand ? $"{Names.Class(Class)}無法以副手持{what}" : $"{what}只能裝備在副手";
+            // a two-hand weapon takes the off hand's item to the bag: it needs a free place there
+            if (it.TwoHand && OffHand != null && OffHand != it)
+            {
+                int after = D.Bag.Count - (D.Bag.Contains(it) ? 1 : 0) + (MainHand != null && MainHand != it ? 1 : 0) + 1;
+                if (after > BagSize) return "行囊已滿，無法卸下副手";
+            }
+        }
+        else if (SlotFor(it.Kind) != s && !(it.Kind == ItemKind.Ring && s is EquipSlot.Ring1 or EquipSlot.Ring2)) return "無法裝備在這個欄位";
+        return null;
+    }
+
+    /// <summary>The equipped item an inventory item would be compared with / replace (null when its slot is empty).</summary>
+    public Item Compared(Item it)
+    {
+        if (!it.IsEquip) return null;
+        if (it.Kind == ItemKind.Ring)
+        {
+            var r1 = D.Equip[(int)EquipSlot.Ring1]; var r2 = D.Equip[(int)EquipSlot.Ring2];
+            if (r1 == null || r2 == null) return null;
+            return r1.Power <= r2.Power ? r1 : r2;
+        }
+        var s = TargetSlot(it);
+        // an off-hand item against a two-hand weapon: compare with the weapon it would take off
+        if (s == EquipSlot.OffHand && OffHandBlocked) return MainHand;
+        return D.Equip[(int)s];
+    }
+
+    /// <summary>A second worn item that equipping this one also takes off: the off hand's item for a two-hand weapon. Else null.</summary>
+    public Item ComparedExtra(Item it)
+    {
+        if (it == null || !it.IsEquip) return null;
+        if (it.Kind == ItemKind.Weapon && it.TwoHand && MainHand != null && OffHand != null && OffHand != it) return OffHand;
+        return null;
+    }
+
+    /// <summary>
+    /// Puts a bag item on (in <paramref name="slot"/>, or where a click would). The replaced item takes the new one's
+    /// place in the bag. A two-hand weapon also moves the off hand's item to the bag (refused when there is no room);
+    /// an off-hand item or a second weapon moves a two-hand weapon out of the main hand.
+    /// </summary>
+    public bool Equip(Item it, EquipSlot? slot = null)
+    {
+        var s = slot ?? TargetSlot(it);
+        if (WhyCantEquip(it, s) != null || !D.Bag.Contains(it)) return false;
+        var old = D.Equip[(int)s];
+        int idx = D.Bag.IndexOf(it);
+        D.Bag.RemoveAt(idx);
+        if (old != null) D.Bag.Insert(idx, old);
+        D.Equip[(int)s] = it;
+        if (s == EquipSlot.MainHand && it.TwoHand && OffHand != null)
+        {
+            var off = OffHand; D.Equip[(int)EquipSlot.OffHand] = null;
+            if (old == null) D.Bag.Insert(idx, off); else D.Bag.Add(off);
+        }
+        else if (s == EquipSlot.OffHand && MainHand != null && MainHand.TwoHand)
+        {
+            var two = MainHand; D.Equip[(int)EquipSlot.MainHand] = null;
+            D.Bag.Insert(Math.Min(idx, D.Bag.Count), two);
+        }
+        Recalc(); return true;
+    }
+
+    public bool Unequip(EquipSlot slot)
+    {
+        var it = D.Equip[(int)slot];
+        if (it == null || BagFull) return false;
+        D.Equip[(int)slot] = null; D.Bag.Add(it);
+        Recalc(); return true;
+    }

@@ -2,6 +2,7 @@ using Godot;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using System.Text;
 
 namespace AshenAbyss;
@@ -372,8 +373,9 @@ public static class ItemUi
         var it = v.Item;
         if (it == null) return v.Text ?? "";
         var h = Game.I?.Hero;
-        Item eq = v.Compare && h != null && !h.IsEquipped(it) ? h.Compared(it) : null;
-        string bb = ItemText.Tooltip(it, eq, h?.D.Level ?? 99, eq != null);
+        bool cmp = v.Compare && h != null && !h.IsEquipped(it);
+        Item eq = cmp ? h.Compared(it) : null, eq2 = cmp ? h.ComparedExtra(it) : null;
+        string bb = ItemText.Tooltip(it, eq, h?.D.Level ?? 99, eq != null || eq2 != null, eq2, cmp ? h : null);
         string extra = v.Extra?.Invoke(it);
         return string.IsNullOrEmpty(extra) ? bb : bb + "\n" + extra;
     }
@@ -384,18 +386,33 @@ public static class ItemUi
         var h = Game.I?.Hero;
         if (h == null || it == null || h.IsEquipped(it)) return null;
         var eq = h.Compared(it);
-        if (eq == null || ReferenceEquals(eq, it)) return null;
-        return Dim("— 目前裝備 —") + "\n" + ItemText.Tooltip(eq, null, h.D.Level, false);
+        var eq2 = h.ComparedExtra(it);
+        if (eq == null || ReferenceEquals(eq, it)) eq = null;
+        if (eq == null && eq2 == null) return null;
+        // a two-hand weapon against main hand + off hand: both worn pieces are shown
+        string s = eq != null ? Dim("— 目前裝備 —") + "\n" + ItemText.Tooltip(eq, null, h.D.Level, false) : "";
+        if (eq2 != null) s += (s.Length > 0 ? "\n\n" : "") + Dim("— 目前副手 —") + "\n" + ItemText.Tooltip(eq2, null, h.D.Level, false);
+        return s;
     }
 
     public static string EquipSound(Item it) =>
         it.Kind == ItemKind.Weapon ? "equip_weapon" : it.Kind is ItemKind.Amulet or ItemKind.Ring ? "equip_jewel" : "equip_armor";
 
+    /// <summary>Worn slots in reading order (hands first), for lists of worn gear.</summary>
+    public static readonly EquipSlot[] WornOrder =
+    {
+        EquipSlot.MainHand, EquipSlot.OffHand, EquipSlot.Helm, EquipSlot.Chest, EquipSlot.Gloves, EquipSlot.Pants, EquipSlot.Boots,
+        EquipSlot.Amulet, EquipSlot.Ring1, EquipSlot.Ring2,
+    };
+
     public static ItemKind KindOf(EquipSlot s) => s switch
     {
-        EquipSlot.Weapon => ItemKind.Weapon, EquipSlot.Helm => ItemKind.Helm, EquipSlot.Chest => ItemKind.Chest, EquipSlot.Gloves => ItemKind.Gloves,
+        EquipSlot.MainHand => ItemKind.Weapon, EquipSlot.OffHand => ItemKind.OffHand, EquipSlot.Helm => ItemKind.Helm, EquipSlot.Chest => ItemKind.Chest, EquipSlot.Gloves => ItemKind.Gloves,
         EquipSlot.Pants => ItemKind.Pants, EquipSlot.Boots => ItemKind.Boots, EquipSlot.Amulet => ItemKind.Amulet, _ => ItemKind.Ring
     };
+
+    /// <summary>Caption of a worn slot: 主手 / 副手 for the hands, the item kind otherwise.</summary>
+    public static string SlotName(EquipSlot s) => s == EquipSlot.MainHand ? "主手" : s == EquipSlot.OffHand ? "副手" : Names.Kind(KindOf(s));
 
     // ───────────────────────── style ─────────────────────────
 
@@ -415,7 +432,7 @@ public static class ItemUi
     }
 
     /// <summary>The theme's cell box for the plain cells built here when the slot widget itself cannot be; flat as the last resort.</summary>
-    private static StyleBox CellBox(int rarity, Color flatBg, Color flatBorder, int px)
+    public static StyleBox CellBox(int rarity, Color flatBg, Color flatBorder, int px)
     {
         try
         {
@@ -470,8 +487,37 @@ public static class ItemUi
         inner.SetAnchorsAndOffsetsPreset(Control.LayoutPreset.FullRect);
         try { SocketPips(holder, inner, it, size); }
         catch (Exception e) { Log.Error("ui", $"socket marks failed for {it?.Name}", e); }
+        try { if (Unusable(it)) { NoUseMark(holder, it); view.Glow = false; } }
+        catch (Exception e) { Log.Error("ui", $"class mark failed for {it?.Name}", e); }
         board?.Add(view);
         return view;
+    }
+
+    public static readonly Color NoUseColor = new(0.86f, 0.22f, 0.16f);
+
+    /// <summary>A weapon or off-hand the hero's class cannot use at all (any base outside its loadout, another class's unique).</summary>
+    public static bool Unusable(Item it)
+    {
+        var h = Game.I?.Hero;
+        return h != null && it != null && it.Kind is ItemKind.Weapon or ItemKind.OffHand && !ItemDb.UsableBy(it, h.Class);
+    }
+
+    /// <summary>
+    /// The class-incompatible mark on a cell: a red-tinted rim and a ⊘ in the top-right corner (top-left when the
+    /// masterwork badge holds the top-right). It sits on the frame, over the icon image, which stays as it is.
+    /// </summary>
+    public static void NoUseMark(Control holder, Item it)
+    {
+        holder.AddChild(Fill(new ColorRect { Color = new Color(0.45f, 0.04f, 0.02f, 0.22f) }));
+        Outline(holder, NoUseColor, 2);
+        var l = UiTheme.Outlined(UiTheme.Label("⊘", UiTheme.FsCaption, NoUseColor), 4);
+        l.MouseFilter = Control.MouseFilterEnum.Ignore;
+        l.AddThemeConstantOverride("line_spacing", 0);
+        holder.AddChild(l);
+        bool right = it.Upgrade <= 0;
+        l.AnchorLeft = right ? 1f : 0f; l.AnchorRight = l.AnchorLeft; l.AnchorTop = 0f; l.AnchorBottom = 0f;
+        l.GrowHorizontal = right ? Control.GrowDirection.Begin : Control.GrowDirection.End;
+        l.OffsetLeft = right ? -4f : 4f; l.OffsetRight = l.OffsetLeft; l.OffsetTop = -2f; l.OffsetBottom = -2f;
     }
 
     /// <summary>Plain cell used only if the theme's slot widget cannot be built: rarity frame, tinted icon, clicks.</summary>
@@ -552,13 +598,33 @@ public static class ItemUi
     /// pips bottom-left (both drawn by the theme's slot), the new-item dot top-left, this mark bottom-right. The
     /// label is pinned to its corner and takes whatever room its caption-size glyph needs, at any text scale.
     /// </summary>
-    public static void JunkMark(Control holder)
+    public static void JunkMark(Control holder) => MarkBadge(holder, "收", RecycleColor, true);
+
+    /// <summary>Bag marks: 收 (回收 at the smith), 棄 (丟棄), and 鎖 (locked; never marked, so it has the corner to itself).</summary>
+    public static void BagBadges(Hero h, Item it, Control holder)
     {
-        var veil = Fill(new ColorRect { Color = new Color(0.08f, 0.02f, 0.02f, 0.5f) });
-        holder.AddChild(veil);
-        // the veil darkens the cell's floor and glyph; the forged rim around them stays as it is
-        if (UiTheme.Art) veil.SetAnchorsAndOffsetsPreset(Control.LayoutPreset.FullRect, Control.LayoutPresetMode.Minsize, 4);
-        var l = UiTheme.Label("廢", UiTheme.FsCaption, JunkColor);
+        var m = h.MarkOf(it);
+        if (m == BagMark.Recycle) MarkBadge(holder, "收", RecycleColor, true);
+        else if (m == BagMark.Discard) MarkBadge(holder, "棄", JunkColor, true);
+        if (h.InSet(it)) MarkBadge(holder, "組", SetColor, false);           // part of a gear set: protected like a locked item
+        else if (it.Locked) MarkBadge(holder, "鎖", LockColor, false);
+    }
+
+    public static readonly Color SetColor = new(0.55f, 0.8f, 0.95f);
+
+    public static readonly Color RecycleColor = new(0.95f, 0.66f, 0.3f), LockColor = new(0.86f, 0.8f, 0.62f);
+
+    /// <summary>One glyph in the bottom-right corner of a cell, over a dark veil when <paramref name="veiled"/> (marked to go).</summary>
+    public static void MarkBadge(Control holder, string glyph, Color color, bool veiled)
+    {
+        if (veiled)
+        {
+            var veil = Fill(new ColorRect { Color = new Color(0.08f, 0.02f, 0.02f, 0.5f) });
+            holder.AddChild(veil);
+            // the veil darkens the cell's floor and glyph; the forged rim around them stays as it is
+            if (UiTheme.Art) veil.SetAnchorsAndOffsetsPreset(Control.LayoutPreset.FullRect, Control.LayoutPresetMode.Minsize, 4);
+        }
+        var l = UiTheme.Label(glyph, UiTheme.FsCaption, color);
         l.MouseFilter = Control.MouseFilterEnum.Ignore;
         l.AddThemeConstantOverride("line_spacing", 0);
         holder.AddChild(l);
@@ -630,7 +696,7 @@ public static class ItemUi
             if (i >= bag.Count) { g.AddChild(Empty(cell)); continue; }
             var it = bag[i];
             var v = Slot(board, it, cell, onLeft, onRight, extra, compare);
-            if (h.IsJunk(it)) JunkMark(v.Node);
+            BagBadges(h, it, v.Node);
             decorate?.Invoke(it, v);
             g.AddChild(v.Node);
         }
@@ -751,16 +817,18 @@ public partial class InventoryUi : UiPanel
     private const float DollGrowMax = 48f;
     private static float DollGrow => MathF.Round(DollGrowMax * Mathf.Clamp((1.3f - UiTheme.TextScale) / 0.3f, 0f, 1f));
     private const float SmithRange = 9f;
-    private const string IdleHint = "左鍵：裝備　右鍵：卸下裝備／選取寶石　Shift＋左鍵：標記廢品";
-    private static readonly string[] SheetTabs = { "總覽", "攻勢", "守禦", "巧用" };
+    private const string IdleHint = "左鍵：裝備　右鍵：卸下或選取寶石　Shift＋左鍵／R：標記回收　X：標記丟棄　L：鎖定　F：篩選";
+    private static readonly string[] SheetTabs = { "總覽", "攻勢", "守禦", "巧用", "裝備組" };
 
-    // paper-doll cells: column (-1 = along the left edge, 1 = along the right edge, 0 = the middle) and top, in the
-    // doll's own coordinates
+    // paper-doll cells: column (-1 = along the left edge, 1 = along the right edge, 0 = the middle: the two hands side by
+    // side under the niche, main hand left of centre, off hand right of it) and top, in the doll's own coordinates
+    private const float HandGap = 16f;
+    private static readonly Color LockedRim = new(0.42f, 0.2f, 0.16f);
     private static readonly (EquipSlot slot, int col, float y)[] DollLayout =
     {
         (EquipSlot.Helm, -1, 8), (EquipSlot.Chest, -1, 90), (EquipSlot.Gloves, -1, 172), (EquipSlot.Pants, -1, 254),
         (EquipSlot.Amulet, 1, 8), (EquipSlot.Ring1, 1, 90), (EquipSlot.Ring2, 1, 172), (EquipSlot.Boots, 1, 254),
-        (EquipSlot.Weapon, 0, 262),
+        (EquipSlot.MainHand, 0, 262), (EquipSlot.OffHand, 0, 262),
     };
 
     private readonly SlotBoard _board = new();
@@ -773,7 +841,12 @@ public partial class InventoryUi : UiPanel
     private ScrollContainer _sheetScroll;
     private Control _doll, _cells, _nicheRim, _bagBox;
     private HeroPortrait3D _portrait;           // the hero, alive, in the niche between the two columns of cells
-    private Button _junkBtn;
+    private Button _junkBtn, _discardBtn, _filterBtn;
+    private PanelContainer _dollFrame, _filterFrame;
+    private VBoxContainer _filterBody;
+    private ScrollContainer _filterScroll;
+    private bool _filterOn;
+    private readonly BagFilter _filter = new();
     private int _tab;
     private Item _gemPick;
     private float _msgT, _dt;
@@ -924,6 +997,9 @@ public partial class InventoryUi : UiPanel
         sheet.AddChild(_name);
         _class = UiTheme.Wrapped(UiTheme.Label("", UiTheme.FsRow, UiTheme.Dim));      // level, class, paragon, spec: two lines when it must
         sheet.AddChild(_class);
+        _setStrip = new HBoxContainer();             // 裝備組 strip (SYSTEMS): six sets, click to load, right-click for save / rename / clear
+        _setStrip.AddThemeConstantOverride("separation", 4);
+        sheet.AddChild(_setStrip);
         _tabBox = new HBoxContainer();
         sheet.AddChild(_tabBox);
         _rows = new VBoxContainer();
@@ -959,6 +1035,18 @@ public partial class InventoryUi : UiPanel
         _doll.AddChild(_cells);
         _cells.SetAnchorsAndOffsetsPreset(LayoutPreset.FullRect);
         right.AddChild(dollFrame);
+        _dollFrame = dollFrame;
+        // the bag filter (行囊篩選) takes the paper doll's place while it is open (F or the 篩選 button)
+        _filterFrame = new PanelContainer { Visible = false };
+        _filterFrame.AddThemeStyleboxOverride("panel", UiTheme.Art
+            ? UiTheme.ArtBox("panel", DollPad, DollPad, "soot", 3f)
+            : new StyleBoxEmpty { ContentMarginLeft = DollPad, ContentMarginRight = DollPad, ContentMarginTop = DollPad, ContentMarginBottom = DollPad });
+        _filterBody = new VBoxContainer();
+        _filterBody.AddThemeConstantOverride("separation", 6);
+        // it scrolls inside exactly the doll's height, so the panel never grows (larger text sizes scroll instead)
+        _filterScroll = ItemUi.Scroll(_filterBody, Vector2.Zero);
+        _filterFrame.AddChild(_filterScroll);
+        right.AddChild(_filterFrame);
         _moneyBox = new HBoxContainer { Alignment = BoxContainer.AlignmentMode.Center };
         right.AddChild(_moneyBox);
         _bagBox = new MarginContainer();
@@ -967,8 +1055,12 @@ public partial class InventoryUi : UiPanel
         var tools = new HBoxContainer();
         tools.AddThemeConstantOverride("separation", 10);
         tools.AddChild(ItemUi.Btn("整理", SortBag, UiTheme.FsRow));
-        _junkBtn = ItemUi.Btn("拆解廢品", SalvageJunk, UiTheme.FsRow);
+        _filterBtn = ItemUi.Btn("篩選", ToggleFilter, UiTheme.FsRow);
+        tools.AddChild(_filterBtn);
+        _junkBtn = ItemUi.Btn("回收", RecycleMarked, UiTheme.FsRow);
         tools.AddChild(_junkBtn);
+        _discardBtn = ItemUi.Btn("丟棄", DiscardMarked, UiTheme.FsRow);
+        tools.AddChild(_discardBtn);
         _bagCount = UiTheme.Trimmed(UiTheme.Label("", UiTheme.FsCaption, UiTheme.Dim), false);
         _bagCount.SizeFlagsHorizontal = SizeFlags.ExpandFill;
         _bagCount.HorizontalAlignment = HorizontalAlignment.Right;
@@ -1000,6 +1092,8 @@ public partial class InventoryUi : UiPanel
         var d = h.D;
         _who.Text = $"{(string.IsNullOrEmpty(d.Name) ? "持燼者" : d.Name)}　等級 {d.Level} {Names.Class(h.Class)}";
         BuildSheet(h);
+        BuildSetStrip(h);
+        GearSets.RefreshHud();
         BuildDoll(h);
         _portrait?.SetHero(h);      // model, weapon in hand and scale follow the hero; a no-op when nothing visible changed
         ItemUi.Clear(_moneyBox);
@@ -1007,11 +1101,15 @@ public partial class InventoryUi : UiPanel
         ItemUi.Clear(_bagBox);
         _bagBox.AddChild(ItemUi.Well(ItemUi.BagGrid(_board, h, BagCell, OnBagLeft, OnBagRight, BagHint, DecorateBag)));
         _bagCount.Text = $"行囊 {d.Bag.Count} / {Hero.BagSize}";
-        int junk = h.JunkItems().Count;
-        bool smith = AtSmith();
-        string verb = smith ? "拆解廢品" : "丟棄廢品";
-        _junkBtn.Text = junk > 0 ? $"{verb}（{junk}）" : verb;
-        ItemUi.Tone(_junkBtn, junk > 0);
+        int junk = h.RecycleItems().Count, toss = h.DiscardItems().Count;
+        _junkBtn.Text = junk > 0 ? $"回收（{junk}）" : "回收";
+        ItemUi.Tone(_junkBtn, junk > 0 && AtSmith());
+        _discardBtn.Text = toss > 0 ? $"丟棄（{toss}）" : "丟棄";
+        ItemUi.Tone(_discardBtn, toss > 0);
+        ItemUi.Tone(_filterBtn, _filterOn || _filter.Active);
+        _dollFrame.Visible = !_filterOn;
+        _filterFrame.Visible = _filterOn;
+        if (_filterOn) BuildFilter(h);
         if (_msgT <= 0f) ShowIdleHint();
     }
 
@@ -1074,6 +1172,30 @@ public partial class InventoryUi : UiPanel
         _dirty = true;
     }
 
+    /// <summary>Tooltip head of an empty worn slot: its name and, for the hands, what the class can hold there.</summary>
+    private static string HandHint(Hero h, EquipSlot slot)
+    {
+        string Names_(IEnumerable<string> ids) => string.Join("、", ids.Select(id => ItemDb.BaseOf(id)?.Name ?? id));
+        var g = ItemDb.Loadout(h.Class);
+        if (slot == EquipSlot.MainHand)
+        {
+            string s = "主手\n";
+            if (g.TwoHand.Length > 0) s += ItemUi.Dim("雙手：" + Names_(g.TwoHand)) + "\n";
+            if (g.MainHand.Length > 0) s += ItemUi.Dim("單手：" + Names_(g.MainHand)) + "\n";
+            return s;
+        }
+        if (slot == EquipSlot.OffHand)
+        {
+            var offs = g.OffHand.Concat(g.Dual).ToArray();
+            if (offs.Length == 0) return "副手\n" + ItemUi.Dim(Names.Class(h.Class) + "不使用副手。") + "\n";
+            string s = "副手\n";
+            if (g.OffHand.Length > 0) s += ItemUi.Dim("副手：" + Names_(g.OffHand)) + "\n";
+            if (g.CanDual) s += ItemUi.Dim("雙持：" + Names_(g.Dual)) + "\n";
+            return s;
+        }
+        return ItemUi.SlotName(slot) + "\n";
+    }
+
     private void BuildDoll(Hero h)
     {
         ItemUi.Clear(_cells);
@@ -1095,25 +1217,35 @@ public partial class InventoryUi : UiPanel
                     else ItemUi.Dimmed(node);
                 }
             }
+            else if (slot == EquipSlot.OffHand && h.OffHandBlocked)
+            {
+                // a two-hand weapon holds both hands: the off hand shows that weapon's ghost, greyed and rimmed as locked
+                node = ItemUi.Empty(DollCell, Icons.ForItem(h.MainHand));
+                ItemUi.Dimmed(node, 0.3f);
+                ItemUi.Outline(node, LockedRim);
+                _board.Add(new SlotView { Node = node, Compare = false, Glow = false,
+                    Text = "副手（已鎖定）\n" + ItemUi.Dim($"雙手武器「{h.MainHand.Name}」同時佔用兩手。\n換上單手武器後才能使用副手。") });
+            }
             else
             {
-                node = ItemUi.Empty(DollCell, Icons.ForKind(kind, slot == EquipSlot.Weapon ? (int)h.Class : -1));
-                string what = slot == EquipSlot.Weapon ? ItemDb.WeaponTypeNames[(int)h.Class] : Names.Kind(kind);
-                _board.Add(new SlotView { Node = node, Text = what + "\n" + ItemUi.Dim("尚未裝備"), Compare = false, Glow = false });
+                node = ItemUi.Empty(DollCell, Icons.ForKind(kind, slot == EquipSlot.MainHand ? (int)h.Class : -1));
+                _board.Add(new SlotView { Node = node, Text = HandHint(h, slot) + ItemUi.Dim("尚未裝備"), Compare = false, Glow = false });
             }
             // pinned to the doll's left edge, right edge or middle, so the layout follows the width of the panel
             _cells.AddChild(node);
             float ax = col < 0 ? 0f : col > 0 ? 1f : 0.5f;
-            float x = col < 0 ? DollEdge : col > 0 ? -(DollEdge + DollCell) : -DollCell * 0.5f;
+            float x = col < 0 ? DollEdge : col > 0 ? -(DollEdge + DollCell)
+                : slot == EquipSlot.MainHand ? -DollCell - HandGap * 0.5f : HandGap * 0.5f;
             Pin(node, ax, x, y, DollCell, DollCell);
 
             // slot name beside the cell, toward the figure: a box as tall as the cell with the text centred in
-            // it, so the caption sits level with the cell at every text size (two glyphs are 52 px wide at the largest)
-            var tag = UiTheme.Label(Names.Kind(kind), UiTheme.FsCaption, UiTheme.Dim);
+            // it, so the caption sits level with the cell at every text size (two glyphs are 52 px wide at the largest);
+            // the two hands carry theirs on their outer sides
+            var tag = UiTheme.Label(ItemUi.SlotName(slot), UiTheme.FsCaption, UiTheme.Dim);
             tag.MouseFilter = MouseFilterEnum.Ignore;
             tag.ClipText = true;
             _cells.AddChild(tag);
-            bool rightSide = col > 0;
+            bool rightSide = col > 0 || slot == EquipSlot.MainHand;
             tag.HorizontalAlignment = rightSide ? HorizontalAlignment.Right : HorizontalAlignment.Left;
             tag.VerticalAlignment = VerticalAlignment.Center;
             Pin(tag, ax, rightSide ? x - 8 - DollTagW : x + DollCell + 8, y, DollTagW, DollCell);
@@ -1181,8 +1313,430 @@ public partial class InventoryUi : UiPanel
 
     // ───────────────────────── bag ─────────────────────────
 
+    // ───────────────────────── gear sets (裝備組) ─────────────────────────
+
+    private HBoxContainer _setStrip;
+    private PopupMenu _setMenu;
+    private int _setMenuFor = -1;
+
+    private static string Stance(Hero h) =>
+        h.OffHandBlocked ? "雙手" : h.DualWielding ? "雙持" : h.OffHand != null ? "單手＋副手" : h.Weapon != null ? "單手" : "徒手";
+
+    /// <summary>Tooltip of a set: its key, its items (⚠ for the missing ones) and what it stores.</summary>
+    private static string SetTip(Hero h, int i)
+    {
+        var s = h.SetAt(i);
+        var sb = new StringBuilder();
+        sb.Append($"{h.SetName(i)}　{ItemUi.Dim($"按鍵 {GearSets.KeyName(i)}")}{(h.D.SetActive == i ? "　" + ItemUi.Col(UiTheme.Gold, "使用中") : "")}\n");
+        if (s.Empty) return sb + ItemUi.Dim("尚未儲存。右鍵：儲存目前裝備為此組");
+        var missing = new HashSet<string>(h.MissingOf(i, GearSets.InTown));
+        foreach (var slot in ItemUi.WornOrder)
+        {
+            string uid = s.Uids[(int)slot];
+            if (uid == null) continue;
+            string name = s.ItemNames[(int)slot] ?? "?";
+            bool gone = missing.Contains(name) && h.MissingOf(i, true).Contains(name);
+            bool away = missing.Contains(name) && !gone;
+            sb.Append(ItemUi.Dim(ItemUi.SlotName(slot) + "：") + (gone ? ItemUi.Col(Palette.Bad, "⚠ " + name + "（找不到）") : away ? ItemUi.Col(Palette.Ember, "⚠ " + name + "（在儲藏箱）") : name) + "\n");
+        }
+        sb.Append(ItemUi.Dim("也保存技能列與專精。左鍵：載入　右鍵：儲存／改名／清除"));
+        return sb.ToString();
+    }
+
+    private void BuildSetStrip(Hero h)
+    {
+        ItemUi.Clear(_setStrip);
+        var cap = UiTheme.Label("裝備組", UiTheme.FsCaption, UiTheme.Dim);
+        cap.VerticalAlignment = VerticalAlignment.Center;
+        _setStrip.AddChild(cap);
+        for (int i = 0; i < Hero.SetCount; i++)
+        {
+            int k = i;
+            var s = h.SetAt(i);
+            Item main = null;
+            if (!s.Empty)
+            {
+                string uid = s.Uids[(int)EquipSlot.MainHand] ?? s.Uids[(int)EquipSlot.OffHand];
+                main = uid == null ? null : h.D.Equip.Concat(h.D.Bag).Concat(h.D.Stash).FirstOrDefault(x => x != null && x.Uid == uid);
+            }
+            bool active = h.D.SetActive == i, warn = !s.Empty && h.MissingOf(i, GearSets.InTown).Count > 0;
+            var cell = new Control { CustomMinimumSize = new Vector2(40, 40), MouseFilter = MouseFilterEnum.Stop };
+            var frame = new Panel { MouseFilter = MouseFilterEnum.Ignore };
+            frame.AddThemeStyleboxOverride("panel", ItemUi.CellBox(main != null ? (int)main.Rarity : -1, new Color(0.07f, 0.065f, 0.06f, 0.95f),
+                active ? UiTheme.Gold : new Color(0.35f, 0.32f, 0.28f), active ? 2 : 1));
+            frame.SetAnchorsAndOffsetsPreset(LayoutPreset.FullRect);
+            cell.AddChild(frame);
+            if (main != null)
+            {
+                var icon = new TextureRect { Texture = Icons.ForItem(main), ExpandMode = TextureRect.ExpandModeEnum.IgnoreSize, StretchMode = TextureRect.StretchModeEnum.KeepAspectCentered, MouseFilter = MouseFilterEnum.Ignore };
+                icon.SetAnchorsAndOffsetsPreset(LayoutPreset.FullRect, LayoutPresetMode.Minsize, 4);
+                cell.AddChild(icon);
+            }
+            var num = UiTheme.Outlined(UiTheme.Label(warn ? $"{i + 1}⚠" : (i + 1).ToString(), UiTheme.FsCaption, warn ? Palette.Ember : active ? UiTheme.Gold : UiTheme.Text), 4);
+            num.MouseFilter = MouseFilterEnum.Ignore;
+            num.SetAnchorsAndOffsetsPreset(LayoutPreset.BottomRight, LayoutPresetMode.Minsize, 1);
+            num.GrowHorizontal = GrowDirection.Begin; num.GrowVertical = GrowDirection.Begin;
+            cell.AddChild(num);
+            cell.GuiInput += e => Log.Guard("ui", () =>
+            {
+                if (e is not InputEventMouseButton mb || !mb.Pressed) return;
+                if (mb.ButtonIndex == MouseButton.Left) LoadSetClick(k);
+                else if (mb.ButtonIndex == MouseButton.Right) OpenSetMenu(k);
+            });
+            _setStrip.AddChild(cell);
+            _board.Add(new SlotView { Node = cell, Text = SetTip(h, i), Glow = true, Compare = false });
+        }
+    }
+
+    private void LoadSetClick(int i)
+    {
+        var h = _hero;
+        if (h == null) return;
+        if (h.SetAt(i).Empty) { Say($"「{h.SetName(i)}」尚未儲存裝備。右鍵：儲存目前裝備為此組。"); return; }
+        if (GearSets.Switch(i, false)) { Say($"已切換：{h.SetName(i)}", Palette.Good); _dirty = true; }
+        else Fail("無法切換裝備組（行囊空間或冷卻，詳見畫面上方訊息）");
+    }
+
+    private void OpenSetMenu(int i)
+    {
+        var h = _hero;
+        if (h == null) return;
+        if (_setMenu == null || !IsInstanceValid(_setMenu))
+        {
+            _setMenu = new PopupMenu();
+            _setMenu.AddThemeFontSizeOverride("font_size", UiTheme.Fs(UiTheme.FsRow));
+            _setMenu.IdPressed += id => Log.Guard("ui", () => SetMenuPick((int)id));
+            AddChild(_setMenu);
+        }
+        _setMenu.Clear();
+        _setMenu.AddItem("儲存目前裝備為此組", 0);
+        _setMenu.AddItem("載入", 1);
+        _setMenu.AddItem("重新命名", 2);
+        _setMenu.AddItem("清除", 3);
+        _setMenu.SetItemDisabled(1, h.SetAt(i).Empty);
+        _setMenu.SetItemDisabled(3, h.SetAt(i).Empty);
+        _setMenuFor = i;
+        _setMenu.Position = (Vector2I)GetViewport().GetMousePosition();
+        _setMenu.Popup();
+    }
+
+    private void SetMenuPick(int id)
+    {
+        var h = _hero; int i = _setMenuFor;
+        if (h == null || i < 0) return;
+        switch (id)
+        {
+            case 0: SaveSetClick(i); break;
+            case 1: LoadSetClick(i); break;
+            case 2: RenameSetClick(i); break;
+            case 3:
+                Game.I?.Ui?.Confirm($"清除「{h.SetName(i)}」？\n裝備本身不會被丟棄，只是不再屬於這個裝備組（也不再受保護）。", () => Log.Guard("ui", () => { h.ClearSet(i); GearSets.RefreshHud(); Say($"已清除「{h.SetName(i)}」。"); }), "清除", "取消");
+                break;
+        }
+    }
+
+    private void SaveSetClick(int i)
+    {
+        var h = _hero;
+        if (h == null) return;
+        void Go() { h.SaveSet(i); GearSets.RefreshHud(); Snd.Ui("ui_click"); Say($"已將目前裝備存為「{h.SetName(i)}」（按 {GearSets.KeyName(i)} 載入）。", Palette.Good); }
+        if (!h.SetAt(i).Empty && h.D.SetActive != i && Game.I?.Ui != null)
+            Game.I.Ui.Confirm($"以目前裝備覆蓋「{h.SetName(i)}」？", () => Log.Guard("ui", Go), "覆蓋", "取消");
+        else Go();
+    }
+
+    private void RenameSetClick(int i)
+    {
+        var h = _hero;
+        if (h == null || Game.I?.Ui == null) return;
+        Game.I.Ui.Prompt("裝備組名稱（最多 12 字）", h.SetName(i), name => Log.Guard("ui", () => { h.RenameSet(i, name); GearSets.RefreshHud(); _dirty = true; }));
+    }
+
+    /// <summary>The 裝備組 tab of the sheet: every set with its stance and its numbers as if worn, against what is worn now.</summary>
+    private void SetsTab(Hero h)
+    {
+        Head("裝備組");
+        _rows.AddChild(UiTheme.Wrapped(UiTheme.Label($"{GearSets.KeyName(0)}–{GearSets.KeyName(5)} 載入，{GearSets.KeyName(6)} 在最近兩組間快速切換（戰鬥中冷卻 {GearSets.CooldownSec:0.#} 秒）。裝備組保存裝備、技能列與專精；技能等級不隨之改變。在殘燈鎮時會自動從儲藏箱取出。",
+            UiTheme.FsCaption, UiTheme.Dim), SheetW - 24));
+        var now = GearEval.Baseline(h);
+        float o0 = GearEval.Offense(now), l0 = now.MaxLife, a0 = now.Armor;
+        float r0 = ResAvg(now);
+        for (int i = 0; i < Hero.SetCount; i++)
+        {
+            int k = i;
+            var s = h.SetAt(i);
+            bool active = h.D.SetActive == i;
+            var missing = s.Empty ? new List<string>() : h.MissingOf(i, GearSets.InTown);
+            var head = new HBoxContainer();
+            head.AddThemeConstantOverride("separation", 8);
+            var name = UiTheme.Trimmed(UiTheme.Label($"{i + 1}. {h.SetName(i)}{(missing.Count > 0 ? " ⚠" : "")}", UiTheme.FsRow, active ? UiTheme.Gold : missing.Count > 0 ? Palette.Ember : UiTheme.Text, active), false);
+            name.SizeFlagsHorizontal = SizeFlags.ExpandFill;
+            head.AddChild(name);
+            head.AddChild(UiTheme.Label($"〔{GearSets.KeyName(i)}〕", UiTheme.FsCaption, UiTheme.Dim));
+            _rows.AddChild(head);
+            _board.Add(new SlotView { Node = head, Clip = _sheetScroll, Text = SetTip(h, i), Glow = false, Compare = false });
+            if (!s.Empty)
+            {
+                Hero p = null;
+                try { p = h.PreviewSet(i); } catch (Exception e) { Log.Error("ui", $"set {i + 1} preview failed", e); }
+                if (p != null)
+                {
+                    float o = GearEval.Offense(p), r = ResAvg(p);
+                    string D(float v, float b, string f) => active || MathF.Abs(v - b) < 0.5f ? "" : $"（{(v > b ? "+" : "−")}{MathF.Abs(v - b).ToString(f)}）";
+                    var line = $"{Stance(p)}・{p.MainHand?.Gb?.Name ?? p.Weapon?.Name ?? "徒手"}{(p.OffHand != null ? "＋" + (p.OffHand.Gb?.Name ?? "") : "")}\n"
+                        + $"每秒傷害 {o:0}{D(o, o0, "0")}　生命 {p.MaxLife:0}{D(p.MaxLife, l0, "0")}\n護甲 {p.Armor:0}{D(p.Armor, a0, "0")}　抗性 {r:0}%{D(r, r0, "0")}";
+                    _rows.AddChild(UiTheme.Wrapped(UiTheme.Label(line, UiTheme.FsCaption, UiTheme.Text), SheetW - 24));
+                }
+            }
+            else _rows.AddChild(UiTheme.Label("（空）", UiTheme.FsCaption, UiTheme.Dim));
+            var acts = new HFlowContainer();
+            acts.AddThemeConstantOverride("h_separation", 6);
+            if (!s.Empty && !active) acts.AddChild(ItemUi.Btn("載入", () => LoadSetClick(k), UiTheme.FsCaption));
+            acts.AddChild(ItemUi.Btn("儲存目前裝備", () => SaveSetClick(k), UiTheme.FsCaption));
+            acts.AddChild(ItemUi.Btn("改名", () => RenameSetClick(k), UiTheme.FsCaption));
+            _rows.AddChild(acts);
+        }
+    }
+
+    private static float ResAvg(Hero h) =>
+        (h.Res(Element.Fire) + h.Res(Element.Frost) + h.Res(Element.Lightning) + h.Res(Element.Poison) + h.Res(Element.Shadow)) / 5f;
+
+    // ───────────────────────── bag filter (行囊篩選) and bulk marks ─────────────────────────
+
+    private void ToggleFilter()
+    {
+        _filterOn = !_filterOn;
+        // the filter takes exactly the doll's height, so nothing below it moves
+        if (_filterOn && _dollFrame != null)
+        {
+            float hh = _dollFrame.Size.Y > 0f ? _dollFrame.Size.Y : DollH + DollGrow + 2f * DollPad;
+            _filterFrame.CustomMinimumSize = new Vector2(0, hh);
+            _filterScroll.CustomMinimumSize = new Vector2(0, MathF.Max(120f, hh - 2f * DollPad));
+        }
+        Snd.Ui("ui_click");
+        _dirty = true;
+        Log.Info("inv", $"bag filter panel {(_filterOn ? "opened" : "closed")}");
+    }
+
+    private bool Shown(Item it) => !_filter.Active || _filter.Matches(_hero, it, ItemMarks.IsNew);
+
+    /// <summary>A drop-down at caption size that never takes keyboard focus (the panel's hotkeys stay live).</summary>
+    private OptionButton Choice(string[] items, int selected, Action<int> onPick)
+    {
+        var ob = new OptionButton { FocusMode = FocusModeEnum.None };
+        foreach (var s in items) ob.AddItem(s);
+        ob.Selected = Math.Clamp(selected, 0, items.Length - 1);
+        ob.AddThemeFontSizeOverride("font_size", UiTheme.Fs(UiTheme.FsCaption));
+        ob.GetPopup().AddThemeFontSizeOverride("font_size", UiTheme.Fs(UiTheme.FsRow));
+        ob.ItemSelected += i => Log.Guard("ui", () => { onPick((int)i); _filter.Preset = null; _dirty = true; });
+        return ob;
+    }
+
+    private static HFlowContainer Flow()
+    {
+        var f = new HFlowContainer();
+        f.AddThemeConstantOverride("h_separation", 6);
+        f.AddThemeConstantOverride("v_separation", 4);
+        return f;
+    }
+
+    private static Label Caption(string s)
+    {
+        var l = UiTheme.Label(s, UiTheme.FsCaption, UiTheme.Dim);
+        l.VerticalAlignment = VerticalAlignment.Center;
+        return l;
+    }
+
+    // every stat an affix (or a base's own stat) can carry, by name
+    private static readonly Stat[] AffixStats = ItemDb.Pools.Select(p => p.S).Concat(ItemDb.GearBases.SelectMany(b => b.Implicit.Select(x => x.s))).Distinct().OrderBy(s => (int)s).ToArray();
+
+    private void BuildFilter(Hero h)
+    {
+        ItemUi.Clear(_filterBody);
+        var head = new HBoxContainer();
+        head.AddThemeConstantOverride("separation", 10);
+        var title = UiTheme.Label("行囊篩選", UiTheme.FsRow, UiTheme.Gold, true);
+        title.SizeFlagsHorizontal = SizeFlags.ExpandFill;
+        head.AddChild(title);
+        head.AddChild(ItemUi.Btn("返回裝備", ToggleFilter, UiTheme.FsCaption));
+        _filterBody.AddChild(head);
+
+        // rarity: any ticked one matches
+        var r = Flow();
+        r.AddChild(Caption("稀有度"));
+        for (int i = 0; i < 5; i++)
+        {
+            int k = i;
+            var b = ItemUi.Btn(Names.Rarity((Rarity)i), () => { _filter.Rarities[k] = !_filter.Rarities[k]; _filter.Preset = null; _dirty = true; }, UiTheme.FsCaption);
+            b.AddThemeColorOverride("font_color", _filter.Rarities[i] ? Palette.Rarity((Rarity)i) : UiTheme.Dim);
+            r.AddChild(b);
+        }
+        _filterBody.AddChild(r);
+
+        var row = Flow();
+        row.AddChild(Choice(new[] { "種類：全部" }.Concat(BagFilter.Kinds.Select(x => x.name)).ToArray(), _filter.Kind + 1, i => _filter.Kind = i - 1));
+        row.AddChild(Choice(BagFilter.UsableNames, _filter.Usable, i => _filter.Usable = i));
+        row.AddChild(Choice(BagFilter.VerdictNames, _filter.Verdict, i => _filter.Verdict = i));
+        row.AddChild(Choice(Enumerable.Range(0, BagFilter.BelowCount).Select(BagFilter.BelowName).ToArray(), _filter.Below, i => _filter.Below = i));
+        int aSel = _filter.Affix == Stat.Count ? 0 : Array.IndexOf(AffixStats, _filter.Affix) + 1;
+        row.AddChild(Choice(new[] { "詞綴：不限" }.Concat(AffixStats.Select(StatInfo.Name)).ToArray(), aSel, i => _filter.Affix = i == 0 ? Stat.Count : AffixStats[i - 1]));
+        var nb = ItemUi.Btn("僅新物品", () => { _filter.NewOnly = !_filter.NewOnly; _filter.Preset = null; _dirty = true; }, UiTheme.FsCaption);
+        ItemUi.Tone(nb, _filter.NewOnly);
+        row.AddChild(nb);
+        _filterBody.AddChild(row);
+
+        var pre = Flow();
+        pre.AddChild(Caption("快速篩選"));
+        foreach (var (id, name) in BagFilter.Presets)
+        {
+            string pid = id;
+            var b = ItemUi.Btn(name, () => { _filter.ApplyPreset(pid); _dirty = true; Log.Info("inv", $"bag filter preset {pid}"); }, UiTheme.FsCaption);
+            ItemUi.Tone(b, _filter.Preset == id);
+            pre.AddChild(b);
+        }
+        pre.AddChild(ItemUi.Btn("清除篩選", () => { _filter.Clear(); _dirty = true; }, UiTheme.FsCaption));
+        _filterBody.AddChild(pre);
+        _filterBody.AddChild(UiTheme.Rule());
+
+        var shown = _filter.Active ? _filter.Pick(h, ItemMarks.IsNew) : new List<Item>();
+        int locked = shown.Count(i => h.IsProtected(i));
+        var act = Flow();
+        act.AddChild(Caption(_filter.Active ? $"符合 {shown.Count} 件{(locked > 0 ? $"（{locked} 件鎖定或在裝備組中）" : "")}" : "尚未設定篩選條件"));
+        act.AddChild(ItemUi.Btn("全部標記回收", () => MarkShown(BagMark.Recycle), UiTheme.FsCaption));
+        act.AddChild(ItemUi.Btn("全部標記丟棄", () => MarkShown(BagMark.Discard), UiTheme.FsCaption));
+        act.AddChild(ItemUi.Btn("清除標記", ClearShownMarks, UiTheme.FsCaption));
+        _filterBody.AddChild(act);
+        var keys = UiTheme.Wrapped(UiTheme.Label("R 回收　X 丟棄　L 鎖定　Shift＋R／X 全部標記　C 清除　F 返回", UiTheme.FsCaption, UiTheme.Dim));
+        _filterBody.AddChild(keys);
+    }
+
+    /// <summary>Marks every item the filter shows (locked items and, for presets, legendary / unique pieces with a power are left alone).</summary>
+    private void MarkShown(BagMark m)
+    {
+        var h = _hero;
+        if (h == null) return;
+        if (!_filter.Active) { Fail("請先設定篩選條件，再一次標記所有符合的物品。"); return; }
+        var shown = _filter.Pick(h, ItemMarks.IsNew);
+        int locked = shown.Count(i => h.IsProtected(i));
+        int special = 0;
+        if (_filter.Preset != null) { special = shown.Count(i => !h.IsProtected(i) && (i.Aspect != null || i.Unique != null)); shown.RemoveAll(i => i.Aspect != null || i.Unique != null); }
+        int gems = m == BagMark.Recycle ? shown.Count(i => !i.IsEquip) : 0;
+        int n = h.MarkAll(shown, m);
+        var skipped = new List<string>();
+        if (locked > 0) skipped.Add($"{locked} 件鎖定或在裝備組中");
+        if (special > 0) skipped.Add($"{special} 件含特殊效果");
+        if (gems > 0) skipped.Add($"{gems} 顆寶石無法回收");
+        Snd.Ui("ui_click");
+        Say($"已將 {n} 件物品標記為{(m == BagMark.Recycle ? "回收" : "丟棄")}。{(skipped.Count > 0 ? "（略過：" + string.Join("、", skipped) + "）" : "")}");
+        Log.Info("inv", $"bulk mark {m}: {n} marked, skipped locked={locked} special={special} gems={gems} (filter preset={_filter.Preset ?? "-"})");
+    }
+
+    private void ClearShownMarks()
+    {
+        var h = _hero;
+        if (h == null) return;
+        int n = h.ClearMarks(_filter.Active ? _filter.Pick(h, ItemMarks.IsNew) : null);
+        Say(n > 0 ? $"已清除 {n} 件物品的標記。" : "沒有需要清除的標記。");
+    }
+
+    private void ToggleOne(Item it, BagMark m)
+    {
+        var h = _hero;
+        if (h == null || it == null) return;
+        string why = h.WhyCantMark(it, m);
+        if (why != null && h.MarkOf(it) != m) { Fail(why); return; }
+        var now = h.ToggleMark(it, m);
+        Snd.Ui("ui_click");
+        Say(now == BagMark.None ? $"已取消「{it.Name}」的標記。" : $"已將「{it.Name}」標記為{(now == BagMark.Recycle ? "回收" : "丟棄")}。");
+    }
+
+    private void ToggleLockOf(Item it)
+    {
+        var h = _hero;
+        if (h == null || it == null || !(h.InBag(it) || h.IsEquipped(it))) return;
+        bool now = h.ToggleLock(it);
+        Snd.Ui("ui_click");
+        Say(now ? $"已鎖定「{it.Name}」：批次標記、回收與丟棄都不會動到它。" : $"已解除「{it.Name}」的鎖定。");
+        _dirty = true;
+    }
+
+    /// <summary>At the smith: every item marked 回收 is salvaged, after a confirmation that shows what it yields.</summary>
+    private void RecycleMarked()
+    {
+        var h = _hero;
+        if (h == null) return;
+        var list = h.RecycleItems().FindAll(i => h.WhyCantSalvage(i) == null);
+        if (list.Count == 0) { Fail("沒有標記回收的物品。以 Shift＋左鍵或 R 標記，或在篩選中一次標記。"); return; }
+        if (!AtSmith()) { Fail($"已標記 {list.Count} 件回收：回收需要在鐵匠布蘭身邊進行。"); return; }
+        var pre = Crafting.PreviewSalvage(list, h.D);
+        string text = $"回收 {list.Count} 件標記的物品？\n可得：{Crafting.Mats(pre.Scrap, pre.Dust, pre.Cores)}"
+            + (pre.Gems > 0 ? $"，取回寶石 {pre.Gems} 顆" : "")
+            + (pre.Precious > 0 ? $"\n其中 {pre.Precious} 件傳奇或獨特裝備，回收之後無法復原。" : "");
+        void Go()
+        {
+            var r = h.SalvageMany(list);
+            if (r.Count == 0) { Fail("沒有回收任何物品"); return; }
+            Snd.Ui("salvage");
+            string powers = r.Powers.Count > 0 ? $"　威能典籍：{string.Join("、", r.Powers)}" : "";
+            Say($"回收了 {r.Count} 件物品：{Crafting.Mats(r.Scrap, r.Dust, r.Cores)}{powers}", Palette.Good);
+            Log.Info("inv", $"recycled {r.Count} marked items: scrap {r.Scrap} dust {r.Dust} cores {r.Cores}");
+        }
+        if (Game.I?.Ui != null) Game.I.Ui.Confirm(text, () => Log.Guard("ui", Go), "回收", "取消");
+        else Go();
+    }
+
+    /// <summary>Anywhere: every item marked 丟棄 is thrown away, after a confirmation that counts them by rarity.</summary>
+    private void DiscardMarked()
+    {
+        var h = _hero;
+        if (h == null) return;
+        var list = h.DiscardItems().FindAll(i => h.WhyCantDiscard(i) == null);
+        if (list.Count == 0) { Fail("沒有標記丟棄的物品。以 X 標記，或在篩選中一次標記。"); return; }
+        var by = new int[5];
+        foreach (var i in list) by[Math.Clamp((int)i.Rarity, 0, 4)]++;
+        string counts = string.Join("、", Enumerable.Range(0, 5).Where(i => by[i] > 0).Select(i => $"{Names.Rarity((Rarity)i)} {by[i]}"));
+        void Go()
+        {
+            var res = h.DiscardMarked();
+            int n = res.Sum();
+            Snd.Ui("ui_click");
+            Say($"丟棄了 {n} 件物品。", Palette.Good);
+            Log.Info("inv", $"discarded {n} marked items ({string.Join("/", res)})");
+        }
+        string warn = by[3] + by[4] > 0 ? "\n其中有傳奇或獨特裝備！" : "";
+        if (Game.I?.Ui != null) Game.I.Ui.Confirm($"丟棄 {list.Count} 件標記的物品？\n{counts}{warn}\n丟棄之後無法找回。（到鐵匠那裡回收可以換得材料。）", () => Log.Guard("ui", Go), "丟棄", "取消");
+        else Go();
+    }
+
+    public override void _UnhandledKeyInput(InputEvent e)
+    {
+        if (!_open || e is not InputEventKey k || !k.Pressed || k.Echo) return;
+        var ui = Game.I?.Ui;
+        if (ui == null || ui.ModalOpen || !ui.IsOpen("inventory")) return;
+        Key key = k.Keycode != Key.None ? k.Keycode : k.PhysicalKeycode;
+        var it = _board.Hovered;
+        bool done = true;
+        try
+        {
+            switch (key)
+            {
+                case Key.F: ToggleFilter(); break;
+                case Key.R when k.ShiftPressed: MarkShown(BagMark.Recycle); break;
+                case Key.X when k.ShiftPressed: MarkShown(BagMark.Discard); break;
+                case Key.R when it != null && _hero.InBag(it): ToggleOne(it, BagMark.Recycle); break;
+                case Key.X when it != null && _hero.InBag(it): ToggleOne(it, BagMark.Discard); break;
+                case Key.L when it != null: ToggleLockOf(it); break;
+                case Key.C: ClearShownMarks(); break;
+                default: done = false; break;
+            }
+        }
+        catch (Exception ex) { Log.Error("ui", $"inventory hotkey {key} failed", ex); }
+        if (done) GetViewport().SetInputAsHandled();
+    }
+
     private void DecorateBag(Item it, SlotView v)
     {
+        if (_filterOn && _filter.Active && !Shown(it)) ItemUi.Dimmed(v.Node, 0.66f);      // the filter dims what it does not show
         if (_gemPick != null)
         {
             if (ReferenceEquals(it, _gemPick)) ItemUi.Outline(v.Node, ItemUi.PickColor, 3);
@@ -1198,10 +1752,11 @@ public partial class InventoryUi : UiPanel
         if (h == null) return null;
         if (_gemPick != null)
             return ReferenceEquals(it, _gemPick) ? ItemUi.Dim("再次點擊：取消鑲嵌") : it.IsEquip ? SocketHint(it) : ItemUi.Dim("點擊：改選這顆寶石");
-        string junk = h.IsJunk(it) ? "Shift＋左鍵：取消廢品標記" : "Shift＋左鍵：標記廢品";
+        string junk = it.Locked ? "L：解除鎖定" : (h.MarkOf(it) == BagMark.Recycle ? "Shift＋左鍵／R：取消回收" : "Shift＋左鍵／R：標記回收") + "　X：" + (h.MarkOf(it) == BagMark.Discard ? "取消丟棄" : "標記丟棄") + "　L：鎖定";
         if (it.Kind == ItemKind.Gem) return ItemUi.Dim(junk + "\nCtrl＋左鍵：丟在地上");
         string why = h.WhyCantEquip(it);
-        return (why != null ? ItemUi.Col(Palette.Bad, why) + "\n" : "") + ItemUi.Dim("左鍵：裝備　" + junk + "\nCtrl＋左鍵：丟在地上");
+        return (why != null ? ItemUi.Col(Palette.Bad, why) + "\n" : "") + ItemUi.Dim("左鍵：裝備　" + junk
+            + (it.Kind == ItemKind.Weapon && !it.TwoHand && ItemDb.Allows(h.Class, it.Base, EquipSlot.OffHand) ? "\nAlt＋左鍵：裝備在副手" : "") + "\nCtrl＋左鍵：丟在地上");
     }
 
     private void OnBagLeft(Item it)
@@ -1211,13 +1766,7 @@ public partial class InventoryUi : UiPanel
         ItemMarks.See(it);
         if (_gemPick != null) { TrySocket(it); return; }
         if (Input.IsKeyPressed(Key.Ctrl)) { DropOnGround(h, it); return; }
-        if (Input.IsKeyPressed(Key.Shift))
-        {
-            bool junk = h.ToggleJunk(it);
-            Snd.Ui("ui_click");
-            Say(junk ? $"已將「{it.Name}」標記為廢品。" : $"已取消「{it.Name}」的廢品標記。");
-            return;
-        }
+        if (Input.IsKeyPressed(Key.Shift)) { ToggleOne(it, BagMark.Recycle); return; }     // Shift＋左鍵: 回收 mark (R does the same, X the 丟棄 mark)
         if (it.Kind == ItemKind.Gem) { BeginGemPick(it); return; }
         EquipFromBag(h, it);
     }
@@ -1234,12 +1783,24 @@ public partial class InventoryUi : UiPanel
 
     private void EquipFromBag(Hero h, Item it)
     {
-        string why = h.WhyCantEquip(it);
-        if (why != null) { Fail(why); return; }
-        if (!h.Equip(it)) { Fail("無法裝備"); return; }
+        // Alt＋click puts a one-hand weapon in the off hand (dual-wield classes); otherwise the item finds its own slot
+        EquipSlot? slot = it.Kind == ItemKind.Weapon && !it.TwoHand && Input.IsKeyPressed(Key.Alt) && ItemDb.Allows(h.Class, it.Base, EquipSlot.OffHand)
+            ? EquipSlot.OffHand : null;
+        string why = h.WhyCantEquip(it, slot);
+        if (why != null)
+        {
+            Fail(why);
+            if (!ItemDb.UsableBy(it, h.Class)) Game.I?.Hud?.Warn(why);       // 「燼刃衛無法裝備魔杖」 as a toast too, never a silent no
+            return;
+        }
+        Item main0 = h.MainHand, off0 = h.OffHand;
+        if (!h.Equip(it, slot)) { Fail("無法裝備"); return; }
         h.ClearJunk(it);
         Snd.Ui(ItemUi.EquipSound(it));
-        Log.Info("inv", $"equipped {it.Name} ({it.Rarity}, power {it.Power})");
+        // the other hand's piece that had to make room went to the bag: say so
+        if (off0 != null && off0 != it && h.OffHand == null && h.InBag(off0) && it.TwoHand) Say($"雙手武器佔用兩手：副手的「{off0.Name}」已收入行囊。");
+        else if (main0 != null && main0.TwoHand && h.MainHand == null && h.InBag(main0)) Say($"「{main0.Name}」需要雙手，已收入行囊。");
+        Log.Info("inv", $"equipped {it.Name} ({it.Rarity}, power {it.Power}, {it.Base}) in {slot?.ToString() ?? "auto"}; main={h.MainHand?.Base} off={h.OffHand?.Base}");
     }
 
     /// <summary>Ctrl＋左鍵: the item leaves the bag and lies on the ground at the hero's feet, where it can be picked up again.</summary>
@@ -1253,26 +1814,6 @@ public partial class InventoryUi : UiPanel
         Log.Guard("loot", () => Loot.DropItem(it, p.Pos2));
         Snd.Ui("ui_click");
         Say($"已將「{it.Name}」丟在地上。");
-    }
-
-    /// <summary>Away from the smith: every item marked as junk is thrown away (after a confirmation; it cannot be undone).</summary>
-    private void DiscardJunk(Hero h)
-    {
-        var junk = h.JunkItems().FindAll(i => h.WhyCantDiscard(i) == null);
-        if (junk.Count == 0) { Fail("沒有可丟棄的廢品。以 Shift＋左鍵標記不要的裝備。"); return; }
-        int precious = 0;
-        foreach (var i in junk) if (i.Rarity is Rarity.Legendary or Rarity.Unique) precious++;
-        void Go()
-        {
-            int n = 0;
-            foreach (var it in junk) if (h.Discard(it)) n++;
-            Snd.Ui("ui_click");
-            Say($"丟棄了 {n} 件廢品。（在殘燈鎮的鐵匠布蘭那裡，廢品可以拆解成材料。）");
-        }
-        string extra = precious > 0 ? $"\n其中有 {precious} 件傳奇或獨特裝備。" : "";
-        if (Game.I?.Ui != null)
-            Game.I.Ui.Confirm($"丟棄 {junk.Count} 件廢品？丟棄之後無法找回。{extra}\n（到鐵匠那裡拆解可以換得材料。）", () => Log.Guard("ui", Go), "丟棄", "取消");
-        else Go();
     }
 
     private void SortBag() => _hero?.SortBag();
@@ -1324,27 +1865,6 @@ public partial class InventoryUi : UiPanel
         return false;
     }
 
-    private void SalvageJunk()
-    {
-        var h = _hero;
-        if (h == null) return;
-        if (!AtSmith()) { DiscardJunk(h); return; }
-        var junk = h.JunkItems().FindAll(i => h.WhyCantSalvage(i) == null);
-        if (junk.Count == 0) { Fail("沒有可拆解的廢品。以 Shift＋左鍵標記不要的裝備。"); return; }
-        var pre = Crafting.PreviewSalvage(junk, h.D);
-        void Go()
-        {
-            var r = h.SalvageMany(junk);
-            if (r.Count == 0) { Fail("沒有拆解任何物品"); return; }
-            Snd.Ui("salvage");
-            string powers = r.Powers.Count > 0 ? $"　威能典籍：{string.Join("、", r.Powers)}" : "";
-            Say($"拆解了 {r.Count} 件廢品：{Crafting.Mats(r.Scrap, r.Dust, r.Cores)}{powers}", Palette.Good);
-        }
-        if (pre.Precious > 0 && Game.I?.Ui != null)
-            Game.I.Ui.Confirm($"廢品之中有 {pre.Precious} 件傳奇或獨特裝備。\n拆解之後無法復原，確定要一併拆解嗎？", () => Log.Guard("ui", Go), "拆解", "取消");
-        else Go();
-    }
-
     // ───────────────────────── character sheet ─────────────────────────
 
     private void BuildSheet(Hero h)
@@ -1356,13 +1876,14 @@ public partial class InventoryUi : UiPanel
         if (h.Spec != null) line += $"　{h.Spec.Name}";
         _class.Text = line;
         ItemUi.Clear(_tabBox);
-        _tabBox.AddChild(ItemUi.Tabs(SheetTabs, _tab, PickTab, UiTheme.FsRow, 86));
+        _tabBox.AddChild(ItemUi.Tabs(SheetTabs, _tab, PickTab, UiTheme.FsRow, 66));
         ItemUi.Clear(_rows);
         switch (_tab)
         {
             case 1: Offence(h); break;
             case 2: Defence(h); break;
             case 3: Utility(h); break;
+            case 4: SetsTab(h); break;
             default: Overview(h); break;
         }
     }
@@ -1385,7 +1906,7 @@ public partial class InventoryUi : UiPanel
         float crit = Mathf.Clamp(h.S[Stat.CritChance] / 100f, 0f, 1f);
         float normal = 1f + add / 100f;
         float critical = 1.5f * (1f + (add + h.S[Stat.CritDmg]) / 100f);
-        return w * h.Aps * h.AttackSpeedMul * h.MainMul * ((1f - crit) * normal + crit * critical);
+        return w * h.SwingsPerSec * h.MainMul * ((1f - crit) * normal + crit * critical);
     }
 
     private void Head(string text)
@@ -1441,8 +1962,8 @@ public partial class InventoryUi : UiPanel
         Row("生命上限", N(h.MaxLife), "生命歸零時倒下。由等級、裝備上的生命與生命加成決定。");
         Row("護甲", N(h.Armor), $"面對同等級的敵人，護甲使你受到的傷害降低 {ItemUi.Pct(Balance.ArmorDr(h.Armor, d.Level) * 100f)}。\n敵人等級越高，同樣的護甲效果越低。");
         Row("每秒傷害（估算）", N(EstimateDps(h)), "以武器傷害、攻擊速度、主屬性、傷害加成與爆擊推算的持續輸出。\n不含技能倍率與條件加成，僅供比較裝備。");
-        Row("武器傷害", $"{h.WeaponMin:0}–{h.WeaponMax:0}", "每一次技能命中，都以這個範圍內的一個數值為基礎。");
-        Row("每秒攻擊", (h.Aps * h.AttackSpeedMul).ToString("0.00", CultureInfo.InvariantCulture), "武器的基礎攻擊頻率，再乘上攻擊速度加成。");
+        Row("武器傷害", $"{h.WeaponMin:0}–{h.WeaponMax:0}", h.DualWielding ? "雙持：兩手輪流出擊，各以自己武器的傷害範圍為基礎；這裡是兩手的平均。" : "每一次技能命中，都以這個範圍內的一個數值為基礎。");
+        Row("每秒攻擊", h.SwingsPerSec.ToString("0.00", CultureInfo.InvariantCulture), h.DualWielding ? "兩把武器速度的平均，雙持再快 10%，乘上攻擊速度加成。" : "武器的基礎攻擊頻率，再乘上攻擊速度加成。");
         Row($"{Names.Resource(h.Class)}上限", N(h.MaxResource));
         Row("藥水容量", d.PotionCap.ToString());
 
@@ -1456,6 +1977,15 @@ public partial class InventoryUi : UiPanel
         Head("專精");
         if (h.Spec != null) Row(h.Spec.Name, "", h.Spec.Desc);
         else Row(d.Level >= SkillDb.SpecLevel ? "尚未選擇專精" : $"等級 {SkillDb.SpecLevel} 開放", "");
+
+        // 可用武器: the class's loadout (the same table the tooltips, filters and loot use)
+        Head("可用武器");
+        foreach (var line in ItemDb.LoadoutLines(h.Class))
+        {
+            _rows.AddChild(UiTheme.Wrapped(UiTheme.Label(line, UiTheme.FsRow, UiTheme.Text), SheetW - 24));
+        }
+        string held = h.OffHandBlocked ? "雙手持握" : h.DualWielding ? "雙持" : h.OffHand != null ? "單手＋副手" : h.Weapon != null ? "單手" : "徒手";
+        Row("目前持握", held, "雙手武器同時佔用兩手；可雙持的職業可在副手再拿一把單手武器。");
     }
 
     private void Attr(Hero h, Stat s, Stat main, string tip)
@@ -1470,7 +2000,7 @@ public partial class InventoryUi : UiPanel
     {
         Head("攻擊");
         Row("武器傷害", $"{h.WeaponMin:0}–{h.WeaponMax:0}");
-        Row("每秒攻擊", (h.Aps * h.AttackSpeedMul).ToString("0.00", CultureInfo.InvariantCulture));
+        Row("每秒攻擊", h.SwingsPerSec.ToString("0.00", CultureInfo.InvariantCulture));
         StatRow(h, Stat.AttackSpeed, 100f);
         StatRow(h, Stat.CritChance, 75f);
         Row("爆擊傷害", $"×1.5　+{ItemUi.Pct(h.S[Stat.CritDmg])}", "爆擊造成 1.5 倍傷害；此處的加成在爆擊時併入傷害加成一起計算。");
@@ -1498,6 +2028,7 @@ public partial class InventoryUi : UiPanel
         Row("護甲", N(h.Armor), $"面對同等級的敵人，受到的傷害降低 {ItemUi.Pct(Balance.ArmorDr(h.Armor, h.D.Level) * 100f)}（最高 80%）。");
         StatRow(h, Stat.DmgReduction, 75f);
         StatRow(h, Stat.Dodge, 50f);
+        StatRow(h, Stat.Block, 50f);
         StatRow(h, Stat.BarrierPct);
 
         Head("元素抗性");
@@ -1550,6 +2081,7 @@ public partial class InventoryUi : UiPanel
         Stat.ResAll => "同時計入五種元素抗性。智力也會提供少量。",
         Stat.DmgReduction => "所有受到的傷害按比例降低，與護甲、抗性相乘。",
         Stat.Dodge => "完全避開一次攻擊的機率。敏捷也會提供少量。",
+        Stat.Block => "以盾格擋的機率：被格擋的攻擊傷害減半。主要來自盾牌。",
         Stat.LifeRegen => "每秒自然恢復的生命。",
         Stat.LifeOnHit => "每次命中敵人時恢復的生命。",
         Stat.LifeOnKill => "每擊殺一名敵人時恢復的生命。",

@@ -6,8 +6,12 @@ namespace AshenAbyss;
 public enum ClassId { Emberblade, Astromancer, Hunter, Soulbinder, Wildsoul, Forgebody, Lampknight, Pactbinder }
 public enum Element { Physical, Fire, Frost, Lightning, Poison, Shadow }
 public enum Rarity { Common, Magic, Rare, Legendary, Unique }
-public enum ItemKind { Weapon, Helm, Chest, Gloves, Pants, Boots, Amulet, Ring, Gem }
-public enum EquipSlot { Weapon, Helm, Chest, Gloves, Pants, Boots, Amulet, Ring1, Ring2 }
+// Saves store these as integers: new members go at the END so 0.1–0.3 saves keep their meaning.
+// ItemKind.Weapon = any wielded weapon (1H or 2H, see Item.Base); ItemKind.OffHand = shield / focus / totem / grimoire / lantern.
+public enum ItemKind { Weapon, Helm, Chest, Gloves, Pants, Boots, Amulet, Ring, Gem, OffHand }
+// MainHand takes the old Weapon index (0), so an old save's weapon lands in the main hand with nothing to convert.
+// OffHand holds an off-hand item or, for dual-wield classes, a second one-hand weapon; a two-hand weapon blocks it.
+public enum EquipSlot { MainHand, Helm, Chest, Gloves, Pants, Boots, Amulet, Ring1, Ring2, OffHand }
 public enum SkillCat { Basic, Core, Defensive, Mobility, Mastery, Ultimate }
 public enum Faction { Player, Monster }
 
@@ -21,6 +25,7 @@ public enum Stat
     AttackSpeed, CritChance, CritDmg, LuckyHit,
     MaxResource, ResourceGen, ResourceCost, Cdr,
     MoveSpeed, GoldFind, MagicFind, XpGain, SkillRanks,
+    Block,
     Count
 }
 
@@ -46,6 +51,7 @@ public static class StatInfo
         S(Stat.MaxResource, "資源上限", false); S(Stat.ResourceGen, "資源產生"); S(Stat.ResourceCost, "資源消耗減少"); S(Stat.Cdr, "冷卻時間縮減");
         S(Stat.MoveSpeed, "移動速度"); S(Stat.GoldFind, "金幣獲取"); S(Stat.MagicFind, "尋寶率"); S(Stat.XpGain, "經驗值獲取");
         S(Stat.SkillRanks, "所有技能等級", false);
+        S(Stat.Block, "格擋機率");
     }
 
     public static string Name(Stat s) => Info[(int)s].name;
@@ -89,10 +95,10 @@ public static class Names
     {
         "身披重甲的近戰守衛，以巨劍與怒焰撕裂敵陣。攻擊累積怒焰，再以毀滅性的重擊宣洩。",
         "操縱火焰、冰霜與閃電的施法者。身軀脆弱，卻能在遠處降下星辰之怒。",
-        "遊走於陰影的獵手，手弩與短刃並用。迅捷、致命，以連擊點強化殺招。",
+        "遊走於陰影的獵手，弓弩與短刃並用。迅捷、致命，以連擊點強化殺招。",
         "與亡魂締約的喚魂師。汲取殘魂喚起骸骨僕從，以暗影與詛咒凋零眾敵。",
         "枯林深處的蛻形者。借熊靈之軀硬撼強敵，以狼靈之爪撕裂獵物，並號令大地與風暴。",
-        "在熄滅的日爐中鍛鍊肉身的武者。不持兵刃，以拳、掌與氣焰擊碎一切。",
+        "在熄滅的日爐中鍛鍊肉身的武者。雙手套上拳刃，以拳、掌與氣焰擊碎一切；必要時也掄起巨錘與巨斧。",
         "守護燼塔的持盾騎士。以信念驅動劍與盾，燃起燼光庇護自己，並審判寂滅的信徒。",
         "與燼魔立約的術士。以咒力施法累積契印，再以契印號令被縛的魔物代為殺戮。",
     };
@@ -137,7 +143,7 @@ public static class Names
     public static string Kind(ItemKind k) => k switch
     {
         ItemKind.Weapon => "武器", ItemKind.Helm => "頭盔", ItemKind.Chest => "胸甲", ItemKind.Gloves => "手套",
-        ItemKind.Pants => "護腿", ItemKind.Boots => "靴子", ItemKind.Amulet => "護符", ItemKind.Ring => "戒指", _ => "寶石"
+        ItemKind.Pants => "護腿", ItemKind.Boots => "靴子", ItemKind.Amulet => "護符", ItemKind.Ring => "戒指", ItemKind.OffHand => "副手", _ => "寶石"
     };
 
     public static string SkillCat(SkillCat c) => c switch

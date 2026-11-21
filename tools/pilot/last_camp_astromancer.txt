@@ -1,0 +1,6 @@
+build ok
+exit= seconds=2088
+log: C:\Users\blhsi\AppData\Roaming\AshenAbyss\logs\game_20261121_222732.log  lines=12002  ERR=0  WRN=3
+--- distinct warnings ---
+   1 x [bot] pilot: going nowhere near (93.6, 48.5) in sands_boss for a minute while 'use emberaltar' (ember altar)
+done

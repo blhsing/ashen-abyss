@@ -68,3 +68,85 @@ leaders/rares/boss) → LevelState.OnArrived (records roster, applies snapshot) 
   prop on its open side, side-step search (16 dirs, simulated steps, second try another way), A* that avoids the
   small-prop cells that pinned the hero (NavGrid.PathAvoiding), detour time limit set once from the first route.
 - Save resume stays OFF (LevelState.Enabled = false). Test saves of slots 92/93 moved to saves_test_backup.
+
+## AI pilot: dodging and strategy (AI-PILOT agent, 2026-11-21) — slot 93
+User request: "in ai-guided mode the bot always fails to beat a boss because it does not dodge any of the boss' high-damage
+skills. make the bot actually play well enough to beat the game without dying".
+- New files: `game/src/DangerMap.cs` (live register of hostile telegraphs + hit/dodge statistics),
+  `game/src/AiPilotCombat.cs` (TestBot partial: per-frame dodge reflex, potions, defensive skills, kiting, retreat),
+  `game/src/AiPilotPlan.cs` (AiPilot partial: level gate before story lairs, potion refill/rest before bosses, merchant
+  upgrades, smith masterwork, paragon, `--pilot-test` harness).
+- Hooks (one line each): Fx.cs Telegraph/TelegraphCone×2/TelegraphLine/TelegraphRing → DangerMap (+ Bind of the node);
+  Projectile.cs `Live` list + getters; TestBot.cs (reflex before Think, pilot potion/evade replaced, Fight positioning,
+  boss-test mode in _Ready, Errand hook); AiPilot.cs (_Ready, OnWorldEvent, Stop, Tick, OnDeath, Travel); Game.cs switch
+  `pilot-test`. Noted in `Y:\tools\gear\CONTRACT.md` (CHANGE AI-PILOT).
+- Harness: `Y:\tools\pilot\run_one.sh boss <class> <area> <level> [secs] [speed]` / `run_one.sh campaign <class> [secs] [speed]`
+  (headless, slot 93, results appended to `Y:\tools\pilot\results\{boss,campaign}.txt`, saves moved to saves_test_backup/pilot).
+- Background jobs (started by AI-PILOT, 2026-11-21 ~18:50): `run_bosses.sh hunter astromancer` (batch2b, parent subshell
+  pid in `Y:\tools\pilot\batch.pid`) and `chain_campaigns.sh emberblade hunter astromancer` (pid in `camp.pid`, waits for
+  batch2b). Stop: `kill <pid>` (the run in progress finishes by itself; its game quits at its --pilot-test limit or
+  run.ps1's timeout). Resume: rerun the script with the classes not yet in `results/*.txt`.
+- Results so far (boss test, `--bossrush --gear`, speed 2, v2 code): emberblade killed all 7 story bosses, 0 deaths in
+  every boss fight (frost run: 2 deaths to trash packs before the fight with the v1 code → damage-intake potions/retreat
+  added). Marked boss hits dodged: 62/68, 91/108, 134/137, 103/107, 75/85, 69/77, 170/176.
+- 19:45 hunter: all 7 story bosses killed, 0 deaths in every boss fight (1 death to a frost elite pack before the
+  rimelord fight). Astromancer (old build): wastes clean; frost_boss = freeze-lock deaths (chill stacks → 2 s freeze →
+  no move/roll/potion while the boss hits). Fix: `PilotShedChill` rolls the chill off at 60 % (the roll clears CC);
+  retreat now triggers on damage intake (≥30 %/2 s under 60 % life) and in boss fights (shorter step); ranged kite
+  sooner when the intake is high; cast gate (`BossBrain.SpecialIn/BasicIn/BasicReach`, read-only getters added) holds a
+  long swing back when the boss can strike before it ends. Boss batch for astromancer stopped after frost to start the
+  campaigns (chain_campaigns.sh builds first, so the campaigns run the new code).
+- 20:00–20:45 frost findings. Campaign v3 (emberblade) entered frost at lv5–6 (region 8) and died 12× there → level
+  gate now = region level for a new region (lair = region + 2; grinding where the region level ≤ hero). Frost packs:
+  every frost blow chills 0.25 and the 4th freezes 2 s (1.5 s immunity, then again) → a hero in a pack is frozen half the
+  time. Tried: chill roll-off (kept), step-back from slow frost packs (now only when about to freeze with no roll),
+  respawn walk-away, pack-mode (plain monsters' swing cones are not dodged when ≥3 enemies are close: dodging them cost
+  the DPS race — baseline plain bot 4 deaths/300 s at `--area=frost --level=8 --gear`, pilot 7–9). Strategy changes:
+  act-2 regions in the order crypt → mire → frost (AiPilot.RegionRank), defensive skills take the crowd-control
+  immunity specialisation when they have one (PreferUnstoppable; e.g. 戰吼「無可阻擋」), merchant sells plain/magic junk
+  for gold before buying upgrades.
+- 20:46 campaigns started: `chain3.sh emberblade hunter astromancer` (pid in `Y:\tools\pilot\camp.pid`), speed 4,
+  5 h game-time cap each, results in `results/campaign.txt`.
+- 21:30 campaign emberblade (v4 build, 20:46): wastes, crypt, mire done with 0 deaths (sh_wastes, gravedigger, sh_crypt,
+  bishop, sh_mire, mire mother); unstoppable war cry taken at lv5–6; frost stronghold sh_frost at lv18–20: 4 deaths
+  (frozen, then pounded by sh_frost + frost elites) before it fell. Added `PilotCcShield` (cast the CC-immunity
+  defensive before the freeze when frost packs close in / boss fight with adds). chain3 stopped; `chain4.sh` waits for
+  this emberblade run (run_one pid 619601) and then builds + runs hunter and astromancer (pid in camp.pid).
+- 22:05 campaign emberblade v4 result (game_20261121_203837.log, stopped by me at t=7742 s): new character → lv49,
+  bosses killed in order: sh_wastes, gravedigger, sh_crypt, bishop, sh_mire, mire mother, sh_frost (after 4 deaths),
+  rimelord, sh_sands, sand tyrant, sh_sanctum; total deaths 4 (all at sh_frost, frozen). Then a loop in 無聲大聖堂:
+  bag stayed ≥34/40 after town (kept legendaries + gems) → bag trip every 60 s → the lair rebuilt afresh each return
+  → idols never done. Fixed: no bag trips out of a dungeon/rift (AiPilot.BagTrip, 1 line), merchant errand now also
+  stashes/sells/salvages non-upgrades until the bag is under 16. (The SYSTEMS agent changed one line of my Shop to
+  `hero.IsProtected(it)`; kept.)
+- 22:06 `chain5.sh emberblade hunter astromancer` started on a fresh build (pid in camp.pid).
+- 21:56 CAMPAIGN emberblade (v5 build 21:14, game_20261121_211423.log): new character → campaign done, 14/14 bosses
+  (7 story + 7 strongholds), **1 death** (sh_frost, frozen by a frost elite's crystals in the stronghold crowd),
+  level 46, 6727 s game time (1 h 52 min; speed 4 → ~42 min of wall clock plus loads), 0 ERR, 2 WRN (the bot's own
+  "going nowhere … focus boss" notices in two lairs). Marked hits: 1981 threats, 1862 dodged, 119 taken; boss marks
+  1692/1615/77. Level gates hit: wastes_boss 4, crypt 8, sands 26, sands_boss 28, sanctum 33, sanctum_boss 35, abyss 40.
+- 22:40 hunter campaign (v5 build) in progress: 0 deaths through crypt and mire, but sh_mire took ~17 min: the boss
+  reset at 18 % life ("the brain let go") because kiting/chasing adds took the hero > 30 m outside the arena (BossBrain
+  leash). Added an arena leash to the pilot (ArenaCost on every dodge/kite/retreat spot, adds outside the arena not
+  chased, walk back when > ArenaR + 18 m). Not in the running hunter build; `chain6.sh` waits for the hunter run, then
+  builds and runs astromancer (pid in camp.pid).
+- 23:3x CAMPAIGN hunter (v5 build, game_20261121_214419.log): campaign done, 14/14 bosses, **1 death** (sh_frost, frost
+  knights' chill 0.5/hit + crowd), level 45, 9914 s game time (2 h 45 min; slower than emberblade: long stronghold
+  fights where kiting dragged the boss out of its arena → resets; arena leash added after). Marked hits 2678 threats,
+  2596 dodged, 82 taken; boss marks 2261/2224/37.
+- Heavy hitters' swing cones (knights, brutes: Def.Dmg > 1.15) are never "minor" any more (frost knights chill 0.5).
+- 00:0x CAMPAIGN astromancer (final build 22:27, game_20261121_222732.log): campaign done, 14/14 bosses, **0 deaths**,
+  level 45, 7928 s game time (2 h 12 min), 0 ERR, 3 WRN (bot's own "going nowhere" notices). Marked hits: 1914 threats,
+  1899 dodged, 15 taken; boss marks 1578/1566/12. sh_frost 0 deaths (heavy-hitter + arena fixes in this build).
+- After it: `chain7.sh` runs `run_bosses.sh` with ONLY="frost_boss:10 abyss_boss:42" for soulbinder, wildsoul,
+  forgebody, lampknight, pactbinder (batch3.txt).
+- 23:50 batch3 (final build, `--gear --bossrush`, speed 2): frost_boss lv10 / abyss_boss lv42 —
+  soulbinder killed/killed 0+0 deaths; wildsoul killed (1 death, freeze chain at the rimelord) / NOT killed in 900 s
+  (0 deaths, boss at 21 %); forgebody killed / NOT killed (1 death, enraged osaros hit 543 = 48 % of a 1138 life bar,
+  boss at 33 %); lampknight killed / NOT killed (0 deaths, boss at 34 %); pactbinder killed/killed 0+0.
+  The three time-outs are DPS races lost to the soft enrage (240 s) with harness gear (life ~1100 at lv42 vs ~3000 for
+  the campaign heroes at lv44–45); the cast gate (PilotMayCast) costs melee some damage there. Not campaign-tested.
+- FINAL: check.ps1 BUILD OK, 0 errors. No background jobs of mine left running. Test saves (slot93, plus a slot0 the
+  runs left) are in `%APPDATA%\AshenAbyss\saves_test_backup\pilot\`.
+- Tables: `bash Y:/tools/pilot/table.sh` (boss tests), `bash Y:/tools/pilot/camptable.sh` (campaigns; the per-fight
+  lines are `TEST FIGHT` in each campaign log).

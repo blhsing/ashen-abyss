@@ -40,6 +40,7 @@ public partial class AiPilot : Node
         World.Event += OnWorldEvent;
         string at = Game.I?.ArgValue("pilot-at");
         if (!string.IsNullOrEmpty(at) && double.TryParse(at, System.Globalization.NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out double s)) _pilotAt = s;
+        ReadTestSwitch();                                      // --pilot-test (AiPilotPlan.cs)
     }
 
     public override void _ExitTree() { if (I == this) I = null; World.Event -= OnWorldEvent; }
@@ -47,6 +48,7 @@ public partial class AiPilot : Node
     /// <summary>Progress (a level, a boss, a stronghold, a dungeon, a waypoint) wipes the death count: dying while still getting on is not a stall.</summary>
     private void OnWorldEvent(string evt, string arg)
     {
+        TestOnEvent(evt, arg); if (evt == "area") TestOnArea();       // test harness (AiPilotPlan.cs)
         if (_bot == null || (_deaths.Count == 0 && _stucks.Count == 0)) return;
         if (evt is "levelup" or "boss" or "miniboss" or "stronghold" or "dungeon" or "waypoint")
         {
@@ -99,6 +101,7 @@ public partial class AiPilot : Node
         _bot = null;
         Log.Info("pilot", $"AI pilot OFF ({reason}) after {_clock - _since:0}s: kills={bot.Kills} bosses={bot.Bosses} deaths={bot.Deaths} areas={bot.Areas} items={bot.ItemsFound} equipped={_equipped} level={_hero?.D.Level ?? 0}");
         Log.Guard("pilot", () => bot.Summary("pilot"));
+        _lastReflex = bot.ReflexStats();
         if (IsInstanceValid(bot)) { RemoveChild(bot); bot.QueueFree(); }      // leaving the tree releases every key it held
         var g = Game.I;
         var p = g?.Player;
@@ -165,6 +168,7 @@ public partial class AiPilot : Node
             if (_playSince < 0) _playSince = _clock;
             if (_clock - _playSince >= _pilotAt) { _pilotAt = -1; Log.Info("pilot", "--pilot-at: turning the AI pilot on"); Start("--pilot-at"); }
         }
+        TestTick(g);                                           // test harness (AiPilotPlan.cs)
         if (_bot == null) return;
         // the session ended (title screen, another save loaded): the pilot ends with it
         if (g.Hero == null || g.Hero != _hero || g.State == Game.GameState.Menu) { Stop("session ended", null); return; }
@@ -207,6 +211,7 @@ public partial class AiPilot : Node
         var hero = g.Hero; var p = g.Player; var lv = g.Level;
         if (hero == null || p == null || !IsInstanceValid(p) || lv == null || !IsInstanceValid(lv) || lv.IsTown) return;
         if (hero.D.Bag.Count < Math.Max(24, Hero.BagSize - 6) || _clock - _bagTripAt < 60.0) return;
+        if (lv.Dungeon != null || lv.IsRift) return;       // a dungeon is rebuilt afresh after a town trip (its objective lost): finish it first
         if (p.InCombat > 0f || p.Dead || lv.Boss != null && IsInstanceValid(lv.Boss) && !lv.Boss.Dead && lv.Boss.Aggro) return;
         _bagTripAt = _clock;
         Log.Info("pilot", $"bag nearly full ({hero.D.Bag.Count}/{Hero.BagSize}): town portal to sell");
@@ -234,11 +239,8 @@ public partial class AiPilot : Node
             if (i >= bag.Count) continue;
             var it = bag[i];
             if (it == null || !it.IsEquip || it.Rarity >= Rarity.Legendary) continue;
-            if (hero.WhyCantEquip(it) == null)
-            {
-                var cur = hero.Compared(it);
-                if (cur == null || Worth(it) > Worth(cur) * 1.03f) continue;      // an upgrade: the bot puts it on
-            }
+            if (hero.IsProtected(it)) continue;            // locked (鎖定) or in a gear set: never salvaged
+            if (GearEval.IsUpgrade(hero, it)) continue;    // an upgrade by the shared evaluator (GearEval): the bot puts it on
             hero.Salvage(it);
             gone++;
         }
@@ -265,6 +267,7 @@ public partial class AiPilot : Node
     /// </summary>
     internal void OnDeath()
     {
+        if (TestDeath()) return;                              // the boss test counts deaths and keeps trying
         _deaths.Add(_clock);
         _deaths.RemoveAll(t => _clock - t > 900.0);
         Log.Info("pilot", $"hero died ({_deaths.Count} since the last progress)");
@@ -390,6 +393,7 @@ public partial class AiPilot : Node
         if (p == null || !IsInstanceValid(p) || lv == null || !IsInstanceValid(lv) || g.State != Game.GameState.Play || p.Dead) return;
         string here = lv.AreaId ?? "";
         if (string.IsNullOrEmpty(dest) || dest == here) return;
+        if (BeforeTravel(g, dest)) return;                     // underlevelled or short of potions for a boss (AiPilotPlan.cs)
         Vector2 me = p.Pos2;
         var destRegion = ZoneDb.Region(dest) ?? ZoneDb.RegionOf(dest);
         if (dest == ZoneDb.Town) { TownPortal(g, p, "quest leads to town"); return; }
@@ -444,7 +448,9 @@ public partial class AiPilot : Node
     {
         var before = (string[])hero.D.Bar.Clone();
         int pts = hero.SkillPoints;
+        PreferUnstoppable(hero);                                // first claim on the points: crowd-control immunity (AiPilotPlan.cs)
         Game.AutoBuild(hero);
+        PreferUnstoppable(hero);                                // crowd-control immunity on the defensive skill (AiPilotPlan.cs)
         var bar = (string[])before.Clone();
         foreach (var id in hero.D.Bar)
         {

@@ -1,0 +1,94 @@
+{
+ "base": "mace1",
+ "prefix": "wpn",
+ "atlas_px": 1024,
+ "area_m2": 0.4154,
+ "notes": "",
+ "entries": [
+  {
+   "id": "wpn_mace1_v1",
+   "kind": "weapon",
+   "base": "mace1",
+   "file": "res://assets/gear/weapons/wpn_mace1_v1.glb",
+   "mount": "hand_r",
+   "grip2": null,
+   "length": 0.654,
+   "variant": 1,
+   "hands": 1,
+   "grip": "r",
+   "tris": 2976,
+   "emissive": false,
+   "bbox": [
+    [
+     -0.0695,
+     -0.07,
+     -0.1745
+    ],
+    [
+     0.0695,
+     0.0667,
+     0.4794
+    ]
+   ],
+   "textures": "wpn_mace1",
+   "atlas_px": 1024
+  },
+  {
+   "id": "wpn_mace1_v2",
+   "kind": "weapon",
+   "base": "mace1",
+   "file": "res://assets/gear/weapons/wpn_mace1_v2.glb",
+   "mount": "hand_r",
+   "grip2": null,
+   "length": 0.707,
+   "variant": 2,
+   "hands": 1,
+   "grip": "r",
+   "tris": 2026,
+   "emissive": false,
+   "bbox": [
+    [
+     -0.0566,
+     -0.0608,
+     -0.1888
+    ],
+    [
+     0.062,
+     0.0608,
+     0.518
+    ]
+   ],
+   "textures": "wpn_mace1",
+   "atlas_px": 1024
+  },
+  {
+   "id": "wpn_mace1_v3",
+   "kind": "weapon",
+   "base": "mace1",
+   "file": "res://assets/gear/weapons/wpn_mace1_v3.glb",
+   "mount": "hand_r",
+   "grip2": null,
+   "length": 0.732,
+   "variant": 3,
+   "hands": 1,
+   "grip": "r",
+   "tris": 3548,
+   "emissive": true,
+   "bbox": [
+    [
+     -0.088,
+     -0.0762,
+     -0.19
+    ],
+    [
+     0.088,
+     0.0762,
+     0.542
+    ]
+   ],
+   "textures": "wpn_mace1",
+   "atlas_px": 1024
+  }
+ ],
+ "built": "2026-11-21 20:23:53"
+}

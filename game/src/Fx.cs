@@ -250,16 +250,17 @@ public static class Fx
     /// </summary>
     public static Node3D Telegraph(Vector2 pos, float radius, float delay, Color c, bool friendly = false, Sigil kind = default)
     {
+        if (!friendly) DangerMap.Circle(pos, radius, delay);       // AI pilot: what lands where and when (DangerMap.cs)
         try
         {
             if (Ensure())
             {
                 radius = Mathf.Max(radius, 0.3f);
-                return Tele(new Vector3(pos.X, friendly ? 0.07f : 0.09f, pos.Y), 0f, new Vector2(radius, radius), 0f, 1f, 0f, delay, c, friendly, kind);
+                return DangerMap.Bind(Tele(new Vector3(pos.X, friendly ? 0.07f : 0.09f, pos.Y), 0f, new Vector2(radius, radius), 0f, 1f, 0f, delay, c, friendly, kind));
             }
         }
         catch (Exception e) { Fail(nameof(Telegraph), e); }
-        return StubInWorld();
+        return DangerMap.Bind(StubInWorld());
     }
 
     /// <summary>Hostile circle in the school of <paramref name="kind"/> (an Element converts by itself).</summary>
@@ -268,6 +269,7 @@ public static class Fx
     /// <summary>Cone in front of an actor (hostile unless the actor fights for the player).</summary>
     public static Node3D TelegraphCone(Actor a, float range, float arcDeg, float delay, Color c, Sigil kind = default)
     {
+        if (Live(a) && a.Faction != Faction.Player) DangerMap.Cone(a.Pos2, a.Forward, range, arcDeg, delay, a);
         try
         {
             if (Live(a) && Ensure())
@@ -276,16 +278,17 @@ public static class Fx
                 range = Mathf.Max(range, 0.5f);
                 float arc = arcDeg >= 359f ? 3.2f : Mathf.DegToRad(Mathf.Clamp(arcDeg, 5f, 358f) * 0.5f);
                 Vector3 p = a.GlobalPosition;
-                return Tele(new Vector3(p.X, friendly ? 0.07f : 0.09f, p.Z), a.Facing, new Vector2(range, range), 1f, arc, 0f, delay, c, friendly, kind);
+                return DangerMap.Bind(Tele(new Vector3(p.X, friendly ? 0.07f : 0.09f, p.Z), a.Facing, new Vector2(range, range), 1f, arc, 0f, delay, c, friendly, kind));
             }
         }
         catch (Exception e) { Fail(nameof(TelegraphCone), e); }
-        return StubInWorld();
+        return DangerMap.Bind(StubInWorld());
     }
 
     /// <summary>Cone from a point toward <paramref name="dir"/> (for marks that no actor stands behind).</summary>
     public static Node3D TelegraphCone(Vector2 pos, Vector2 dir, float range, float arcDeg, float delay, Color c, bool friendly = false, Sigil kind = default)
     {
+        if (!friendly) DangerMap.Cone(pos, dir, range, arcDeg, delay, null);
         try
         {
             if (Ensure())
@@ -293,16 +296,17 @@ public static class Fx
                 dir = dir.LengthSquared() < 1e-6f ? new Vector2(0f, 1f) : dir.Normalized();
                 range = Mathf.Max(range, 0.5f);
                 float arc = arcDeg >= 359f ? 3.2f : Mathf.DegToRad(Mathf.Clamp(arcDeg, 5f, 358f) * 0.5f);
-                return Tele(new Vector3(pos.X, friendly ? 0.07f : 0.09f, pos.Y), Mathf.Atan2(dir.X, dir.Y), new Vector2(range, range), 1f, arc, 0f, delay, c, friendly, kind);
+                return DangerMap.Bind(Tele(new Vector3(pos.X, friendly ? 0.07f : 0.09f, pos.Y), Mathf.Atan2(dir.X, dir.Y), new Vector2(range, range), 1f, arc, 0f, delay, c, friendly, kind));
             }
         }
         catch (Exception e) { Fail(nameof(TelegraphCone), e); }
-        return StubInWorld();
+        return DangerMap.Bind(StubInWorld());
     }
 
     /// <summary>Hostile rectangle starting at <paramref name="from"/>: <paramref name="length"/> long, <paramref name="width"/> wide in total.</summary>
     public static Node3D TelegraphLine(Vector2 from, Vector2 dir, float length, float width, float delay, Color c, Sigil kind = default)
     {
+        DangerMap.Line(from, dir, length, width, delay);
         try
         {
             if (Ensure())
@@ -310,27 +314,28 @@ public static class Fx
                 dir = dir.LengthSquared() < 1e-6f ? new Vector2(0f, 1f) : dir.Normalized();
                 length = Mathf.Max(length, 0.5f); width = Mathf.Max(width, 0.3f);
                 Vector2 mid = from + dir * (length * 0.5f);
-                return Tele(new Vector3(mid.X, 0.09f, mid.Y), Mathf.Atan2(dir.X, dir.Y), new Vector2(width * 0.5f, length * 0.5f), 2f, 1f, 0f, delay, c, false, kind);
+                return DangerMap.Bind(Tele(new Vector3(mid.X, 0.09f, mid.Y), Mathf.Atan2(dir.X, dir.Y), new Vector2(width * 0.5f, length * 0.5f), 2f, 1f, 0f, delay, c, false, kind));
             }
         }
         catch (Exception e) { Fail(nameof(TelegraphLine), e); }
-        return StubInWorld();
+        return DangerMap.Bind(StubInWorld());
     }
 
     /// <summary>Hostile donut: safe inside <paramref name="inner"/>, dangerous out to <paramref name="outer"/>.</summary>
     public static Node3D TelegraphRing(Vector2 pos, float inner, float outer, float delay, Color c, Sigil kind = default)
     {
+        DangerMap.Ring(pos, inner, outer, delay);
         try
         {
             if (Ensure())
             {
                 outer = Mathf.Max(outer, 0.5f);
                 float frac = Mathf.Clamp(inner / outer, 0f, 0.97f);
-                return Tele(new Vector3(pos.X, 0.09f, pos.Y), 0f, new Vector2(outer, outer), 3f, 1f, frac, delay, c, false, kind);
+                return DangerMap.Bind(Tele(new Vector3(pos.X, 0.09f, pos.Y), 0f, new Vector2(outer, outer), 3f, 1f, frac, delay, c, false, kind));
             }
         }
         catch (Exception e) { Fail(nameof(TelegraphRing), e); }
-        return StubInWorld();
+        return DangerMap.Bind(StubInWorld());
     }
 
     /// <summary>A body falling along a slanted path with a trail; it touches the ground exactly after <paramref name="delay"/>.</summary>

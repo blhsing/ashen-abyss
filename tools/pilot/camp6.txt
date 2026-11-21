@@ -1,0 +1,16 @@
+22:27:19 campaign astromancer
+ 2085.409 INF [pilot] TEST RESULT mode=campaign class=astromancer end=pilot stopped t=7928s level=45 deaths=0 area=town campaignDone=True bossesKilled=14 telegraphed threats=1914 dodged=1899 taken=15 (boss 1578/1566/12) dmgTelegraphed=2774 otherHits=2478 dmgOther=40371 dodgeWalks=3452 rolls=218 defensives=14
+ 2085.410 INF [pilot] TEST FIGHT boss=boss_bishop area=crypt_boss killed=True secs=149 deaths=0 heroLevel=12 threats=71 dodged=71 taken=0 dmgTelegraphed=0 dmgOther=46 life=747
+ 2085.410 INF [pilot] TEST FIGHT boss=boss_gravedigger area=wastes_boss killed=True secs=150 deaths=0 heroLevel=5 threats=91 dodged=91 taken=0 dmgTelegraphed=0 dmgOther=157 life=296
+ 2085.410 INF [pilot] TEST FIGHT boss=sh_crypt area=crypt killed=True secs=126 deaths=0 heroLevel=10 threats=54 dodged=54 taken=0 dmgTelegraphed=0 dmgOther=287 life=698
+ 2085.410 INF [pilot] TEST FIGHT boss=sh_mire area=mire killed=True secs=171 deaths=0 heroLevel=14 threats=66 dodged=66 taken=0 dmgTelegraphed=0 dmgOther=324 life=1039
+ 2085.411 INF [pilot] TEST FIGHT boss=boss_mire_mother area=mire_boss killed=True secs=192 deaths=0 heroLevel=16 threats=119 dodged=116 taken=3 dmgTelegraphed=37 dmgOther=550 life=1016
+ 2085.411 INF [pilot] TEST FIGHT boss=boss_rimelord area=frost_boss killed=True secs=197 deaths=0 heroLevel=22 threats=99 dodged=99 taken=0 dmgTelegraphed=0 dmgOther=387 life=1111
+ 2085.411 INF [pilot] TEST FIGHT boss=boss_sand_tyrant area=sands_boss killed=True secs=236 deaths=0 heroLevel=29 threats=126 dodged=126 taken=0 dmgTelegraphed=0 dmgOther=362 life=2099
+ 2085.411 INF [pilot] TEST FIGHT boss=sh_frost area=frost killed=True secs=119 deaths=0 heroLevel=19 threats=31 dodged=30 taken=1 dmgTelegraphed=45 dmgOther=562 life=1113
+ 2085.411 INF [pilot] TEST FIGHT boss=sh_sands area=sands killed=True secs=142 deaths=0 heroLevel=27 threats=43 dodged=42 taken=1 dmgTelegraphed=13 dmgOther=542 life=2023
+ 2085.412 INF [pilot] TEST FIGHT boss=boss_grand_hush area=sanctum_boss killed=True secs=234 deaths=0 heroLevel=37 threats=116 dodged=116 taken=0 dmgTelegraphed=0 dmgOther=920 life=2389
+ 2085.412 INF [pilot] TEST FIGHT boss=boss_osaros area=abyss_boss killed=True secs=667 deaths=0 heroLevel=44 threats=609 dodged=602 taken=7 dmgTelegraphed=2576 dmgOther=5732 life=3056
+ 2085.412 INF [pilot] TEST FIGHT boss=sh_abyss area=abyss killed=True secs=180 deaths=0 heroLevel=41 threats=68 dodged=68 taken=0 dmgTelegraphed=0 dmgOther=1480 life=2495
+ 2085.412 INF [pilot] TEST FIGHT boss=sh_sanctum area=sanctum killed=True secs=196 deaths=0 heroLevel=34 threats=60 dodged=60 taken=0 dmgTelegraphed=0 dmgOther=648 life=2317
+campaigns done

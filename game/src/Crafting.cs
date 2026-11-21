@@ -41,12 +41,12 @@ public static class Crafting
     public const int MaxGemTier = 3;
     public const string ScrapName = "碎鐵", DustName = "幽塵", CoreName = "燼核";
 
-    private static readonly ItemKind[] AllGear = { ItemKind.Weapon, ItemKind.Helm, ItemKind.Chest, ItemKind.Gloves, ItemKind.Pants, ItemKind.Boots, ItemKind.Amulet, ItemKind.Ring };
+    private static readonly ItemKind[] AllGear = { ItemKind.Weapon, ItemKind.OffHand, ItemKind.Helm, ItemKind.Chest, ItemKind.Gloves, ItemKind.Pants, ItemKind.Boots, ItemKind.Amulet, ItemKind.Ring };
     private static readonly ItemKind[] WeaponOnly = { ItemKind.Weapon };
-    private static readonly ItemKind[] OffenceGear = { ItemKind.Weapon, ItemKind.Gloves, ItemKind.Amulet, ItemKind.Ring };
-    private static readonly ItemKind[] DefenceGear = { ItemKind.Helm, ItemKind.Chest, ItemKind.Pants, ItemKind.Boots, ItemKind.Amulet };
+    private static readonly ItemKind[] OffenceGear = { ItemKind.Weapon, ItemKind.OffHand, ItemKind.Gloves, ItemKind.Amulet, ItemKind.Ring };
+    private static readonly ItemKind[] DefenceGear = { ItemKind.OffHand, ItemKind.Helm, ItemKind.Chest, ItemKind.Pants, ItemKind.Boots, ItemKind.Amulet };
     private static readonly ItemKind[] UtilityGear = { ItemKind.Helm, ItemKind.Chest, ItemKind.Gloves, ItemKind.Pants, ItemKind.Boots, ItemKind.Amulet, ItemKind.Ring };
-    private static readonly ItemKind[] ResourceGear = { ItemKind.Weapon, ItemKind.Helm, ItemKind.Gloves, ItemKind.Amulet, ItemKind.Ring };
+    private static readonly ItemKind[] ResourceGear = { ItemKind.Weapon, ItemKind.OffHand, ItemKind.Helm, ItemKind.Gloves, ItemKind.Amulet, ItemKind.Ring };
     private static readonly ItemKind[] MobilityGear = { ItemKind.Gloves, ItemKind.Pants, ItemKind.Boots, ItemKind.Amulet };
 
     // ───────────────────────── tempering ─────────────────────────
@@ -229,7 +229,10 @@ public static class Crafting
 
     // ───────────────────────── bag order ─────────────────────────
 
-    /// <summary>Bag order: gear by slot, best rarity and power first; gems last, grouped by kind.</summary>
+    /// <summary>Sorting rank of a kind: weapons, off-hands, then armour and jewellery in slot order.</summary>
+    private static int KindOrder(ItemKind k) => k == ItemKind.OffHand ? 1 : k == ItemKind.Weapon ? 0 : (int)k + 1;
+
+    /// <summary>Bag order: gear by slot (weapons by base), best rarity and power first; gems last, grouped by kind.</summary>
     public static int CompareItems(Item a, Item b)
     {
         if (ReferenceEquals(a, b)) return 0;
@@ -244,7 +247,8 @@ public static class Crafting
             c = b.Power.CompareTo(a.Power); if (c != 0) return c;
             return string.CompareOrdinal(a.Uid, b.Uid);
         }
-        c = ((int)a.Kind).CompareTo((int)b.Kind); if (c != 0) return c;
+        c = KindOrder(a.Kind).CompareTo(KindOrder(b.Kind)); if (c != 0) return c;
+        c = string.CompareOrdinal(a.Base ?? "", b.Base ?? ""); if (c != 0 && a.Kind is ItemKind.Weapon or ItemKind.OffHand) return c;
         c = ((int)b.Rarity).CompareTo((int)a.Rarity); if (c != 0) return c;
         c = b.Power.CompareTo(a.Power); if (c != 0) return c;
         c = string.CompareOrdinal(a.Name, b.Name); if (c != 0) return c;

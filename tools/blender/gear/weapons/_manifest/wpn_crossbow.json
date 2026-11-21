@@ -1,0 +1,109 @@
+{
+ "base": "crossbow",
+ "prefix": "wpn",
+ "atlas_px": 1024,
+ "area_m2": 0.9161,
+ "notes": "",
+ "entries": [
+  {
+   "id": "wpn_crossbow_v1",
+   "kind": "weapon",
+   "base": "crossbow",
+   "file": "res://assets/gear/weapons/wpn_crossbow_v1.glb",
+   "mount": "hand_r",
+   "grip2": [
+    0.27,
+    0.0,
+    0.04
+   ],
+   "length": 0.698,
+   "variant": 1,
+   "hands": 2,
+   "grip": "both",
+   "tris": 2724,
+   "emissive": false,
+   "bbox": [
+    [
+     -0.27,
+     -0.3032,
+     -0.0832
+    ],
+    [
+     0.428,
+     0.3032,
+     0.1212
+    ]
+   ],
+   "textures": "wpn_crossbow",
+   "atlas_px": 1024,
+   "hint": "aims along +X (knuckles); prod spans +-Y; handle through the fist along Z"
+  },
+  {
+   "id": "wpn_crossbow_v2",
+   "kind": "weapon",
+   "base": "crossbow",
+   "file": "res://assets/gear/weapons/wpn_crossbow_v2.glb",
+   "mount": "hand_r",
+   "grip2": [
+    0.27,
+    0.0,
+    0.04
+   ],
+   "length": 0.841,
+   "variant": 2,
+   "hands": 2,
+   "grip": "both",
+   "tris": 1668,
+   "emissive": false,
+   "bbox": [
+    [
+     -0.31,
+     -0.3365,
+     -0.0911
+    ],
+    [
+     0.5308,
+     0.3365,
+     0.1288
+    ]
+   ],
+   "textures": "wpn_crossbow",
+   "atlas_px": 1024,
+   "hint": "aims along +X (knuckles); prod spans +-Y; handle through the fist along Z"
+  },
+  {
+   "id": "wpn_crossbow_v3",
+   "kind": "weapon",
+   "base": "crossbow",
+   "file": "res://assets/gear/weapons/wpn_crossbow_v3.glb",
+   "mount": "hand_r",
+   "grip2": [
+    0.27,
+    0.0,
+    0.04
+   ],
+   "length": 0.871,
+   "variant": 3,
+   "hands": 2,
+   "grip": "both",
+   "tris": 1842,
+   "emissive": true,
+   "bbox": [
+    [
+     -0.3275,
+     -0.4355,
+     -0.0911
+    ],
+    [
+     0.5413,
+     0.4355,
+     0.1318
+    ]
+   ],
+   "textures": "wpn_crossbow",
+   "atlas_px": 1024,
+   "hint": "aims along +X (knuckles); prod spans +-Y; handle through the fist along Z"
+  }
+ ],
+ "built": "2026-11-21 20:26:59"
+}

@@ -1,0 +1,7 @@
+exit= seconds=32
+log: C:\Users\blhsi\AppData\Roaming\AshenAbyss\logs\game_20261121_202547.log  lines=206  ERR=0  WRN=0
+   28.036 INF [suite] gear set swap: 8 full 2H↔dual-wield swaps in combat, 8 rebuilds, frames waiting for files 0; frames after a swap: worst 34.2 ms, mean 17.0 ms; now modular stance=TwoHandMelee [arm_emberblade_helm_t4, arm_emberblade_chest_t4, arm_emberblade_gloves_t4, arm_emberblade_pants_t4, arm_emberblade_boots_t4, wpn_s
+   28.038 INF [suite] PASS gear: one rebuild per set swap — 8/8
+   28.038 INF [suite] PASS gear: preloaded sets never wait for files
+   28.040 INF [suite] DONE suite=gear pass=2 fail=0 errors=0 warnings=0
+SW

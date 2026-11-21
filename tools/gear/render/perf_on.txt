@@ -1,0 +1,11 @@
+exit= seconds=181
+log: C:\Users\blhsi\AppData\Roaming\AshenAbyss\logs\game_20261121_185927.log  lines=678  ERR=0  WRN=0
+--- last lines ---
+  172.916 INF [loot] Unique drop: ????? [Helm power 227] at (35.0, 104.1)
+  174.393 INF [perf] fps=60 frame=17.2ms worst=33.0ms slowestProcess=32.7ms area=wastes_d2 monsters=141 minions=0 objects=38 nodes=2374 draws=343 prims=372000 vram=5310MB mem=333MB scale=1.00 q=2 errors=0
+  174.394 INF [perf] game code per frame: whole tree=10.27ms | monsters=1.29ms (awake 67: 1.19ms, separation 0.68ms) player=0.25ms shots+zones=0.02ms level=0.01ms bot=0.04ms
+  175.509 INF [test] harness quit at 140.00 s
+  175.511 INF [game] quitting
+  175.514 INF [anim] anim-check: hero moved 33.9s - 0.0s without a locomotion clip, 0.0s with frozen legs; hero stood 17.3s - 0.0s in a run clip or none; monsters moved 340.9s - 0.0s without a locomotion clip, 0.0s with frozen legs; models without a skeleton o ƒ?Ý
+  175.515 INF [input] keyboard hook saw 364 key events, 0 of them PrtSc
+  175.516 INF [boot] shutdown errors=0 warnings=0 uptime=176s

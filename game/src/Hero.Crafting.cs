@@ -33,7 +33,7 @@ public sealed partial class Hero
     /// <summary>Marks or unmarks a carried item as junk; returns the new state.</summary>
     public bool ToggleJunk(Item it)
     {
-        if (!InBag(it)) return false;
+        if (!InBag(it) || IsProtected(it)) return false;    // locked (鎖定) or gear-set items take no mark
         bool now = !JunkSet.Remove(it.Uid);
         if (now) JunkSet.Add(it.Uid);
         Notify();

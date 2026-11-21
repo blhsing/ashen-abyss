@@ -1,0 +1,17 @@
+exit= seconds=37
+log: C:\Users\blhsi\AppData\Roaming\AshenAbyss\logs\game_20261121_201212.log  lines=1198  ERR=0  WRN=14
+   14.627 WRN [suite] FAIL gamble OffHand: got a Weapon
+   14.627 WRN [suite] FAIL gamble OffHand: got a Weapon
+   14.628 WRN [suite] FAIL gamble OffHand: got a Weapon
+   14.628 WRN [suite] FAIL gamble OffHand: got a Weapon
+   14.628 WRN [suite] FAIL gamble OffHand: got a Weapon
+   14.628 WRN [suite] FAIL gamble OffHand: got a Weapon
+   14.629 WRN [suite] FAIL gamble OffHand: got a Weapon
+   14.629 WRN [suite] FAIL gamble OffHand: got a Weapon
+   14.629 WRN [suite] FAIL gamble OffHand: got a Weapon
+   14.630 WRN [suite] FAIL gamble OffHand: got a Weapon
+   14.630 WRN [suite] FAIL gamble OffHand: got a Weapon
+   14.631 WRN [suite] FAIL gamble OffHand: got a Weapon
+   14.631 WRN [suite] FAIL gamble: every equipment kind can be gambled for — 108 items, rarities C/M/R/L/U=0/57/44/7/0
+   35.690 INF [suite] DONE suite=systems pass=186 fail=13 errors=0 warnings=14
+FINAL-DONE

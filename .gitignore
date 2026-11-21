@@ -101,3 +101,4 @@ tools/**/*_err.txt
 tools/release/*.txt
 tools/repo/
 tools/roster/orig/
+*.TMP

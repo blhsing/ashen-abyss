@@ -65,6 +65,7 @@ public partial class MainMenu : Control
     private float _clsPickedAt = -10f;
     private bool _infoFilled;
     private Label _ciName, _ciRole, _ciDesc, _ciResName, _ciResNote, _ciStat, _ciDiff, _ciDiffNote, _dragHint, _plate;
+    private Label _ciWeapons;          // SYSTEMS: 可用武器 lines from ItemDb.LoadoutLines (the same table as tooltips and loot)
     private readonly Control[] _skRow = new Control[3];
     private readonly PanelContainer[] _skFrame = new PanelContainer[3];
     private readonly TextureRect[] _skIcon = new TextureRect[3];
@@ -1103,6 +1104,14 @@ public partial class MainMenu : Control
         _ciDesc = MenuKit.Wrap("", UiTheme.Fs(24), MenuKit.Ivory, w);
         col.AddChild(_ciDesc);
 
+        // 可用武器 (SYSTEMS): two-hand / one-hand (dual-wield) / off-hand bases, generated from the loadout table
+        var wpnRow = MenuKit.HBox(12);
+        wpnRow.AddChild(KeyLabel("可用武器"));
+        _ciWeapons = MenuKit.Wrap("", UiTheme.Fs(20), MenuKit.Ivory, 0f, MenuKit.UiFont);
+        _ciWeapons.SizeFlagsHorizontal = SizeFlags.ExpandFill;
+        wpnRow.AddChild(_ciWeapons);
+        col.AddChild(wpnRow);
+
         // key / value / note rows: the key and value columns grow with the text, the note wraps in what they leave
         var resRow = MenuKit.HBox(12);
         resRow.AddChild(KeyLabel("資源"));
@@ -1391,8 +1400,9 @@ public partial class MainMenu : Control
         Color cc = Names.ClassColor(c);
         _ciName.Text = Names.Class(c);
         _ciName.AddThemeColorOverride("font_color", cc.Lerp(Colors.White, 0.12f));
-        _ciRole.Text = $"{blurb.Role}　｜　武器：{blurb.Weapon}";
+        _ciRole.Text = blurb.Role;          // the weapons are listed from the loadout table under the description (可用武器)
         _ciDesc.Text = Names.ClassDesc(c);
+        if (_ciWeapons != null) _ciWeapons.Text = string.Join("\n", ItemDb.LoadoutLines(c));
         _ciResName.Text = Names.Resource(c);
         _ciResName.AddThemeColorOverride("font_color", Names.ResourceColor(c).Lerp(Colors.White, 0.15f));
         _ciResNote.Text = blurb.ResourceNote;
@@ -2477,7 +2487,7 @@ public partial class MainMenu : Control
             if (_heroIdleAt > 0f && t >= _heroIdleAt)
             {
                 _heroIdleAt = -1f;
-                if (_hero != null && IsInstanceValid(_hero)) _hero.Play("Idle_Loop", 1f, 0.3f);
+                if (_hero != null && IsInstanceValid(_hero)) _hero.Play(_hero.Gear != null ? _hero.StanceIdle : "Idle_Loop", 1f, 0.3f);
             }
         }
     }
@@ -2505,7 +2515,8 @@ public partial class MainMenu : Control
             _hero = m;
             _heroHeight = Mathf.Clamp(m.Height, 1.3f, 2.4f);
             m.SetRim(new Color(cc.R * 0.6f, cc.G * 0.6f, cc.B * 0.6f));
-            m.Play("Idle_Loop");
+            m.SetGear(GearSet.Starter(c));              // what the new hero starts with: no armour, the starting weapon(s)
+            m.Play(m.Gear != null ? m.StanceIdle : "Idle_Loop");
             string anim = MenuKit.Blurb(c).Flourish;
             if (flourish && !string.IsNullOrEmpty(anim) && m.Has(anim))
             {

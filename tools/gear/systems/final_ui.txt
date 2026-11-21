@@ -1,0 +1,4 @@
+exit= seconds=30
+log: C:\Users\blhsi\AppData\Roaming\AshenAbyss\logs\game_20261121_200525.log  lines=124  ERR=0  WRN=0
+exit= seconds=21
+log: C:\Users\blhsi\AppData\Roaming\AshenAbyss\logs\game_20261121_200848.log  lines=195  ERR=0  WRN=0

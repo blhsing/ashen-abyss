@@ -1098,6 +1098,10 @@ public partial class MapUi : UiPanel
     private MapMarker _hoverMarker;
     private readonly List<MapMarkStyle> _legendStyles = new();
     private readonly List<MapMarker> _goals = new();     // exits and entrances that lead toward the main quest
+    // quest pins (QuestMarks.cs): the kinds shown in the legend, and the pin under the pointer
+    private readonly List<(QuestMarkKind kind, bool main)> _legendQuest = new();
+    private sealed class HoverQ { public object Ref; public QuestMarkKind Kind; public bool Main; public string Name, Text; public Vector2 Pos; }
+    private HoverQ _hoverQuest;
     private static readonly Vector2[] T3 = new Vector2[3];
     // marker names of one overlay redraw: the candidates in order of importance, and the screen space already spoken for
     private readonly List<MarkLabel> _labelQueue = new();
@@ -1294,7 +1298,8 @@ public partial class MapUi : UiPanel
     private void SizeLegend()
     {
         if (_legend == null) return;
-        int rows = _legendStyles.Count + 2 + (_goals.Count > 0 ? 1 : 0);        // + the hero and the fog
+        int rows = _legendStyles.Count + 2 + (_goals.Count > 0 ? 1 : 0)        // + the hero and the fog
+            + (_legendQuest.Count > 0 ? _legendQuest.Count + 1 : 0);             // + the quest pins and their colour key
         _legend.CustomMinimumSize = new Vector2(UiTheme.Px(SideW), LegendRow * rows + 4f);
     }
 
@@ -1690,6 +1695,7 @@ public partial class MapUi : UiPanel
             }
         }
         _legendStyles.Sort((a, b) => a.Order.CompareTo(b.Order));
+        BakeQuestLegend(lv);
     }
 
     /// <summary>Marks the exits and dungeon entrances of this area that lead to where the main quest continues.</summary>
@@ -1722,7 +1728,7 @@ public partial class MapUi : UiPanel
     /// The level decides what the hero knows about: a marker hidden until seen has Visible = false until the fog over it
     /// lifts (Level.AddMarker), and every other marker is common knowledge from the start (roads out, the way to the boss).
     /// </summary>
-    private static bool Shown(MapMarker m) => m != null && m.Visible;
+    private static bool Shown(MapMarker m) => m != null && m.Visible && !QuestMarks.Covers(m);      // dungeon objectives: quest pins only
 
     private static string MarkerLabel(MapMarker m, MapMarkStyle st) => string.IsNullOrEmpty(m.Label) ? st.Name : m.Label;
 
@@ -1870,6 +1876,7 @@ public partial class MapUi : UiPanel
 
     private void OnAreaMouseExited()
     {
+        _hoverQuest = null;
         if (_hoverMarker == null) return;
         _hoverMarker = null;
         _areaOverlay.QueueRedraw();
@@ -1909,6 +1916,7 @@ public partial class MapUi : UiPanel
 
     private void HoverMarker(Vector2 mouse)
     {
+        if (HoverQuest(mouse)) { if (_hoverMarker != null) { _hoverMarker = null; _areaOverlay.QueueRedraw(); } return; }
         MapMarker best = null;
         float bd = 18f * 18f;
         var marks = _lv?.Markers;
@@ -2078,7 +2086,7 @@ public partial class MapUi : UiPanel
                 for (int i = 0; i < marks.Count; i++)
                 {
                     var m = marks[i];
-                    if (m == null || !m.Visible) continue;
+                    if (!Shown(m)) continue;
                     var st = MapGlyphs.Style(m.Kind);
                     if (st.Always) fx.DrawArc(W2S(m.Pos), 12f + 6f * pulse, 0f, Mathf.Tau, 24, new Color(st.Col, 0.6f * (1f - pulse * 0.7f)), 1.6f, true);
                 }
@@ -2088,6 +2096,7 @@ public partial class MapUi : UiPanel
                 fx.DrawArc(p, 15f + 7f * pulse, 0f, Mathf.Tau, 28, new Color(1f, 0.83f, 0.35f, 0.85f * (1f - pulse * 0.75f)), 2.2f, true);
                 fx.DrawArc(p, 13f, 0f, Mathf.Tau, 28, new Color(1f, 0.83f, 0.35f, 0.9f), 1.6f, true);
             }
+            DrawQuestPins(fx, pulse);
             if (!TryHero(out var hero, out var forward)) return;
             var c = W2S(hero);
             var dir = new Vector2(forward.Dot(_right), -forward.Dot(_fwd));
@@ -2102,6 +2111,136 @@ public partial class MapUi : UiPanel
             fx.DrawColoredPolygon(T3, new Color(0.95f, 0.68f, 0.3f));
         }
         catch (Exception e) { DrawFail(e); }
+    }
+
+    // ───────────────────────── area tab: quest pins ─────────────────────────
+
+    private const float QuestPinR = 16.5f, QuestEdgeInset = 30f;
+    /// <summary>Test hook (--suite=mapquest): hover the first quest pin shown, main quest first, as a pointer would.</summary>
+    internal static bool TestHover;
+
+    /// <summary>Which kinds of quest pin the legend lists (those shown in this area right now), main before side.</summary>
+    private void BakeQuestLegend(Level lv)
+    {
+        _legendQuest.Clear();
+        var list = QuestMarks.Of(lv);
+        foreach (var m in list)
+        {
+            if (!m.Known) continue;
+            int at = _legendQuest.FindIndex(e => e.kind == m.Kind);
+            if (at < 0) _legendQuest.Add((m.Kind, m.Main));
+            else if (m.Main && !_legendQuest[at].main) _legendQuest[at] = (m.Kind, true);
+        }
+        _legendQuest.Sort((a, b) => a.kind.CompareTo(b.kind));
+        Log.Info("map", $"quest pins in {lv.AreaId}: {QuestMarks.Describe(lv)}");
+    }
+
+    private static bool SameTarget(HoverQ h, QuestMark m) => h.Ref != null ? ReferenceEquals(h.Ref, m.Ref) : h.Name == m.Name && h.Kind == m.Kind;
+
+    /// <summary>Hovering a quest pin: true when one is under the pointer (it then takes the hover from the markers).</summary>
+    private bool HoverQuest(Vector2 mouse)
+    {
+        HoverQ best = null;
+        float bd = 24f * 24f;
+        if (_lv != null && !_dragging)
+            foreach (var m in QuestMarks.Of(_lv))
+            {
+                if (!m.Known) continue;
+                var tip = W2S(m.Pos);
+                if (!InView(tip, _areaFx.Size)) continue;
+                float d2 = MathF.Min(QuestGlyph.Head(tip, QuestPinR).DistanceSquaredTo(mouse), tip.DistanceSquaredTo(mouse));
+                if (d2 >= bd) continue;
+                bd = d2;
+                best = new HoverQ { Ref = m.Ref, Kind = m.Kind, Main = m.Main, Name = m.Name, Text = m.Text, Pos = m.Pos };
+            }
+        _hoverQuest = best;
+        return best != null;
+    }
+
+    private bool InView(Vector2 tip, Vector2 sz) =>
+        tip.X >= QuestEdgeInset && tip.X <= sz.X - QuestEdgeInset && QuestGlyph.Head(tip, QuestPinR).Y - QuestPinR >= QuestEdgeInset * 0.6f && tip.Y <= sz.Y - QuestEdgeInset;
+
+    private struct MapEdge { public QuestMark M; public Vector2 At, Dir; public int Count; }
+    private readonly List<MapEdge> _edgeAt = new();
+    private const float QuestEdgeR = 13.5f;
+
+    /// <summary>
+    /// The quest pins, every frame so moving targets are followed: side targets first, the main quest on top. A target
+    /// outside the pane sits on its edge with an arrow toward it (one per spot, the main quest's first, with a "×n"
+    /// badge when several share it; the main quest's pulses). The pin under the pointer gets a ring and its objective.
+    /// </summary>
+    private void DrawQuestPins(Control fx, float pulse)
+    {
+        var list = QuestMarks.Of(_lv);
+        if (list.Count == 0) { _hoverQuest = null; return; }
+        var sz = fx.Size;
+        var mid = sz * 0.5f;
+        if (TestHover && _hoverQuest == null)
+            for (int pass = 1; pass >= 0 && _hoverQuest == null; pass--)
+                foreach (var m in list)
+                    if (m.Known && m.Main == (pass == 1) && InView(W2S(m.Pos), sz)) { _hoverQuest = new HoverQ { Ref = m.Ref, Kind = m.Kind, Main = m.Main, Name = m.Name, Text = m.Text, Pos = m.Pos }; break; }
+
+        // off the pane: on its edge (kept inside by the pin's own reach), main quest first, one per spot
+        _edgeAt.Clear();
+        float inset = MathF.Max(QuestEdgeInset, QuestGlyph.EdgeReach(QuestEdgeR) + 20f);     // clear of the forged rim of the pane
+        float hx = MathF.Max(1f, mid.X - inset), hy = MathF.Max(1f, mid.Y - inset);
+        for (int pass = 1; pass >= 0; pass--)
+            foreach (var m in list)
+            {
+                if (!m.Known || m.Main != (pass == 1)) continue;
+                var tip = W2S(m.Pos);
+                if (InView(tip, sz)) continue;
+                var dir = tip - mid;
+                if (dir.LengthSquared() < 1f) continue;
+                float t = MathF.Min(hx / MathF.Max(1e-3f, MathF.Abs(dir.X)), hy / MathF.Max(1e-3f, MathF.Abs(dir.Y)));
+                var at = mid + dir * MathF.Min(1f, t);
+                int near = -1;
+                for (int j = 0; j < _edgeAt.Count; j++) if (_edgeAt[j].At.DistanceSquaredTo(at) < 46f * 46f) { near = j; break; }
+                if (near >= 0) { var e = _edgeAt[near]; e.Count++; _edgeAt[near] = e; continue; }
+                _edgeAt.Add(new MapEdge { M = m, At = at, Dir = dir, Count = 1 });
+            }
+        for (int j = _edgeAt.Count - 1; j >= 0; j--)
+        {
+            var e = _edgeAt[j];
+            QuestGlyph.Edge(fx, e.M.Kind, QuestMarks.ColorOf(e.M), e.At, e.Dir, QuestEdgeR, 0.95f, e.M.Main ? pulse : -1f, e.Count);
+        }
+
+        bool hoverAlive = false;
+        for (int pass = 0; pass < 2; pass++)
+            foreach (var m in list)
+            {
+                if (!m.Known || m.Main != (pass == 1)) continue;
+                var tip = W2S(m.Pos);
+                if (!InView(tip, sz)) continue;
+                var col = QuestMarks.ColorOf(m);
+                if (_hoverQuest != null && SameTarget(_hoverQuest, m)) { hoverAlive = true; _hoverQuest.Pos = m.Pos; _hoverQuest.Text = m.Text; }
+                fx.DrawArc(tip, 7f + 7f * pulse, 0f, Mathf.Tau, 24, new Color(col, (m.Main ? 0.75f : 0.5f) * (1f - pulse * 0.7f)), 1.8f, true);
+                QuestGlyph.Pin(fx, m.Kind, col, tip, QuestPinR);
+            }
+        if (_hoverQuest == null) return;
+        if (!hoverAlive) { _hoverQuest = null; return; }
+
+        // the pin under the pointer: a lit ring, the target's name and the objective, on a dark plate
+        var h = _hoverQuest;
+        var font = WorldUiKit.SmallFont;
+        var hcol = h.Main ? QuestMarks.MainCol : QuestMarks.SideCol;
+        var htip = W2S(h.Pos);
+        var hhead = QuestGlyph.Head(htip, QuestPinR);
+        fx.DrawArc(hhead, QuestPinR + 5f, 0f, Mathf.Tau, 28, new Color(UiTheme.Gold, 0.95f), 2f, true);
+        QuestGlyph.Pin(fx, h.Kind, hcol, htip, QuestPinR);
+        string l1 = h.Name, l2 = string.IsNullOrEmpty(h.Text) ? QuestMarks.KindName(h.Kind) : (h.Main ? "主線　" : "支線　") + h.Text;
+        float lh1 = WorldUiKit.LineHeight(font, FsMarkHover), lh2 = WorldUiKit.LineHeight(font, FsMark);
+        float w = MathF.Max(WorldUiKit.Measure(font, l1, FsMarkHover).X, WorldUiKit.Measure(font, l2, FsMark).X) + 20f;
+        float hgt = lh1 + lh2 + 10f;
+        float x = MathF.Round(Mathf.Clamp(htip.X - w * 0.5f, 14f, MathF.Max(14f, sz.X - w - 14f)));
+        float top = htip.Y + 8f;
+        if (top + hgt > sz.Y - 12f) top = hhead.Y - QuestPinR - 10f - hgt;
+        top = MathF.Round(top);
+        var plate = new Rect2(x, top, w, hgt);
+        fx.DrawRect(plate, new Color(0.035f, 0.028f, 0.022f, 0.92f));
+        fx.DrawRect(plate, new Color(hcol, 0.8f), false, 1.4f);
+        WorldUiKit.Text(fx, font, new Vector2(x + 10f, MathF.Round(top + 4f + WorldUiKit.Ascent(font, FsMarkHover))), l1, FsMarkHover, hcol, HorizontalAlignment.Left, -1f, 4);
+        WorldUiKit.Text(fx, font, new Vector2(x + 10f, MathF.Round(top + 4f + lh1 + WorldUiKit.Ascent(font, FsMark))), l2, FsMark, UiTheme.Text, HorizontalAlignment.Left, -1f, 4);
     }
 
     private void DrawObjectiveBar()
@@ -2155,6 +2294,20 @@ public partial class MapUi : UiPanel
                 cv.DrawArc(new Vector2(14, y), 9f, 0f, Mathf.Tau, 20, new Color(1f, 0.83f, 0.35f), 1.8f, true);
                 cv.DrawArc(new Vector2(14, y), 5f, 0f, Mathf.Tau, 16, new Color(1f, 0.83f, 0.35f, 0.5f), 1.4f, true);
                 WorldUiKit.Text(cv, font, new Vector2(tx, Baseline(y)), "主線的去向", FsLegend, UiTheme.Gold, HorizontalAlignment.Left, tw);
+                y += row;
+            }
+            if (_legendQuest.Count > 0)
+            {
+                // the quest pins: one row per kind of target present, then the key to their two colours
+                foreach (var (kind, main) in _legendQuest)
+                {
+                    QuestGlyph.Pin(cv, kind, main ? QuestMarks.MainCol : QuestMarks.SideCol, new Vector2(14, y + 9f), 7.5f);
+                    WorldUiKit.Text(cv, font, new Vector2(tx, Baseline(y)), QuestMarks.KindName(kind), FsLegend, main ? UiTheme.Gold : UiTheme.Text, HorizontalAlignment.Left, tw);
+                    y += row;
+                }
+                cv.DrawCircle(new Vector2(9, y), 5f, QuestMarks.MainCol);
+                cv.DrawCircle(new Vector2(20, y), 5f, QuestMarks.SideCol);
+                WorldUiKit.Text(cv, font, new Vector2(tx, Baseline(y)), "金色：主線　銀藍：支線", FsLegend, UiTheme.Dim, HorizontalAlignment.Left, tw);
                 y += row;
             }
             foreach (var st in _legendStyles)

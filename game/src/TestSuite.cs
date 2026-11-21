@@ -161,6 +161,9 @@ public sealed partial class TestSuite
             case "objects": yield return ObjectsSuite(); break;
             case "save": yield return SaveSuite(); break;
             case "dps": yield return DpsSuite(); break;
+            case "gear": yield return GearSuite(); break;        // RENDER: --suite=gear[:part] (TestSuite.Gear.cs)
+            case "items": yield return ItemsSuite(); break;      // SYSTEMS: --suite=items[:fixture dir] (TestSuite.Items.cs): save migration, hands, loot spread
+            case "mapquest": yield return MapQuestSuite(); break; // MAP-QUEST: --suite=mapquest (TestSuite.MapQuest.cs): quest pins on the maps
             case "named": yield return NamedSuite(); break;      // NAMED-HOOK: --suite=named[:filter[:class]] (TestSuite.Named.cs)
             case "census": case "bestiary": case "ai": case "rosterperf": yield return RosterSuite(); break;      // TestSuite.Roster.cs
             case "anims":
@@ -638,7 +641,9 @@ public sealed partial class TestSuite
                         string why = null;
                         if (it == null) why = "null";
                         else if (string.IsNullOrEmpty(it.Name)) why = "no name";
-                        else if (it.Kind != k) why = $"kind {it.Kind}";
+                        // an off-hand asked for a class without off-hands comes back as a weapon (modular gear)
+                        else if (it.Kind != k && !(k == ItemKind.OffHand && it.Kind == ItemKind.Weapon && ItemDb.OffBasesOf((ClassId)ci).Length == 0)) why = $"kind {it.Kind}";
+                        else if (it.Kind is ItemKind.Weapon or ItemKind.OffHand && (it.Gb == null || it.Look == null)) why = $"no base/look ({it.Base}, {it.Look})";
                         else if (k == ItemKind.Weapon && (it.DmgMax <= 0 || it.DmgMin > it.DmgMax)) why = $"weapon damage {it.DmgMin}-{it.DmgMax}";
                         else if (it.Rarity >= Rarity.Magic && it.Affixes.Count == 0) why = "no affixes";
                         else if (it.Rarity == Rarity.Legendary && it.Aspect == null) why = "legendary without a power";
@@ -672,12 +677,14 @@ public sealed partial class TestSuite
         _section = "systems: equip";
         d.Bag.Clear();
         d.Gold = 5_000_000; d.Scrap = 5000; d.Dust = 5000; d.Cores = 500;
-        var sword = ItemDb.Generate(300, Rarity.Rare, h.Class, ItemKind.Weapon, rng); sword.ReqLevel = 1;
-        var staff = ItemDb.Generate(300, Rarity.Rare, ClassId.Astromancer, ItemKind.Weapon, rng); staff.ReqLevel = 1;
+        // (modular gear) a two-hand base of the class, so it lands in the main hand; a wand no emberblade can hold
+        var sword = ItemDb.Generate(300, Rarity.Rare, h.Class, ItemKind.Weapon, rng, ItemDb.Loadout(h.Class).TwoHand[0]); sword.ReqLevel = 1;
+        var staff = ItemDb.Generate(300, Rarity.Rare, ClassId.Astromancer, ItemKind.Weapon, rng, "wand"); staff.ReqLevel = 1;
         var high = ItemDb.Generate(600, Rarity.Rare, h.Class, ItemKind.Helm, rng); high.ReqLevel = 50;
         h.AddItem(sword); h.AddItem(staff); h.AddItem(high);
         float wBefore = h.WeaponMax;
-        Check(h.Equip(sword) && h.Weapon == sword && d.Bag.Count == 3, "equip: weapon swaps with the old one in the bag", $"weaponMax {wBefore:0}→{h.WeaponMax:0} bag={d.Bag.Count}");
+        int bagExpect = 3 + (h.OffHand != null ? 1 : 0);        // a two-hand weapon also sends the off hand's piece to the bag
+        Check(h.Equip(sword) && h.Weapon == sword && d.Bag.Count == bagExpect && h.OffHand == null, "equip: weapon swaps with the old one in the bag", $"weaponMax {wBefore:0}→{h.WeaponMax:0} bag={d.Bag.Count}");
         Check(h.WhyCantEquip(staff) != null && !h.Equip(staff), "equip: another class's weapon is refused", h.WhyCantEquip(staff));
         Check(h.WhyCantEquip(high) != null, "equip: level requirement is enforced", h.WhyCantEquip(high));
         var ring1 = ItemDb.Generate(200, Rarity.Rare, h.Class, ItemKind.Ring, rng); ring1.ReqLevel = 1;
@@ -841,7 +848,7 @@ public sealed partial class TestSuite
         int gambled = 0; var gr = new int[5];
         foreach (ItemKind k in Enum.GetValues<ItemKind>())
         {
-            if (k == ItemKind.Gem) continue;
+            if (k == ItemKind.Gem || (k == ItemKind.OffHand && ItemDb.OffBasesOf(h.Class).Length == 0)) continue;     // (modular gear) a class without off-hands is never offered one
             for (int i = 0; i < 12; i++)
             {
                 long g0 = d.Gold; int price = Loot.GamblePrice(k, h);
@@ -854,7 +861,8 @@ public sealed partial class TestSuite
                 d.Bag.Remove(item);
             }
         }
-        Check(gambled == 8 * 12, "gamble: every equipment kind can be gambled for", $"{gambled} items, rarities C/M/R/L/U={string.Join("/", gr)}");
+        int kindsWanted = Enum.GetValues<ItemKind>().Count(k => k != ItemKind.Gem && !(k == ItemKind.OffHand && ItemDb.OffBasesOf(h.Class).Length == 0));
+        Check(gambled == kindsWanted * 12, "gamble: every equipment kind can be gambled for", $"{gambled} items, rarities C/M/R/L/U={string.Join("/", gr)}");
         yield return null;
 
         // ── bulk sell / junk ──
@@ -1216,7 +1224,7 @@ public sealed partial class TestSuite
             var partial = SaveSystem.Load(3);
             bool heroOk = false;
             try { if (partial != null) { var hp = new Hero(partial); heroOk = hp.MaxLife > 0; } } catch (Exception e) { Log.Error("suite", "hero from a partial save threw", e); }
-            Check(partial != null && partial.Level == Balance.LevelCap && partial.Bar.Length == 6 && partial.Equip.Length == 9 && partial.Bag.Count == 0 && heroOk, "save: a hand-edited save with missing fields is repaired", $"level={partial?.Level}");
+            Check(partial != null && partial.Level == Balance.LevelCap && partial.Bar.Length == 6 && partial.Equip.Length == SaveSystem.EquipSlots && partial.Bag.Count == 0 && heroOk, "save: a hand-edited save with missing fields is repaired", $"level={partial?.Level}");
             SaveSystem.Delete(3);
             Check(!SaveSystem.List()[2].Exists, "save: deleting a slot removes it");
             yield return null;

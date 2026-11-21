@@ -1,0 +1,6 @@
+exit= seconds=2542
+log: C:\Users\blhsi\AppData\Roaming\AshenAbyss\logs\game_20261121_214419.log  lines=13826  ERR=0  WRN=2
+--- distinct warnings ---
+   1 x [bot] pilot: going nowhere near (123.3, 103.9) in frost for a minute while 'fight frostbound' (main_frost@2:area(frost_boss)frost_boss)
+   1 x [bot] pilot: going nowhere near (51.6, 74.4) in wastes for a minute while 'fight skeleton_thrower' (main_wastes@3:area(wastes_boss)wastes_boss)
+done

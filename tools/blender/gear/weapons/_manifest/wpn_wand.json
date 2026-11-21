@@ -1,0 +1,94 @@
+{
+ "base": "wand",
+ "prefix": "wpn",
+ "atlas_px": 512,
+ "area_m2": 0.1165,
+ "notes": "",
+ "entries": [
+  {
+   "id": "wpn_wand_v1",
+   "kind": "weapon",
+   "base": "wand",
+   "file": "res://assets/gear/weapons/wpn_wand_v1.glb",
+   "mount": "hand_r",
+   "grip2": null,
+   "length": 0.387,
+   "variant": 1,
+   "hands": 1,
+   "grip": "r",
+   "tris": 2190,
+   "emissive": false,
+   "bbox": [
+    [
+     -0.0158,
+     -0.0123,
+     -0.0887
+    ],
+    [
+     0.0304,
+     0.0123,
+     0.298
+    ]
+   ],
+   "textures": "wpn_wand",
+   "atlas_px": 512
+  },
+  {
+   "id": "wpn_wand_v2",
+   "kind": "weapon",
+   "base": "wand",
+   "file": "res://assets/gear/weapons/wpn_wand_v2.glb",
+   "mount": "hand_r",
+   "grip2": null,
+   "length": 0.479,
+   "variant": 2,
+   "hands": 1,
+   "grip": "r",
+   "tris": 1916,
+   "emissive": false,
+   "bbox": [
+    [
+     -0.0265,
+     -0.0265,
+     -0.1008
+    ],
+    [
+     0.0265,
+     0.0265,
+     0.378
+    ]
+   ],
+   "textures": "wpn_wand",
+   "atlas_px": 512
+  },
+  {
+   "id": "wpn_wand_v3",
+   "kind": "weapon",
+   "base": "wand",
+   "file": "res://assets/gear/weapons/wpn_wand_v3.glb",
+   "mount": "hand_r",
+   "grip2": null,
+   "length": 0.45,
+   "variant": 3,
+   "hands": 1,
+   "grip": "r",
+   "tris": 1624,
+   "emissive": true,
+   "bbox": [
+    [
+     -0.0341,
+     -0.0226,
+     -0.1205
+    ],
+    [
+     0.0368,
+     0.0226,
+     0.3299
+    ]
+   ],
+   "textures": "wpn_wand",
+   "atlas_px": 512
+  }
+ ],
+ "built": "2026-11-21 20:24:13"
+}

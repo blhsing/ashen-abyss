@@ -1,0 +1,21 @@
+# SYSTEMS: ⊘ marks on other classes' weapons (merchant, bag) and the tooltip banner
+wait 3
+gold 200000
+open vendor:merchant
+wait 1.5
+click @只顯示本職業可用
+wait 1
+shot sys_vendor_ownclass_off
+hover 408,358
+wait 1.2
+shot sys_vendor_alien_tooltip
+click 408,358
+wait 1
+close vendor
+wait 0.5
+open inventory
+wait 2
+hover 1004,533
+wait 1.2
+shot sys_bag_alien_tooltip
+quit

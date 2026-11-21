@@ -1,0 +1,6 @@
+# SYSTEMS: a two-hand weapon locks the off hand
+wait 3
+open inventory
+wait 2.5
+shot sys_inv_2h_offhand_locked
+quit

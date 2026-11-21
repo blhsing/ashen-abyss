@@ -1,0 +1,25 @@
+# SYSTEMS: gear sets — strip, 裝備組 tab, F-keys and E in a fight
+wait 3
+sets
+wait 0.5
+open inventory
+wait 2
+shot sys_sets_strip
+click @裝備組#2
+wait 1
+shot sys_sets_tab
+close inventory
+wait 0.5
+key F2
+wait 1.2
+shot sys_sets_switch_f2
+wait 2
+key E
+wait 1.0
+shot sys_sets_quickswap_e
+key E
+key E
+wait 0.4
+shot sys_sets_cooldown
+wait 3
+quit

@@ -19,11 +19,14 @@ public struct HitOpt
 /// </summary>
 public static class Combat
 {
+    /// <summary>Share of a blocked hit that still lands (block chance comes from shields: Stat.Block).</summary>
+    public const float BlockedShare = 0.5f;
+
     public static float PlayerHit(Player p, Actor t, SkillDef s, float coef, Element el, HitOpt o = default)
     {
         if (t == null || t.Dead || p == null) return 0f;
         var h = p.Hero; var S = h.S;
-        float w = Rng.Range(h.WeaponMin, h.WeaponMax);
+        float w = Rng.Range(h.StrikeMin, h.StrikeMax);      // the hand that strikes now (dual-wield alternates, SkillExec.Fire)
         float add = S[Stat.DmgAll] + S[StatInfo.DmgOf(el)];
         if (s != null) add += s.Cat switch { SkillCat.Basic => S[Stat.DmgBasic], SkillCat.Core => S[Stat.DmgCore], SkillCat.Ultimate => S[Stat.DmgUlt], _ => 0f };
         bool elite = t.IsElite || t.IsBoss;
@@ -95,6 +98,7 @@ public static class Combat
             var h = p.Hero;
             if (Rng.Chance(h.S[Stat.Dodge] / 100f)) { World.RaiseDamage(p, new Hit { Source = m, Amount = 0, El = el }, -1f); return 0f; }
             float red = (1f - Balance.ArmorDr(h.Armor, m.Level)) * (1f - h.Res(el) / 100f) * (1f - h.S[Stat.DmgReduction] / 100f) * p.ExtraDr();
+            if (h.S[Stat.Block] > 0f && Rng.Chance(h.S[Stat.Block] / 100f)) red *= BlockedShare;    // a shield (or block affixes) takes half the hit
             float dmg = raw * red;
             float dealt = p.TakeHit(new Hit { Source = m, Amount = dmg, El = el });
             if (status.HasValue && !p.Unstoppable && !p.Dead)

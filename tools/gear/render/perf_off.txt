@@ -1,0 +1,11 @@
+exit= seconds=170
+log: C:\Users\blhsi\AppData\Roaming\AshenAbyss\logs\game_20261121_185219.log  lines=707  ERR=0  WRN=0
+--- last lines ---
+  163.700 INF [named] rare_crypt_namelessking discovered by the hero
+  164.247 INF [perf] fps=61 frame=16.8ms worst=43.0ms slowestProcess=33.8ms area=rift~arena:rare_crypt_namelessking monsters=1 minions=4 objects=1 nodes=585 draws=139 prims=136572 vram=4512MB mem=334MB scale=1.00 q=2 errors=0
+  164.250 INF [perf] game code per frame: whole tree=2.32ms | monsters=0.12ms (awake 5: 0.11ms, separation 0.02ms) player=0.18ms shots+zones=0.01ms level=0.01ms bot=0.03ms
+  165.282 INF [test] harness quit at 140.01 s
+  165.284 INF [game] quitting
+  165.288 INF [anim] anim-check: hero moved 27.0s - 0.0s without a locomotion clip, 0.0s with frozen legs; hero stood 18.0s - 0.0s in a run clip or none; monsters moved 223.3s - 0.0s without a locomotion clip, 0.0s with frozen legs; models without a skeleton o ƒ?Ý
+  165.289 INF [input] keyboard hook saw 28 key events, 0 of them PrtSc
+  165.290 INF [boot] shutdown errors=0 warnings=0 uptime=165s

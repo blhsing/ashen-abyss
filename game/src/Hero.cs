@@ -24,6 +24,14 @@ public sealed partial class Hero
     public readonly HashSet<string> Uniques = new();
     public readonly HashSet<string> Keystones = new();          // behaviour hooks granted by the paragon board (filled by ApplyParagonStats)
     public float MaxLife, MaxResource, WeaponMin, WeaponMax, Aps, MainMul, Armor;
+    /// <summary>Swing-speed factor of the held weapon(s) against the class's animation timing (Aps / RefAps, kept within 0.7–1.35;
+    /// outside that range the damage of one hit carries the rest, so damage per second never depends on the clamp).</summary>
+    public float SpeedMul = 1f;
+    /// <summary>True while two weapons are held: hits alternate between the hands (<see cref="StrikeHand"/>).</summary>
+    public bool DualWielding;
+    /// <summary>The hand of the current strike: 0 main hand, 1 off hand (only ever 1 while dual-wielding). <see cref="NextStrike"/> swaps it.</summary>
+    public int StrikeHand;
+    private readonly float[] _handMin = { 2, 2 }, _handMax = { 4, 4 };
     public int MaxPips;
     public const int BagSize = 40, StashSize = 80;
 
@@ -36,15 +44,27 @@ public sealed partial class Hero
 
     public ClassId Class => D.Class;
     public ClassSpec Spec => SkillDb.Spec(D.Spec);
-    public Item Weapon => D.Equip[(int)EquipSlot.Weapon];
+    public Item MainHand => D.Equip[(int)EquipSlot.MainHand];
+    public Item OffHand => D.Equip[(int)EquipSlot.OffHand];
+    /// <summary>The weapon that strikes first: the main hand, or a lone off-hand weapon. Null when bare-handed.</summary>
+    public Item Weapon => MainHand?.Kind == ItemKind.Weapon ? MainHand : OffHand?.Kind == ItemKind.Weapon ? OffHand : null;
+    /// <summary>The weapon of the current strike (alternates while dual-wielding), or null when bare-handed.</summary>
+    public Item StrikeWeapon => DualWielding && StrikeHand == 1 ? OffHand : Weapon;
+    /// <summary>Damage range of one hit with the current strike hand (masterworking and speed compensation included).</summary>
+    public float StrikeMin => _handMin[DualWielding ? StrikeHand : 0];
+    public float StrikeMax => _handMax[DualWielding ? StrikeHand : 0];
+    /// <summary>Called once per attack: while dual-wielding the other hand strikes next. Returns the hand that strikes now.</summary>
+    public int NextStrike() { StrikeHand = DualWielding ? 1 - StrikeHand : 0; return StrikeHand; }
 
+    /// <summary>New hero: the class's starter weapon (two of them for the forgebody's fists) and no armour at all.</summary>
     public static SaveData NewCharacter(string name, ClassId cls, bool hardcore)
     {
         var d = new SaveData { Name = name, Class = cls, Hardcore = hardcore };
         string basic = SkillDb.DefaultBasic(cls);
         d.Skills[basic] = 1;
         d.Bar[0] = basic;
-        d.Equip[(int)EquipSlot.Weapon] = ItemDb.Starter(cls);
+        d.Equip[(int)EquipSlot.MainHand] = ItemDb.Starter(cls);
+        d.Equip[(int)EquipSlot.OffHand] = ItemDb.StarterOff(cls);
         d.Gold = 50;
         return d;
     }
@@ -67,13 +87,14 @@ public sealed partial class Hero
             if (it == null) continue;
             armor += it.Armor * it.BaseMul;
             foreach (var a in it.Affixes) S.Add(a.Stat, it.Eff(a));
+            if (it.Implicits != null) foreach (var a in it.Implicits) S.Add(a.Stat, it.Eff(a));
             foreach (var g in it.Gems) { var gd = ItemDb.Gem(g); if (gd != null) { var b = ItemDb.GemBonus(gd, it.Kind); S.Add(b.s, b.v); } }
             if (it.Aspect != null)
             {
                 var asp = ItemDb.Aspect(it.Aspect);
                 if (asp != null)
                 {
-                    float v = asp.Value(it.AspectRoll) * (it.Kind == ItemKind.Amulet ? 1.5f : it.Kind == ItemKind.Weapon ? 2f : 1f);
+                    float v = asp.Value(it.AspectRoll) * (it.Kind is ItemKind.Amulet or ItemKind.OffHand ? 1.5f : it.Kind == ItemKind.Weapon ? 2f : 1f);
                     if (asp.Id == "multishot") v = asp.Value(it.AspectRoll);
                     Aspects[asp.Id] = Aspects.TryGetValue(asp.Id, out var cur) ? MathF.Max(cur, v) : v;
                 }
@@ -105,14 +126,42 @@ public sealed partial class Hero
         S[Stat.Cdr] = MathF.Min(S[Stat.Cdr], 60); S[Stat.MoveSpeed] = MathF.Min(S[Stat.MoveSpeed], 100);
         S[Stat.AttackSpeed] = MathF.Min(S[Stat.AttackSpeed], 100); S[Stat.ResourceCost] = MathF.Min(S[Stat.ResourceCost], 50);
         S[Stat.CritChance] = MathF.Min(S[Stat.CritChance], 75);
+        S[Stat.Block] = MathF.Min(S[Stat.Block], 50);
 
         MaxLife = MathF.Round((Balance.BaseLife(D.Level) + S[Stat.MaxLife]) * MathF.Max(0.2f, 1f + S[Stat.LifePct] / 100f));
         MaxResource = 100 + S[Stat.MaxResource];
-        var w = Weapon;
-        if (w != null) { float up = w.BaseMul; WeaponMin = w.DmgMin * up; WeaponMax = w.DmgMax * up; Aps = w.Aps; }
-        else { WeaponMin = 2; WeaponMax = 4; Aps = 1f; }
+        RecalcWeapons();
         MaxPips = Class == ClassId.Hunter ? 3 + (D.Spec == "hu_combo" ? 1 : 0) + (HasKeystone("ks_combo") ? 2 : 0) : Class == ClassId.Pactbinder ? 5 : 0;
         Changed?.Invoke();
+    }
+
+    /// <summary>
+    /// Weapon damage and speed. One weapon: its hit range and speed. Two (dual-wield): each hand keeps its own range,
+    /// hits alternate, and the speed is the mean of both ×1.1. Bare hands: 2–4 at the class's own pace. Aps / RefAps
+    /// (the class's old weapon speed, which its animations are timed to) scales every swing via AttackSpeedMul.
+    /// </summary>
+    private void RecalcWeapons()
+    {
+        var g = ItemDb.Loadout(Class);
+        Item w1 = Weapon;
+        Item w2 = MainHand?.Kind == ItemKind.Weapon && OffHand?.Kind == ItemKind.Weapon ? OffHand : null;
+        DualWielding = w2 != null;
+        if (!DualWielding) StrikeHand = 0;
+        float aps = w1 == null ? g.RefAps : w2 == null ? w1.Aps : (w1.Aps + w2.Aps) * 0.5f * ItemDb.DualSpeed;
+        float raw = aps / g.RefAps;
+        SpeedMul = Math.Clamp(raw, 0.7f, 1.35f);
+        float comp = raw / SpeedMul;
+        void Hand(int i, Item w)
+        {
+            if (w == null) { _handMin[i] = 2 * comp; _handMax[i] = 4 * comp; return; }
+            float up = w.BaseMul * comp;
+            _handMin[i] = w.DmgMin * up; _handMax[i] = w.DmgMax * up;
+        }
+        Hand(0, w1);
+        Hand(1, w2 ?? w1);
+        WeaponMin = (_handMin[0] + _handMin[1]) * 0.5f;
+        WeaponMax = (_handMax[0] + _handMax[1]) * 0.5f;
+        Aps = aps;
     }
 
     public float Asp(string id) => Aspects.GetValueOrDefault(id);
@@ -123,7 +172,12 @@ public sealed partial class Hero
     /// <summary>Implemented by the paragon module (Hero.Paragon.cs): adds board and glyph stats to S and hook ids to Keystones.</summary>
     partial void ApplyParagonStats();
     public float Res(Element e) { var s = StatInfo.ResOf(e); return s == Stat.Count ? 0 : MathF.Min(70, S[Stat.ResAll] + S[s]); }
-    public float AttackSpeedMul => 1f + S[Stat.AttackSpeed] / 100f;
+    /// <summary>Speed of every swing and cast: the attack-speed stat times the held weapon's own speed (SpeedMul).</summary>
+    public float AttackSpeedMul => (1f + S[Stat.AttackSpeed] / 100f) * SpeedMul;
+    /// <summary>Swings per second as played: the class's animation pace × AttackSpeedMul (WeaponMin/Max × this = weapon DPS).</summary>
+    public float SwingsPerSec => ItemDb.Loadout(Class).RefAps * AttackSpeedMul;
+    /// <summary>The attack-speed stat alone (gear, buffs, paragon), without the weapon's speed.</summary>
+    public float StatSpeedMul => 1f + S[Stat.AttackSpeed] / 100f;
     public float CdrMul => 1f - S[Stat.Cdr] / 100f;
     public float MoveMul => 1f + S[Stat.MoveSpeed] / 100f;
 
@@ -313,19 +367,66 @@ public sealed partial class Hero
 
     public static EquipSlot SlotFor(ItemKind k) => k switch
     {
-        ItemKind.Weapon => EquipSlot.Weapon, ItemKind.Helm => EquipSlot.Helm, ItemKind.Chest => EquipSlot.Chest, ItemKind.Gloves => EquipSlot.Gloves,
-        ItemKind.Pants => EquipSlot.Pants, ItemKind.Boots => EquipSlot.Boots, ItemKind.Amulet => EquipSlot.Amulet, _ => EquipSlot.Ring1
+        ItemKind.Weapon => EquipSlot.MainHand, ItemKind.OffHand => EquipSlot.OffHand, ItemKind.Helm => EquipSlot.Helm, ItemKind.Chest => EquipSlot.Chest,
+        ItemKind.Gloves => EquipSlot.Gloves, ItemKind.Pants => EquipSlot.Pants, ItemKind.Boots => EquipSlot.Boots, ItemKind.Amulet => EquipSlot.Amulet, _ => EquipSlot.Ring1
     };
 
-    public string WhyCantEquip(Item it)
+    /// <summary>True when the main hand holds a two-hand weapon (the off-hand slot is then blocked).</summary>
+    public bool OffHandBlocked => MainHand != null && MainHand.TwoHand;
+
+    /// <summary>Weapon damage per second of one item, for picking the weaker hand.</summary>
+    private static float Dps(Item w) => w == null ? 0f : w.AvgDmg * w.Aps;
+
+    /// <summary>
+    /// The slot a click would put this item in. Two-hand weapons and off-hands have one place each. A one-hand weapon goes
+    /// to the main hand, except for a dual-wield class already holding a one-hand weapon there: then to the empty off
+    /// hand, or over the weaker of the two. Rings fill an empty ring slot first, else replace the weaker ring.
+    /// </summary>
+    public EquipSlot TargetSlot(Item it)
+    {
+        if (it.Kind == ItemKind.Ring)
+        {
+            var r1 = D.Equip[(int)EquipSlot.Ring1]; var r2 = D.Equip[(int)EquipSlot.Ring2];
+            return r1 == null ? EquipSlot.Ring1 : r2 == null ? EquipSlot.Ring2 : (r1.Power <= r2.Power ? EquipSlot.Ring1 : EquipSlot.Ring2);
+        }
+        if (it.Kind != ItemKind.Weapon || it.TwoHand) return SlotFor(it.Kind);
+        var mh = MainHand; var oh = OffHand;
+        if (!ItemDb.Allows(Class, it.Base, EquipSlot.OffHand) || mh == null || mh.TwoHand || mh.Kind != ItemKind.Weapon) return EquipSlot.MainHand;
+        if (oh == null) return EquipSlot.OffHand;
+        if (oh.Kind != ItemKind.Weapon) return EquipSlot.MainHand;
+        return Dps(oh) < Dps(mh) ? EquipSlot.OffHand : EquipSlot.MainHand;
+    }
+
+    /// <summary>Why this item cannot go in <paramref name="slot"/> (default: where a click puts it), or null.</summary>
+    public string WhyCantEquip(Item it, EquipSlot? slot = null)
     {
         if (!it.IsEquip) return "無法裝備";
         if (it.ReqLevel > D.Level) return $"需要等級 {it.ReqLevel}";
         if (it.Kind == ItemKind.Weapon && it.WeaponClass >= 0 && it.WeaponClass != (int)Class) return $"僅限{Names.Class((ClassId)it.WeaponClass)}使用";
+        var s = slot ?? TargetSlot(it);
+        if (it.Kind is ItemKind.Weapon or ItemKind.OffHand)
+        {
+            var b = it.Gb;
+            string what = b?.Name ?? Names.Kind(it.Kind);
+            if (s is not (EquipSlot.MainHand or EquipSlot.OffHand)) return "無法裝備在這個欄位";
+            if (it.Kind == ItemKind.OffHand && s != EquipSlot.OffHand) return "副手物品只能裝備在副手";
+            if (it.TwoHand && s != EquipSlot.MainHand) return "雙手武器只能裝備在主手";
+            if (!ItemDb.Allows(Class, it.Base, EquipSlot.MainHand) && !ItemDb.Allows(Class, it.Base, EquipSlot.OffHand))
+                return $"{Names.Class(Class)}無法裝備{what}";
+            if (!ItemDb.Allows(Class, it.Base, s))
+                return s == EquipSlot.OffHand ? $"{Names.Class(Class)}無法以副手持{what}" : $"{what}只能裝備在副手";
+            // a two-hand weapon takes the off hand's item to the bag: it needs a free place there
+            if (it.TwoHand && OffHand != null && OffHand != it)
+            {
+                int after = D.Bag.Count - (D.Bag.Contains(it) ? 1 : 0) + (MainHand != null && MainHand != it ? 1 : 0) + 1;
+                if (after > BagSize) return "行囊已滿，無法卸下副手";
+            }
+        }
+        else if (SlotFor(it.Kind) != s && !(it.Kind == ItemKind.Ring && s is EquipSlot.Ring1 or EquipSlot.Ring2)) return "無法裝備在這個欄位";
         return null;
     }
 
-    /// <summary>The equipped item an inventory item would be compared with / replace.</summary>
+    /// <summary>The equipped item an inventory item would be compared with / replace (null when its slot is empty).</summary>
     public Item Compared(Item it)
     {
         if (!it.IsEquip) return null;
@@ -335,24 +436,57 @@ public sealed partial class Hero
             if (r1 == null || r2 == null) return null;
             return r1.Power <= r2.Power ? r1 : r2;
         }
-        return D.Equip[(int)SlotFor(it.Kind)];
+        var s = TargetSlot(it);
+        // an off-hand item against a two-hand weapon: compare with the weapon it would take off
+        if (s == EquipSlot.OffHand && OffHandBlocked) return MainHand;
+        return D.Equip[(int)s];
     }
 
-    public bool Equip(Item it)
+    /// <summary>A second worn item that equipping this one also takes off: the off hand's item for a two-hand weapon. Else null.</summary>
+    public Item ComparedExtra(Item it)
     {
-        if (WhyCantEquip(it) != null || !D.Bag.Contains(it)) return false;
-        EquipSlot slot = SlotFor(it.Kind);
-        if (it.Kind == ItemKind.Ring)
-        {
-            var r1 = D.Equip[(int)EquipSlot.Ring1]; var r2 = D.Equip[(int)EquipSlot.Ring2];
-            slot = r1 == null ? EquipSlot.Ring1 : r2 == null ? EquipSlot.Ring2 : (r1.Power <= r2.Power ? EquipSlot.Ring1 : EquipSlot.Ring2);
-        }
-        var old = D.Equip[(int)slot];
+        if (it == null || !it.IsEquip) return null;
+        if (it.Kind == ItemKind.Weapon && it.TwoHand && MainHand != null && OffHand != null && OffHand != it) return OffHand;
+        return null;
+    }
+
+    /// <summary>
+    /// Puts a bag item on (in <paramref name="slot"/>, or where a click would). The replaced item takes the new one's
+    /// place in the bag. A two-hand weapon also moves the off hand's item to the bag (refused when there is no room);
+    /// an off-hand item or a second weapon moves a two-hand weapon out of the main hand.
+    /// </summary>
+    public bool Equip(Item it, EquipSlot? slot = null)
+    {
+        var s = slot ?? TargetSlot(it);
+        if (WhyCantEquip(it, s) != null || !D.Bag.Contains(it)) return false;
+        var old = D.Equip[(int)s];
         int idx = D.Bag.IndexOf(it);
         D.Bag.RemoveAt(idx);
         if (old != null) D.Bag.Insert(idx, old);
-        D.Equip[(int)slot] = it;
+        D.Equip[(int)s] = it;
+        if (s == EquipSlot.MainHand && it.TwoHand && OffHand != null)
+        {
+            var off = OffHand; D.Equip[(int)EquipSlot.OffHand] = null;
+            if (old == null) D.Bag.Insert(idx, off); else D.Bag.Add(off);
+        }
+        else if (s == EquipSlot.OffHand && MainHand != null && MainHand.TwoHand)
+        {
+            var two = MainHand; D.Equip[(int)EquipSlot.MainHand] = null;
+            D.Bag.Insert(Math.Min(idx, D.Bag.Count), two);
+        }
         Recalc(); return true;
+    }
+
+
+    /// <summary>
+    /// Kept for callers written against the first gear API (AiPilotPlan.cs). The verdict now comes from the shared
+    /// evaluator <see cref="GearEval"/> (simulated swap, offence and defence): <paramref name="worth"/> is ignored, and a
+    /// margin above 1.05 also demands the weighted total to rise by that much.
+    /// </summary>
+    public bool IsUpgrade(Item it, Func<Item, float> worth = null, float margin = 1.03f)
+    {
+        if (!GearEval.IsUpgrade(this, it)) return false;
+        return margin <= 1.05f || GearEval.Judge(this, it).Total >= margin - 1f;
     }
 
     public bool Unequip(EquipSlot slot)
