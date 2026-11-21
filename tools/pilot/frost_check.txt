@@ -1,0 +1,3 @@
+00:40:58 hunter frost lv19
+  177.957 INF [pilot] TEST RESULT mode=boss class=hunter end=boss killed t=340s level=20 deaths=3 area=frost campaignDone=False bossesKilled=1 telegraphed threats=74 dodged=71 taken=3 (boss 53/53/0) dmgTelegraphed=236 otherHits=121 dmgOther=3543 dodgeWalks=220
+01:10:11 hunter frost lv19

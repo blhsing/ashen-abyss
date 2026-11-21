@@ -1,0 +1,14 @@
+23:58:15 campaign emberblade
+ 1532.326 INF [pilot] TEST FIGHT boss=boss_grand_hush area=sanctum_boss killed=True secs=106 deaths=0 heroLevel=37 threats=54 dodged=54 taken=0 dmgTelegraphed=0 dmgOther=630 life=2319
+ 1532.326 INF [pilot] TEST FIGHT boss=boss_osaros area=abyss_boss killed=True secs=123 deaths=0 heroLevel=44 threats=90 dodged=88 taken=2 dmgTelegraphed=279 dmgOther=1114 life=3484
+ 1532.326 INF [pilot] TEST FIGHT boss=sh_abyss area=abyss killed=True secs=89 deaths=0 heroLevel=41 threats=54 dodged=53 taken=1 dmgTelegraphed=72 dmgOther=1224 life=3151
+00:24:05 campaign hunter
+  687.702 INF [pilot] TEST FIGHT boss=sh_frost area=frost killed=False secs=71 deaths=4 heroLevel=19 threats=26 dodged=11 taken=15 dmgTelegraphed=1557 dmgOther=4165 life=1275
+  687.702 INF [pilot] TEST FIGHT boss=sh_frost area=town killed=False secs=252 deaths=4 heroLevel=18 threats=36 dodged=19 taken=17 dmgTelegraphed=1700 dmgOther=4196 life=1216
+  687.702 INF [pilot] TEST FIGHT boss=sh_mire area=mire killed=True secs=133 deaths=0 heroLevel=14 threats=61 dodged=60 taken=1 dmgTelegraphed=42 dmgOther=348 life=1056
+00:35:51 campaign wildsoul
+ 1846.356 INF [pilot] TEST FIGHT boss=boss_grand_hush area=sanctum_boss killed=True secs=323 deaths=0 heroLevel=37 threats=156 dodged=152 taken=4 dmgTelegraphed=326 dmgOther=3367 life=3066
+ 1846.356 INF [pilot] TEST FIGHT boss=boss_osaros area=abyss_boss killed=True secs=184 deaths=0 heroLevel=44 threats=168 dodged=164 taken=4 dmgTelegraphed=591 dmgOther=3276 life=3342
+ 1846.356 INF [pilot] TEST FIGHT boss=sh_abyss area=abyss killed=True secs=140 deaths=0 heroLevel=41 threats=90 dodged=86 taken=4 dmgTelegraphed=663 dmgOther=4376 life=3230
+01:07:07 campaign forgebody
+STOPPED by lead 01:51:38: old build, freeing lock for AI-PILOT sh_frost checks

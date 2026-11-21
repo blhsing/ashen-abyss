@@ -1,0 +1,13 @@
+04:24:34 emberblade sands lv27
+  128.984 INF [pilot] TEST RESULT mode=boss class=emberblade end=boss killed t=239s level=28 deaths=0 area=sands campaignDone=False bossesKilled=1 telegraphed threats=121 dodged=119 taken=2 (boss 119/117/2) dmgTelegraphed=114 otherHits=106 
+04:27:32 emberblade abyss_boss lv42
+  173.949 INF [pilot] TEST RESULT mode=boss class=emberblade end=boss killed t=330s level=43 deaths=0 area=abyss_boss campaignDone=True bossesKilled=1 telegraphed threats=207 dodged=200 taken=7 (boss 200/194/6) dmgTelegraphed=986 otherHits=
+04:31:11 astromancer sands lv27
+  111.166 INF [pilot] TEST RESULT mode=boss class=astromancer end=boss killed t=208s level=28 deaths=0 area=sands campaignDone=False bossesKilled=1 telegraphed threats=49 dodged=48 taken=1 (boss 46/46/0) dmgTelegraphed=6 otherHits=327 dmgOt
+04:33:52 astromancer abyss_boss lv42
+  397.011 INF [pilot] TEST RESULT mode=boss class=astromancer end=boss killed t=780s level=43 deaths=0 area=abyss_boss campaignDone=True bossesKilled=1 telegraphed threats=656 dodged=651 taken=5 (boss 654/649/5) dmgTelegraphed=1780 otherHit
+04:41:17 wildsoul sands lv27
+  458.038 INF [pilot] TEST RESULT mode=boss class=wildsoul end=time limit t=900s level=28 deaths=0 area=sands campaignDone=False bossesKilled=0 telegraphed threats=700 dodged=663 taken=37 (boss 691/656/35) dmgTelegraphed=3654 otherHits=872 
+04:49:58 wildsoul abyss_boss lv42
+  291.567 INF [pilot] TEST RESULT mode=boss class=wildsoul end=boss killed t=568s level=43 deaths=0 area=abyss_boss campaignDone=True bossesKilled=1 telegraphed threats=588 dodged=561 taken=27 (boss 575/548/27) dmgTelegraphed=8300 otherHits
+chain11 done

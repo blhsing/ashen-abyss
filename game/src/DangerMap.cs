@@ -214,6 +214,7 @@ internal static class DangerMap
     /// <summary>Per frame (the pilot calls it): drops what is over, counts what the hero stood in and whether it struck.</summary>
     public static void Tick(Vector2 hero, float pad)
     {
+        Hook();                     // the damage intake is needed from the first blow, not only after the first mark
         double now = Now;
         var root = World.Root;
         for (int i = Live.Count - 1; i >= 0; i--)

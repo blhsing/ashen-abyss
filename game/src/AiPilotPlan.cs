@@ -22,7 +22,7 @@ public partial class AiPilot
     // ───────────────────────── strategy ─────────────────────────
 
     /// <summary>Level a hero should have before walking into a region's story lair (monsters there are max(region, hero) + 1).</summary>
-    internal static int WantedLevel(RegionDef r) => r == null ? 1 : r.Act == 1 ? 4 : r.Level + 2;
+    internal static int WantedLevel(RegionDef r) => r == null ? 1 : r.Act == 1 ? 6 : r.Level + 2;      // act 1: level 4 was enough for a melee hero, not for a hunter (out of potions in the graveyard crowd)
 
     private string _restockFor;
     private double _restAt = -1;
@@ -51,8 +51,10 @@ public partial class AiPilot
             return true;
         }
         if (!lair) return false;
+        // never walk into a lair in the middle of a fight (the entrance crowd follows, and the lair has its own)
+        if (!lv.IsTown && p.InCombat > 0f) return true;
         // a full belt before the lair: the town refills it
-        if (!lv.IsTown && p.Potions <= hero.D.PotionCap - 2 && p.InCombat <= 0f && _restockFor != dest)
+        if (!lv.IsTown && p.Potions <= hero.D.PotionCap - 2 && _restockFor != dest)
         {
             _restockFor = dest;
             Log.Info("pilot", $"potions {p.Potions}/{hero.D.PotionCap} before {dest}: town portal to refill");
@@ -389,5 +391,85 @@ public partial class AiPilot
                 if (hero.TakeUp(id, u.Id)) Log.Info("pilot", $"skills: {id} takes '{u.Name}' (immune to crowd control while it lasts)");
             }
         }
+    }
+}
+
+public partial class AiPilot
+{
+    /// <summary>
+    /// Two deaths without progress: grinding where it just died (a stronghold's crowd, a frost pass) only sends it back
+    /// into the same fight. It levels up in the highest other open region whose level is not above the hero's instead,
+    /// three levels or ten minutes, then comes back stronger (skill ranks, passives and gear grow faster than the
+    /// monsters, which scale with the hero).
+    /// </summary>
+    private void ChooseRegroup(Game g)
+    {
+        var hero = g?.Hero;
+        if (hero == null || BossTest) return;
+        string here = _grindRegion;
+        string best = null; int bl = -1;
+        foreach (var r in ZoneDb.Regions)
+        {
+            if (r.Id == here || r.Level > hero.D.Level || r.Level < bl || !CanEnter(r.Id)) continue;
+            best = r.Id; bl = r.Level;
+        }
+        if (best == null) return;
+        _grindRegion = best;
+        _grindUntil = _clock + 600.0;
+        _grindLevel = hero.D.Level + 1;              // Grinding ends at _grindLevel + 2: three levels up
+        Log.Info("pilot", $"two deaths in {here}: regroups in {best} until level {_grindLevel + 2} (or 10 minutes)");
+    }
+}
+
+public partial class AiPilot
+{
+    /// <summary>
+    /// Strongholds that measured as walls below a hero level (kept small, per region). 凍骨關 (瓦雷克): his banner musters
+    /// frostbound every 15 s and their blows chill to a freeze; heroes arriving at level 17–19 died there 4–11 times,
+    /// heroes at 22+ cleared it with 0–1 deaths.
+    /// </summary>
+    private static readonly Dictionary<string, int> StrongholdLevel = new() { ["frost"] = 22 };
+
+    /// <summary>False (and a grind elsewhere is set up) while the hero is below the stronghold's measured level.</summary>
+    internal bool StrongholdReady(Level lv)
+    {
+        var hero = Game.I?.Hero;
+        if (hero == null || lv?.Region == null || BossTest) return true;
+        int want = Math.Max(lv.Region.Level + 2, StrongholdLevel.GetValueOrDefault(lv.Region.Id));      // a level-1 hunter charging the outpost met 39 monsters
+        if (hero.D.Level >= want) return true;
+        if (Grinding) return false;
+        string best = null; int bl = -1;
+        foreach (var r in ZoneDb.Regions)
+        {
+            if (r.Id == lv.Region.Id || r.Level > hero.D.Level || r.Level < bl || !CanEnter(r.Id)) continue;
+            best = r.Id; bl = r.Level;
+        }
+        _grindRegion = best ?? lv.Region.Id;
+        _grindLevel = want - 2;
+        _grindUntil = _clock + 1500.0;
+        Log.Info("pilot", $"stronghold of {lv.Region.Id} wants level {want} (hero {hero.D.Level}): levels up in {_grindRegion} first");
+        return false;
+    }
+}
+
+public partial class AiPilot
+{
+    private readonly Dictionary<string, int> _deathsByRegion = new();
+
+    /// <summary>
+    /// Deaths per region, never reset by progress (levels come while regrouping, so the "without progress" count never
+    /// reaches the hand-back there). Eight deaths in one region: the pilot has no answer to that place — it hands back
+    /// with that reason instead of trading lives forever.
+    /// </summary>
+    private bool WallReached()
+    {
+        var lv = Game.I?.Level;
+        string region = lv != null && IsInstanceValid(lv) ? (lv.Region ?? ZoneDb.RegionOf(lv.AreaId))?.Id : null;
+        if (region == null) return false;
+        int n = _deathsByRegion.GetValueOrDefault(region) + 1;
+        _deathsByRegion[region] = n;
+        if (n < 8) return false;
+        Stop("wall: " + region, $"在「{ZoneDb.AreaName(region)}」接連倒下八次，AI 代打找不到對策，請親自挑戰。");
+        return true;
     }
 }

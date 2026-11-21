@@ -268,6 +268,7 @@ public partial class AiPilot : Node
     internal void OnDeath()
     {
         if (TestDeath()) return;                              // the boss test counts deaths and keeps trying
+        if (WallReached()) return;                            // the same place keeps killing the hero: hand back (AiPilotPlan.cs)
         _deaths.Add(_clock);
         _deaths.RemoveAll(t => _clock - t > 900.0);
         Log.Info("pilot", $"hero died ({_deaths.Count} since the last progress)");
@@ -279,6 +280,7 @@ public partial class AiPilot : Node
             _grindRegion ??= ZoneDb.RegionOf(g?.Hero?.D.Area ?? "")?.Id ?? ZoneDb.Regions[0].Id;
             _grindUntil = _clock + 240.0;
             _grindLevel = g?.Hero?.D.Level ?? 1;
+            ChooseRegroup(g);                                 // died twice in one place: level up somewhere else first (AiPilotPlan.cs)
             Log.Info("pilot", $"two deaths: grinding in {_grindRegion} for up to 4 minutes (level {_grindLevel})");
             Log.Guard("hud", () => g?.Hud?.Toast("AI 代打：先到荒野磨練一番，再回頭挑戰", Palette.Ember));
         }

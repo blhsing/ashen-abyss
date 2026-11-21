@@ -1,0 +1,9 @@
+03:23:18 campaign forgebody
+ 1852.055 INF [pilot] TEST FIGHT boss=sh_sands area=sands killed=True secs=153 deaths=0 heroLevel=31 threats=80 dodged=78 taken=2 dmgTelegraphed=92 dmgOther=1903 life=1794
+ 1852.056 INF [pilot] TEST FIGHT boss=boss_osaros area=abyss_boss killed=True secs=254 deaths=0 heroLevel=45 threats=242 dodged=230 taken=12 dmgTelegraphed=959 dmgOther=2345 life=3330
+ 1852.056 INF [pilot] TEST FIGHT boss=sh_abyss area=abyss killed=True secs=147 deaths=0 heroLevel=43 threats=91 dodged=90 taken=1 dmgTelegraphed=36 dmgOther=2615 life=3276
+03:55:00 campaign lampknight
+ 1474.115 INF [pilot] TEST fight ends: boss=sh_frost area=frost killed=True secs=282 deaths=1 heroLevel=30 threats=147 dodged=108 taken=39 dmgTelegraphed=2206 dmgOther=4483 life=2386
+ 1578.374 INF [pilot] TEST fight ends: boss=boss_rimelord area=frost_boss killed=True secs=115 deaths=0 heroLevel=33 threats=65 dodged=61 taken=4 dmgTelegraphed=299 dmgOther=696 life=2555
+ 1661.944 INF [pilot] TEST fight ends: boss=sh_sands area=sands killed=True secs=215 deaths=0 heroLevel=35 threats=138 dodged=136 taken=2 dmgTelegraphed=59 dmgOther=3102 life=2748
+campaigns done

@@ -1,0 +1,9 @@
+01:28:21 hunter frost lv19
+  198.270 INF [pilot] TEST RESULT mode=boss class=hunter end=boss killed t=380s level=20 deaths=3 area=frost campaignDone=False bossesKilled=1 telegraphed threats=187 dodged=176 taken=11 (boss 74/66/8) dmgTelegraphed=977 otherHits=102 dmgOther=3892 dodgeWalks=
+01:55:06 hunter frost lv19
+  248.089 INF [pilot] TEST RESULT mode=boss class=hunter end=boss killed t=481s level=20 deaths=5 area=frost campaignDone=False bossesKilled=1 telegraphed threats=107 dodged=84 taken=23 (boss 76/63/13) dmgTelegraphed=1717 otherHits=225 dmgOther=7115 dodgeWalks
+01:59:43 emberblade frost lv19
+  201.745 INF [pilot] TEST RESULT mode=boss class=emberblade end=boss killed t=389s level=20 deaths=4 area=frost campaignDone=False bossesKilled=1 telegraphed threats=83 dodged=65 taken=18 (boss 80/63/17) dmgTelegraphed=1450 otherHits=181 dmgOther=5674 dodgeWa
+02:03:39 astromancer frost lv19
+  266.037 INF [pilot] TEST RESULT mode=boss class=astromancer end=boss killed t=517s level=20 deaths=2 area=frost campaignDone=False bossesKilled=1 telegraphed threats=245 dodged=238 taken=7 (boss 239/232/7) dmgTelegraphed=636 otherHits=146 dmgOther=5331 dodge
+frost check done

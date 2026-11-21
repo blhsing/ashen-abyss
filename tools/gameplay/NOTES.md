@@ -150,3 +150,44 @@ skills. make the bot actually play well enough to beat the game without dying".
   runs left) are in `%APPDATA%\AshenAbyss\saves_test_backup\pilot\`.
 - Tables: `bash Y:/tools/pilot/table.sh` (boss tests), `bash Y:/tools/pilot/camptable.sh` (campaigns; the per-fight
   lines are `TEST FIGHT` in each campaign log).
+
+## 2026-11-22 — lead's final-code campaigns: hunter 11 deaths at sh_frost (凍骨關); forgebody stuck there too
+Diagnosis (logs game_20261122_002409 hunter, 003559 wildsoul, frost isolation runs):
+- 瓦雷克's garrison banner: while it stands 4 frostbound muster every 15 s and frost monsters near it can't be slowed.
+  The script publishes the counter as `NamedScript.BotTarget` (and BotStand/BotPassive); the pilot ignored it → endless
+  frost crowd → freeze chains. Fixed: `PilotNamedHint` follows the encounter hints in every named fight (also 第七號's
+  pylons that reflect melee damage — wildsoul's only death was at sh_sands).
+- My arena leash marched the hero back from the checkpoint into the crowd after every respawn (hunter deaths 8–11
+  ~5 s apart). Now only when the boss is < 90 %, hero ≥ 70 % life with ≥ 2 potions, ≥ 15 s after a respawn, no crowd near.
+- Level: the final hunter reached sh_frost at 17–19 (the v5 hunter at 24, 1 death). Isolated sh_frost at lv19 with
+  harness gear kills every class 2–5× (hunter 3/5, emberblade 4, astromancer 2) → per-region stronghold level floor
+  (`AiPilot.StrongholdLevel`, frost = 22; otherwise region level + 2). Below it the pilot levels elsewhere first.
+- Two deaths without progress now regroup in another region for 3 levels (ChooseRegroup) instead of the same place.
+- Bugs found on the way: DangerMap only subscribed to World.Damage after the first telegraph (damage intake = 0
+  early: potions/retreat blind in the first minutes); act-1 lair level 4 → 6 (a level-4 hunter ran dry of potions in
+  the graveyard); the new "ranged retreat in any pack" rule pulled the next packs (removed); retreats now avoid
+  monsters that have not noticed the hero; no walking into a lair mid-fight; ranged heroes keep dodging plain swings.
+- Proposed game-side (NOT changed, lead asking the user): chill keeps stacking during the 1.5 s CC immunity after a
+  freeze, so in a frost pack the next blow re-freezes at once (~57 % of the time frozen). Reset chill when a freeze
+  ends, or ignore chill while CcImmune > 0 (Actor.ApplyStatus, case Chill).
+- Runs: `chain10.sh` = campaigns hunter, forgebody, lampknight (camp10.txt), then isolated sh_sands + 奧薩洛斯 for
+  emberblade/astromancer/wildsoul (iso10.txt). pid in chain10.pid.
+- 2026-11-22 05:00 results on the fixed code (game_20261122_*):
+  - Campaign forgebody (032332): done, 14/14, 4 deaths (all at frost: 3 on the first sh_frost attempt at lv22–23, 1 in
+    the frost overworld), lv46, 0 ERR. The lead's earlier forgebody run (old code) had 10+ deaths and was still stuck
+    at lv30.
+  - Campaign lampknight (035510): 8 deaths (2 crypt cultist packs, 6 at sh_frost); sh_frost killed on the 3rd attempt
+    at lv30; stopped at sands_boss lv36 by my wall watcher (the 6-deaths-per-region rule as it stood then; now 8).
+  - Campaign hunter (022655): wastes/crypt/mire 0 deaths; sh_frost a wall from lv22 to lv33 (7 deaths); I stopped it.
+  - sh_frost A/B at lv22 (`--chill-grace`, test-only switch): hunter 5/4 deaths → 3/0; forgebody 8 → 12.
+  - Isolated (sh_sands lv27 / 奧薩洛斯 lv42): emberblade 0/0 killed both; astromancer 0/0 killed both; wildsoul
+    sh_sands NOT killed in 900 s (0 deaths, damage race), 奧薩洛斯 killed, 0 deaths.
+  - Code after those runs (compiles; NOT campaign-tested): defensive skill fired when 3+ frost melee close in;
+    AiPilot.WallReached hands back after 8 deaths in one region (reason shown to the player).
+  - No processes of mine running; test saves moved to saves_test_backup/pilot by run_one.sh.
+- 2026-11-22 freeze rule (user decision via lead), real game behaviour for every Actor (hero, minions, monsters):
+  Actor.TickStatuses — when a freeze ends, chill (time and stacks) resets to 0; Actor.ApplyStatus — no chill is added
+  while CcImmune > 0. `--chill-grace` switch removed (Actor.ChillGrace, AiPilot, Game.cs list). Buff-row tooltip for
+  凍結/冰緩 adds 「凍結結束時，冰緩層數歸零」 (HudBuffs.cs, one line). check.ps1 0 errors.
+  Runs: `chain12.sh` (pid chain12.pid): sh_frost lv22 hunter×2, lampknight, forgebody (iso12.txt), then campaigns
+  hunter, lampknight, forgebody (camp12.txt).

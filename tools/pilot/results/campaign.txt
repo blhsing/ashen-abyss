@@ -130,3 +130,151 @@
  2085.412 INF [pilot] TEST FIGHT boss=boss_osaros area=abyss_boss killed=True secs=667 deaths=0 heroLevel=44 threats=609 dodged=602 taken=7 dmgTelegraphed=2576 dmgOther=5732 life=3056
  2085.412 INF [pilot] TEST FIGHT boss=sh_abyss area=abyss killed=True secs=180 deaths=0 heroLevel=41 threats=68 dodged=68 taken=0 dmgTelegraphed=0 dmgOther=1480 life=2495
  2085.412 INF [pilot] TEST FIGHT boss=sh_sanctum area=sanctum killed=True secs=196 deaths=0 heroLevel=34 threats=60 dodged=60 taken=0 dmgTelegraphed=0 dmgOther=648 life=2317
+=== 2026-11-22 00:24:00 campaign emberblade campaign lv- speed=4 log=C:\Users\blhsi\AppData\Roaming\AshenAbyss\logs\game_20261121_235820.log ERR=0
+   58.455 INF [pilot] TEST fight ends: boss=sh_wastes area=wastes killed=True secs=117 deaths=0 heroLevel=3 threats=64 dodged=64 taken=0 dmgTelegraphed=0 dmgOther=140 life=202
+  124.026 INF [pilot] TEST fight ends: boss=boss_gravedigger area=wastes_boss killed=True secs=132 deaths=0 heroLevel=5 threats=106 dodged=106 taken=0 dmgTelegraphed=0 dmgOther=451 life=301
+  253.868 INF [pilot] TEST fight ends: boss=sh_crypt area=crypt killed=True secs=85 deaths=0 heroLevel=9 threats=45 dodged=44 taken=1 dmgTelegraphed=22 dmgOther=656 life=722
+  365.893 INF [pilot] TEST fight ends: boss=boss_bishop area=crypt_boss killed=True secs=210 deaths=0 heroLevel=12 threats=169 dodged=167 taken=2 dmgTelegraphed=24 dmgOther=414 life=830
+  440.638 INF [pilot] TEST fight ends: boss=sh_mire area=mire killed=True secs=208 deaths=0 heroLevel=14 threats=130 dodged=128 taken=2 dmgTelegraphed=44 dmgOther=1107 life=821
+  527.303 INF [pilot] TEST fight ends: boss=boss_mire_mother area=mire_boss killed=True secs=108 deaths=0 heroLevel=16 threats=75 dodged=75 taken=0 dmgTelegraphed=0 dmgOther=277 life=869
+  578.909 INF [pilot] TEST fight ends: boss=sh_frost area=frost killed=True secs=79 deaths=0 heroLevel=18 threats=38 dodged=38 taken=0 dmgTelegraphed=0 dmgOther=1178 life=1043
+  642.911 INF [pilot] TEST fight ends: boss=boss_rimelord area=frost_boss killed=True secs=76 deaths=0 heroLevel=20 threats=43 dodged=43 taken=0 dmgTelegraphed=0 dmgOther=70 life=1172
+  886.759 INF [pilot] TEST fight ends: boss=sh_sands area=sands killed=True secs=99 deaths=0 heroLevel=27 threats=70 dodged=67 taken=3 dmgTelegraphed=67 dmgOther=4856 life=2254
+ 1019.209 INF [pilot] TEST fight ends: boss=boss_sand_tyrant area=sands_boss killed=True secs=123 deaths=0 heroLevel=29 threats=83 dodged=83 taken=0 dmgTelegraphed=0 dmgOther=78 life=2114
+ 1146.368 INF [pilot] TEST fight ends: boss=sh_sanctum area=sanctum killed=True secs=80 deaths=0 heroLevel=34 threats=47 dodged=47 taken=0 dmgTelegraphed=0 dmgOther=3145 life=2226
+ 1243.894 INF [pilot] TEST fight ends: boss=boss_grand_hush area=sanctum_boss killed=True secs=106 deaths=0 heroLevel=37 threats=54 dodged=54 taken=0 dmgTelegraphed=0 dmgOther=630 life=2319
+ 1407.962 INF [pilot] TEST fight ends: boss=sh_abyss area=abyss killed=True secs=89 deaths=0 heroLevel=41 threats=54 dodged=53 taken=1 dmgTelegraphed=72 dmgOther=1224 life=3151
+ 1526.075 INF [pilot] TEST fight ends: boss=boss_osaros area=abyss_boss killed=True secs=123 deaths=0 heroLevel=44 threats=90 dodged=88 taken=2 dmgTelegraphed=279 dmgOther=1114 life=3484
+ 1532.322 INF [pilot] TEST RESULT mode=campaign class=emberblade end=pilot stopped t=5767s level=45 deaths=0 area=town campaignDone=True bossesKilled=14 telegraphed threats=1361 dodged=1338 taken=23 (boss 1072/1061/11) dmgTelegraphed=937 otherHits=4261 dmgOther=55578 dodgeWalks=3302 rolls=369 defensives=57
+ 1532.323 INF [pilot] TEST FIGHT boss=boss_bishop area=crypt_boss killed=True secs=210 deaths=0 heroLevel=12 threats=169 dodged=167 taken=2 dmgTelegraphed=24 dmgOther=414 life=830
+ 1532.323 INF [pilot] TEST FIGHT boss=boss_gravedigger area=wastes_boss killed=True secs=132 deaths=0 heroLevel=5 threats=106 dodged=106 taken=0 dmgTelegraphed=0 dmgOther=451 life=301
+ 1532.323 INF [pilot] TEST FIGHT boss=sh_crypt area=crypt killed=True secs=85 deaths=0 heroLevel=9 threats=45 dodged=44 taken=1 dmgTelegraphed=22 dmgOther=656 life=722
+ 1532.323 INF [pilot] TEST FIGHT boss=sh_wastes area=wastes killed=True secs=117 deaths=0 heroLevel=3 threats=64 dodged=64 taken=0 dmgTelegraphed=0 dmgOther=140 life=202
+ 1532.324 INF [pilot] TEST FIGHT boss=boss_mire_mother area=mire_boss killed=True secs=108 deaths=0 heroLevel=16 threats=75 dodged=75 taken=0 dmgTelegraphed=0 dmgOther=277 life=869
+ 1532.324 INF [pilot] TEST FIGHT boss=sh_frost area=frost killed=True secs=79 deaths=0 heroLevel=18 threats=38 dodged=38 taken=0 dmgTelegraphed=0 dmgOther=1178 life=1043
+ 1532.324 INF [pilot] TEST FIGHT boss=sh_mire area=mire killed=True secs=208 deaths=0 heroLevel=14 threats=130 dodged=128 taken=2 dmgTelegraphed=44 dmgOther=1107 life=821
+ 1532.325 INF [pilot] TEST FIGHT boss=boss_rimelord area=frost_boss killed=True secs=76 deaths=0 heroLevel=20 threats=43 dodged=43 taken=0 dmgTelegraphed=0 dmgOther=70 life=1172
+ 1532.325 INF [pilot] TEST FIGHT boss=boss_sand_tyrant area=sands_boss killed=True secs=123 deaths=0 heroLevel=29 threats=83 dodged=83 taken=0 dmgTelegraphed=0 dmgOther=78 life=2114
+ 1532.325 INF [pilot] TEST FIGHT boss=sh_sanctum area=sanctum killed=True secs=80 deaths=0 heroLevel=34 threats=47 dodged=47 taken=0 dmgTelegraphed=0 dmgOther=3145 life=2226
+ 1532.325 INF [pilot] TEST FIGHT boss=sh_sands area=sands killed=True secs=99 deaths=0 heroLevel=27 threats=70 dodged=67 taken=3 dmgTelegraphed=67 dmgOther=4856 life=2254
+ 1532.326 INF [pilot] TEST FIGHT boss=boss_grand_hush area=sanctum_boss killed=True secs=106 deaths=0 heroLevel=37 threats=54 dodged=54 taken=0 dmgTelegraphed=0 dmgOther=630 life=2319
+ 1532.326 INF [pilot] TEST FIGHT boss=boss_osaros area=abyss_boss killed=True secs=123 deaths=0 heroLevel=44 threats=90 dodged=88 taken=2 dmgTelegraphed=279 dmgOther=1114 life=3484
+ 1532.326 INF [pilot] TEST FIGHT boss=sh_abyss area=abyss killed=True secs=89 deaths=0 heroLevel=41 threats=54 dodged=53 taken=1 dmgTelegraphed=72 dmgOther=1224 life=3151
+=== 2026-11-22 00:35:48 campaign hunter campaign lv- speed=4 log=C:\Users\blhsi\AppData\Roaming\AshenAbyss\logs\game_20261122_002409.log ERR=0
+   65.694 INF [pilot] TEST fight ends: boss=sh_wastes area=wastes killed=True secs=109 deaths=0 heroLevel=3 threats=16 dodged=16 taken=0 dmgTelegraphed=0 dmgOther=136 life=202
+   84.143 INF [pilot] TEST death 1 at t=292s in wastes_boss (fight=-) life bar 226; last hits: husk x14 218, skeleton x7 142, skeleton_thrower x1 18
+   99.066 INF [pilot] TEST death 2 at t=351s in wastes_boss (fight=-) life bar 250; last hits: skeleton x5 102, skeleton_thrower x1 18, skeleton(elite) x1 25
+  204.954 INF [pilot] TEST death 3 at t=775s in wastes_boss (fight=boss_gravedigger) life bar 250; last hits: boss_gravedigger(boss) x1 81 (1 marked), husk x1 16
+  205.834 INF [pilot] TEST fight ends: boss=boss_gravedigger area=wastes killed=False secs=414 deaths=1 heroLevel=5 threats=295 dodged=285 taken=10 dmgTelegraphed=565 dmgOther=1521 life=250
+  319.054 INF [pilot] TEST fight ends: boss=boss_gravedigger area=wastes_boss killed=True secs=135 deaths=0 heroLevel=7 threats=91 dodged=90 taken=1 dmgTelegraphed=39 dmgOther=221 life=298
+  361.933 INF [pilot] TEST fight ends: boss=sh_crypt area=crypt killed=True secs=82 deaths=0 heroLevel=10 threats=38 dodged=38 taken=0 dmgTelegraphed=0 dmgOther=780 life=731
+  444.049 INF [pilot] TEST fight ends: boss=boss_bishop area=crypt_boss killed=True secs=101 deaths=0 heroLevel=12 threats=41 dodged=41 taken=0 dmgTelegraphed=0 dmgOther=66 life=780
+  501.985 INF [pilot] TEST fight ends: boss=sh_mire area=mire killed=True secs=133 deaths=0 heroLevel=14 threats=61 dodged=60 taken=1 dmgTelegraphed=42 dmgOther=348 life=1056
+  552.955 INF [pilot] TEST fight ends: boss=boss_mire_mother area=mire_boss killed=True secs=87 deaths=0 heroLevel=16 threats=50 dodged=50 taken=0 dmgTelegraphed=0 dmgOther=71 life=1105
+  579.041 INF [pilot] TEST death 4 at t=2212s in frost (fight=sh_frost) life bar 1191; last hits: frost_knight x5 289 (5 marked), frost_thrower x1 30, frostbound x16 614 (7 marked), frostbound(elite) x4 178 (1 marked), ice_wraith x5 213, rime_stalker x2 64, rime_stalker(elite) x1 41, sh_frost(boss) x2 100 (2 marked)
+  587.697 INF [pilot] TEST death 5 at t=2247s in frost (fight=sh_frost) life bar 1191; last hits: frost_knight x1 66 (1 marked), frost_thrower x1 30, frost_thrower(elite) x1 36 (1 marked), frostbound x18 676 (3 marked), ice_wraith x6 251 (1 marked), rime_stalker x3 97, sh_frost(boss) x2 100 (2 marked)
+  608.348 INF [pilot] TEST death 6 at t=2329s in frost (fight=sh_frost) life bar 1216; last hits: frost_knight x2 132 (2 marked), frost_thrower x3 95, frost_thrower(elite) x1 38, frostbound x11 418, ice_wraith x6 255 (2 marked), rime_stalker x12 390 (4 marked)
+  614.588 INF [pilot] TEST death 7 at t=2354s in frost (fight=sh_frost) life bar 1216; last hits: frost_knight x2 123 (2 marked), frost_thrower x4 122, frost_thrower(elite) x1 36, frostbound x9 344, ice_wraith x6 253 (2 marked), rime_stalker x13 403
+  638.957 INF [pilot] TEST fight ends: boss=sh_frost area=town killed=False secs=252 deaths=4 heroLevel=18 threats=36 dodged=19 taken=17 dmgTelegraphed=1700 dmgOther=4196 life=1216
+  673.937 INF [pilot] TEST death 8 at t=2583s in frost (fight=sh_frost) life bar 1275; last hits: frost_knight x2 128 (2 marked), frost_thrower x1 31, frost_thrower(elite) x1 43, frostbound x20 776 (5 marked), frostbound(elite) x2 96 (1 marked), ice_wraith x3 136 (1 marked), rime_stalker(elite) x1 36, sh_frost(boss) x2 119 (2 marked)
+  679.653 INF [pilot] TEST death 9 at t=2606s in frost (fight=sh_frost) life bar 1275; last hits: frost_knight x4 242 (4 marked), frost_thrower x1 30, frost_thrower(elite) x1 37, frostbound x18 689 (2 marked), frostbound(elite) x3 144 (1 marked), ice_wraith x2 83, rime_stalker(elite) x2 80
+  683.776 INF [pilot] TEST death 10 at t=2622s in frost (fight=sh_frost) life bar 1275; last hits: frost_knight x4 239 (4 marked), frost_thrower x2 71, frost_thrower(elite) x2 82, frostbound x17 655 (3 marked), frostbound(elite) x2 91, rime_stalker(elite) x4 155 (1 marked)
+  687.690 INF [pilot] TEST death 11 at t=2638s in frost (fight=sh_frost) life bar 1275; last hits: frost_knight x3 192 (3 marked), frost_thrower x2 65, frost_thrower(elite) x2 87, frostbound x18 707 (1 marked), frostbound(elite) x3 136, ice_wraith x2 82, rime_stalker(elite) x3 112 (1 marked)
+  687.699 INF [pilot] TEST fight ends: boss=sh_frost area=frost killed=False secs=71 deaths=4 heroLevel=19 threats=26 dodged=11 taken=15 dmgTelegraphed=1557 dmgOther=4165 life=1275
+  687.700 INF [pilot] TEST FIGHT boss=boss_gravedigger area=wastes killed=False secs=414 deaths=1 heroLevel=5 threats=295 dodged=285 taken=10 dmgTelegraphed=565 dmgOther=1521 life=250
+  687.700 INF [pilot] TEST FIGHT boss=sh_wastes area=wastes killed=True secs=109 deaths=0 heroLevel=3 threats=16 dodged=16 taken=0 dmgTelegraphed=0 dmgOther=136 life=202
+  687.700 INF [pilot] TEST RESULT mode=campaign class=hunter end=pilot stopped t=2638s level=19 deaths=11 area=frost campaignDone=False bossesKilled=6 telegraphed threats=763 dodged=719 taken=44 (boss 643/602/41) dmgTelegraphed=3903 otherHits=772 dmgOther=15211 dodgeWalks=1278 rolls=137 defensives=7
+  687.701 INF [pilot] TEST FIGHT boss=boss_bishop area=crypt_boss killed=True secs=101 deaths=0 heroLevel=12 threats=41 dodged=41 taken=0 dmgTelegraphed=0 dmgOther=66 life=780
+  687.701 INF [pilot] TEST FIGHT boss=boss_gravedigger area=wastes_boss killed=True secs=135 deaths=0 heroLevel=7 threats=91 dodged=90 taken=1 dmgTelegraphed=39 dmgOther=221 life=298
+  687.701 INF [pilot] TEST FIGHT boss=sh_crypt area=crypt killed=True secs=82 deaths=0 heroLevel=10 threats=38 dodged=38 taken=0 dmgTelegraphed=0 dmgOther=780 life=731
+  687.702 INF [pilot] TEST FIGHT boss=boss_mire_mother area=mire_boss killed=True secs=87 deaths=0 heroLevel=16 threats=50 dodged=50 taken=0 dmgTelegraphed=0 dmgOther=71 life=1105
+  687.702 INF [pilot] TEST FIGHT boss=sh_frost area=frost killed=False secs=71 deaths=4 heroLevel=19 threats=26 dodged=11 taken=15 dmgTelegraphed=1557 dmgOther=4165 life=1275
+  687.702 INF [pilot] TEST FIGHT boss=sh_frost area=town killed=False secs=252 deaths=4 heroLevel=18 threats=36 dodged=19 taken=17 dmgTelegraphed=1700 dmgOther=4196 life=1216
+  687.702 INF [pilot] TEST FIGHT boss=sh_mire area=mire killed=True secs=133 deaths=0 heroLevel=14 threats=61 dodged=60 taken=1 dmgTelegraphed=42 dmgOther=348 life=1056
+=== 2026-11-22 01:07:02 campaign wildsoul campaign lv- speed=4 log=C:\Users\blhsi\AppData\Roaming\AshenAbyss\logs\game_20261122_003559.log ERR=0
+   68.045 INF [pilot] TEST fight ends: boss=sh_wastes area=wastes killed=True secs=156 deaths=0 heroLevel=3 threats=84 dodged=84 taken=0 dmgTelegraphed=0 dmgOther=165 life=220
+  175.085 INF [pilot] TEST fight ends: boss=boss_gravedigger area=wastes_boss killed=True secs=168 deaths=0 heroLevel=6 threats=143 dodged=141 taken=2 dmgTelegraphed=49 dmgOther=554 life=336
+  352.025 INF [pilot] TEST fight ends: boss=sh_crypt area=crypt killed=True secs=417 deaths=0 heroLevel=9 threats=300 dodged=297 taken=3 dmgTelegraphed=174 dmgOther=4014 life=590
+  431.998 INF [pilot] TEST fight ends: boss=boss_bishop area=crypt_boss killed=True secs=181 deaths=0 heroLevel=11 threats=109 dodged=107 taken=2 dmgTelegraphed=80 dmgOther=540 life=777
+  484.157 INF [pilot] TEST fight ends: boss=sh_mire area=mire killed=True secs=114 deaths=0 heroLevel=13 threats=80 dodged=79 taken=1 dmgTelegraphed=1 dmgOther=405 life=781
+  546.564 INF [pilot] TEST fight ends: boss=boss_mire_mother area=mire_boss killed=True secs=107 deaths=0 heroLevel=16 threats=86 dodged=85 taken=1 dmgTelegraphed=10 dmgOther=387 life=939
+  596.422 INF [pilot] TEST fight ends: boss=sh_frost area=frost killed=True secs=84 deaths=0 heroLevel=17 threats=35 dodged=34 taken=1 dmgTelegraphed=39 dmgOther=1273 life=1382
+  671.694 INF [pilot] TEST fight ends: boss=boss_rimelord area=frost_boss killed=True secs=85 deaths=0 heroLevel=20 threats=55 dodged=55 taken=0 dmgTelegraphed=0 dmgOther=509 life=1464
+  926.111 INF [pilot] TEST death 1 at t=3473s in sands (fight=sh_sands) life bar 1992; last hits: sand_revenant x54 138, sand_revenant(elite) x6 18
+  984.612 INF [pilot] TEST fight ends: boss=sh_sands area=sands killed=True secs=257 deaths=1 heroLevel=27 threats=186 dodged=183 taken=3 dmgTelegraphed=279 dmgOther=13837 life=2021
+ 1147.571 INF [pilot] TEST fight ends: boss=boss_sand_tyrant area=sands_boss killed=True secs=224 deaths=0 heroLevel=30 threats=199 dodged=195 taken=4 dmgTelegraphed=306 dmgOther=342 life=2633
+ 1336.405 INF [pilot] TEST fight ends: boss=sh_sanctum area=sanctum killed=True secs=205 deaths=0 heroLevel=34 threats=127 dodged=124 taken=3 dmgTelegraphed=259 dmgOther=3439 life=2920
+ 1533.039 INF [pilot] TEST fight ends: boss=boss_grand_hush area=sanctum_boss killed=True secs=323 deaths=0 heroLevel=37 threats=156 dodged=152 taken=4 dmgTelegraphed=326 dmgOther=3367 life=3066
+ 1706.894 INF [pilot] TEST fight ends: boss=sh_abyss area=abyss killed=True secs=140 deaths=0 heroLevel=41 threats=90 dodged=86 taken=4 dmgTelegraphed=663 dmgOther=4376 life=3230
+ 1840.217 INF [pilot] TEST fight ends: boss=boss_osaros area=abyss_boss killed=True secs=184 deaths=0 heroLevel=44 threats=168 dodged=164 taken=4 dmgTelegraphed=591 dmgOther=3276 life=3342
+ 1846.352 INF [pilot] TEST RESULT mode=campaign class=wildsoul end=pilot stopped t=6978s level=45 deaths=1 area=town campaignDone=True bossesKilled=14 telegraphed threats=2383 dodged=2328 taken=55 (boss 1824/1792/32) dmgTelegraphed=4761 otherHits=4883 dmgOther=104975 dodgeWalks=5307 rolls=506 defensives=86
+ 1846.353 INF [pilot] TEST FIGHT boss=boss_bishop area=crypt_boss killed=True secs=181 deaths=0 heroLevel=11 threats=109 dodged=107 taken=2 dmgTelegraphed=80 dmgOther=540 life=777
+ 1846.353 INF [pilot] TEST FIGHT boss=boss_gravedigger area=wastes_boss killed=True secs=168 deaths=0 heroLevel=6 threats=143 dodged=141 taken=2 dmgTelegraphed=49 dmgOther=554 life=336
+ 1846.353 INF [pilot] TEST FIGHT boss=sh_crypt area=crypt killed=True secs=417 deaths=0 heroLevel=9 threats=300 dodged=297 taken=3 dmgTelegraphed=174 dmgOther=4014 life=590
+ 1846.353 INF [pilot] TEST FIGHT boss=sh_wastes area=wastes killed=True secs=156 deaths=0 heroLevel=3 threats=84 dodged=84 taken=0 dmgTelegraphed=0 dmgOther=165 life=220
+ 1846.354 INF [pilot] TEST FIGHT boss=boss_mire_mother area=mire_boss killed=True secs=107 deaths=0 heroLevel=16 threats=86 dodged=85 taken=1 dmgTelegraphed=10 dmgOther=387 life=939
+ 1846.354 INF [pilot] TEST FIGHT boss=boss_rimelord area=frost_boss killed=True secs=85 deaths=0 heroLevel=20 threats=55 dodged=55 taken=0 dmgTelegraphed=0 dmgOther=509 life=1464
+ 1846.354 INF [pilot] TEST FIGHT boss=sh_frost area=frost killed=True secs=84 deaths=0 heroLevel=17 threats=35 dodged=34 taken=1 dmgTelegraphed=39 dmgOther=1273 life=1382
+ 1846.354 INF [pilot] TEST FIGHT boss=sh_mire area=mire killed=True secs=114 deaths=0 heroLevel=13 threats=80 dodged=79 taken=1 dmgTelegraphed=1 dmgOther=405 life=781
+ 1846.355 INF [pilot] TEST FIGHT boss=boss_sand_tyrant area=sands_boss killed=True secs=224 deaths=0 heroLevel=30 threats=199 dodged=195 taken=4 dmgTelegraphed=306 dmgOther=342 life=2633
+ 1846.355 INF [pilot] TEST FIGHT boss=sh_sanctum area=sanctum killed=True secs=205 deaths=0 heroLevel=34 threats=127 dodged=124 taken=3 dmgTelegraphed=259 dmgOther=3439 life=2920
+ 1846.355 INF [pilot] TEST FIGHT boss=sh_sands area=sands killed=True secs=257 deaths=1 heroLevel=27 threats=186 dodged=183 taken=3 dmgTelegraphed=279 dmgOther=13837 life=2021
+ 1846.356 INF [pilot] TEST FIGHT boss=boss_grand_hush area=sanctum_boss killed=True secs=323 deaths=0 heroLevel=37 threats=156 dodged=152 taken=4 dmgTelegraphed=326 dmgOther=3367 life=3066
+ 1846.356 INF [pilot] TEST FIGHT boss=boss_osaros area=abyss_boss killed=True secs=184 deaths=0 heroLevel=44 threats=168 dodged=164 taken=4 dmgTelegraphed=591 dmgOther=3276 life=3342
+ 1846.356 INF [pilot] TEST FIGHT boss=sh_abyss area=abyss killed=True secs=140 deaths=0 heroLevel=41 threats=90 dodged=86 taken=4 dmgTelegraphed=663 dmgOther=4376 life=3230
+=== 2026-11-22 03:54:56 campaign forgebody campaign lv- speed=4 log=C:\Users\blhsi\AppData\Roaming\AshenAbyss\logs\game_20261122_032332.log ERR=0
+   89.106 INF [pilot] TEST fight ends: boss=sh_wastes area=wastes killed=True secs=150 deaths=0 heroLevel=3 threats=85 dodged=85 taken=0 dmgTelegraphed=0 dmgOther=175 life=206
+  211.604 INF [pilot] TEST fight ends: boss=boss_gravedigger area=wastes_boss killed=True secs=137 deaths=0 heroLevel=7 threats=109 dodged=108 taken=1 dmgTelegraphed=13 dmgOther=258 life=370
+  342.356 INF [pilot] TEST fight ends: boss=sh_mire area=mire killed=True secs=186 deaths=0 heroLevel=11 threats=129 dodged=125 taken=4 dmgTelegraphed=67 dmgOther=624 life=624
+  455.100 INF [pilot] TEST fight ends: boss=boss_mire_mother area=mire_boss killed=True secs=150 deaths=0 heroLevel=13 threats=101 dodged=100 taken=1 dmgTelegraphed=7 dmgOther=309 life=672
+  502.462 INF [pilot] TEST fight ends: boss=sh_crypt area=crypt killed=True secs=108 deaths=0 heroLevel=14 threats=65 dodged=61 taken=4 dmgTelegraphed=109 dmgOther=1520 life=840
+  620.810 INF [pilot] TEST fight ends: boss=boss_bishop area=crypt_boss killed=True secs=194 deaths=0 heroLevel=17 threats=137 dodged=136 taken=1 dmgTelegraphed=17 dmgOther=464 life=953
+  816.819 INF [pilot] TEST death 1 at t=3072s in frost (fight=sh_frost) life bar 1460; last hits: frost_knight(elite) x2 140 (2 marked), frost_thrower x3 93 (2 marked), frostbound x21 763 (10 marked), frostbound(elite) x2 88, ice_wraith x2 82 (1 marked), ice_wraith(elite) x1 46, rime_stalker x24 745 (12 marked), rime_stalker(elite) x2 71 (2 marked), sh_frost(boss) x1 64 (1 marked), skeleton x2 74 (1 marked)
+  828.723 INF [pilot] TEST death 2 at t=3120s in frost (fight=sh_frost) life bar 1485; last hits: frost_knight x1 60 (1 marked), frost_thrower x3 90, frostbound x18 655 (1 marked), ice_wraith x9 379, ice_wraith(elite) x3 163 (1 marked), sh_frost(boss) x1 49 (1 marked)
+  838.908 INF [pilot] TEST death 3 at t=3160s in frost (fight=sh_frost) life bar 1485; last hits: frost_thrower x4 126, frostbound x11 390, ice_wraith x13 534 (1 marked), ice_wraith(elite) x4 196, sh_frost(boss) x4 223 (4 marked)
+  840.506 INF [pilot] TEST fight ends: boss=sh_frost area=town killed=False secs=106 deaths=3 heroLevel=23 threats=36 dodged=19 taken=17 dmgTelegraphed=2015 dmgOther=4639 life=1485
+ 1025.919 INF [pilot] TEST death 4 at t=3855s in frost (fight=-) life bar 1715; last hits: frostbound x16 695, ice_wraith(elite) x2 142 (1 marked), rime_stalker x9 353 (1 marked), rime_stalker(elite) x3 134 (1 marked)
+ 1058.638 INF [pilot] TEST fight ends: boss=sh_frost area=frost killed=True secs=89 deaths=0 heroLevel=27 threats=39 dodged=38 taken=1 dmgTelegraphed=28 dmgOther=460 life=1741
+ 1162.131 INF [pilot] TEST fight ends: boss=boss_rimelord area=frost_boss killed=True secs=98 deaths=0 heroLevel=29 threats=63 dodged=54 taken=9 dmgTelegraphed=1142 dmgOther=1145 life=1791
+ 1225.487 INF [pilot] TEST fight ends: boss=sh_sands area=sands killed=True secs=153 deaths=0 heroLevel=31 threats=80 dodged=78 taken=2 dmgTelegraphed=92 dmgOther=1903 life=1794
+ 1306.721 INF [pilot] TEST fight ends: boss=boss_sand_tyrant area=sands_boss killed=True secs=188 deaths=0 heroLevel=33 threats=188 dodged=188 taken=0 dmgTelegraphed=0 dmgOther=86 life=1842
+ 1445.461 INF [pilot] TEST fight ends: boss=sh_sanctum area=sanctum killed=True secs=186 deaths=0 heroLevel=36 threats=109 dodged=108 taken=1 dmgTelegraphed=86 dmgOther=1086 life=2588
+ 1560.209 INF [pilot] TEST fight ends: boss=boss_grand_hush area=sanctum_boss killed=True secs=220 deaths=0 heroLevel=38 threats=95 dodged=91 taken=4 dmgTelegraphed=629 dmgOther=2225 life=2642
+ 1736.526 INF [pilot] TEST fight ends: boss=sh_abyss area=abyss killed=True secs=147 deaths=0 heroLevel=43 threats=91 dodged=90 taken=1 dmgTelegraphed=36 dmgOther=2615 life=3276
+ 1845.934 INF [pilot] TEST fight ends: boss=boss_osaros area=abyss_boss killed=True secs=254 deaths=0 heroLevel=45 threats=242 dodged=230 taken=12 dmgTelegraphed=959 dmgOther=2345 life=3330
+ 1852.052 INF [pilot] TEST FIGHT boss=sh_wastes area=wastes killed=True secs=150 deaths=0 heroLevel=3 threats=85 dodged=85 taken=0 dmgTelegraphed=0 dmgOther=175 life=206
+ 1852.052 INF [pilot] TEST RESULT mode=campaign class=forgebody end=pilot stopped t=6992s level=46 deaths=4 area=town campaignDone=True bossesKilled=14 telegraphed threats=2120 dodged=2033 taken=87 (boss 1575/1517/58) dmgTelegraphed=7675 otherHits=4588 dmgOther=72896 dodgeWalks=5359 rolls=537 defensives=92
+ 1852.053 INF [pilot] TEST FIGHT boss=boss_gravedigger area=wastes_boss killed=True secs=137 deaths=0 heroLevel=7 threats=109 dodged=108 taken=1 dmgTelegraphed=13 dmgOther=258 life=370
+ 1852.053 INF [pilot] TEST FIGHT boss=boss_mire_mother area=mire_boss killed=True secs=150 deaths=0 heroLevel=13 threats=101 dodged=100 taken=1 dmgTelegraphed=7 dmgOther=309 life=672
+ 1852.053 INF [pilot] TEST FIGHT boss=sh_crypt area=crypt killed=True secs=108 deaths=0 heroLevel=14 threats=65 dodged=61 taken=4 dmgTelegraphed=109 dmgOther=1520 life=840
+ 1852.053 INF [pilot] TEST FIGHT boss=sh_mire area=mire killed=True secs=186 deaths=0 heroLevel=11 threats=129 dodged=125 taken=4 dmgTelegraphed=67 dmgOther=624 life=624
+ 1852.054 INF [pilot] TEST FIGHT boss=boss_bishop area=crypt_boss killed=True secs=194 deaths=0 heroLevel=17 threats=137 dodged=136 taken=1 dmgTelegraphed=17 dmgOther=464 life=953
+ 1852.054 INF [pilot] TEST FIGHT boss=boss_rimelord area=frost_boss killed=True secs=98 deaths=0 heroLevel=29 threats=63 dodged=54 taken=9 dmgTelegraphed=1142 dmgOther=1145 life=1791
+ 1852.054 INF [pilot] TEST FIGHT boss=sh_frost area=frost killed=True secs=89 deaths=0 heroLevel=27 threats=39 dodged=38 taken=1 dmgTelegraphed=28 dmgOther=460 life=1741
+ 1852.054 INF [pilot] TEST FIGHT boss=sh_frost area=town killed=False secs=106 deaths=3 heroLevel=23 threats=36 dodged=19 taken=17 dmgTelegraphed=2015 dmgOther=4639 life=1485
+ 1852.055 INF [pilot] TEST FIGHT boss=boss_grand_hush area=sanctum_boss killed=True secs=220 deaths=0 heroLevel=38 threats=95 dodged=91 taken=4 dmgTelegraphed=629 dmgOther=2225 life=2642
+ 1852.055 INF [pilot] TEST FIGHT boss=boss_sand_tyrant area=sands_boss killed=True secs=188 deaths=0 heroLevel=33 threats=188 dodged=188 taken=0 dmgTelegraphed=0 dmgOther=86 life=1842
+ 1852.055 INF [pilot] TEST FIGHT boss=sh_sanctum area=sanctum killed=True secs=186 deaths=0 heroLevel=36 threats=109 dodged=108 taken=1 dmgTelegraphed=86 dmgOther=1086 life=2588
+ 1852.055 INF [pilot] TEST FIGHT boss=sh_sands area=sands killed=True secs=153 deaths=0 heroLevel=31 threats=80 dodged=78 taken=2 dmgTelegraphed=92 dmgOther=1903 life=1794
+ 1852.056 INF [pilot] TEST FIGHT boss=boss_osaros area=abyss_boss killed=True secs=254 deaths=0 heroLevel=45 threats=242 dodged=230 taken=12 dmgTelegraphed=959 dmgOther=2345 life=3330
+ 1852.056 INF [pilot] TEST FIGHT boss=sh_abyss area=abyss killed=True secs=147 deaths=0 heroLevel=43 threats=91 dodged=90 taken=1 dmgTelegraphed=36 dmgOther=2615 life=3276
+=== 2026-11-22 04:24:21 campaign lampknight campaign lv- speed=4 log=C:\Users\blhsi\AppData\Roaming\AshenAbyss\logs\game_20261122_035510.log ERR=0
+  104.320 INF [pilot] TEST fight ends: boss=sh_wastes area=wastes killed=True secs=202 deaths=0 heroLevel=4 threats=97 dodged=96 taken=1 dmgTelegraphed=7 dmgOther=236 life=226
+  236.722 INF [pilot] TEST fight ends: boss=boss_gravedigger area=wastes_boss killed=True secs=102 deaths=0 heroLevel=7 threats=78 dodged=78 taken=0 dmgTelegraphed=0 dmgOther=186 life=500
+  390.113 INF [pilot] TEST fight ends: boss=sh_mire area=mire killed=True secs=322 deaths=0 heroLevel=10 threats=234 dodged=231 taken=3 dmgTelegraphed=73 dmgOther=1091 life=736
+  467.984 INF [pilot] TEST fight ends: boss=boss_mire_mother area=mire_boss killed=True secs=141 deaths=0 heroLevel=12 threats=111 dodged=110 taken=1 dmgTelegraphed=1 dmgOther=391 life=784
+  528.754 INF [pilot] TEST fight ends: boss=sh_crypt area=crypt killed=True secs=90 deaths=0 heroLevel=14 threats=60 dodged=60 taken=0 dmgTelegraphed=0 dmgOther=791 life=1041
+  566.055 INF [pilot] TEST death 1 at t=2127s in crypt (fight=-) life bar 1041; last hits: cultist x34 624, skeleton x8 146, skeleton(elite) x3 62
+  583.295 INF [pilot] TEST death 2 at t=2196s in crypt (fight=-) life bar 1041; last hits: cultist x44 766, skeleton x11 183
+  876.235 INF [pilot] TEST fight ends: boss=boss_bishop area=crypt_boss killed=True secs=330 deaths=0 heroLevel=19 threats=210 dodged=204 taken=6 dmgTelegraphed=146 dmgOther=843 life=1344
+  997.810 INF [pilot] TEST death 3 at t=3731s in frost (fight=sh_frost) life bar 1453; last hits: frost_knight x1 46 (1 marked), frost_knight(elite) x2 118 (2 marked), frost_thrower x5 131 (1 marked), frost_thrower(elite) x2 59, frostbound x24 740 (4 marked), frostbound(elite) x7 240 (5 marked), ice_wraith x1 33 (1 marked), rime_stalker x10 260 (8 marked), sh_frost(boss) x1 68 (1 marked)
+ 1030.371 INF [pilot] TEST death 4 at t=3862s in frost (fight=sh_frost) life bar 1765; last hits: frost_knight x2 92 (2 marked), frost_knight(elite) x3 182 (3 marked), frost_thrower x3 76 (1 marked), frost_thrower(elite) x2 63, frostbound x11 338 (4 marked), ice_wraith x2 72 (1 marked), sh_frost(boss) x4 188 (4 marked)
+ 1044.422 INF [pilot] TEST death 5 at t=3918s in frost (fight=sh_frost) life bar 1765; last hits: frost_knight x2 99 (2 marked), frost_thrower x8 205 (4 marked), frost_thrower(elite) x2 63 (2 marked), frostbound x31 939 (8 marked), frostbound(elite) x8 291 (5 marked), ice_wraith x3 98, sh_frost(boss) x3 148 (3 marked)
+ 1046.022 INF [pilot] TEST fight ends: boss=sh_frost area=town killed=False secs=202 deaths=3 heroLevel=23 threats=72 dodged=36 taken=36 dmgTelegraphed=3162 dmgOther=4901 life=1765
+ 1223.851 INF [pilot] TEST death 6 at t=4569s in frost (fight=sh_frost) life bar 2101; last hits: frost_knight x1 51 (1 marked), frost_knight(elite) x3 181 (2 marked), frost_thrower x4 100 (4 marked), frost_thrower(elite) x2 59, frostbound x25 763 (10 marked), frostbound(elite) x7 252 (6 marked), ice_wraith x2 66 (2 marked), rime_stalker x14 360 (7 marked), sh_frost(boss) x2 96 (2 marked)
+ 1235.015 INF [pilot] TEST death 7 at t=4614s in frost (fight=sh_frost) life bar 2103; last hits: frost_knight x2 97 (2 marked), frost_knight(elite) x4 255 (2 marked), frost_thrower x6 158 (2 marked), frost_thrower(elite) x2 65, frostbound x31 928 (7 marked), frostbound(elite) x9 302 (3 marked), ice_wraith x3 106 (1 marked), sh_frost(boss) x3 144 (3 marked)
+ 1236.633 INF [pilot] TEST fight ends: boss=sh_frost area=town killed=False secs=61 deaths=2 heroLevel=26 threats=36 dodged=12 taken=24 dmgTelegraphed=2120 dmgOther=3297 life=2103
+ 1422.662 INF [pilot] TEST death 8 at t=5315s in frost (fight=sh_frost) life bar 2386; last hits: frost_knight x4 204 (4 marked), frost_knight(elite) x3 190 (2 marked), frost_thrower x2 50 (1 marked), frost_thrower(elite) x6 191, frostbound x9 281 (1 marked), ice_wraith x4 142 (1 marked), sh_frost(boss) x4 187 (4 marked)
+ 1474.115 INF [pilot] TEST fight ends: boss=sh_frost area=frost killed=True secs=282 deaths=1 heroLevel=30 threats=147 dodged=108 taken=39 dmgTelegraphed=2206 dmgOther=4483 life=2386
+ 1578.374 INF [pilot] TEST fight ends: boss=boss_rimelord area=frost_boss killed=True secs=115 deaths=0 heroLevel=33 threats=65 dodged=61 taken=4 dmgTelegraphed=299 dmgOther=696 life=2555
+ 1661.944 INF [pilot] TEST fight ends: boss=sh_sands area=sands killed=True secs=215 deaths=0 heroLevel=35 threats=138 dodged=136 taken=2 dmgTelegraphed=59 dmgOther=3102 life=2748

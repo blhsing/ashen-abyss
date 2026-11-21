@@ -1,0 +1,2 @@
+04:19:32 C:\Users\blhsi\AppData\Roaming/AshenAbyss/logs/game_20261122_035510.log: 6 deaths in frost -> stopping (wall rule)
+04:21:58 C:\Users\blhsi\AppData\Roaming/AshenAbyss/logs/game_20261122_035510.log: 6 deaths in frost -> stopping (wall rule)

@@ -1,0 +1,13 @@
+02:49:00 hunter frost lv22 
+  458.002 INF [pilot] TEST RESULT mode=boss class=hunter end=time limit t=900s level=23 deaths=5 area=frost campaignDone=False bossesKilled=0 telegraphed threats=233 dodged=198 taken=35 (boss 222/187/35) dmgTelegraphed=2201 otherHits=246 dm
+02:57:24 hunter frost lv22 --chill-grace
+  221.987 INF [pilot] TEST RESULT mode=boss class=hunter end=boss killed t=429s level=23 deaths=3 area=frost campaignDone=False bossesKilled=1 telegraphed threats=121 dodged=117 taken=4 (boss 98/94/4) dmgTelegraphed=500 otherHits=155 dmgOth
+03:01:46 hunter frost lv22 
+  285.593 INF [pilot] TEST RESULT mode=boss class=hunter end=boss killed t=556s level=23 deaths=4 area=frost campaignDone=False bossesKilled=1 telegraphed threats=139 dodged=132 taken=7 (boss 81/78/3) dmgTelegraphed=757 otherHits=230 dmgOth
+03:07:00 hunter frost lv22 --chill-grace
+  242.239 INF [pilot] TEST RESULT mode=boss class=hunter end=boss killed t=469s level=23 deaths=0 area=frost campaignDone=False bossesKilled=1 telegraphed threats=211 dodged=209 taken=2 (boss 179/178/1) dmgTelegraphed=125 otherHits=132 dmgO
+03:11:30 forgebody frost lv22 
+  289.263 INF [pilot] TEST RESULT mode=boss class=forgebody end=boss killed t=564s level=23 deaths=8 area=frost campaignDone=False bossesKilled=1 telegraphed threats=134 dodged=108 taken=26 (boss 110/86/24) dmgTelegraphed=1654 otherHits=412
+03:16:51 forgebody frost lv22 --chill-grace
+  346.029 INF [pilot] TEST RESULT mode=boss class=forgebody end=boss killed t=677s level=23 deaths=12 area=frost campaignDone=False bossesKilled=1 telegraphed threats=196 dodged=140 taken=56 (boss 179/127/52) dmgTelegraphed=4995 otherHits=5
+ab done

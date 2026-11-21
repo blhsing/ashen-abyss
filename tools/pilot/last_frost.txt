@@ -1,0 +1,6 @@
+exit= seconds=268
+log: C:\Users\blhsi\AppData\Roaming\AshenAbyss\logs\game_20261122_020344.log  lines=629  ERR=0  WRN=0
+--- last lines ---
+  267.253 INF [paragon] state ready for ???: boards=1 lit=0 earned=0 glyphs=0 tries=0
+  267.514 INF [pilot] TEST over: quitting
+done

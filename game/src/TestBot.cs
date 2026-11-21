@@ -396,6 +396,7 @@ public partial class TestBot : Node
         if (target != null && _focus && !target.Aggro && me.DistanceTo(target.Pos2) > 9f && target != level?.BossMon) target = null;
         if (Pilot != null && target != null && PilotLeaveAlone(target, level)) target = null;      // optional world bosses and named rares are not picked fights
         if (Pilot != null) { target = PilotArenaTarget(target, me); if (PilotBackToArena(p, me)) return; }      // boss leash (AiPilotCombat.cs)
+        if (Pilot != null) { target = PilotNamedHint(p, target, me, out var stand); if (stand != null && p.Pos2.DistanceTo(stand.Value) > 2.4f && !p.Busy) { MoveTo(p, World.Grid?.NearestWalk(stand.Value) ?? stand.Value, 0.4); _doing = "named: stand"; return; } }      // named encounter hints
         if (Pilot != null && Pilot.Errand(g, p, level, target)) { _stuckSince = _clock; _doing = "errand"; return; }      // town shopping, rest before a boss (AiPilotPlan.cs)
         if (target != null)
         {
@@ -1075,6 +1076,7 @@ public partial class TestBot : Node
         if (level.Region != null)
         {
             bool wantHold = !level.Liberated && level.StrongholdMobs.Count > 0 && (!_campaign || step == null || step.Event == "stronghold" || step.Area == here);
+            if (wantHold && Pilot != null && !Pilot.StrongholdReady(level)) wantHold = false;      // a stronghold that is a wall below some level (AiPilotPlan.cs)
             if (wantHold)
             {
                 Monster best = null; float bd = float.MaxValue;

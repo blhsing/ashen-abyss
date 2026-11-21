@@ -1,0 +1,6 @@
+exit= seconds=348
+log: C:\Users\blhsi\AppData\Roaming\AshenAbyss\logs\game_20261122_031657.log  lines=897  ERR=0  WRN=0
+--- last lines ---
+  346.498 INF [perf] game code per frame: whole tree=0.00ms | monsters=0.29ms (awake 33: 0.20ms, separation 0.08ms) player=0.13ms shots+zones=0.05ms level=0.03ms bot=0.03ms
+  347.508 INF [pilot] TEST over: quitting
+done

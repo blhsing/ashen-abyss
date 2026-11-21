@@ -140,7 +140,7 @@ public partial class TestBot
     {
         Vector2 me = p.Pos2;
         DangerMap.Tick(me, p.Radius + 0.1f);
-        _packMode = CloseMonsters(me, 5f) >= 3 && p.LifeFrac > 0.4f;
+        _packMode = !PilotRanged(p.Hero) && CloseMonsters(me, 5f) >= 3 && p.LifeFrac > 0.4f;      // a ranged hero should not be in the pack at all: it keeps dodging
         PilotPotion(p);
         if (PilotCcShield(p, me)) return true;
         if (PilotShedChill(p, me)) return true;
@@ -456,7 +456,7 @@ public partial class TestBot
         float life = p.LifeFrac;
         int packed = CloseMonsters(me, 3.5f);
         bool bad = life < 0.4f && (p.Potions == 0 || in2 >= 0.2f) || life < 0.6f && in2 >= 0.3f
-            || packed >= 4 && in2 >= 0.2f && life < 0.6f;            // surrounded and bleeding: string the pack out
+            || packed >= 4 && in2 >= 0.2f && life < 0.6f;             // surrounded and bleeding: string the pack out
         if (!bad) return false;
         bool boss = DangerMap.BossFight();
         Vector2 sum = Vector2.Zero; int n = 0;
@@ -477,7 +477,7 @@ public partial class TestBot
             Vector2 dir = away.Rotated((k - 6) * Mathf.Pi / 8f);
             float reach = boss ? 7f : 12f;
             Vector2 end = grid != null ? grid.ClampLine(me, me + dir * reach, false) : me + dir * reach;
-            float sc = end.DistanceTo(me) + dir.Dot(away) * 6f - CloseMonsters(end, 4f) * 5f - ArenaCost(me, end);
+            float sc = end.DistanceTo(me) + dir.Dot(away) * 6f - CloseMonsters(end, 4f) * 5f - ArenaCost(me, end) - SleepersNear(end, 9f) * 4f;      // not into the next pack
             if (sc > bs) { bs = sc; best = end; }
         }
         if (best.DistanceTo(me) < 3f) return false;
@@ -632,7 +632,8 @@ public partial class TestBot
     /// Just back on its feet (the respawn grants a moment of protection): when the checkpoint sits next to the pack that
     /// killed the hero, walk away from it first instead of fighting it again at once.
     /// </summary>
-    internal void PilotRespawned() => _respawnedAt = _clock;
+    internal void PilotRespawned() { _respawnedAt = _clock; _lastRespawn = _clock; }
+    private double _lastRespawn = -100;
 
     private bool PilotAfterRespawn(Player p, Vector2 me)
     {
@@ -693,9 +694,11 @@ public partial class TestBot
             sum += m.Pos2; frost++;
         }
         bool thawed = p.CcImmune > 0f && frost >= 1;
+        if (frost >= 3) PilotDefensive(p, "frost pack closing in");      // a smoke bomb or frost nova stuns the pack before it freezes the hero
         // only when the next blows would freeze and the roll cannot clear it: stepping back costs the fight its damage
         bool rollSoon = p.EvadeCd <= 0.6f;
-        if (!(thawed && frost >= 2 || chill >= 0.5f && !rollSoon && frost >= 2)) return false;
+        bool ranged = PilotRanged(p.Hero);      // a ranged hero loses little by stepping back, and frost blows are what freeze it
+        if (!(thawed && frost >= 2 || chill >= 0.5f && !rollSoon && frost >= 2 || ranged && frost >= 1)) return false;
         Vector2 away = me - sum / frost;
         away = away.LengthSquared() < 0.01f ? -p.Forward : away.Normalized();
         var grid = World.Grid;
@@ -710,7 +713,7 @@ public partial class TestBot
         if (best.DistanceTo(me) < 2.5f) { _frostNext = _clock + 1.0; return false; }
         StopChannel();
         MoveTo(p, best, 0.0);
-        _frostUntil = _clock + 0.75; _frostNext = _clock + 1.5;
+        _frostUntil = _clock + 0.75; _frostNext = _clock + (ranged ? 0.5 : 1.5);
         _doing = "frost: step back";
         if (_clock - _frostLog > 6.0) { _frostLog = _clock; Log.Info("pilot", $"frost pack ({frost} in reach, chill {chill * 100f:0}%{(thawed ? ", just thawed" : "")}): steps back to string it out"); }
         return true;
@@ -790,7 +793,7 @@ public partial class TestBot
     {
         var b = ArenaBoss(me);
         if (b == null || b.Brain == null || t == null || t == b) return t;
-        if (t.Pos2.DistanceTo(b.Brain.Arena) > b.Brain.ArenaR + 10f) return b;
+        if (t.Pos2.DistanceTo(b.Brain.Arena) > b.Brain.ArenaR + 10f && t.Pos2.DistanceTo(me) > 7f) return b;      // an add on the hero is fought wherever it stands
         return t;
     }
 
@@ -802,10 +805,82 @@ public partial class TestBot
         Vector2 a = b.Brain.Arena;
         float r = b.Brain.ArenaR;
         if (me.DistanceTo(a) < r + 18f) return false;
+        // only when the fight is worth keeping and the walk back is safe: a boss still near full life may as well reset,
+        // and walking a hurt hero (or one just back on its feet) into the crowd that killed it is how the leash killed hunters
+        if (b.MaxLife > 0f && b.Life > b.MaxLife * 0.9f) return false;
+        if (p.LifeFrac < 0.7f || p.Potions < 2 || _clock - _lastRespawn < 15.0 || CloseMonsters(me, 8f) >= 3) return false;
         Vector2 to = a + (me - a).LimitLength(r * 0.6f);
         MoveTo(p, to, 0.5);
         _doing = "back to the arena";
         if (_clock - _dgLog > 3.0) { _dgLog = _clock; Log.Info("pilot", $"{me.DistanceTo(a):0} m from {b.Def?.Id}'s arena: walks back before it lets go"); }
         return true;
+    }
+}
+
+public partial class TestBot
+{
+    /// <summary>A hero whose basic attack reaches 6 m or more (hunter, casters): it fights from range and kites.</summary>
+    private static bool PilotRanged(Hero hero)
+    {
+        var basic = hero.Eff(hero.D.Bar[0]) ?? hero.Eff(hero.D.Bar[1]);
+        if (basic == null) return false;
+        return basic.Kind switch
+        {
+            SkillKind.Melee or SkillKind.Nova or SkillKind.Channel or SkillKind.Dash or SkillKind.Leap => false,
+            _ => basic.Range >= 6f,
+        };
+    }
+}
+
+public partial class TestBot
+{
+    private double _hintLog = -10;
+
+    /// <summary>
+    /// Named encounters say what a player is meant to do (NamedScript.BotTarget / BotStand / BotPassive — the hints
+    /// the named test suite plays by): break the garrison banner before the frost commander's musters bury the hero
+    /// (瓦雷克), topple the storm pylons first (第七號), stand where the script wants, leave a passive boss alone. The
+    /// pilot follows them while such a fight is on near the hero. Returns the target to fight (or the one it had).
+    /// </summary>
+    private Monster PilotNamedHint(Player p, Monster t, Vector2 me, out Vector2? stand)
+    {
+        stand = null;
+        var live = NamedHub.Live;
+        for (int i = 0; i < live.Count; i++)
+        {
+            var e = live[i];
+            if (e == null || !IsInstanceValid(e) || !e.Alive || e.S == null) continue;
+            var boss = e.M;
+            if (!boss.Aggro || boss.Pos2.DistanceTo(me) > 35f) continue;
+            Monster hint = null; bool passive = false;
+            try { hint = e.S.BotTarget; stand = e.S.BotStand; passive = e.S.BotPassive; } catch (Exception) { stand = null; continue; }
+            if (hint != null && IsInstanceValid(hint) && !hint.Dead && !hint.Untargetable && hint.Pos2.DistanceTo(me) < 30f)
+            {
+                // an add on the hero still comes first (a frost blow freezes whatever the plan was)
+                if (t != null && t != hint && t != boss && t.Pos2.DistanceTo(me) < 3f) return t;
+                if (_clock - _hintLog > 8.0) { _hintLog = _clock; Log.Info("pilot", $"{boss.Def?.Id}: goes for {hint.DisplayName ?? hint.Def?.Id} first (the encounter's mechanic)"); }
+                return hint;
+            }
+            if (passive && t == boss) return null;
+            return t;
+        }
+        return t;
+    }
+}
+
+public partial class TestBot
+{
+    /// <summary>Monsters that have not noticed the hero yet near a spot (a retreat that runs into them pulls a second pack).</summary>
+    private static int SleepersNear(Vector2 c, float r)
+    {
+        int n = 0;
+        var list = World.Monsters;
+        for (int i = 0; i < list.Count; i++)
+        {
+            var m = list[i];
+            if (m == null || m.Dead || m.Aggro || !IsInstanceValid(m)) continue;
+            if (m.Pos2.DistanceSquaredTo(c) < r * r) n++;
+        }
+        return n;
     }
 }
