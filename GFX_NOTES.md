@@ -439,3 +439,90 @@ still empty; the README gallery was shot before these changes.
 **Files of others touched (small, marked `[gfx 0.3 …]`):** Monster.cs (BodyBlock), Player.cs (evade clip/rate),
 TestSuite.Anims.cs (evade check), Hud.cs + HudGlobe.cs (vignette), WorldObjects.cs (gateway code behind the switch),
 ParagonUi.cs (item 9), project.godot (`focus_pos` global), ARCHITECTURE.md (one sentence).
+
+## 21 Nov — ground sigils: the arcs and circles that show a skill's range (user request)
+"the arcs and circles that show the projected range of a skill should be a lot more decorated with arts and/or lines
+that hint at the nature and/or the directions of the skill/spell". Shots: `Y:\shots\telegraphs\`. Work folder:
+`Y:\tools\gfx_tmp\tele\` (shader work copies, CPU previewer, edit scripts, run scripts).
+
+**What was there:** `Fx.Telegraph / TelegraphCone / TelegraphLine / TelegraphRing` drew a flat fill and one outline
+(fx_telegraph), `Fx.Ring` and the ring of `Fx.Burst` a plain band (fx_ring), `Fx.Slash` a thin arc (fx_slash). The hero
+has no aim or range preview of his own: his skills show their reach through exactly these three (friendly circles for
+delayed / leap / trap skills, the burst ring of novas, the slash arc of melee skills), so all three were dressed.
+
+**The school of a mark:** new `Sigil` value type (Fx.cs): Fire, Frost, Lightning, Poison, Shadow, Blade, Holy,
+Arcane (+ Auto = read from the colour, None = plain ring). An `Element` converts by itself, so call sites pass
+`d.El` / `Def.Element` / `el`. The old signatures still work: the danger red gives the generic Arcane mark, element
+colours give their element, pale gold Holy, greys Blade (`Fx.SigilOf`).
+
+**fx_telegraph (rewritten, all procedural, sized in metres):** four layers.
+- *frame*: heavy rule + hairline + inner rule; the band between carries runes (16 runes of our own, drawn into a
+  1024 x 64 L8 texture at start-up by `Fx.MakeGlyphs`) turning round a circle / running along a line; iron studs for
+  Blade; plain graduations when the band is too narrow for runes; marks under ~0.5 m stay plain.
+- *nature*: "arms" in arm space (across, along), radial on circles / cones / rings, along the travel on lines:
+  fire = swaying flame tongues + embers (on a circle they stand on the rim and lick inward); frost = dendrites with
+  60 degree branches inside a faceted frame; lightning = forked zigzags that strike anew 9 times a second;
+  poison = hanging drops + bubbles; shadow = seven-pointed star, thorn crown, brambles; blade = three crescents across
+  a cone / cracks round an impact / a gash along a charge; holy = sun disc and rays; arcane = astrolabe.
+- *flow*: chevrons streaming away from the caster between the arms (cone), along the travel with a double head at the
+  far end (line), darts on the inner rule pointing at the centre (circle), pale gold dotted ring + arrows pointing
+  into the safe hole (ring; hostile only).
+- *time*: the old fill (unchanged semantics: arrives when the blow lands) now lights the ornaments as it passes; the
+  rim of a circle is run round by a bright head; flash in the last 14 %.
+Hostile = red fill, hard red rim, ornaments in a warm accent per school (`Fx.HostileAccent`); friendly = the same
+drawing in the skill's own colour, thin and dim, almost no fill. 12 instance uniforms (limit 16).
+**fx_ring:** `kind >= 0` dresses the ring (tongues / ice spikes / jagged second ring / thrown drops / thorns / broken
+ring with debris lines / rays / graduated double ring), always pointing the way the ring travels; the quad is scaled
+up (`over`) so the ornament has room. `Fx.Burst` passes its element, `Fx.Ring` its `Sigil` (loot flourishes: None).
+**fx_slash:** echo arcs behind the edge, chevrons on the trail pointing along the swing, and per element tongues /
+shards / jagged arc / drops / thorns / sparks on the edge.
+
+**Call sites given a school:** SkillExec (all 6; lamp knight fire skills = Holy via `SkillExec.Mark`), BossBrain
+(all 20: `d.El`, phase ring `_kit.El`, add spawn marks Arcane), EliteFx (10: molten Fire, crystals Frost, shock
+Lightning, plague Poison, orb / tether / raise dead Shadow, wall Blade), Monster / MonsterAi* (25: `Def.Element`,
+hook / grab / shield dash Blade), NamedEncounter helpers (7: `el`), NamedRares / NamedDungeons (3), Level (channel
+circle Arcane), Loot (3 x None). Everything else keeps the automatic mark.
+
+**Tools:** `EnvProbe` gallery `--gfx-fx=telec|telecf|telek|telekf|telel|teler|telering|telemix|telestress` (stop option
+`fx:telec` ...); `Fx.TelegraphCone(Vector2 pos, Vector2 dir, ...)` (cone without an actor). CPU previewer
+`gfx_tmp\tele\preview.py` / `preview_scene.py` (+ `glsl_np.py`: runs the fragment() of a restricted .gdshader with
+numpy, so the pattern can be drawn while the game may not be started) and `to_glsl.py` + the Khronos reference
+compiler (`%LOCALAPPDATA%\AshenAbyssTools\glslang_dl`, downloaded from the official GitHub release) for a type check.
+
+**Second pass (lead's notes, 09:50: the red must not drown the drawing; overlapping marks must not merge into a red
+slab; the two sides must be told apart at a glance):** the mark is now composited in layers inside the shader
+(premultiplied `acc` / `cov`): a thin veil (4 % + 7 % gathering toward the rim, + 11 % where the fill has passed;
+it was 12 % + 24 % flat) → the rune band of a HOSTILE mark lies on a dark plate (45 % near-black: legible on top of
+other marks, and it keeps neighbours apart) → ornaments → fill front → rim. The hostile rim is thinner (12 cm, was
+22 cm), less over-bright (1.3-1.85 x, was 2.1 x) and drawn as a twisted cable (bright and dim strands). Shape language
+per side: hostile = cable rim, dark plate, teeth on the inner rule, pulse, red veil; friendly = one plain thin line, no
+plate, round beads instead of teeth, no pulse, no veil. Early `discard` outside the shape (a cone covers under a
+third of its quad).
+
+**State, 21 Nov 14:05 — DONE and seen in the game (the user closed the game 13:08-13:20 and 13:53-14:03):**
+- The three shaders are in `game\shaders`, compile and load in Godot; `check.ps1` 0 errors; every one of the ten runs
+  ERR=0 WRN=0 (last: `game_20261121_140211.log`, with the final shader).
+- Real fights, HUD on: `shots\telegraphs\bossrush\br_1..18.png` (`--bossrush` in frost_d1; `br_17.png` = the frost
+  boss cone with dendrites, `br_11.png` = a molten elite fire circle in a pack), `boss2\boss_f_*`, `boss_a_*`,
+  `boss_m_*` (frost / abyss / mire boss lairs: snowflake circles, bramble cones and crossed lines, poison circles and
+  lines), `boss\boss_s_*`, `boss_w_*` (sanctum / wastes bosses, first shader version), `classes\cls_*` (8-class bot
+  sweep: slash arcs, burst rings, friendly circles — `cls_astromancer_3.png`), `demo\demo_1..12.png` (demo mode;
+  `demo_12.png` = hostile cone over a friendly circle), `final2\boss_s_*` (final shader).
+- Orderly galleries with the final tuning: `shots\telegraphs\final\` (wastes boss lair: `circ_1..3`, `circ_friendly`,
+  `cone`, `cone_friendly`, `line`, `ring`, `shock`; `town_circ`, `town_friendly`, `snow_circ`), `final2\ring_*`.
+  Earlier set `gal1\` (first version, also three deliberately crowded `*_mix` frames).
+- Tuning after the first real shots: veil lowered again (4 % + 7 % toward the rim + 11 % where the fill has passed);
+  lit ornaments 1.18 x instead of 1.5 x (the bloom made them fat); the last 14 % no longer flash the whole disc (veil
+  +14 %, was +30 %) — the drawing and the rim flare instead; safe-hole arrows moved clear of the dotted ring and stay
+  visible for most of their beat.
+- Frame time: 60 fps (vsync cap) in every fight and gallery at 1600x900, gpu 2.7-7 ms (`*\perf.txt`). Fill-rate
+  stress `telestress` (48 screen-filling marks about six deep, 3840x2160 at scale 1.0): crypt_d1 gpu 16.70 ms old ->
+  19.13 ms new, wastes boss lair 23.05 -> 26.53 ms (`perf_old\`, `perf_new\`; measured with the
+  second-pass shader, the later changes were constants only). The user saw that stress scene on screen and asked whether
+  the game looks like that: it does not; it exists only behind `--gfx-fx=telestress`. Do not run it (or `telemix`)
+  while the user is at the machine.
+- One engine error line in one gallery run, not from this work as far as its stack shows: `Handle is not initialized`
+  in `PackedScene.Instantiate` <- `EnvProps.Extract` <- `LevelBuilder.Build` (once in 19 area loads; did not recur).
+- Not looked at one by one: every elite affix and every named encounter (they go through the same four functions);
+  friendly cones and lines (the API draws them, no skill uses them yet); a 4K fight at the default 0.67 scale.
+No background job of mine is left; `slot98*` is back in `saves_test_backup`.

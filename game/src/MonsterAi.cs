@@ -301,7 +301,7 @@ public partial class Monster
                 _t = 1.2f;
                 _attackDir = Forward;                    // it fires where it faces: the turn rate lets the hero out-run the aim
                 _attackPos = Pos2 + _attackDir * Def.Range;
-                _telegraph = Fx.TelegraphLine(Pos2, _attackDir, Def.Range, 1.6f, _t, Palette.Danger);
+                _telegraph = Fx.TelegraphLine(Pos2, _attackDir, Def.Range, 1.6f, _t, Palette.Danger, Def.Element);
                 Snd.At("telegraph_warn", GlobalPosition, 0.4f);
                 _shutterOpenUntil = Now + 1.2 + 1.5;
                 break;
@@ -309,7 +309,7 @@ public partial class Monster
                 _bombMelee = A.BombMelee && _target != null && Pos2.DistanceTo(_target.Pos2) < 4f;
                 if (_bombMelee)
                 {
-                    _telegraph = Fx.TelegraphCone(this, Def.Range * 0.3f + Radius + 1.6f, 110f, Mathf.Max(_t, 0.6f), Palette.Danger);
+                    _telegraph = Fx.TelegraphCone(this, Def.Range * 0.3f + Radius + 1.6f, 110f, Mathf.Max(_t, 0.6f), Palette.Danger, Def.Element);
                     _t = Mathf.Max(_t, 0.6f);
                     anim = A.MeleeAnim ?? (Def.Rig == "A" ? "Sword_Attack" : "Attack1");
                 }

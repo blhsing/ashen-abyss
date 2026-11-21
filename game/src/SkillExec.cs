@@ -26,6 +26,9 @@ public sealed class SkillExec
     private float Coef(SkillDef d) => d.Dmg(Rank(d));
     private Vector3 Pos3 => P.GlobalPosition;
 
+    /// <summary>The school a skill's ground marks are drawn in: its element; the lamp knight's ember-light is the holy mark.</summary>
+    private static Sigil Mark(SkillDef d) => d.Element == Element.Fire && d.Id != null && d.Id.StartsWith("lk_") ? Sigil.Holy : d.Element;
+
     public void After(float t, Action a) { if (t <= 0) a(); else _later.Add((t, a)); }
 
     public void Tick(float dt)
@@ -139,7 +142,7 @@ public sealed class SkillExec
         if (d.Kind != SkillKind.Buff)
         {
             foreach (var b in d.Buffs) AddBuff(b, d);
-            if (d.Barrier > 0) { P.AddBarrier(P.MaxLife * d.Barrier * P.BarrierMul, d.BarrierDur); Fx.Ring(Pos3, 1.6f, new Color(0.7f, 0.85f, 1f), 0.4f); }
+            if (d.Barrier > 0) { P.AddBarrier(P.MaxLife * d.Barrier * P.BarrierMul, d.BarrierDur); Fx.Ring(Pos3, 1.6f, new Color(0.7f, 0.85f, 1f), 0.4f, Sigil.Arcane); }
             if (d.HealPct > 0 && !d.Has("remnants")) P.Heal(P.MaxLife * d.HealPct / 100f);
             if (d.CastBurst > 0 && d.Kind == SkillKind.Summon) Burst(pos, d.CastBurstRadius, d.CastBurst, d.Element, d);
         }
@@ -262,8 +265,8 @@ public sealed class SkillExec
     {
         if (d.Has("remnants")) { DetonateRemnants(d, aim, coef, mul); return; }
         float r = d.Radius;
-        if (d.Delay > 0.2f) { Fx.Telegraph(aim, r, d.Delay, Palette.Element(d.Element), true); Fx.Meteor(aim, d.Delay, d.Element, r); }
-        else if (coef <= 0) Fx.Ring(World.To3(aim, 0.15f), r, Palette.Element(d.Element), 0.6f);
+        if (d.Delay > 0.2f) { Fx.Telegraph(aim, r, d.Delay, Palette.Element(d.Element), true, Mark(d)); Fx.Meteor(aim, d.Delay, d.Element, r); }
+        else if (coef <= 0) Fx.Ring(World.To3(aim, 0.15f), r, Palette.Element(d.Element), 0.6f, Mark(d));
         Burst(aim, r, coef, d.Element, d, d.Delay, mul, forceCrit);
         if (d.Leave != null) After(d.Delay, () => SpawnZone(aim, d.Leave, d));
         for (int i = 0; i < d.ExtraStrikes; i++)
@@ -343,7 +346,7 @@ public sealed class SkillExec
         Vector2 to = World.Grid?.ClampLine(from, from + dir * dist, true) ?? from + dir * dist;
         float dur = 0.32f + from.DistanceTo(to) * 0.018f;
         P.ActiveModel.Play("NinjaJump_Idle_Loop", 1f, 0.1f);
-        Fx.Telegraph(to, d.Radius, dur, Palette.Element(d.Element), true);
+        Fx.Telegraph(to, d.Radius, dur, Palette.Element(d.Element), true, Mark(d));
         P.StartDash(to, dur, 2.6f, true, null, () =>
         {
             P.ActiveModel.Play("NinjaJump_Land", 1.6f, 0.05f, true);
@@ -392,7 +395,7 @@ public sealed class SkillExec
         {
             World.InCircle(Faction.Player, P.Pos2, d.CastBurstRadius, Tmp);
             foreach (var t in Tmp.ToArray()) Combat.ApplyStatuses(P, t, d.OnHit, d.Element);
-            Fx.Ring(Pos3 + Vector3.Up * 0.2f, d.CastBurstRadius, Palette.Element(d.Element), 0.5f);
+            Fx.Ring(Pos3 + Vector3.Up * 0.2f, d.CastBurstRadius, Palette.Element(d.Element), 0.5f, Mark(d));
         }
         if (d.Leave != null) SpawnZone(P.Pos2, d.Leave, d);
         for (int i = 0; i < d.SpawnRemnants; i++) SpawnRemnant(P.Pos2 + Vector2.Right.Rotated(i * Mathf.Tau / d.SpawnRemnants) * 2.5f);
@@ -502,7 +505,7 @@ public sealed class SkillExec
     {
         var fiend = World.Minions.FirstOrDefault(m => m.Def.Id.StartsWith("pact") && !m.Dead);
         if (fiend == null) { Burst(aim, d.Radius * 0.8f, coef * 0.4f, d.Element, d, 0.15f, mul); return; }
-        Fx.Telegraph(aim, d.Radius, 0.35f, Palette.Element(d.Element), true);
+        Fx.Telegraph(aim, d.Radius, 0.35f, Palette.Element(d.Element), true, Mark(d));
         fiend.CommandLeap(aim, 0.35f, () =>
         {
             Burst(aim, d.Radius, coef, d.Element, d, 0, mul);

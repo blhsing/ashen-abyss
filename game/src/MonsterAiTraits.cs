@@ -62,7 +62,7 @@ public partial class Monster
         // the telegraph: at its own spot, or under the hero for a drop from the ceiling
         bool ceiling = A.DormantMode == "ceiling";
         Vector2 at = ceiling && p != null ? p.Pos2 : Pos2;
-        var tele = Fx.Telegraph(at, 2f, 0.6f, Palette.Danger);
+        var tele = Fx.Telegraph(at, 2f, 0.6f, Palette.Danger, Def.Element);
         Snd.At(Def.Sfx + "_idle", GlobalPosition, 0.9f);
         if (ceiling)
         {
@@ -103,7 +103,7 @@ public partial class Monster
         _aiCd[CdHook] = 8f;
         Vector2 dir = (_target.Pos2 - Pos2).Normalized();
         FaceDir(dir);
-        _telegraph = Fx.TelegraphLine(Pos2, dir, A.HookRange, 1f, 0.6f, PullColor);
+        _telegraph = Fx.TelegraphLine(Pos2, dir, A.HookRange, 1f, 0.6f, PullColor, Sigil.Blade);
         string clip = Def.Rig != "A" ? "Attack2" : CharModel.HasClip(A.CastAnim) && A.CastAnim != "Spell_Simple_Shoot" ? A.CastAnim : "OverhandThrow";
         Model.Play(clip, 1f, 0.1f, true);
         Snd.At("chain", GlobalPosition, 0.6f);
@@ -135,7 +135,7 @@ public partial class Monster
         _aiCd[CdGrab] = 10f;
         float len = Def.Range + Radius + 1f;
         FaceDir(_target.Pos2 - Pos2);
-        _telegraph = Fx.TelegraphCone(this, len, 70f, 0.7f, GrabColor);
+        _telegraph = Fx.TelegraphCone(this, len, 70f, 0.7f, GrabColor, Sigil.Blade);
         Model.Play(Def.Rig == "A" ? "Melee_Hook" : "Attack2", 0.8f, 0.1f, true);
         Note("Grab.windup");
         Channel(0.7f, () =>
@@ -178,7 +178,7 @@ public partial class Monster
             // Knock 12 carries v²/(2·28) ≈ 2.6 m (Actor's knock decay): the circle is where the hero really lands
             Vector2 at = p.Pos2 + dir * (12f * 12f / 56f);
             Vector2 land = World.Grid?.NearestWalk(at) ?? at;
-            Fx.Telegraph(land, 1.6f, 0.6f, GrabColor);
+            Fx.Telegraph(land, 1.6f, 0.6f, GrabColor, Sigil.Blade);
             p.ApplyStatus(St.Knock(12f), this);
             Model.Play(Def.Rig == "A" ? "Sword_Attack" : "Attack2", 1.2f, 0.05f, true);
             var self = this;
@@ -206,7 +206,7 @@ public partial class Monster
         if (replaces) _cd = Mathf.Max(_cd, 2f);
         Vector2 dir = (_target.Pos2 - Pos2).Normalized();
         FaceDir(dir);
-        _telegraph = Fx.TelegraphCone(this, A.BreathLen, A.BreathArc, 0.8f, Palette.Danger);
+        _telegraph = Fx.TelegraphCone(this, A.BreathLen, A.BreathArc, 0.8f, Palette.Danger, Def.Element);
         Model.Play(Def.Rig != "A" ? "Attack2" : A.CastAnim, 0.7f, 0.1f, true);
         Snd.At("telegraph_warn", GlobalPosition, 0.4f);
         Note("Breath.windup");
@@ -249,7 +249,7 @@ public partial class Monster
         _cd = Def.Cooldown / (AtkSpeedMul * (_enrage > 0 ? 1.3f : 1f));
         Vector2 at = _target.Pos2;
         FaceDir(at - Pos2);
-        _telegraph = Fx.Telegraph(at, A.EruptRadius, 0.9f, Palette.Danger);
+        _telegraph = Fx.Telegraph(at, A.EruptRadius, 0.9f, Palette.Danger, Def.Element);
         Model.Play(A.CastAnim, 1f, 0.1f, true);
         Snd.At(Def.Element == Element.Lightning ? "lightning_cast" : "earth_cast", GlobalPosition, 0.6f);
         Note("Eruption.cast");
@@ -435,7 +435,7 @@ public partial class Monster
         float delay = Def.Role == "swarmer" || Def.Scale < 0.9f || A.BurstDelay < 0.5f ? 0.4f : 0.6f;
         Vector2 at = Pos2;
         Element el = A.BurstEl ?? Def.Element;
-        Fx.Telegraph(at, r, delay, Palette.Danger);
+        Fx.Telegraph(at, r, delay, Palette.Danger, Def.Element);
         _keepUntil = Math.Max(_keepUntil, Now + delay + (A.BurstZone?.Dur ?? 0f) + 0.2);
         var self = this;
         Note("DeathBurst.armed");
@@ -563,7 +563,7 @@ public partial class Monster
     {
         _aiCd[CdPulse] = 9f;
         Vector2 at = Pos2;
-        Fx.Telegraph(at, 1.2f, 0.8f, Palette.Danger);
+        Fx.Telegraph(at, 1.2f, 0.8f, Palette.Danger, Def.Element);
         Snd.At("bell_toll", GlobalPosition, 0.8f);
         Note("Pulse.mark", $"{A.PulseRings} ring(s)");
         var self = this;
@@ -617,7 +617,7 @@ public partial class Monster
                 Close();
                 float mul = MathF.Min(1.5f, 0.5f + 0.15f * _absorbed);
                 Note("Absorb.close", $"{_absorbed} shots");
-                Fx.TelegraphRing(Pos2, 0f, 6f, 0.6f, Palette.Danger);
+                Fx.TelegraphRing(Pos2, 0f, 6f, 0.6f, Palette.Danger, Sigil.Shadow);
                 Channel(0.6f, () =>
                 {
                     World.InCircle(Faction.Monster, Pos2, 6f, AiTmp);

@@ -418,7 +418,7 @@ public partial class Monster : Actor
             {
                 _special = Rng.Range(5f, 7f);
                 Vector2 land = _target.Pos2;
-                _telegraph = Fx.Telegraph(land, 2.4f, 0.75f, Palette.Danger);
+                _telegraph = Fx.Telegraph(land, 2.4f, 0.75f, Palette.Danger, Def.Element);
                 FaceDir(land - Pos2);
                 Model.Play("NinjaJump_Start", 1.5f, 0.1f, true);
                 Vector2 from = Pos2;
@@ -460,7 +460,7 @@ public partial class Monster : Actor
                     if (!IsInstanceValid(a) || a.Dead) return;
                     a.AddBarrier(a.MaxLife * 0.35f, 8f);
                     Fx.Beam(Chest, a.Chest, Element.Frost, 0.2f, 0.4f);
-                    Fx.Ring(a.GlobalPosition + Vector3.Up * 0.2f, a.Radius * 2.5f, new Color(0.9f, 0.95f, 1f), 0.5f);
+                    Fx.Ring(a.GlobalPosition + Vector3.Up * 0.2f, a.Radius * 2.5f, new Color(0.9f, 0.95f, 1f), 0.5f, Sigil.Arcane);
                     Snd.At("barrier_up", a.GlobalPosition, 0.6f);
                 });
                 return true;
@@ -505,8 +505,8 @@ public partial class Monster : Actor
         if (Faction == Faction.Monster)
             switch (Def.AI)
             {
-                case MonAI.Brute: _telegraph = Fx.TelegraphCone(this, Def.Range + Radius + 0.6f, 110f, _t, Palette.Danger); break;
-                case MonAI.Exploder: _t = 0.95f; _telegraph = Fx.Telegraph(Pos2, ExplodeRadius, _t, Palette.Danger); Model.Flash(Def.Element == Element.Poison ? new Color(0.8f, 1f, 0.3f) : Palette.Element(Def.Element), 1.5f); break;
+                case MonAI.Brute: _telegraph = Fx.TelegraphCone(this, Def.Range + Radius + 0.6f, 110f, _t, Palette.Danger, Def.Element); break;
+                case MonAI.Exploder: _t = 0.95f; _telegraph = Fx.Telegraph(Pos2, ExplodeRadius, _t, Palette.Danger, Def.Element); Model.Flash(Def.Element == Element.Poison ? new Color(0.8f, 1f, 0.3f) : Palette.Element(Def.Element), 1.5f); break;
             }
         if (Faction == Faction.Monster) anim = AiStartAttack(anim);
         Model.PlayAttack(anim, sp, _t, 0.1f);          // the swing meets the moment the blow resolves

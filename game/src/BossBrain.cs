@@ -651,7 +651,7 @@ public sealed class BossBrain
         Snd.At("boss_phase", feet);
         Fx.Shake(0.6f, 0.7f);
         Fx.Burst(_m.Chest, _kit.El, 8f, 1.6f);
-        Fx.Ring(feet + Vector3.Up * 0.2f, 9f, Palette.Element(_kit.El), 0.7f);
+        Fx.Ring(feet + Vector3.Up * 0.2f, 9f, Palette.Element(_kit.El), 0.7f, _kit.El);
         Fx.BuffAura(_m, _kit.El, RoarTime, true);
 
         // the nova only shoves: it makes room, it does not hurt
@@ -958,7 +958,7 @@ public sealed class BossBrain
     /// <summary>A marked circle that goes off after <paramref name="fuse"/> seconds and may leave a zone behind.</summary>
     private void Drop(BossMoveDef d, Vector2 at, float radius, float fuse)
     {
-        HazardMark(Fx.Telegraph(at, radius, fuse, Palette.Danger));
+        HazardMark(Fx.Telegraph(at, radius, fuse, Palette.Danger, d.El));
         if (d.Meteor) Fx.Meteor(at, fuse, d.El, radius);
         Hz(fuse, () =>
         {
@@ -1004,7 +1004,7 @@ public sealed class BossBrain
             if (gap > 0.2f) _m.Move(dir * Mathf.Min(gap, 1.4f));
         }
         _m.FaceDir(dir);
-        MoveMark(Fx.TelegraphCone(_m, d.Radius, d.Arc, wind, Palette.Danger));
+        MoveMark(Fx.TelegraphCone(_m, d.Radius, d.Arc, wind, Palette.Danger, d.El));
         PlayWind(d.Anims != null ? d.Anims[k % d.Anims.Length] : d.Anim, d.Contact, wind);
         float mul = DmgOf(d) * (n > 1 && k == n - 1 ? 1.3f : 1f);     // a combo ends on its heaviest blow
         Mv(wind, () =>
@@ -1024,7 +1024,7 @@ public sealed class BossBrain
         int rings = RingCount(d);
         Vector2 c = _m.Pos2;
         _lock = wind + RecOf(d);
-        MoveMark(Fx.Telegraph(c, d.Radius, wind, Palette.Danger));
+        MoveMark(Fx.Telegraph(c, d.Radius, wind, Palette.Danger, d.El));
         PlayWind(d.Anim, d.Contact, wind);
         if (d.Sfx != null) Snd.At(d.Sfx, _m.GlobalPosition, 0.8f);
         Mv(wind, () =>
@@ -1049,11 +1049,11 @@ public sealed class BossBrain
 
     private void RingHazard(BossMoveDef d, Vector2 c, float inner, float outer, float delay)
     {
-        HazardMark(Fx.TelegraphRing(c, inner, outer, delay, Palette.Danger));
+        HazardMark(Fx.TelegraphRing(c, inner, outer, delay, Palette.Danger, d.El));
         Hz(delay, () =>
         {
             HitRing(c, inner, outer, d.RingDmg * _dmg, d.El, d.Status);
-            Fx.Ring(World.To3(c, 0.25f), outer, Palette.Element(d.El), 0.45f);
+            Fx.Ring(World.To3(c, 0.25f), outer, Palette.Element(d.El), 0.45f, d.El);
             Snd.At(d.HitSfx ?? ImpactSfx(d.El), World.To3(c), 0.6f);
         });
     }
@@ -1066,7 +1066,7 @@ public sealed class BossBrain
         float outer = d.Radius > d.Inner ? d.Radius : c.DistanceTo(_arena) + _arenaR + 4f;      // 0 = out to the arena wall
         _lock = wind + RecOf(d);
         _m.FaceDir(AimDir());
-        MoveMark(Fx.TelegraphRing(c, d.Inner, outer, wind, Palette.Danger));
+        MoveMark(Fx.TelegraphRing(c, d.Inner, outer, wind, Palette.Danger, d.El));
         PlayWind(d.Anim, d.Contact, wind);
         Fx.BuffAura(_m, d.El, wind, true);
         Snd.At(d.Sfx ?? CastSfx(d.El), _m.GlobalPosition);
@@ -1075,7 +1075,7 @@ public sealed class BossBrain
         {
             HitRing(c, d.Inner, outer, DmgOf(d), d.El, d.Status);
             Fx.Burst(World.To3(c, 0.3f), d.El, Mathf.Min(outer, 16f), 1.6f);
-            Fx.Ring(World.To3(c, 0.25f), outer, Palette.Element(d.El), 0.6f);
+            Fx.Ring(World.To3(c, 0.25f), outer, Palette.Element(d.El), 0.6f, d.El);
             Fx.Shake(0.6f, 0.4f);
             Snd.At(d.HitSfx ?? "nova", _m.GlobalPosition);
         });
@@ -1101,7 +1101,7 @@ public sealed class BossBrain
         float len = from.DistanceTo(to);
         _m.FaceDir(dir);
         if (len < 3f) return;                           // no room to run: the beat passes as a feint
-        MoveMark(Fx.TelegraphLine(from, dir, len, d.Width, wind, Palette.Danger));
+        MoveMark(Fx.TelegraphLine(from, dir, len, d.Width, wind, Palette.Danger, d.El));
         _m.Model?.Play("Sword_Idle", 1f, 0.15f, true);             // braced; the dash animation plays as it moves
         Snd.At("telegraph_warn", _m.GlobalPosition, 0.7f);
         Mv(wind, () =>
@@ -1152,7 +1152,7 @@ public sealed class BossBrain
         PlayWind(d.Anim, d.Contact, wind);
         Snd.At(d.Sfx ?? CastSfx(d.El), _m.GlobalPosition, 0.8f);
         for (int k = 0; k < n; k++)
-            MoveMark(Fx.TelegraphLine(from, dir.Rotated(spread * (k - (n - 1) * 0.5f)), d.Length, d.Width, wind, Palette.Danger));
+            MoveMark(Fx.TelegraphLine(from, dir.Rotated(spread * (k - (n - 1) * 0.5f)), d.Length, d.Width, wind, Palette.Danger, d.El));
         Mv(wind, () =>
         {
             _struck.Clear();
@@ -1264,7 +1264,7 @@ public sealed class BossBrain
         _m.FaceDir(dir);
         PlayWind(d.Anim, d.Contact, wind);
         for (int k = 0; k < n; k++)
-            MoveMark(Fx.TelegraphLine(from, dir.Rotated(skew + spread * (k - (n - 1) * 0.5f)), show, width, wind, Palette.Danger));
+            MoveMark(Fx.TelegraphLine(from, dir.Rotated(skew + spread * (k - (n - 1) * 0.5f)), show, width, wind, Palette.Danger, d.El));
         Mv(wind, () =>
         {
             for (int k = 0; k < n; k++) Shoot(d, dir.Rotated(skew + spread * (k - (n - 1) * 0.5f)));
@@ -1279,7 +1279,7 @@ public sealed class BossBrain
         int arms = N(d), ticks = Math.Max(1, Mathf.CeilToInt(d.Duration / gap));
         float dur = ticks * gap;
         _lock = wind + dur + RecOf(d);
-        MoveMark(Fx.Telegraph(_m.Pos2, _m.Radius + 2f, wind, Palette.Danger));
+        MoveMark(Fx.Telegraph(_m.Pos2, _m.Radius + 2f, wind, Palette.Danger, d.El));
         _m.Model?.Play("Spell_Simple_Enter", 1f, 0.15f, true);
         Fx.CastGlow(_m, d.El);
         Fx.BuffAura(_m, d.El, wind + dur, false);
@@ -1310,7 +1310,7 @@ public sealed class BossBrain
         const float gap = 0.3f;
         _lock = wind + (n - 1) * gap + RecOf(d);
         _m.FaceDir(AimDir());
-        MoveMark(Fx.Telegraph(_m.Pos2, _m.Radius + 1.6f, wind, Palette.Danger));
+        MoveMark(Fx.Telegraph(_m.Pos2, _m.Radius + 1.6f, wind, Palette.Danger, d.El));
         PlayWind(d.Anim, d.Contact, wind);
         Fx.CastGlow(_m, d.El);
         for (int k = 0; k < n; k++)
@@ -1352,7 +1352,7 @@ public sealed class BossBrain
         for (int k = 0; k < lines; k++)
         {
             Vector2 dir = Vector2.Right.Rotated(ang + k * Mathf.Pi / lines);
-            MoveMark(Fx.TelegraphLine(c - dir * d.Length, dir, d.Length * 2f, d.Width, wind, Palette.Danger));
+            MoveMark(Fx.TelegraphLine(c - dir * d.Length, dir, d.Length * 2f, d.Width, wind, Palette.Danger, d.El));
         }
         Mv(wind, () =>
         {
@@ -1392,7 +1392,7 @@ public sealed class BossBrain
             def ??= MonsterDb.Get("skeleton");
             if (def == null) continue;
             Vector2 at = grid != null ? grid.RandomWalkNear(_m.Pos2, 3f, 6.5f) : _m.Pos2 + Vector2.Right.Rotated(Rng.Range(0f, Mathf.Tau)) * 4.5f;
-            HazardMark(Fx.Telegraph(at, 1.1f, delay, Palette.Danger));
+            HazardMark(Fx.Telegraph(at, 1.1f, delay, Palette.Danger, Sigil.Arcane));
             Hz(delay, () =>
             {
                 var add = Monster.Spawn(def, _m.Level, MonTier.Normal, at, Faction.Monster);
@@ -1437,7 +1437,7 @@ public sealed class BossBrain
         Vector2 to = d.Away ? FarSpot() : World.Grid != null ? World.Grid.RandomWalkNear(_aim, 2.5f, 4f) : _aim + InDisc(3f);
         if (to.DistanceTo(_m.Pos2) < 2f) { _lock = 0.2f; return; }
         _lock = wind + RecOf(d);
-        MoveMark(Fx.Telegraph(to, _m.Radius + 0.8f, wind, Palette.Danger));
+        MoveMark(Fx.Telegraph(to, _m.Radius + 0.8f, wind, Palette.Danger, d.El));
         _m.Model?.Play("Spell_Simple_Enter", 1.4f, 0.1f, true);
         Fx.CastGlow(_m, d.El);
         Mv(wind, () =>
@@ -1474,7 +1474,7 @@ public sealed class BossBrain
         Fx.Teleport(_m.Chest, d.El);
         Snd.At("teleport", _m.GlobalPosition, 0.8f);
         Vanish(true);
-        MoveMark(Fx.Telegraph(at, d.Radius, wind, Palette.Danger));
+        MoveMark(Fx.Telegraph(at, d.Radius, wind, Palette.Danger, d.El));
         Mv(wind, () =>
         {
             _m.Pos2 = at;
@@ -1504,7 +1504,7 @@ public sealed class BossBrain
         float reach = Mathf.Min(from.DistanceTo(_aim) + 3f, d.Length);
         _lock = warn + wind + RecOf(d);
         _m.FaceDir(dir);
-        MoveMark(Fx.TelegraphLine(from, dir, reach, d.Width, warn, Palette.Danger));
+        MoveMark(Fx.TelegraphLine(from, dir, reach, d.Width, warn, Palette.Danger, d.El));
         _m.Model?.Play("Spell_Simple_Enter", 1f, 0.15f, true);
         Fx.CastGlow(_m, d.El);
         Snd.At("wind_cast", _m.GlobalPosition);
@@ -1522,7 +1522,7 @@ public sealed class BossBrain
                 }
             }
             Vector2 c = _m.Pos2;
-            MoveMark(Fx.Telegraph(c, d.Radius, wind, Palette.Danger));
+            MoveMark(Fx.Telegraph(c, d.Radius, wind, Palette.Danger, d.El));
             PlayWind(d.Anim, d.Contact, wind);
             Mv(wind, () =>
             {
@@ -1549,7 +1549,7 @@ public sealed class BossBrain
         }
         _lock = wind + RecOf(d);
         _m.FaceDir(dir);
-        MoveMark(Fx.Telegraph(land, d.Radius, wind, Palette.Danger));
+        MoveMark(Fx.Telegraph(land, d.Radius, wind, Palette.Danger, d.El));
         _m.Model?.Play("NinjaJump_Start", 1.2f, 0.1f, true);
         Snd.At("telegraph_warn", _m.GlobalPosition, 0.7f);
         Mv(wind - air, () =>

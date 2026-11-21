@@ -362,7 +362,7 @@ public static class EliteFx
                     if (active && ++s.AuraPulse >= 5)
                     {
                         s.AuraPulse = 0;
-                        Fx.Ring(m.GlobalPosition + Vector3.Up * 0.15f, 5f, ChillColor, 0.9f);
+                        Fx.Ring(m.GlobalPosition + Vector3.Up * 0.15f, 5f, ChillColor, 0.9f, Sigil.Frost);
                     }
                     break;
 
@@ -413,7 +413,7 @@ public static class EliteFx
     private static void Mortar(Monster m, Vector2 target)
     {
         const float R = 2.6f, Delay = 1.1f;
-        Fx.Telegraph(target, R, Delay, Palette.Danger);
+        Fx.Telegraph(target, R, Delay, Palette.Danger, Sigil.Fire);
         Fx.Meteor(target, Delay, Element.Fire, R);
         Fx.CastGlow(m, Element.Fire);
         Snd.At("fire_cast", m.GlobalPosition, 0.6f);
@@ -432,7 +432,7 @@ public static class EliteFx
     {
         const float R = 4.2f, Delay = 1.2f;
         Vector2 at = m.Pos2;
-        Fx.Telegraph(at, R, Delay, Palette.Danger);
+        Fx.Telegraph(at, R, Delay, Palette.Danger, Sigil.Fire);
         Snd.At("telegraph_warn", m.GlobalPosition, 0.7f);
         HazardClock.Run(Delay, _ =>
         {
@@ -462,7 +462,7 @@ public static class EliteFx
             Vector2 at = heroPos + Vector2.Right.Rotated(a0 + k * Mathf.Tau / 3f) * (k == 0 ? 0.6f : Rng.Range(2f, 3.2f));
             if (grid != null && !grid.WalkAt(at)) at = heroPos;
             float fuse = Delay + k * 0.15f;
-            Fx.Telegraph(at, R, fuse, Palette.Danger);
+            Fx.Telegraph(at, R, fuse, Palette.Danger, Sigil.Frost);
             Node3D crystal = MakeSpike(CrystalMesh, CrystalMat, CrystalH, at);
             HazardClock.Run(fuse, g =>
             {
@@ -484,7 +484,7 @@ public static class EliteFx
     {
         const float Warn = 0.6f;
         const int Sparks = 8;
-        Fx.Telegraph(m.Pos2, m.Radius + 1.4f, Warn, Palette.Danger);
+        Fx.Telegraph(m.Pos2, m.Radius + 1.4f, Warn, Palette.Danger, Sigil.Lightning);
         HazardClock.After(Warn, () =>
         {
             if (!Alive(m)) return;
@@ -502,7 +502,7 @@ public static class EliteFx
     private static void Pool(Monster m, Vector2 at)
     {
         const float R = 2.2f, Warn = 0.7f;
-        Fx.Telegraph(at, R, Warn, Palette.Danger);
+        Fx.Telegraph(at, R, Warn, Palette.Danger, Sigil.Poison);
         HazardClock.After(Warn, () =>
         {
             if (!Valid(m)) return;
@@ -515,7 +515,7 @@ public static class EliteFx
     private static void Orb(Monster m)
     {
         const float Warn = 0.6f;
-        Fx.Telegraph(m.Pos2, m.Radius + 1f, Warn, Palette.Danger);
+        Fx.Telegraph(m.Pos2, m.Radius + 1f, Warn, Palette.Danger, Sigil.Shadow);
         Fx.CastGlow(m, Element.Shadow);
         HazardClock.After(Warn, () =>
         {
@@ -540,7 +540,7 @@ public static class EliteFx
         if (grid == null) return;
         Vector2 toElite = elitePos - centre;
         float gap = toElite.LengthSquared() > 0.01f ? Mathf.Atan2(toElite.Y, toElite.X) : Rng.Range(0f, Mathf.Tau);
-        Fx.TelegraphRing(centre, R - 0.7f, R + 0.7f, Warn, Palette.Danger);
+        Fx.TelegraphRing(centre, R - 0.7f, R + 0.7f, Warn, Palette.Danger, Sigil.Blade);
         Fx.CastGlow(m, Element.Physical);
         Snd.At("earth_cast", World.To3(centre), 0.7f);
         HazardClock.After(Warn, () =>
@@ -581,7 +581,7 @@ public static class EliteFx
         if (len < 0.1f) return;
         dir /= len;
         float reach = Mathf.Min(len + 2.5f, 15f);
-        Fx.TelegraphLine(from, dir, reach, Width, Warn, Palette.Danger);
+        Fx.TelegraphLine(from, dir, reach, Width, Warn, Palette.Danger, Sigil.Shadow);
         Fx.CastGlow(m, Element.Shadow);
         Snd.At("wind_cast", m.GlobalPosition, 0.7f);
         HazardClock.After(Warn, () =>
@@ -674,7 +674,7 @@ public static class EliteFx
             Vector2 at = grid != null
                 ? grid.RandomWalkNear(m.Pos2, 1.6f, 3.6f)
                 : m.Pos2 + Vector2.Right.Rotated(Rng.Range(0f, Mathf.Tau)) * 2.5f;
-            Fx.Telegraph(at, 0.9f, Warn, Palette.Danger);
+            Fx.Telegraph(at, 0.9f, Warn, Palette.Danger, Sigil.Shadow);
             HazardClock.After(Warn, () =>
             {
                 if (!Alive(m)) return;

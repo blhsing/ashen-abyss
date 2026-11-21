@@ -23,7 +23,7 @@ public partial class Monster
         _aiCd[CdKind] = 7f;
         FaceDir(dir);
         float width = 2f * Radius + 0.8f;
-        _telegraph = Fx.TelegraphLine(Pos2, dir, len, width, 0.8f, Palette.Danger);
+        _telegraph = Fx.TelegraphLine(Pos2, dir, len, width, 0.8f, Palette.Danger, Def.Element);
         Snd.At("telegraph_warn", GlobalPosition, 0.5f);
         Snd.At(Def.Sfx + "_idle", GlobalPosition, 0.8f);
         Model.Play(Def.Idle, 1.6f, 0.1f);
@@ -106,7 +106,7 @@ public partial class Monster
         _blocks = 0; _aiCd[CdKind] = 6f;
         Vector2 dir = (_target.Pos2 - Pos2).Normalized();
         FaceDir(dir);
-        _telegraph = Fx.TelegraphLine(Pos2, dir, 6f, 2f * Radius + 0.8f, 0.6f, Palette.Danger);
+        _telegraph = Fx.TelegraphLine(Pos2, dir, 6f, 2f * Radius + 0.8f, 0.6f, Palette.Danger, Sigil.Blade);
         Model.Play(CharModel.HasClip("Shield_Dash") && Def.Rig == "A" ? "Shield_Dash" : "Attack2", 1f, 0.1f, true);
         Note("Shieldbearer.dash");
         Channel(0.6f, () =>
@@ -174,7 +174,7 @@ public partial class Monster
     {
         _bur = 2;
         Vector2 at = Pos2;
-        _telegraph = Fx.Telegraph(at, 2.2f, 0.7f, Palette.Danger);
+        _telegraph = Fx.Telegraph(at, 2.2f, 0.7f, Palette.Danger, Def.Element);
         Snd.At("earth_cast", GlobalPosition, 0.8f);
         Note("Burrower.emerge");
         Channel(0.7f, () =>
@@ -325,7 +325,7 @@ public partial class Monster
         grave.Used = true;
         FaceDir(grave.Pos - Pos2);
         Model.Play(A.CastAnim, 0.8f, 0.15f);
-        var tele = Fx.Telegraph(grave.Pos, 1.3f, 1.5f, new Color(0.5f, 1f, 0.6f), true);
+        var tele = Fx.Telegraph(grave.Pos, 1.3f, 1.5f, new Color(0.5f, 1f, 0.6f), true, Sigil.Shadow);
         float beamT = 0f;
         Note("Reviver.cast", grave.Def.Id);
         Channel(1.5f, () =>
@@ -361,7 +361,7 @@ public partial class Monster
         {
             Vector2 at = World.Grid?.RandomWalkNear(Pos2, 1.2f, 2.5f) ?? Pos2;
             spots.Add(at);
-            Fx.Telegraph(at, 0.7f, 0.8f, new Color(0.8f, 0.8f, 0.6f), true);
+            Fx.Telegraph(at, 0.7f, 0.8f, new Color(0.8f, 0.8f, 0.6f), true, Sigil.Arcane);
         }
         Model.Play(Model.Has("Attack2") ? "Attack2" : A.CastAnim, 1f, 0.1f, true);
         Note(A.EggSac ? "Spawner.egg" : "Spawner.spawn", def.Id);
@@ -433,7 +433,7 @@ public partial class Monster
             {
                 World.InCircle(Faction.Monster, Pos2, A.CallWailRadius, AiTmp);
                 foreach (var a in AiTmp.ToArray()) ApplyHostile(a, A.CallWail.Value, Def.Element);
-                Fx.Ring(GlobalPosition + Vector3.Up * 0.2f, A.CallWailRadius, new Color(0.7f, 0.75f, 0.9f), 0.5f);
+                Fx.Ring(GlobalPosition + Vector3.Up * 0.2f, A.CallWailRadius, new Color(0.7f, 0.75f, 0.9f), 0.5f, Sigil.Arcane);
             }
             if (escorts) { foreach (var m in _called) m.Enrage(8f); Note("Escort.enrage"); return; }
             int n = Math.Min(A.CallCount, A.CallCap - _called.Count);
@@ -539,7 +539,7 @@ public partial class Monster
         _aiCd[CdKind2] = 8f;
         _shutterOpenUntil = Now + 0.8 + 1.5;
         string kind = A.Attack2;
-        Node3D tele = kind == "cloud" ? Fx.Telegraph(Pos2, 3f, 0.8f, Palette.Danger) : Fx.TelegraphCone(this, 5f, 90f, 0.8f, Palette.Danger);
+        Node3D tele = kind == "cloud" ? Fx.Telegraph(Pos2, 3f, 0.8f, Palette.Danger, Def.Element) : Fx.TelegraphCone(this, 5f, 90f, 0.8f, Palette.Danger, Def.Element);
         _telegraph = tele;
         Model.Play(Model.Has("Attack2") ? "Attack2" : A.CastAnim, 1f, 0.1f, true);
         Note("Turret.close", kind);
@@ -586,7 +586,7 @@ public partial class Monster
         Vector2 dir = (_target.Pos2 - Pos2).Normalized();
         float len = Mathf.Clamp(Pos2.DistanceTo(_target.Pos2) + 3f, 6f, 15f);
         FaceDir(dir);
-        _telegraph = Fx.TelegraphLine(Pos2, dir, len, 1.6f, 0.6f, Palette.Danger);
+        _telegraph = Fx.TelegraphLine(Pos2, dir, len, 1.6f, 0.6f, Palette.Danger, Def.Element);
         Model.Play(Def.Idle, 1.6f, 0.1f);
         Snd.At(Def.Sfx + "_idle", GlobalPosition, 0.7f);
         Note("Flyer.windup");
@@ -671,7 +671,7 @@ public partial class Monster
     /// <summary>A leap onto a point (stalkers' pounce, the ceiling drop of a dormant flyer): telegraph, flight, area landing.</summary>
     private void Leap(Vector2 land, float time, float radius, float mul, StatusApply? status, string what)
     {
-        _telegraph = Fx.Telegraph(land, radius, time, Palette.Danger);
+        _telegraph = Fx.Telegraph(land, radius, time, Palette.Danger, Def.Element);
         FaceDir(land - Pos2);
         bool rig = Def.Rig == "A" || !Model.OwnAnimations;
         Model.Play(rig && Model.Has("NinjaJump_Start") ? "NinjaJump_Start" : "Attack2", 1.5f, 0.1f, true);

@@ -263,7 +263,7 @@ internal sealed class PinRimelord : PinScript
         Take(1.8f);
         Vector2 from = M.Pos2, to = E.Walk(l.Pos + (M.Pos2 - l.Pos).Normalized() * 1.2f);
         M.Model?.Play("NinjaJump_Idle_Loop", 1f, 0.05f);
-        E.Track(Fx.Telegraph(l.Pos, 4.2f, 1f, Palette.Danger));
+        E.Track(Fx.Telegraph(l.Pos, 4.2f, 1f, Palette.Danger, M.Def.Element));
         E.Run(1f, k => { if (E.Alive) { var q = from.Lerp(to, k); M.GlobalPosition = new Vector3(q.X, Mathf.Sin(k * Mathf.Pi) * 3f, q.Y); } }, () =>
         {
             if (!E.Alive) return;

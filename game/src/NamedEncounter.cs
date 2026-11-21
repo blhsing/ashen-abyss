@@ -497,7 +497,7 @@ public partial class NamedEncounter : Node
     public void Blast(Vector2 at, float r, float wind, float mul, Element el, StatusApply? st = null, Action then = null, bool meteor = false, string sfx = null)
     {
         wind = Mathf.Max(0.6f, wind);
-        Track(Fx.Telegraph(at, r, wind, Palette.Danger));
+        Track(Fx.Telegraph(at, r, wind, Palette.Danger, el));
         if (meteor) Fx.Meteor(at, wind, el, r);
         After(wind, () =>
         {
@@ -512,11 +512,11 @@ public partial class NamedEncounter : Node
     public void RingBlast(Vector2 c, float inner, float outer, float wind, float mul, Element el, StatusApply? st = null, Action then = null)
     {
         wind = Mathf.Max(0.6f, wind);
-        Track(Fx.TelegraphRing(c, inner, outer, wind, Palette.Danger));
+        Track(Fx.TelegraphRing(c, inner, outer, wind, Palette.Danger, el));
         After(wind, () =>
         {
             HitRing(c, inner, outer, mul, el, st);
-            Fx.Ring(World.To3(c, 0.25f), outer, Palette.Element(el), 0.45f);
+            Fx.Ring(World.To3(c, 0.25f), outer, Palette.Element(el), 0.45f, el);
             Snd.At(ImpactSfx(el), World.To3(c), 0.6f);
             then?.Invoke();
         });
@@ -533,11 +533,11 @@ public partial class NamedEncounter : Node
         {
             int kk = k;
             float inner = firstInner + k * width, outer = inner + width, at = t;
-            After(Mathf.Max(0f, at - 0.7f), () => Track(Fx.TelegraphRing(c, inner, outer, 0.7f, Palette.Danger)));
+            After(Mathf.Max(0f, at - 0.7f), () => Track(Fx.TelegraphRing(c, inner, outer, 0.7f, Palette.Danger, el)));
             After(at, () =>
             {
                 HitRing(c, inner, outer, mul, el, st);
-                Fx.Ring(World.To3(c, 0.25f), outer, Palette.Element(el), 0.45f);
+                Fx.Ring(World.To3(c, 0.25f), outer, Palette.Element(el), 0.45f, el);
                 Snd.At(ImpactSfx(el), World.To3(c), 0.5f);
                 each?.Invoke(kk, inner, outer);
             });
@@ -550,7 +550,7 @@ public partial class NamedEncounter : Node
     {
         wind = Mathf.Max(0.6f, wind);
         dir = dir.LengthSquared() < 1e-4f ? Vector2.Down : dir.Normalized();
-        Track(Fx.TelegraphLine(from, dir, len, width, wind, Palette.Danger));
+        Track(Fx.TelegraphLine(from, dir, len, width, wind, Palette.Danger, el));
         After(wind, () =>
         {
             Vector2 end = from + dir * len;
@@ -568,7 +568,7 @@ public partial class NamedEncounter : Node
         wind = Mathf.Max(0.6f, wind);
         M.FaceDir(dir);
         Vector2 origin = M.Pos2, d = M.Forward;
-        Track(Fx.TelegraphCone(M, range, arc, wind, Palette.Danger));
+        Track(Fx.TelegraphCone(M, range, arc, wind, Palette.Danger, el));
         After(wind, () =>
         {
             bool hero = HitCone(origin, d, range, arc, mul, el, st);

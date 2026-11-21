@@ -35,7 +35,7 @@ public partial class MonsterShot : Node3D
     public static void Lob(Monster m, Vector3 origin, Vector2 land, float time, float radius)
     {
         if (World.Root == null) return;
-        Fx.Telegraph(land, radius, time, Palette.Danger);
+        Fx.Telegraph(land, radius, time, Palette.Danger, m.Def.Element);
         var s = Make(m, Kind.Lob, origin, m.Def.Element, 0.5f);
         s._land = land; s._time = Mathf.Max(0.3f, time); s._start = new Vector2(origin.X, origin.Z);
     }

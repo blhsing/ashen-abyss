@@ -5,6 +5,31 @@ using System.Collections.Generic;
 namespace AshenAbyss;
 
 /// <summary>
+/// The school a ground mark is drawn in (fx_telegraph, fx_ring, fx_slash): its ornament tells what is about to land.
+/// An Element converts by itself, so callers simply pass the element of the skill. Auto (the default) reads the
+/// school from the colour; None asks for the plain form where there is one (rings), the generic mark elsewhere.
+/// </summary>
+public readonly struct Sigil
+{
+    private readonly byte _v;                       // 0 = auto, 1 = none, otherwise the shader's kind number + 2
+    private Sigil(byte v) { _v = v; }
+
+    public static readonly Sigil Auto = default, None = new(1), Fire = new(2), Frost = new(3), Lightning = new(4), Poison = new(5),
+        Shadow = new(6), Blade = new(7), Holy = new(8), Arcane = new(9);
+
+    public bool IsAuto => _v == 0;
+    public bool IsNone => _v == 1;
+
+    /// <summary>The shader's kind number (0 fire, 1 frost, 2 lightning, 3 poison, 4 shadow, 5 blade, 6 holy, 7 arcane); -1 for Auto and None.</summary>
+    public int Kind => _v >= 2 ? _v - 2 : -1;
+
+    public static implicit operator Sigil(Element e) => e switch
+    {
+        Element.Fire => Fire, Element.Frost => Frost, Element.Lightning => Lightning, Element.Poison => Poison, Element.Shadow => Shadow, _ => Blade,
+    };
+}
+
+/// <summary>
 /// Every visual effect in the game. Effects are assembled from a handful of shared resources created once:
 /// procedural textures, unit meshes, one ShaderMaterial per fx_* shader (instance uniforms carry what differs)
 /// and cached ParticleProcessMaterial presets per element. Nothing here needs a scene or a custom node class:
@@ -84,7 +109,7 @@ public static class Fx
     private static readonly StringName PT = "t", PTint = "tint", PGain = "gain", PPower = "power", PWidth = "width", PFade = "fade",
         PMode = "mode", PArc = "arc", PInner = "inner", PSoft = "soft", PEdge = "edge_tint", PHalf = "half_size", PHostile = "hostile",
         PSeed = "seed", PRadius = "radius", PPulse = "pulse", PBob = "bob", PFlow = "flow", PTopFade = "top_fade", PShimmer = "shimmer",
-        PUpright = "upright", PNoise = "noise_tex", PKind = "kind", MetaProj = "fx_projectile";
+        PUpright = "upright", PNoise = "noise_tex", PKind = "kind", PAccent = "accent", POver = "over", PGlyph = "glyph_tex", MetaProj = "fx_projectile";
 
     private static readonly Action<Anim, float> FnT = StepT, FnTele = StepTelegraph, FnZone = StepZone, FnMeteor = StepMeteor,
         FnAura = StepAura, FnPillar = StepPillar, FnBeam = StepBeam, FnFlicker = StepFlicker, FnGhost = StepGhost,
@@ -122,7 +147,7 @@ public static class Fx
             // impact: a white-hot core for a few frames, a light flash, and the shock ring racing to the edge of the area
             FlashFx(null, core, Vector3.One, radius * 0.16f, radius * (0.32f + 0.08f * punch), Hot(c, 0.45f), 0.14f + 0.012f * radius, 0.85f + 0.3f * punch, 3f);
             FlashLight(core + Vector3.Up * 0.5f, LightTint(c), 2.4f + 3f * punch, radius * 2f + 3f, 0.32f);
-            RingFx(null, ground, radius, c, 0.3f + radius * 0.035f, 1.1f + 0.6f * punch, 0.13f);
+            RingFx(null, ground, radius, c, 0.3f + radius * 0.035f, 1.1f + 0.6f * punch, 0.13f, ZoneKind(el));
             // body and linger
             BurstParticles(core, el, radius, intensity);
             if (el == Element.Lightning && radius >= 1.5f)
@@ -169,6 +194,7 @@ public static class Fx
             Set(q, PArc, full ? 3.2f : Mathf.DegToRad(Mathf.Clamp(arcDeg, 20f, 358f) * 0.5f));
             Set(q, PTint, c);
             Set(q, PGain, plain ? 0.8f : 1.05f);
+            Set(q, PKind, (float)ZoneKind(el)); Set(q, PRadius, radius); Set(q, PSeed, Rng.F());
             Vector3 off = new(0f, Mathf.Clamp(a.HeightM * 0.55f, 0.6f, 2.4f), 0f);
             Vector3 at = a.GlobalPosition + off;
             if (!Spawn(q, at, a.Facing)) { q.Free(); return; }
@@ -185,13 +211,17 @@ public static class Fx
         catch (Exception e) { Fail(nameof(Slash), e); }
     }
 
-    /// <summary>A plain expanding ring on the ground.</summary>
-    public static void Ring(Vector3 pos, float radius, Color c, float seconds)
+    /// <summary>
+    /// An expanding ring on the ground that runs out to <paramref name="radius"/>. It is dressed in the school of the
+    /// skill (<paramref name="kind"/>; by default read from the colour); Sigil.None keeps it a plain ring.
+    /// </summary>
+    public static void Ring(Vector3 pos, float radius, Color c, float seconds, Sigil kind = default)
     {
         try
         {
             if (!Ensure() || Far(pos)) return;
-            RingFx(null, new Vector3(pos.X, Mathf.Max(pos.Y, 0.08f), pos.Z), Mathf.Max(radius, 0.3f), c, Mathf.Max(seconds, 0.1f), 0.85f, 0.09f);
+            int k = kind.IsNone ? -1 : kind.IsAuto ? SigilOf(c) : kind.Kind;
+            RingFx(null, new Vector3(pos.X, Mathf.Max(pos.Y, 0.08f), pos.Z), Mathf.Max(radius, 0.3f), c, Mathf.Max(seconds, 0.1f), 0.85f, 0.09f, k);
         }
         catch (Exception e) { Fail(nameof(Ring), e); }
     }
@@ -213,23 +243,30 @@ public static class Fx
         catch (Exception e) { Fail(nameof(Beam), e); }
     }
 
-    /// <summary>Circle on the ground that fills over <paramref name="delay"/>, then frees itself. Hostile unless friendly is set.</summary>
-    public static Node3D Telegraph(Vector2 pos, float radius, float delay, Color c, bool friendly = false)
+    /// <summary>
+    /// Circle on the ground that fills over <paramref name="delay"/>, then frees itself. Hostile unless friendly is set.
+    /// <paramref name="kind"/> is the school its ornament is drawn in (pass the element of the skill); by default it is
+    /// read from the colour, and the danger red gives the generic mark.
+    /// </summary>
+    public static Node3D Telegraph(Vector2 pos, float radius, float delay, Color c, bool friendly = false, Sigil kind = default)
     {
         try
         {
             if (Ensure())
             {
                 radius = Mathf.Max(radius, 0.3f);
-                return Tele(new Vector3(pos.X, friendly ? 0.07f : 0.09f, pos.Y), 0f, new Vector2(radius, radius), 0f, 1f, 0f, delay, c, friendly);
+                return Tele(new Vector3(pos.X, friendly ? 0.07f : 0.09f, pos.Y), 0f, new Vector2(radius, radius), 0f, 1f, 0f, delay, c, friendly, kind);
             }
         }
         catch (Exception e) { Fail(nameof(Telegraph), e); }
         return StubInWorld();
     }
 
+    /// <summary>Hostile circle in the school of <paramref name="kind"/> (an Element converts by itself).</summary>
+    public static Node3D Telegraph(Vector2 pos, float radius, float delay, Color c, Sigil kind) => Telegraph(pos, radius, delay, c, false, kind);
+
     /// <summary>Cone in front of an actor (hostile unless the actor fights for the player).</summary>
-    public static Node3D TelegraphCone(Actor a, float range, float arcDeg, float delay, Color c)
+    public static Node3D TelegraphCone(Actor a, float range, float arcDeg, float delay, Color c, Sigil kind = default)
     {
         try
         {
@@ -239,7 +276,24 @@ public static class Fx
                 range = Mathf.Max(range, 0.5f);
                 float arc = arcDeg >= 359f ? 3.2f : Mathf.DegToRad(Mathf.Clamp(arcDeg, 5f, 358f) * 0.5f);
                 Vector3 p = a.GlobalPosition;
-                return Tele(new Vector3(p.X, friendly ? 0.07f : 0.09f, p.Z), a.Facing, new Vector2(range, range), 1f, arc, 0f, delay, c, friendly);
+                return Tele(new Vector3(p.X, friendly ? 0.07f : 0.09f, p.Z), a.Facing, new Vector2(range, range), 1f, arc, 0f, delay, c, friendly, kind);
+            }
+        }
+        catch (Exception e) { Fail(nameof(TelegraphCone), e); }
+        return StubInWorld();
+    }
+
+    /// <summary>Cone from a point toward <paramref name="dir"/> (for marks that no actor stands behind).</summary>
+    public static Node3D TelegraphCone(Vector2 pos, Vector2 dir, float range, float arcDeg, float delay, Color c, bool friendly = false, Sigil kind = default)
+    {
+        try
+        {
+            if (Ensure())
+            {
+                dir = dir.LengthSquared() < 1e-6f ? new Vector2(0f, 1f) : dir.Normalized();
+                range = Mathf.Max(range, 0.5f);
+                float arc = arcDeg >= 359f ? 3.2f : Mathf.DegToRad(Mathf.Clamp(arcDeg, 5f, 358f) * 0.5f);
+                return Tele(new Vector3(pos.X, friendly ? 0.07f : 0.09f, pos.Y), Mathf.Atan2(dir.X, dir.Y), new Vector2(range, range), 1f, arc, 0f, delay, c, friendly, kind);
             }
         }
         catch (Exception e) { Fail(nameof(TelegraphCone), e); }
@@ -247,7 +301,7 @@ public static class Fx
     }
 
     /// <summary>Hostile rectangle starting at <paramref name="from"/>: <paramref name="length"/> long, <paramref name="width"/> wide in total.</summary>
-    public static Node3D TelegraphLine(Vector2 from, Vector2 dir, float length, float width, float delay, Color c)
+    public static Node3D TelegraphLine(Vector2 from, Vector2 dir, float length, float width, float delay, Color c, Sigil kind = default)
     {
         try
         {
@@ -256,7 +310,7 @@ public static class Fx
                 dir = dir.LengthSquared() < 1e-6f ? new Vector2(0f, 1f) : dir.Normalized();
                 length = Mathf.Max(length, 0.5f); width = Mathf.Max(width, 0.3f);
                 Vector2 mid = from + dir * (length * 0.5f);
-                return Tele(new Vector3(mid.X, 0.09f, mid.Y), Mathf.Atan2(dir.X, dir.Y), new Vector2(width * 0.5f, length * 0.5f), 2f, 1f, 0f, delay, c, false);
+                return Tele(new Vector3(mid.X, 0.09f, mid.Y), Mathf.Atan2(dir.X, dir.Y), new Vector2(width * 0.5f, length * 0.5f), 2f, 1f, 0f, delay, c, false, kind);
             }
         }
         catch (Exception e) { Fail(nameof(TelegraphLine), e); }
@@ -264,7 +318,7 @@ public static class Fx
     }
 
     /// <summary>Hostile donut: safe inside <paramref name="inner"/>, dangerous out to <paramref name="outer"/>.</summary>
-    public static Node3D TelegraphRing(Vector2 pos, float inner, float outer, float delay, Color c)
+    public static Node3D TelegraphRing(Vector2 pos, float inner, float outer, float delay, Color c, Sigil kind = default)
     {
         try
         {
@@ -272,7 +326,7 @@ public static class Fx
             {
                 outer = Mathf.Max(outer, 0.5f);
                 float frac = Mathf.Clamp(inner / outer, 0f, 0.97f);
-                return Tele(new Vector3(pos.X, 0.09f, pos.Y), 0f, new Vector2(outer, outer), 3f, 1f, frac, delay, c, false);
+                return Tele(new Vector3(pos.X, 0.09f, pos.Y), 0f, new Vector2(outer, outer), 3f, 1f, frac, delay, c, false, kind);
             }
         }
         catch (Exception e) { Fail(nameof(TelegraphRing), e); }
@@ -527,6 +581,7 @@ public static class Fx
             q.Position = new Vector3(0f, 0.02f, 0f);
             Set(q, PT, 0f); Set(q, PTint, c); Set(q, PEdge, c); Set(q, PMode, 3f); Set(q, PArc, 1f); Set(q, PInner, 0.9f);
             Set(q, PSoft, 1f); Set(q, PFade, 0.55f); Set(q, PHalf, new Vector2(1.9f, 1.9f));
+            Set(q, PAccent, c); Set(q, PKind, 7f); Set(q, PSeed, Rng.F());
             root.AddChild(q);
         }
         catch (Exception e) { Fail(nameof(TrapVisual), e); }
@@ -732,7 +787,7 @@ public static class Fx
             var an = NewAnim(FnGhost, ghost, seconds);
             an.G1 = ghost; an.V0 = new Vector3(0.42f, 0.95f, 0.42f);
             // a quiet timer at its feet
-            Tele(new Vector3(pos.X, 0.07f, pos.Y), 0f, new Vector2(1.1f, 1.1f), 0f, 1f, 0f, seconds, c, true);
+            Tele(new Vector3(pos.X, 0.07f, pos.Y), 0f, new Vector2(1.1f, 1.1f), 0f, 1f, 0f, seconds, c, true, el);
         }
         catch (Exception e) { Fail(nameof(Afterimage), e); }
     }
@@ -1155,11 +1210,15 @@ public static class Fx
     private static ParticleProcessMaterial KeepPm(int key, ParticleProcessMaterial m) { lock (_pm) _pm[key] = m; return m; }
 
     /// <summary>Expanding ring. With an owner, <paramref name="pos"/> is local to it and the ring travels with it.</summary>
-    private static void RingFx(Node3D owner, Vector3 pos, float radius, Color c, float seconds, float gain, float width)
+    /// <summary>kind 0..7 dresses the ring in a school (see fx_ring.gdshader); below 0 it stays plain.</summary>
+    private static void RingFx(Node3D owner, Vector3 pos, float radius, Color c, float seconds, float gain, float width, int kind = -1)
     {
         var q = MeshNode(_quad, _mRing);
-        q.Scale = new Vector3(radius, 1f, radius);
+        // the ornament reaches a little beyond the ring: a dressed ring gets a larger quad, and the shader is told by how much
+        float over = kind >= 0 ? 1f + Mathf.Clamp(1.1f / Mathf.Max(radius, 0.3f), 0.08f, 0.6f) : 1f;
+        q.Scale = new Vector3(radius * over, 1f, radius * over);
         Set(q, PT, 0f); Set(q, PTint, c); Set(q, PGain, gain * 0.75f); Set(q, PWidth, width);
+        Set(q, PKind, (float)kind); Set(q, PRadius, radius); Set(q, POver, over); Set(q, PSeed, Rng.F());
         if (owner != null) { q.Position = pos; owner.AddChild(q); }
         else if (!Spawn(q, pos)) { q.Free(); return; }
         var a = NewAnim(FnT, q, seconds);
@@ -1411,14 +1470,43 @@ public static class Fx
         a.G1 = mi; a.V0 = delta; a.V1 = side; a.A = width; a.I = jagged ? 1 : 0; a.C = 0.045f;
     }
 
-    private static Node3D Tele(Vector3 pos, float yaw, Vector2 half, float mode, float arc, float inner, float delay, Color c, bool friendly)
+    // Ornament colours of hostile marks, by kind: every one stays in the warm family, so a warning is never mistaken
+    // for a friendly mark, yet each leans to its school (amber, rime white, spark yellow, bile, blood violet, bone, gold, ember).
+    private static readonly Color[] HostileAccent =
+    {
+        new(1f, 0.66f, 0.2f), new(0.94f, 0.8f, 0.86f), new(1f, 0.9f, 0.62f), new(0.9f, 0.85f, 0.22f),
+        new(0.98f, 0.3f, 0.6f), new(1f, 0.74f, 0.58f), new(1f, 0.9f, 0.55f), new(1f, 0.6f, 0.4f),
+    };
+
+    /// <summary>
+    /// The school a colour stands for when the caller names none: the element colours give their element, pale gold
+    /// the holy mark, greys the blade, and the danger red (or anything else) the generic arcane mark.
+    /// </summary>
+    private static int SigilOf(Color c)
+    {
+        c.ToHsv(out float h, out float s, out float _);
+        if (s < 0.16f) return 5;                                   // steel, bone, dust
+        float deg = h * 360f;
+        if (deg < 14f || deg >= 345f) return 7;                    // the danger red
+        if (deg < 36f) return 0;                                   // fire, ember
+        if (deg < 72f) return s < 0.7f ? 6 : 0;                    // pale gold is holy, a deep yellow still fire
+        if (deg < 165f) return 3;                                  // venom
+        if (deg < 225f) return 1;                                  // ice
+        if (deg < 300f) return s < 0.45f ? 2 : 4;                  // pale violet is lightning, deep violet shadow
+        return 4;
+    }
+
+    private static Node3D Tele(Vector3 pos, float yaw, Vector2 half, float mode, float arc, float inner, float delay, Color c, bool friendly, Sigil kind = default)
     {
         var q = MeshNode(_quad, _mTele);
         q.Scale = new Vector3(half.X, 1f, half.Y);
-        Color fill = friendly ? c : Palette.Danger.Lerp(c, 0.2f);
+        int k = kind.Kind >= 0 ? kind.Kind : kind.IsNone ? 7 : SigilOf(c);
+        Color accent = friendly ? c.Lerp(Colors.White, 0.3f) : HostileAccent[k];
+        Color fill = friendly ? c : Palette.Danger.Lerp(c, 0.2f).Lerp(accent, 0.12f);
         Color edge = friendly ? c.Lerp(Colors.White, 0.25f) : Palette.Danger;
         Set(q, PT, 0f); Set(q, PTint, fill); Set(q, PEdge, edge); Set(q, PMode, mode); Set(q, PArc, arc); Set(q, PInner, inner);
         Set(q, PSoft, friendly ? 1f : 0f); Set(q, PFade, 0f); Set(q, PHalf, half);
+        Set(q, PAccent, accent); Set(q, PKind, (float)k); Set(q, PSeed, Rng.F());
         if (!friendly) q.SortingOffset = 1f;         // warnings are drawn over everything else on the ground
         if (!Spawn(q, pos, yaw)) return q;
         var a = NewAnim(FnTele, q, Mathf.Max(delay, 0.05f));
@@ -2466,7 +2554,8 @@ public static class Fx
 
         // one material per shader; instance uniforms carry everything that differs
         _mRing = ShaderMat("fx_ring", noise);
-        _mTele = ShaderMat("fx_telegraph", null);
+        _mTele = ShaderMat("fx_telegraph", noise);
+        if (_mTele is ShaderMaterial tm) tm.SetShaderParameter(PGlyph, MakeGlyphs());
         _mZone = ShaderMat("fx_zone", noise);
         _mSlash = ShaderMat("fx_slash", noise);
         _mFlash = ShaderMat("fx_flash", null);
@@ -2601,6 +2690,54 @@ public static class Fx
         }
         catch (Exception e) { Log.Warn("fx", "immediate noise image failed, using a NoiseTexture2D: " + e.Message); }
         return new NoiseTexture2D { Noise = fn, Width = 256, Height = 256, Seamless = true, GenerateMipmaps = true };
+    }
+
+    // Sixteen runes of our own for the band of the ground sigils. One rune per group; a stroke is four digits
+    // x1 y1 x2 y2 on a lattice 5 wide (0..4) and 9 high (0..8, 8 = top); a stroke of no length is a lozenge pip.
+    private const string Runes =
+        "2028 2846 2301|0428 2844 2222|2025 2508 2548 2528|0848 4800 0040 1434|2022 2204 0426 2644 4422 2628|0008 0848 4845 4141|" +
+        "0048 0840 2828 2020|2028 0628 4628 0325 4325|4816 1612 1240 3434|0008 0848 4840 2845|0848 4800 0040 4008|1018 1846 1543|" +
+        "2428 2400 2440 2121|0427 2744 4421 2104 2424|0008 0840 4048|2028 0547 0224";
+
+    /// <summary>The runes drawn into one row of 64 px cells (coverage in the single channel), mip-mapped.</summary>
+    private static Texture2D MakeGlyphs()
+    {
+        const int cell = 64;
+        string[] runes = Runes.Split('|');
+        int w = cell * runes.Length;
+        var data = new byte[w * cell];
+        for (int g = 0; g < runes.Length; g++)
+        {
+            foreach (string s in runes[g].Split(' ', StringSplitOptions.RemoveEmptyEntries))
+            {
+                if (s.Length != 4) continue;
+                float ax = 16f + (s[0] - '0') * 8f, ay = 56f - (s[1] - '0') * 6f;
+                float bx = 16f + (s[2] - '0') * 8f, by = 56f - (s[3] - '0') * 6f;
+                bool pip = s[0] == s[2] && s[1] == s[3];
+                float bax = bx - ax, bay = by - ay, len2 = bax * bax + bay * bay;
+                for (int y = 0; y < cell; y++)
+                {
+                    for (int x = 0; x < cell; x++)
+                    {
+                        float px = x + 0.5f - ax, py = y + 0.5f - ay, cov;
+                        if (pip) cov = (5.6f - (Mathf.Abs(px) + Mathf.Abs(py))) / 1.4f;
+                        else
+                        {
+                            float t = Mathf.Clamp((px * bax + py * bay) / len2, 0f, 1f);
+                            float dx = px - bax * t, dy = py - bay * t;
+                            cov = (3.3f - Mathf.Sqrt(dx * dx + dy * dy)) / 1.3f;
+                        }
+                        if (cov <= 0f) continue;
+                        int i = y * w + g * cell + x;
+                        byte b = (byte)Mathf.RoundToInt(Mathf.Min(cov, 1f) * 255f);
+                        if (b > data[i]) data[i] = b;
+                    }
+                }
+            }
+        }
+        var img = Image.CreateFromData(w, cell, false, Image.Format.L8, data);
+        img.GenerateMipmaps();
+        return ImageTexture.CreateFromImage(img);
     }
 
     private static Texture2D FromAlpha(int w, int h, Func<float, float, int, int, float> alpha)

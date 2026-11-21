@@ -562,7 +562,7 @@ public partial class Level : Node3D
         p.Stop();
         p.FaceDir(obj.Pos2 - p.Pos2);
         _chanObj = obj; _chanDur = Mathf.Max(0.1f, seconds); _chanT = 0f; _chanFrom = p.Pos2; _chanDone = done; _chanText = text ?? ""; _chanSub = obj.Sub;
-        _chanFx = Fx.Telegraph(obj.Pos2, 1.6f, _chanDur, Palette.Ember, true);
+        _chanFx = Fx.Telegraph(obj.Pos2, 1.6f, _chanDur, Palette.Ember, true, Sigil.Arcane);
         Snd.At("hex_cast", obj.GlobalPosition, 0.6f);
     }
 

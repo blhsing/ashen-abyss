@@ -112,7 +112,7 @@ internal sealed class NightWatch : RareScript
         Face();
         M.Busy(1.25f, null);
         M.Model?.Play("Spell_Simple_Enter", 0.8f, 0.1f, true);
-        E.Track(Fx.TelegraphRing(M.Pos2, 0f, 12f, 1.2f, Palette.Danger));
+        E.Track(Fx.TelegraphRing(M.Pos2, 0f, 12f, 1.2f, Palette.Danger, M.Def.Element));
         Fx.Glow(M.Chest + Vector3.Up * 0.4f, new Color(0.85f, 0.9f, 1f), 0.8f, 1.2f);
         E.Then(1.2f, Wail);
     }
@@ -123,7 +123,7 @@ internal sealed class NightWatch : RareScript
         if (M.Stunned || _hurt >= M.MaxLife * 0.08f) { Mech("interrupted"); E.Toast("呼喊被打斷了"); Fx.Burst(M.Chest, Element.Lightning, 2f, 0.6f); return; }
         Mech("wail");
         Snd.At("bell_toll", M.GlobalPosition, 0.9f);
-        Fx.Ring(M.GlobalPosition + Vector3.Up * 0.2f, 12f, new Color(0.8f, 0.85f, 1f), 0.6f);
+        Fx.Ring(M.GlobalPosition + Vector3.Up * 0.2f, 12f, new Color(0.8f, 0.85f, 1f), 0.6f, Sigil.Arcane);
         E.HitCircle(M.Pos2, 12f, 0.5f, Element.Frost, St.Fear(1.5f));
         Mech("rise");
         for (int i = 0; i < 3; i++) E.SummonAfter(0.8f, "husk", E.Near(M.Pos2, 3f, 9f));
@@ -155,7 +155,7 @@ internal sealed class AshBride : RareScript
             E.Toast("灰堆被打散——新娘不再歸來");
             E.KillNamed();
         }, 0.9f, 1f);
-        E.Track(Fx.Telegraph(at, 1.4f, 3f, Palette.Danger));
+        E.Track(Fx.Telegraph(at, 1.4f, 3f, Palette.Danger, M.Def.Element));
         E.After(3f, () =>
         {
             if (_pile == null || !E.Alive) return;
@@ -306,7 +306,7 @@ internal sealed class WhiteShadow : RareScript
     {
         _pounce = 4f;
         Vector2 at = E.HeroPos;
-        E.Track(Fx.Telegraph(at, 1.8f, 0.8f, Palette.Danger));
+        E.Track(Fx.Telegraph(at, 1.8f, 0.8f, Palette.Danger, M.Def.Element));
         E.After(0.8f, () =>
         {
             if (!E.Alive) return;
@@ -498,7 +498,7 @@ internal sealed class VeilWife : RareScript
         if (!E.Alive || !E.HeroOk) { E.Then(1f, Drop); return; }
         _drops++;
         Vector2 at = E.HeroPos;
-        E.Track(Fx.Telegraph(at, 2.2f, 1f, Palette.Danger));
+        E.Track(Fx.Telegraph(at, 2.2f, 1f, Palette.Danger, M.Def.Element));
         E.Then(1f, () =>
         {
             Mech("drop");
@@ -1185,7 +1185,7 @@ internal sealed class Foreman : RareScript
     {
         Mech("bell");
         Snd.At("bell_toll", M.GlobalPosition, 0.9f);
-        Fx.Ring(M.GlobalPosition + Vector3.Up * 0.3f, 20f, Palette.Ember, 0.6f);
+        Fx.Ring(M.GlobalPosition + Vector3.Up * 0.3f, 20f, Palette.Ember, 0.6f, Sigil.Arcane);
         foreach (var m in E.HostilesIn(M.Pos2, 20f)) if (m != M) { m.Enrage(10f); Fx.BuffAura(m, Element.Fire, 10f, false); }
         if (E.AliveAdds() < 2) for (int i = 0; i < 2; i++) E.SummonAfter(0.8f, "forge_thrall", E.Near(M.Pos2, 3f, 7f), "fiend");
     }
@@ -1308,7 +1308,7 @@ internal sealed class SlagFerry : RareScript
         if (!E.HeroOk) return;
         Mech("wade");
         Vector2 bank = E.Walk(E.HeroPos + E.DirToHero(E.HeroPos) * 0f);
-        E.Track(Fx.Telegraph(E.HeroPos, 2f, 1.4f, Palette.Danger));
+        E.Track(Fx.Telegraph(E.HeroPos, 2f, 1.4f, Palette.Danger, M.Def.Element));
         M.Busy(1.4f, null);
         E.Then(1.4f, () =>
         {

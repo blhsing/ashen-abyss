@@ -25,6 +25,7 @@ namespace AshenAbyss;
 ///   --gfx-zoom=1.2           camera zoom
 ///   --gfx-novsync            uncapped frame rate while measuring
 ///   --gfx-fx                 spawn a gallery of ground zones, telegraphs, bursts and loot beams round the hero before each shot
+///                            (--gfx-fx=telec|telecf|telek|telekf|telel|teler|telemix|telering: the ground sigils of every school, see TeleGallery)
 ///   --gfx-stay               do not quit after the last area
 ///   a tour stop may carry a placement: label=area@behind:tree:2 stands the hero just north of (behind, seen from the
 ///   lens) the 3rd nearest prop slot of that category; consecutive stops in the same area do not reload it
@@ -806,6 +807,77 @@ public partial class EnvProbe : Node
 
     // ───────────── effect gallery ─────────────
 
+    /// <summary>
+    /// The ground sigils laid out for review, all filling together so one shot shows them at the same moment (the
+    /// gallery appears 1.6 s before the first shot, which finds the marks half filled):
+    ///   telec / telecf   circles of the eight schools, hostile / friendly      telek / telekf   cones
+    ///   telel            lines      teler   rings (donuts)      telering   the expanding rings of Fx.Ring
+    ///   telemix          a crowded floor: every shape, hostile and friendly, large and small
+    ///   telestress       48 large marks over the whole view for 14 s (fill-rate measurement)
+    /// Order of the schools: fire, frost, lightning, poison / shadow, blade, holy, arcane.
+    /// </summary>
+    private static void TeleGallery(Vector2 c, string what)
+    {
+        Sigil[] kinds = { Sigil.Fire, Sigil.Frost, Sigil.Lightning, Sigil.Poison, Sigil.Shadow, Sigil.Blade, Sigil.Holy, Sigil.Arcane };
+        Color[] cols =
+        {
+            Palette.Element(Element.Fire), Palette.Element(Element.Frost), Palette.Element(Element.Lightning), Palette.Element(Element.Poison),
+            Palette.Element(Element.Shadow), Palette.Element(Element.Physical), new Color(1f, 0.86f, 0.5f), new Color(0.7f, 0.6f, 1f),
+        };
+        const float fill = 3.2f;
+        bool friendly = what.EndsWith('f');
+        Vector2 up = new(0f, -1f);                                                    // up the screen
+        Vector2 Cell(int i) => c + new Vector2(-6.3f + (i % 4) * 4.2f, i < 4 ? -7.1f : -2.7f);
+        Color Tint(int i) => friendly ? cols[i] : Palette.Danger;
+        switch (what.TrimEnd('f'))
+        {
+            case "telec":
+                for (int i = 0; i < 8; i++) Fx.Telegraph(Cell(i), 1.95f, fill, Tint(i), friendly, kinds[i]);
+                break;
+            case "telek":
+                for (int i = 0; i < 8; i++) Fx.TelegraphCone(Cell(i) - up * 1.7f, up, 3.1f, 84f, fill, Tint(i), friendly, kinds[i]);
+                break;
+            case "telel":
+                for (int i = 0; i < 8; i++) Fx.TelegraphLine(c + new Vector2(-7.35f + i * 2.1f, -0.6f), up, 8.2f, 1.8f, fill, Palette.Danger, kinds[i]);
+                break;
+            case "teler":
+                for (int i = 0; i < 8; i++) Fx.TelegraphRing(Cell(i), 0.85f, 1.95f, fill, Palette.Danger, kinds[i]);
+                break;
+            case "telering":
+                for (int i = 0; i < 8; i++) Fx.Ring(World.To3(Cell(i), 0.1f), 1.9f, cols[i], 4.6f, kinds[i]);
+                break;
+            case "telestress":
+                // 48 large, long-lived marks over the whole view: the worst case for the fill rate (read gpu ms in perf.txt)
+                for (int i = 0; i < 48; i++)
+                {
+                    Vector2 at = c + new Vector2(-7.5f + (i % 8) * 2.15f, -9f + (i / 8) * 2.1f);
+                    switch (i % 4)
+                    {
+                        case 0: Fx.Telegraph(at, 3.2f, 14f, Palette.Danger, kinds[i % 8]); break;
+                        case 1: Fx.TelegraphCone(at, up.Rotated(i), 5f, 100f, 14f, Palette.Danger, false, kinds[i % 8]); break;
+                        case 2: Fx.TelegraphLine(at, up.Rotated(i * 0.7f), 7f, 2.2f, 14f, Palette.Danger, kinds[i % 8]); break;
+                        default: Fx.TelegraphRing(at, 1.4f, 3.4f, 14f, Palette.Danger, kinds[i % 8]); break;
+                    }
+                }
+                break;
+            default:
+                // a crowded floor: what a boss room looks like when everything goes off at once
+                Fx.TelegraphRing(c + new Vector2(0f, -4.6f), 2.2f, 5.4f, fill, Palette.Danger, Sigil.Frost);
+                Fx.TelegraphCone(c + new Vector2(-7.4f, -1.2f), new Vector2(1f, -0.35f), 5.2f, 80f, fill * 0.9f, Palette.Danger, false, Sigil.Fire);
+                Fx.TelegraphCone(c + new Vector2(7.6f, -8.2f), new Vector2(-1f, 0.5f), 4.6f, 110f, fill * 1.2f, Palette.Danger, false, Sigil.Blade);
+                Fx.TelegraphLine(c + new Vector2(-7.6f, -9.4f), new Vector2(1f, 0.16f), 9f, 2.2f, fill * 1.1f, Palette.Danger, Sigil.Lightning);
+                Fx.TelegraphLine(c + new Vector2(6.9f, 1.6f), new Vector2(-0.3f, -1f), 6.5f, 1.6f, fill * 0.8f, Palette.Danger, Sigil.Shadow);
+                Fx.Telegraph(c + new Vector2(5.3f, -3.4f), 1.6f, fill * 1.3f, Palette.Danger, Sigil.Poison);
+                Fx.Telegraph(c + new Vector2(-4.9f, -6.3f), 1.25f, fill * 0.7f, Palette.Danger, Sigil.Shadow);
+                Fx.Telegraph(c + new Vector2(2.9f, 1.3f), 1.1f, fill, Palette.Danger);
+                Fx.Telegraph(c + new Vector2(-3.4f, 0.9f), 0.8f, fill * 1.4f, Palette.Danger, Sigil.Arcane);
+                Fx.Telegraph(c + new Vector2(-2.3f, -2.9f), 1.7f, fill, cols[2], true, Sigil.Lightning);
+                Fx.Telegraph(c + new Vector2(2.3f, -8.6f), 1.5f, fill * 1.2f, cols[6], true, Sigil.Holy);
+                Fx.TelegraphCone(c, up, 3.2f, 90f, fill, cols[0], true, Sigil.Fire);
+                break;
+        }
+    }
+
     /// <summary>Lays out one of every ground effect round the hero so a single screenshot reviews them all.</summary>
     private static void Gallery(Game g)
     {
@@ -813,6 +885,8 @@ public partial class EnvProbe : Node
         var root = World.Root;
         if (p == null || root == null) return;
         Vector2 c = new(p.GlobalPosition.X, p.GlobalPosition.Z);
+        string what = _fxArg ?? A("gfx-fx");
+        if (what != null && what.StartsWith("tele")) { TeleGallery(c, what); return; }
         Element[] els = { Element.Fire, Element.Frost, Element.Lightning, Element.Poison, Element.Shadow, Element.Physical };
 
         void Zone(Vector2 at, float r, Element el, bool hostile)

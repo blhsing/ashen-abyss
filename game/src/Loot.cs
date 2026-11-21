@@ -341,7 +341,7 @@ public static class Loot
         try
         {
             Vector3 pos = World.To3(at, 0.15f);
-            Fx.Ring(pos, 0.8f, c, 0.45f);
+            Fx.Ring(pos, 0.8f, c, 0.45f, Sigil.None);
             Snd.At("item_pickup", pos, 0.45f);
         }
         catch (Exception e) { Log.Error(Cat, "material pickup effects failed", e); }
@@ -439,7 +439,7 @@ public static class Loot
                     else if (parent != node) { beam.Reparent(node, false); beam.Position = Vector3.Zero; }
                 }
             }
-            if (it.Rarity >= Rarity.Legendary) Fx.Ring(pos + Vector3.Up * 0.1f, 1.8f, Palette.Rarity(it.Rarity), 0.7f);
+            if (it.Rarity >= Rarity.Legendary) Fx.Ring(pos + Vector3.Up * 0.1f, 1.8f, Palette.Rarity(it.Rarity), 0.7f, Sigil.None);
             Snd.At(DropSfx[r], pos, it.Rarity >= Rarity.Rare ? 1f : 0.55f);
         }
         catch (Exception e) { Log.Error(Cat, "loot landing effects failed", e); }
@@ -698,7 +698,7 @@ public static class Loot
             Vector3 pos = World.To3(at, 0.5f);
             Snd.At("chest_open", pos);
             Fx.Burst(pos, Element.Fire, 1.1f + 0.3f * quality, 0.3f + 0.15f * quality);
-            Fx.Ring(World.To3(at, 0.1f), 1.3f + 0.3f * quality, Palette.Gold, 0.5f);
+            Fx.Ring(World.To3(at, 0.1f), 1.3f + 0.3f * quality, Palette.Gold, 0.5f, Sigil.None);
         }
         catch (Exception e) { Log.Error(Cat, "chest effects failed", e); }
 

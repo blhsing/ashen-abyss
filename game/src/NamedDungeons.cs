@@ -622,7 +622,7 @@ internal sealed class Abbess : BossScript
         Take(2.1f);
         Anim("Spell_Simple_Enter", 0.6f);
         _rest = 2f; _cast = false; _wasBusy = World.P?.Busy ?? false;
-        E.Track(Fx.TelegraphRing(E.HeroPos, 0f, 2.6f, 2f, new Color(0.85f, 0.85f, 1f)));
+        E.Track(Fx.TelegraphRing(E.HeroPos, 0f, 2.6f, 2f, new Color(0.85f, 0.85f, 1f), Sigil.Arcane));
         E.Warn("休止——此刻別施放任何技能");
         Snd.At("bell_toll", M.GlobalPosition, 0.6f);
     }
