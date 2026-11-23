@@ -3,7 +3,7 @@
 一款原創的黑暗奇幻動作角色扮演遊戲，全程使用繁體中文，以 Godot 4.7（.NET／C#）製作。
 溫暖世界的日爐已然熄滅；英雄帶著最後的餘燼，穿越七大區域，直抵其下的深淵。
 
-**0.3.0 版是可遊玩的原型。** 從第一個區域到結局的主線劇情皆可完整遊玩，但仍有許多部分正在製作中（見下方〈0.3.0 版現況〉）。
+**0.4.0 版是可遊玩的原型。** 從第一個區域到結局的主線劇情皆可完整遊玩，但仍有許多部分正在製作中（見下方〈0.4.0 版現況〉）。
 
 ## 遊戲畫面
 
@@ -67,7 +67,7 @@
 
 ### 安裝程式（Windows）
 
-最簡單的安裝方式：從[發行頁](https://github.com/blhsing/ashen-abyss/releases/latest)下載 **`AshenAbyss-0.3.0-Setup.exe`**（約 5 MB）並執行。安裝程式會：
+最簡單的安裝方式：從[發行頁](https://github.com/blhsing/ashen-abyss/releases/latest)下載 **`AshenAbyss-0.4.0-Setup.exe`**（約 5 MB）並執行。安裝程式會：
 
 - 從 GitHub 下載遊戲檔案（約 3.3 GB），逐一核對 SHA-256，再解壓縮安裝（安裝後約 3.7 GB）；
 - 預設安裝到 `%LOCALAPPDATA%\Programs\AshenAbyss`，**不需要系統管理員權限**，也可以選擇其他資料夾；
@@ -91,16 +91,16 @@
 | `/KEEPPARTS` | 安裝後保留下載的分割檔 |
 
 ```bat
-AshenAbyss-0.3.0-Setup.exe /VERYSILENT /SUPPRESSMSGBOXES /DIR="D:\Games\AshenAbyss" /LOG="%TEMP%\aa_setup.log"
+AshenAbyss-0.4.0-Setup.exe /VERYSILENT /SUPPRESSMSGBOXES /DIR="D:\Games\AshenAbyss" /LOG="%TEMP%\aa_setup.log"
 ```
 
 結束代碼：0＝成功、2＝已取消、10＝參數錯誤、11＝無法取得發行清單、12＝下載失敗、13＝Proxy 驗證失敗、14＝檔案驗證失敗、15＝磁碟空間不足、16＝本機分割檔不完整、17＝解壓縮失敗、18＝遊戲正在執行、19＝無法寫入資料夾。完整的參數與說明見 [`tools/installer/README.md`](tools/installer/README.md)。
 
-不想用安裝程式的話，也可以自行下載所有 `AshenAbyss-0.3.0-win64.7z.*` 分割檔，用 [7-Zip](https://www.7-zip.org/) 解壓縮後執行 `AshenAbyss.exe`。
+不想用安裝程式的話，也可以自行下載所有 `AshenAbyss-0.4.0-win64.7z.*` 分割檔，用 [7-Zip](https://www.7-zip.org/) 解壓縮後執行 `AshenAbyss.exe`。
 
 ### 手動安裝
 
-1. 從 [最新發行頁](../../releases/latest)下載遊戲本體的所有分割檔：`AshenAbyss-0.3.0-win64.7z.001`、`.002`……（GitHub 限制每個發行檔案不得超過 2 GB，因此遊戲以分割壓縮檔提供）。
+1. 從 [最新發行頁](../../releases/latest)下載遊戲本體的所有分割檔：`AshenAbyss-0.4.0-win64.7z.001`、`.002`……（GitHub 限制每個發行檔案不得超過 2 GB，因此遊戲以分割壓縮檔提供）。
 2. 將所有分割檔放在同一個資料夾，用 [7-Zip](https://www.7-zip.org/) 開啟 `.001` 檔（它會自動接合各分割檔）。
 3. 解壓縮後執行 `AshenAbyss.exe`。遊戲以全螢幕啟動，同一時間只會執行一份。
 
@@ -112,7 +112,7 @@ AshenAbyss-0.3.0-Setup.exe /VERYSILENT /SUPPRESSMSGBOXES /DIR="D:\Games\AshenAby
 |---|---|
 | 存檔（8 個欄位）與設定 | `%APPDATA%\AshenAbyss\saves`、`%APPDATA%\AshenAbyss\settings.json` |
 | 紀錄檔（回報問題時請附上） | `%APPDATA%\AshenAbyss\logs` |
-| 截圖（PrtSc 或 F12） | `圖片\AshenAbyss` |
+| 截圖（PrtSc 或 F12；設定「截圖方式」為存成檔案時） | `圖片\AshenAbyss` |
 
 ## 操作方式
 
@@ -127,9 +127,12 @@ AshenAbyss-0.3.0-Setup.exe /VERYSILENT /SUPPRESSMSGBOXES /DIR="D:\Games\AshenAby
 | M 或 Tab／J | 地圖／任務日誌 |
 | 按住 Alt | 顯示所有掉落物名稱 |
 | Esc | 關閉面板／暫停選單 |
-| PrtSc 或 F12／F11 | 截圖／切換全螢幕 |
+| PrtSc 或 F12 | 擷取畫面（預設複製到剪貼簿） |
+| F11 | 切換全螢幕 |
 | F8 | AI 代打：由 AI 接手遊玩；點擊地面或按移動鍵即可接管 |
-| Shift＋左鍵（行囊） | 標記為廢品 · Ctrl＋左鍵（行囊）：丟在地上 |
+| F1–F6／E | 載入裝備組 1–6／在最近兩組間快速切換 |
+| G | 武器指南（指向武器或副手時開啟該武器的說明） |
+| 行囊中：Shift＋左鍵或 R／X | 標記回收／標記丟棄 · L 鎖定 · F 篩選 · Ctrl＋左鍵丟在地上 |
 
 切換到其他視窗（Alt-Tab）時遊戲會自動暫停。點擊攻擊範圍外的敵人時，英雄會跑到敵人面前再出手。
 
@@ -141,17 +144,17 @@ AshenAbyss-0.3.0-Setup.exe /VERYSILENT /SUPPRESSMSGBOXES /DIR="D:\Games\AshenAby
 
 1. 安裝 [Godot 4.7.2 .NET](https://godotengine.org/) 編輯器與 .NET 10 SDK。
 2. 複製（clone）本儲存庫。
-3. 從發行頁下載 `AshenAbyss-0.3.0-assets.7z.001`（及之後的分割檔，如有），解壓縮到儲存庫根目錄（會填入 `game/assets/…`；對應的 `.import` 檔已在儲存庫中）。
+3. 從發行頁下載 `AshenAbyss-0.4.0-assets.7z.001`（及之後的分割檔，如有），解壓縮到儲存庫根目錄（會填入 `game/assets/…`；對應的 `.import` 檔已在儲存庫中）。
 4. 用編輯器開啟 `game/project.godot`（第一次匯入需要數分鐘），或執行 `tools\import.ps1` 後再執行 `tools\run.ps1`。
 5. `tools\install.ps1` 會匯出發行版本，並安裝到本機、建立開始功能表捷徑。
 
 `tools\` 中的腳本需要專案位於較短的路徑：它們會以 `subst` 將專案對應為 `Y:` 磁碟機（避開 Windows 的路徑長度限制）。程式架構、測試參數與工具腳本的說明請見 `ARCHITECTURE.md`。
 
-## 0.3.0 版現況
+## 0.4.0 版現況
 
-已完成：8 種職業、7 大區域與一座城鎮、14 座支線地城（含具名首領）、含 7 位區域首領的主線劇情、28 名稀有菁英、7 位要塞首領與 4 位世界首領、帶詞綴的裝備、傳奇威能、鑲嵌與工藝、技能樹、燼紋盤、世界階級、深淵裂隙、8 個存檔欄位、點擊攻擊、情境滑鼠游標、展示模式、AI 代打、行囊中的即時 3D 角色、點陣圖示、黑暗光影、AI 生成音樂（19 首，戰鬥音樂交叉淡入）與台灣口音配音（207 句中的 125 句）。
+已完成：8 種職業、7 大區域與一座城鎮、14 座支線地城（含具名首領）、含 7 位區域首領的主線劇情、完整怪物圖鑑（129 種怪物與 28 種地區變體）、28 名稀有菁英、7 位要塞首領、4 位世界首領與燼階（8 位巔峰首領）、依實際裝備組成的 3D 英雄外觀、主手／副手／雙手／雙持武器系統（17 種武器與 5 種副手）與武器指南、3D 物品圖示與掉落模型、裝備比較、行囊篩選與批次處理、6 組裝備組、共用儲藏箱、喚魂師的亡者名冊與三種魔像（含鐵魔像鑄造）、帶詞綴的裝備、傳奇威能、鑲嵌與工藝、技能樹、燼紋盤、世界階級、深淵裂隙、8 個存檔欄位與「從離開的地方繼續」、地圖任務目標標記、依元素裝飾的地面法陣、點擊攻擊、情境滑鼠游標、展示模式、AI 代打（閃避預警、拾取與管理裝備，八個職業皆已打完劇情）、行囊中的即時 3D 角色、黑暗光影、AI 生成音樂（19 首）與台灣口音配音（207 句全部完成）。
 
-製作中：完整怪物圖鑑（129 種怪物、28 種地區變體與新的怪物行為；人形 83 種與非人形 46 種模型皆已完成，但尚未在完整劇情中測試，因此一般遊戲仍使用原本的怪物陣容）、巔峰首領階梯、「從離開的地方繼續」的完整存檔還原、主題傳送門、華麗介面邊框、其餘配音。已知問題列於 `QA_NOTES.md`。
+製作中（美術）：影獵手與縛淵術士的部分護甲外觀、裸身皮膚質感、長袍與披布的腿部穿模、雙手武器待機與奔跑、拉弓與左手攻擊動作、魔像與骸骨術士的正式模型、主題傳送門、華麗介面邊框。已知問題列於 `QA_NOTES.md`。
 
 ## 致謝與授權
 
