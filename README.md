@@ -69,7 +69,7 @@
 
 最簡單的安裝方式：從[發行頁](https://github.com/blhsing/ashen-abyss/releases/latest)下載 **`AshenAbyss-0.4.0-Setup.exe`**（約 5 MB）並執行。安裝程式會：
 
-- 從 GitHub 下載遊戲檔案（約 3.3 GB），逐一核對 SHA-256，再解壓縮安裝（安裝後約 3.7 GB）；
+- 從 GitHub 下載遊戲檔案（約 3.9 GB），逐一核對 SHA-256，再解壓縮安裝（安裝後約 6.0 GB）；
 - 預設安裝到 `%LOCALAPPDATA%\Programs\AshenAbyss`，**不需要系統管理員權限**，也可以選擇其他資料夾；
 - 預設使用系統（瀏覽器）的 Proxy 設定，也可以在精靈中改用自訂 Proxy（含帳號密碼）或直接連線；下載中斷後再次執行會接續下載；
 - 偵測到已安裝的版本時可以**就地升級**；存檔與設定（`%APPDATA%\AshenAbyss`）不會被安裝、升級或移除動到；
@@ -111,6 +111,7 @@ AshenAbyss-0.4.0-Setup.exe /VERYSILENT /SUPPRESSMSGBOXES /DIR="D:\Games\AshenAby
 | 項目 | 位置 |
 |---|---|
 | 存檔（8 個欄位）與設定 | `%APPDATA%\AshenAbyss\saves`、`%APPDATA%\AshenAbyss\settings.json` |
+| 共用儲藏箱（所有角色共用；專家模式另一個） | `%APPDATA%\AshenAbyss\saves\stash.json`、`stash_hc.json`（各有 `.bak` 備份） |
 | 紀錄檔（回報問題時請附上） | `%APPDATA%\AshenAbyss\logs` |
 | 截圖（PrtSc 或 F12；設定「截圖方式」為存成檔案時） | `圖片\AshenAbyss` |
 
