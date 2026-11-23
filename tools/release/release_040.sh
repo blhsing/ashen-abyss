@@ -22,7 +22,7 @@ powershell -NoProfile -ExecutionPolicy Bypass -File 'Y:\tools\installer\build_in
 [ -f $R/installer/AshenAbyss-$V-Setup.exe ] && [ -f $R/installer/AshenAbyss-$V-manifest.json ] || { say "STOP: installer or manifest missing"; exit 1; }
 ls -la $R/installer | awk 'NF>5{print $5, $9}' >> $log
 say "create release"
-gh release view v$V --repo blhsing/ashen-abyss --json isDraft --jq .isDraft 2>/dev/null | grep -q true && gh release delete v$V --repo blhsing/ashen-abyss --yes --cleanup-tag >> $log 2>&1
+gh release view v$V --repo blhsing/ashen-abyss >/dev/null 2>&1 && { say "replacing existing v$V (user: re-release as 0.4.0)"; gh release delete v$V --repo blhsing/ashen-abyss --yes --cleanup-tag >> $log 2>&1; }
 gh release create v$V --repo blhsing/ashen-abyss --title "燼淵 Ashen Abyss $V" --notes-file /y/release_out/notes_040.md --target main --latest $R/installer/AshenAbyss-$V-Setup.exe $R/installer/AshenAbyss-$V-manifest.json >> $log 2>&1 || { say "STOP: release create failed"; exit 1; }
 for f in $R/AshenAbyss-$V-win64.7z.* $R/AshenAbyss-$V-assets.7z.*; do
   for try in 1 2 3; do say "upload $(basename $f) try $try"; gh release upload v$V --repo blhsing/ashen-abyss "$f" --clobber >> $log 2>&1 && break; sleep 20; done
