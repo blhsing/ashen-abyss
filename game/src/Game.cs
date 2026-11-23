@@ -644,7 +644,7 @@ public partial class Game : Node
 
         ApplyHarnessToSave(d);
         Log.Guard("stash", () => SharedStash.Attach(d, slot, isNew));      // the account's shared stash, read fresh (SharedStash.cs)
-        try { Hero = new Hero(d); Hero.PreloadSetModels(); }      // RENDER: every saved set's models loaded and pinned (instant swaps)
+        try { Hero = new Hero(d); Hero.PreloadSetModels(); GearCatalog.ReleaseShowcase(); }      // RENDER: every saved set's models loaded and pinned (instant swaps)
         catch (Exception e)
         {
             Log.Error("game", "building the hero failed", e);

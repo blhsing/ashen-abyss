@@ -1,0 +1,191 @@
+# README 0.4.0: town + panels, lampknight 50 (run: --new=lampknight --level=50 --paragon=20 --tier=2 --gear --hands=off --area=town --named=none)
+wait 4
+shot town_1
+wait 2
+shot town_2
+give set
+give legendary Helm
+give legendary Weapon
+give rare Boots
+give magic Gloves
+give common Pants
+give unique Chest
+give rare OffHand
+gold 250000
+mats 300
+points 4
+ppoints 30
+wait 0.5
+open inventory
+wait 2.5
+shot inv
+hover 1517,533
+wait 1.2
+shot tip_lw
+hover 1289,647
+wait 1.2
+shot tip_lw2
+hover 1118,590
+wait 1.2
+shot tip_uw
+hover 1346,533
+wait 1.2
+shot tip_rw
+unhover
+key F
+wait 0.9
+shot filter
+click @低於目前等級的普通與魔法
+wait 0.8
+shot filter_preset
+click @全部標記回收
+wait 0.8
+shot filter_marked
+key F
+wait 0.8
+hover 1061,647
+key L
+wait 0.4
+unhover
+wait 0.6
+shot bag_badges
+sets
+wait 0.6
+click @裝備組
+wait 1.2
+shot sets
+close
+wait 0.4
+open skills
+wait 1.2
+shot skills
+hover 850,142
+wait 0.9
+shot skills_tip
+unhover
+close
+wait 0.4
+open paragon
+wait 1.5
+shot paragon
+close
+wait 0.4
+open map
+wait 1.2
+shot map_area
+click @世界
+wait 1.2
+shot map_world
+close
+wait 0.4
+open vendor:smith
+wait 1.0
+click @淬火
+wait 0.7
+click 258,265
+wait 0.6
+unhover
+wait 0.4
+shot smith_temper
+click @精鑄
+wait 0.7
+click 258,265
+wait 0.6
+unhover
+wait 0.4
+shot smith_mw
+close
+wait 0.4
+open quests
+wait 1.0
+shot quests
+close
+wait 0.4
+open dialogue:elder_first
+wait 2.8
+shot dialogue_elder
+key Escape
+wait 0.8
+close
+open tier
+wait 1.0
+shot tier
+close
+wait 0.4
+open settings
+wait 1.0
+shot settings
+close
+wait 0.4
+open named_ladder
+wait 1.2
+shot ladder
+close
+wait 0.4
+open guide:lampknight:shield
+wait 1.5
+shot guide_shield
+open guide:lampknight:polearm
+wait 1.5
+shot guide_polearm
+open guide
+wait 1.5
+shot guide_rules
+close
+wait 0.4
+give set
+give legendary Ring
+give rare Amulet
+open vendor:stash
+wait 1.2
+click 229,229
+click 286,229
+click 343,229
+click 400,229
+click 457,229
+click 514,229
+click 571,229
+click 628,229
+click 685,229
+click 742,229
+click 229,229
+click 286,229
+click 343,229
+click 400,229
+click 457,229
+click 514,229
+click 571,229
+click 628,229
+wait 0.5
+click 980,216
+wait 0.5
+click 229,229
+click 286,229
+click 343,229
+click 400,229
+click 457,229
+click 514,229
+click 571,229
+click 628,229
+click 685,229
+wait 0.5
+click 1090,216
+wait 0.5
+click 229,229
+click 286,229
+click 343,229
+click 400,229
+click 457,229
+wait 0.5
+click 872,216
+wait 0.8
+unhover
+wait 0.4
+shot stash
+hover 855,280
+wait 1.0
+shot stash_tip
+unhover
+close
+wait 0.4
+quit

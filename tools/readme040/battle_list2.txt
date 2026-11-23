@@ -1,0 +1,14 @@
+wastes_s1|--new=emberblade --level=14 --tier=1 --hands=2h --area=wastes --seed=4111 --spawn=husk_huddle,reaver_brute,sexton_beetle,char_walker,reaver_cutter,husk_chained,sexton_grub,reaver_hook
+wastes_s2|--new=lampknight --level=14 --tier=1 --hands=off --area=wastes --seed=4112 --spawn=hauler_yoke,char_walker,reaver_firepot,dusk_hound,dusk_hound,sexton_beetle,husk_wailer
+frost_s1|--new=forgebody --level=22 --tier=1 --area=frost --seed=4211 --spawn=rime_breaker,cf_hulk,rime_horn,cf_flicker,cf_flicker,rime_sentry,dusk_lynx,reaver_cutter
+frost_s2|--new=astromancer --level=22 --tier=1 --hands=2h --area=frost --seed=4212 --spawn=dusk_yak,cf_spirit,rime_packbeast,cf_mite,cf_flicker,rime_horn,reaver_brute
+crypt_s1|--new=hunter --level=22 --tier=1 --area=crypt --seed=4311 --spawn=shroud_matron,shroud_ling,shroud_ling,shroud_weaver,effigy_knight,bone_amalgam,shroud_wrapped,bone_pallbearer
+crypt_s2|--new=soulbinder --level=22 --tier=1 --hands=off --area=crypt --seed=4312 --spawn=effigy_caryatid,effigy_knight,effigy_orant,effigy_hound,cult_snuffer,bone_urnbearer,wraith_mourner
+mire_s1|--new=wildsoul --level=24 --tier=1 --area=mire --seed=4411 --spawn=lamp_colony,lamp_bearer,lamp_bomber,bog_fisher,bog_toad,lurk_spitter,lamp_crawler,lamp_crawler
+mire_s2|--new=astromancer --level=24 --tier=1 --hands=off --area=mire --seed=4412 --spawn=lurk_elder,bog_fisher,bog_netter,lamp_bearer,lurk_leech,lurk_leech,dusk_gadfly
+sands_s1|--new=pactbinder --level=34 --tier=1 --area=sands --seed=4511 --spawn=rust_stinger,dune_mirror,dune_disc,dune_stormjar,rust_gear,rust_helm,rust_helm,dune_masker
+sands_s2|--new=forgebody --level=34 --tier=1 --area=sands --seed=4512 --spawn=engine_carrier,dune_mirror,rust_stinger,rust_locust,rust_jar,dune_disc,engine_winder
+sanctum_s1|--new=emberblade --level=40 --tier=1 --hands=dual --area=sanctum --seed=4611 --spawn=bell_clapper,wax_dripper,bell_hood,wax_sealed,wax_wick,hush_blank,cult_flagellant,wax_chandler
+sanctum_s2|--new=lampknight --level=40 --tier=1 --hands=2h --area=sanctum --seed=4612 --spawn=hush_mouth,hush_blank,bell_hanging,wax_sealed,effigy_knight,hush_ribwalker,hush_ribwalker
+abyss_s1|--new=wildsoul --level=46 --paragon=8 --tier=2 --area=abyss --seed=4711 --spawn=forge_hammer,fiend_maw,forge_tongs,forge_hound,forge_hound,fiend_caller,hush_mute,forge_pourer
+abyss_s2|--new=hunter --level=46 --paragon=8 --tier=2 --area=abyss --seed=4712 --spawn=hauler_stoker,hush_mute,fiend_wing,hush_beast,forge_hammer,ash_weeper,hush_ribwalker

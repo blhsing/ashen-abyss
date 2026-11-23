@@ -848,6 +848,7 @@ public partial class InventoryUi : UiPanel
     private PanelContainer _dollFrame, _filterFrame;
     private VBoxContainer _filterBody;
     private ScrollContainer _filterScroll;
+    private VBoxContainer _filterAct;
     private bool _filterOn;
     private readonly BagFilter _filter = new();
     private int _tab;
@@ -1048,7 +1049,16 @@ public partial class InventoryUi : UiPanel
         _filterBody.AddThemeConstantOverride("separation", 6);
         // it scrolls inside exactly the doll's height, so the panel never grows (larger text sizes scroll instead)
         _filterScroll = ItemUi.Scroll(_filterBody, Vector2.Zero);
-        _filterFrame.AddChild(_filterScroll);
+        // the key hint is a footer under the scroll area: always whole, never scrolled away or clipped (README pass)
+        var filterCol = new VBoxContainer();
+        filterCol.AddThemeConstantOverride("separation", 4);
+        _filterScroll.SizeFlagsVertical = SizeFlags.ExpandFill;
+        filterCol.AddChild(_filterScroll);
+        _filterAct = new VBoxContainer();                       // the 符合 N 件 / bulk-mark row: pinned, never cut by the scroll edge
+        filterCol.AddChild(UiTheme.Rule());
+        filterCol.AddChild(_filterAct);
+        filterCol.AddChild(UiTheme.Wrapped(UiTheme.Label("R 回收　X 丟棄　L 鎖定　Shift＋R／X 全部標記　C 清除　F 返回", UiTheme.FsCaption, UiTheme.Dim)));
+        _filterFrame.AddChild(filterCol);
         right.AddChild(_filterFrame);
         _moneyBox = new HBoxContainer { Alignment = BoxContainer.AlignmentMode.Center };
         right.AddChild(_moneyBox);
@@ -1514,7 +1524,7 @@ public partial class InventoryUi : UiPanel
         {
             float hh = _dollFrame.Size.Y > 0f ? _dollFrame.Size.Y : DollH + DollGrow + 2f * DollPad;
             _filterFrame.CustomMinimumSize = new Vector2(0, hh);
-            _filterScroll.CustomMinimumSize = new Vector2(0, MathF.Max(120f, hh - 2f * DollPad));
+            _filterScroll.CustomMinimumSize = new Vector2(0, 120f);   // the frame's height is the doll's; the scroll takes what the key footer leaves
         }
         Snd.Ui("ui_click");
         _dirty = true;
@@ -1556,6 +1566,7 @@ public partial class InventoryUi : UiPanel
     private void BuildFilter(Hero h)
     {
         ItemUi.Clear(_filterBody);
+        ItemUi.Clear(_filterAct);
         var head = new HBoxContainer();
         head.AddThemeConstantOverride("separation", 10);
         var title = UiTheme.Label("行囊篩選", UiTheme.FsRow, UiTheme.Gold, true);
@@ -1600,7 +1611,6 @@ public partial class InventoryUi : UiPanel
         }
         pre.AddChild(ItemUi.Btn("清除篩選", () => { _filter.Clear(); _dirty = true; }, UiTheme.FsCaption));
         _filterBody.AddChild(pre);
-        _filterBody.AddChild(UiTheme.Rule());
 
         var shown = _filter.Active ? _filter.Pick(h, ItemMarks.IsNew) : new List<Item>();
         int locked = shown.Count(i => h.IsProtected(i));
@@ -1609,9 +1619,7 @@ public partial class InventoryUi : UiPanel
         act.AddChild(ItemUi.Btn("全部標記回收", () => MarkShown(BagMark.Recycle), UiTheme.FsCaption));
         act.AddChild(ItemUi.Btn("全部標記丟棄", () => MarkShown(BagMark.Discard), UiTheme.FsCaption));
         act.AddChild(ItemUi.Btn("清除標記", ClearShownMarks, UiTheme.FsCaption));
-        _filterBody.AddChild(act);
-        var keys = UiTheme.Wrapped(UiTheme.Label("R 回收　X 丟棄　L 鎖定　Shift＋R／X 全部標記　C 清除　F 返回", UiTheme.FsCaption, UiTheme.Dim));
-        _filterBody.AddChild(keys);
+        _filterAct.AddChild(act);
     }
 
     /// <summary>Marks every item the filter shows (locked items and, for presets, legendary / unique pieces with a power are left alone).</summary>

@@ -749,9 +749,25 @@ public static class Quests
         }
     }
 
+    // [fixes] quest toasts raised by a conversation (TalkTo) or while one is on screen wait until it closes, so
+    // 「目標更新：…」 is not shown before the line that gives the objective has been read
+    private static bool _holdToasts;
+    private static readonly List<(string text, Color c)> _heldToasts = new();
+
+    /// <summary>Shows the quest toasts held back while a dialogue was up (DialogueUi calls this when it closes).</summary>
+    public static void ReleaseHeldToasts()
+    {
+        if (_heldToasts.Count == 0) return;
+        var held = _heldToasts.ToArray();
+        _heldToasts.Clear();
+        Log.Info("quest", $"{held.Length} toast(s) shown after the dialogue");
+        foreach (var (t, c) in held) Toast(t, c);
+    }
+
     private static void Toast(string text, Color c)
     {
         if (_silent || string.IsNullOrEmpty(text)) return;
+        if (_holdToasts || DialogueUi.Talking) { _heldToasts.Add((text, c)); return; }
         try { Game.I?.Hud?.Toast(text, c); }
         catch (Exception e) { Log.Error("quest", "toast failed", e); }
     }
@@ -1130,7 +1146,13 @@ public static class Quests
             result = lines != null && lines.Count > 0 ? new DialogueScript { Id = id ?? npcId, Lines = lines } : SmallTalk(npcId);
         }
         catch (Exception e) { Log.Error("quest", $"TalkTo({npcId}) failed", e); }
-        finally { End(); }
+        finally
+        {
+            _holdToasts = result != null;        // the caller opens this script next: its toasts wait for it to close
+            try { End(); } finally { _holdToasts = false; }
+            // safety: when no dialogue opened after all, show them at the end of the frame
+            if (result != null) Callable.From(() => { if (!DialogueUi.Talking) ReleaseHeldToasts(); }).CallDeferred();
+        }
         return result;
     }
 

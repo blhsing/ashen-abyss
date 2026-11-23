@@ -1,0 +1,52 @@
+# discovery: shots + layout dumps of the panels (town, lampknight 50)
+wait 5
+shot town0
+give set
+give legendary Helm
+give legendary Weapon
+give rare Boots
+give magic Gloves
+give common Pants
+give unique Chest
+gold 250000
+mats 300
+wait 0.5
+open inventory
+wait 2
+shot inv
+dump inv
+click @裝備組
+wait 1
+shot sets
+dump sets
+close
+wait 0.4
+open vendor:stash
+wait 1.2
+shot stash
+dump stash
+close
+wait 0.4
+open vendor:smith
+wait 1.2
+dump smith
+close
+wait 0.4
+open map
+wait 1.2
+shot map
+dump map
+close
+wait 0.4
+open named_ladder
+wait 1.2
+shot ladder
+dump ladder
+close
+wait 0.4
+open guide
+wait 1.2
+shot guide
+dump guide
+close
+quit

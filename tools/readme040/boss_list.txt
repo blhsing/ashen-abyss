@@ -1,0 +1,3 @@
+boss_c|--new=hunter --level=45 --paragon=8 --tier=1 --area=abyss_boss --seed=4911
+boss_d|--new=emberblade --level=24 --tier=1 --hands=2h --area=crypt_boss --seed=4912
+boss_e|--new=forgebody --level=22 --tier=1 --area=frost_boss --seed=4913

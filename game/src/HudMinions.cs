@@ -96,7 +96,7 @@ public partial class HudMinions : Control
             var art = MinionArt.OfKind(kind);
             var k = ClassBook.Kind(kind);
             _dead = !sys.GolemAlive;
-            _life = sys.GolemAlive ? sys.Golem.Life / Mathf.Max(1f, sys.Golem.MaxLife) : 1f - Mathf.Clamp(sys.ReformLeft / MinionSystem.ReformTime, 0f, 1f);
+            _life = sys.GolemAlive ? sys.Golem.Life / Mathf.Max(1f, sys.Golem.MaxLife) : 1f - Mathf.Clamp(sys.ReformLeft / Mathf.Max(1f, sys.ReformTotal), 0f, 1f);
             _name.Text = art?.Name ?? k?.Name ?? "魔像";
             _state.Text = sys.GolemAlive ? $"生命 {Mathf.Round(sys.Golem.Life)} / {Mathf.Round(sys.Golem.MaxLife)}" : $"重新塑成：{Mathf.Ceil(sys.ReformLeft)} 秒";
             sig = kind + (h.D.GolemForge?.Uid ?? "");

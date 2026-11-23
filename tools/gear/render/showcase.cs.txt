@@ -1,0 +1,34 @@
+
+    public static void Unpin(string owner) => Pins.Remove(owner);
+
+    private static readonly List<Resource> Held = new();
+    /// <summary>
+    /// Class select: the eight signature loadouts (GearSet.Showcase) and the eight base bodies are loaded on the loader
+    /// thread and kept, so switching classes in the selector never stalls. Game unpins them once a hero exists.
+    /// </summary>
+    public static void PreloadShowcase()
+    {
+        if (Off || Pins.ContainsKey("showcase")) return;
+        PreloadLoadouts("showcase", Enum.GetValues<ClassId>().Select(GearSet.Showcase).ToList());
+        if (Held.Count > 0) return;
+        var paths = Names.ClassKeys.Select(k => $"res://assets/chars/hero_{k}_base.glb").Where(ResourceLoader.Exists).ToList();
+        foreach (var p in paths) ResourceLoader.LoadThreadedRequest(p, "", true);
+        if (Engine.GetMainLoop() is not SceneTree tree) return;
+        var left = new List<string>(paths);
+        Action poll = null;
+        poll = () =>
+        {
+            for (int i = left.Count - 1; i >= 0; i--)
+            {
+                var st = ResourceLoader.LoadThreadedGetStatus(left[i]);
+                if (st == ResourceLoader.ThreadLoadStatus.InProgress) continue;
+                if (st == ResourceLoader.ThreadLoadStatus.Loaded && ResourceLoader.LoadThreadedGet(left[i]) is Resource r) Held.Add(r);
+                left.RemoveAt(i);
+            }
+            if (left.Count == 0) tree.ProcessFrame -= poll;
+        };
+        tree.ProcessFrame += poll;
+    }
+
+    /// <summary>The class select is left behind (a hero exists): its pinned models and bodies may be evicted again.</summary>
+    public static void ReleaseShowcase() { Pins.Remove("showcase"); Held.Clear(); }

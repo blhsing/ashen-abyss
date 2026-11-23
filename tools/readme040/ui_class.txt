@@ -1,0 +1,20 @@
+# README 0.4.0: class selection, relit (no hero created)
+wait 3
+menu class:lampknight
+wait 1.5
+shot class_lampknight_a
+wait 0.4
+shot class_lampknight_b
+menu class:emberblade
+wait 1.5
+shot class_emberblade_a
+wait 0.4
+shot class_emberblade_b
+menu class:astromancer
+wait 1.5
+shot class_astromancer_a
+wait 0.4
+shot class_astromancer_b
+menu title
+wait 1
+quit

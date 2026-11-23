@@ -1,0 +1,3 @@
+dung_s1|--new=astromancer --level=42 --tier=1 --hands=2h --area=abyss_d2 --seed=4821 --spawn=forge_hammer,forge_tongs,forge_hound,forge_hound,fiend_maw,forge_pourer,fiend_caller
+dung_s2|--new=astromancer --level=24 --tier=1 --hands=off --area=frost_d2 --seed=4822 --spawn=rime_breaker,cf_spirit,cf_flicker,cf_flicker,cf_mite,rime_horn,dusk_lynx
+golem_s1|--new=soulbinder --level=34 --tier=1 --golem=iron --forge --area=sands --seed=5011 --spawn=rust_stinger,dune_mirror,rust_gear,rust_helm,rust_helm,dune_disc

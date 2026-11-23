@@ -29,8 +29,11 @@ public partial class MinionSystem : Node
     public bool GolemAlive => Golem != null && GodotObject.IsInstanceValid(Golem) && !Golem.Dead;
     /// <summary>Seconds before a dead golem re-forms (0 when alive or not wanted).</summary>
     public float ReformLeft => Save?.GolemDead == true ? Save.GolemReform : 0f;
+    /// <summary>The full re-form time of the current death (20 s, 8 s with 重鑄), for the minion frame's bar.</summary>
+    public float ReformTotal { get; private set; } = ReformTime;
 
     private float _slow, _corpseT, _summonGrace;
+    private string _deathToast; private double _deathToastAt;
     private string _golemSig;                    // kind + forge uid the current golem was built for
     private Actor _heroTarget; private double _heroTargetT;
     private readonly Dictionary<ulong, float> _unseen = new();
@@ -77,6 +80,11 @@ public partial class MinionSystem : Node
         var h = H; var p = P;
         if (_summonGrace > 0f) _summonGrace -= dt;
         TickGolem(dt, h, p);
+        if (_deathToast != null && Game.I.Time >= _deathToastAt)
+        {
+            if (!GolemAlive && Save.GolemDead) Game.I.Hud?.Toast($"{_deathToast}崩解了，{Mathf.Ceil(Save.GolemReform):0} 秒後重新塑成。", new Color(0.8f, 0.75f, 0.7f));
+            _deathToast = null;
+        }
         foreach (var m in World.Minions.ToArray())
             if (m != null && GodotObject.IsInstanceValid(m) && !m.Dead && m.Ctl != null) m.Ctl.Tick(m, dt);
 
@@ -215,10 +223,11 @@ public partial class MinionSystem : Node
         var hero = H;
         s.GolemDead = true;
         s.GolemReform = hero != null && hero.HasBookUp("g_iron", 1) && (m.Ctl as GolemCtl)?.Kind == "g_iron" ? ReformFast : ReformTime;
+        sys.ReformTotal = s.GolemReform;
         s.GolemLife = 0f;
         sys.Golem = null; sys._golemSig = null;
         Log.Info("golem", $"{m.Def?.Name} fell (killer {(h.Source as Monster)?.Def?.Id ?? "?"}); re-forms in {s.GolemReform:0} s");
-        Game.I?.Hud?.Toast($"{m.Def?.Name}崩解了，{s.GolemReform:0} 秒後重新塑成。", new Color(0.8f, 0.75f, 0.7f));
+        sys._deathToast = m.Def?.Name; sys._deathToastAt = (Game.I?.Time ?? 0) + 1.0;      // shown a moment later, with the real time left (a command may re-form it first)
     }
 
     // ───────────────────────── the command ─────────────────────────
@@ -230,7 +239,7 @@ public partial class MinionSystem : Node
         if (h == null || p == null) return;
         if (!GolemAlive)
         {
-            if (ReformNow("re-formed by 魔像號令")) { Commands++; Fx.Telegraph(Golem.Pos2, 3f, 0.4f, new Color(0.8f, 0.85f, 0.75f), true, Sigil.Arcane); return; }
+            if (ReformNow("re-formed by 魔像號令")) { Commands++; _deathToast = null; Game.I?.Hud?.Toast("魔像已重新塑形", new Color(0.8f, 0.85f, 0.75f)); Fx.Telegraph(Golem.Pos2, 3f, 0.4f, new Color(0.8f, 0.85f, 0.75f), true, Sigil.Arcane); return; }
             // no golem to command (line sacrificed): the command is a weak burst of bone at the cursor
             p.Exec.Burst(aim, 3f, coef * 0.5f, Element.Physical, d, 0.2f, mul);
             Fx.Telegraph(aim, 3f, 0.2f, new Color(0.85f, 0.85f, 0.8f), true, Sigil.Arcane);

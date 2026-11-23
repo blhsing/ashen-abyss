@@ -1,0 +1,11 @@
+wait 5
+talk elder
+wait 1.5
+shot talk_open
+wait 2.0
+shot talk_open2
+key Escape
+wait 1.0
+shot talk_closed
+wait 1.5
+quit

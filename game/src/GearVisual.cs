@@ -112,6 +112,20 @@ public sealed class GearSet
         catch (Exception e) { Log.Error("gear", $"starter gear of {c} could not be built", e); return new GearSet { Class = c }; }
     }
 
+    /// <summary>
+    /// The class's signature look, for display before a hero exists (class select): t4 armour in all five slots and the
+    /// class's own weapon(s) of today's baked hero (ItemDb legacy base and companion) at v3. Never given to a hero.
+    /// </summary>
+    public static GearSet Showcase(ClassId c)
+    {
+        var g = new GearSet { Class = c };
+        for (int i = 0; i < 5; i++) g.Armor[i] = new ArmorPick { Slot = ArmorSlots[i], Tier = 4, Rarity = Rarity.Legendary, Model = GearCatalog.ArmorId(c, ArmorSlots[i], 4) };
+        var (m, o) = GearAdapter.Legacy(c);
+        if (m != null) g.Main = new WeaponPick { Base = m, Variant = 3, Rarity = Rarity.Legendary };
+        if (o != null && !GearAdapter.IsTwoHand(m)) g.Off = new WeaponPick { Base = o, Variant = 3, Rarity = Rarity.Legendary };
+        return g;
+    }
+
     /// <summary>Test loadout: armour tier for every slot (0 = none), weapon bases (null = empty) and variant.</summary>
     public static GearSet Make(ClassId c, int armorTier, string main, string off, int variant = 2, Rarity rarity = Rarity.Rare, int slots = 0x1F)
     {
@@ -448,13 +462,17 @@ public static class GearCatalog
     /// any of them — a gear-set swap, several slots at once, in combat — is built in the same frame without a stall.
     /// Call again whenever the sets change (the previous pins of <paramref name="owner"/> are replaced); an empty list unpins.
     /// </summary>
-    public static void PreloadSets(string owner, ClassId cls, IEnumerable<IEnumerable<Item>> sets)
+    public static void PreloadSets(string owner, ClassId cls, IEnumerable<IEnumerable<Item>> sets) =>
+        PreloadLoadouts(owner, (sets ?? Enumerable.Empty<IEnumerable<Item>>()).Select(s => GearSet.FromItems(cls, s)).ToList());
+
+    /// <summary>As <see cref="PreloadSets"/>, for loadouts already in render terms (the class showcase).</summary>
+    public static void PreloadLoadouts(string owner, IEnumerable<GearSet> loadouts)
     {
         var ids = new HashSet<string>();
-        foreach (var set in sets ?? Enumerable.Empty<IEnumerable<Item>>())
+        foreach (var g in loadouts ?? Enumerable.Empty<GearSet>())
         {
-            var g = GearSet.FromItems(cls, set);
-            foreach (var a in g.Armor) { var id = ResolveArmor(cls, a); if (id != null) ids.Add(id); }
+            if (g == null) continue;
+            foreach (var a in g.Armor) { var id = ResolveArmor(g.Class, a); if (id != null) ids.Add(id); }
             foreach (var w in new[] { g.Main, g.Off }) { var id = ResolveWeapon(w); if (id != null) ids.Add(id); }
         }
         if (ids.Count == 0) { Pins.Remove(owner); return; }
@@ -469,6 +487,41 @@ public static class GearCatalog
         };
         tree.ProcessFrame += poll;
     }
+
+
+    public static void Unpin(string owner) => Pins.Remove(owner);
+
+    private static readonly List<Resource> Held = new();
+    /// <summary>
+    /// Class select: the eight signature loadouts (GearSet.Showcase) and the eight base bodies are loaded on the loader
+    /// thread and kept, so switching classes in the selector never stalls. Game unpins them once a hero exists.
+    /// </summary>
+    public static void PreloadShowcase()
+    {
+        if (Off || Pins.ContainsKey("showcase")) return;
+        PreloadLoadouts("showcase", Enum.GetValues<ClassId>().Select(GearSet.Showcase).ToList());
+        if (Held.Count > 0) return;
+        var paths = Names.ClassKeys.Select(k => $"res://assets/chars/hero_{k}_base.glb").Where(p => ResourceLoader.Exists(p)).ToList();
+        foreach (var p in paths) ResourceLoader.LoadThreadedRequest(p, "", true);
+        if (Engine.GetMainLoop() is not SceneTree tree) return;
+        var left = new List<string>(paths);
+        Action poll = null;
+        poll = () =>
+        {
+            for (int i = left.Count - 1; i >= 0; i--)
+            {
+                var st = ResourceLoader.LoadThreadedGetStatus(left[i]);
+                if (st == ResourceLoader.ThreadLoadStatus.InProgress) continue;
+                if (st == ResourceLoader.ThreadLoadStatus.Loaded && ResourceLoader.LoadThreadedGet(left[i]) is Resource r) Held.Add(r);
+                left.RemoveAt(i);
+            }
+            if (left.Count == 0) tree.ProcessFrame -= poll;
+        };
+        tree.ProcessFrame += poll;
+    }
+
+    /// <summary>The class select is left behind (a hero exists): its pinned models and bodies may be evicted again.</summary>
+    public static void ReleaseShowcase() { Pins.Remove("showcase"); Held.Clear(); }
 
     private static readonly HashSet<string> Warmed = new();
 

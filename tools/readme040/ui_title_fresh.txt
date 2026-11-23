@@ -1,0 +1,13 @@
+# README 0.4.0: title screen with an empty profile (no personal save shown)
+wait 3
+shot title_1
+wait 2.5
+shot title_2
+wait 3
+shot title_3
+menu settings
+wait 1.2
+shot menu_settings
+menu title
+wait 1
+quit

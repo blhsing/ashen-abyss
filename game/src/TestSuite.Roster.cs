@@ -304,7 +304,8 @@ public sealed partial class TestSuite
         new() { Name = "Extinguish", Type = "cult_snuffer", Dist = 2.5f, Time = 8f, Expect = new[] { "Extinguish.snuff" },
             Setup = (m, p) => GroundZone.SpawnPlayer(p, null, new ZoneSpec { El = Element.Fire, Radius = 3f, Dur = 9f, Coef = 0f }, p.Pos2 + (m.Pos2 - p.Pos2) * 0.5f, 0f, false) },
         new() { Name = "Pulse", Type = "bell_hanging", Dist = 5f, Expect = new[] { "Pulse.mark", "Pulse.ring" }, Shot = "Pulse.ring" },
-        new() { Name = "Pulse:brute", Type = "bell_clapper", Dist = 2.8f, Time = 14f, Expect = new[] { "Pulse.ring" } },
+        new() { Name = "Pulse:brute", Type = "bell_clapper", Dist = 2.8f, Time = 14f, Expect = new[] { "Pulse.ring" }, Shot = "Pulse.ring" },
+        new() { Name = "Pulse:forge", Type = "forge_hammer", Dist = 2.8f, Time = 14f, Expect = new[] { "Pulse.ring" }, Shot = "Pulse.ring" },
         new() { Name = "Snare", Type = "shroud_weaver", Dist = 9f, Expect = new[] { "Snare.throw" } },
         new() { Name = "Return", Type = "dune_disc", Dist = 8f, Expect = new[] { "Return.throw", "Return.turn" }, Shot = "Return.throw" },
         new() { Name = "Trail", Type = "cf_spirit", Dist = 8f, Expect = new[] { "Trail.zone" } },
@@ -487,6 +488,13 @@ public sealed partial class TestSuite
                 p.Life = p.MaxLife;
                 t += 0.05f;
                 yield return 0.05f;
+            }
+            // a shot keyed on the last expected event: the loop above ends on that very event, before its picture
+            if (shots && !shotTaken && c.Shot != null && Seen(c.Shot) > shotBefore)
+            {
+                shotTaken = true;
+                yield return 0.25f;
+                yield return Snap($"ai_{c.Name.Replace(':', '_')}", 0f);
             }
             var missing = c.Expect.Where(k => Seen(k) <= before[k]).ToList();
             string got = string.Join(" ", Monster.AiSeen.Where(kv => kv.Key.StartsWith(c.Name.Split(':')[0]) || c.Expect.Contains(kv.Key)).Select(kv => $"{kv.Key}={kv.Value}"));

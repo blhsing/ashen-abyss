@@ -1,0 +1,18 @@
+# README 0.4.0: region map with quest pins and quest log, in the wastes
+wait 5
+open map
+wait 1.5
+shot map_region
+wheel 600,470,2
+wait 0.8
+shot map_region_zoom
+click @世界
+wait 1.2
+shot map_world
+close
+wait 0.4
+open quests
+wait 1.0
+shot quests
+close
+quit

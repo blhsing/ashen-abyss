@@ -102,12 +102,14 @@ public partial class MainMenu : Control
     private CameraAttributesPractical _camAttr;
     private Godot.Environment _env;
     private OmniLight3D _fireLight;
-    private SpotLight3D _keyLight, _rimLight;
+    private SpotLight3D _keyLight, _rimLight, _fillLight, _rim2Light;
     private StandardMaterial3D _coalMat, _ringMat, _fallbackMat;
     private GpuParticles3D _swapBurst;
     private ParticleProcessMaterial _swapBurstMat;
     private CharModel _hero;
     private int _heroClass = -1;
+    private const float HeroFrontYaw = 0.45f;      // about 26° off front: the three-quarter view the stage was framed for
+    private float _swayT;
     private float _heroHeight = 1.8f, _heroYaw = 0.45f, _spinHold, _heroIdleAt = -1f, _heroFrac = 0.43f, _heroFracTarget = 0.43f;
     private float _camBlend, _camBlendTarget, _rimPulse;
     private Color _rimColor = Palette.Ember, _rimTarget = Palette.Ember;
@@ -193,8 +195,16 @@ public partial class MainMenu : Control
         }
     }
 
+    private ScrollContainer _infoScroll;     // [fixes] the class sheet and its 「▼ 捲動看更多」 cue
+    private Control _infoMore;
+
     private void Tick(float dt)
     {
+        if (_infoScroll != null && _infoMore != null)
+        {
+            var bar = _infoScroll.GetVScrollBar();
+            _infoMore.Visible = bar != null && bar.MaxValue - bar.Page - bar.Value > 2.0;
+        }
         bool vis = IsVisibleInTree();
         if (vis != _wasVisible)
         {
@@ -946,10 +956,10 @@ public partial class MainMenu : Control
         // both lines stand on the bottom edge of the open middle and grow upward with the text
         _dragHint = MenuKit.Text("按住滑鼠左鍵拖曳，可轉動身形", UiTheme.Fs(20), MenuKit.Faint, MenuKit.UiFont);
         _dragHint.HorizontalAlignment = HorizontalAlignment.Center;
-        _dragHint.VerticalAlignment = VerticalAlignment.Bottom;
-        _dragHint.GrowVertical = GrowDirection.Begin;
+        _dragHint.VerticalAlignment = VerticalAlignment.Center;
+        // [fixes] below the stage, in the band of the 返回／下一步 bar (it sat on the floor ring and was hard to read)
         MenuKit.Shadow(_dragHint, new Color(0, 0, 0, 0.8f), 5, 1);
-        MenuKit.Place(_dragHint, 0, 1, 1, 1, 0, -34, 0, -4);
+        MenuKit.Place(_dragHint, 0, 1, 1, 1, 0, PaneBottom - 98, 0, PaneBottom - 42);
         _dragArea.AddChild(_dragHint);
 
         // the name plate keeps to the gap between the panes: a long name ends in an ellipsis (it is in the name field anyway)
@@ -1090,7 +1100,29 @@ public partial class MainMenu : Control
             SizeFlagsHorizontal = SizeFlags.ExpandFill, SizeFlagsVertical = SizeFlags.ExpandFill,
         };
         // the sheet is laid out to fit the pane at the standard text size; with larger text (or a wordy class) it scrolls
-        frame.AddChild(MenuKit.Pad(scroll, 26, 14, 16, 12));          // the scroll bar keeps clear of the pane's moulding
+        var padded = MenuKit.Pad(scroll, 26, 14, 16, 12);          // the scroll bar keeps clear of the pane's moulding
+        frame.AddChild(padded);
+        // [fixes] when the sheet runs past the pane (職業專精 at the bottom), its last rows fade into the pane with a
+        // 「▼ 捲動看更多」 cue instead of ending on a half-cut line; gone once scrolled to the end (README pass)
+        var cue = new Control { MouseFilter = MouseFilterEnum.Ignore };
+        padded.AddChild(cue);
+        var grad = new Gradient();
+        grad.SetColor(0, new Color(MenuKit.GlassBg, 0f));
+        grad.SetColor(1, new Color(MenuKit.GlassBg, 1f));
+        grad.AddPoint(0.55f, new Color(MenuKit.GlassBg, 1f));     // solid under the cue line
+        var fade = new TextureRect
+        {
+            Texture = new GradientTexture2D { Gradient = grad, FillFrom = new Vector2(0, 0), FillTo = new Vector2(0, 1), Width = 4, Height = 64 },
+            ExpandMode = TextureRect.ExpandModeEnum.IgnoreSize, StretchMode = TextureRect.StretchModeEnum.Scale, MouseFilter = MouseFilterEnum.Ignore,
+        };
+        MenuKit.Place(fade, 0, 1, 1, 1, 0, -UiTheme.Px(100f), -14, 0);
+        cue.AddChild(fade);
+        var more = MenuKit.Text("▼ 捲動看更多", UiTheme.Fs(18), MenuKit.Faint, MenuKit.UiFont);
+        more.HorizontalAlignment = HorizontalAlignment.Center;
+        MenuKit.Shadow(more, new Color(0, 0, 0, 0.9f), 4, 1);
+        MenuKit.Place(more, 0, 1, 1, 1, 0, -UiTheme.Px(26f), -14, 0);
+        cue.AddChild(more);
+        _infoScroll = scroll; _infoMore = cue;
         var col = MenuKit.VBox(6);
         col.SizeFlagsHorizontal = SizeFlags.ExpandFill;
         scroll.AddChild(col);
@@ -2294,6 +2326,7 @@ public partial class MainMenu : Control
             Stage + new Vector3(0, StageH + 0.005f, 0), Vector3.Zero, Vector3.One, false);
 
         _heroPivot = new Node3D { Name = "HeroPivot", Position = Stage + new Vector3(0, StageH, 0), Visible = false };
+        GearCatalog.PreloadShowcase();         // the eight signature looks load in the background: switching classes never stalls
         _scene.AddChild(_heroPivot);
 
         // a plain statue stands in when no character model can be loaded at all
@@ -2305,7 +2338,7 @@ public partial class MainMenu : Control
         Vector3 keyPos = Stage + new Vector3(-2.4f, 3.2f, 4.4f), keyAt = Stage + new Vector3(0, 1.15f, 0);
         _keyLight = new SpotLight3D
         {
-            Name = "Key", LightColor = new Color(1f, 0.87f, 0.74f), LightEnergy = 0f, SpotRange = 10f, SpotAngle = 30f, SpotAttenuation = 0.8f,
+            Name = "Key", LightColor = new Color(1f, 0.95f, 0.87f), LightEnergy = 0f, SpotRange = 10f, SpotAngle = 38f, SpotAttenuation = 0.8f,
             SpotAngleAttenuation = 0.6f, ShadowEnabled = false, LightVolumetricFogEnergy = 0f, Visible = false,
             Transform = new Transform3D(Basis.LookingAt((keyAt - keyPos).Normalized(), Vector3.Up), keyPos),
         };
@@ -2314,10 +2347,28 @@ public partial class MainMenu : Control
         _rimLight = new SpotLight3D
         {
             Name = "Rim", LightColor = Palette.Ember, LightEnergy = 0f, SpotRange = 9f, SpotAngle = 40f, SpotAttenuation = 0.7f,
-            SpotAngleAttenuation = 0.5f, ShadowEnabled = false, LightVolumetricFogEnergy = 0.4f, Visible = false,
+            SpotAngleAttenuation = 0.5f, ShadowEnabled = false, LightVolumetricFogEnergy = 0f, Visible = false,
             Transform = new Transform3D(Basis.LookingAt((rimAt - rimPos).Normalized(), Vector3.Up), rimPos),
         };
         _scene.AddChild(_rimLight);
+        // the hero, not the room: a soft neutral fill from the other front side and a second rim from behind on the left,
+        // so dark armour reads and the silhouette is cut clean against the dark background
+        Vector3 fillPos = Stage + new Vector3(2.7f, 1.7f, 3.8f), fillAt = Stage + new Vector3(0, 1.1f, 0);
+        _fillLight = new SpotLight3D
+        {
+            Name = "Fill", LightColor = new Color(0.86f, 0.9f, 1f), LightEnergy = 0f, SpotRange = 10f, SpotAngle = 36f, SpotAttenuation = 0.8f,
+            SpotAngleAttenuation = 0.6f, ShadowEnabled = false, LightVolumetricFogEnergy = 0f, Visible = false,
+            Transform = new Transform3D(Basis.LookingAt((fillAt - fillPos).Normalized(), Vector3.Up), fillPos),
+        };
+        _scene.AddChild(_fillLight);
+        Vector3 rim2Pos = Stage + new Vector3(-2.3f, 2.6f, -3.0f);
+        _rim2Light = new SpotLight3D
+        {
+            Name = "Rim2", LightColor = new Color(0.92f, 0.95f, 1f), LightEnergy = 0f, SpotRange = 9f, SpotAngle = 34f, SpotAttenuation = 0.7f,
+            SpotAngleAttenuation = 0.5f, ShadowEnabled = false, LightVolumetricFogEnergy = 0f, Visible = false,
+            Transform = new Transform3D(Basis.LookingAt((rimAt - rim2Pos).Normalized(), Vector3.Up), rim2Pos),
+        };
+        _scene.AddChild(_rim2Light);
 
         // a puff of class-coloured sparks when the hero on the dais changes
         _swapBurstMat = new ParticleProcessMaterial
@@ -2446,7 +2497,8 @@ public partial class MainMenu : Control
         if (_camAttr != null)
         {
             _camAttr.DofBlurFarDistance = Mathf.Lerp(34f, dist + 2.2f, k);
-            _camAttr.DofBlurFarTransition = Mathf.Lerp(40f, 7f, k);
+            _camAttr.DofBlurFarTransition = Mathf.Lerp(40f, 3.5f, k);
+            _camAttr.DofBlurAmount = Mathf.Lerp(0.07f, 0.12f, k);
         }
     }
 
@@ -2468,13 +2520,19 @@ public partial class MainMenu : Control
         _rimColor = _rimColor.Lerp(_rimTarget, 1f - Mathf.Exp(-6f * dt));
         _rimPulse = Mathf.MoveToward(_rimPulse, 0f, dt * 2.2f);
         bool lit = k > 0.01f;
-        if (_keyLight != null) { _keyLight.Visible = lit; _keyLight.LightEnergy = 3.1f * k; }
+        // the hero is lit in neutral light (true colours) and cut out by strong near-white rims; the class colour is only an
+        // accent (the floor ring, the sparks, a faint tint in one rim). The room behind is pushed back while the stage is up.
+        if (_keyLight != null) { _keyLight.Visible = lit; _keyLight.LightEnergy = 4.4f * k; }
+        if (_fillLight != null) { _fillLight.Visible = lit; _fillLight.LightEnergy = 1.5f * k; }
         if (_rimLight != null)
         {
             _rimLight.Visible = lit;
-            _rimLight.LightColor = _rimColor;
-            _rimLight.LightEnergy = (8.5f + 9f * _rimPulse) * k;
+            _rimLight.LightColor = new Color(0.95f, 0.95f, 0.95f).Lerp(_rimColor, 0.2f);
+            _rimLight.LightEnergy = (9.5f + 6f * _rimPulse) * k;
         }
+        if (_rim2Light != null) { _rim2Light.Visible = lit; _rim2Light.LightEnergy = 7.5f * k; }
+        if (_fireLight != null) { _fireLight.LightEnergy *= 1f - 0.7f * k; _fireLight.LightVolumetricFogEnergy = 1.6f * (1f - 0.85f * k); }
+        if (_env != null) _env.AmbientLightEnergy = 0.30f * (1f - 0.45f * k);
         if (_ringMat != null)
         {
             _ringMat.Emission = _rimColor;
@@ -2483,10 +2541,17 @@ public partial class MainMenu : Control
 
         if (_heroPivot != null && _heroPivot.Visible)
         {
+            // a chosen hero faces the lens three-quarter on; after a pause (or a drag) it sways gently about that view
+            // (±35°) instead of spinning, so its back is never shown for long. A dragged figure eases back onto the sway.
             if (_spinHold > 0f) _spinHold -= dt;
-            else _heroYaw += dt * 0.42f;
-            if (_heroYaw > Mathf.Tau) _heroYaw -= Mathf.Tau;
-            else if (_heroYaw < -Mathf.Tau) _heroYaw += Mathf.Tau;
+            else
+            {
+                _swayT += dt;
+                float sway = HeroFrontYaw + Mathf.DegToRad(35f) * Mathf.Sin(_swayT * 0.32f);
+                _heroYaw = Mathf.Lerp(_heroYaw, sway, 1f - Mathf.Exp(-dt * 2.5f));
+            }
+            if (_heroYaw > Mathf.Pi) _heroYaw -= Mathf.Tau;
+            else if (_heroYaw < -Mathf.Pi) _heroYaw += Mathf.Tau;
             _heroPivot.Rotation = new Vector3(0f, _heroYaw, 0f);
             if (_heroIdleAt > 0f && t >= _heroIdleAt)
             {
@@ -2500,6 +2565,8 @@ public partial class MainMenu : Control
     private void SetHero(ClassId c, bool flourish)
     {
         if (_heroPivot == null) return;
+        _heroYaw = HeroFrontYaw; _spinHold = 3f; _swayT = 0f;        // every class is first seen from the front, three-quarter on
+        ulong t0 = Time.GetTicksUsec();
         _heroClass = (int)c;
         _heroIdleAt = -1f;
         if (_hero != null)
@@ -2518,8 +2585,9 @@ public partial class MainMenu : Control
             _heroPivot.AddChild(m);
             _hero = m;
             _heroHeight = Mathf.Clamp(m.Height, 1.3f, 2.4f);
-            m.SetRim(new Color(cc.R * 0.6f, cc.G * 0.6f, cc.B * 0.6f));
-            m.SetGear(GearSet.Starter(c));              // what the new hero starts with: no armour, the starting weapon(s)
+            m.SetRim(new Color(0.5f, 0.5f, 0.5f).Lerp(cc, 0.2f));        // a neutral edge: the class colour is not the hero's light
+            m.SetGear(GearSet.Showcase(c));             // the class's signature look (t4 armour, its own weapon at v3): display only, never the new hero's gear
+            Log.Info("menu", $"class preview {Names.ClassKey(c)}: {m.GearReport} built in {(Time.GetTicksUsec() - t0) / 1000.0:0.0} ms");
             m.Play(m.Gear != null ? m.StanceIdle : "Idle_Loop");
             string anim = MenuKit.Blurb(c).Flourish;
             if (flourish && !string.IsNullOrEmpty(anim) && m.Has(anim))

@@ -33,3 +33,6 @@ How to rebuild one class: `./rb.sh build_base.py <class>` → `./rb.sh split_t4.
 - Screenshot: Y:\shots\deferred\lampknight_thigh_through_tabard.png (lampknight, armoured, mid-stride in frost). The forward thigh renders in front of the tabard and belt cloth that should cover it.
 - Cause: the drape/tabard panels (chest and pants pieces) are weighted only to the pelvis/spine, so leg swing pushes the thigh through them.
 - Fix (art): weight the drape's lower rows partly to thigh_l/thigh_r (front and back panels split per leg) or add per-leg flaps. Check all classes' skirted, robed and tabard looks (lampknight, astromancer robe, soulbinder coat, pactbinder) in run, attack and evade clips.
+
+## DEFERRED (Fable) 2026-11-23: effigy_knight emissive
+- mon_effigy_knight_mon_effigy_knight_em.jpg: the slab-edge inscription glow is plain blocky dashed bars and reads as a placeholder (Y:\shots\readme040 sanctum_s2_6..12). Redo it as a carved inscription glow.

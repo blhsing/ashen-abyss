@@ -1,0 +1,2 @@
+town_c|--new=wildsoul --level=30 --tier=1 --area=town --campaign --seed=4851 --hands=2h
+town_d|--new=astromancer --level=30 --tier=1 --area=town --campaign --seed=4852 --hands=off

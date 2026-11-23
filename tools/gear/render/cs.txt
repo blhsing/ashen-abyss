@@ -1,0 +1,38 @@
+exit= seconds=36
+log: C:\Users\blhsi\AppData\Roaming\AshenAbyss\logs\game_20261123_212410.log  lines=116  ERR=0  WRN=0
+/c/Users/blhsi/AppData/Roaming/AshenAbyss/logs/game_20261123_212410.log
+    0.030 INF [boot] args=[] userargs=[--win --mute --slot=94 --uido=@Y:\tools\gear\render\classselect.uido --uidir=Y:\shots\gear\classselect]
+    0.034 INF [boot] switches: --win --mute --slot=94 --uido=@Y:\tools\gear\render\classselect.uido --uidir=Y:\shots\gear\classselect
+    0.382 INF [uitest] interface script: 34 steps, pictures in Y:\shots\gear\classselect
+    0.820 INF [fx] effect resources ready (budget: 70 one-shot emitters, 12 flash lights, 10 soft lights)
+    1.547 INF [uitest] script started (Menu)
+    4.625 INF [menu] class preview emberblade: modular stance=TwoHandMelee [arm_emberblade_helm_t4, arm_emberblade_chest_t4, arm_emberblade_gloves_t4, arm_emberblade_pants_t4, arm_emberblade_boots_t4, wpn_sword2_v3@hand_r] built in 16.4 ms
+    7.873 INF [uitest] shot Y:\shots\gear\classselect\emberblade.png
+    8.027 INF [menu] class preview astromancer: modular stance=TwoHandStaff [arm_astromancer_helm_t4, arm_astromancer_chest_t4, arm_astromancer_gloves_t4, arm_astromancer_pants_t4, arm_astromancer_boots_t4, wpn_staff_v3@hand_r] built in 7.2 ms
+    8.290 INF [shot] screenshot saved: Y:\shots\gear\classselect\emberblade.png
+   11.277 INF [uitest] shot Y:\shots\gear\classselect\astromancer.png
+   11.426 INF [menu] class preview hunter: modular stance=Ranged [arm_hunter_helm_t4, arm_hunter_chest_t4, arm_hunter_gloves_t4, arm_hunter_pants_t4, arm_hunter_boots_t4, wpn_crossbow_v3@hand_r] built in 4.8 ms
+   11.711 INF [shot] screenshot saved: Y:\shots\gear\classselect\astromancer.png
+   14.680 INF [uitest] shot Y:\shots\gear\classselect\hunter.png
+   14.831 INF [menu] class preview soulbinder: modular stance=TwoHandStaff [arm_soulbinder_helm_t4, arm_soulbinder_chest_t4, arm_soulbinder_gloves_t4, arm_soulbinder_pants_t4, arm_soulbinder_boots_t4, wpn_scythe2_v3@hand_r] built in 5.4 ms
+   15.114 INF [shot] screenshot saved: Y:\shots\gear\classselect\hunter.png
+   18.066 INF [uitest] shot Y:\shots\gear\classselect\soulbinder.png
+   18.218 INF [menu] class preview wildsoul: modular stance=TwoHandMelee [arm_wildsoul_helm_t4, arm_wildsoul_chest_t4, arm_wildsoul_gloves_t4, arm_wildsoul_pants_t4, arm_wildsoul_boots_t4, wpn_mace2_v3@hand_r] built in 6.0 ms
+   18.500 INF [shot] screenshot saved: Y:\shots\gear\classselect\soulbinder.png
+   21.470 INF [uitest] shot Y:\shots\gear\classselect\wildsoul.png
+   21.619 INF [menu] class preview forgebody: modular stance=Fists [arm_forgebody_helm_t4, arm_forgebody_chest_t4, arm_forgebody_gloves_t4, arm_forgebody_pants_t4, arm_forgebody_boots_t4, wpn_fist_v3@hand_r, wpn_fist_v3@hand_l] built in 5.2 ms
+   21.904 INF [shot] screenshot saved: Y:\shots\gear\classselect\wildsoul.png
+   24.856 INF [uitest] shot Y:\shots\gear\classselect\forgebody.png
+   25.008 INF [menu] class preview lampknight: modular stance=OneHandShield [arm_lampknight_helm_t4, arm_lampknight_chest_t4, arm_lampknight_gloves_t4, arm_lampknight_pants_t4, arm_lampknight_boots_t4, wpn_sword1_v3@hand_r, wpn_shield_v3@forearm_l] built in 5.5 ms
+   25.274 INF [shot] screenshot saved: Y:\shots\gear\classselect\forgebody.png
+   28.244 INF [uitest] shot Y:\shots\gear\classselect\lampknight.png
+   28.394 INF [menu] class preview pactbinder: modular stance=OneHandCaster [arm_pactbinder_helm_t4, arm_pactbinder_chest_t4, arm_pactbinder_gloves_t4, arm_pactbinder_pants_t4, arm_pactbinder_boots_t4, wpn_wand_v3@hand_r, wpn_grimoire_v3@hand_l] built in 5.6 ms
+   28.661 INF [shot] screenshot saved: Y:\shots\gear\classselect\lampknight.png
+   31.633 INF [uitest] shot Y:\shots\gear\classselect\pactbinder.png
+   31.774 INF [menu] class preview emberblade: modular stance=TwoHandMelee [arm_emberblade_helm_t4, arm_emberblade_chest_t4, arm_emberblade_gloves_t4, arm_emberblade_pants_t4, arm_emberblade_boots_t4, wpn_sword2_v3@hand_r] built in 3.9 ms
+   32.047 INF [shot] screenshot saved: Y:\shots\gear\classselect\pactbinder.png
+   32.240 INF [menu] class preview astromancer: modular stance=TwoHandStaff [arm_astromancer_helm_t4, arm_astromancer_chest_t4, arm_astromancer_gloves_t4, arm_astromancer_pants_t4, arm_astromancer_boots_t4, wpn_staff_v3@hand_r] built in 2.7 ms
+   32.692 INF [menu] class preview hunter: modular stance=Ranged [arm_hunter_helm_t4, arm_hunter_chest_t4, arm_hunter_gloves_t4, arm_hunter_pants_t4, arm_hunter_boots_t4, wpn_crossbow_v3@hand_r] built in 2.5 ms
+   33.174 INF [menu] class preview soulbinder: modular stance=TwoHandStaff [arm_soulbinder_helm_t4, arm_soulbinder_chest_t4, arm_soulbinder_gloves_t4, arm_soulbinder_pants_t4, arm_soulbinder_boots_t4, wpn_scythe2_v3@hand_r] built in 3.0 ms
+   33.632 INF [uitest] quit
+CS

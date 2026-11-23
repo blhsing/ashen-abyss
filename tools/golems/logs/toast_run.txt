@@ -1,0 +1,16 @@
+build ok
+exit= seconds=53
+log: C:\Users\blhsi\AppData\Roaming\AshenAbyss\logs\game_20261123_223439.log  lines=203  ERR=0  WRN=0
+--- last lines ---
+   51.108 INF [game] quitting
+   51.113 INF [save] slot 95 saved: ??? lv25 ??? area=town bytes=10079
+   51.113 INF [save] save reason=quit slot=95 ok=True area=town playtime=47s capture=0.1ms total=4.4ms
+   51.115 INF [bot] final summary t=48s game=47s area=town doing=idle kills=0 elites=0 bosses=0 level=25 life=75% items=0 gold=50 deaths=0 areas=1 casts=0 unstuck=0 monsters=1 errors=0 warnings=0 botErrors=0
+   51.118 INF [bot] final progress: waypoints=[town] renown=[] quests done=0/1 skillpts bonus=0 potion cap=4 altars=0 codex=0 tier=0/1 riftBest=0 paragon=0 playtime=47s
+   51.118 INF [anim] anim-check: hero moved 0.0s - 0.0s without a locomotion clip, 0.0s with frozen legs; hero stood 47.2s - 0.0s in a run clip or none; monsters moved 1.1s - 0.0s without a locomotion clip, 0.0s with frozen legs; models without a skeleton or a ƒ?Ý
+   51.119 INF [input] keyboard hook saw 0 key events, 0 of them PrtSc
+   51.120 INF [boot] shutdown errors=0 warnings=0 uptime=51s
+--- engine output: distinct problem lines (6 total) ---
+   2 x [31] Godot.NativeInterop.godot_bool Godot.Bridge.CSharpInstanceBridge.Call(nint, Godot.NativeInterop.godot_string_name*, Godot.NativeInterop.godot_variant**, int, Godot.NativeInterop.godot_variant_call_error*, Godot.NativeInterop.godot_variant*) (/root/ ƒ?Ý
+   2 x [19] Godot.NativeInterop.godot_bool Godot.Bridge.CSharpInstanceBridge.Call(nint, Godot.NativeInterop.godot_string_name*, Godot.NativeInterop.godot_variant**, int, Godot.NativeInterop.godot_variant_call_error*, Godot.NativeInterop.godot_variant*) (/root/ ƒ?Ý
+   2 x ERROR: Parameter "t" is null.

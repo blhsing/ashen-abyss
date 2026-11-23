@@ -226,6 +226,49 @@ public static class Fx
         catch (Exception e) { Fail(nameof(Ring), e); }
     }
 
+    /// <summary>
+    /// A hostile shock wave on the ground whose front the CALLER drives (a monster's pulse ring: its hit test runs at a
+    /// fixed speed, so the drawing must sit exactly on it). The same dressed fx_ring as <see cref="Ring"/>, in the school
+    /// of <paramref name="kind"/> (an Element converts; Physical = the broken ring with debris). Move the front with
+    /// <see cref="WaveFront"/>; the caller frees the node. Returns null when effects are unavailable.
+    /// </summary>
+    public static MeshInstance3D Wave(Vector3 pos, float reach, float halfWidth, Sigil kind)
+    {
+        try
+        {
+            if (!Ensure() || Far(pos)) return null;
+            reach = Mathf.Max(reach, 0.5f);
+            int k = kind.IsAuto || kind.IsNone ? 5 : kind.Kind;
+            float r = reach / 0.93f;                              // fx_ring settles its band at 0.93 of the radius
+            float over = 1f + Mathf.Clamp(1.1f / r, 0.08f, 0.6f);
+            var q = MeshNode(_quad, _mRing);
+            q.Scale = new Vector3(r * over, 1f, r * over);
+            Color c = Palette.Danger.Lerp(HostileAccent[k], 0.55f);
+            // the band's falloff is a fraction of the radius (narrowing to 0.3-0.8 of `width` as it travels): a crisp line
+            // on the front of the hit band, so the ornament of the school stays readable
+            Set(q, PT, 0f); Set(q, PTint, c); Set(q, PGain, 1.1f); Set(q, PWidth, Mathf.Clamp(halfWidth * 0.9f / r, 0.03f, 0.12f));
+            Set(q, PKind, (float)k); Set(q, PRadius, r); Set(q, POver, over); Set(q, PSeed, Rng.F());
+            q.SortingOffset = 0.4f;
+            if (!Spawn(q, new Vector3(pos.X, Mathf.Max(pos.Y, 0.1f), pos.Z))) { q.Free(); return null; }
+            return q;
+        }
+        catch (Exception e) { Fail(nameof(Wave), e); return null; }
+    }
+
+    /// <summary>Puts the front of a <see cref="Wave"/> at <paramref name="front"/> metres (0 .. reach).</summary>
+    public static void WaveFront(MeshInstance3D q, float front, float reach)
+    {
+        if (q == null || !GodotObject.IsInstanceValid(q)) return;
+        try
+        {
+            // invert fx_ring's ease (rad = mix(0.1, 0.93, 1 - (1 - t)^3)) so the band stands exactly on the front
+            float rad = Mathf.Clamp(front / Mathf.Max(reach / 0.93f, 0.01f), 0.1f, 0.93f);
+            float e = (rad - 0.1f) / 0.83f;
+            Set(q, PT, Mathf.Clamp(1f - Mathf.Pow(1f - e, 1f / 3f), 0f, 0.995f));
+        }
+        catch (Exception e) { Fail(nameof(WaveFront), e); }
+    }
+
     /// <summary>A beam between two points; jagged and flickering for lightning, a straight soft stream otherwise.</summary>
     public static void Beam(Vector3 from, Vector3 to, Element el, float width = 0.25f, float seconds = 0.2f)
     {

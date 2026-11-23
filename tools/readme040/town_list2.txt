@@ -1,0 +1,2 @@
+town_e|--new=lampknight --level=50 --paragon=10 --tier=1 --area=town --campaign --seed=4853 --hands=off
+town_f|--new=emberblade --level=50 --paragon=10 --tier=1 --area=town --campaign --seed=4854 --hands=2h

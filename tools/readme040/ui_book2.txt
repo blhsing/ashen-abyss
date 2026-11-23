@@ -1,0 +1,7 @@
+# README 0.4.0 re-shoot: 亡者名冊
+wait 4
+open skills:book
+wait 2.0
+unhover
+shot book
+quit

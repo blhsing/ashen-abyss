@@ -1,0 +1,19 @@
+frost_b|--new=astromancer --level=20 --tier=2 --hands=2h --area=frost --seed=4202
+crypt_a|--new=hunter --level=20 --tier=2 --area=crypt --seed=4301
+crypt_b|--new=soulbinder --level=20 --tier=2 --hands=off --area=crypt --seed=4302
+mire_a|--new=astromancer --level=22 --tier=2 --hands=off --area=mire --seed=4401
+mire_b|--new=wildsoul --level=22 --tier=2 --area=mire --seed=4402
+sands_a|--new=pactbinder --level=32 --tier=2 --area=sands --seed=4501
+sands_b|--new=forgebody --level=32 --tier=2 --area=sands --seed=4502
+sanctum_a|--new=emberblade --level=38 --tier=2 --hands=2h --area=sanctum --seed=4601
+sanctum_b|--new=lampknight --level=38 --tier=2 --hands=2h --area=sanctum --seed=4602
+abyss_a|--new=wildsoul --level=45 --paragon=8 --tier=3 --area=abyss --seed=4701
+abyss_b|--new=hunter --level=45 --paragon=8 --tier=3 --area=abyss --seed=4702
+dung_a|--new=wildsoul --level=24 --tier=2 --area=mire_d1 --seed=4801
+dung_b|--new=pactbinder --level=42 --tier=2 --area=abyss_d2 --seed=4802
+boss_a|--new=pactbinder --level=38 --tier=2 --bossrush --area=sanctum_boss --seed=4901
+boss_b|--new=astromancer --level=30 --tier=2 --hands=off --bossrush --area=sands_boss --seed=4902
+golem_a|--new=soulbinder --level=30 --tier=2 --golem=iron --forge --area=sands --seed=5001
+golem_b|--new=soulbinder --level=40 --tier=2 --golem=iron --forge --area=abyss --seed=5002
+pin_a|--new=emberblade --level=50 --paragon=20 --tier=3 --hands=dual --named=pin_6_grand_hush --seed=5101
+pin_b|--new=lampknight --level=50 --paragon=20 --tier=3 --hands=off --named=pin_1_gravedigger --seed=5102

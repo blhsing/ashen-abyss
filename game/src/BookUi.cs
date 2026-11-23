@@ -36,10 +36,15 @@ public partial class BookPage : Control
         bg.AddThemeStyleboxOverride("panel", UiTheme.Box(new Color(UiTheme.Bg, 1f), UiTheme.Border, 2, 0));      // fully opaque: the tree must not show through
         bg.SetAnchorsAndOffsetsPreset(LayoutPreset.FullRect);
         AddChild(bg);
+        // [fixes] the window moulding of the other panels round the page (it was a bare dark page; README pass)
+        var frame = new Panel { MouseFilter = MouseFilterEnum.Ignore };
+        frame.AddThemeStyleboxOverride("panel", UiTheme.WindowPlainBox);
+        frame.SetAnchorsAndOffsetsPreset(LayoutPreset.FullRect);
+        AddChild(frame);
         var margin = new MarginContainer { MouseFilter = MouseFilterEnum.Ignore };
         margin.SetAnchorsAndOffsetsPreset(LayoutPreset.FullRect);
         foreach (var s in new[] { "margin_left", "margin_right" }) margin.AddThemeConstantOverride(s, 48);
-        foreach (var s in new[] { "margin_top", "margin_bottom" }) margin.AddThemeConstantOverride(s, 28);
+        foreach (var s in new[] { "margin_top", "margin_bottom" }) margin.AddThemeConstantOverride(s, 36);
         AddChild(margin);
         _cols0 = new VBoxContainer { MouseFilter = MouseFilterEnum.Ignore };
         _cols0.AddThemeConstantOverride("separation", 10);
@@ -63,10 +68,44 @@ public partial class BookPage : Control
         _lock = UiTheme.Label("", UiTheme.FsRow, Palette.Danger);
         _cols0.AddChild(_lock);
         var scroll = new ScrollContainer { SizeFlagsVertical = SizeFlags.ExpandFill, HorizontalScrollMode = ScrollContainer.ScrollMode.Disabled };
-        _cols0.AddChild(scroll);
+        // [fixes] the columns scroll together; while more lies below, the bottom fades out under 「▼ 捲動看更多」
+        // (the golem column ran off the bottom edge with no sign that it went on)
+        var stack = new MarginContainer { SizeFlagsVertical = SizeFlags.ExpandFill, MouseFilter = MouseFilterEnum.Ignore };
+        _cols0.AddChild(stack);
+        stack.AddChild(scroll);
+        _scroll = scroll;
+        _more = new Control { MouseFilter = MouseFilterEnum.Ignore, Visible = false };
+        stack.AddChild(_more);
+        var grad = new Gradient();
+        grad.SetColor(0, new Color(UiTheme.Panel, 0f));
+        grad.SetColor(1, new Color(UiTheme.Panel, 1f));
+        grad.AddPoint(0.55f, new Color(UiTheme.Panel, 1f));      // solid under the cue line
+        var fade = new TextureRect
+        {
+            Texture = new GradientTexture2D { Gradient = grad, FillFrom = Vector2.Zero, FillTo = new Vector2(0, 1), Width = 4, Height = 64 },
+            ExpandMode = TextureRect.ExpandModeEnum.IgnoreSize, StretchMode = TextureRect.StretchModeEnum.Scale, MouseFilter = MouseFilterEnum.Ignore,
+        };
+        fade.AnchorLeft = 0f; fade.AnchorRight = 1f; fade.AnchorTop = 1f; fade.AnchorBottom = 1f;
+        fade.OffsetTop = -UiTheme.Px(100f); fade.OffsetRight = -14f;
+        _more.AddChild(fade);
+        var more = UiTheme.Label("▼ 捲動看更多", UiTheme.FsCaption, UiTheme.Dim);
+        more.HorizontalAlignment = HorizontalAlignment.Center;
+        more.AnchorLeft = 0f; more.AnchorRight = 1f; more.AnchorTop = 1f; more.AnchorBottom = 1f;
+        more.GrowVertical = GrowDirection.Begin; more.OffsetRight = -14f; more.OffsetBottom = -2f;
+        _more.AddChild(more);
         _cols = new HBoxContainer { SizeFlagsHorizontal = SizeFlags.ExpandFill, MouseFilter = MouseFilterEnum.Ignore };
         _cols.AddThemeConstantOverride("separation", 22);
         scroll.AddChild(_cols);
+    }
+
+    private ScrollContainer _scroll;
+    private Control _more;
+
+    public override void _Process(double delta)
+    {
+        if (_scroll == null || _more == null || !Visible) return;
+        var bar = _scroll.GetVScrollBar();
+        _more.Visible = bar != null && bar.MaxValue - bar.Page - bar.Value > 2.0;
     }
 
     private static bool InTown => Game.I?.Level?.IsTown ?? false;
@@ -91,7 +130,7 @@ public partial class BookPage : Control
     private Control Column(Hero h, BookLineDef line)
     {
         var panel = new PanelContainer { SizeFlagsHorizontal = SizeFlags.ExpandFill, CustomMinimumSize = new Vector2(520f, 0f) };
-        panel.AddThemeStyleboxOverride("panel", UiTheme.Box(UiTheme.Panel, UiTheme.Border, 2, 6));
+        panel.AddThemeStyleboxOverride("panel", UiTheme.PanelBox);                              // [fixes] sub-panel moulding
         var v = new VBoxContainer();
         v.AddThemeConstantOverride("separation", 8);
         var pad = new MarginContainer();
@@ -265,7 +304,7 @@ public partial class BookPage : Control
         center.SetAnchorsAndOffsetsPreset(LayoutPreset.FullRect);
         dim.AddChild(center);
         var panel = new PanelContainer { CustomMinimumSize = new Vector2(width, 0f) };
-        panel.AddThemeStyleboxOverride("panel", UiTheme.Box(UiTheme.Panel, UiTheme.Gold.Darkened(0.35f), 2, 6));
+        panel.AddThemeStyleboxOverride("panel", UiTheme.WindowBox);                             // [fixes] window moulding
         center.AddChild(panel);
         var pad = new MarginContainer();
         foreach (var s in new[] { "margin_left", "margin_right", "margin_top", "margin_bottom" }) pad.AddThemeConstantOverride(s, 22);

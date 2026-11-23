@@ -9,28 +9,28 @@
 
 ### 七大區域與戰鬥
 
-每一張使用不同的職業、怪物與技能組合（皆為遊戲內實際畫面）。
+每一張使用不同的職業、怪物與技能組合（皆為遊戲內實際畫面，英雄身上為實際穿戴的裝備）。
 
 <table>
 <tr>
-<td width="50%" valign="top"><img src="https://raw.githubusercontent.com/blhsing/ashen-abyss/media/screenshots/01-wastes-emberblade.jpg" alt="灰燼荒原・燼刃衛以旋風斬殺出骸骨兵的重圍" width="100%"><br><sub>灰燼荒原・燼刃衛以旋風斬殺出骸骨兵的重圍</sub></td>
-<td width="50%" valign="top"><img src="https://raw.githubusercontent.com/blhsing/ashen-abyss/media/screenshots/02-frost-astromancer.jpg" alt="霜脊隘口・星術師以霜槍與霜環迎擊霜骸擲矛手，風雪中冰晶四濺" width="100%"><br><sub>霜脊隘口・星術師以霜槍與霜環迎擊霜骸擲矛手，風雪中冰晶四濺</sub></td>
+<td width="50%" valign="top"><img src="https://raw.githubusercontent.com/blhsing/ashen-abyss/media/screenshots/0.4.0/01-wastes-emberblade.jpg" alt="灰燼荒原・燼刃衛揮動雙手巨劍，在抱暖骸團、炭木人與葬甲蟲的扇形預警中硬闖" width="100%"><br><sub>灰燼荒原・燼刃衛揮動雙手巨劍，在抱暖骸團、炭木人與葬甲蟲的扇形預警中硬闖</sub></td>
+<td width="50%" valign="top"><img src="https://raw.githubusercontent.com/blhsing/ashen-abyss/media/screenshots/0.4.0/02-frost-forgebody.jpg" alt="霜脊隘口・鍛身者在立凍哨的盾牆與冰爐巨軀之間出拳，腳下是鑿冰的扇形預警" width="100%"><br><sub>霜脊隘口・鍛身者在立凍哨的盾牆與冰爐巨軀之間出拳，腳下是鑿冰的扇形預警</sub></td>
 </tr>
 <tr>
-<td width="50%" valign="top"><img src="https://raw.githubusercontent.com/blhsing/ashen-abyss/media/screenshots/03-crypt-soulbinder.jpg" alt="沉眠墓原・喚魂師以凋零吞沒墮落騎士與寂滅教徒，戰利品「銳利的刻紋金戒」落在一旁" width="100%"><br><sub>沉眠墓原・喚魂師以凋零吞沒墮落騎士與寂滅教徒，戰利品「銳利的刻紋金戒」落在一旁</sub></td>
-<td width="50%" valign="top"><img src="https://raw.githubusercontent.com/blhsing/ashen-abyss/media/screenshots/04-mire-hunter.jpg" alt="瘴泣沼澤・影獵手擲下煙幕，在沼巫與沼澤魔物的圍攻中反擊" width="100%"><br><sub>瘴泣沼澤・影獵手擲下煙幕，在沼巫與沼澤魔物的圍攻中反擊</sub></td>
+<td width="50%" valign="top"><img src="https://raw.githubusercontent.com/blhsing/ashen-abyss/media/screenshots/0.4.0/03-crypt-soulbinder.jpg" alt="沉眠墓原・喚魂師率骸骨戰士與術士，在臥像騎士與托柱像的地裂預警中堅守" width="100%"><br><sub>沉眠墓原・喚魂師率骸骨戰士與術士，在臥像騎士與托柱像的地裂預警中堅守</sub></td>
+<td width="50%" valign="top"><img src="https://raw.githubusercontent.com/blhsing/ashen-abyss/media/screenshots/0.4.0/04-mire-wildsoul.jpg" alt="瘴泣沼澤・荒靈行者迎擊菌冠巨軀，孢子毒池與符文預警在腳下層層疊起" width="100%"><br><sub>瘴泣沼澤・荒靈行者迎擊菌冠巨軀，孢子毒池與符文預警在腳下層層疊起</sub></td>
 </tr>
 <tr>
-<td width="50%" valign="top"><img src="https://raw.githubusercontent.com/blhsing/ashen-abyss/media/screenshots/05-sands-forgebody.jpg" alt="鏽砂廢都・鍛身者以連拳與崩山掌獨戰乾屍與砂中湧出的亡軍" width="100%"><br><sub>鏽砂廢都・鍛身者以連拳與崩山掌獨戰乾屍與砂中湧出的亡軍</sub></td>
-<td width="50%" valign="top"><img src="https://raw.githubusercontent.com/blhsing/ashen-abyss/media/screenshots/06-sanctum-lampknight.jpg" alt="寂滅聖城・誓燈騎士以守燈光環化腳下為聖地，聖焰焚燒寂滅教團" width="100%"><br><sub>寂滅聖城・誓燈騎士以守燈光環化腳下為聖地，聖焰焚燒寂滅教團</sub></td>
+<td width="50%" valign="top"><img src="https://raw.githubusercontent.com/blhsing/ashen-abyss/media/screenshots/0.4.0/05-sands-pactbinder.jpg" alt="鏽砂廢都・縛淵術士召來契約巨魔，迎戰鏽尾蠍與鏡盾衛的扇形斬擊" width="100%"><br><sub>鏽砂廢都・縛淵術士召來契約巨魔，迎戰鏽尾蠍與鏡盾衛的扇形斬擊</sub></td>
+<td width="50%" valign="top"><img src="https://raw.githubusercontent.com/blhsing/ashen-abyss/media/screenshots/0.4.0/06-sanctum-lampknight.jpg" alt="寂滅聖城・誓燈騎士以雙手兵器與聖焰橫掃臥像騎士與寂滅教團" width="100%"><br><sub>寂滅聖城・誓燈騎士以雙手兵器與聖焰橫掃臥像騎士與寂滅教團</sub></td>
 </tr>
 <tr>
-<td width="50%" valign="top"><img src="https://raw.githubusercontent.com/blhsing/ashen-abyss/media/screenshots/07-abyss-wildsoul.jpg" alt="燼淵・荒靈行者以熊靈重擊硬撼燼魔群，縛魂在遠處游移" width="100%"><br><sub>燼淵・荒靈行者以熊靈重擊硬撼燼魔群，縛魂在遠處游移</sub></td>
-<td width="50%" valign="top"><img src="https://raw.githubusercontent.com/blhsing/ashen-abyss/media/screenshots/08-town.jpg" alt="殘燈鎮・最後的燼火庇護所：誓燈騎士與鎮民老葛交談，街燈映照石板路" width="100%"><br><sub>殘燈鎮・最後的燼火庇護所：誓燈騎士與鎮民老葛交談，街燈映照石板路</sub></td>
+<td width="50%" valign="top"><img src="https://raw.githubusercontent.com/blhsing/ashen-abyss/media/screenshots/0.4.0/07-abyss-hunter.jpg" alt="燼淵・影獵手在默巨與添爐巨人的烈焰預警邊緣閃身反擊" width="100%"><br><sub>燼淵・影獵手在默巨與添爐巨人的烈焰預警邊緣閃身反擊</sub></td>
+<td width="50%" valign="top"><img src="https://raw.githubusercontent.com/blhsing/ashen-abyss/media/screenshots/0.4.0/08-town.jpg" alt="殘燈鎮・最後的燼火庇護所：全副武裝的誓燈騎士走過街燈映照的石板路" width="100%"><br><sub>殘燈鎮・最後的燼火庇護所：全副武裝的誓燈騎士走過街燈映照的石板路</sub></td>
 </tr>
 <tr>
-<td width="50%" valign="top"><img src="https://raw.githubusercontent.com/blhsing/ashen-abyss/media/screenshots/09-dungeon-pactbinder.jpg" alt="燼淵地城「黑曜裂谷」・縛淵術士以淵門洞開召來淵門巨魔，衝入燼魔群" width="100%"><br><sub>燼淵地城「黑曜裂谷」・縛淵術士以淵門洞開召來淵門巨魔，衝入燼魔群</sub></td>
-<td width="50%" valign="top"><img src="https://raw.githubusercontent.com/blhsing/ashen-abyss/media/screenshots/10-boss-grand-hush.jpg" alt="無聲大聖堂・燼刃衛在寂滅大導師・賽倫的同心圓預警中硬撼首領" width="100%"><br><sub>無聲大聖堂・燼刃衛在寂滅大導師・賽倫的同心圓預警中硬撼首領</sub></td>
+<td width="50%" valign="top"><img src="https://raw.githubusercontent.com/blhsing/ashen-abyss/media/screenshots/0.4.0/09-dungeon-astromancer.jpg" alt="燼淵地城「黑曜裂谷」・星術師以連鎖閃電迎擊鍛錘役與熔爐的烈焰" width="100%"><br><sub>燼淵地城「黑曜裂谷」・星術師以連鎖閃電迎擊鍛錘役與熔爐的烈焰</sub></td>
+<td width="50%" valign="top"><img src="https://raw.githubusercontent.com/blhsing/ashen-abyss/media/screenshots/0.4.0/10-boss-rimelord.jpg" alt="赫爾蒙的冰廳・鍛身者在霜骸領主・赫爾蒙的霜晶預警陣中近身纏鬥" width="100%"><br><sub>赫爾蒙的冰廳・鍛身者在霜骸領主・赫爾蒙的霜晶預警陣中近身纏鬥</sub></td>
 </tr>
 </table>
 
@@ -38,27 +38,52 @@
 
 <table>
 <tr>
-<td width="50%" valign="top"><img src="https://raw.githubusercontent.com/blhsing/ashen-abyss/media/screenshots/11-title.jpg" alt="標題畫面：寂主・奧薩洛斯自陰影中低頭怒視" width="100%"><br><sub>標題畫面：寂主・奧薩洛斯自陰影中低頭怒視</sub></td>
-<td width="50%" valign="top"><img src="https://raw.githubusercontent.com/blhsing/ashen-abyss/media/screenshots/12-class-select.jpg" alt="擇定持燼者：八種職業之一的縛淵術士，附招牌技能與職業專精" width="100%"><br><sub>擇定持燼者：八種職業之一的縛淵術士，附招牌技能與職業專精</sub></td>
+<td width="50%" valign="top"><img src="https://raw.githubusercontent.com/blhsing/ashen-abyss/media/screenshots/0.4.0/11-title.jpg" alt="標題畫面：寂主・奧薩洛斯自陰影中低頭怒視" width="100%"><br><sub>標題畫面：寂主・奧薩洛斯自陰影中低頭怒視</sub></td>
+<td width="50%" valign="top"><img src="https://raw.githubusercontent.com/blhsing/ashen-abyss/media/screenshots/0.4.0/12-class-select.jpg" alt="擇定持燼者：燼刃衛的招牌造型，附可用武器、招牌技能與武器指南" width="100%"><br><sub>擇定持燼者：燼刃衛的招牌造型，附可用武器、招牌技能與武器指南</sub></td>
 </tr>
 <tr>
-<td width="50%" valign="top"><img src="https://raw.githubusercontent.com/blhsing/ashen-abyss/media/screenshots/13-inventory-tooltip.jpg" alt="行囊：即時 3D 角色預覽（誓燈騎士，可拖曳旋轉）與裝備欄位" width="100%"><br><sub>行囊：即時 3D 角色預覽（誓燈騎士，可拖曳旋轉）與裝備欄位</sub></td>
-<td width="50%" valign="top"><img src="https://raw.githubusercontent.com/blhsing/ashen-abyss/media/screenshots/14-skill-tree.jpg" alt="技能樹：縛淵術士的締約召喚與技能配置列" width="100%"><br><sub>技能樹：縛淵術士的締約召喚與技能配置列</sub></td>
+<td width="50%" valign="top"><img src="https://raw.githubusercontent.com/blhsing/ashen-abyss/media/screenshots/0.4.0/13-inventory.jpg" alt="行囊：即時 3D 角色預覽（誓燈騎士，模組化盔甲與劍盾）與 3D 物品圖示" width="100%"><br><sub>行囊：即時 3D 角色預覽（誓燈騎士，模組化盔甲與劍盾）與 3D 物品圖示</sub></td>
+<td width="50%" valign="top"><img src="https://raw.githubusercontent.com/blhsing/ashen-abyss/media/screenshots/0.4.0/14-skill-tree.jpg" alt="技能樹：誓燈騎士的技能分支與技能配置列" width="100%"><br><sub>技能樹：誓燈騎士的技能分支與技能配置列</sub></td>
 </tr>
 <tr>
-<td width="50%" valign="top"><img src="https://raw.githubusercontent.com/blhsing/ashen-abyss/media/screenshots/15-paragon.jpg" alt="燼紋盤：點亮燼紋節點、嵌入燼符" width="100%"><br><sub>燼紋盤：點亮燼紋節點、嵌入燼符</sub></td>
-<td width="50%" valign="top"><img src="https://raw.githubusercontent.com/blhsing/ashen-abyss/media/screenshots/16-world-map.jpg" alt="世界地圖：瑟蘭的七大地域，灰燼荒原的據點、地城與首領一覽" width="100%"><br><sub>世界地圖：瑟蘭的七大地域，灰燼荒原的據點、地城與首領一覽</sub></td>
+<td width="50%" valign="top"><img src="https://raw.githubusercontent.com/blhsing/ashen-abyss/media/screenshots/0.4.0/15-paragon.jpg" alt="燼紋盤：點亮燼紋節點、嵌入燼符" width="100%"><br><sub>燼紋盤：點亮燼紋節點、嵌入燼符</sub></td>
+<td width="50%" valign="top"><img src="https://raw.githubusercontent.com/blhsing/ashen-abyss/media/screenshots/0.4.0/16-world-map.jpg" alt="世界地圖：瑟蘭的七大地域，名望、首領與主線下一步的標記" width="100%"><br><sub>世界地圖：瑟蘭的七大地域，名望、首領與主線下一步的標記</sub></td>
 </tr>
 <tr>
-<td width="50%" valign="top"><img src="https://raw.githubusercontent.com/blhsing/ashen-abyss/media/screenshots/17-blacksmith.jpg" alt="鐵匠布蘭・淬火：為「霜語守望・淵語之書」挑選淬火配方" width="100%"><br><sub>鐵匠布蘭・淬火：為「霜語守望・淵語之書」挑選淬火配方</sub></td>
-<td width="50%" valign="top"><img src="https://raw.githubusercontent.com/blhsing/ashen-abyss/media/screenshots/18-dialogue.jpg" alt="殘燈鎮・與守燈長老艾爾溫的對話" width="100%"><br><sub>殘燈鎮・與守燈長老艾爾溫的對話</sub></td>
+<td width="50%" valign="top"><img src="https://raw.githubusercontent.com/blhsing/ashen-abyss/media/screenshots/0.4.0/17-blacksmith.jpg" alt="鐵匠布蘭・淬火：為傳奇連枷挑選淬火配方" width="100%"><br><sub>鐵匠布蘭・淬火：為傳奇連枷挑選淬火配方</sub></td>
+<td width="50%" valign="top"><img src="https://raw.githubusercontent.com/blhsing/ashen-abyss/media/screenshots/0.4.0/18-dialogue.jpg" alt="殘燈鎮・誓燈騎士與守燈長老艾爾溫的對話" width="100%"><br><sub>殘燈鎮・誓燈騎士與守燈長老艾爾溫的對話</sub></td>
 </tr>
 <tr>
-<td width="50%" valign="top"><img src="https://raw.githubusercontent.com/blhsing/ashen-abyss/media/screenshots/19-quest-log.jpg" alt="任務日誌：第一幕〈將熄的火盆〉" width="100%"><br><sub>任務日誌：第一幕〈將熄的火盆〉</sub></td>
-<td width="50%" valign="top"><img src="https://raw.githubusercontent.com/blhsing/ashen-abyss/media/screenshots/20-world-tier.jpg" alt="世界階級：冒險者、老練者、夢魘、煉獄四階難度" width="100%"><br><sub>世界階級：冒險者、老練者、夢魘、煉獄四階難度</sub></td>
+<td width="50%" valign="top"><img src="https://raw.githubusercontent.com/blhsing/ashen-abyss/media/screenshots/0.4.0/19-quest-log.jpg" alt="任務日誌：第一幕〈將熄的火盆〉與灰燼荒原的委託" width="100%"><br><sub>任務日誌：第一幕〈將熄的火盆〉與灰燼荒原的委託</sub></td>
+<td width="50%" valign="top"><img src="https://raw.githubusercontent.com/blhsing/ashen-abyss/media/screenshots/0.4.0/20-world-tier.jpg" alt="世界階級：冒險者、老練者、夢魘、煉獄四階難度" width="100%"><br><sub>世界階級：冒險者、老練者、夢魘、煉獄四階難度</sub></td>
 </tr>
 <tr>
-<td width="50%" valign="top"><img src="https://raw.githubusercontent.com/blhsing/ashen-abyss/media/screenshots/21-settings.jpg" alt="設定：顯示、音量、遊戲與操作說明四個分頁" width="100%"><br><sub>設定：顯示、音量、遊戲與操作說明四個分頁</sub></td>
+<td width="50%" valign="top"><img src="https://raw.githubusercontent.com/blhsing/ashen-abyss/media/screenshots/0.4.0/21-settings.jpg" alt="設定：顯示、音量、遊戲與操作說明四個分頁" width="100%"><br><sub>設定：顯示、音量、遊戲與操作說明四個分頁</sub></td>
+<td width="50%"></td>
+</tr>
+</table>
+
+### 0.4.0 新功能
+
+<table>
+<tr>
+<td width="50%" valign="top"><img src="https://raw.githubusercontent.com/blhsing/ashen-abyss/media/screenshots/0.4.0/22-weapon-guide.jpg" alt="武器指南：每種武器的數值、優劣與比較（誓燈騎士・長柄刀）" width="100%"><br><sub>武器指南：每種武器的數值、優劣與比較（誓燈騎士・長柄刀）</sub></td>
+<td width="50%" valign="top"><img src="https://raw.githubusercontent.com/blhsing/ashen-abyss/media/screenshots/0.4.0/23-golem-book.jpg" alt="亡者名冊：喚魂師的骸骨戰士、骸骨術士與魔像三條線，鐵魔像由裝備鑄造" width="100%"><br><sub>亡者名冊：喚魂師的骸骨戰士、骸骨術士與魔像三條線，鐵魔像由裝備鑄造</sub></td>
+</tr>
+<tr>
+<td width="50%" valign="top"><img src="https://raw.githubusercontent.com/blhsing/ashen-abyss/media/screenshots/0.4.0/24-golem-battle.jpg" alt="鏽砂廢都・喚魂師的鐵魔像手持鑄入的巨斧，與骸骨大軍圍攻鏽尾蠍" width="100%"><br><sub>鏽砂廢都・喚魂師的鐵魔像手持鑄入的巨斧，與骸骨大軍圍攻鏽尾蠍</sub></td>
+<td width="50%" valign="top"><img src="https://raw.githubusercontent.com/blhsing/ashen-abyss/media/screenshots/0.4.0/25-gear-sets.jpg" alt="裝備組：雙手與單手＋副手兩組配裝，F1–F6 一鍵切換" width="100%"><br><sub>裝備組：雙手與單手＋副手兩組配裝，F1–F6 一鍵切換</sub></td>
+</tr>
+<tr>
+<td width="50%" valign="top"><img src="https://raw.githubusercontent.com/blhsing/ashen-abyss/media/screenshots/0.4.0/26-bag-filter-marks.jpg" alt="行囊篩選：「全部非升級」一鍵標記回收；符合件數與批次按鈕固定在篩選面板下方" width="100%"><br><sub>行囊篩選：「全部非升級」一鍵標記回收；符合件數與批次按鈕固定在篩選面板下方</sub></td>
+<td width="50%" valign="top"><img src="https://raw.githubusercontent.com/blhsing/ashen-abyss/media/screenshots/0.4.0/27-item-tooltip.jpg" alt="物品說明：與目前裝備並排比較，升級判定與每秒傷害、攻速等武器數值" width="100%"><br><sub>物品說明：與目前裝備並排比較，升級判定與每秒傷害、攻速等武器數值</sub></td>
+</tr>
+<tr>
+<td width="50%" valign="top"><img src="https://raw.githubusercontent.com/blhsing/ashen-abyss/media/screenshots/0.4.0/28-ember-ladder.jpg" alt="燼階：八段燼憶依序排成階梯，擊敗一階才開啟下一階" width="100%"><br><sub>燼階：八段燼憶依序排成階梯，擊敗一階才開啟下一階</sub></td>
+<td width="50%" valign="top"><img src="https://raw.githubusercontent.com/blhsing/ashen-abyss/media/screenshots/0.4.0/29-shared-stash.jpg" alt="共用儲藏箱：所有角色共用，分為四個分頁" width="100%"><br><sub>共用儲藏箱：所有角色共用，分為四個分頁</sub></td>
+</tr>
+<tr>
+<td width="50%" valign="top"><img src="https://raw.githubusercontent.com/blhsing/ashen-abyss/media/screenshots/0.4.0/30-pinnacle-boss.jpg" alt="燼階第六階・燼刃衛在終止式・賽倫的同心圓預警中硬撼巔峰首領" width="100%"><br><sub>燼階第六階・燼刃衛在終止式・賽倫的同心圓預警中硬撼巔峰首領</sub></td>
 <td width="50%"></td>
 </tr>
 </table>

@@ -111,7 +111,7 @@ public partial class HeroPortrait3D : Control
         Sync();
     }
 
-    /// <summary>Shows a class without a hero behind it (a class-choice screen): its model, idle and the weapon of the given tier (1–3).</summary>
+    /// <summary>Shows a class without a hero behind it (a class-choice screen): its model, idle and its signature look (weaponTier is kept for old callers).</summary>
     public void SetClass(ClassId c, int weaponTier = 1)
     {
         if (_hero != null) { _hero.Changed -= OnHeroChanged; _hero = null; }
@@ -195,7 +195,7 @@ public partial class HeroPortrait3D : Control
         if (_model.GearManaged)
         {
             var gear = world != null && world.Gear != null && world.ModelId == _model.ModelId ? world.Gear
-                : _hero != null ? GearSet.FromHero(_hero) : GearSet.Starter(cls);
+                : _hero != null ? GearSet.FromHero(_hero) : GearSet.Showcase(cls);     // a class shown without a hero: its signature look
             _model.SetGear(gear);
             if (_model.GearSignature != _ownedSig) { OwnMaterials(_model); _ownedSig = _model.GearSignature; }
             if (form == 0 && _forceId == null) idle = _model.StanceIdle;

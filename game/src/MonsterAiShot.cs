@@ -155,11 +155,9 @@ public partial class PulseRing : Node3D
     private Monster _m;
     private float _r, _max, _speed, _width, _mul;
     private StatusApply? _status;
-    private MeshInstance3D _mesh;
-    private TorusMesh _torus;
+    private MeshInstance3D _wave;                   // the dressed fx_ring band (Fx.Wave), driven along with the hit front
     private readonly HashSet<Actor> _hit = new();
     private static readonly List<Actor> Tmp = new();
-    private static StandardMaterial3D _mat;
 
     public static void Start(Monster m, Vector2 at, float max, float speed, float width, float mul, StatusApply? status)
     {
@@ -167,14 +165,9 @@ public partial class PulseRing : Node3D
         var p = new PulseRing { _m = m, _max = max, _speed = speed, _width = width, _mul = mul, _status = status, _r = 0.3f };
         World.Root.AddChild(p);
         p.GlobalPosition = World.To3(at, 0.12f);
-        _mat ??= new StandardMaterial3D
-        {
-            ShadingMode = BaseMaterial3D.ShadingModeEnum.Unshaded, Transparency = BaseMaterial3D.TransparencyEnum.Alpha,
-            AlbedoColor = new Color(0.95f, 0.75f, 0.55f, 0.45f), CullMode = BaseMaterial3D.CullModeEnum.Disabled, ResourceName = "pulse_ring",
-        };
-        p._torus = new TorusMesh { InnerRadius = 0.1f, OuterRadius = 0.3f + width, Rings = 48, RingSegments = 6 };
-        p._mesh = new MeshInstance3D { Mesh = p._torus, MaterialOverride = _mat, CastShadow = GeometryInstance3D.ShadowCastingSetting.Off, Scale = new Vector3(1f, 0.06f, 1f) };
-        p.AddChild(p._mesh);
+        // drawn as a ground sigil in the monster's school (was a flat cream torus on a plain StandardMaterial3D)
+        p._wave = Fx.Wave(p.GlobalPosition, max, width * 0.5f, m != null ? m.Def.Element : Element.Physical);
+        Fx.WaveFront(p._wave, p._r, max);
         Snd.At("nova", p.GlobalPosition, 0.6f);
     }
 
@@ -186,7 +179,7 @@ public partial class PulseRing : Node3D
             float dt = (float)delta;
             _r += _speed * dt;
             float inner = Mathf.Max(0.05f, _r - _width * 0.5f), outer = _r + _width * 0.5f;
-            _torus.InnerRadius = inner; _torus.OuterRadius = outer;
+            Fx.WaveFront(_wave, _r, _max);
             if (_m != null && IsInstanceValid(_m))
             {
                 var c = new Vector2(GlobalPosition.X, GlobalPosition.Z);
@@ -202,6 +195,13 @@ public partial class PulseRing : Node3D
             if (_r >= _max || _m == null || !IsInstanceValid(_m)) QueueFree();
         }
         catch (Exception e) { Log.Error("monster-ai", "pulse ring failed", e); QueueFree(); }
+    }
+
+    public override void _ExitTree()
+    {
+        // the band lives in the level beside this node (Fx spawns it), so it goes with the ring
+        if (_wave != null && IsInstanceValid(_wave)) _wave.QueueFree();
+        _wave = null;
     }
 }
 

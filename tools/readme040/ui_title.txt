@@ -1,0 +1,29 @@
+# README 0.4.0: title screen and class selection (signature looks), no hero created
+wait 3
+shot title_1
+wait 2
+shot title_2
+wait 3
+shot title_3
+menu class:lampknight
+wait 1.5
+shot class_lampknight_a
+wait 0.4
+shot class_lampknight_b
+menu class:emberblade
+wait 1.5
+shot class_emberblade_a
+wait 0.4
+shot class_emberblade_b
+menu class:soulbinder
+wait 1.5
+shot class_soulbinder_a
+wait 0.4
+shot class_soulbinder_b
+menu class:lampknight
+wait 1.5
+shot class_lampknight_c
+dump class_lampknight
+menu title
+wait 1
+quit

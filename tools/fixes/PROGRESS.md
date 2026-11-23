@@ -99,3 +99,11 @@ controls row), README.md (PrtSc rows), assets/chars/hero_emberblade_base_skin_n.
 
 ## Pactbinder early bonus (契約初成)
 - Hero.PactEarlyDmgPct 25 / PactEarlyLifePct 15, PactEarlyFrac(level) = (8-level)/7 clamped; applied in Recalc (DmgAll, LifePct). Defs intro line; SkillTreeUi trait while active. Data: pact_early.txt vs low_after_pb.txt.
+
+## README 0.4.0 UI pass
+- BookUi.cs: WindowPlainBox frame, PanelBox columns, WindowBox popups, fade + 「▼ 捲動看更多」 cue while more below.
+- InventoryUi.cs: bag-filter key hint is a footer under the scroll (always whole, wraps).
+- MainMenu.cs: drag hint moved into the bottom bar band; class sheet fade + cue.
+- Quests.cs/DialogueUi.cs: quest toasts held during TalkTo / open dialogue, released on close (DialogueUi.Talking, Quests.ReleaseHeldToasts). Ui.cs: uitest `talk <npc>`.
+- Shots: Y:/shots/fixes/readme040 (before/ + *_s0/s1/s2, talk_*).
+- bag filter: 符合/bulk-mark row pinned in the footer too (_filterAct), above the key hint (regression fix).

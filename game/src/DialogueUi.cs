@@ -40,6 +40,8 @@ public partial class DialogueUi : UiPanel
     }
 
     private bool _built, _active, _cinematic, _typed, _voiceDone, _fastOut, _forged, _plateForged;
+    /// <summary>[fixes] A conversation is on screen: quest toasts wait for it (Quests.ReleaseHeldToasts).</summary>
+    public static bool Talking { get; private set; }
     private DialogueScript _script;
     private int _index, _len, _voiceToken, _phase, _errors;
     private string _lineText = "";
@@ -316,7 +318,7 @@ public partial class DialogueUi : UiPanel
         }
 
         _script = s;
-        _active = true;
+        _active = true; Talking = true;
         _index = 0;
         _cinematic = s.Id == "intro" || s.Id == "ending";
         _skipArm = 0f; _outro = 0f; _phase = 0; _alpha = 0f; _clock = 0f; _emberFade = 0f; _blink = 0f; _errors = 0;
@@ -347,11 +349,14 @@ public partial class DialogueUi : UiPanel
         }
         if (_built) ShowMode(false, false);
         _cinematic = false;
+        Talking = false;
+        Quests.ReleaseHeldToasts();             // [fixes] 「目標更新」 and the like, now that the lines have been read
     }
 
     public override void _ExitTree()
     {
         base._ExitTree();
+        Talking = false;
         if (!_active) return;
         _active = false; _script = null; _voiceToken++;
         StopVoice();

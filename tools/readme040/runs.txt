@@ -1,0 +1,331 @@
+=== 21:20:48 wastes_a: exit= seconds=73 log: C:\Users\blhsi\AppData\Roaming\AshenAbyss\logs\game_20261123_211935.log  lines=308  ERR=0  WRN=0 
+=== 21:23:30 wastes_b: exit= seconds=72 log: C:\Users\blhsi\AppData\Roaming\AshenAbyss\logs\game_20261123_212215.log  lines=277  ERR=0  WRN=0 
+    0.035 INF [boot] args=[] userargs=[--win --mute --slot=99 --gear --bot --focus --god --new=emberblade --level=12 --tier=2 --hands=dual --area=wastes --seed=4102 --shot=Y:\shots\readme040\raw$n.png --shot-at=8,12,16,2
+    0.040 INF [boot] switches: --win --mute --slot=99 --gear --bot --focus --god --new=emberblade --level=12 --tier=2 --hands=dual --area=wastes --seed=4102 --shot=Y:\shots\readme040\raw$n.png --shot-at=8,12,16,20,24,28,
+    0.659 INF [test] --gear: rare items of power 180 equipped (main sword1, off sword1); life=775 armor=631 weapon=49-73
+    6.919 INF [named] layer ready: 68 definitions (Rare 28, Stronghold 7, Dungeon 14, Region 7, World 4, Pinnacle 8), scripted=61
+    6.931 INF [named] spawned sh_wastes (斷燈哨長・莫葛) kind=Stronghold base=husk_bloated model=mon_husk_bloated level=16 life=64597 dmg=199 at=(91,87) arena=(89,85) r=20 brain=kit script=Mog mechs=[vent,rupture,
+    6.931 INF [named] stronghold 斷燈哨站: leader replaced by sh_wastes
+    6.932 INF [named] rare rare_wastes_oldhowl: not out this visit (roll 0.45)
+    6.933 INF [named] rare rare_wastes_nightwatch: not out this visit (roll 0.54)
+    6.937 INF [named] spawned rare_wastes_ashbride (灰燼新娘) kind=Rare base=ash_weeper model=mon_ash_weeper level=16 life=16149 dmg=179 at=(101,37) arena=(101,37) r=14 brain=base-ai script=AshBride mechs=[pile,refor
+    6.937 INF [named] rare rare_wastes_ashbride is out at (101,37) rule=open
+    6.937 INF [named] rare rare_wastes_gallowsfather: not out this visit (roll 0.51)
+    6.938 INF [named] world boss wb_barrowbearer: not yet (region crypt not open)
+=== 21:24:07 ui0: exit= seconds=27 log: C:\Users\blhsi\AppData\Roaming\AshenAbyss\logs\game_20261123_212338.log  lines=178  ERR=1  WRN=0 
+=== 21:25:59 frost_a: exit= seconds=72 log: C:\Users\blhsi\AppData\Roaming\AshenAbyss\logs\game_20261123_212446.log  lines=276  ERR=0  WRN=0 
+=== 21:28:04 frost_b: exit= seconds=72 log: C:\Users\blhsi\AppData\Roaming\AshenAbyss\logs\game_20261123_212652.log  lines=285  ERR=0  WRN=0 
+    0.032 INF [boot] args=[] userargs=[--win --mute --slot=99 --gear --bot --focus --god --new=astromancer --level=20 --tier=2 --hands=2h --area=frost --seed=4202 --shot=Y:/shots/readme040/raw/frost_b.png --shot-at=8,12,
+    0.037 INF [boot] switches: --win --mute --slot=99 --gear --bot --focus --god --new=astromancer --level=20 --tier=2 --hands=2h --area=frost --seed=4202 --shot=Y:/shots/readme040/raw/frost_b.png --shot-at=8,12,16,20,24
+    0.645 INF [test] --gear: rare items of power 260 equipped (main staff, off -); life=1462 armor=848 weapon=96-130
+    7.361 INF [named] layer ready: 68 definitions (Rare 28, Stronghold 7, Dungeon 14, Region 7, World 4, Pinnacle 8), scripted=61
+    7.373 INF [named] spawned sh_frost (凍骨關守將・瓦雷克) kind=Stronghold base=knight model=mon_knight level=24 life=110441 dmg=290 at=(144,82) arena=(141,83) r=20 brain=kit script=Varek mechs=[banner,muster,b
+    7.374 INF [named] stronghold 凍骨關: leader replaced by sh_frost
+    7.374 INF [named] rare rare_frost_hamo: not out this visit (roll 0.54)
+    7.375 INF [named] rare rare_frost_whiteshadow: not out this visit (roll 0.60)
+    7.379 INF [named] spawned rare_frost_lastrun (末班馱隊) kind=Rare base=rime_packbeast model=mon_rime_packbeast level=24 life=46017 dmg=261 at=(121,57) arena=(121,57) r=14 brain=base-ai script=LastRun mechs=[charg
+    7.380 INF [named] rare rare_frost_lastrun is out at (121,57) rule=road
+    7.380 INF [named] rare rare_frost_thousandyear: not out this visit (roll 0.57)
+    7.381 INF [named] world boss wb_firstbearer: not yet (region frost not open)
+=== 21:29:49 crypt_a: exit= seconds=71 log: C:\Users\blhsi\AppData\Roaming\AshenAbyss\logs\game_20261123_212838.log  lines=256  ERR=0  WRN=0 
+    0.662 INF [test] --gear: rare items of power 260 equipped (main bow, off -); life=1365 armor=982 weapon=85-115
+    6.537 INF [named] layer ready: 68 definitions (Rare 28, Stronghold 7, Dungeon 14, Region 7, World 4, Pinnacle 8), scripted=61
+    6.548 INF [named] spawned sh_crypt (叛誓守陵人・柯瓦) kind=Stronghold base=knight model=mon_knight level=24 life=82831 dmg=290 at=(108,79) arena=(111,77) r=20 brain=kit script=Kova mechs=[circle,raise]
+    6.548 INF [named] stronghold 守陵人營地: leader replaced by sh_crypt
+    6.549 INF [named] rare rare_crypt_belak: not out this visit (roll 0.50)
+    6.550 INF [named] rare rare_crypt_veilwife: not out this visit (roll 0.55)
+    6.550 INF [named] rare rare_crypt_namelessking: not out this visit (roll 0.41)
+    6.550 INF [named] rare rare_crypt_hundredtears: not out this visit (roll 0.72)
+    6.551 INF [named] world boss wb_barrowbearer: not yet (region crypt not open)
+=== 21:30:59 ui1: exit= seconds=71 log: C:\Users\blhsi\AppData\Roaming\AshenAbyss\logs\game_20261123_212949.log  lines=405  ERR=1  WRN=0 
+=== 21:32:12 crypt_b: exit= seconds=71 log: C:\Users\blhsi\AppData\Roaming\AshenAbyss\logs\game_20261123_213100.log  lines=276  ERR=0  WRN=0 
+    0.033 INF [boot] args=[] userargs=[--win --mute --slot=99 --gear --bot --focus --god --new=soulbinder --level=20 --tier=2 --hands=off --area=crypt --seed=4302 --shot=Y:/shots/readme040/raw/crypt_b.png --shot-at=8,12,
+    0.037 INF [boot] switches: --win --mute --slot=99 --gear --bot --focus --god --new=soulbinder --level=20 --tier=2 --hands=off --area=crypt --seed=4302 --shot=Y:/shots/readme040/raw/crypt_b.png --shot-at=8,12,16,20,24
+    0.632 INF [test] --gear: rare items of power 260 equipped (main wand, off focus); life=1090 armor=830 weapon=60-90
+    6.822 INF [named] layer ready: 68 definitions (Rare 28, Stronghold 7, Dungeon 14, Region 7, World 4, Pinnacle 8), scripted=61
+    6.836 INF [named] spawned sh_crypt (叛誓守陵人・柯瓦) kind=Stronghold base=knight model=mon_knight level=24 life=82831 dmg=290 at=(125,83) arena=(123,81) r=20 brain=kit script=Kova mechs=[circle,raise]
+    6.836 INF [named] stronghold 守陵人營地: leader replaced by sh_crypt
+    6.837 INF [named] rare rare_crypt_belak: not out this visit (roll 0.94)
+    6.838 INF [named] rare rare_crypt_veilwife: not out this visit (roll 0.80)
+    6.842 INF [named] spawned rare_crypt_namelessking (無名王臥像) kind=Rare base=effigy_knight model=mon_effigy_knight level=24 life=64424 dmg=261 at=(41,21) arena=(41,21) r=14 brain=base-ai script=NamelessKing mec
+    6.842 INF [named] rare rare_crypt_namelessking is out at (41,21) rule=far
+    6.843 INF [named] rare rare_crypt_hundredtears: not out this visit (roll 0.70)
+    6.844 INF [named] world boss wb_barrowbearer: not yet (region crypt not open)
+=== 21:32:35 ui2: exit= seconds=22 log: C:\Users\blhsi\AppData\Roaming\AshenAbyss\logs\game_20261123_213213.log  lines=96  ERR=0  WRN=0 
+=== 21:33:46 mire_a: exit= seconds=71 log: C:\Users\blhsi\AppData\Roaming\AshenAbyss\logs\game_20261123_213235.log  lines=283  ERR=0  WRN=0 
+    0.032 INF [boot] args=[] userargs=[--win --mute --slot=99 --gear --bot --focus --god --new=astromancer --level=22 --tier=2 --hands=off --area=mire --seed=4401 --shot=Y:/shots/readme040/raw/mire_a.png --shot-at=8,12,1
+    0.037 INF [boot] switches: --win --mute --slot=99 --gear --bot --focus --god --new=astromancer --level=22 --tier=2 --hands=off --area=mire --seed=4401 --shot=Y:/shots/readme040/raw/mire_a.png --shot-at=8,12,16,20,24,
+    0.666 INF [test] --gear: rare items of power 280 equipped (main wand, off focus); life=1365 armor=1210 weapon=68-101
+    7.045 INF [named] layer ready: 68 definitions (Rare 28, Stronghold 7, Dungeon 14, Region 7, World 4, Pinnacle 8), scripted=61
+    7.057 INF [named] spawned sh_mire (沉木寨主・老泥) kind=Stronghold base=rotspawn model=mon_rotspawn level=26 life=146359 dmg=313 at=(75,74) arena=(75,77) r=20 brain=kit script=OldPeat mechs=[plate,sink,sleeper
+    7.057 INF [named] stronghold 沉木寨: leader replaced by sh_mire
+    7.058 INF [named] rare rare_mire_olddrum: not out this visit (roll 0.45)
+    7.058 INF [named] rare rare_mire_guidelight: not out this visit (roll 0.78)
+    7.059 INF [named] rare rare_mire_weepingriver: not out this visit (roll 0.89)
+    7.063 INF [named] spawned rare_mire_dafu (網婆・妲芙) kind=Rare base=bog_netter model=mon_bog_netter level=26 life=31101 dmg=282 at=(37,85) arena=(37,85) r=14 brain=base-ai script=Dafu mechs=[nets]
+    7.064 INF [named] rare rare_mire_dafu is out at (37,85) rule=open
+    7.065 INF [named] world boss wb_firstbearer: not yet (region frost not open)
+=== 21:35:12 mire_b: exit= seconds=72 log: C:\Users\blhsi\AppData\Roaming\AshenAbyss\logs\game_20261123_213400.log  lines=249  ERR=0  WRN=0 
+    0.828 INF [test] --gear: rare items of power 280 equipped (main axe1, off totem); life=1327 armor=1049 weapon=74-138
+    7.176 INF [named] layer ready: 68 definitions (Rare 28, Stronghold 7, Dungeon 14, Region 7, World 4, Pinnacle 8), scripted=61
+    7.189 INF [named] spawned sh_mire (沉木寨主・老泥) kind=Stronghold base=rotspawn model=mon_rotspawn level=26 life=146359 dmg=313 at=(109,77) arena=(111,81) r=20 brain=kit script=OldPeat mechs=[plate,sink,sleep
+    7.189 INF [named] stronghold 沉木寨: leader replaced by sh_mire
+    7.190 INF [named] rare rare_mire_olddrum: not out this visit (roll 0.32)
+    7.191 INF [named] rare rare_mire_guidelight: not out this visit (roll 0.64)
+    7.191 INF [named] rare rare_mire_weepingriver: not out this visit (roll 0.93)
+    7.191 INF [named] rare rare_mire_dafu: not out this visit (roll 0.64)
+    7.193 INF [named] world boss wb_firstbearer: not yet (region frost not open)
+=== 21:36:39 sands_a: exit= seconds=72 log: C:\Users\blhsi\AppData\Roaming\AshenAbyss\logs\game_20261123_213529.log  lines=281  ERR=0  WRN=0 
+    0.670 INF [test] --gear: rare items of power 380 equipped (main wand, off focus); life=2348 armor=1672 weapon=96-145
+    6.863 INF [named] layer ready: 68 definitions (Rare 28, Stronghold 7, Dungeon 14, Region 7, World 4, Pinnacle 8), scripted=61
+    6.877 INF [named] spawned sh_sands (商站看守・第七號) kind=Stronghold base=brass_sentinel model=mon_brass_sentinel level=36 life=298315 dmg=427 at=(149,79) arena=(149,83) r=20 brain=kit script=Custodian mechs
+    6.877 INF [named] stronghold 斷柱商站: leader replaced by sh_sands
+    6.882 INF [named] spawned rare_sands_ogan (正午之盾・歐岡) kind=Rare base=dune_mirror model=mon_dune_mirror level=36 life=102055 dmg=384 at=(125,49) arena=(125,49) r=14 brain=base-ai script=Ogan mechs=[bash]
+    6.883 INF [named] rare rare_sands_ogan is out at (125,49) rule=road
+    6.883 INF [named] rare rare_sands_hundredshell: not out this visit (roll 0.76)
+    6.883 INF [named] rare rare_sands_tesa: not out this visit (roll 0.70)
+    6.883 INF [named] rare rare_sands_thirteenth: not out this visit (roll 0.35)
+    6.884 INF [named] world boss wb_daylessdisc: not yet (region sands not open)
+=== 21:37:09 ui4: exit= seconds=29 log: C:\Users\blhsi\AppData\Roaming\AshenAbyss\logs\game_20261123_213640.log  lines=225  ERR=0  WRN=0 
+=== 21:37:30 ui5: exit= seconds=21 log: C:\Users\blhsi\AppData\Roaming\AshenAbyss\logs\game_20261123_213709.log  lines=139  ERR=0  WRN=0 
+=== 21:38:41 sands_b: exit= seconds=71 log: C:\Users\blhsi\AppData\Roaming\AshenAbyss\logs\game_20261123_213730.log  lines=298  ERR=0  WRN=0 
+    0.676 INF [test] --gear: rare items of power 380 equipped (main fist, off fist); life=898 armor=1419 weapon=94-127
+    6.644 INF [named] layer ready: 68 definitions (Rare 28, Stronghold 7, Dungeon 14, Region 7, World 4, Pinnacle 8), scripted=61
+    6.656 INF [named] spawned sh_sands (商站看守・第七號) kind=Stronghold base=brass_sentinel model=mon_brass_sentinel level=36 life=298315 dmg=427 at=(73,87) arena=(77,85) r=20 brain=kit script=Custodian mechs=[
+    6.657 INF [named] stronghold 斷柱商站: leader replaced by sh_sands
+    6.662 INF [named] spawned rare_sands_ogan (正午之盾・歐岡) kind=Rare base=dune_mirror model=mon_dune_mirror level=36 life=102055 dmg=384 at=(105,49) arena=(105,49) r=14 brain=base-ai script=Ogan mechs=[bash]
+    6.662 INF [named] rare rare_sands_ogan is out at (105,49) rule=road
+    6.662 INF [named] rare rare_sands_hundredshell: not out this visit (roll 0.65)
+    6.665 INF [named] spawned rare_sands_tesa (雷甕長老・泰薩) kind=Rare base=dune_stormjar model=mon_dune_stormjar level=36 life=235512 dmg=384 at=(37,77) arena=(37,77) r=14 brain=base-ai script=Tesa mechs=[strik
+    6.667 INF [named] rare rare_sands_tesa is out at (37,77) rule=open
+    6.668 INF [named] rare rare_sands_thirteenth: not out this visit (roll 0.73)
+    6.669 INF [named] world boss wb_daylessdisc: not yet (region sands not open)
+=== 21:39:22 wastes_s1: exit= seconds=41 log: C:\Users\blhsi\AppData\Roaming\AshenAbyss\logs\game_20261123_213841.log  lines=236  ERR=0  WRN=0 
+    0.034 INF [boot] args=[] userargs=[--win --mute --slot=99 --gear --bot --focus --god --spawn-aggro --new=emberblade --level=14 --tier=1 --hands=2h --area=wastes --seed=4111 --spawn=husk_huddle,rea
+    0.039 INF [boot] switches: --win --mute --slot=99 --gear --bot --focus --god --spawn-aggro --new=emberblade --level=14 --tier=1 --hands=2h --area=wastes --seed=4111 --spawn=husk_huddle,reaver_brut
+    0.657 INF [test] --gear: rare items of power 170 equipped (main mace2, off -); life=649 armor=621 weapon=68-114
+    6.902 INF [populate] --spawn: 8 of 8 types placed 7 m ahead of the entry (aggro'd)
+=== 21:40:32 sanctum_a: exit= seconds=71 log: C:\Users\blhsi\AppData\Roaming\AshenAbyss\logs\game_20261123_213922.log  lines=261  ERR=0  WRN=0 
+    0.030 INF [boot] args=[] userargs=[--win --mute --slot=99 --gear --bot --focus --god --new=emberblade --level=38 --tier=2 --hands=2h --area=sanctum --seed=4601 --shot=Y:/shots/readme040/raw/sanctum_a.png --shot-at=8,
+    0.034 INF [boot] switches: --win --mute --slot=99 --gear --bot --focus --god --new=emberblade --level=38 --tier=2 --hands=2h --area=sanctum --seed=4601 --shot=Y:/shots/readme040/raw/sanctum_a.png --shot-at=8,12,16,20
+    0.800 INF [test] --gear: rare items of power 440 equipped (main mace2, off -); life=2748 armor=1523 weapon=184-307
+    6.181 INF [named] layer ready: 68 definitions (Rare 28, Stronghold 7, Dungeon 14, Region 7, World 4, Pinnacle 8), scripted=61
+    6.197 INF [named] spawned sh_sanctum (封街騎士長・葛蘭) kind=Stronghold base=knight model=mon_knight level=42 life=601679 dmg=495 at=(101,78) arena=(103,81) r=20 brain=kit script=Gran mechs=[sweep,seal]
+    6.197 INF [named] stronghold 燭匠街壘: leader replaced by sh_sanctum
+    6.198 INF [named] rare rare_sanctum_firstcantor: not out this visit (roll 0.49)
+    6.199 INF [named] rare rare_sanctum_everquiet: not out this visit (roll 0.49)
+    6.203 INF [named] spawned rare_sanctum_kolen (不熄者・柯倫) kind=Rare base=wax_wick model=mon_wax_wick level=42 life=138849 dmg=446 at=(117,113) arena=(117,113) r=14 brain=base-ai script=Kolen mechs=[sprint,tra
+    6.203 INF [named] rare rare_sanctum_kolen is out at (117,113) rule=road
+    6.204 INF [named] rare rare_sanctum_vesna: not out this visit (roll 0.98)
+    6.205 INF [named] world boss wb_daylessdisc: not yet (region sands not open)
+=== 21:41:13 wastes_s2: exit= seconds=41 log: C:\Users\blhsi\AppData\Roaming\AshenAbyss\logs\game_20261123_214032.log  lines=231  ERR=0  WRN=0 
+    0.031 INF [boot] args=[] userargs=[--win --mute --slot=99 --gear --bot --focus --god --spawn-aggro --new=lampknight --level=14 --tier=1 --hands=off --area=wastes --seed=4112 --spawn=hauler_yoke,ch
+    0.035 INF [boot] switches: --win --mute --slot=99 --gear --bot --focus --god --spawn-aggro --new=lampknight --level=14 --tier=1 --hands=off --area=wastes --seed=4112 --spawn=hauler_yoke,char_walke
+    0.629 INF [test] --gear: rare items of power 170 equipped (main flail, off lantern); life=998 armor=659 weapon=37-87
+    6.828 INF [populate] --spawn: 7 of 7 types placed 7 m ahead of the entry (aggro'd)
+=== 21:42:25 sanctum_b: exit= seconds=70 log: C:\Users\blhsi\AppData\Roaming\AshenAbyss\logs\game_20261123_214113.log  lines=249  ERR=0  WRN=0 
+    0.031 INF [boot] args=[] userargs=[--win --mute --slot=99 --gear --bot --focus --god --new=lampknight --level=38 --tier=2 --hands=2h --area=sanctum --seed=4602 --shot=Y:/shots/readme040/raw/sanctum_b.png --shot-at=8,
+    0.036 INF [boot] switches: --win --mute --slot=99 --gear --bot --focus --god --new=lampknight --level=38 --tier=2 --hands=2h --area=sanctum --seed=4602 --shot=Y:/shots/readme040/raw/sanctum_b.png --shot-at=8,12,16,20
+    0.635 INF [test] --gear: rare items of power 440 equipped (main sword2, off -); life=2552 armor=1784 weapon=163-244
+    5.893 INF [named] layer ready: 68 definitions (Rare 28, Stronghold 7, Dungeon 14, Region 7, World 4, Pinnacle 8), scripted=61
+    5.909 INF [named] spawned sh_sanctum (封街騎士長・葛蘭) kind=Stronghold base=knight model=mon_knight level=42 life=601679 dmg=495 at=(99,86) arena=(101,83) r=20 brain=kit script=Gran mechs=[sweep,seal]
+    5.909 INF [named] stronghold 燭匠街壘: leader replaced by sh_sanctum
+    5.914 INF [named] spawned rare_sanctum_firstcantor (首席領唱) kind=Rare base=choir model=mon_choir level=42 life=161990 dmg=446 at=(93,41) arena=(93,41) r=14 brain=base-ai script=FirstCantor mechs=[rest,halo]
+    5.914 INF [named] rare rare_sanctum_firstcantor is out at (93,41) rule=open
+    5.914 INF [named] rare rare_sanctum_everquiet: not out this visit (roll 0.82)
+    5.915 INF [named] rare rare_sanctum_kolen: not out this visit (roll 0.74)
+    5.916 INF [named] spawned rare_sanctum_vesna (審默官・薇絲娜) kind=Rare base=cult_snuffer model=mon_cult_snuffer level=42 life=208273 dmg=446 at=(81,69) arena=(81,69) r=14 brain=base-ai script=Vesna mechs=[snu
+    5.917 INF [named] rare rare_sanctum_vesna is out at (81,69) rule=camp_north
+    5.918 INF [named] world boss wb_daylessdisc: not yet (region sands not open)
+=== 21:43:08 town_c: exit= seconds=44 log: C:\Users\blhsi\AppData\Roaming\AshenAbyss\logs\game_20261123_214224.log  lines=285  ERR=0  WRN=0 
+=== 21:44:19 abyss_a: exit= seconds=71 log: C:\Users\blhsi\AppData\Roaming\AshenAbyss\logs\game_20261123_214308.log  lines=257  ERR=0  WRN=0 
+    0.632 INF [test] --gear: rare items of power 540 equipped (main mace1, off totem); life=2057 armor=2077 weapon=153-255
+    6.157 INF [named] layer ready: 68 definitions (Rare 28, Stronghold 7, Dungeon 14, Region 7, World 4, Pinnacle 8), scripted=61
+    6.193 INF [named] spawned sh_abyss (餘火吞食者・烏爾格) kind=Stronghold base=brute model=mon_brute level=51 life=1217024 dmg=936 at=(139,77) arena=(139,81) r=20 brain=kit script=Urg mechs=[eat]
+    6.194 INF [named] stronghold 餘火前哨: leader replaced by sh_abyss
+    6.195 INF [named] rare rare_abyss_foreman: not out this visit (roll 0.89)
+    6.200 INF [named] spawned rare_abyss_firstborn (長子火) kind=Rare base=fiend_caller model=mon_fiend_caller level=51 life=715896 dmg=842 at=(29,17) arena=(29,17) r=14 brain=base-ai script=FirstBorn mechs=[summon,ho
+    6.200 INF [named] rare rare_abyss_firstborn is out at (29,17) rule=far
+    6.200 INF [named] rare rare_abyss_whitetide: not out this visit (roll 0.91)
+    6.201 INF [named] rare rare_abyss_slagferry: not out this visit (roll 0.94)
+    6.202 INF [named] world boss wb_breathofsilence: not yet (region abyss not open)
+=== 21:45:02 frost_s1: exit= seconds=41 log: C:\Users\blhsi\AppData\Roaming\AshenAbyss\logs\game_20261123_214419.log  lines=266  ERR=0  WRN=0 
+    0.031 INF [boot] args=[] userargs=[--win --mute --slot=99 --gear --bot --focus --god --spawn-aggro --new=forgebody --level=22 --tier=1 --area=frost --seed=4211 --spawn=rime_breaker,cf_hulk,rime_ho
+    0.037 INF [boot] switches: --win --mute --slot=99 --gear --bot --focus --god --spawn-aggro --new=forgebody --level=22 --tier=1 --area=frost --seed=4211 --spawn=rime_breaker,cf_hulk,rime_horn,cf_fl
+    0.660 INF [test] --gear: rare items of power 250 equipped (main mace2, off -); life=975 armor=801 weapon=88-147
+    7.103 INF [populate] --spawn: 8 of 8 types placed 7 m ahead of the entry (aggro'd)
+=== 21:45:44 town_d: exit= seconds=43 log: C:\Users\blhsi\AppData\Roaming\AshenAbyss\logs\game_20261123_214500.log  lines=296  ERR=0  WRN=0 
+BATCH DONE 21:45:52 town_list.txt
+=== 21:46:55 abyss_b: exit= seconds=71 log: C:\Users\blhsi\AppData\Roaming\AshenAbyss\logs\game_20261123_214543.log  lines=268  ERR=0  WRN=0 
+    0.736 INF [test] --gear: rare items of power 540 equipped (main sword1, off dagger); life=1307 armor=2025 weapon=135-193
+    6.442 INF [named] layer ready: 68 definitions (Rare 28, Stronghold 7, Dungeon 14, Region 7, World 4, Pinnacle 8), scripted=61
+    6.474 INF [named] spawned sh_abyss (餘火吞食者・烏爾格) kind=Stronghold base=brute model=mon_brute level=51 life=1217024 dmg=936 at=(76,79) arena=(77,83) r=20 brain=kit script=Urg mechs=[eat]
+    6.474 INF [named] stronghold 餘火前哨: leader replaced by sh_abyss
+    6.481 INF [named] spawned rare_abyss_foreman (末班工頭) kind=Rare base=forge_hammer model=mon_forge_hammer level=51 life=644307 dmg=842 at=(109,125) arena=(109,125) r=14 brain=base-ai script=Foreman mechs=[bell,s
+    6.482 INF [named] rare rare_abyss_foreman is out at (109,125) rule=open
+    6.484 INF [named] spawned rare_abyss_firstborn (長子火) kind=Rare base=fiend_caller model=mon_fiend_caller level=51 life=715896 dmg=842 at=(201,21) arena=(201,21) r=14 brain=base-ai script=FirstBorn mechs=[summon,
+    6.484 INF [named] rare rare_abyss_firstborn is out at (201,21) rule=far
+    6.484 INF [named] rare rare_abyss_whitetide: not out this visit (roll 0.58)
+    6.485 INF [named] rare rare_abyss_slagferry: not out this visit (roll 0.52)
+    6.486 INF [named] world boss wb_breathofsilence: not yet (region abyss not open)
+=== 21:47:36 frost_s2: exit= seconds=41 log: C:\Users\blhsi\AppData\Roaming\AshenAbyss\logs\game_20261123_214654.log  lines=245  ERR=0  WRN=0 
+    0.033 INF [boot] args=[] userargs=[--win --mute --slot=99 --gear --bot --focus --god --spawn-aggro --new=astromancer --level=22 --tier=1 --hands=2h --area=frost --seed=4212 --spawn=dusk_yak,cf_spi
+    0.038 INF [boot] switches: --win --mute --slot=99 --gear --bot --focus --god --spawn-aggro --new=astromancer --level=22 --tier=1 --hands=2h --area=frost --seed=4212 --spawn=dusk_yak,cf_spirit,rime
+    0.662 INF [test] --gear: rare items of power 250 equipped (main staff, off -); life=1123 armor=845 weapon=96-129
+    7.146 INF [populate] --spawn: 7 of 7 types placed 7 m ahead of the entry (aggro'd)
+=== 21:48:47 dung_a: exit= seconds=70 log: C:\Users\blhsi\AppData\Roaming\AshenAbyss\logs\game_20261123_214736.log  lines=215  ERR=0  WRN=0 
+    0.720 INF [test] --gear: rare items of power 300 equipped (main mace2, off -); life=1095 armor=934 weapon=116-193
+    5.846 INF [named] layer ready: 68 definitions (Rare 28, Stronghold 7, Dungeon 14, Region 7, World 4, Pinnacle 8), scripted=61
+    5.859 INF [named] spawned db_mire_d1 (溺窟長鱔) kind=Dungeon base=lurk_eel model=mon_lurk_eel level=29 life=187506 dmg=347 at=(107,23) arena=(107,23) r=12 brain=kit script=LongEel mechs=[flood,strike]
+    5.860 INF [named] dungeon mire_d1: boss replaced by db_mire_d1 (arena r=12)
+=== 21:49:11 town_e: exit= seconds=23 log: C:\Users\blhsi\AppData\Roaming\AshenAbyss\logs\game_20261123_214846.log  lines=267  ERR=0  WRN=0 
+=== 21:49:52 crypt_s1: exit= seconds=41 log: C:\Users\blhsi\AppData\Roaming\AshenAbyss\logs\game_20261123_214910.log  lines=254  ERR=0  WRN=0 
+    0.033 INF [boot] args=[] userargs=[--win --mute --slot=99 --gear --bot --focus --god --spawn-aggro --new=hunter --level=22 --tier=1 --area=crypt --seed=4311 --spawn=shroud_matron,shroud_ling,shrou
+    0.038 INF [boot] switches: --win --mute --slot=99 --gear --bot --focus --god --spawn-aggro --new=hunter --level=22 --tier=1 --area=crypt --seed=4311 --spawn=shroud_matron,shroud_ling,shroud_ling,s
+    0.656 INF [test] --gear: rare items of power 250 equipped (main dagger, off sword1); life=1030 armor=795 weapon=65-92
+    6.585 INF [populate] --spawn: 8 of 8 types placed 7 m ahead of the entry (aggro'd)
+=== 21:50:14 town_f: exit= seconds=23 log: C:\Users\blhsi\AppData\Roaming\AshenAbyss\logs\game_20261123_214951.log  lines=279  ERR=0  WRN=0 
+BATCH DONE 21:50:20 town_list2.txt
+=== 21:51:24 dung_b: exit= seconds=69 log: C:\Users\blhsi\AppData\Roaming\AshenAbyss\logs\game_20261123_215014.log  lines=228  ERR=0  WRN=0 
+    0.663 INF [test] --gear: rare items of power 480 equipped (main dagger, off grimoire); life=1275 armor=1523 weapon=108-146
+    4.544 INF [named] layer ready: 68 definitions (Rare 28, Stronghold 7, Dungeon 14, Region 7, World 4, Pinnacle 8), scripted=61
+    4.563 INF [named] spawned db_abyss_d2 (半燼騎士) kind=Dungeon base=knight model=mon_knight level=47 life=676718 dmg=552 at=(59,23) arena=(59,23) r=12 brain=kit script=HalfBurnt mechs=[fire,hush]
+    4.564 INF [named] dungeon abyss_d2: boss replaced by db_abyss_d2 (arena r=12)
+=== 21:52:07 crypt_s2: exit= seconds=42 log: C:\Users\blhsi\AppData\Roaming\AshenAbyss\logs\game_20261123_215123.log  lines=254  ERR=0  WRN=0 
+    0.035 INF [boot] args=[] userargs=[--win --mute --slot=99 --gear --bot --focus --god --spawn-aggro --new=soulbinder --level=22 --tier=1 --hands=off --area=crypt --seed=4312 --spawn=effigy_caryatid
+    0.040 INF [boot] switches: --win --mute --slot=99 --gear --bot --focus --god --spawn-aggro --new=soulbinder --level=22 --tier=1 --hands=off --area=crypt --seed=4312 --spawn=effigy_caryatid,effigy_
+    0.803 INF [test] --gear: rare items of power 250 equipped (main scythe1, off shield); life=926 armor=1108 weapon=59-110
+    7.128 INF [populate] --spawn: 7 of 7 types placed 7 m ahead of the entry (aggro'd)
+=== 21:53:17 boss_a: exit= seconds=70 log: C:\Users\blhsi\AppData\Roaming\AshenAbyss\logs\game_20261123_215205.log  lines=196  ERR=0  WRN=0 
+    1.090 INF [test] --gear: rare items of power 440 equipped (main staff, off -); life=2857 armor=1913 weapon=152-206
+    5.873 INF [named] layer ready: 68 definitions (Rare 28, Stronghold 7, Dungeon 14, Region 7, World 4, Pinnacle 8), scripted=61
+=== 21:55:07 boss_b: exit= seconds=69 log: C:\Users\blhsi\AppData\Roaming\AshenAbyss\logs\game_20261123_215356.log  lines=187  ERR=0  WRN=0 
+    0.035 INF [boot] args=[] userargs=[--win --mute --slot=99 --gear --bot --focus --god --new=astromancer --level=30 --tier=2 --hands=off --bossrush --area=sands_boss --seed=4902 --shot=Y:/shots/readme040/raw/boss_b.png
+    0.040 INF [boot] switches: --win --mute --slot=99 --gear --bot --focus --god --new=astromancer --level=30 --tier=2 --hands=off --bossrush --area=sands_boss --seed=4902 --shot=Y:/shots/readme040/raw/boss_b.png --shot-
+    0.825 INF [test] --gear: rare items of power 360 equipped (main sceptre, off focus); life=850 armor=1368 weapon=99-149
+    5.033 INF [named] layer ready: 68 definitions (Rare 28, Stronghold 7, Dungeon 14, Region 7, World 4, Pinnacle 8), scripted=61
+=== 21:55:46 mire_s1: exit= seconds=41 log: C:\Users\blhsi\AppData\Roaming\AshenAbyss\logs\game_20261123_215505.log  lines=272  ERR=0  WRN=0 
+    0.032 INF [boot] args=[] userargs=[--win --mute --slot=99 --gear --bot --focus --god --spawn-aggro --new=wildsoul --level=24 --tier=1 --area=mire --seed=4411 --spawn=lamp_colony,lamp_bearer,lamp_b
+    0.037 INF [boot] switches: --win --mute --slot=99 --gear --bot --focus --god --spawn-aggro --new=wildsoul --level=24 --tier=1 --area=mire --seed=4411 --spawn=lamp_colony,lamp_bearer,lamp_bomber,bo
+    0.656 INF [test] --gear: rare items of power 270 equipped (main axe2, off -); life=1390 armor=894 weapon=94-175
+    6.590 INF [populate] --spawn: 8 of 8 types placed 7 m ahead of the entry (aggro'd)
+=== 21:56:58 golem_a: exit= seconds=71 log: C:\Users\blhsi\AppData\Roaming\AshenAbyss\logs\game_20261123_215546.log  lines=294  ERR=0  WRN=0 
+    0.796 INF [test] --gear: rare items of power 360 equipped (main scythe2, off -); life=1241 armor=1081 weapon=110-204
+    6.920 INF [test] golem stance: book=[warriors=w_raider, mages=m_shadow, golem=g_iron] forge=寂影之環・劊子手巨斧 bar=[sb_bolt,sb_raise,sb_veil,sb_curse,sb_golem_cmd,sb_colossus]
+    6.956 INF [named] layer ready: 68 definitions (Rare 28, Stronghold 7, Dungeon 14, Region 7, World 4, Pinnacle 8), scripted=61
+    6.970 INF [named] spawned sh_sands (商站看守・第七號) kind=Stronghold base=brass_sentinel model=mon_brass_sentinel level=34 life=259460 dmg=404 at=(159,87) arena=(159,83) r=20 brain=kit script=Custodian mechs
+    6.971 INF [named] stronghold 斷柱商站: leader replaced by sh_sands
+    6.975 INF [named] spawned rare_sands_ogan (正午之盾・歐岡) kind=Rare base=dune_mirror model=mon_dune_mirror level=34 life=88763 dmg=364 at=(57,129) arena=(57,129) r=14 brain=base-ai script=Ogan mechs=[bash]
+    6.976 INF [named] rare rare_sands_ogan is out at (57,129) rule=road
+    6.979 INF [named] spawned rare_sands_hundredshell (百殼老蠍) kind=Rare base=rust_stinger model=mon_rust_stinger level=34 life=157041 dmg=364 at=(97,61) arena=(97,61) r=14 brain=base-ai script=HundredShell mechs=[
+    6.979 INF [named] rare rare_sands_hundredshell is out at (97,61) rule=open
+    6.979 INF [named] rare rare_sands_tesa: not out this visit (roll 0.84)
+    6.981 INF [named] spawned rare_sands_thirteenth (第十三輪) kind=Rare base=dune_disc model=mon_dune_disc level=34 life=184353 dmg=364 at=(29,25) arena=(29,25) r=14 brain=base-ai script=Thirteenth mechs=[disc,orbit
+    6.981 INF [named] rare rare_sands_thirteenth is out at (29,25) rule=far
+    6.983 INF [named] world boss wb_daylessdisc: not yet (region sands not open)
+=== 21:57:15 ui6: exit= seconds=15 log: C:\Users\blhsi\AppData\Roaming\AshenAbyss\logs\game_20261123_215659.log  lines=82  ERR=0  WRN=0 
+=== 21:57:55 mire_s2: exit= seconds=41 log: C:\Users\blhsi\AppData\Roaming\AshenAbyss\logs\game_20261123_215714.log  lines=257  ERR=0  WRN=0 
+    0.032 INF [boot] args=[] userargs=[--win --mute --slot=99 --gear --bot --focus --god --spawn-aggro --new=astromancer --level=24 --tier=1 --hands=off --area=mire --seed=4412 --spawn=lurk_elder,bog_
+    0.037 INF [boot] switches: --win --mute --slot=99 --gear --bot --focus --god --spawn-aggro --new=astromancer --level=24 --tier=1 --hands=off --area=mire --seed=4412 --spawn=lurk_elder,bog_fisher,b
+    0.653 INF [test] --gear: rare items of power 270 equipped (main dagger, off focus); life=1670 armor=814 weapon=65-88
+    6.837 INF [populate] --spawn: 7 of 7 types placed 7 m ahead of the entry (aggro'd)
+=== 21:59:06 golem_b: exit= seconds=71 log: C:\Users\blhsi\AppData\Roaming\AshenAbyss\logs\game_20261123_215755.log  lines=297  ERR=0  WRN=0 
+    0.633 INF [test] --gear: rare items of power 460 equipped (main wand, off shield); life=1909 armor=1953 weapon=106-159
+    6.038 INF [test] golem stance: book=[warriors=w_raider, mages=m_shadow, golem=g_iron] forge=蝕月餘燼・灰鑄巨斧 bar=[sb_bolt,sb_raise,sb_veil,sb_curse,sb_golem_cmd,sb_colossus]
+    6.094 INF [named] layer ready: 68 definitions (Rare 28, Stronghold 7, Dungeon 14, Region 7, World 4, Pinnacle 8), scripted=61
+    6.127 INF [named] spawned sh_abyss (餘火吞食者・烏爾格) kind=Stronghold base=brute model=mon_brute level=44 life=443723 dmg=518 at=(52,82) arena=(55,79) r=20 brain=kit script=Urg mechs=[eat]
+    6.127 INF [named] stronghold 餘火前哨: leader replaced by sh_abyss
+    6.128 INF [named] rare rare_abyss_foreman: not out this visit (roll 0.93)
+    6.129 INF [named] rare rare_abyss_firstborn: not out this visit (roll 0.48)
+    6.133 INF [named] spawned rare_abyss_whitetide (白潮) kind=Rare base=hush_mouth model=mon_hush_mouth level=44 life=313216 dmg=466 at=(173,169) arena=(173,169) r=14 brain=base-ai script=WhiteTide mechs=[absorb,relea
+    6.133 INF [named] rare rare_abyss_whitetide is out at (173,169) rule=shore
+    6.135 INF [named] spawned rare_abyss_slagferry (渣河擺渡人) kind=Rare base=hauler_stoker model=mon_hauler_stoker level=44 life=221862 dmg=466 at=(173,81) arena=(173,81) r=14 brain=base-ai script=SlagFerry mechs=
+    6.135 INF [named] rare rare_abyss_slagferry is out at (173,81) rule=shore
+    6.136 INF [named] world boss wb_breathofsilence: not yet (region abyss not open)
+=== 21:59:48 sands_s1: exit= seconds=41 log: C:\Users\blhsi\AppData\Roaming\AshenAbyss\logs\game_20261123_215906.log  lines=255  ERR=0  WRN=0 
+    0.032 INF [boot] args=[] userargs=[--win --mute --slot=99 --gear --bot --focus --god --spawn-aggro --new=pactbinder --level=34 --tier=1 --area=sands --seed=4511 --spawn=rust_stinger,dune_mirror,du
+    0.036 INF [boot] switches: --win --mute --slot=99 --gear --bot --focus --god --spawn-aggro --new=pactbinder --level=34 --tier=1 --area=sands --seed=4511 --spawn=rust_stinger,dune_mirror,dune_disc,
+    0.648 INF [test] --gear: rare items of power 370 equipped (main dagger, off grimoire); life=2282 armor=1109 weapon=91-123
+    6.457 INF [populate] --spawn: 8 of 8 types placed 7 m ahead of the entry (aggro'd)
+=== 22:01:00 pin_a: exit= seconds=72 log: C:\Users\blhsi\AppData\Roaming\AshenAbyss\logs\game_20261123_215947.log  lines=224  ERR=0  WRN=0 
+    0.033 INF [boot] args=[] userargs=[--win --mute --slot=99 --gear --bot --focus --god --new=emberblade --level=50 --paragon=20 --tier=3 --hands=dual --named=pin_6_grand_hush --seed=5101 --shot=Y:/shots/readme040/raw/p
+    0.038 INF [boot] switches: --win --mute --slot=99 --gear --bot --focus --god --new=emberblade --level=50 --paragon=20 --tier=3 --hands=dual --named=pin_6_grand_hush --seed=5101 --shot=Y:/shots/readme040/raw/pin_a.png
+    0.916 INF [test] --gear: rare items of power 590 equipped (main mace1, off mace1); life=2460 armor=2432 weapon=175-292
+    6.162 INF [named] layer ready: 68 definitions (Rare 28, Stronghold 7, Dungeon 14, Region 7, World 4, Pinnacle 8), scripted=61
+    6.163 INF [named] --named=pin_6_grand_hush: travelling to rift~arena:pin_6_grand_hush
+    6.243 INF [named] town: the Ember Stair altar at (80,54)
+    7.220 INF [named] encounter area rift~arena:pin_6_grand_hush: pin_6_grand_hush theme=cathedral size=56
+    8.281 INF [named] spawned pin_6_grand_hush (終止式・賽倫) kind=Pinnacle base=boss_grand_hush model=boss_grand_hush level=56 life=2154806 dmg=1336 at=(59,25) arena=(59,25) r=12 brain=kit script=PinGrandHush mech
+   18.073 INF [named] pin_6_grand_hush engaged: life=2154806 level=56 heroLevel=50 tier=3
+   18.253 INF [named] pin_6_grand_hush mech punish t=0.2s life=100%
+   19.067 INF [named] pin_6_grand_hush mech bells t=1.0s life=100%
+   22.116 INF [named] pin_6_grand_hush mech toll3 t=4.0s life=99%
+   23.116 INF [named] pin_6_grand_hush mech bells ×10 t=5.0s life=99%
+   26.233 INF [named] pin_6_grand_hush mech rest t=8.0s life=98%
+   28.317 INF [named] pin_6_grand_hush mech bells ×20 t=10.0s life=98%
+   32.484 INF [named] pin_6_grand_hush mech bells ×30 t=14.0s life=96%
+   37.648 INF [named] pin_6_grand_hush mech bells ×40 t=19.0s life=95%
+   42.816 INF [named] pin_6_grand_hush mech bells ×50 t=24.0s life=93%
+   63.553 INF [named] pin_6_grand_hush mech toll3 ×10 t=44.1s life=87%
+=== 22:01:40 sands_s2: exit= seconds=41 log: C:\Users\blhsi\AppData\Roaming\AshenAbyss\logs\game_20261123_220059.log  lines=237  ERR=0  WRN=0 
+    0.035 INF [boot] args=[] userargs=[--win --mute --slot=99 --gear --bot --focus --god --spawn-aggro --new=forgebody --level=34 --tier=1 --area=sands --seed=4512 --spawn=engine_carrier,dune_mirror,r
+    0.039 INF [boot] switches: --win --mute --slot=99 --gear --bot --focus --god --spawn-aggro --new=forgebody --level=34 --tier=1 --area=sands --seed=4512 --spawn=engine_carrier,dune_mirror,rust_stin
+    0.653 INF [test] --gear: rare items of power 370 equipped (main axe2, off -); life=1836 armor=1087 weapon=125-231
+    6.495 INF [populate] --spawn: 7 of 7 types placed 7 m ahead of the entry (aggro'd)
+=== 22:02:52 pin_b: exit= seconds=71 log: C:\Users\blhsi\AppData\Roaming\AshenAbyss\logs\game_20261123_220140.log  lines=215  ERR=0  WRN=0 
+    0.033 INF [boot] args=[] userargs=[--win --mute --slot=99 --gear --bot --focus --god --new=lampknight --level=50 --paragon=20 --tier=3 --hands=off --named=pin_1_gravedigger --seed=5102 --shot=Y:/shots/readme040/raw/p
+    0.038 INF [boot] switches: --win --mute --slot=99 --gear --bot --focus --god --new=lampknight --level=50 --paragon=20 --tier=3 --hands=off --named=pin_1_gravedigger --seed=5102 --shot=Y:/shots/readme040/raw/pin_b.png
+    0.958 INF [test] --gear: rare items of power 590 equipped (main mace1, off lantern); life=3722 armor=2525 weapon=172-287
+    6.378 INF [named] layer ready: 68 definitions (Rare 28, Stronghold 7, Dungeon 14, Region 7, World 4, Pinnacle 8), scripted=61
+    6.379 INF [named] --named=pin_1_gravedigger: travelling to rift~arena:pin_1_gravedigger
+    6.459 INF [named] town: the Ember Stair altar at (75,45)
+    7.399 INF [named] encounter area rift~arena:pin_1_gravedigger: pin_1_gravedigger theme=graveyard size=56
+    8.428 INF [named] spawned pin_1_gravedigger (不眠掘墓者・葛魯姆) kind=Pinnacle base=boss_gravedigger model=boss_gravedigger level=56 life=2400454 dmg=1103 at=(61,27) arena=(61,27) r=12 brain=kit script=PinGr
+   18.166 INF [named] pin_1_gravedigger engaged: life=2400454 level=56 heroLevel=50 tier=3
+   28.479 INF [named] pin_1_gravedigger mech pit t=9.8s life=99%
+BATCH DONE 22:03:01 battle_rest.txt
+=== 22:03:31 sanctum_s1: exit= seconds=40 log: C:\Users\blhsi\AppData\Roaming\AshenAbyss\logs\game_20261123_220251.log  lines=253  ERR=0  WRN=0 
+    0.034 INF [boot] args=[] userargs=[--win --mute --slot=99 --gear --bot --focus --god --spawn-aggro --new=emberblade --level=40 --tier=1 --hands=dual --area=sanctum --seed=4611 --spawn=bell_clapper
+    0.038 INF [boot] switches: --win --mute --slot=99 --gear --bot --focus --god --spawn-aggro --new=emberblade --level=40 --tier=1 --hands=dual --area=sanctum --seed=4611 --spawn=bell_clapper,wax_dri
+    0.641 INF [test] --gear: rare items of power 430 equipped (main axe1, off sword1); life=2210 armor=2065 weapon=108-180
+    5.792 INF [populate] --spawn: 8 of 8 types placed 7 m ahead of the entry (aggro'd)
+=== 22:04:24 sanctum_s2: exit= seconds=40 log: C:\Users\blhsi\AppData\Roaming\AshenAbyss\logs\game_20261123_220343.log  lines=246  ERR=0  WRN=0 
+    0.033 INF [boot] args=[] userargs=[--win --mute --slot=99 --gear --bot --focus --god --spawn-aggro --new=lampknight --level=40 --tier=1 --hands=2h --area=sanctum --seed=4612 --spawn=hush_mouth,hus
+    0.037 INF [boot] switches: --win --mute --slot=99 --gear --bot --focus --god --spawn-aggro --new=lampknight --level=40 --tier=1 --hands=2h --area=sanctum --seed=4612 --spawn=hush_mouth,hush_blank,
+    0.682 INF [test] --gear: rare items of power 430 equipped (main polearm, off -); life=2832 armor=1768 weapon=154-257
+    5.639 INF [populate] --spawn: 7 of 7 types placed 7 m ahead of the entry (aggro'd)
+=== 22:05:22 abyss_s1: exit= seconds=40 log: C:\Users\blhsi\AppData\Roaming\AshenAbyss\logs\game_20261123_220442.log  lines=268  ERR=0  WRN=0 
+    0.031 INF [boot] args=[] userargs=[--win --mute --slot=99 --gear --bot --focus --god --spawn-aggro --new=wildsoul --level=46 --paragon=8 --tier=2 --area=abyss --seed=4711 --spawn=forge_hammer,fien
+    0.035 INF [boot] switches: --win --mute --slot=99 --gear --bot --focus --god --spawn-aggro --new=wildsoul --level=46 --paragon=8 --tier=2 --area=abyss --seed=4711 --spawn=forge_hammer,fiend_maw,fo
+    0.675 INF [test] --gear: rare items of power 520 equipped (main staff, off -); life=2567 armor=1594 weapon=195-264
+    5.496 INF [populate] --spawn: 8 of 8 types placed 7 m ahead of the entry (aggro'd)
+=== 22:06:27 abyss_s2: exit= seconds=39 log: C:\Users\blhsi\AppData\Roaming\AshenAbyss\logs\game_20261123_220545.log  lines=267  ERR=0  WRN=0 
+    0.033 INF [boot] args=[] userargs=[--win --mute --slot=99 --gear --bot --focus --god --spawn-aggro --new=hunter --level=46 --paragon=8 --tier=2 --area=abyss --seed=4712 --spawn=hauler_stoker,hush_
+    0.038 INF [boot] switches: --win --mute --slot=99 --gear --bot --focus --god --spawn-aggro --new=hunter --level=46 --paragon=8 --tier=2 --area=abyss --seed=4712 --spawn=hauler_stoker,hush_mute,fie
+    0.648 INF [test] --gear: rare items of power 520 equipped (main dagger, off dagger); life=2318 armor=1684 weapon=122-165
+    5.414 INF [populate] --spawn: 7 of 7 types placed 7 m ahead of the entry (aggro'd)
+BATCH DONE 22:06:35 battle_list2.txt
+=== 22:13:32 boss_c: exit= seconds=211 log: C:\Users\blhsi\AppData\Roaming\AshenAbyss\logs\game_20261123_221001.log  lines=332  ERR=0  WRN=0 
+=== 22:17:19 boss_d: exit= seconds=212 log: C:\Users\blhsi\AppData\Roaming\AshenAbyss\logs\game_20261123_221347.log  lines=327  ERR=0  WRN=0 
+=== 22:17:39 ui7: exit= seconds=21 log: C:\Users\blhsi\AppData\Roaming\AshenAbyss\logs\game_20261123_221718.log  lines=210  ERR=0  WRN=0 
+=== 22:21:10 boss_e: exit= seconds=211 log: C:\Users\blhsi\AppData\Roaming\AshenAbyss\logs\game_20261123_221739.log  lines=414  ERR=0  WRN=0 
+BATCH DONE 22:21:18 boss_list.txt
+=== 22:22:14 dung_s1: exit= seconds=38 log: C:\Users\blhsi\AppData\Roaming\AshenAbyss\logs\game_20261123_222136.log  lines=216  ERR=0  WRN=0 
+    0.033 INF [boot] args=[] userargs=[--win --mute --slot=99 --gear --bot --focus --god --spawn-aggro --new=astromancer --level=42 --tier=1 --hands=2h --area=abyss_d2 --seed=4821 --spawn=forge_hammer
+    0.037 INF [boot] switches: --win --mute --slot=99 --gear --bot --focus --god --spawn-aggro --new=astromancer --level=42 --tier=1 --hands=2h --area=abyss_d2 --seed=4821 --spawn=forge_hammer,forge_t
+    0.640 INF [test] --gear: rare items of power 450 equipped (main staff, off -); life=1138 armor=1989 weapon=155-210
+    3.792 INF [populate] --spawn: 7 of 7 types placed 7 m ahead of the entry (aggro'd)
+=== 22:23:10 dung_s2: exit= seconds=37 log: C:\Users\blhsi\AppData\Roaming\AshenAbyss\logs\game_20261123_222231.log  lines=202  ERR=0  WRN=0 
+    0.032 INF [boot] args=[] userargs=[--win --mute --slot=99 --gear --bot --focus --god --spawn-aggro --new=astromancer --level=24 --tier=1 --hands=off --area=frost_d2 --seed=4822 --spawn=rime_breake
+    0.037 INF [boot] switches: --win --mute --slot=99 --gear --bot --focus --god --spawn-aggro --new=astromancer --level=24 --tier=1 --hands=off --area=frost_d2 --seed=4822 --spawn=rime_breaker,cf_spi
+    0.638 INF [test] --gear: rare items of power 270 equipped (main sceptre, off focus); life=1961 armor=1002 weapon=81-122
+    3.716 INF [populate] --spawn: 7 of 7 types placed 7 m ahead of the entry (aggro'd)
+=== 22:24:06 golem_s1: exit= seconds=40 log: C:\Users\blhsi\AppData\Roaming\AshenAbyss\logs\game_20261123_222326.log  lines=267  ERR=0  WRN=0 
+    0.038 INF [boot] args=[] userargs=[--win --mute --slot=99 --gear --bot --focus --god --spawn-aggro --new=soulbinder --level=34 --tier=1 --golem=iron --forge --area=sands --seed=5011 --spawn=rust_s
+    0.042 INF [boot] switches: --win --mute --slot=99 --gear --bot --focus --god --spawn-aggro --new=soulbinder --level=34 --tier=1 --golem=iron --forge --area=sands --seed=5011 --spawn=rust_stinger,d
+    0.658 INF [test] --gear: rare items of power 370 equipped (main dagger, off shield); life=1350 armor=1315 weapon=88-120
+    6.196 INF [populate] --spawn: 6 of 6 types placed 7 m ahead of the entry (aggro'd)
+BATCH DONE 22:24:18 battle_list3.txt
+=== 22:54:58 r2class: exit= seconds=15 log: C:\Users\blhsi\AppData\Roaming\AshenAbyss\logs\game_20261123_225444.log  lines=82  ERR=0  WRN=0 
+=== 22:55:24 r2book: exit= seconds=14 log: C:\Users\blhsi\AppData\Roaming\AshenAbyss\logs\game_20261123_225510.log  lines=115  ERR=0  WRN=0 
+=== 22:55:52 r2filter: exit= seconds=19 log: C:\Users\blhsi\AppData\Roaming\AshenAbyss\logs\game_20261123_225533.log  lines=188  ERR=0  WRN=0 

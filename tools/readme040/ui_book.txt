@@ -1,0 +1,22 @@
+# README 0.4.0: 亡者名冊 (soulbinder 40, iron golem forged)
+wait 4
+shot sb_town
+open skills:book
+wait 1.8
+shot book
+dump book
+hover 1100,400
+wait 1.0
+shot book_tip
+unhover
+close
+wait 0.4
+open skills
+wait 1.2
+shot sb_skills
+close
+open inventory
+wait 2.2
+shot sb_inv
+close
+quit

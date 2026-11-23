@@ -1,0 +1,62 @@
+# README 0.4.0 round 2: smith with an item selected, bag marks, merchant (lampknight 50, 2h polearm)
+wait 4
+give set
+give legendary Helm
+give legendary Weapon
+give rare Boots
+give magic Gloves
+give common Pants
+give unique Chest
+give rare OffHand
+gold 250000
+mats 300
+wait 0.5
+open inventory
+wait 2.5
+key F
+wait 0.9
+click @全部非升級
+wait 0.8
+shot filter_nonup
+click @全部標記回收
+wait 0.8
+shot filter_nonup_marked
+key F
+wait 0.8
+hover 1061,647
+key L
+hover 1004,647
+key X
+hover 1118,647
+key X
+unhover
+wait 0.8
+shot bag_marks
+close
+wait 0.4
+open vendor:smith
+wait 1.0
+click @淬火
+wait 0.7
+click 739,378
+wait 0.6
+unhover
+wait 0.4
+shot smith_temper
+click @精鑄
+wait 0.7
+click 739,378
+wait 0.6
+unhover
+wait 0.4
+shot smith_mw
+close
+wait 0.4
+open vendor:merchant
+wait 1.0
+hover 223,250
+wait 1.0
+shot merchant
+unhover
+close
+quit

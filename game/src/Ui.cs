@@ -1234,6 +1234,14 @@ internal sealed class UiScript
                 Loot.DropGold(137, pl.Pos2 + new Vector2(-2.4f, 2.0f));
                 break;
             }
+            case "talk":
+            {
+                // [fixes] "npcId": speak to a town NPC exactly as a click on it does (quest steps, then the dialogue)
+                var n = g.Level?.Npcs?.Find(x => x.Id == arg);
+                if (n?.Obj == null || !GodotObject.IsInstanceValid(n.Obj)) Log.Warn("uitest", $"talk: no npc '{arg}' here");
+                else { Log.Info("uitest", $"talk {arg}"); Log.Guard("npc", () => n.Obj.OnUse?.Invoke(g.Player)); }
+                break;
+            }
             case "dropat":
             {
                 // [fixes] "x,y[,n]": n rare items (default 4) on the ground under that WINDOW pixel (loot labels next to the HUD)

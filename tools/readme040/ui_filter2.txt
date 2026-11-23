@@ -1,0 +1,28 @@
+# README 0.4.0 re-shoot: bag filter + marks (lampknight 50, 2h)
+wait 4
+give set
+give legendary Helm
+give legendary Weapon
+give rare Boots
+give magic Gloves
+give common Pants
+give unique Chest
+give rare OffHand
+gold 250000
+mats 300
+wait 0.5
+open inventory
+wait 2.5
+hover 1061,647
+key L
+unhover
+key F
+wait 0.9
+click @全部非升級
+wait 0.8
+click @全部標記回收
+wait 1.0
+unhover
+wait 0.4
+shot filter_nonup_marked
+quit

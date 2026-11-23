@@ -1,0 +1,31 @@
+wait 4
+give legendary Helm
+give rare Boots
+give magic Gloves
+give common Pants
+wait 0.5
+open inventory
+wait 2.0
+key F
+wait 0.9
+click @全部非升級
+wait 0.8
+click @全部標記回收
+wait 0.8
+shot filter_s0
+close
+scale 1
+wait 0.5
+open inventory
+wait 2.0
+shot filter_s1
+close
+scale 2
+wait 0.5
+open inventory
+wait 2.0
+shot filter_s2
+close
+scale 0
+wait 0.3
+quit

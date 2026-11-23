@@ -1,0 +1,19 @@
+wait 3
+menu class:emberblade
+wait 1.5
+shot class_s0
+scale 1
+wait 1.0
+menu class:emberblade
+wait 1.5
+shot class_s1
+scale 2
+wait 1.0
+menu class:emberblade
+wait 1.5
+shot class_s2
+scale 0
+wait 0.5
+menu title
+wait 1
+quit
