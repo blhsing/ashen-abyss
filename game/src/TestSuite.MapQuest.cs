@@ -197,6 +197,14 @@ public sealed partial class TestSuite
                 yield return 0.3f;
             }
             yield return 0.4f;                                   // one quest-layer update after the cell was seen
+            bool alive = !(tgt.Ref is Actor ta) || (GodotObject.IsInstanceValid(ta) && !ta.Dead);
+            Log.Info("suite", $"mapquest pin check: target alive={alive} seen={lv.SeenAt(TargetNow())} at {TargetNow()} — " + QuestMarks.Describe(lv));
+            if (!alive)
+            {
+                // [lead] the elite died fighting the hero while we waited: its pin is gone by design, so test another target
+                var next = QMarks().Where(m => m.Kind != QuestMarkKind.Area).OrderBy(m => m.Pos.DistanceSquaredTo(G.Player.Pos2)).FirstOrDefault();
+                if (next != null) { G.Player.Teleport(lv.Grid.NearestWalk(lv.StandNear(next.Pos, G.Player.Pos2, 4f))); yield return 1.6f; }
+            }
             Check(QMarks().Any(m => m.Known && m.Kind != QuestMarkKind.Area), "dungeon: an objective target is pinned once its room is explored");
             yield return MapShot("dungeon_after_hud", false);
             yield return MapShot("dungeon_after_map", true, hover: true);

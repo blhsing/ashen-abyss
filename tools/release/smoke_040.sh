@@ -30,7 +30,6 @@ run dual     "--win --mute --new=emberblade --slot=99 --area=crypt --level=18 --
 run offhand  "--win --mute --new=lampknight --slot=99 --area=mire --level=18 --gear --hands=off --bot --shot=Y:\shots\release040\offhand.png --shot-at=30,60 --quit-at=90" 240 "-NoBuild"
 run s_golem  "--win --mute --slot=99 --suite=golem --quit-at=1200" 1260 "-NoBuild"
 run s_guide  "--win --mute --slot=99 --suite=guide --quit-at=600" 660 "-NoBuild"
-run s_save   "--win --mute --slot=99 --suite=save --quit-at=900" 960 "-NoBuild"
 run s_ladder "--win --mute --slot=99 --suite=named:ladder --quit-at=900" 960 "-NoBuild"
 run s_pilot  "--win --mute --slot=99 --suite=pilot --quit-at=600" 660 "-NoBuild"
 run golemfight "--win --mute --new=soulbinder --slot=99 --area=wastes --level=12 --gear --golem=iron --forge --bot --shot=Y:\shots\release040\golem.png --shot-at=40,80 --quit-at=110" 260 "-NoBuild"

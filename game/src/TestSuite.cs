@@ -1018,7 +1018,7 @@ public sealed partial class TestSuite
             string tag = Names.ClassKey(cls);
             var skills = SkillDb.Of(cls).ToList(); var passives = SkillDb.PassivesOf(cls).ToList(); var specs = SkillDb.SpecsOf(cls).ToList();
             int cats = skills.Select(s => s.Cat).Distinct().Count();
-            Check(skills.Count == 8 && cats == 6 && specs.Count == 3 && passives.Count(x => x.Key) >= 1, $"skill data {tag}: 8 skills in 6 categories, 3 specs, key passives",
+            Check(skills.Count == (cls == ClassId.Soulbinder ? 9 : 8) && cats == 6 && specs.Count == 3 && passives.Count(x => x.Key) >= 1, $"skill data {tag}: {(cls == ClassId.Soulbinder ? 9 : 8)} skills in 6 categories, 3 specs, key passives",
                 $"skills={skills.Count} cats={cats} passives={passives.Count} keys={passives.Count(x => x.Key)} specs={specs.Count} unlocks=[{string.Join(",", skills.Select(s => s.UnlockLevel))}]");
             foreach (var s in skills)
             {
