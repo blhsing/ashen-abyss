@@ -112,7 +112,12 @@ public static class NamedHub
             d.Poise = Mathf.Max(d.Poise, 8f);
             if (d.Radius < 0.6f) d.Radius = 0.6f;
         }
-        else d.Scale = n.Scale / 1.2f;                   // an elite's model grows by a fifth on top of its definition
+        else
+        {
+            d.Scale = n.Scale / 1.2f;                    // an elite's model grows by a fifth on top of its definition
+            // a named rare never blows itself up: with the roster live, 柯倫's base (燃芯者, an exploder) burst in 6 s
+            if (d.AI == MonAI.Exploder) { d.AI = MonAI.Melee; d.Range = 2.2f; d.Contact = 0.45f; d.Cooldown = 1.4f; }
+        }
         n.Shape?.Invoke(d);
         var kitReady = n.Boss && BossKits.Has(n.Id);
         if (n.Boss && !kitReady) Log.Warn("named", $"{n.Id}: no boss kit registered, the generic one is used");
@@ -145,13 +150,22 @@ public static class NamedHub
         return e;
     }
 
-    /// <summary>Elite affixes that would fight a named monster's own design are swapped for others.</summary>
+    /// <summary>
+    /// Elite affixes that would fight a named monster's own design are swapped for others. At most one of the
+    /// staying-power affixes (armored, shielded, vampiric): two together made a 30 s rare a 75-120 s one (armored +
+    /// shielded took a seventh of the damage; armored + vampiric healed back what got through).
+    /// </summary>
     private static IEnumerable<string> FilterAffixes(List<string> list, int n, Random rng)
     {
         string[] bad = { "splitting", "teleporter", "summoner", "waller" };
+        string[] tough = { "armored", "shielded", "vampiric" };
         list.RemoveAll(a => Array.IndexOf(bad, a) >= 0);
+        var has = list.FindAll(a => Array.IndexOf(tough, a) >= 0);
+        for (int i = 1; i < has.Count; i++) list.Remove(has[i]);
+        bool one = has.Count > 0;
         var pool = new List<string>();
-        foreach (var a in MonsterDb.Affixes) if (Array.IndexOf(bad, a.Id) < 0 && !list.Contains(a.Id)) pool.Add(a.Id);
+        foreach (var a in MonsterDb.Affixes)
+            if (Array.IndexOf(bad, a.Id) < 0 && !list.Contains(a.Id) && !(one && Array.IndexOf(tough, a.Id) >= 0)) pool.Add(a.Id);
         while (list.Count < n && pool.Count > 0) { int i = rng.Next(pool.Count); list.Add(pool[i]); pool.RemoveAt(i); }
         return list;
     }

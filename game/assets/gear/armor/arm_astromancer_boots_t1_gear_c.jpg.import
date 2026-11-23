@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://bflblmgl50bpo"
-path="res://.godot/imported/arm_astromancer_boots_t1_gear_c.jpg-150c811d7b055bd314d93a52bc368382.ctex"
+path.bptc="res://.godot/imported/arm_astromancer_boots_t1_gear_c.jpg-150c811d7b055bd314d93a52bc368382.bptc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "85b1d72bb417fa63d9fdcf1418744b46"
@@ -14,12 +15,12 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/gear/armor/arm_astromancer_boots_t1_gear_c.jpg"
-dest_files=["res://.godot/imported/arm_astromancer_boots_t1_gear_c.jpg-150c811d7b055bd314d93a52bc368382.ctex"]
+dest_files=["res://.godot/imported/arm_astromancer_boots_t1_gear_c.jpg-150c811d7b055bd314d93a52bc368382.bptc.ctex"]
 
 [params]
 
-compress/mode=0
-compress/high_quality=false
+compress/mode=2
+compress/high_quality=true
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

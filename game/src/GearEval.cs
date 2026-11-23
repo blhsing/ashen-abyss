@@ -50,6 +50,7 @@ public static class GearEval
         bool minions = h.Class is ClassId.Soulbinder or ClassId.Pactbinder or ClassId.Wildsoul;
         float add = S[Stat.DmgAll] + S[StatInfo.DmgOf(el)] + 0.5f * (S[Stat.DmgBasic] + S[Stat.DmgCore]) + 0.15f * S[Stat.DmgUlt]
                     + 0.25f * (S[Stat.DmgVuln] + S[Stat.DmgElite] + S[Stat.DmgCC]) + 0.3f * S[Stat.DmgDot] + (minions ? 0.5f * S[Stat.MinionDmg] : 0f);
+        if (h.Class == ClassId.Soulbinder) add += MinionTerms(h);         // [golem] golem, mage and minion-speed affixes of a minion build
         float crit = Math.Clamp(S[Stat.CritChance] / 100f, 0f, 1f);
         float normal = 1f + add / 100f;
         float critical = 1.5f * (1f + (add + S[Stat.CritDmg]) / 100f);
@@ -59,6 +60,14 @@ public static class GearEval
         float ranks = 1f + 0.05f * S[Stat.SkillRanks];
         float res = 1f + 0.002f * (S[Stat.ResourceGen] + S[Stat.ResourceCost] * 2f) + 0.001f * S[Stat.MaxResource] + 0.002f * S[Stat.LuckyHit];
         return w * h.MainMul * (hit + op) * cdr * ranks * res;
+    }
+
+    /// <summary>[golem] What the Soulbinder's minion affixes add to the damage score (zero for a line that is sacrificed).</summary>
+    public static float MinionTerms(Hero h)
+    {
+        var S = h.S;
+        bool golem = !h.LineSacrificed(ClassBook.Golem), mages = !h.LineSacrificed(ClassBook.Mages), any = golem || mages || !h.LineSacrificed(ClassBook.Warriors);
+        return (golem ? 0.35f * S[Stat.GolemDmg] + 0.1f * S[Stat.CmdCdr] + 0.05f * S[Stat.GolemLife] : 0f) + (mages ? 0.25f * S[Stat.MageDmg] : 0f) + (any ? 0.4f * S[Stat.MinionAtkSpeed] : 0f);
     }
 
     /// <summary>Effective life against a typical hit at the hero's level: half physical, half spread over the five elements.</summary>

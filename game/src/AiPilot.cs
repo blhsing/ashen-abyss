@@ -185,6 +185,7 @@ public partial class AiPilot : Node
 
         if (_bot.CampaignOver) { Stop("campaign over", "主線旅程已全部完成。"); return; }
         BagTrip(g);
+        PotionTrip(g);
         if (_walkOut && g.Level != null && IsInstanceValid(g.Level) && !g.Level.IsTown) _walkOut = false;
         if (MayTidyBag() && g.Hero.D.Bag.Count >= 24) TidyInTown(g.Hero);
     }
@@ -210,14 +211,34 @@ public partial class AiPilot : Node
     {
         var hero = g.Hero; var p = g.Player; var lv = g.Level;
         if (hero == null || p == null || !IsInstanceValid(p) || lv == null || !IsInstanceValid(lv) || lv.IsTown) return;
-        if (hero.D.Bag.Count < Math.Max(24, Hero.BagSize - 6) || _clock - _bagTripAt < 60.0) return;
-        if (lv.Dungeon != null || lv.IsRift) return;       // a dungeon is rebuilt afresh after a town trip (its objective lost): finish it first
+        if (hero.D.Bag.Count < Hero.BagSize * 4 / 5 || _clock - _bagTripAt < 60.0) return;      // 80 % full: home at the next safe moment
+        // the town portal now brings the hero back to the spot with the dungeon / rift as it was left (LevelState, SAVE-RESTORE
+        // 2026-11-22); without it a dungeon would be rebuilt afresh (its objective lost), so then finish it first
+        if ((lv.Dungeon != null || lv.IsRift) && !LevelState.Enabled) return;
         if (p.InCombat > 0f || p.Dead || lv.Boss != null && IsInstanceValid(lv.Boss) && !lv.Boss.Dead && lv.Boss.Aggro) return;
         _bagTripAt = _clock;
         Log.Info("pilot", $"bag nearly full ({hero.D.Bag.Count}/{Hero.BagSize}): town portal to sell");
         TownPortal(g, p, "bag full");
     }
 
+
+    private double _potTripAt = -100;
+
+    /// <summary>
+    /// Out of potions in a dungeon or rift (hunter, final round: a lv6 lair horde after the last potion): at the next
+    /// lull the town portal refills them; the way back finds the place as it was left (LevelState).
+    /// </summary>
+    private void PotionTrip(Game g)
+    {
+        var hero = g.Hero; var p = g.Player; var lv = g.Level;
+        if (hero == null || p == null || !IsInstanceValid(p) || lv == null || !IsInstanceValid(lv) || lv.IsTown) return;
+        if (lv.Dungeon == null && !lv.IsRift || !LevelState.Enabled) return;
+        if (p.Potions > 0 || hero.D.PotionCap <= 0 || _clock - _potTripAt < 60.0) return;
+        if (p.InCombat > 0f || p.Dead || lv.Boss != null && IsInstanceValid(lv.Boss) && !lv.Boss.Dead && lv.Boss.Aggro) return;
+        _potTripAt = _clock;
+        Log.Info("pilot", $"no potions left in {lv.AreaId}: town portal to refill");
+        TownPortal(g, p, "potions out");
+    }
     private static string SafeQuestArea()
     {
         try { return Quests.NextObjectiveArea() ?? "-"; }
@@ -232,6 +253,7 @@ public partial class AiPilot : Node
     /// </summary>
     private void TidyInTown(Hero hero)
     {
+        if (!Overflow(hero)) return;                    // stash, junk, found legendaries, or hand back (AiPilotPlan.cs)
         var bag = hero.D.Bag;
         int before = bag.Count, gone = 0;
         for (int i = bag.Count - 1; i >= 0; i--)
@@ -240,6 +262,7 @@ public partial class AiPilot : Node
             var it = bag[i];
             if (it == null || !it.IsEquip || it.Rarity >= Rarity.Legendary) continue;
             if (hero.IsProtected(it)) continue;            // locked (鎖定) or in a gear set: never salvaged
+            if (PlayerValues(hero, it)) continue;          // locked / set pieces, legendaries and uniques: not junk (overflow handles a full stash)
             if (GearEval.IsUpgrade(hero, it)) continue;    // an upgrade by the shared evaluator (GearEval): the bot puts it on
             hero.Salvage(it);
             gone++;

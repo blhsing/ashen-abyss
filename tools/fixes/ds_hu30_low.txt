@@ -1,0 +1,12 @@
+dps-bases hunter lv30: fixed gear (seed 93944), crit affixes removed: crit chance 10.3% crit dmg 73% life 1671
+dps-bases hunter lv30 starter crossbow: aps 1.00 (x0.80 of pace 1.25) hit 97-161 | single 560/s = 0.78x expected, 1.00x starter | cooldown skills 10%, minions 0%
+dps-bases hunter lv30 2h bow: aps 1.15 (x0.92 of pace 1.25) hit 95-129 | single 620/s = 0.86x expected, 1.11x starter | cooldown skills 9%, minions 0%
+dps-bases hunter lv30 2h crossbow: aps 1.00 (x0.80 of pace 1.25) hit 97-161 | single 528/s = 0.73x expected, 0.94x starter | cooldown skills 14%, minions 0%
+dps-bases hunter lv30 dual sword1: aps 1.32 (x1.06 of pace 1.25) hit 79-118 | single 581/s = 0.81x expected, 1.04x starter | cooldown skills 20%, minions 0%
+dps-bases hunter lv30 dual dagger: aps 1.54 (x1.23 of pace 1.25) hit 72-97 | single 463/s = 0.64x expected, 0.83x starter | cooldown skills 14%, minions 0%
+dps-bases hunter lv30: fixed gear (seed 93944), crit affixes removed: crit chance 7.7% crit dmg 27% life 1671
+dps-bases hunter lv30 starter crossbow: aps 1.00 (x0.80 of pace 1.25) hit 97-161 | single 522/s = 0.72x expected, 1.00x starter | cooldown skills 15%, minions 0%
+dps-bases hunter lv30 2h bow: aps 1.15 (x0.92 of pace 1.25) hit 95-129 | single 631/s = 0.88x expected, 1.21x starter | cooldown skills 11%, minions 0%
+dps-bases hunter lv30 2h crossbow: aps 1.00 (x0.80 of pace 1.25) hit 97-161 | single 536/s = 0.74x expected, 1.03x starter | cooldown skills 17%, minions 0%
+dps-bases hunter lv30 dual sword1: aps 1.32 (x1.06 of pace 1.25) hit 79-118 | single 625/s = 0.87x expected, 1.20x starter | cooldown skills 11%, minions 0%
+dps-bases hunter lv30 dual dagger: aps 1.54 (x1.23 of pace 1.25) hit 72-97 | single 517/s = 0.72x expected, 0.99x starter | cooldown skills 16%, minions 0%

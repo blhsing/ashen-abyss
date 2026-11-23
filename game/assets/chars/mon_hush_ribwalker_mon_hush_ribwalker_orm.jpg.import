@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://7walab22d58m"
-path="res://.godot/imported/mon_hush_ribwalker_mon_hush_ribwalker_orm.jpg-2f7c464472159ab2edda24d69ce4acf0.ctex"
+path.bptc="res://.godot/imported/mon_hush_ribwalker_mon_hush_ribwalker_orm.jpg-2f7c464472159ab2edda24d69ce4acf0.bptc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "7b02fd9f5a9a1716acb07e9351867e56"
@@ -14,12 +15,12 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/chars/mon_hush_ribwalker_mon_hush_ribwalker_orm.jpg"
-dest_files=["res://.godot/imported/mon_hush_ribwalker_mon_hush_ribwalker_orm.jpg-2f7c464472159ab2edda24d69ce4acf0.ctex"]
+dest_files=["res://.godot/imported/mon_hush_ribwalker_mon_hush_ribwalker_orm.jpg-2f7c464472159ab2edda24d69ce4acf0.bptc.ctex"]
 
 [params]
 
-compress/mode=0
-compress/high_quality=false
+compress/mode=2
+compress/high_quality=true
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

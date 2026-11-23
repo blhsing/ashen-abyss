@@ -1,0 +1,12 @@
+dps-bases pactbinder lv1: bare (hands only): crit chance 5.2% life 177
+ehp pactbinder lv1 bare: life 177 armor 8 (dr 5%) dmgred 0% res 0 -> ehp 187
+dps-bases pactbinder lv1 starter wand+grimoire: aps 1.30 (x1.24 of pace 1.05) hit 5-8 | single 12/s = 1.48x expected, 1.00x starter | cooldown skills 0%, minions 0%
+dps-bases pactbinder lv3: bare (hands only): crit chance 5.1% life 224
+ehp pactbinder lv3 bare: life 224 armor 10 (dr 4%) dmgred 0% res 0 -> ehp 234
+dps-bases pactbinder lv3 starter wand+grimoire: aps 1.30 (x1.24 of pace 1.05) hit 10-15 | single 26/s = 1.45x expected, 1.00x starter | cooldown skills 0%, minions 22%
+dps-bases pactbinder lv5: bare (hands only): crit chance 5.3% life 266
+ehp pactbinder lv5 bare: life 266 armor 12 (dr 4%) dmgred 0% res 0 -> ehp 277
+dps-bases pactbinder lv5 starter wand+grimoire: aps 1.30 (x1.24 of pace 1.05) hit 15-22 | single 79/s = 2.48x expected, 1.00x starter | cooldown skills 0%, minions 1%
+dps-bases pactbinder lv8: bare (hands only): crit chance 5.2% life 322
+ehp pactbinder lv8 bare: life 322 armor 15 (dr 3%) dmgred 0% res 0 -> ehp 334
+dps-bases pactbinder lv8 starter wand+grimoire: aps 1.30 (x1.24 of pace 1.05) hit 20-30 | single 101/s = 1.68x expected, 1.00x starter | cooldown skills 0%, minions 2%

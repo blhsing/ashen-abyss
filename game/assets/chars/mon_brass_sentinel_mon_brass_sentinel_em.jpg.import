@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://cvl40utq0bllh"
-path="res://.godot/imported/mon_brass_sentinel_mon_brass_sentinel_em.jpg-64617bc25c49f5fbd263b47ac55a2303.ctex"
+path.bptc="res://.godot/imported/mon_brass_sentinel_mon_brass_sentinel_em.jpg-64617bc25c49f5fbd263b47ac55a2303.bptc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "02e1cecb003ebeb5fab2b980ac04b6d2"
@@ -14,12 +15,12 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/chars/mon_brass_sentinel_mon_brass_sentinel_em.jpg"
-dest_files=["res://.godot/imported/mon_brass_sentinel_mon_brass_sentinel_em.jpg-64617bc25c49f5fbd263b47ac55a2303.ctex"]
+dest_files=["res://.godot/imported/mon_brass_sentinel_mon_brass_sentinel_em.jpg-64617bc25c49f5fbd263b47ac55a2303.bptc.ctex"]
 
 [params]
 
-compress/mode=0
-compress/high_quality=false
+compress/mode=2
+compress/high_quality=true
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

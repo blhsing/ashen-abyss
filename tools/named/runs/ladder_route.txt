@@ -1,0 +1,15 @@
+build ok
+exit= seconds=65
+log: C:\Users\blhsi\AppData\Roaming\AshenAbyss\logs\game_20261122_093059.log  lines=253  ERR=0  WRN=0
+--- last lines ---
+   62.471 INF [game] quitting
+   62.473 INF [save] slot 91 saved: ??? lv50 ??? area=rift~pin:2 bytes=10565
+   62.474 INF [save] save reason=quit slot=91 ok=True area=rift~pin:2 playtime=41s capture=0.0ms total=2.5ms
+   62.476 INF [bot] final summary t=42s game=242s area=rift~pin:2 doing=fight pin_1_gravedigger kills=46 elites=0 bosses=1 level=50 life=76% items=0 gold=23427 deaths=0 areas=3 casts=393 unstuck=0 monsters=1 errors=0 warnings=0 botErrors=0
+   62.477 INF [bot] final progress: waypoints=[town] renown=[] quests done=0/1 skillpts bonus=0 potion cap=4 altars=0 codex=0 tier=2/2 riftBest=0 paragon=51 playtime=41s
+   62.477 INF [anim] anim-check: hero moved 12.0s - 0.0s without a locomotion clip, 0.0s with frozen legs; hero stood 39.7s - 0.0s in a run clip or none; monsters moved 49.6s - 0.0s without a locomotion clip, 0.0s with frozen legs; models without a skeleton or ƒ?Ý
+   62.478 INF [input] keyboard hook saw 139 key events, 0 of them PrtSc
+   62.478 INF [boot] shutdown errors=0 warnings=0 uptime=62s
+--- engine output: distinct problem lines (1 total) ---
+   1 x [17] Godot.NativeInterop.godot_bool Godot.Bridge.CSharpInstanceBridge.Call(nint, Godot.NativeInterop.godot_string_name*, Godot.NativeInterop.godot_variant**, int, Godot.NativeInterop.godot_variant_call_error*, Godot.NativeInterop.godot_variant*) (/root/ ƒ?Ý
+DONE

@@ -1,0 +1,16 @@
+astromancer lv25 worst loadout: before 0.72 of best, after 0.90
+astromancer lv50 worst loadout: before 0.80 of best, after 0.84
+emberblade lv25  worst loadout: before 0.82 of best, after 0.82
+emberblade lv50  worst loadout: before 0.70 of best, after 0.70
+forgebody lv25   worst loadout: before 0.76 of best, after 0.93
+forgebody lv50   worst loadout: before 0.61 of best, after 0.71
+hunter lv25      worst loadout: before 0.73 of best, after 0.84
+hunter lv50      worst loadout: before 0.73 of best, after 0.82
+lampknight lv25  worst loadout: before 0.81 of best, after 0.82
+lampknight lv50  worst loadout: before 0.75 of best, after 0.67
+pactbinder lv25  worst loadout: before 0.74 of best, after 0.92
+pactbinder lv50  worst loadout: before 0.76 of best, after 0.86
+soulbinder lv25  worst loadout: before 0.67 of best, after 0.94
+soulbinder lv50  worst loadout: before 0.69 of best, after 0.96
+wildsoul lv25    worst loadout: before 0.81 of best, after 0.81
+wildsoul lv50    worst loadout: before 0.83 of best, after 0.81

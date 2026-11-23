@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://04t6mcancrm8"
-path="res://.godot/imported/mon_fiend_caller_mon_fiend_caller_bc.jpg-f0ddd1c26ca05aa409cfacb563b8dfad.ctex"
+path.bptc="res://.godot/imported/mon_fiend_caller_mon_fiend_caller_bc.jpg-f0ddd1c26ca05aa409cfacb563b8dfad.bptc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "65f72e5b67faa1254f887ab85f8d7be4"
@@ -14,12 +15,12 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/chars/mon_fiend_caller_mon_fiend_caller_bc.jpg"
-dest_files=["res://.godot/imported/mon_fiend_caller_mon_fiend_caller_bc.jpg-f0ddd1c26ca05aa409cfacb563b8dfad.ctex"]
+dest_files=["res://.godot/imported/mon_fiend_caller_mon_fiend_caller_bc.jpg-f0ddd1c26ca05aa409cfacb563b8dfad.bptc.ctex"]
 
 [params]
 
-compress/mode=0
-compress/high_quality=false
+compress/mode=2
+compress/high_quality=true
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

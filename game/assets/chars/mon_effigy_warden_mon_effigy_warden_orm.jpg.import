@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://cr3tum3jb3tto"
-path="res://.godot/imported/mon_effigy_warden_mon_effigy_warden_orm.jpg-f5100738ec8f5c4b8a707b50e5cc6868.ctex"
+path.bptc="res://.godot/imported/mon_effigy_warden_mon_effigy_warden_orm.jpg-f5100738ec8f5c4b8a707b50e5cc6868.bptc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "dff3c75a50b267c2506aeb52918654f0"
@@ -14,12 +15,12 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/chars/mon_effigy_warden_mon_effigy_warden_orm.jpg"
-dest_files=["res://.godot/imported/mon_effigy_warden_mon_effigy_warden_orm.jpg-f5100738ec8f5c4b8a707b50e5cc6868.ctex"]
+dest_files=["res://.godot/imported/mon_effigy_warden_mon_effigy_warden_orm.jpg-f5100738ec8f5c4b8a707b50e5cc6868.bptc.ctex"]
 
 [params]
 
-compress/mode=0
-compress/high_quality=false
+compress/mode=2
+compress/high_quality=true
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

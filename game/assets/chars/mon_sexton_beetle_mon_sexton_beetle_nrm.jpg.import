@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://8uh1va25htco"
-path="res://.godot/imported/mon_sexton_beetle_mon_sexton_beetle_nrm.jpg-8e0c2aeafde4399645179c733e222ee5.ctex"
+path.s3tc="res://.godot/imported/mon_sexton_beetle_mon_sexton_beetle_nrm.jpg-8e0c2aeafde4399645179c733e222ee5.s3tc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "22e722e1e219f1b33115076a4c0fbe04"
@@ -14,17 +15,17 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/chars/mon_sexton_beetle_mon_sexton_beetle_nrm.jpg"
-dest_files=["res://.godot/imported/mon_sexton_beetle_mon_sexton_beetle_nrm.jpg-8e0c2aeafde4399645179c733e222ee5.ctex"]
+dest_files=["res://.godot/imported/mon_sexton_beetle_mon_sexton_beetle_nrm.jpg-8e0c2aeafde4399645179c733e222ee5.s3tc.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1
-compress/normal_map=0
+compress/normal_map=1
 compress/channel_pack=0
 mipmaps/generate=true
 mipmaps/limit=-1

@@ -1,0 +1,12 @@
+build ok
+exit= seconds=29
+log: C:\Users\blhsi\AppData\Roaming\AshenAbyss\logs\game_20261122_193539.log  lines=260  ERR=0  WRN=0
+--- last lines ---
+   27.512 INF [game] quitting
+   27.515 INF [save] slot 95 saved: ??? lv20 ??? area=wastes bytes=31185
+   27.515 INF [save] save reason=quit slot=95 ok=True area=wastes playtime=21s capture=0.1ms total=3.1ms
+   27.517 INF [bot] final summary t=22s game=21s area=wastes doing=idle kills=12 elites=0 bosses=0 level=20 life=100% items=0 gold=170 deaths=0 areas=2 casts=0 unstuck=0 monsters=0 errors=0 warnings=0 botErrors=0
+   27.518 INF [bot] final progress: waypoints=[town,wastes] renown=[wastes:100] quests done=0/3 skillpts bonus=0 potion cap=4 altars=0 codex=0 tier=0/1 riftBest=0 paragon=0 playtime=21s
+   27.519 INF [anim] anim-check: hero moved 0.0s - 0.0s without a locomotion clip, 0.0s with frozen legs; hero stood 21.3s - 0.0s in a run clip or none; monsters moved 0.8s - 0.0s without a locomotion clip, 0.0s with frozen legs; models without a skeleton or a ƒ?Ý
+   27.519 INF [input] keyboard hook saw 0 key events, 0 of them PrtSc
+   27.520 INF [boot] shutdown errors=0 warnings=0 uptime=28s

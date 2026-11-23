@@ -1,0 +1,16 @@
+dps-bases emberblade lv5: bare (hands only): crit chance 5.1% life 250
+dps-bases emberblade lv5 starter sword2: aps 0.95 (x1.00 of pace 0.95) hit 21-31 | single 47/s = 1.48x expected, 1.00x starter | cooldown skills 0%, minions 0%
+dps-bases astromancer lv5: bare (hands only): crit chance 6.3% life 250
+dps-bases astromancer lv5 starter staff: aps 1.00 (x1.00 of pace 1.00) hit 23-31 | single 38/s = 1.19x expected, 1.00x starter | cooldown skills 3%, minions 0%
+dps-bases hunter lv5: bare (hands only): crit chance 5.9% life 250
+dps-bases hunter lv5 starter crossbow: aps 1.00 (x0.80 of pace 1.25) hit 19-31 | single 47/s = 1.48x expected, 1.00x starter | cooldown skills 0%, minions 0%
+dps-bases soulbinder lv5: bare (hands only): crit chance 5.1% life 250
+dps-bases soulbinder lv5 starter scythe2: aps 0.95 (x0.95 of pace 1.00) hit 20-37 | single 47/s = 1.48x expected, 1.00x starter | cooldown skills 0%, minions 19%
+dps-bases wildsoul lv5: bare (hands only): crit chance 5.1% life 250
+dps-bases wildsoul lv5 starter mace2: aps 0.80 (x0.80 of pace 1.00) hit 24-39 | single 41/s = 1.30x expected, 1.00x starter | cooldown skills 0%, minions 0%
+dps-bases forgebody lv5: bare (hands only): crit chance 5.2% life 250
+dps-bases forgebody lv5 starter fist+fist: aps 1.52 (x1.13 of pace 1.35) hit 15-21 | single 32/s = 0.99x expected, 1.00x starter | cooldown skills 0%, minions 0%
+dps-bases lampknight lv5: bare (hands only): crit chance 5.1% life 250
+dps-bases lampknight lv5 starter sword1: aps 1.20 (x1.09 of pace 1.10) hit 15-23 | single 32/s = 0.99x expected, 1.00x starter | cooldown skills 0%, minions 0%
+dps-bases pactbinder lv5: bare (hands only): crit chance 5.1% life 250
+dps-bases pactbinder lv5 starter wand: aps 1.30 (x1.24 of pace 1.05) hit 15-22 | single 64/s = 1.99x expected, 1.00x starter | cooldown skills 0%, minions 1%

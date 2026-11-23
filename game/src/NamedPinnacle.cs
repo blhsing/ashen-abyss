@@ -149,6 +149,8 @@ public abstract class PinScript : BossScript
 {
     protected readonly List<Vector2> Trail = new();
     private float _trailT;
+    /// <summary>The hero's class fights from range (the archer and caster archetypes).</summary>
+    protected static bool RangedHero => Names.ClassKey(Game.I?.Hero?.Class ?? ClassId.Emberblade) is "hunter" or "astromancer" or "soulbinder" or "pactbinder";
     protected bool HeroActed(ref bool was)
     {
         if (!E.HeroOk) return false;
@@ -245,11 +247,11 @@ internal sealed class PinRimelord : PinScript
         base.Tick(dt);
         if (!E.HeroOk) return;
         bool warm = E.Lights.Any(l => l.Lit && l.Pos.DistanceTo(E.HeroPos) <= 6f);
-        _cold = Mathf.Clamp(_cold + (warm ? -dt / 3f : dt / 9f), 0f, 1f);
+        _cold = Mathf.Clamp(_cold + (warm ? -dt / 3f : dt / 11f), 0f, 1f);
         if (_cold > 0.5f && !_warned) { _warned = true; Mech("cold"); E.Warn("寒意入骨——靠近火盆！"); }
         if (_cold < 0.3f) _warned = false;
-        if (_cold >= 1f) { _cold = 0f; Mech("frozen"); E.Hit(World.P, 0.4f, Element.Frost, St.Freeze(3f)); World.P.CcImmune = 0f; }
-        if ((int)(T * 2) != (int)((T - dt) * 2) && _cold > 0.1f) World.P.ApplyStatus(St.Chill(_cold * 0.6f, 0.6f), M);
+        if (_cold >= 1f) { _cold = 0f; Mech("frozen"); E.Hit(World.P, 0.4f, Element.Frost, St.Freeze(2f)); }      // 2 s; the hero keeps the immunity a freeze leaves (no chain-freeze by the adds)
+        if ((int)(T * 2) != (int)((T - dt) * 2) && _cold > 0.1f) World.P.ApplyStatus(St.Slow(_cold * 0.35f, 0.6f), M);      // sluggish, not chill: the meter is the one freeze (chill ticks stacked into a second one)
         _leap -= dt;
         if (_leap <= 0f && Free) { _leap = 14f; LeapAtBrazier(); }
         if (_white >= 0f) { _white -= dt; if (_white < 0f) NamedOverlay.Clear(); }
@@ -341,7 +343,7 @@ internal sealed class PinBishop : PinScript
 /// <summary>滿潮・艾絲珂: the tide rises and falls on a 30 s cycle — at high tide only the root-islands are dry and standing in water stacks poison and slow; at low tide her roots are exposed and she takes double damage. The devouring pull runs along the water from any range; her brood are elder leeches.</summary>
 internal sealed class PinMireMother : PinScript
 {
-    private float _tide = 0f; private bool _high;
+    private float _tide = 0f, _wet; private bool _high;
     private readonly List<Vector2> _islands = new();
     private readonly List<Node3D> _water = new();
     public override Vector2? BotStand => _high && E.HeroOk && !OnIsland(E.HeroPos) ? _islands.OrderBy(i => i.DistanceTo(E.HeroPos)).FirstOrDefault() : null;
@@ -371,7 +373,8 @@ internal sealed class PinMireMother : PinScript
             if (_high) _water.Add(E.Own(NamedProps.Place(NamedProps.Patch(E.ArenaR + 2f, new Color(0.12f, 0.2f, 0.12f, 1f)), E.Center)));
         }
         M.DrMul = _high ? 1f : 2f;
-        if (_high && E.HeroOk && !OnIsland(E.HeroPos) && (int)T != (int)(T - dt)) { Mech("soaked"); E.Hit(World.P, 0.12f, Element.Poison, St.Poison(0.4f, 3f)); World.P.ApplyStatus(St.Slow(0.3f, 1.2f), M); }
+        _wet = _high && E.HeroOk && !OnIsland(E.HeroPos) ? _wet + dt : 0f;          // 1.5 s of grace: her pull drags the hero off an island
+        if (_wet > 1.5f && (int)T != (int)(T - dt)) { Mech("soaked"); E.Hit(World.P, 0.12f, Element.Poison, St.Poison(0.4f, 3f)); World.P.ApplyStatus(St.Slow(0.3f, 1.2f), M); }
     }
 }
 
@@ -381,6 +384,17 @@ internal sealed class PinTyrant : PinScript
     private float _angle, _cone; private Monster _pointer;
     private readonly List<Monster> _guards = new();
     private BossMoveDef _cross;
+    /// <summary>Hint: a hero who fights with projectiles breaks the mirror-guards first (they send every shot back).</summary>
+    public override Monster BotTarget
+    {
+        get
+        {
+            if (!E.HeroOk || !RangedHero) return null;
+            Monster best = null; float bd = 14f;
+            foreach (var g in _guards) { if (g == null || !GodotObject.IsInstanceValid(g) || g.Dead || g.Untargetable) continue; float d = g.Pos2.DistanceTo(E.HeroPos); if (d < bd) { bd = d; best = g; } }
+            return best;
+        }
+    }
     public override void Build() => E.AtLife(() => { Mech("reforge"); E.Toast("面具匠重鑄了鏡衛"); Guards(); }, 0.5f);
     public override void Setup()
     {
@@ -544,9 +558,22 @@ internal sealed class PinOsaros : PinScript
 {
     private float _hole = 0.5f, _ext = 6f, _echo = 4f; private int _extN, _phase = 1, _echoI; private bool _stag;
     private float _wedge = -1f, _wedgeA; private Monster _pointer; private float _cone;
+    private Vector2? _safe;
+    /// <summary>Hints: into the drifting ring before Extinguish lands; into the shadow wedge while the tyrant's echo burns the rest.</summary>
+    public override Vector2? BotStand
+    {
+        get
+        {
+            if (!E.Alive || !E.HeroOk) return null;
+            if (_safe != null) return _safe.Value.DistanceTo(E.HeroPos) > 2.5f ? _safe : null;
+            if (_wedge < 0f) return null;
+            Vector2 d = E.HeroPos - M.Pos2; float a = Mathf.Wrap(Mathf.Atan2(d.Y, d.X) - _wedgeA, -Mathf.Pi, Mathf.Pi);
+            return Mathf.Abs(a) > Mathf.Pi / 6f ? E.Walk(M.Pos2 + Vector2.Right.Rotated(_wedgeA + 0.25f) * 3.5f) : null;   // a little ahead of the turning wedge
+        }
+    }
     public override void Setup()
     {
-        _hole = 0.5f; _ext = 6f; _extN = 0; _phase = 1; _echoI = 0;
+        _hole = 0.5f; _ext = 6f; _extN = 0; _phase = 1; _echoI = 0; _safe = null; _wedge = -1f;
         var b = E.Brain; if (b != null) b.Veto = d => d.Id == "extinguish";
         _pointer = E.Prop("", E.Center, 1e9f, null, null, 0.1f, 0.1f); _pointer.Untargetable = true;
     }
@@ -589,8 +616,12 @@ internal sealed class PinOsaros : PinScript
         Vector2 drift = Vector2.Right.Rotated(Rng.Range(0f, Mathf.Tau));
         var ring = E.Mark(safe, 4.5f, Palette.Ember, 4f);
         E.Warn("熄滅將臨——走進移動的火圈！");
-        E.Run(3.5f, k => { safe = E.Walk(safe + drift * (1.2f / 60f)); if (GodotObject.IsInstanceValid(ring)) ring.GlobalPosition = World.To3(safe); }, () =>
+        Vector2 start = safe;
+        _safe = safe;
+        // the ring drifts 1.2 m/s (by the run's progress, so the speed does not depend on the frame rate)
+        E.Run(3.5f, k => { safe = E.Walk(start + drift * (4.2f * k)); _safe = safe; if (GodotObject.IsInstanceValid(ring)) ring.GlobalPosition = World.To3(safe); }, () =>
         {
+            _safe = null;
             if (!E.Alive || !E.HeroOk) return;
             Fx.Shake(0.5f, 0.5f);
             if (E.HeroPos.DistanceTo(safe) > 4.5f) E.Hit(World.P, 2.6f, Element.Shadow);

@@ -1,0 +1,9 @@
+=== after4 frost lv22 --sacrifice=all log=C:\Users\blhsi\AppData\Roaming\AshenAbyss\logs\game_20261123_055412.log
+  179.621 INF [balance] sh_frost down: damage since the area began 203080: sb_explode=62% sb_blight=19% sb_bolt=8% hero-other=8% sb_spear=3% sb_veil=0% | hero took 767 in 96 hits, golem took 0; boss taunts 0 (refused 0); army factor now 1.00
+  179.626 INF [pilot] TEST RESULT mode=boss class=soulbinder end=boss killed t=347s level=23 deaths=0 area=frost campaignDone=False bossesKilled=1 telegraphed threats=137 dodged=136 taken=1 (boss 110/110/0) dmgTelegraphed=27 otherHits=95 dmgOther=740 dodgeWalks=149 rolls=16 defensives=9
+  179.627 INF [pilot] TEST FIGHT boss=sh_frost area=frost killed=True secs=214 deaths=0 heroLevel=23 threats=110 dodged=110 taken=0 dmgTelegraphed=0 dmgOther=537 life=2052
+=== after4 abyss_boss lv42 --sacrifice=all log=C:\Users\blhsi\AppData\Roaming\AshenAbyss\logs\game_20261123_055752.log
+  275.545 INF [balance] boss_osaros down: damage since the area began 806435: sb_explode=54% sb_blight=18% sb_bolt=14% sb_spear=10% hero-other=2% sb_veil=0% | hero took 2548 in 62 hits, golem took 0; boss taunts 0 (refused 0); army factor now 1.00
+  275.548 INF [pilot] TEST RESULT mode=boss class=soulbinder end=boss killed t=543s level=43 deaths=0 area=abyss_boss campaignDone=True bossesKilled=1 telegraphed threats=403 dodged=402 taken=1 (boss 385/384/1) dmgTelegraphed=336 otherHits=61 dmgOther=2212 dodgeWalks=460 rolls=28 defensives=12
+  275.548 INF [pilot] TEST FIGHT boss=boss_osaros area=abyss_boss killed=True secs=461 deaths=0 heroLevel=43 threats=385 dodged=384 taken=1 dmgTelegraphed=336 dmgOther=1765 life=2724
+done

@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://pgv1gimih4d1"
-path="res://.godot/imported/hero_hunter_hair_orm.jpg-a27e1a43f2874e66413875ecd5f67216.ctex"
+path.bptc="res://.godot/imported/hero_hunter_hair_orm.jpg-a27e1a43f2874e66413875ecd5f67216.bptc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "491673da6d29f627c725dff021c9204c"
@@ -14,12 +15,12 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/chars/hero_hunter_hair_orm.jpg"
-dest_files=["res://.godot/imported/hero_hunter_hair_orm.jpg-a27e1a43f2874e66413875ecd5f67216.ctex"]
+dest_files=["res://.godot/imported/hero_hunter_hair_orm.jpg-a27e1a43f2874e66413875ecd5f67216.bptc.ctex"]
 
 [params]
 
-compress/mode=0
-compress/high_quality=false
+compress/mode=2
+compress/high_quality=true
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

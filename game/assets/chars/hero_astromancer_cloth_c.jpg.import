@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://eyi0p2ffwdlw"
-path="res://.godot/imported/hero_astromancer_cloth_c.jpg-a8d2e6aef611d0931ea3028e97d03852.ctex"
+path.bptc="res://.godot/imported/hero_astromancer_cloth_c.jpg-a8d2e6aef611d0931ea3028e97d03852.bptc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "e4525a6694c574c1a8660ec4dfde9cf9"
@@ -14,12 +15,12 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/chars/hero_astromancer_cloth_c.jpg"
-dest_files=["res://.godot/imported/hero_astromancer_cloth_c.jpg-a8d2e6aef611d0931ea3028e97d03852.ctex"]
+dest_files=["res://.godot/imported/hero_astromancer_cloth_c.jpg-a8d2e6aef611d0931ea3028e97d03852.bptc.ctex"]
 
 [params]
 
-compress/mode=0
-compress/high_quality=false
+compress/mode=2
+compress/high_quality=true
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

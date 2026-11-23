@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://builpgpce5r8p"
-path="res://.godot/imported/mon_cult_assassin_mon_cult_assassin_em.jpg-e849f010f1a833d597fe4f2a55d271cf.ctex"
+path.bptc="res://.godot/imported/mon_cult_assassin_mon_cult_assassin_em.jpg-e849f010f1a833d597fe4f2a55d271cf.bptc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "e279851ff85fe6fcc1834049ae784786"
@@ -14,12 +15,12 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/chars/mon_cult_assassin_mon_cult_assassin_em.jpg"
-dest_files=["res://.godot/imported/mon_cult_assassin_mon_cult_assassin_em.jpg-e849f010f1a833d597fe4f2a55d271cf.ctex"]
+dest_files=["res://.godot/imported/mon_cult_assassin_mon_cult_assassin_em.jpg-e849f010f1a833d597fe4f2a55d271cf.bptc.ctex"]
 
 [params]
 
-compress/mode=0
-compress/high_quality=false
+compress/mode=2
+compress/high_quality=true
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

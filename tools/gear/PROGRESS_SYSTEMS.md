@@ -78,3 +78,9 @@ stat speed × (weapon aps / class pace RefAps), clamped 0.7–1.35 (damage per h
 - Background helpers: bots.sh, runwait.sh, final*.sh in Y:\tools\gear\systems (no detached processes left once final3.sh ends).
 - DONE: final3.sh finished — --suite=items 148/148 after the set-bar fix (no background processes left).
   slot92 files were already moved to saves_test_backup.
+
+## 2026-11-22 武器指南 (weapon guide)
+- New: WeaponGuide.cs (authored notes per base, class notes, class bonuses looked up by passive name, stance groups, alternatives, data-generated comparisons, rules), WeaponGuideUi.cs (panel "guide": class selector, list by stance with 3D icons, detail with data stats, worn card), TestSuite.Guide.cs (--suite=guide, 17/17).
+- Small approved edits: Ui.cs (register "guide"; G: hovered weapon/off-hand → that base, else class page; G again closes), InventoryUi.cs (SlotBoard.HoveredItem; 「武器指南（G）」 button under 可用武器), SettingsUi.cs (controls row G), MainMenu.cs (武器指南 button in the class intro), Items.cs (tooltip hint 「G：武器指南」), TestSuite.cs (dispatch).
+- Screenshots: Y:\shots\guide\1600x900 and \1920x1080 (rules, polearm with worn card, shield, fist, three text sizes; class intro). Slot 96 (lead-assigned) cleaned after each run.
+- 2026-11-23: tooltip 可用職業 now lists only classes that can use the base (hero's own gold), joined with 、, wrapped by hand at 、 (≤14 glyphs/line). Shots Y:\shots\guide\compat (axe2 unusable / sword1 usable × 3 sizes, Soulbinder). items 149/149. Test-only: Ui.cs give command 'base <id> [rarity]'.

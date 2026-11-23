@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://05dbyet1mwlc"
-path="res://.godot/imported/mon_ash_worm_mon_ash_worm_bc.jpg-e4f3628532d7c42b8bde29137a5f84e5.ctex"
+path.bptc="res://.godot/imported/mon_ash_worm_mon_ash_worm_bc.jpg-e4f3628532d7c42b8bde29137a5f84e5.bptc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "6adc7adf7765fe80277f05a87f8a3bcf"
@@ -14,12 +15,12 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/chars/mon_ash_worm_mon_ash_worm_bc.jpg"
-dest_files=["res://.godot/imported/mon_ash_worm_mon_ash_worm_bc.jpg-e4f3628532d7c42b8bde29137a5f84e5.ctex"]
+dest_files=["res://.godot/imported/mon_ash_worm_mon_ash_worm_bc.jpg-e4f3628532d7c42b8bde29137a5f84e5.bptc.ctex"]
 
 [params]
 
-compress/mode=0
-compress/high_quality=false
+compress/mode=2
+compress/high_quality=true
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

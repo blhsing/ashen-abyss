@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://bfo5h3ke1v54p"
-path="res://.godot/imported/mon_hush_mouth_mon_hush_mouth_bc.jpg-873404d3b72631f31b0c19d611fc2e9d.ctex"
+path.bptc="res://.godot/imported/mon_hush_mouth_mon_hush_mouth_bc.jpg-873404d3b72631f31b0c19d611fc2e9d.bptc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "3594e77304ef2518df22b63b43d8797c"
@@ -14,12 +15,12 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/chars/mon_hush_mouth_mon_hush_mouth_bc.jpg"
-dest_files=["res://.godot/imported/mon_hush_mouth_mon_hush_mouth_bc.jpg-873404d3b72631f31b0c19d611fc2e9d.ctex"]
+dest_files=["res://.godot/imported/mon_hush_mouth_mon_hush_mouth_bc.jpg-873404d3b72631f31b0c19d611fc2e9d.bptc.ctex"]
 
 [params]
 
-compress/mode=0
-compress/high_quality=false
+compress/mode=2
+compress/high_quality=true
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

@@ -26,7 +26,10 @@ public sealed partial class TestSuite
         switch (_name)
         {
             case "census": yield return CensusSuite(); break;
-            case "bestiary": yield return BestiarySuite(); break;
+            case "bestiary":
+                if (_arg != null && _arg.StartsWith("creatures")) yield return CreatureSuite(_arg.Split(':', StringSplitOptions.TrimEntries));
+                else yield return BestiarySuite();
+                break;
             case "ai": yield return AiSuite(); break;
         }
     }

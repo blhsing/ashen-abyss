@@ -1,0 +1,18 @@
+build ok
+exit= seconds=48
+log: C:\Users\blhsi\AppData\Roaming\AshenAbyss\logs\game_20261122_232016.log  lines=440  ERR=0  WRN=2
+--- distinct warnings ---
+   1 x [suite] FAIL named db_wastes_d2: kill time within 45-90s - 21.9s
+   1 x [suite] FAIL named rare_frost_thousandyear: kill time within 20-45s - 51.3s
+--- last lines ---
+   45.921 INF [game] quitting
+   45.924 INF [save] slot 91 saved: ??? lv45 ??? area=rift~arena:db_abyss_d1 bytes=16894
+   45.924 INF [save] save reason=quit slot=91 ok=True area=rift~arena:db_abyss_d1 playtime=10s capture=0.0ms total=2.9ms
+   45.927 INF [bot] final summary t=38s game=216s area=rift~arena:db_abyss_d1 doing=fight db_abyss_d1 kills=1 elites=2 bosses=3 level=45 life=100% items=0 gold=50 deaths=0 areas=5 casts=356 unstuck=0 monsters=0 errors=0 warnings=2 botErrors=0
+   45.929 INF [bot] final progress: waypoints=[town] renown=[] quests done=0/1 skillpts bonus=0 potion cap=4 altars=0 codex=0 tier=0/1 riftBest=0 paragon=0 playtime=10s
+   45.929 INF [anim] anim-check: hero moved 31.2s - 0.0s without a locomotion clip, 0.0s with frozen legs; hero stood 30.0s - 0.0s in a run clip or none; monsters moved 14.4s - 0.0s without a locomotion clip, 0.0s with frozen legs; models without a skeleton or ƒ?Ý
+   45.930 INF [input] keyboard hook saw 0 key events, 0 of them PrtSc
+   45.930 INF [boot] shutdown errors=0 warnings=2 uptime=46s
+--- engine output: distinct problem lines (1 total) ---
+   1 x ERROR: 5 resources still in use at exit (run with --verbose for details).
+DONE

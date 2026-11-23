@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://bvbcih486rwy7"
-path="res://.godot/imported/npc_smith_cloth_orm.jpg-44cdfbd5791a765c57d9767fd71094dd.ctex"
+path.bptc="res://.godot/imported/npc_smith_cloth_orm.jpg-44cdfbd5791a765c57d9767fd71094dd.bptc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "77cb34bc3b255f1155065e3014a30e1a"
@@ -14,12 +15,12 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/chars/npc_smith_cloth_orm.jpg"
-dest_files=["res://.godot/imported/npc_smith_cloth_orm.jpg-44cdfbd5791a765c57d9767fd71094dd.ctex"]
+dest_files=["res://.godot/imported/npc_smith_cloth_orm.jpg-44cdfbd5791a765c57d9767fd71094dd.bptc.ctex"]
 
 [params]
 
-compress/mode=0
-compress/high_quality=false
+compress/mode=2
+compress/high_quality=true
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://c3egc6ylet8xj"
-path="res://.godot/imported/boss_rimelord_boss_rimelord_em.jpg-7ef6a8a32277c07bf1ee70029c2cfc1f.ctex"
+path.bptc="res://.godot/imported/boss_rimelord_boss_rimelord_em.jpg-7ef6a8a32277c07bf1ee70029c2cfc1f.bptc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "e6829ac1a14a7e8c83b05d642ff53f16"
@@ -14,12 +15,12 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/chars/boss_rimelord_boss_rimelord_em.jpg"
-dest_files=["res://.godot/imported/boss_rimelord_boss_rimelord_em.jpg-7ef6a8a32277c07bf1ee70029c2cfc1f.ctex"]
+dest_files=["res://.godot/imported/boss_rimelord_boss_rimelord_em.jpg-7ef6a8a32277c07bf1ee70029c2cfc1f.bptc.ctex"]
 
 [params]
 
-compress/mode=0
-compress/high_quality=false
+compress/mode=2
+compress/high_quality=true
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

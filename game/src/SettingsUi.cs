@@ -23,6 +23,7 @@ public sealed class SettingsView
     private readonly List<Control> _pages = new();
     private MenuSeg _display, _vsync, _quality, _scaleMode, _dmgNum, _shake, _subs, _loot, _textScale, _cursor;
     private MenuSeg _gearWeight;        // SYSTEMS: 裝備比較 weighting for GearEval
+    private MenuSeg _shotMode;          // FIXES: 截圖方式 (Settings.ScreenshotMode)
     private HSlider _scale, _bright;
     private Label _brightGlyph;
     private Label _scaleValue;
@@ -288,6 +289,9 @@ public sealed class SettingsView
         // 裝備比較 (SYSTEMS, GearEval): how attack and defence are weighed when an item is judged 升級 / 相近 / 較差
         _gearWeight = new MenuSeg(new[] { "平衡", "偏重攻擊", "偏重防禦" }, i => { Cfg.GearWeight = i; GearEval.Invalidate(); Commit("gearWeight=" + Cfg.GearWeight); }, UiTheme.Fs(FsOption), UiTheme.Px(150f));
         col.AddChild(Row("裝備比較", "判斷升級或較差時，攻擊與防禦的比重：平衡各半，偏重攻擊 3 比 1，偏重防禦 1 比 3", _gearWeight.Root));
+        // 截圖方式 (FIXES): what PrtSc and F12 do with the frame (Game.TakeScreenshot)
+        _shotMode = new MenuSeg(new[] { "剪貼簿", "存成檔案", "剪貼簿與檔案" }, i => { Cfg.ScreenshotMode = Math.Clamp(i, 0, 2); Commit("screenshotMode=" + Cfg.ScreenshotMode); }, UiTheme.Fs(FsOption), UiTheme.Px(150f));
+        col.AddChild(Row("截圖方式", "按 PrtSc 或 F12 時，把畫面複製到剪貼簿（預設），或存成檔案（圖片\\AshenAbyss）。若 Windows 設定以 PrtSc 開啟剪取工具，按 PrtSc 時它仍可能一併開啟；F12 不受影響", _shotMode.Root));
         return col;
     }
 
@@ -349,8 +353,9 @@ public sealed class SettingsView
             (K("J"), "任務日誌"),
             (K("Alt"), "按住：顯示所有掉落物標籤"),
             (K("Esc"), "關閉視窗；無視窗時開啟暫停選單"),
-            (K("PrtSc", "F12"), "擷取畫面"),
+            (K("PrtSc", "F12"), "擷取畫面（預設複製到剪貼簿）"),
             (K("F8"), "AI 代打：開啟／關閉（點擊地面或移動鍵即可接管）"),
+            (K("G"), "武器指南（指向武器或副手時：直接查看該武器）"),
         }));
         col.AddChild(groups);
 
@@ -552,6 +557,7 @@ public sealed class SettingsView
             _loot.Select(c.ShowAllLoot ? 0 : 1);
             _cursor.Select(c.SystemCursor ? 1 : 0);
             _gearWeight?.Select(Math.Clamp(c.GearWeight, 0, 2));
+            _shotMode?.Select(Math.Clamp(c.ScreenshotMode, 0, 2));
         }
         finally { _refreshing = false; }
     }
@@ -611,6 +617,7 @@ public sealed class SettingsView
         c.Fullscreen = d.Fullscreen; c.VSync = d.VSync; c.DamageNumbers = d.DamageNumbers; c.ScreenShake = d.ScreenShake;
         c.Subtitles = d.Subtitles; c.ShowAllLoot = d.ShowAllLoot; c.Quality = d.Quality; c.RenderScale = d.RenderScale;
         c.UiTextScale = d.UiTextScale; c.Brightness = d.Brightness; c.SystemCursor = d.SystemCursor; c.GearWeight = d.GearWeight;
+        c.ScreenshotMode = d.ScreenshotMode;
         // LastSlot is not a preference and stays as it is
         try { UiTheme.ApplyTextScale(c.UiTextScale); }
         catch (Exception e) { Log.Error("cfg", "resetting the text size failed", e); }

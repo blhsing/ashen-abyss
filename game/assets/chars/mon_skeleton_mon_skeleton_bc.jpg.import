@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://b234iplvgbmu2"
-path="res://.godot/imported/mon_skeleton_mon_skeleton_bc.jpg-0eef112dcefa727b9ba9630dd098f0fb.ctex"
+path.bptc="res://.godot/imported/mon_skeleton_mon_skeleton_bc.jpg-0eef112dcefa727b9ba9630dd098f0fb.bptc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "c9c2f9fc24cf5e0dfb24ca0f57647c24"
@@ -14,12 +15,12 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/chars/mon_skeleton_mon_skeleton_bc.jpg"
-dest_files=["res://.godot/imported/mon_skeleton_mon_skeleton_bc.jpg-0eef112dcefa727b9ba9630dd098f0fb.ctex"]
+dest_files=["res://.godot/imported/mon_skeleton_mon_skeleton_bc.jpg-0eef112dcefa727b9ba9630dd098f0fb.bptc.ctex"]
 
 [params]
 
-compress/mode=0
-compress/high_quality=false
+compress/mode=2
+compress/high_quality=true
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

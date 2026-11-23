@@ -29,11 +29,55 @@ public sealed partial class Hero
     public float SpeedMul = 1f;
     /// <summary>True while two weapons are held: hits alternate between the hands (<see cref="StrikeHand"/>).</summary>
     public bool DualWielding;
+    /// <summary>True while the Forgebody holds a fist blade in each hand (拳刃精通 applies; see RecalcWeapons).</summary>
+    public bool FistMastery;
+
+    /// <summary>
+    /// 拳刃精通: weapon damage bonus in % for a Forgebody with a fist blade in each hand, by hero level. Tuned with
+    /// --suite=dps:forgebody:…:bases so the fists sit at about 0.9 of the best two-hand weapon. Test switch
+    /// --fistmastery=N forces N % (measurement only).
+    /// </summary>
+    public static float FistMasteryPct(int level)
+    {
+        if (float.TryParse(Game.I?.ArgValue("fistmastery"), System.Globalization.NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out float forced)) return forced;
+        return FistMasteryBase + FistMasteryPerLevel * Math.Clamp(level, 1, Balance.LevelCap);
+    }
+    // fair baselines (fixed gear, 3 samples, pinned dummy): fists 0.83-0.85 of the best two-hand weapon at levels 10, 30, 50;
+    // +8 % brings them to about 0.90 at every level (tools/fixes/fair_*.txt)
+    public const float FistMasteryBase = 12f, FistMasteryPerLevel = 0f;   // 8 -> 12 after the dual trim (fists fell to 0.85 of the best 2H)
+    // 鍛體: the Forgebody's innate damage reduction. On identical gear its effective life (life ÷ share of a physical hit
+    // that gets through) was 10-11 % under the median of Emberblade, Wildsoul and Lampknight at levels 10 and 40
+    // (tools/fixes/ehp_same.txt, ehp_bare.txt); 8 % (x1.087) puts it at about that median
+    public const float ForgedBodyDrPct = 8f;
+    // 契約初成: the Pactbinder's start (5.5 s per normal kill in real fights at levels 1-5). Full at level 1, linear to 0 at
+    // PactEarlyEndLevel; nothing from that level on
+    public const float PactEarlyDmgPct = 25f, PactEarlyLifePct = 15f; public const int PactEarlyEndLevel = 8;
+    public static float PactEarlyFrac(int level) => Math.Clamp((PactEarlyEndLevel - level) / (float)(PactEarlyEndLevel - 1), 0f, 1f);
+
+    /// <summary>Lampknight 盾誓 / 燈誓 bonus in % on weapon damage this hero has now (0 when neither applies).</summary>
+    public float OathPct;
+    /// <summary>盾誓: % weapon damage per 1 % of the shield's own block chance (--shieldoath=N forces it, tests only).</summary>
+    public static float ShieldOathPerBlock() =>
+        float.TryParse(Game.I?.ArgValue("shieldoath"), System.Globalization.NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out float f) ? f : ShieldOathPerBlockPct;
+    /// <summary>盾誓 in % for this shield next to this one-hand weapon (0 for anything else).</summary>
+    public static float ShieldOathFor(Item shield, Item weapon)
+    {
+        if (shield?.Base != "shield" || weapon == null || weapon.TwoHand) return 0f;
+        return shield.BlockChance * ShieldOathPerBlock();
+    }
+    /// <summary>燈誓: % weapon damage (lamp fire) with a lantern in the off hand (--lanternoath=N forces it, tests only).</summary>
+    public static float LanternOathPct() =>
+        float.TryParse(Game.I?.ArgValue("lanternoath"), System.Globalization.NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out float f) ? f : LanternOathBasePct;
+    // 盾誓 is small on purpose: a shield setup must stay ~3 % under the weakest two-hand weapon (mace2, 0.86-0.89 of the best),
+    // and mace1+shield already sits at 0.82-0.84. 燈誓 is held under mace2 for the same rule. (tools/fixes/fair_*.txt)
+    public const float ShieldOathPerBlockPct = 0.1f, LanternOathBasePct = 0f;   // 燈誓 off: the lantern base alone already reaches the weakest two-hand weapon (mace2); any bonus broke the rule (fair runs 2026-11-23)
     /// <summary>The hand of the current strike: 0 main hand, 1 off hand (only ever 1 while dual-wielding). <see cref="NextStrike"/> swaps it.</summary>
     public int StrikeHand;
     private readonly float[] _handMin = { 2, 2 }, _handMax = { 4, 4 };
     public int MaxPips;
-    public const int BagSize = 40, StashSize = 80;
+    public const int BagSize = 40;
+    /// <summary>Cells of the stash: the shared stash's tabs × 80 (SharedStash.cs; 4 × 80 to start).</summary>
+    public static int StashSize => SharedStash.Capacity;
 
     public event Action Changed;                 // stats or inventory changed → UI refresh
     public event Action<int> LevelUp;
@@ -65,6 +109,7 @@ public sealed partial class Hero
         d.Bar[0] = basic;
         d.Equip[(int)EquipSlot.MainHand] = ItemDb.Starter(cls);
         d.Equip[(int)EquipSlot.OffHand] = ItemDb.StarterOff(cls);
+        d.Book = ClassBook.Of(cls) != null ? new BookData() : null;      // [golem] a new hero's book (a save without one is from before 亡者名冊: Hero.EnsureBook migrates it)
         d.Gold = 50;
         return d;
     }
@@ -87,7 +132,14 @@ public sealed partial class Hero
             if (it == null) continue;
             armor += it.Armor * it.BaseMul;
             foreach (var a in it.Affixes) S.Add(a.Stat, it.Eff(a));
-            if (it.Implicits != null) foreach (var a in it.Implicits) S.Add(a.Stat, it.Eff(a));
+            // --dual-one-implicit (measurement only): the off-hand WEAPON's base stat is left out, to size what two
+            // stacked implicits (e.g. two swords' crit damage) add when dual-wielding
+            bool offWeapon = it.Kind == ItemKind.Weapon && ReferenceEquals(it, D.Equip[(int)EquipSlot.OffHand]);
+            bool skipImplicit = offWeapon && (Game.I?.Arg("dual-one-implicit") ?? false);
+            // dual trim (user 2026-11-23): the off-hand weapon's base stat counts at half strength (two swords' crit
+            // damage stacked made the Hunter's dual swords outdo every two-hand weapon)
+            float implMul = offWeapon ? ItemDb.OffHandImplicitMul : 1f;
+            if (it.Implicits != null && !skipImplicit) foreach (var a in it.Implicits) S.Add(a.Stat, it.Eff(a) * implMul);
             foreach (var g in it.Gems) { var gd = ItemDb.Gem(g); if (gd != null) { var b = ItemDb.GemBonus(gd, it.Kind); S.Add(b.s, b.v); } }
             if (it.Aspect != null)
             {
@@ -108,6 +160,7 @@ public sealed partial class Hero
         }
         if (Spec != null) foreach (var (s, v) in Spec.Stats) S.Add(s, v);
         ApplyParagonStats();
+        ApplyBookStats();                                              // [golem] 亡者名冊 sacrifice bonuses (Hero.Book.cs)
         foreach (var b in Buffs) if (b.Def.Stat != Stat.Count) S.Add(b.Def.Stat, b.Def.Value * b.Stacks);
         if (Uniques.Contains("u_emberheart")) S.Add(Stat.DmgAll, 35);
         S.Add(Stat.Thorns, S[Stat.Thorns] * Asp("thornmail") / 100f);
@@ -122,6 +175,9 @@ public sealed partial class Hero
         S.Add(Stat.ResourceGen, S[Stat.Wil] * 0.05f);
         MainMul = 1f + S[main] * 0.0025f;
 
+        if (Class == ClassId.Forgebody) S.Add(Stat.DmgReduction, ForgedBodyDrPct);   // [fixes] 鍛體
+        if (Class == ClassId.Pactbinder && PactEarlyFrac(D.Level) > 0f)                // [fixes] 契約初成
+        { S.Add(Stat.DmgAll, PactEarlyDmgPct * PactEarlyFrac(D.Level)); S.Add(Stat.LifePct, PactEarlyLifePct * PactEarlyFrac(D.Level)); }
         S[Stat.Dodge] = MathF.Min(S[Stat.Dodge], 50); S[Stat.DmgReduction] = MathF.Min(S[Stat.DmgReduction], 75);
         S[Stat.Cdr] = MathF.Min(S[Stat.Cdr], 60); S[Stat.MoveSpeed] = MathF.Min(S[Stat.MoveSpeed], 100);
         S[Stat.AttackSpeed] = MathF.Min(S[Stat.AttackSpeed], 100); S[Stat.ResourceCost] = MathF.Min(S[Stat.ResourceCost], 50);
@@ -159,6 +215,24 @@ public sealed partial class Hero
         }
         Hand(0, w1);
         Hand(1, w2 ?? w1);
+        // 拳刃精通 (Forgebody only, lead/user 2026-11-22): dual fist blades are the class's signature but trailed its
+        // two-hand weapons; while both hands hold fist blades every hit of either hand is FistMasteryPct % stronger.
+        FistMastery = Class == ClassId.Forgebody && DualWielding && w1?.Base == "fist" && w2?.Base == "fist";
+        if (FistMastery)
+        {
+            float k = 1f + FistMasteryPct(D.Level) / 100f;
+            for (int i = 0; i < 2; i++) { _handMin[i] *= k; _handMax[i] *= k; }
+        }
+        // 盾誓 / 燈誓 (Lampknight only, user 2026-11-22): a one-hand weapon with a shield gains damage by the shield's
+        // block chance; with a lantern, the lamp's fire adds a flat share. Two-hand weapons are untouched.
+        OathPct = 0f;
+        if (Class == ClassId.Lampknight && w2 == null && w1 != null && !w1.TwoHand && OffHand?.Kind == ItemKind.OffHand)
+        {
+            if (OffHand.Base == "shield") OathPct = ShieldOathFor(OffHand, w1);
+            else if (OffHand.Base == "lantern") OathPct = LanternOathPct();
+            float k = 1f + OathPct / 100f;
+            for (int i = 0; i < 2; i++) { _handMin[i] *= k; _handMax[i] *= k; }
+        }
         WeaponMin = (_handMin[0] + _handMin[1]) * 0.5f;
         WeaponMax = (_handMax[0] + _handMax[1]) * 0.5f;
         Aps = aps;
@@ -241,6 +315,7 @@ public sealed partial class Hero
         if (id == "as_chain" && HasUnique("u_stargazer")) e.Count += 3;
         if (id == "eb_whirl" && HasAsp("cyclone_pull") && e.OnHit.All(x => x.Id != StatusId.Pull)) e.OnHit.Add(St.Pull(3));
         if (HasKey("kp_ws_elder") && e.Form == 3) { e.Cooldown *= 0.75f; e.Coef *= 1.1f; }
+        BookEff(id, e);                                                // [golem] golem command cooldown, book caps (Hero.Book.cs)
         _eff[id] = e;
         return e;
     }
@@ -497,8 +572,20 @@ public sealed partial class Hero
         Recalc(); return true;
     }
 
-    public bool ToStash(Item it) { if (D.Stash.Count >= StashSize || !D.Bag.Remove(it)) return false; D.Stash.Add(it); Changed?.Invoke(); return true; }
-    public bool FromStash(Item it) { if (BagFull || !D.Stash.Remove(it)) return false; D.Bag.Add(it); Changed?.Invoke(); return true; }
+    /// <summary>Bag → stash, into the stash tab shown (SharedStash.Page) or the first with room; saved soon after (shared stash).</summary>
+    public bool ToStash(Item it)
+    {
+        if (it == null || D.Stash.Count >= StashSize || !D.Bag.Contains(it)) return false;
+        int tab = SharedStash.FreeTab(D.Stash, SharedStash.Page);
+        if (tab < 0) return false;
+        D.Bag.Remove(it);
+        it.Tab = tab; it.StashBy = D.Cid;
+        D.Stash.Add(it);
+        Changed?.Invoke();
+        Game.I?.SaveSoon("stash");
+        return true;
+    }
+    public bool FromStash(Item it) { if (BagFull || !D.Stash.Remove(it)) return false; D.Bag.Add(it); Changed?.Invoke(); Game.I?.SaveSoon("stash"); return true; }
 
     public void Sell(Item it) { if (D.Bag.Remove(it)) { D.Gold += it.Value; Changed?.Invoke(); } }
     public bool Buy(Item it, int price) { if (D.Gold < price || BagFull) return false; D.Gold -= price; D.Bag.Add(it); Changed?.Invoke(); return true; }

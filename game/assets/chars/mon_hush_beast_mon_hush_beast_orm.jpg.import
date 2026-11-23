@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://cn218bs3rogo7"
-path="res://.godot/imported/mon_hush_beast_mon_hush_beast_orm.jpg-a1664d3363457522295ee34d4928bce4.ctex"
+path.bptc="res://.godot/imported/mon_hush_beast_mon_hush_beast_orm.jpg-a1664d3363457522295ee34d4928bce4.bptc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "69e72e74e2c867ba8b23f3dcffb8c943"
@@ -14,12 +15,12 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/chars/mon_hush_beast_mon_hush_beast_orm.jpg"
-dest_files=["res://.godot/imported/mon_hush_beast_mon_hush_beast_orm.jpg-a1664d3363457522295ee34d4928bce4.ctex"]
+dest_files=["res://.godot/imported/mon_hush_beast_mon_hush_beast_orm.jpg-a1664d3363457522295ee34d4928bce4.bptc.ctex"]
 
 [params]
 
-compress/mode=0
-compress/high_quality=false
+compress/mode=2
+compress/high_quality=true
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

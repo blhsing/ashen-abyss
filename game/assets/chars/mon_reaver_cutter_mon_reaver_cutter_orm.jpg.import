@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://ddak6shrjqdd4"
-path="res://.godot/imported/mon_reaver_cutter_mon_reaver_cutter_orm.jpg-f8cffaae55f7a28181af94bc77ce7953.ctex"
+path.bptc="res://.godot/imported/mon_reaver_cutter_mon_reaver_cutter_orm.jpg-f8cffaae55f7a28181af94bc77ce7953.bptc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "789b368fecd90c74081e690cbae6a024"
@@ -14,12 +15,12 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/chars/mon_reaver_cutter_mon_reaver_cutter_orm.jpg"
-dest_files=["res://.godot/imported/mon_reaver_cutter_mon_reaver_cutter_orm.jpg-f8cffaae55f7a28181af94bc77ce7953.ctex"]
+dest_files=["res://.godot/imported/mon_reaver_cutter_mon_reaver_cutter_orm.jpg-f8cffaae55f7a28181af94bc77ce7953.bptc.ctex"]
 
 [params]
 
-compress/mode=0
-compress/high_quality=false
+compress/mode=2
+compress/high_quality=true
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

@@ -1,0 +1,66 @@
+AUDIO agent notes (0.4.0 voice + music finish), started 2026-11-22 08:55
+=======================================================================
+Background processes started by the AUDIO agent:
+- music batch: run_batch.ps1 -Tracks wastes_base,crypt_combat,mire_base,mire_combat -Device cpu -Deliver -RedoFinal
+  started 08:56:46, produce.py pid 49256 (see Y:\tools\music_ai\RUNNING.txt for stop command). Resumable.
+  !! When it ends: any of the 4 that FAILED -> copy <piece>.ogg/.json from
+     %LOCALAPPDATA%\AshenAbyssTools\music_ai\stage\ace_xl\final_prestrict_2026-11-21\ into ...\final\ and run deliver.py.
+- voice: gen.py all (VT_THREADS=8), started 08:58:18, python pid 50380 (launcher powershell 44904).
+  Stop: Stop-Process -Id 50380 -Force. Resume: same command (README.md). Log %LOCALAPPDATA%\AshenAbyssTools\voice_tw\logs\gen.log
+- idle guard: Y:\tools\voice_tw\idle_guard_audio.ps1, powershell pid 25916 (sets both jobs Idle while AshenAbyss.exe runs;
+  ends by itself 4 min after both jobs are gone).
+Changes:
+- voices.py boss_sh_sands: description rewritten lower (男低音, 音调很低) - round 4.
+  boss_sand_tyrant / sh_wastes / sh_frost: round-2 descriptions (written 2026-11-20) are used for the first time now.
+- RUNNING.txt of 2026-11-21 saved to %LOCALAPPDATA%\AshenAbyssTools\voice_tw\logs\RUNNING_before_2026-11-22.txt
+Progress:
+09:11 boss_sand_tyrant redesigned (round-2 desc): design 23 = 96 Hz, HNR 5.8 dB, p(male) 0.70; lines 94 Hz; audit pass; 4 lines delivered 09:12 (incl. the 4 held ids).
+09:03 music wastes_base seed 7155 PASSED strict
+09:22 boss_sh_wastes round-2 desc: kept design 105 Hz p(male) 0.70 but HNR 4.1 dB < 5.5 -> pipeline audit passed (no HNR gate there) and delivered; voices.py rewritten (round 3) -> redo with gen.py all --voice boss_sh_wastes AFTER the main run.
+09:40 sh_frost round 2 kept 111 Hz but HNR 4.6 -> desc round 3 + designs=8; wb_firstbearer (not in brief) anchor HNR 4.0 < 5.0 floor -> desc round 3 + designs=8. sh_wastes designs=8. Redo all three after the main run: gen.py all --voice <v>
+09:54 boss_sh_sands round 4 desc (男低音): 3 design rounds in this run, kept design 45 = 133 Hz, HNR 6.7, p(male) 0.63/0.67, line 151 Hz (<=154) -> pass, sh_sands_intro delivered.
+10:31 smith failed 3 design rounds (LISTEN). Stopped my gen.py (pid 50380) at 10:32; voices.py smith desc round 4 + designs=8.
+10:33 RESTARTED gen.py all: python pid 7924 (launcher 35036). Stop: Stop-Process -Id 7924 -Force. It redesigns sh_wastes, sh_frost,
+      wb_firstbearer (new descs) and smith, then continues with the voices still missing.
+11:05 sh_wastes round 3: audit passed pitch/classifier (102 Hz, 0.71/0.75) but anchor HNR 3.9 < 5.5 -> the audit had no HNR gate.
+      gen.py audit_voice now also requires anchor HNR >= hnr_min (README gate 4; None = not failed). Backup of the old
+      gen.py: %LOCALAPPDATA%\AshenAbyssTools\voice_tw\logs\gen.py.bak_2026-11-22
+11:08 RESTARTED gen.py all (stopped my pid 7924): python pid 11948 (launcher 58204). Stop: Stop-Process -Id 11948 -Force.
+11:37 sh_wastes round 3 (3 design rounds, 24 designs) LISTEN again: best clean designs fail lines classifier (0.55-0.58). voices.py round 4 desc (男中音, like sh_crypt) -> redo after the run: gen.py all --voice boss_sh_wastes
+11:59 sh_wastes round-4 desc gets 干净不沙哑 (sh_abyss's 不嘶哑 wording gave HNR 9.0).
+12:08 music crypt_combat seed 7607 PASSED strict
+12:15 sh_frost round 3 LISTEN (3 rounds). voices.py round 4 desc (男中音, 干净不沙哑) -> redo after the run.
+12:26 MUSIC DONE: wastes_base 7155 + crypt_combat 7607 pass strict; mire_base/mire_combat failed -> prestrict picks restored, deliver.py, verify 19/19 ok, report_tables, make_samples. RUNNING.txt rewritten.
+12:44 wb_firstbearer round 3 LISTEN (anchors clean, but the single short line scored p(male) 0.55-0.61). Pattern for all the
+      hard bosses: anchor passes, the one 2-4 s line misses the classifier. gen.py designed_voice: when the ANCHOR passes
+      every gate, its first lines get up to two retakes (seeds 11-13, 21-23; ASR-checked as usual) before the design is
+      rejected. Gates unchanged. sh_wastes reverted to its round-3 description (its LISTEN anchor 120 Hz / HNR 5.5 /
+      p(male) 0.60 qualifies for the retake); sh_frost keeps the round-4 description.
+12:47 RESTARTED gen.py all (stopped my pids 11948, then 10464): python pid 56160 (launcher 29712), 8 threads.
+      Stop: Stop-Process -Id 56160 -Force.
+13:0x spot check (Whisper small, independent of the pipeline's SenseVoice): occultist 11 + sh_sands_intro -> sound-based CER 0.0 on all 12 (only homophones differ); sand_tyrant 4 -> mean 0.046.
+13:16 sh_wastes round 3 failed again with line retakes (6 rounds total) -> round-4 desc set for the next run.
+13:50 sh_frost round 4 LISTEN (3 rounds, with retakes).
+13:57 wb_firstbearer PASSES the normal gate (round 3 desc, new design: anchor 100 Hz, HNR 8.0, p(male) 0.70 / line 0.63).
+13:58 LEAD DECISION: short-line exception for sh_wastes, sh_frost, wb_firstbearer only (one line < 4 s, anchor passes every
+      gate, line pitch <= min(ceiling,160), line HNR >= floor, line p(male) >= 0.50). Implemented in gen.py
+      (SHORT_LINE_EXCEPTION; logged in audit.json and report.json -> audit_exceptions). Must list the clips in
+      RUNNING.txt under "USER SPOT-CHECK". Note: sh_wastes_intro dry take is ~4.9 s -> the exception cannot apply to it.
+14:01 RESTARTED gen.py all (stopped my pid 56160): python pid 48196 (launcher 32568). Stop: Stop-Process -Id 48196 -Force.
+14:23 sh_wastes PASSES the normal gate (round 4 desc 男中音军官 干净不沙哑): anchor 82 Hz, HNR 5.8, p(male) 0.62 / line 0.61.
+14:41 sh_frost PASSES the normal gate (round 4 desc 男中音守将 干净不沙哑): anchor 89 Hz, HNR 5.5, p(male) 0.72 / line 0.72. => all three one-line bosses passed WITHOUT the short-line exception.
+14:52 smith PASSES (round 4 desc): anchor 126 Hz, HNR 4.4 (floor 3.5), p(male) 0.73 / lines 0.68.
+15:17 jeweler passes (design round 2): anchor 178 Hz, HNR 12.9, p(male) 0.40 / 0.34.
+16:30 hero_wildsoul designs at 203-327 Hz (exclaimed anchor) -> voices.py round 4 (男低音, calmer anchor sentence, designs=8) for the follow-up run.
+16:46 hero_forgebody round-1..2 failing (182-198 Hz) -> voices.py round 4 desc (男低音 音调偏低) for the follow-up run.
+17:04 main run finished: report 207 ok, 0 failed, 0 missing. LISTEN (failed audit, shipped): hero_wildsoul, hero_forgebody.
+17:05 follow-up: redo_audio_agent.ps1 hero_wildsoul hero_forgebody (launcher powershell pid 37056; gen.py pid 56684 for wildsoul).
+      Stop: Stop-Process -Id <gen.py pid in RUNNING.txt> -Force, then the launcher 37056.
+17:18 hero_wildsoul PASSES (round 4): anchor 130 Hz, HNR 4.5, p(male) 0.68 / 0.69.
+17:27 hero_forgebody PASSES (round 4): anchor 140 Hz, HNR 4.8, p(male) 0.63 / 0.63.
+17:3x import.ps1 (207 .ogg.import), spot check Whisper on 69 new lines: mean sound-CER 0.005, max 0.125 (one syllable).
+18:35 IN-GAME CHECK (run.ps1, --win WITH sound, --new=hunter --slot=97 --pilot-test=campaign:170 --speed=2): ERR=0 WRN=0,
+      no "has no recording" notes; sh_wastes_intro (redesigned voice) played with its subtitle (screenshot
+      spotcheck\ingame_sh_wastes_intro.png), elder_first line 1, wastes base/combat crossfades (new wastes_base 7155), boss music,
+      2 level-ups (hero_hunter_levelup is a hero bark; not separately confirmed on screen). slot97 save moved to saves_test_backup.
+DONE. Nothing of mine is running.

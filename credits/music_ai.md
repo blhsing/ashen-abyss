@@ -91,12 +91,12 @@ through a speech recogniser: no words were found in any of them.
 | `intro_bed` | AI | 1:05.30 | free (60) | D minor (D minor) | 7120 (3) | GPU, bfloat16 | 0.17 (0.22) | 0.03 / 0.15 / 0.01 | none (3 windows) | not looped | -22.0 LUFS, -5.2 dBTP |
 | `boss` | AI | 1:55.84 | 116 (116) | D minor (G minor) | 7133 (7) | GPU, bfloat16 | 0.48 (0.65) | 0.05 / 0.06 / 0.27 | none (5 windows) | 0.04x, +5.4 dB, +2.9 dB | -18.0 LUFS, -8.8 dBTP |
 | `boss_final` | AI | 2:32.00 | 120 (120) | D minor (D minor) | 7141 (4) | GPU, bfloat16 | 0.43 (0.52) | 0.01 / 0.01 / 0.14 | none (6 windows) | 0.18x, +8.4 dB, +0.3 dB | -18.0 LUFS, -8.5 dBTP |
-| `wastes_base` | AI | 2:15.50 | free (56) | E major (E minor) | 7154 (6) | GPU, bfloat16 | 0.45 (0.53) | 0.01 / 0.03 / 0.01 | none (6 windows) | 0.15x, -0.5 dB, +0.2 dB | -18.0 LUFS, -8.1 dBTP |
+| `wastes_base` | AI | 2:19.50 | free (56) | E minor (E minor) | 7155 (6) | GPU, bfloat16 | 0.39 (0.53) | 0.01 / 0.05 / 0.00 | none (6 windows) | 0.29x, +2.1 dB, -2.1 dB | -18.0 LUFS, -7.1 dBTP |
 | `wastes_combat` | AI | 1:51.42 | 112 (112) | E minor (E minor) | 7163 (4) | GPU, bfloat16 | 0.43 (0.62) | 0.03 / 0.02 / 0.24 | none (5 windows) | 0.32x, +1.6 dB, -2.3 dB | -18.0 LUFS, -9.1 dBTP |
 | `frost_base` | AI | 2:02.50 | free (54) | F# minor (F# minor) | 7172 (3) | GPU, bfloat16 | 0.31 (0.37) | 0.03 / 0.08 / 0.00 | none (6 windows) | 0.12x, +2.4 dB, -2.5 dB | -18.0 LUFS, -7.7 dBTP |
 | `frost_combat` | AI | 1:53.33 | 108 (108) | F# minor (F# minor) | 7183 (4) | GPU, bfloat16 | 0.54 (0.60) | 0.01 / 0.03 / 0.25 | none (5 windows) | 0.28x, -0.5 dB, -0.4 dB | -18.0 LUFS, -10.1 dBTP |
 | `crypt_base` | AI | 2:00.00 | free (52) | C minor (C minor) | 7191 (3) | GPU, bfloat16 | 0.39 (0.42) | 0.07 / 0.04 / 0.00 | none (6 windows) | 0.31x, +1.9 dB, +4.1 dB | -18.0 LUFS, -6.5 dBTP |
-| `crypt_combat` | AI | 2:08.00 | 105 (104) | F major (C minor) | 7201 (2) | CPU, float32 | 0.39 (0.47) | 0.04 / 0.39 / 0.33 | none (5 windows) | 0.33x, +4.1 dB, +0.3 dB | -18.0 LUFS, -7.8 dBTP |
+| `crypt_combat` | AI | 1:55.38 | 104 (104) | C minor (C minor) | 7607 (8) | CPU, float32 | 0.35 (0.47) | 0.01 / 0.07 / 0.34 | none (5 windows) | 0.19x, +4.0 dB, +1.9 dB | -18.0 LUFS, -8.1 dBTP |
 | `mire_base` | AI | 2:00.00 | free (50) | F major (Bb minor) | 7210 (2) | CPU, float32 | 0.46 (0.47) | 0.01 / 0.49 / 0.01 | none (6 windows) | 0.22x, +0.6 dB, -4.3 dB | -18.0 LUFS, -4.9 dBTP |
 | `mire_combat` | AI | 1:55.20 | 101 (100) | F major (Bb minor) | 7221 (2) | CPU, float32 | 0.32 (0.45) | 0.03 / 0.02 / 0.03 | none (5 windows) | 0.24x, +3.5 dB, +0.2 dB | -18.0 LUFS, -8.2 dBTP |
 | `sands_base` | AI | 2:12.38 | free (58) | A minor (A minor) | 7231 (2) | CPU, float32 | 0.42 (0.50) | 0.08 / 0.18 / 0.02 | none (6 windows) | 0.20x, +8.5 dB, -0.8 dB | -18.0 LUFS, -2.5 dBTP |

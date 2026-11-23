@@ -91,6 +91,7 @@ public partial class HudBuffs : Control
         string col = UiTheme.Hex(en.Bad ? Palette.Bad : UiTheme.Gold);
         string bb = $"[color=#{col}]{en.Name}[/color]";
         if (en.Stacks > 1) bb += $"  ×{en.Stacks}";
+        if (en.Name is "凍結" or "冰緩") bb += "\n[color=#" + UiTheme.Hex(UiTheme.Dim) + "]凍結結束時，冰緩層數歸零[/color]";      // the freeze rule (2026-11-22)
         var at = GlobalPosition + new Vector2(_hover * (IconSize + Gap), -6f);
         ui.ShowTooltipAbove(new Rect2(at, IconSize, IconSize), bb, this);
     }

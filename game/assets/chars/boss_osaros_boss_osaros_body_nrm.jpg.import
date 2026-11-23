@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://12yiekaj0rb4"
-path="res://.godot/imported/boss_osaros_boss_osaros_body_nrm.jpg-57c4e1de6eb05226c22961ed07d8a849.ctex"
+path.s3tc="res://.godot/imported/boss_osaros_boss_osaros_body_nrm.jpg-57c4e1de6eb05226c22961ed07d8a849.s3tc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "efb06ce4c71debd011c8e01acc14b122"
@@ -14,17 +15,17 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/chars/boss_osaros_boss_osaros_body_nrm.jpg"
-dest_files=["res://.godot/imported/boss_osaros_boss_osaros_body_nrm.jpg-57c4e1de6eb05226c22961ed07d8a849.ctex"]
+dest_files=["res://.godot/imported/boss_osaros_boss_osaros_body_nrm.jpg-57c4e1de6eb05226c22961ed07d8a849.s3tc.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1
-compress/normal_map=0
+compress/normal_map=1
 compress/channel_pack=0
 mipmaps/generate=true
 mipmaps/limit=-1

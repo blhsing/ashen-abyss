@@ -63,9 +63,10 @@ public static class Bestiary
     /// <summary>
     /// The game's default: whether the designed roster is in play. While it is false the bestiary changes nothing — no
     /// new definitions in MonsterDb, the built-in region spawn lists stay, CharModel resolves models as before (the data
-    /// can still be read: Info, Named, Family, Region).
+    /// can still be read: Info, Named, Family, Region). On since 0.4.0 (2026-11-23): two full AI-pilot campaigns with it, emberblade
+    /// 14/14 bosses 3 deaths and hunter 14/14 bosses 2 deaths, 0 errors (ROSTER_NOTES.md). --no-bestiary plays the old roster.
     /// </summary>
-    public const bool LiveByDefault = false;
+    public const bool LiveByDefault = true;
     /// <summary>
     /// The roster is live: <see cref="LiveByDefault"/>, overridden for a test run by the switches --bestiary (on) and
     /// --no-bestiary (off; for comparing a build against the old roster). Read once, before MonsterDb is built.
@@ -340,7 +341,7 @@ public static class Bestiary
         var d = new MonsterDef
         {
             Id = t.Id, Name = string.IsNullOrEmpty(t.NameZh) ? t.Id : t.NameZh, NameEn = t.NameEn ?? "", Model = t.Model, Family = t.Family, Sfx = SfxOf(t.Family, heavy),
-            Role = role == "giant" || role == "mother" ? "bruiser" : role, RoleText = t.Role, AI = kind, Scale = t.Scale, Hp = t.Hp, Dmg = t.Dmg, Speed = t.Speed,
+            Role = role == "giant" || role == "mother" ? "bruiser" : role, RoleText = t.Role, AI = kind, Scale = t.Scale, Hp = TunedHp(t.Hp), Dmg = t.Dmg * DmgScale, Speed = t.Speed,
             Element = ElementOf(t.Element, Element.Physical), Rig = t.Rig, BodyPlan = t.BodyPlan, Regions = t.Regions, SpawnWeight = t.SpawnWeight, Stage = t.Stage,
             Look = t.Silhouette, InBestiary = true, Traits = TraitsOf(t),
             Radius = swarmer ? 0.42f : giant ? 0.62f : heavy ? 0.55f : 0.5f,
@@ -518,6 +519,15 @@ public static class Bestiary
         "wail", "within", "opening strike", "ground", "thrown", "chains", "heals", "dims",
     };
 
+    // ── balance pass 2026-11-22 (ROSTER_NOTES.md, per-region A/B against the old roster, same seed and gear): the designed
+    // types killed 1.4-2.8× slower and hit 10-50 % harder than the old roster in every region (their behaviours — shields,
+    // healers, reflect, revivers, hooks, chill — add to the life on paper). New types only; the 18 written by hand keep theirs.
+    /// <summary>Life of a designed type: × 0.8, and the part above 2 × the level curve counts 60 % (heavies were the slowest kills).</summary>
+    public static float TunedHp(float hp) => 0.8f * (hp > 2f ? 2f + (hp - 2f) * 0.6f : hp);
+    public const float DmgScale = 0.9f;
+    /// <summary>Chill per hit from the status text: frost packs chilled every few blows, a frozen hero 2 s out of 6.</summary>
+    public const float ChillScale = 0.6f;
+
     /// <summary>
     /// The statuses a type's ordinary hits apply, read from the bestiary's status text ("chill 0.3", "burn 0.3 over 3 s",
     /// "slow 0.3 for 2 s", "stun 0.5 s (30% chance)", "knockback" …). Clauses that belong to one behaviour (the waking strike,
@@ -541,7 +551,7 @@ public static class Bestiary
             if (ch.Success) chance = int.Parse(ch.Groups[1].Value, CultureInfo.InvariantCulture) / 100f;
             StatusApply? st = m.Groups[1].Value switch
             {
-                "chill" => St.Chill(a > 0 ? a : 0.3f),
+                "chill" => St.Chill((a > 0 ? a : 0.3f) * ChillScale),
                 "burn" => St.Burn(a > 0 ? a : 0.3f, b > 0 ? b : 3f),
                 "poison" => St.Poison(a > 0 ? a : 0.3f, b > 0 ? b : 3f),
                 "bleed" => St.Bleed(a > 0 ? a : 0.3f, b > 0 ? b : 3f),

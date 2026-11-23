@@ -22,11 +22,20 @@ public static class Combat
     /// <summary>Share of a blocked hit that still lands (block chance comes from shields: Stat.Block).</summary>
     public const float BlockedShare = 0.5f;
 
+    /// <summary>--no-overpower (measurement only, --suite=dps): no hit overpowers, to size what overpower adds.</summary>
+    private static bool? _noOp;
+    private static bool NoOverpowerTest => _noOp ??= Game.I?.Arg("no-overpower") ?? false;
+
     public static float PlayerHit(Player p, Actor t, SkillDef s, float coef, Element el, HitOpt o = default)
     {
         if (t == null || t.Dead || p == null) return 0f;
         var h = p.Hero; var S = h.S;
         float w = Rng.Range(h.StrikeMin, h.StrikeMax);      // the hand that strikes now (dual-wield alternates, SkillExec.Fire)
+        // [fixes 0.4.0] One weapon hit is the weapon's damage per second ÷ its swing speed, which keeps attacks that are
+        // repeated as fast as the weapon swings equal on every base. A skill held back by its cooldown, or a minion's
+        // blow, comes at its own rate whatever the weapon: with the per-swing hit a slow two-hander made them up to 1.7×
+        // stronger (--suite=dps:…:bases). They use the hit at the class's own pace instead (× SpeedMul), the same on every base.
+        if (o.Minion || (s != null && s.Cooldown > 0f)) w *= h.SpeedMul;
         float add = S[Stat.DmgAll] + S[StatInfo.DmgOf(el)];
         if (s != null) add += s.Cat switch { SkillCat.Basic => S[Stat.DmgBasic], SkillCat.Core => S[Stat.DmgCore], SkillCat.Ultimate => S[Stat.DmgUlt], _ => 0f };
         bool elite = t.IsElite || t.IsBoss;
@@ -41,7 +50,7 @@ public static class Combat
         if (h.Class == ClassId.Hunter && h.HasKeystone("ks_combo")) cc += p.Pips * 3f;
         bool crit = !o.NoCrit && (o.ForceCrit || (!o.Minion && p.ConsumeAmbush()) || Rng.Chance(cc / 100f));
         if (crit) add += S[Stat.CritDmg];
-        bool op = !o.Minion && !o.NoCrit && Rng.Chance(h.D.Spec == "eb_heavy" ? 0.06f : 0.03f);
+        bool op = !o.Minion && !o.NoCrit && !NoOverpowerTest && Rng.Chance(h.D.Spec == "eb_heavy" ? 0.06f : 0.03f);
         if (op) add += 50f + S[Stat.DmgOverpower];
 
         float m = (o.Mul <= 0f ? 1f : o.Mul) * (crit ? 1.5f : 1f) * (vuln ? 1.2f : 1f) * (op ? 1.25f : 1f);
@@ -63,7 +72,9 @@ public static class Combat
     public static float DotDps(Player p, float coefTotal, float dur, Element el, bool minion = false)
     {
         var h = p.Hero; var S = h.S;
-        float w = (h.WeaponMin + h.WeaponMax) * 0.5f;
+        // [fixes 0.4.0] a DoT does not stack (the stronger one stays), so its damage per second must not depend on how
+        // slowly the weapon swings: the hit at the class's own pace (see PlayerHit)
+        float w = (h.WeaponMin + h.WeaponMax) * 0.5f * h.SpeedMul;
         float add = S[Stat.DmgAll] + S[Stat.DmgDot] + S[StatInfo.DmgOf(el)] + (minion ? S[Stat.MinionDmg] : 0f);
         return w * coefTotal * h.MainMul * (1f + add / 100f) / MathF.Max(dur, 0.1f);
     }

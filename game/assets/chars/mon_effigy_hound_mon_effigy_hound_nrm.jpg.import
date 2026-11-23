@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://cnt6r8n3xnkfj"
-path="res://.godot/imported/mon_effigy_hound_mon_effigy_hound_nrm.jpg-e92c9ac4838172bed17a27985b08c49c.ctex"
+path.s3tc="res://.godot/imported/mon_effigy_hound_mon_effigy_hound_nrm.jpg-e92c9ac4838172bed17a27985b08c49c.s3tc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "bf4037a44d2e73212ecc2e21dd09ebed"
@@ -14,17 +15,17 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/chars/mon_effigy_hound_mon_effigy_hound_nrm.jpg"
-dest_files=["res://.godot/imported/mon_effigy_hound_mon_effigy_hound_nrm.jpg-e92c9ac4838172bed17a27985b08c49c.ctex"]
+dest_files=["res://.godot/imported/mon_effigy_hound_mon_effigy_hound_nrm.jpg-e92c9ac4838172bed17a27985b08c49c.s3tc.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1
-compress/normal_map=0
+compress/normal_map=1
 compress/channel_pack=0
 mipmaps/generate=true
 mipmaps/limit=-1

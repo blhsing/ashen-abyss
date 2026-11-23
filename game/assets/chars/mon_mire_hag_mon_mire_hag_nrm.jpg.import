@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://c8eleu2xnlcum"
-path="res://.godot/imported/mon_mire_hag_mon_mire_hag_nrm.jpg-e0d23127f97b810c5aa7a2fd67caab08.ctex"
+path.s3tc="res://.godot/imported/mon_mire_hag_mon_mire_hag_nrm.jpg-e0d23127f97b810c5aa7a2fd67caab08.s3tc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "a66b9fc1d37a0bd92beaaf3cd4b46cf0"
@@ -14,17 +15,17 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/chars/mon_mire_hag_mon_mire_hag_nrm.jpg"
-dest_files=["res://.godot/imported/mon_mire_hag_mon_mire_hag_nrm.jpg-e0d23127f97b810c5aa7a2fd67caab08.ctex"]
+dest_files=["res://.godot/imported/mon_mire_hag_mon_mire_hag_nrm.jpg-e0d23127f97b810c5aa7a2fd67caab08.s3tc.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1
-compress/normal_map=0
+compress/normal_map=1
 compress/channel_pack=0
 mipmaps/generate=true
 mipmaps/limit=-1

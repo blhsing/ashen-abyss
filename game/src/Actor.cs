@@ -110,6 +110,9 @@ public partial class Actor : Node3D
     public readonly float[] StMag = new float[(int)StatusId.Count];
     public readonly List<DotEffect> Dots = new();
     public float CcImmune;                     // after a hard CC ends, brief immunity so enemies can't be perma-locked
+    private static bool _chillFreeze;          // diagnostics: the freeze being applied comes from a full chill bar
+    /// <summary>A full chill bar freezes the hero this long (user, 2026-11-23: 1.2 s, was 2 s); monsters keep 2 s.</summary>
+    public const float HeroChillFreeze = 1.2f;
     public float HexCoef; public Actor HexSource;
     public Actor TauntBy;
     /// <summary>When this actor last took a tick from a ground zone of each skill (zones of one skill do not stack).</summary>
@@ -179,9 +182,10 @@ public partial class Actor : Node3D
                 return;
             case StatusId.Chill:
                 if (Unstoppable) return;
+                if (CcImmune > 0f || this is Player && Has(StatusId.Freeze)) return;      // no chill builds up while frozen (a full bar mid-freeze re-froze and stretched the hero's 1.2 s freeze to 2.4 s, release re-run) nor in the immunity after it
                 StTime[i] = Mathf.Max(StTime[i], s.Dur);
                 StMag[i] = Mathf.Min(1f, StMag[i] + s.Mag);
-                if (StMag[i] >= 1f && CcImmune <= 0f && !IsBoss) { StMag[i] = 0.3f; ApplyStatus(St.Freeze(2f), source); }
+                if (StMag[i] >= 1f && CcImmune <= 0f && !IsBoss) { StMag[i] = 0.3f; _chillFreeze = true; ApplyStatus(St.Freeze(this is Player ? HeroChillFreeze : 2f), source); _chillFreeze = false; }
                 return;
             case StatusId.Taunt:
                 TauntBy = source; StTime[i] = s.Dur; return;
@@ -193,7 +197,8 @@ public partial class Actor : Node3D
             if (IsBoss) { OnStagger(s.Dur * 12f); return; }       // bosses convert crowd control into stagger
             if (CcImmune > 0f) return;
             float dur = s.Dur * (IsElite ? 0.6f : 1f);
-            if (StTime[i] <= 0f) OnCcStart(s.Id);
+            if (StTime[i] <= 0f) { OnCcStart(s.Id); if (this is Player && s.Id == StatusId.Freeze) Log.Info("hero", $"frozen {dur:0.0}s by {(source as Monster)?.Def?.Id ?? source?.Name ?? "?"}{(_chillFreeze ? " (chill full)" : "")}"); }
+            else if (this is Player && s.Id == StatusId.Freeze && dur > StTime[i]) Log.Info("hero", $"freeze extended {StTime[i]:0.0}→{dur:0.0}s by {(source as Monster)?.Def?.Id ?? source?.Name ?? "?"}");
             StTime[i] = Mathf.Max(StTime[i], dur);
             return;
         }
@@ -220,7 +225,13 @@ public partial class Actor : Node3D
         {
             if (StTime[i] <= 0f) continue;
             StTime[i] -= dt;
-            if (StTime[i] <= 0f) { StTime[i] = 0f; StMag[i] = 0f; if (i == (int)StatusId.Taunt) TauntBy = null; }
+            if (StTime[i] <= 0f)
+            {
+                StTime[i] = 0f; StMag[i] = 0f;
+                if (i == (int)StatusId.Taunt) TauntBy = null;
+                // the freeze rule (user, 2026-11-22): a freeze that ends takes the chill with it — the next blows start from zero
+                if (i == (int)StatusId.Freeze) { StTime[(int)StatusId.Chill] = 0f; StMag[(int)StatusId.Chill] = 0f; }
+            }
         }
         if (wasHard && !(Stunned || Has(StatusId.Root))) CcImmune = IsElite ? 3f : 1.5f;
         if (CcImmune > 0f) CcImmune -= dt;

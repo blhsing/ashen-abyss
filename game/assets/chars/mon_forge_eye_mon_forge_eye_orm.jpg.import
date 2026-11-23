@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://dto5g04kirmt6"
-path="res://.godot/imported/mon_forge_eye_mon_forge_eye_orm.jpg-bbcaa6b1ae035966a5f076b12a48e243.ctex"
+path.bptc="res://.godot/imported/mon_forge_eye_mon_forge_eye_orm.jpg-bbcaa6b1ae035966a5f076b12a48e243.bptc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "636e7960b9a283156432726a35d94e1b"
@@ -14,12 +15,12 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/chars/mon_forge_eye_mon_forge_eye_orm.jpg"
-dest_files=["res://.godot/imported/mon_forge_eye_mon_forge_eye_orm.jpg-bbcaa6b1ae035966a5f076b12a48e243.ctex"]
+dest_files=["res://.godot/imported/mon_forge_eye_mon_forge_eye_orm.jpg-bbcaa6b1ae035966a5f076b12a48e243.bptc.ctex"]
 
 [params]
 
-compress/mode=0
-compress/high_quality=false
+compress/mode=2
+compress/high_quality=true
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

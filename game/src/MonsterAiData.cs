@@ -41,8 +41,8 @@ public static class MonsterAiTune
             case "cult_assassin": d.OnHit = null; a.PounceStatus = St.Vuln(3f); break;
             case "cult_censer": a.HealFilter = null; break;
             // ── wraith ──
-            case "wraith_mourner": d.OnHit = St.Chill(0.3f); d.OnHit2 = new StatusApply(StatusId.Fear, 0.8f, 0, 0.2f); break;
-            case "wraith_gasp": a.BurstRadius = 1.8f; a.BurstDmg = 0.6f; a.BurstDelay = 0.4f; a.BurstStatus = St.Chill(0.3f); break;
+            case "wraith_mourner": d.OnHit = St.Chill(0.3f * Bestiary.ChillScale); d.OnHit2 = new StatusApply(StatusId.Fear, 0.8f, 0, 0.2f); break;
+            case "wraith_gasp": a.BurstRadius = 1.8f; a.BurstDmg = 0.6f; a.BurstDelay = 0.4f; a.BurstStatus = St.Chill(0.3f * Bestiary.ChillScale); break;
             // ── reaver ──
             case "reaver_hook": d.OnHit = null; a.HookStatus = St.Slow(0.3f, 1.5f); break;
             case "reaver_firepot": d.OnHit = St.Burn(0.3f, 3f); a.BombZone = Zone(2.4f, 4f, Element.Fire, St.Burn(0.3f, 3f)); break;
@@ -51,21 +51,21 @@ public static class MonsterAiTune
             case "reaver_houndmaster": a.CallDef = "dusk_hound"; a.EscortDefs = new[] { "dusk_hound", "dusk_hound" }; break;
             // ── dusk ──
             case "dusk_boar": d.OnHit = St.Knock(6f); break;
-            case "dusk_yak": d.OnHit = St.Chill(0.4f); d.OnHit2 = St.Knock(6f); break;
+            case "dusk_yak": d.OnHit = St.Chill(0.4f * Bestiary.ChillScale); d.OnHit2 = St.Knock(6f); break;
             case "dusk_lynx": d.OnHit = St.Bleed(0.3f, 3f); a.PounceStatus = St.Vuln(2f); break;
             case "dusk_crow": d.OnHit = St.Weaken(0.15f, 3f); break;
             case "dusk_bat": d.OnHit = St.Bleed(0.25f, 3f); break;
             case "dusk_gadfly": d.OnHit = St.Poison(0.3f, 3f); a.DrainHeal = true; break;
             case "dusk_moths": d.OnHit = St.Weaken(0.2f, 1.2f); a.Attract = "fire"; break;
             // ── frost ──
-            case "rime_horn": d.OnHit = St.Knock(6f); a.BreathMode = "chill"; a.BreathStatus = St.Chill(0.3f); a.CastAnim = "Spell_Simple_Enter"; break;
-            case "rime_sentry": d.OnHit = St.Chill(0.4f); a.WakeStatus = St.Root(1f); a.ShellMul = 1f; break;
-            case "rime_breaker": d.OnHit = St.Chill(0.5f); break;
-            case "rime_packbeast": d.OnHit = St.Chill(0.5f); a.BurstRadius = 4.5f; a.BurstDmg = 1.6f; a.BurstStatus = St.Freeze(1f); break;
+            case "rime_horn": d.OnHit = St.Knock(6f); a.BreathMode = "chill"; a.BreathStatus = St.Chill(0.3f * Bestiary.ChillScale); a.CastAnim = "Spell_Simple_Enter"; break;
+            case "rime_sentry": d.OnHit = St.Chill(0.4f * Bestiary.ChillScale); a.WakeStatus = St.Root(1f); a.ShellMul = 1f; break;
+            case "rime_breaker": d.OnHit = St.Chill(0.5f * Bestiary.ChillScale); break;
+            case "rime_packbeast": d.OnHit = St.Chill(0.5f * Bestiary.ChillScale); a.BurstRadius = 4.5f; a.BurstDmg = 1.6f; a.BurstStatus = St.Chill(0.6f * Bestiary.ChillScale); break;   // was freeze 1 s: frost strongholds froze the hero into the boss's telegraphs
             // ── coldfire ──
-            case "cf_flicker": d.OnHit = St.Chill(0.25f); a.BurstRadius = 2f; a.BurstDmg = 0.7f; a.BurstDelay = 0.4f; a.BurstStatus = St.Chill(0.3f); break;
-            case "cf_spirit": d.OnHit = St.Chill(0.35f); a.Trail = Zone(1.8f, 4f, Element.Frost, St.Chill(0.15f), 0.1f); break;
-            case "cf_hulk": d.OnHit = St.Chill(0.5f); a.HookStatus = St.Chill(0.3f); a.AuraEffect = "chill"; a.AuraRadius = 5f; break;
+            case "cf_flicker": d.OnHit = St.Chill(0.25f * Bestiary.ChillScale); a.BurstRadius = 2f; a.BurstDmg = 0.7f; a.BurstDelay = 0.4f; a.BurstStatus = St.Chill(0.3f * Bestiary.ChillScale); break;
+            case "cf_spirit": d.OnHit = St.Chill(0.35f * Bestiary.ChillScale); a.Trail = Zone(1.8f, 4f, Element.Frost, St.Chill(0.15f * Bestiary.ChillScale), 0.1f); break;
+            case "cf_hulk": d.OnHit = St.Chill(0.5f * Bestiary.ChillScale); a.HookStatus = St.Chill(0.3f * Bestiary.ChillScale); a.AuraEffect = "chill"; a.AuraRadius = 5f; break;
             // ── hauler ──
             case "hauler_yoke": d.OnHit = St.Knock(7f); break;
             case "hauler_hod": d.OnHit = St.Knock(6f); a.BombDirect = St.Stun(0.6f); a.BombMelee = true; a.BombZone = Zone(2.4f, 3f, Element.Physical, St.Slow(0.3f, 1f), 0.05f); break;
@@ -102,9 +102,9 @@ public static class MonsterAiTune
             case "lamp_crawler": d.OnHit = St.Poison(0.2f, 3f); a.BurstRadius = 2f; a.BurstDmg = 0.3f; a.BurstDelay = 0.4f; a.BurstZone = Zone(2f, 3f, Element.Poison, St.Poison(0.2f, 3f)); break;
             case "lamp_colony": d.OnHit = St.Poison(0.4f, 4f); a.AuraEffect = "weaken"; a.AuraRadius = 5f; break;
             // ── lurk ──
-            case "lurk_leech": d.OnHit = St.Chill(0.2f); d.OnHit2 = St.Slow(0.2f, 2f); a.DrainHeal = true; break;
+            case "lurk_leech": d.OnHit = St.Chill(0.2f * Bestiary.ChillScale); d.OnHit2 = St.Slow(0.2f, 2f); a.DrainHeal = true; a.DrainPct = 0.03f; break;      // a swarm (weight 5): 10 % a bite emptied the bar
             case "lurk_spitter": d.OnHit = St.Poison(0.4f, 4f); a.BombZone = Zone(2.4f, 4f, Element.Poison, St.Poison(0.3f, 3f)); break;
-            case "lurk_elder": d.OnHit = St.Chill(0.5f); a.SplitDef = "lurk_leech"; a.SplitCount = 4; break;
+            case "lurk_elder": d.OnHit = St.Chill(0.5f * Bestiary.ChillScale); a.SplitDef = "lurk_leech"; a.SplitCount = 4; break;
             // ── sands ──
             case "dune_mirror": d.OnHit = St.Stun(0.5f); break;
             case "dune_stormjar": d.OnHit = St.Stun(0.3f, 0.2f); a.BurstRadius = 4f; a.BurstDmg = 1f; a.BurstEl = Element.Lightning; break;
@@ -160,10 +160,10 @@ public static class MonsterAiTune
         if (a.BombZone != null && baseDef.Element != el) a.BombZone = Zone(a.BombZone.Radius, a.BombZone.Dur, el, a.BombZone.Status, a.BombZone.Mul);
         switch (d.Id)
         {
-            case "frost_pallbearer": d.OnHit = St.Knock(6f); d.OnHit2 = St.Chill(0.3f); break;
-            case "frost_snuffer": d.OnHit = St.Weaken(0.25f, 4f); d.OnHit2 = St.Chill(0.2f); break;
+            case "frost_pallbearer": d.OnHit = St.Knock(6f); d.OnHit2 = St.Chill(0.3f * Bestiary.ChillScale); break;
+            case "frost_snuffer": d.OnHit = St.Weaken(0.25f, 4f); d.OnHit2 = St.Chill(0.2f * Bestiary.ChillScale); break;
             case "sand_snuffer": d.OnHit = St.Weaken(0.25f, 4f); d.OnHit2 = null; break;
-            case "frost_mourner": d.OnHit = St.Chill(0.4f); d.OnHit2 = new StatusApply(StatusId.Fear, 0.8f, 0, 0.2f); break;
+            case "frost_mourner": d.OnHit = St.Chill(0.4f * Bestiary.ChillScale); d.OnHit2 = new StatusApply(StatusId.Fear, 0.8f, 0, 0.2f); break;
             case "mire_mourner": d.OnHit = St.Slow(0.3f, 2f); d.OnHit2 = new StatusApply(StatusId.Fear, 0.8f, 0, 0.2f); break;
             case "mire_wraith": d.OnHit = St.Slow(0.3f, 2f); d.OnHit2 = null; break;
             case "mire_chained": d.OnHit = St.Poison(0.2f, 3f); d.OnHit2 = null; a.HookStatus = St.Slow(0.3f, 2f); break;

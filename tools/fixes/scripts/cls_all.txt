@@ -1,0 +1,33 @@
+# class screens (item 10) at the three sizes, three classes with the longest loadout text
+wait 2
+scale 0
+wait 1
+shot cls_lampknight_s0
+dump cls_lampknight_s0
+scale 2
+wait 1
+shot cls_lampknight_s2
+dump cls_lampknight_s2
+menu class:pactbinder
+wait 2
+shot cls_pactbinder_s2
+dump cls_pactbinder_s2
+scale 1
+wait 1
+shot cls_pactbinder_s1
+dump cls_pactbinder_s1
+menu class:soulbinder
+wait 2
+shot cls_soulbinder_s1
+dump cls_soulbinder_s1
+scale 2
+wait 1
+shot cls_soulbinder_s2
+dump cls_soulbinder_s2
+menu class:wildsoul
+wait 2
+shot cls_wildsoul_s2
+dump cls_wildsoul_s2
+scale 0
+wait 1
+quit

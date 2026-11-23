@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://c64ko2wj2vgt"
-path="res://.godot/imported/mon_bog_sleeper_mon_bog_sleeper_orm.jpg-74f82ab4f3f6c363dac418d20c6011d6.ctex"
+path.bptc="res://.godot/imported/mon_bog_sleeper_mon_bog_sleeper_orm.jpg-74f82ab4f3f6c363dac418d20c6011d6.bptc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "398c4fde4c5bd7e50f7dddc4fc62eff2"
@@ -14,12 +15,12 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/chars/mon_bog_sleeper_mon_bog_sleeper_orm.jpg"
-dest_files=["res://.godot/imported/mon_bog_sleeper_mon_bog_sleeper_orm.jpg-74f82ab4f3f6c363dac418d20c6011d6.ctex"]
+dest_files=["res://.godot/imported/mon_bog_sleeper_mon_bog_sleeper_orm.jpg-74f82ab4f3f6c363dac418d20c6011d6.bptc.ctex"]
 
 [params]
 
-compress/mode=0
-compress/high_quality=false
+compress/mode=2
+compress/high_quality=true
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

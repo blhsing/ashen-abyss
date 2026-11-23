@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://pjeo8d0tlxio"
-path="res://.godot/imported/mon_cult_censer_mon_cult_censer_em.jpg-ed6013aa0cf9f7822da437ff8ea2f290.ctex"
+path.bptc="res://.godot/imported/mon_cult_censer_mon_cult_censer_em.jpg-ed6013aa0cf9f7822da437ff8ea2f290.bptc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "ae25d531e087ff60f333cdb9ccfe8cf8"
@@ -14,12 +15,12 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/chars/mon_cult_censer_mon_cult_censer_em.jpg"
-dest_files=["res://.godot/imported/mon_cult_censer_mon_cult_censer_em.jpg-ed6013aa0cf9f7822da437ff8ea2f290.ctex"]
+dest_files=["res://.godot/imported/mon_cult_censer_mon_cult_censer_em.jpg-ed6013aa0cf9f7822da437ff8ea2f290.bptc.ctex"]
 
 [params]
 
-compress/mode=0
-compress/high_quality=false
+compress/mode=2
+compress/high_quality=true
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

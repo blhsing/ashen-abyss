@@ -1,0 +1,28 @@
+exit= seconds=604
+log: C:\Users\blhsi\AppData\Roaming\AshenAbyss\logs\game_20261122_151101.log  lines=1781  ERR=0  WRN=12
+--- distinct warnings ---
+   1 x [bot] going nowhere near (64.4, 27.8) in frost_boss for a minute while 'focus leave' (portal out); jumping to the checkpoint (63.0, 45.0)
+   1 x [bot] going nowhere near (63.8, 28.8) in frost_boss for a minute while 'focus leave' (portal out); jumping to the checkpoint (63.0, 45.0)
+   1 x [bot] going nowhere near (65.5, 26.0) in frost_boss for a minute while 'focus leave' (portal out); jumping to the checkpoint (63.0, 45.0)
+   1 x [bot] going nowhere near (66.3, 28.8) in frost_boss for a minute while 'focus leave' (portal out); jumping to the checkpoint (63.0, 45.0)
+   1 x [bot] going nowhere near (65.0, 28.9) in frost_boss for a minute while 'focus leave' (portal out); jumping to the checkpoint (63.0, 45.0)
+   1 x [bot] going nowhere near (64.0, 30.3) in frost_boss for a minute while 'focus leave' (portal out); jumping to the checkpoint (63.0, 45.0)
+   1 x [bot] going nowhere near (62.4, 25.3) in frost_boss for a minute while 'focus leave' (portal out); jumping to the checkpoint (63.0, 45.0)
+   1 x [bot] going nowhere near (62.9, 19.4) in frost_boss for a minute while 'focus leave' (portal out); jumping to the checkpoint (63.0, 45.0)
+   1 x [bot] going nowhere near (65.9, 24.3) in frost_boss for a minute while 'focus leave' (portal out); jumping to the checkpoint (63.0, 45.0)
+   1 x [bot] going nowhere near (62.0, 29.9) in frost_boss for a minute while 'focus leave' (portal out); jumping to the checkpoint (63.0, 45.0)
+   1 x [bot] going nowhere near (64.1, 26.0) in frost_boss for a minute while 'focus leave' (portal out); jumping to the checkpoint (63.0, 45.0)
+   1 x [bot] going nowhere near (60.8, 27.3) in frost_boss for a minute while 'focus leave' (portal out); jumping to the checkpoint (63.0, 45.0)
+--- last lines ---
+  603.375 INF [save] save reason=quit slot=95 ok=True area=frost_boss playtime=600s capture=0.3ms total=5.1ms
+  603.378 INF [bot] final summary t=1801s game=1800s area=frost_boss doing=focus leave kills=53 elites=5 bosses=1 level=19 life=100% items=23 gold=4245 deaths=0 areas=1 casts=175 unstuck=12 monsters=82 errors=0 warnings=12 botErrors=0 focus=portal out
+  603.380 INF [bot] final progress: waypoints=[town] renown=[frost:150] quests done=0/3 skillpts bonus=0 potion cap=4 altars=0 codex=0 tier=0/1 riftBest=0 paragon=0 playtime=600s
+  603.383 INF [bot] final skills [soulbinder lv19] cast/hits/damage: (other):c0/h6/d969 sb_bolt:c96/h85/d7166 sb_curse:c9/h0/d0 sb_golem_cmd:c8/h85/d7742 sb_raise:c5/h306/d20286 sb_spear:c52/h125/d27966 sb_veil:c5/h47/d2555
+  603.385 INF [bot] final balance: ttk normal=2.0s(n=47) champion=6.3s(n=3) elite=6.2s(n=2) boss=44.9s(n=1) | taken 29/min in 20 hits (life 1184; 0.02 life bars/min) god-saves=0 | kills/min 1.8 | never cast: [] cast but never hit: []
+  603.386 INF [anim] anim-check: hero moved 338.5s - 0.0s without a locomotion clip, 0.0s with frozen legs; hero stood 1384.0s - 0.0s in a run clip or none; monsters moved 1144.5s - 0.0s without a locomotion clip, 0.0s with frozen legs; models without a skelet ƒ?Ý
+  603.386 INF [input] keyboard hook saw 0 key events, 0 of them PrtSc
+  603.387 INF [boot] shutdown errors=0 warnings=12 uptime=603s
+--- engine output: distinct problem lines (5 total) ---
+   2 x [1] void Godot.GeometryInstance3D.SetInstanceShaderParameter(Godot.StringName, Godot.Variant) (/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Generated/GodotObjects/GeometryInstance3D.cs:569)
+   2 x ERROR: Parameter "t" is null.
+   1 x [7] Godot.NativeInterop.godot_bool Godot.Bridge.CSharpInstanceBridge.Call(nint, Godot.NativeInterop.godot_string_name*, Godot.NativeInterop.godot_variant**, int, Godot.NativeInterop.godot_variant_call_error*, Godot.NativeInterop.godot_variant*) (/root/g ƒ?Ý

@@ -1,0 +1,9 @@
+    3.575 INF [suite] PASS pilot: the reported items are in the save copy — 鐵淚庇護・鐵製巨劍 / 亡歌餘燼・皮手套
+    3.663 INF [suite] PASS pilot: the best sword in the bag is worn, in one step — 堅實的鐵製巨劍 (best 堅實的鐵製巨劍)
+    3.664 INF [suite] PASS pilot: no plain sword over the rare one — 堅實的鐵製巨劍
+    3.665 INF [suite] PASS pilot: a second pass makes no further swap — 堅實的鐵製巨劍|亡歌餘燼・皮手套
+    3.720 INF [suite] PASS pilot: a legendary is only replaced for a 15 % gain — candidate -7.1% kept=True
+    3.777 WRN [suite] FAIL storage: a full bag empties (legendaries stashed, junk gone, the locked piece stays put) — Cleared bag 11 stash 4
+    3.895 INF [suite] PASS storage: only locked pieces left and the stash full → hand back, nothing sold, the shared stash untouched — StorageFull bag 40
+    3.988 INF [suite] PASS storage: a full stash → found legendaries salvaged from the bag (lowest first), the stash untouched, powers kept in the codex — Cleared bag 27 codex 0→8
+    3.990 INF [suite] DONE suite=pilot pass=7 fail=1 errors=0 warnings=1

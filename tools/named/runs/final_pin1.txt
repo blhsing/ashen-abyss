@@ -1,0 +1,19 @@
+build ok
+exit= seconds=87
+log: C:\Users\blhsi\AppData\Roaming\AshenAbyss\logs\game_20261122_164338.log  lines=324  ERR=0  WRN=0
+--- last lines ---
+   84.272 INF [pilot] picks up ?????? (Legendary)
+   84.341 INF [pilot] TEST over: quitting
+   84.342 INF [game] quitting
+   84.346 INF [save] slot 91 saved: ??? lv50 ??? area=rift~pin:1 bytes=29588
+   84.347 INF [save] save reason=quit slot=91 ok=True area=rift~pin:1 playtime=80s capture=0.2ms total=4.3ms
+   84.351 INF [anim] anim-check: hero moved 113.2s - 0.0s without a locomotion clip, 0.0s with frozen legs; hero stood 48.3s - 0.0s in a run clip or none; monsters moved 105.4s - 0.0s without a locomotion clip, 0.0s with frozen legs; models without a skeleton  ƒ?Ý
+   84.352 INF [input] keyboard hook saw 102 key events, 0 of them PrtSc
+   84.353 INF [boot] shutdown errors=0 warnings=0 uptime=84s
+--- engine output: distinct problem lines (5 total) ---
+   1 x [12] float AshenAbyss.Combat.PlayerHit(AshenAbyss.Player, AshenAbyss.Actor, AshenAbyss.SkillDef, float, AshenAbyss.Element, AshenAbyss.HitOpt) (Y:\game\src\Combat.cs:62)
+   1 x [19] Godot.NativeInterop.godot_bool Godot.Bridge.CSharpInstanceBridge.Call(nint, Godot.NativeInterop.godot_string_name*, Godot.NativeInterop.godot_variant**, int, Godot.NativeInterop.godot_variant_call_error*, Godot.NativeInterop.godot_variant*) (/root/ ƒ?Ý
+   1 x [11] float AshenAbyss.Monster.TakeHit(AshenAbyss.Hit) (Y:\game\src\Monster.cs:619)
+   1 x ERROR: Parameter "t" is null.
+   1 x [10] float AshenAbyss.Actor.TakeHit(AshenAbyss.Hit) (Y:\game\src\Actor.cs:290)
+DONE

@@ -1,0 +1,12 @@
+dps-bases wildsoul lv50: fixed gear (seed 96578): crit chance 5.6% crit dmg 101% life 3068
+dps-bases wildsoul lv50 2h staff: aps 1.00 (x1.00 of pace 1.00) hit 174-236 | single 1984/s = 0.82x expected, 1.00x starter | cooldown skills 14%, minions 0%
+dps-bases wildsoul lv50 2h mace2: aps 0.80 (x0.80 of pace 1.00) hit 192-321 | single 1945/s = 0.81x expected, 0.98x starter | cooldown skills 12%, minions 0%
+dps-bases wildsoul lv50 2h axe2: aps 0.90 (x0.90 of pace 1.00) hit 160-296 | single 1884/s = 0.78x expected, 0.95x starter | cooldown skills 14%, minions 0%
+dps-bases wildsoul lv50: fixed gear (seed 96578): crit chance 5.6% crit dmg 101% life 3068
+dps-bases wildsoul lv50 2h staff: aps 1.00 (x1.00 of pace 1.00) hit 174-236 | single 1951/s = 0.81x expected, 1.00x starter | cooldown skills 14%, minions 0%
+dps-bases wildsoul lv50 2h mace2: aps 0.80 (x0.80 of pace 1.00) hit 192-321 | single 1944/s = 0.81x expected, 1.00x starter | cooldown skills 14%, minions 0%
+dps-bases wildsoul lv50 2h axe2: aps 0.90 (x0.90 of pace 1.00) hit 160-296 | single 1888/s = 0.78x expected, 0.97x starter | cooldown skills 14%, minions 0%
+dps-bases wildsoul lv50: fixed gear (seed 96578): crit chance 5.6% crit dmg 101% life 3068
+dps-bases wildsoul lv50 2h staff: aps 1.00 (x1.00 of pace 1.00) hit 174-236 | single 2053/s = 0.85x expected, 1.00x starter | cooldown skills 13%, minions 0%
+dps-bases wildsoul lv50 2h mace2: aps 0.80 (x0.80 of pace 1.00) hit 192-321 | single 1978/s = 0.82x expected, 0.96x starter | cooldown skills 12%, minions 0%
+dps-bases wildsoul lv50 2h axe2: aps 0.90 (x0.90 of pace 1.00) hit 160-296 | single 1931/s = 0.80x expected, 0.94x starter | cooldown skills 14%, minions 0%

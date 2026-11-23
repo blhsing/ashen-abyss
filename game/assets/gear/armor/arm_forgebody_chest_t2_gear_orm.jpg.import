@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://br1uh01gde2eo"
-path="res://.godot/imported/arm_forgebody_chest_t2_gear_orm.jpg-349879515fc7cc3a02350e3db19fd87e.ctex"
+path.bptc="res://.godot/imported/arm_forgebody_chest_t2_gear_orm.jpg-349879515fc7cc3a02350e3db19fd87e.bptc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "1aa7b58f21701339ed2ff90c0bd68267"
@@ -14,12 +15,12 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/gear/armor/arm_forgebody_chest_t2_gear_orm.jpg"
-dest_files=["res://.godot/imported/arm_forgebody_chest_t2_gear_orm.jpg-349879515fc7cc3a02350e3db19fd87e.ctex"]
+dest_files=["res://.godot/imported/arm_forgebody_chest_t2_gear_orm.jpg-349879515fc7cc3a02350e3db19fd87e.bptc.ctex"]
 
 [params]
 
-compress/mode=0
-compress/high_quality=false
+compress/mode=2
+compress/high_quality=true
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

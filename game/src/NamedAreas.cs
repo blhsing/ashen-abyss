@@ -21,7 +21,7 @@ public static class NamedAreas
     public const string Prefix = "rift~";
     public const float RareChance = 0.3f;
 
-    // ── feature flags (PAUSE 2026-11-19, lead's order): what reaches normal play. Every encounter stays reachable through
+    // ── feature flags: what reaches normal play (all five on since 2026-11-22). Every encounter stays reachable through
     //    --named=<id> / --area=rift~arena:<id> / --suite=named whatever these say. ──
     /// <summary>Rare elites roll their chance in the region overworlds (tested: spawn, announce, fight in the overworld).</summary>
     public static bool LiveRares = true;
@@ -31,8 +31,8 @@ public static class NamedAreas
     public static bool LiveDungeons = true;
     /// <summary>World-boss gateways open in the overworld (tested 2026-11-20: gateway in the wastes, field fought by the bot, cache once, exit to the region).</summary>
     public static bool LiveWorld = true;
-    /// <summary>OFF: no Ember Stair altar in town (route and panel not tested on screen).</summary>
-    public static bool LiveLadder = false;
+    /// <summary>The Ember Stair altar stands in town once the campaign is done (tested 2026-11-22: --suite=named:ladder — altar, panel, rung 1, kill recorded at the tier, portal to rung 2; every rung beaten by the no-god AI pilot).</summary>
+    public static bool LiveLadder = true;
     private static bool _testDone;
     private static string _forceRare;
 
@@ -350,7 +350,6 @@ public static class NamedAreas
     public static bool RungOpen(int rung)
     {
         if (rung <= 1) return true;
-        if (Game.I != null && Game.I.Arg("suite")) return true;
         var below = NamedDb.RungOf(rung - 1);
         return below != null && NamedRecords.BestTier(below.Id) >= (Game.I?.WorldTier ?? 0);
     }
@@ -359,7 +358,7 @@ public static class NamedAreas
     {
         var ui = Game.I?.Ui;
         if (ui != null && ui.Find(NamedLadderUi.PanelId) == null) ui.Register(new NamedLadderUi());     // --ui=named_ladder can open it too
-        if (!Quests.CampaignDone && !(Game.I?.Arg("named") ?? false)) return;
+        if (!Quests.CampaignDone && !((Game.I?.Arg("named") ?? false) || (Game.I?.Arg("suite") ?? false))) return;      // tests: the altar stands before the campaign is done
         var stone = L.Markers.FirstOrDefault(k => k.Kind == "riftstone");
         Vector2 near = stone?.Pos ?? L.Checkpoint;
         Vector2 at = L.Grid.RandomWalkNear(near, 4.5f, 6.5f, L.Rand);

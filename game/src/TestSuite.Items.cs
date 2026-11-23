@@ -143,8 +143,23 @@ public sealed partial class TestSuite
         var h = new Hero(d);
         d.Bag.Add(wand); wand.ReqLevel = 1;
         string tip = ItemText.Tooltip(wand, null, 30, false, null, h);
-        Check(tip.Contains("你的職業無法使用") && tip.Contains("可用職業") && tip.Contains("[s]") && tip.Contains(Names.Class(ClassId.Pactbinder)),
-            "compat: an unusable weapon's tooltip carries the red banner and the 可用職業 line");
+        // 可用職業 lists only the classes that can use it (wand: 星術師、喚魂師、縛淵術士), never a name split across lines
+        string usable = string.Concat(tip.Split('\n').SkipWhile(l => !l.Contains("可用職業")).Take(3));
+        bool onlyUsers = Enum.GetValues<ClassId>().All(c => usable.Contains(Names.Class(c)) == ItemDb.UsableBy(wand, c));
+        bool whole = tip.Split('\n').All(l => Enum.GetValues<ClassId>().All(c => { var n = Names.Class(c); return l.Contains(n) || !(l.EndsWith(n[..2]) || l.TrimStart('　').StartsWith(n[2..] + "[")); }));
+        Check(tip.Contains("你的職業無法使用") && tip.Contains("可用職業") && onlyUsers && !tip.Contains("[s]"),
+            "compat: an unusable weapon's tooltip carries the red banner and lists only the classes that can use it", usable);
+        // every base for every hero class: the 可用職業 lines break only at 、 (no line ends inside a class name)
+        int splits = 0;
+        foreach (var gb in ItemDb.GearBases)
+            foreach (ClassId hc in Enum.GetValues<ClassId>())
+            {
+                var hh = new Hero(Hero.NewCharacter("斷", hc, false));
+                var t = ItemText.Tooltip(ItemDb.Generate(100, Rarity.Common, hc, gb.Off ? ItemKind.OffHand : ItemKind.Weapon, new Random(1), gb.Id), null, 30, false, null, hh);
+                var lines = t.Split('\n').SkipWhile(l => !l.Contains("可用職業")).TakeWhile(l => l.Contains("可用職業") || l.StartsWith("　")).ToList();
+                foreach (var l in lines) { var plain = System.Text.RegularExpressions.Regex.Replace(l, @"\[[^\]]*\]", ""); if (plain.Length > 19 || !(plain.EndsWith("、") || l == lines[^1])) splits++; }
+            }
+        Check(splits == 0 && whole, "compat: 可用職業 lines wrap only at 、 and stay within a card line", $"bad lines {splits}");
         string why = h.WhyCantEquip(wand);
         Check(why == $"{Names.Class(ClassId.Emberblade)}無法裝備魔杖" && !h.Equip(wand), "compat: equipping it is refused with 「燼刃衛無法裝備魔杖」", why);
         var axe = ItemDb.Generate(200, Rarity.Rare, ClassId.Emberblade, ItemKind.Weapon, rng, "axe1");

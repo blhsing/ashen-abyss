@@ -22,9 +22,15 @@ powershell -NoProfile -ExecutionPolicy Bypass -File 'Y:\tools\installer\build_in
 [ -f $R/installer/AshenAbyss-$V-Setup.exe ] && [ -f $R/installer/AshenAbyss-$V-manifest.json ] || { say "STOP: installer or manifest missing"; exit 1; }
 ls -la $R/installer | awk 'NF>5{print $5, $9}' >> $log
 say "create release"
+gh release view v$V --repo blhsing/ashen-abyss --json isDraft --jq .isDraft 2>/dev/null | grep -q true && gh release delete v$V --repo blhsing/ashen-abyss --yes --cleanup-tag >> $log 2>&1
 gh release create v$V --repo blhsing/ashen-abyss --title "燼淵 Ashen Abyss $V" --notes-file /y/release_out/notes_040.md --target main --latest $R/installer/AshenAbyss-$V-Setup.exe $R/installer/AshenAbyss-$V-manifest.json >> $log 2>&1 || { say "STOP: release create failed"; exit 1; }
 for f in $R/AshenAbyss-$V-win64.7z.* $R/AshenAbyss-$V-assets.7z.*; do
   for try in 1 2 3; do say "upload $(basename $f) try $try"; gh release upload v$V --repo blhsing/ashen-abyss "$f" --clobber >> $log 2>&1 && break; sleep 20; done
 done
 gh release view v$V --repo blhsing/ashen-abyss --json assets --jq '.assets[] | "\(.name) \(.size)"' >> $log 2>&1
 say "finished"
+# cleanup (user: don't keep old builds): only after every asset is verified on GitHub
+ok=1; for f in $R/AshenAbyss-$V-win64.7z.* $R/AshenAbyss-$V-assets.7z.* $R/installer/AshenAbyss-$V-Setup.exe $R/installer/AshenAbyss-$V-manifest.json; do
+  n=$(basename $f); s=$(stat -c %s $f); grep -q "^$n $s$" <(gh release view v$V --repo blhsing/ashen-abyss --json assets --jq '.assets[] | "\(.name) \(.size)"') || { ok=0; say "verify FAIL $n"; }
+done
+if [ $ok = 1 ]; then rm -rf $R/*.7z.* $R/installer "$LOCALAPPDATA/Temp/AshenAbyss_export"; say "cleanup done"; else say "cleanup skipped (verify failed)"; fi

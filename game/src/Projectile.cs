@@ -24,6 +24,7 @@ public partial class Projectile : Node3D
     public Player MinionOwner;
     public float MinionCoef;
     public SkillDef MinionSkill;
+    public Action<Actor> OnMinionHit;        // [golem] skeleton mages: their statuses on the struck enemy (Golems.cs)
     private static readonly List<Actor> Tmp = new();
 
     // AI pilot (DangerMap.cs): the shots in flight and where they are heading
@@ -119,6 +120,7 @@ public partial class Projectile : Node3D
             {
                 bool alive = GodotObject.IsInstanceValid(_m);
                 if (MinionOwner != null) Combat.PlayerHit(MinionOwner, t, MinionSkill, MinionCoef, _el, new HitOpt { Minion = true, MinionActor = alive ? _m : null, Dir = _dir });
+                if (MinionOwner != null && OnMinionHit != null) { try { OnMinionHit(t); } catch (Exception e) { Log.Error("golem", "mage bolt hook failed", e); } }
                 else if (alive) Combat.MonsterHit(_m, t, _mul, _el, _status);
                 Fx.Hit(t.Chest, _el, false);
                 End(to, false);

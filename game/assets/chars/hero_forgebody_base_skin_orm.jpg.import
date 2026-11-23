@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://wpookarjkr1q"
-path="res://.godot/imported/hero_forgebody_base_skin_orm.jpg-8ae3d229e36689832e3a61b435a01ecd.ctex"
+path.bptc="res://.godot/imported/hero_forgebody_base_skin_orm.jpg-8ae3d229e36689832e3a61b435a01ecd.bptc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "56b388775fa7152f23478dc77dcdb95a"
@@ -14,12 +15,12 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/chars/hero_forgebody_base_skin_orm.jpg"
-dest_files=["res://.godot/imported/hero_forgebody_base_skin_orm.jpg-8ae3d229e36689832e3a61b435a01ecd.ctex"]
+dest_files=["res://.godot/imported/hero_forgebody_base_skin_orm.jpg-8ae3d229e36689832e3a61b435a01ecd.bptc.ctex"]
 
 [params]
 
-compress/mode=0
-compress/high_quality=false
+compress/mode=2
+compress/high_quality=true
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

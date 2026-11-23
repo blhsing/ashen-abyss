@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://dwvpedltvwll6"
-path="res://.godot/imported/arm_lampknight_chest_t1_gear_c.jpg-647d5bd3e60cfd08b772488ecb6a8a28.ctex"
+path.bptc="res://.godot/imported/arm_lampknight_chest_t1_gear_c.jpg-647d5bd3e60cfd08b772488ecb6a8a28.bptc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "048947a35d63f716e4d4912ba1ae3c16"
@@ -14,12 +15,12 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/gear/armor/arm_lampknight_chest_t1_gear_c.jpg"
-dest_files=["res://.godot/imported/arm_lampknight_chest_t1_gear_c.jpg-647d5bd3e60cfd08b772488ecb6a8a28.ctex"]
+dest_files=["res://.godot/imported/arm_lampknight_chest_t1_gear_c.jpg-647d5bd3e60cfd08b772488ecb6a8a28.bptc.ctex"]
 
 [params]
 
-compress/mode=0
-compress/high_quality=false
+compress/mode=2
+compress/high_quality=true
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

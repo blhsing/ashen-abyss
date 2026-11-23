@@ -26,6 +26,7 @@ public enum Stat
     MaxResource, ResourceGen, ResourceCost, Cdr,
     MoveSpeed, GoldFind, MagicFind, XpGain, SkillRanks,
     Block,
+    GolemLife, GolemDmg, MageDmg, MinionAtkSpeed, CmdCdr,      // [golem] Soulbinder off-hand affixes (GolemItems.cs)
     Count
 }
 
@@ -52,6 +53,7 @@ public static class StatInfo
         S(Stat.MoveSpeed, "移動速度"); S(Stat.GoldFind, "金幣獲取"); S(Stat.MagicFind, "尋寶率"); S(Stat.XpGain, "經驗值獲取");
         S(Stat.SkillRanks, "所有技能等級", false);
         S(Stat.Block, "格擋機率");
+        S(Stat.GolemLife, "魔像生命"); S(Stat.GolemDmg, "魔像傷害"); S(Stat.MageDmg, "骸骨術士傷害"); S(Stat.MinionAtkSpeed, "僕從攻擊速度"); S(Stat.CmdCdr, "魔像號令冷卻縮減");
     }
 
     public static string Name(Stat s) => Info[(int)s].name;
@@ -98,9 +100,9 @@ public static class Names
         "遊走於陰影的獵手，弓弩與短刃並用。迅捷、致命，以連擊點強化殺招。",
         "與亡魂締約的喚魂師。汲取殘魂喚起骸骨僕從，以暗影與詛咒凋零眾敵。",
         "枯林深處的蛻形者。借熊靈之軀硬撼強敵，以狼靈之爪撕裂獵物，並號令大地與風暴。",
-        "在熄滅的日爐中鍛鍊肉身的武者。雙手套上拳刃，以拳、掌與氣焰擊碎一切；必要時也掄起巨錘與巨斧。",
-        "守護燼塔的持盾騎士。以信念驅動劍與盾，燃起燼光庇護自己，並審判寂滅的信徒。",
-        "與燼魔立約的術士。以咒力施法累積契印，再以契印號令被縛的魔物代為殺戮。",
+        $"在熄滅的日爐中鍛鍊肉身的武者。雙手套上拳刃，以拳、掌與氣焰擊碎一切；必要時也掄起巨錘與巨斧。「鍛體」使其受到的傷害降低 {Hero.ForgedBodyDrPct:0}%；雙持拳刃時，「拳刃精通」提高武器傷害。",
+        "守護燼塔的持盾騎士。以信念驅動劍與盾，燃起燼光庇護自己，並審判寂滅的信徒。單手持盾時，「盾誓」依盾的格擋率提高武器傷害。",
+        "與燼魔立約的術士。以咒力施法累積契印，再以契印號令被縛的魔物代為殺戮。「契約初成」：等級 8 前傷害與生命提高。",
     };
     private static readonly string[] ResourceNames = { "怒焰", "靈能", "精力", "魂能", "靈息", "氣焰", "信念", "咒力" };
     private static readonly Stat[] MainStats = { Stat.Str, Stat.Int, Stat.Dex, Stat.Wil, Stat.Wil, Stat.Dex, Stat.Str, Stat.Int };

@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://bbnh8nttyow6s"
-path="res://.godot/imported/hero_pactbinder_emis_g.png-b18dce41725ca5e03a58de9a215380f2.ctex"
+path.bptc="res://.godot/imported/hero_pactbinder_emis_g.png-b18dce41725ca5e03a58de9a215380f2.bptc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "bb5a5faa03a97aa1b9fce8fed4a6d26f"
@@ -14,12 +15,12 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/chars/hero_pactbinder_emis_g.png"
-dest_files=["res://.godot/imported/hero_pactbinder_emis_g.png-b18dce41725ca5e03a58de9a215380f2.ctex"]
+dest_files=["res://.godot/imported/hero_pactbinder_emis_g.png-b18dce41725ca5e03a58de9a215380f2.bptc.ctex"]
 
 [params]
 
-compress/mode=0
-compress/high_quality=false
+compress/mode=2
+compress/high_quality=true
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

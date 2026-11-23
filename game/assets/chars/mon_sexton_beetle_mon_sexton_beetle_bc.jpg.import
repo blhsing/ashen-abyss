@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://by14d5c1xspd8"
-path="res://.godot/imported/mon_sexton_beetle_mon_sexton_beetle_bc.jpg-388c3630e314e6527d9b5501beb7b72f.ctex"
+path.bptc="res://.godot/imported/mon_sexton_beetle_mon_sexton_beetle_bc.jpg-388c3630e314e6527d9b5501beb7b72f.bptc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "8f3cd2d67c6ee2b8c8a06e4bd5a76e1b"
@@ -14,12 +15,12 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/chars/mon_sexton_beetle_mon_sexton_beetle_bc.jpg"
-dest_files=["res://.godot/imported/mon_sexton_beetle_mon_sexton_beetle_bc.jpg-388c3630e314e6527d9b5501beb7b72f.ctex"]
+dest_files=["res://.godot/imported/mon_sexton_beetle_mon_sexton_beetle_bc.jpg-388c3630e314e6527d9b5501beb7b72f.bptc.ctex"]
 
 [params]
 
-compress/mode=0
-compress/high_quality=false
+compress/mode=2
+compress/high_quality=true
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

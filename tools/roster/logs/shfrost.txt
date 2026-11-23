@@ -1,0 +1,9 @@
+== bestiary ERR=0
+  205.280 INF [pilot] TEST fight ends: boss=sh_frost area=frost killed=False secs=460 deaths=3 heroLevel=25 threats=222 dodged=194 taken=28 dmgTelegraphed=2723 dmgOther=3570 life=1657
+  205.281 INF [pilot] TEST RESULT mode=boss class=hunter end=time limit t=600s level=25 deaths=5 area=frost campaignDone=False bossesKilled=0 telegraphed threats=254 dodged=218 taken=36 (boss 220/192/28) dmgTelegraphed=3355 otherHits=286 dmgOther=6432 dodgeWalks=592 rolls=25 defensives=15
+  205.281 INF [pilot] TEST FIGHT boss=sh_frost area=frost killed=False secs=460 deaths=3 heroLevel=25 threats=222 dodged=194 taken=28 dmgTelegraphed=2723 dmgOther=3570 life=1657
+== no-bestiary ERR=0
+  205.138 INF [pilot] TEST fight ends: boss=sh_frost area=frost killed=False secs=386 deaths=2 heroLevel=25 threats=137 dodged=134 taken=3 dmgTelegraphed=318 dmgOther=5630 life=1525
+  205.139 INF [pilot] TEST RESULT mode=boss class=hunter end=time limit t=600s level=25 deaths=4 area=frost campaignDone=False bossesKilled=0 telegraphed threats=187 dodged=181 taken=6 (boss 136/133/3) dmgTelegraphed=846 otherHits=227 dmgOther=10636 dodgeWalks=536 rolls=31 defensives=13
+  205.139 INF [pilot] TEST FIGHT boss=sh_frost area=frost killed=False secs=386 deaths=2 heroLevel=25 threats=137 dodged=134 taken=3 dmgTelegraphed=318 dmgOther=5630 life=1525
+done 21:27:09

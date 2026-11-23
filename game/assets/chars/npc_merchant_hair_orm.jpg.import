@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://xs2sotd40hk"
-path="res://.godot/imported/npc_merchant_hair_orm.jpg-e759855efb4767a298bac62976544068.ctex"
+path.bptc="res://.godot/imported/npc_merchant_hair_orm.jpg-e759855efb4767a298bac62976544068.bptc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "7997d3cefa11c6cdd83b883d578c771f"
@@ -14,12 +15,12 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/chars/npc_merchant_hair_orm.jpg"
-dest_files=["res://.godot/imported/npc_merchant_hair_orm.jpg-e759855efb4767a298bac62976544068.ctex"]
+dest_files=["res://.godot/imported/npc_merchant_hair_orm.jpg-e759855efb4767a298bac62976544068.bptc.ctex"]
 
 [params]
 
-compress/mode=0
-compress/high_quality=false
+compress/mode=2
+compress/high_quality=true
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

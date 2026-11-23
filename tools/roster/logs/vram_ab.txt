@@ -1,0 +1,15 @@
+vram_before_best:  log=
+
+vram_before_old: exit= seconds=47 log: C:\Users\blhsi\AppData\Roaming\AshenAbyss\logs\game_20261122_092249.log  lines=205  ERR=0  WRN=0  log=C:\Users\blhsi\AppData\Roaming\AshenAbyss\logs\game_20261122_092249.log
+fps=59 frame=16.7ms monsters=37 draws=1133 vram=2001MB fps=60 frame=16.7ms monsters=37 draws=1101 vram=2001MB fps=60 frame=16.7ms monsters=37 draws=1143 vram=2001MB 
+tex_vram: 485 import files set to VRAM compression
+import exit=0 seconds=9
+vram_after_best:  log=
+
+vram_after_old: exit= seconds=56 log: C:\Users\blhsi\AppData\Roaming\AshenAbyss\logs\game_20261122_10tex_vram: 485 import files set to VRAM compression
+import exit=0 seconds=9
+vram_after_best:  log=
+
+vram_after_old: exit= seconds=60 log: C:\Users\blhsi\AppData\Roaming\AshenAbyss\logs\game_20261122_101245.log  lines=205  ERR=0  WRN=0  log=C:\Users\blhsi\AppData\Roaming\AshenAbyss\logs\game_20261122_101245.log
+fps=47 frame=21.9ms monsters=37 draws=1103 vram=1557MB fps=46 frame=20.9ms monsters=37 draws=1071 vram=1557MB fps=52 frame=20.5ms monsters=37 draws=1072 vram=1557MB 
+vram_ab done 10:14:31

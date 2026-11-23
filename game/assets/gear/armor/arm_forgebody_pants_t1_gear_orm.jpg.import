@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://dcu66hfu7akst"
-path="res://.godot/imported/arm_forgebody_pants_t1_gear_orm.jpg-95af2d80d36064e4f68cb9f9c5820a96.ctex"
+path.bptc="res://.godot/imported/arm_forgebody_pants_t1_gear_orm.jpg-95af2d80d36064e4f68cb9f9c5820a96.bptc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "a8b1ae7d535d6fc1d038308cb3e8b7bb"
@@ -14,12 +15,12 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/gear/armor/arm_forgebody_pants_t1_gear_orm.jpg"
-dest_files=["res://.godot/imported/arm_forgebody_pants_t1_gear_orm.jpg-95af2d80d36064e4f68cb9f9c5820a96.ctex"]
+dest_files=["res://.godot/imported/arm_forgebody_pants_t1_gear_orm.jpg-95af2d80d36064e4f68cb9f9c5820a96.bptc.ctex"]
 
 [params]
 
-compress/mode=0
-compress/high_quality=false
+compress/mode=2
+compress/high_quality=true
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

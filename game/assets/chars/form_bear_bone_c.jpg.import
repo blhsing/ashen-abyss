@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://de70eiqengh5l"
-path="res://.godot/imported/form_bear_bone_c.jpg-c6622a85f0e8e8099b167c9565e8bad5.ctex"
+path.bptc="res://.godot/imported/form_bear_bone_c.jpg-c6622a85f0e8e8099b167c9565e8bad5.bptc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "0302257ac31cc2ea785083d5a43247c3"
@@ -14,12 +15,12 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/chars/form_bear_bone_c.jpg"
-dest_files=["res://.godot/imported/form_bear_bone_c.jpg-c6622a85f0e8e8099b167c9565e8bad5.ctex"]
+dest_files=["res://.godot/imported/form_bear_bone_c.jpg-c6622a85f0e8e8099b167c9565e8bad5.bptc.ctex"]
 
 [params]
 
-compress/mode=0
-compress/high_quality=false
+compress/mode=2
+compress/high_quality=true
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

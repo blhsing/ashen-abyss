@@ -1,0 +1,17 @@
+# skill screen 職業特性 (forgebody fists / lampknight shield) at 標準 and 特大
+wait 2
+open skills
+wait 1.5
+shot traits_s0
+dump traits_s0
+close
+scale 2
+wait 0.5
+open skills
+wait 1.5
+shot traits_s2
+dump traits_s2
+close
+scale 0
+wait 0.3
+quit

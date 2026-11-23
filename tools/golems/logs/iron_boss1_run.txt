@@ -1,0 +1,33 @@
+exit= seconds=487
+log: C:\Users\blhsi\AppData\Roaming\AshenAbyss\logs\game_20261122_135044.log  lines=923  ERR=0  WRN=13
+--- distinct warnings ---
+   1 x [bot] going nowhere near (190.2, 195.2) in wastes for a minute while 'focus event in progress' (event in progress); jumping to the checkpoint (125.3, 85.9)
+   1 x [bot] going nowhere near (196.4, 197.7) in wastes for a minute while 'use loot' (event in progress); jumping to the checkpoint (125.3, 85.9)
+   1 x [bot] going nowhere near (192.2, 197.0) in wastes for a minute while 'focus event in progress' (event in progress); jumping to the checkpoint (125.3, 85.9)
+   1 x [bot] going nowhere near (195.9, 197.5) in wastes for a minute while 'use loot' (event in progress); jumping to the checkpoint (125.3, 85.9)
+   1 x [bot] going nowhere near (195.0, 196.9) in wastes for a minute while 'use loot' (event in progress); jumping to the checkpoint (125.3, 85.9)
+   1 x [bot] going nowhere near (193.2, 197.1) in wastes for a minute while 'focus event in progress' (event in progress); jumping to the checkpoint (125.3, 85.9)
+   1 x [bot] going nowhere near (191.5, 196.7) in wastes for a minute while 'focus event in progress' (event in progress); jumping to the checkpoint (125.3, 85.9)
+   1 x [bot] going nowhere near (194.2, 196.7) in wastes for a minute while 'focus event in progress' (event in progress); jumping to the checkpoint (125.3, 85.9)
+   1 x [bot] going nowhere near (191.2, 196.3) in wastes for a minute while 'focus event in progress' (event in progress); jumping to the checkpoint (125.3, 85.9)
+   1 x [bot] going nowhere near (190.4, 195.6) in wastes for a minute while 'focus event in progress' (event in progress); jumping to the checkpoint (125.3, 85.9)
+   1 x [bot] going nowhere near (196.3, 197.6) in wastes for a minute while 'use gold' (event in progress); jumping to the checkpoint (125.3, 85.9)
+   1 x [bot] going nowhere near (196.6, 198.7) in wastes for a minute while 'use loot' (event in progress); jumping to the checkpoint (125.3, 85.9)
+   1 x [bot] going nowhere near (196.2, 197.6) in wastes for a minute while 'explore marker:altar' (event in progress); jumping to the checkpoint (125.3, 85.9)
+--- last lines ---
+  486.436 INF [save] save reason=quit slot=95 ok=True area=wastes playtime=479s capture=0.3ms total=4.1ms
+  486.438 INF [bot] final summary t=1440s game=1437s area=wastes doing=focus event in progress kills=267 elites=13 bosses=2 level=13 life=100% items=46 gold=6311 deaths=0 areas=2 casts=354 unstuck=13 monsters=199 errors=0 warnings=13 botErrors=0 focus=event in ƒ?Ý
+  486.439 INF [bot] final progress: waypoints=[town,wastes] renown=[wastes:330] quests done=0/3 skillpts bonus=1 potion cap=4 altars=1 codex=0 tier=0/1 riftBest=0 paragon=0 playtime=479s
+  486.442 INF [bot] final skills [soulbinder lv13] cast/hits/damage: (minion):c0/h37/d722 (other):c0/h33/d3267 sb_bolt:c192/h158/d8798 sb_curse:c19/h0/d0 sb_golem_cmd:c16/h123/d14792 sb_raise:c3/h468/d13009 sb_spear:c114/h330/d37980 sb_veil:c10/h24/d733
+  486.443 INF [bot] final balance: ttk normal=0.9s(n=251) champion=4.3s(n=10) elite=2.0s(n=3) boss=28.5s(n=2) | taken 69/min in 118 hits (life 933; 0.07 life bars/min) god-saves=0 | kills/min 11.1 | never cast: [] cast but never hit: []
+  486.444 INF [anim] anim-check: hero moved 1275.6s - 0.0s without a locomotion clip, 0.0s with frozen legs; hero stood 20.2s - 0.0s in a run clip or none; monsters moved 3043.9s - 0.0s without a locomotion clip, 1.2s with frozen legs; models without a skeleto ƒ?Ý
+  486.444 INF [input] keyboard hook saw 32 key events, 0 of them PrtSc
+  486.445 INF [boot] shutdown errors=0 warnings=13 uptime=486s
+--- engine output: distinct problem lines (7 total) ---
+   1 x [12] float AshenAbyss.Combat.PlayerHit(AshenAbyss.Player, AshenAbyss.Actor, AshenAbyss.SkillDef, float, AshenAbyss.Element, AshenAbyss.HitOpt) (Y:\game\src\Combat.cs:62)
+   1 x [13] float AshenAbyss.GolemCtl.Hit(AshenAbyss.Player, AshenAbyss.Actor, float, AshenAbyss.Element, AshenAbyss.HitOpt) (Y:\game\src\Golems.cs:383)
+   1 x [26] Godot.NativeInterop.godot_bool Godot.Bridge.CSharpInstanceBridge.Call(nint, Godot.NativeInterop.godot_string_name*, Godot.NativeInterop.godot_variant**, int, Godot.NativeInterop.godot_variant_call_error*, Godot.NativeInterop.godot_variant*) (/root/ ƒ?Ý
+   1 x [11] float AshenAbyss.Monster.TakeHit(AshenAbyss.Hit) (Y:\game\src\Monster.cs:619)
+   1 x ERROR: 1 RID allocations of type 'PN13RendererDummy14TextureStorage12DummyTextureE' were leaked at exit.
+   1 x ERROR: Parameter "t" is null.
+   1 x [10] float AshenAbyss.Actor.TakeHit(AshenAbyss.Hit) (Y:\game\src\Actor.cs:290)

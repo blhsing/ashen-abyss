@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://bp1tj7tmbs18"
-path="res://.godot/imported/mon_sexton_matron_mon_sexton_matron_bc.jpg-98cbdcfdfaf80a0378084ae6522234d0.ctex"
+path.bptc="res://.godot/imported/mon_sexton_matron_mon_sexton_matron_bc.jpg-98cbdcfdfaf80a0378084ae6522234d0.bptc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "cee45b4eddd16ae932ca19c545f69c0e"
@@ -14,12 +15,12 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/chars/mon_sexton_matron_mon_sexton_matron_bc.jpg"
-dest_files=["res://.godot/imported/mon_sexton_matron_mon_sexton_matron_bc.jpg-98cbdcfdfaf80a0378084ae6522234d0.ctex"]
+dest_files=["res://.godot/imported/mon_sexton_matron_mon_sexton_matron_bc.jpg-98cbdcfdfaf80a0378084ae6522234d0.bptc.ctex"]
 
 [params]
 
-compress/mode=0
-compress/high_quality=false
+compress/mode=2
+compress/high_quality=true
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

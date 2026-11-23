@@ -1431,7 +1431,7 @@ public sealed class BossBrain
     private static float AddWeight(string id, float w)
     {
         var def = MonsterDb.Get(id);
-        return def == null || def.AI == MonAI.Exploder || def.AI == MonAI.Boss ? 0f : Mathf.Max(w, 0f);
+        return def == null || def.AI == MonAI.Exploder || def.AI == MonAI.Boss || (Bestiary.Live && !Populate.FitsAsAdd(def)) ? 0f : Mathf.Max(w, 0f);   // roster: no turrets, clouds, giants, summoners as adds
     }
 
     /// <summary>Blink to another spot of the arena; "away" picks the far side from the hero.</summary>

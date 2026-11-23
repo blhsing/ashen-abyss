@@ -83,22 +83,23 @@ ONNX Runtime + DirectML (CosyVoice 3 and BreezyVoice ship an official ONNX expor
 estimator), Vulkan GGUF runtimes (VoxCPM2: VoxCPM.cpp / llama.cpp-omni, community ports), else CPU.
 
 <!-- pause-state-start -->
-## State when the run was paused (2026-11-21 00:53)
+## State after the 0.4.0 run (2026-11-22 17:28, AUDIO agent)
 
-- **130 of 207 ids have audio** in `Y:\game\assets\audio\vo` (every file decoded and checked: mono 44.1 kHz OGG Vorbis, complete, identical to the validated staging file, made from the current anchor of its voice).
-- Voices with audio: narrator 19/19, elder 66/66, merchant 8/8, boss_gravedigger 4/4, boss_rimelord 4/4, boss_bishop 4/4, boss_mire_mother 4/4, boss_sand_tyrant 4/4, boss_grand_hush 4/4, boss_osaros 4/4, boss_sh_wastes 1/1, boss_sh_frost 1/1, boss_sh_crypt 1/1, boss_sh_mire 1/1, boss_sh_sands 1/1, boss_sh_sanctum 1/1, boss_sh_abyss 1/1, boss_wb_firstbearer 1/1, boss_firstkeeper 1/1.
-- Voices designed and audited so far: boss_bishop, boss_firstkeeper, boss_grand_hush, boss_gravedigger, boss_mire_mother, boss_osaros, boss_rimelord, boss_sand_tyrant, boss_sh_abyss, boss_sh_crypt, boss_sh_frost, boss_sh_mire, boss_sh_sanctum, boss_sh_sands, boss_sh_wastes, boss_wb_firstbearer, elder, merchant, narrator. Audit results: table below.
-- Anchor designed but not yet audited (the run stopped while making its first lines): occultist.
-- Removed from the game folder because they were takes of a rejected voice: none.
-- Still to record: 77 ids - occultist 0/11, smith 0/9, jeweler 0/7, villager_m 0/5, villager_f 0/5, hero_emberblade 0/5, hero_astromancer 0/5, hero_hunter 0/5, hero_soulbinder 0/5, hero_wildsoul 0/5, hero_forgebody 0/5, hero_lampknight 0/5, hero_pactbinder 0/5.
-- Resume with `gen.py all` (see `RUNNING.txt`); nothing has to be redone except the four voices below.
-- To redo on resume, AFTER gen.py all finishes (descriptions already rewritten in voices.py for the first three): boss_sand_tyrant (failed all 3 rounds: 232-340 Hz, lines delivered and marked LISTEN), boss_sh_wastes and boss_sh_frost (passed pitch/classifier but harmonics-to-noise 4.0 / 4.1 dB, under the 5.5 dB boss floor), boss_sh_sands (failed all 3 rounds: 139-178 Hz, wanted 85-140; needs a lower description). For each: gen.py all --voice <v> --force (Idle priority).
+- **207 of 207 ids have audio** in `Y:\game\assets\audio\vo` (report.json: 207 ok, 0 failed, 0 missing; drift 0 of 207).
+- Redesigned on 2026-11-22 (descriptions in `voices.py`, every rejected design in the audit table below):
+  boss_sand_tyrant (96 Hz), boss_sh_sands (133 Hz), boss_sh_wastes (82 Hz), boss_sh_frost (89 Hz), boss_wb_firstbearer (100 Hz),
+  smith (126 Hz), hero_wildsoul (130 Hz), hero_forgebody (140 Hz). The five held lines are back in the game.
+- `gen.py` changes: the audit now also enforces gate 4 (anchor HNR >= the character's floor; it was only a preference
+  in the design choice before, which let boss_sh_wastes / boss_sh_frost / boss_wb_firstbearer through at 4.0-4.6 dB);
+  a design whose anchor passes every gate gets two retakes of its first lines before it is thrown away;
+  a short-line exception for the three one-line bosses above (lead's decision; it was not needed in the end).
+- All voices pass the audit except boss_osaros (user-approved by ear, exempt as before).
 <!-- pause-state-end -->
 
 <!-- voice-audit-start -->
 ## Voice audit - does every designed voice measure as its character?
 
-Written by `gen.py` (2026-11-21 00:50). Gates: (1) median pitch of the anchor inside the range wanted for the
+Written by `gen.py` (2026-11-22 17:27). Gates: (1) median pitch of the anchor inside the range wanted for the
 character, and of its first three lines within 10 % of it (men at most 150 Hz - the elder 140 Hz -, women at least
 165 Hz); (2) the male / female classifier of `gender.py` (CAM++ speaker embeddings, calibrated on the 100 labelled
 Kokoro speakers: 0.99 cross-validated accuracy there; on VoxCPM2 voices a man must score at least
@@ -109,20 +110,28 @@ Kokoro speakers: 0.99 cross-validated accuracy there; on VoxCPM2 voices a man mu
 | narrator | man, middle-aged storyteller | 80-135 | 108 | 94 (3) | 0.69 / 0.67 | pass | kept |
 | elder (rejected) | old man | 95-140 | 172 | 170 (3) | 0.33 / 0.31 | **failed** (pitch classifier) | rejected: the user heard an elderly woman (first design, pitch range then allowed up to 190 Hz); designed again, all lines redone |
 | elder | old man | 95-140 | 122 | 116 (3) | 0.7 / 0.67 | pass | kept (design round 2) |
-| smith | man, middle-aged, burly | 85-140 | - | - | - | not designed yet | - |
+| smith (rejected) | man, middle-aged, burly | 85-140 | 142 | 155 (3) | 0.74 / 0.72 | **failed** (pitch) | rejected, designed again; its lines were discarded |
+| smith (rejected) | man, middle-aged, burly | 85-140 | 169 | 144 (3) | 0.62 / 0.61 | **failed** (pitch) | rejected, designed again; its lines were discarded |
+| smith | man, middle-aged, burly | 85-140 | 126 | 132 (3) | 0.73 / 0.68 | pass | kept (design round 3) |
 | merchant | young woman | 200-330 | 296 | 276 (3) | 0.36 / 0.39 | pass | kept |
-| occultist | woman, mature | 170-250 | - | - | - | not designed yet | - |
-| jeweler | woman, elderly | 165-250 | - | - | - | not designed yet | - |
-| villager_m | man, middle-aged | 95-150 | - | - | - | not designed yet | - |
-| villager_f | woman, middle-aged | 175-270 | - | - | - | not designed yet | - |
-| hero_emberblade | young man | 85-140 | - | - | - | not designed yet | - |
-| hero_astromancer | young woman | 190-310 | - | - | - | not designed yet | - |
-| hero_hunter | young woman | 165-240 | - | - | - | not designed yet | - |
-| hero_soulbinder | young man | 90-150 | - | - | - | not designed yet | - |
-| hero_wildsoul | man in his prime | 90-150 | - | - | - | not designed yet | - |
-| hero_forgebody | young man | 95-150 | - | - | - | not designed yet | - |
-| hero_lampknight | woman, adult | 170-250 | - | - | - | not designed yet | - |
-| hero_pactbinder | man, adult | 95-150 | - | - | - | not designed yet | - |
+| occultist | woman, mature | 170-250 | 237 | 213 (3) | 0.21 / 0.25 | pass | kept |
+| jeweler (rejected) | woman, elderly | 165-250 | 246 | 239 (3) | 0.41 / 0.5 | **failed** (classifier) | rejected, designed again; its lines were discarded |
+| jeweler | woman, elderly | 165-250 | 178 | 222 (3) | 0.4 / 0.34 | pass | kept (design round 2) |
+| villager_m | man, middle-aged | 95-150 | 103 | 98 (3) | 0.72 / 0.71 | pass | kept |
+| villager_f | woman, middle-aged | 175-270 | 213 | 190 (3) | 0.31 / 0.32 | pass | kept |
+| hero_emberblade | young man | 85-140 | 110 | 106 (3) | 0.72 / 0.7 | pass | kept |
+| hero_astromancer | young woman | 190-310 | 281 | 262 (3) | 0.29 / 0.29 | pass | kept |
+| hero_hunter (rejected) | young woman | 165-240 | 281 | 267 (3) | 0.23 / 0.23 | **failed** (pitch) | rejected, designed again; its lines were discarded |
+| hero_hunter | young woman | 165-240 | 232 | 229 (3) | 0.28 / 0.26 | pass | kept (design round 2) |
+| hero_soulbinder | young man | 90-150 | 98 | 110 (3) | 0.72 / 0.68 | pass | kept |
+| hero_wildsoul (rejected) | man in his prime | 90-150 | 203 | 258 (3) | 0.61 / 0.62 | **failed** (pitch) | rejected, designed again; its lines were discarded |
+| hero_wildsoul (rejected) | man in his prime | 90-150 | 286 | 274 (3) | 0.52 / 0.47 | **failed** (pitch classifier) | rejected, designed again; its lines were discarded |
+| hero_wildsoul | man in his prime | 90-150 | 130 | 143 (3) | 0.68 / 0.69 | pass | kept (design round 3) |
+| hero_forgebody (rejected) | young man | 95-150 | 89 | 96 (3) | 0.61 / 0.61 | **failed** (pitch HNR) | rejected, designed again; its lines were discarded |
+| hero_forgebody (rejected) | young man | 95-150 | 182 | 193 (3) | 0.69 / 0.68 | **failed** (pitch) | rejected, designed again; its lines were discarded |
+| hero_forgebody | young man | 95-150 | 140 | 138 (3) | 0.63 / 0.63 | pass | kept (design round 3) |
+| hero_lampknight | woman, adult | 170-250 | 198 | 158 (3) | 0.25 / 0.3 | pass | kept |
+| hero_pactbinder | man, adult | 95-150 | 119 | 121 (3) | 0.69 / 0.65 | pass | kept |
 | boss_gravedigger | old man | 70-120 | 77 | 79 (3) | 0.67 / 0.62 | pass | kept |
 | boss_rimelord | man, middle-aged soldier | 75-125 | 103 | 101 (3) | 0.71 / 0.69 | pass | kept |
 | boss_bishop | woman, elderly cleric (she in the script) | 175-290 | 254 | 254 (3) | 0.39 / 0.35 | pass | kept |
@@ -131,19 +140,35 @@ Kokoro speakers: 0.99 cross-validated accuracy there; on VoxCPM2 voices a man mu
 | boss_mire_mother | woman, middle-aged | 165-235 | 235 | 216 (3) | 0.45 / 0.44 | pass | kept (design round 3) |
 | boss_sand_tyrant (rejected) | man, middle-aged king | 90-150 | 250 | 271 (3) | 0.63 / 0.56 | **failed** (pitch classifier) | rejected, designed again; its lines were discarded |
 | boss_sand_tyrant (rejected) | man, middle-aged king | 90-150 | 232 | 262 (3) | 0.72 / 0.75 | **failed** (pitch) | rejected, designed again; its lines were discarded |
-| boss_sand_tyrant | man, middle-aged king | 90-150 | 276 | 320 (3) | 0.64 / 0.63 | **failed** (pitch) | kept after three design rounds - no design passed both gates: LISTEN |
+| boss_sand_tyrant | man, middle-aged king | 90-150 | 96 | 94 (3) | 0.7 / 0.69 | pass | kept (design round 3) |
 | boss_grand_hush | old man | 90-150 | 99 | 100 (3) | 0.66 / 0.63 | pass | kept |
 | boss_osaros | man, ageless | 65-125 | 124 | 117 (3) | 0.55 / 0.52 | **failed** (classifier) | kept: chosen by the user by ear on the choice page |
-| boss_sh_wastes | man, middle-aged (swollen outpost captain who swallowed the beacon's ember) | 75-135 | 99 | 101 (1) | 0.68 / 0.66 | pass | kept |
-| boss_sh_frost | man, middle-aged castellan (fallen knight) | 80-135 | 111 | 129 (1) | 0.72 / 0.62 | pass | kept |
+| boss_sh_wastes (rejected) | man, middle-aged (swollen outpost captain who swallowed the beacon's ember) | 75-135 | 125 | 113 (1) | 0.6 / 0.58 | **failed** (classifier) | rejected, designed again; its lines were discarded |
+| boss_sh_wastes (rejected) | man, middle-aged (swollen outpost captain who swallowed the beacon's ember) | 75-135 | 102 | 96 (1) | 0.71 / 0.75 | **failed** (HNR) | rejected, designed again; its lines were discarded |
+| boss_sh_wastes (rejected) | man, middle-aged (swollen outpost captain who swallowed the beacon's ember) | 75-135 | 129 | 122 (1) | 0.65 / 0.63 | **failed** (HNR) | rejected, designed again; its lines were discarded |
+| boss_sh_wastes (rejected) | man, middle-aged (swollen outpost captain who swallowed the beacon's ember) | 75-135 | 120 | 118 (1) | 0.6 / 0.56 | **failed** (classifier) | rejected, designed again; its lines were discarded |
+| boss_sh_wastes (rejected) | man, middle-aged (swollen outpost captain who swallowed the beacon's ember) | 75-135 | 112 | 110 (1) | 0.73 / 0.71 | **failed** (HNR) | rejected, designed again; its lines were discarded |
+| boss_sh_wastes (rejected) | man, middle-aged (swollen outpost captain who swallowed the beacon's ember) | 75-135 | 113 | 149 (1) | 0.63 / 0.58 | **failed** (pitch classifier) | rejected, designed again; its lines were discarded |
+| boss_sh_wastes | man, middle-aged (swollen outpost captain who swallowed the beacon's ember) | 75-135 | 82 | 82 (1) | 0.62 / 0.61 | pass | kept (design round 7) |
+| boss_sh_frost (rejected) | man, middle-aged castellan (fallen knight) | 80-135 | 102 | 103 (1) | 0.61 / 0.55 | **failed** (classifier) | rejected, designed again; its lines were discarded |
+| boss_sh_frost (rejected) | man, middle-aged castellan (fallen knight) | 80-135 | 120 | 187 (1) | 0.63 / 0.66 | **failed** (pitch) | rejected, designed again; its lines were discarded |
+| boss_sh_frost (rejected) | man, middle-aged castellan (fallen knight) | 80-135 | 104 | 127 (1) | 0.6 / 0.57 | **failed** (classifier HNR) | rejected, designed again; its lines were discarded |
+| boss_sh_frost (rejected) | man, middle-aged castellan (fallen knight) | 80-135 | 126 | 130 (1) | 0.61 / 0.58 | **failed** (classifier) | rejected, designed again; its lines were discarded |
+| boss_sh_frost (rejected) | man, middle-aged castellan (fallen knight) | 80-135 | 131 | 142 (1) | 0.66 / 0.68 | **failed** (HNR) | rejected, designed again; its lines were discarded |
+| boss_sh_frost | man, middle-aged castellan (fallen knight) | 80-135 | 89 | 102 (1) | 0.72 / 0.72 | pass | kept (design round 6) |
 | boss_sh_crypt | man, adult (oath-broken barrow warden) | 85-140 | 105 | 107 (1) | 0.69 / 0.63 | pass | kept |
 | boss_sh_mire | old man, huge (stockade master of the bog) | 70-125 | 97 | 106 (1) | 0.69 / 0.74 | pass | kept |
 | boss_sh_sands (rejected) | brass custodian (construct; male register) | 85-140 | 139 | 158 (1) | 0.75 / 0.71 | **failed** (pitch) | rejected, designed again; its lines were discarded |
 | boss_sh_sands (rejected) | brass custodian (construct; male register) | 85-140 | 170 | 198 (1) | 0.63 / 0.63 | **failed** (pitch) | rejected, designed again; its lines were discarded |
-| boss_sh_sands | brass custodian (construct; male register) | 85-140 | 178 | 189 (1) | 0.67 / 0.66 | **failed** (pitch) | kept after three design rounds - no design passed both gates: LISTEN |
+| boss_sh_sands (rejected) | brass custodian (construct; male register) | 85-140 | 95 | 92 (1) | 0.63 / 0.53 | **failed** (classifier) | rejected, designed again; its lines were discarded |
+| boss_sh_sands (rejected) | brass custodian (construct; male register) | 85-140 | 131 | 136 (1) | 0.61 / 0.59 | **failed** (classifier) | rejected, designed again; its lines were discarded |
+| boss_sh_sands | brass custodian (construct; male register) | 85-140 | 133 | 151 (1) | 0.63 / 0.67 | pass | kept (design round 5) |
 | boss_sh_sanctum | man, adult knight-commander | 85-140 | 96 | 99 (1) | 0.7 / 0.7 | pass | kept |
 | boss_sh_abyss | man, huge brute (ember-eater) | 70-125 | 101 | 99 (1) | 0.79 / 0.81 | pass | kept |
 | boss_wb_firstbearer (rejected) | old man, giant (the oldest fuel-bearer) | 65-120 | 101 | 100 (1) | 0.64 / 0.59 | **failed** (classifier) | rejected, designed again; its lines were discarded |
-| boss_wb_firstbearer | old man, giant (the oldest fuel-bearer) | 65-120 | 106 | 96 (1) | 0.64 / 0.64 | pass | kept (design round 2) |
+| boss_wb_firstbearer (rejected) | old man, giant (the oldest fuel-bearer) | 65-120 | 79 | 76 (1) | 0.77 / 0.67 | **failed** (HNR) | rejected, designed again; its lines were discarded |
+| boss_wb_firstbearer (rejected) | old man, giant (the oldest fuel-bearer) | 65-120 | 83 | 84 (1) | 0.71 / 0.61 | **failed** (HNR) | rejected, designed again; its lines were discarded |
+| boss_wb_firstbearer (rejected) | old man, giant (the oldest fuel-bearer) | 65-120 | 92 | 91 (1) | 0.63 / 0.49 | **failed** (classifier) | rejected, designed again; its lines were discarded |
+| boss_wb_firstbearer | old man, giant (the oldest fuel-bearer) | 65-120 | 100 | 97 (1) | 0.7 / 0.63 | pass | kept (design round 5) |
 | boss_firstkeeper | woman, adult (the first lamp-keeper; warm) | 170-260 | 225 | 242 (1) | 0.17 / 0.19 | pass | kept |
 <!-- voice-audit-end -->

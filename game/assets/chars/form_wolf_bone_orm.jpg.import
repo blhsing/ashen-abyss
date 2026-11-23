@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://cr6mnvtkg1w5b"
-path="res://.godot/imported/form_wolf_bone_orm.jpg-8da4bdc2cb54eb20450a2f11209e3e45.ctex"
+path.bptc="res://.godot/imported/form_wolf_bone_orm.jpg-8da4bdc2cb54eb20450a2f11209e3e45.bptc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "a566551a481bc9fe96ae74982f715818"
@@ -14,12 +15,12 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/chars/form_wolf_bone_orm.jpg"
-dest_files=["res://.godot/imported/form_wolf_bone_orm.jpg-8da4bdc2cb54eb20450a2f11209e3e45.ctex"]
+dest_files=["res://.godot/imported/form_wolf_bone_orm.jpg-8da4bdc2cb54eb20450a2f11209e3e45.bptc.ctex"]
 
 [params]
 
-compress/mode=0
-compress/high_quality=false
+compress/mode=2
+compress/high_quality=true
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

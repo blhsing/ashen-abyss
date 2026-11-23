@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://dyt3mvdj6i5as"
-path="res://.godot/imported/hero_astromancer_skin_orm.jpg-574d681dbe3d7012e9e88b8e7096f59f.ctex"
+path.bptc="res://.godot/imported/hero_astromancer_skin_orm.jpg-574d681dbe3d7012e9e88b8e7096f59f.bptc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "9c2595bec5aa58952acb04d0404ed7fc"
@@ -14,12 +15,12 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/chars/hero_astromancer_skin_orm.jpg"
-dest_files=["res://.godot/imported/hero_astromancer_skin_orm.jpg-574d681dbe3d7012e9e88b8e7096f59f.ctex"]
+dest_files=["res://.godot/imported/hero_astromancer_skin_orm.jpg-574d681dbe3d7012e9e88b8e7096f59f.bptc.ctex"]
 
 [params]
 
-compress/mode=0
-compress/high_quality=false
+compress/mode=2
+compress/high_quality=true
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

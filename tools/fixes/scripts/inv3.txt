@@ -1,0 +1,28 @@
+# 特大 inventory: 裝備組 sheet tab (by position), dual wield, tooltip (item 5)
+wait 2
+give set
+give legendary
+sets
+scale 2
+wait 0.5
+open inventory
+wait 1.5
+click 903,287
+wait 1
+shot inv3_setstab_s2
+dump inv3_setstab_s2
+click 718,287
+wait 0.8
+shot inv3_defence_s2
+dump inv3_defence_s2
+click 805,287
+wait 0.8
+shot inv3_utility_s2
+dump inv3_utility_s2
+hover 1003,512
+wait 1.2
+shot inv3_tooltip_s2
+dump inv3_tooltip_s2
+unhover
+close
+quit

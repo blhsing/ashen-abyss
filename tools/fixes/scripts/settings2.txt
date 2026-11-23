@@ -1,0 +1,16 @@
+# 截圖方式 row (bottom of the 遊戲 tab), 標準 and 特大
+wait 2
+click @遊戲
+wait 1
+wheel 800,600,-10
+wait 0.6
+shot settings_shotmode_s0
+scale 2
+wait 1
+wheel 800,600,-12
+wait 0.6
+shot settings_shotmode_s2
+dump settings_shotmode_s2
+scale 0
+wait 0.5
+quit

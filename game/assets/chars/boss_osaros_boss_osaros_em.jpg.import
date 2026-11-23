@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://dhhrv64xr5wpq"
-path="res://.godot/imported/boss_osaros_boss_osaros_em.jpg-4cf6ce54b73b37a131284d94fc6f137d.ctex"
+path.bptc="res://.godot/imported/boss_osaros_boss_osaros_em.jpg-4cf6ce54b73b37a131284d94fc6f137d.bptc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "da46408bd129075bb2e698dfd7fded4c"
@@ -14,12 +15,12 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/chars/boss_osaros_boss_osaros_em.jpg"
-dest_files=["res://.godot/imported/boss_osaros_boss_osaros_em.jpg-4cf6ce54b73b37a131284d94fc6f137d.ctex"]
+dest_files=["res://.godot/imported/boss_osaros_boss_osaros_em.jpg-4cf6ce54b73b37a131284d94fc6f137d.bptc.ctex"]
 
 [params]
 
-compress/mode=0
-compress/high_quality=false
+compress/mode=2
+compress/high_quality=true
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

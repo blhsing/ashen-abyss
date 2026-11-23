@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://2c34bst03kis"
-path="res://.godot/imported/mon_hauler_yoke_mon_hauler_yoke_bc.jpg-b39ea294045360982c79dac115eecb85.ctex"
+path.bptc="res://.godot/imported/mon_hauler_yoke_mon_hauler_yoke_bc.jpg-b39ea294045360982c79dac115eecb85.bptc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "b749a256939623a5460da6a1c9c9f07f"
@@ -14,12 +15,12 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/chars/mon_hauler_yoke_mon_hauler_yoke_bc.jpg"
-dest_files=["res://.godot/imported/mon_hauler_yoke_mon_hauler_yoke_bc.jpg-b39ea294045360982c79dac115eecb85.ctex"]
+dest_files=["res://.godot/imported/mon_hauler_yoke_mon_hauler_yoke_bc.jpg-b39ea294045360982c79dac115eecb85.bptc.ctex"]
 
 [params]
 
-compress/mode=0
-compress/high_quality=false
+compress/mode=2
+compress/high_quality=true
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

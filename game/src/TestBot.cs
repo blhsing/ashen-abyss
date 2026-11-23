@@ -396,8 +396,9 @@ public partial class TestBot : Node
         if (target != null && _focus && !target.Aggro && me.DistanceTo(target.Pos2) > 9f && target != level?.BossMon) target = null;
         if (Pilot != null && target != null && PilotLeaveAlone(target, level)) target = null;      // optional world bosses and named rares are not picked fights
         if (Pilot != null) { target = PilotArenaTarget(target, me); if (PilotBackToArena(p, me)) return; }      // boss leash (AiPilotCombat.cs)
-        if (Pilot != null) { target = PilotNamedHint(p, target, me, out var stand); if (stand != null && p.Pos2.DistanceTo(stand.Value) > 2.4f && !p.Busy) { MoveTo(p, World.Grid?.NearestWalk(stand.Value) ?? stand.Value, 0.4); _doing = "named: stand"; return; } }      // named encounter hints
+        if (Pilot != null) { target = PilotNamedHint(p, target, me, out var stand); if (stand != null && p.Pos2.DistanceTo(stand.Value) > 2.4f && !p.Busy && !PilotHintUnsafe(p, me)) { MoveTo(p, World.Grid?.NearestWalk(stand.Value) ?? stand.Value, 0.4); _doing = "named: stand"; return; } }      // named encounter hints
         if (Pilot != null && Pilot.Errand(g, p, level, target)) { _stuckSince = _clock; _doing = "errand"; return; }      // town shopping, rest before a boss (AiPilotPlan.cs)
+        if (Pilot != null && PilotLoot(p, hero, me, target, level)) return;      // pick up what dropped, like a player (AiPilotLoot.cs)
         if (target != null)
         {
             // between packs: grab the loot at the hero's feet before running to the next monster
@@ -804,7 +805,8 @@ public partial class TestBot : Node
     private void ManageBag(Hero hero, bool tidy = true)
     {
         var bag = hero.D.Bag;
-        for (int i = bag.Count - 1; i >= 0; i--)
+        if (Pilot != null) Pilot.PickEquips(hero);      // AI pilot: best per slot, the player's and prized pieces need a clear gain (AiPilotPlan.cs)
+        else for (int i = bag.Count - 1; i >= 0; i--)
         {
             if (i >= bag.Count) continue;
             var it = bag[i];
@@ -823,6 +825,7 @@ public partial class TestBot : Node
                 var it = bag[i];
                 if (it == null) { bag.RemoveAt(i); continue; }
                 if (hero.IsProtected(it)) continue;      // 鎖定 by the player or in a gear set: never sold or salvaged
+                if (Pilot != null && Pilot.PlayerValues(hero, it)) continue;      // the player's own gear, legendaries and uniques stay
                 if (!it.IsEquip) { if (bag.Count >= 34) hero.Sell(it); continue; }
                 int keepFrom = bag.Count >= 39 ? 99 : bag.Count >= 36 ? (int)Rarity.Unique : (int)Rarity.Legendary;
                 if ((int)it.Rarity >= keepFrom) continue;
@@ -1086,6 +1089,7 @@ public partial class TestBot : Node
                     float d = m.Pos2.DistanceSquaredTo(me);
                     if (d < bd) { bd = d; best = m; }
                 }
+                if (best != null && Pilot != null && PilotClearYard(p, me, level)) return true;      // AiPilotCombat.cs
                 if (best != null) return Approach(p, me, best.Pos2, "stronghold", 8f);
             }
             if (_campaign) return false;

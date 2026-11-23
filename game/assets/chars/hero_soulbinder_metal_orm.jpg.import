@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://wbi2hcm6twes"
-path="res://.godot/imported/hero_soulbinder_metal_orm.jpg-d35402b1e257c52f4b8a980f2b767262.ctex"
+path.bptc="res://.godot/imported/hero_soulbinder_metal_orm.jpg-d35402b1e257c52f4b8a980f2b767262.bptc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "c07c688553f995e4d8df06bc939baaaa"
@@ -14,12 +15,12 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/chars/hero_soulbinder_metal_orm.jpg"
-dest_files=["res://.godot/imported/hero_soulbinder_metal_orm.jpg-d35402b1e257c52f4b8a980f2b767262.ctex"]
+dest_files=["res://.godot/imported/hero_soulbinder_metal_orm.jpg-d35402b1e257c52f4b8a980f2b767262.bptc.ctex"]
 
 [params]
 
-compress/mode=0
-compress/high_quality=false
+compress/mode=2
+compress/high_quality=true
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

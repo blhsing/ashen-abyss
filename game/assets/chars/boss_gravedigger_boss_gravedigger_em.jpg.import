@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://cueqju5wnx670"
-path="res://.godot/imported/boss_gravedigger_boss_gravedigger_em.jpg-331e644c3a864d8a2fbb110bd23d8576.ctex"
+path.bptc="res://.godot/imported/boss_gravedigger_boss_gravedigger_em.jpg-331e644c3a864d8a2fbb110bd23d8576.bptc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "d18183c5d56455a5e1666d70ddee844c"
@@ -14,12 +15,12 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/chars/boss_gravedigger_boss_gravedigger_em.jpg"
-dest_files=["res://.godot/imported/boss_gravedigger_boss_gravedigger_em.jpg-331e644c3a864d8a2fbb110bd23d8576.ctex"]
+dest_files=["res://.godot/imported/boss_gravedigger_boss_gravedigger_em.jpg-331e644c3a864d8a2fbb110bd23d8576.bptc.ctex"]
 
 [params]
 
-compress/mode=0
-compress/high_quality=false
+compress/mode=2
+compress/high_quality=true
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

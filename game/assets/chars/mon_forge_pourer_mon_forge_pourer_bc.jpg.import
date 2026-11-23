@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://p1qa3pi5fhuf"
-path="res://.godot/imported/mon_forge_pourer_mon_forge_pourer_bc.jpg-9109a233792f2518e3a71359928253a5.ctex"
+path.bptc="res://.godot/imported/mon_forge_pourer_mon_forge_pourer_bc.jpg-9109a233792f2518e3a71359928253a5.bptc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "71eedbfd36d741080e2483fd4c7ffb9a"
@@ -14,12 +15,12 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/chars/mon_forge_pourer_mon_forge_pourer_bc.jpg"
-dest_files=["res://.godot/imported/mon_forge_pourer_mon_forge_pourer_bc.jpg-9109a233792f2518e3a71359928253a5.ctex"]
+dest_files=["res://.godot/imported/mon_forge_pourer_mon_forge_pourer_bc.jpg-9109a233792f2518e3a71359928253a5.bptc.ctex"]
 
 [params]
 
-compress/mode=0
-compress/high_quality=false
+compress/mode=2
+compress/high_quality=true
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

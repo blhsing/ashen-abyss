@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://crabm5f1gryqj"
-path="res://.godot/imported/boss_mire_mother_boss_mire_mother_orm.jpg-e4611792cf0fe2fdfcc85ffeaaafb204.ctex"
+path.bptc="res://.godot/imported/boss_mire_mother_boss_mire_mother_orm.jpg-e4611792cf0fe2fdfcc85ffeaaafb204.bptc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "a46f5d8d888636e822f84661f632b0cf"
@@ -14,12 +15,12 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/chars/boss_mire_mother_boss_mire_mother_orm.jpg"
-dest_files=["res://.godot/imported/boss_mire_mother_boss_mire_mother_orm.jpg-e4611792cf0fe2fdfcc85ffeaaafb204.ctex"]
+dest_files=["res://.godot/imported/boss_mire_mother_boss_mire_mother_orm.jpg-e4611792cf0fe2fdfcc85ffeaaafb204.bptc.ctex"]
 
 [params]
 
-compress/mode=0
-compress/high_quality=false
+compress/mode=2
+compress/high_quality=true
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

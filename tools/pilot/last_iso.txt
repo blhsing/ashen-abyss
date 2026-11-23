@@ -1,0 +1,6 @@
+exit= seconds=352
+log: C:\Users\blhsi\AppData\Roaming\AshenAbyss\logs\game_20261122_092434.log  lines=885  ERR=0  WRN=0
+--- last lines ---
+  349.984 INF [loot] picked up Legendary: ??????? [Boots power 221] bag=18/40
+  349.993 INF [pilot] TEST over: quitting
+done

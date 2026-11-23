@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://bnm2dewj6pnue"
-path="res://.godot/imported/npc_villager_f_hair_c.jpg-33be107b7f54f998cfd2ef3df184f819.ctex"
+path.bptc="res://.godot/imported/npc_villager_f_hair_c.jpg-33be107b7f54f998cfd2ef3df184f819.bptc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "5cfef3843c1db64c1b610cc52950c942"
@@ -14,12 +15,12 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/chars/npc_villager_f_hair_c.jpg"
-dest_files=["res://.godot/imported/npc_villager_f_hair_c.jpg-33be107b7f54f998cfd2ef3df184f819.ctex"]
+dest_files=["res://.godot/imported/npc_villager_f_hair_c.jpg-33be107b7f54f998cfd2ef3df184f819.bptc.ctex"]
 
 [params]
 
-compress/mode=0
-compress/high_quality=false
+compress/mode=2
+compress/high_quality=true
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

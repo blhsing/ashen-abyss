@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://ce56i4hjd0wx1"
-path="res://.godot/imported/arm_astromancer_chest_t3_gear_n.jpg-20cb4dcf4df4f52e1ac1decd2ee1ca6b.ctex"
+path.s3tc="res://.godot/imported/arm_astromancer_chest_t3_gear_n.jpg-20cb4dcf4df4f52e1ac1decd2ee1ca6b.s3tc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "375219bdd0a2d8a93c4397d09e41e2db"
@@ -14,17 +15,17 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/gear/armor/arm_astromancer_chest_t3_gear_n.jpg"
-dest_files=["res://.godot/imported/arm_astromancer_chest_t3_gear_n.jpg-20cb4dcf4df4f52e1ac1decd2ee1ca6b.ctex"]
+dest_files=["res://.godot/imported/arm_astromancer_chest_t3_gear_n.jpg-20cb4dcf4df4f52e1ac1decd2ee1ca6b.s3tc.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1
-compress/normal_map=0
+compress/normal_map=1
 compress/channel_pack=0
 mipmaps/generate=true
 mipmaps/limit=-1

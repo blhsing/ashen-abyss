@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://cyxpgkpjwfuio"
-path="res://.godot/imported/mon_hush_blank_mon_hush_blank_bc.jpg-99bbd7c8c61554e685bdbfe5ce375bf1.ctex"
+path.bptc="res://.godot/imported/mon_hush_blank_mon_hush_blank_bc.jpg-99bbd7c8c61554e685bdbfe5ce375bf1.bptc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "7f42529751a97a893d3962eb4b93d014"
@@ -14,12 +15,12 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/chars/mon_hush_blank_mon_hush_blank_bc.jpg"
-dest_files=["res://.godot/imported/mon_hush_blank_mon_hush_blank_bc.jpg-99bbd7c8c61554e685bdbfe5ce375bf1.ctex"]
+dest_files=["res://.godot/imported/mon_hush_blank_mon_hush_blank_bc.jpg-99bbd7c8c61554e685bdbfe5ce375bf1.bptc.ctex"]
 
 [params]
 
-compress/mode=0
-compress/high_quality=false
+compress/mode=2
+compress/high_quality=true
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

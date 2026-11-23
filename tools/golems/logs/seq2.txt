@@ -1,0 +1,46 @@
+exit= seconds=136
+log: C:\Users\blhsi\AppData\Roaming\AshenAbyss\logs\game_20261122_180420.log  lines=1432  ERR=0  WRN=0
+=== sacrifice_region: --new=soulbinder --slot=95 --level=26 --gear --bot --focus --area=frost --sacrifice=all --speed=3 --quit-at=420 --mute  (18:06:40)
+user is playing; waiting 30 s
+user is playing; waiting 30 s
+user is playing; waiting 30 s
+user is playing; waiting 30 s
+user is playing; waiting 30 s
+exit= seconds=424
+log: C:\Users\blhsi\AppData\Roaming\AshenAbyss\logs\game_20261122_182519.log  lines=1163  ERR=0  WRN=0
+    3.680 INF [test] golem stance: book=[warriors=sac, mages=sac, golem=sac] forge=- bar=[sb_bolt,sb_raise,sb_veil,sb_curse,sb_golem_cmd,sb_colossus]
+   45.305 INF [hero] died: killer=sh_frost amount=59 level=26 area=frost
+   46.133 INF [boss] sh_frost disengaged (the hero fell) after 16s: back to full life, phase 1
+   67.836 INF [hero] died: killer=frost_thrower amount=28 level=26 area=frost
+   68.670 INF [boss] sh_frost disengaged (the hero fell) after 24s: back to full life, phase 1
+   94.893 INF [hero] died: killer=sh_frost amount=49 level=26 area=frost
+   95.723 INF [boss] sh_frost disengaged (the hero fell) after 55s: back to full life, phase 1
+  132.081 INF [boss] sh_frost slain: phase=3 fight=71s enraged=False tier=0
+  169.115 INF [hero] died: killer=frostbound amount=35 level=27 area=frost
+  194.731 INF [hero] died: killer=frostbound amount=37 level=28 area=frost
+  208.606 INF [hero] died: killer=rime_stalker amount=34 level=28 area=frost
+  243.703 INF [hero] died: killer=frostbound amount=40 level=28 area=frost
+  423.928 INF [bot] final summary t=1261s game=1254s area=frost doing=fight frost_thrower kills=407 elites=20 bosses=1 level=29 life=100% items=80 gold=14010 deaths=7 areas=1 casts=1221 unstuck=0 monsters=78 errors=0 warnings=0 botErrors=0 
+=== sacrifice_region done 18:32:34
+=== sacrifice_boss: --new=soulbinder --slot=95 --level=26 --gear --bot --focus --bossrush --area=frost_boss --sacrifice=all --speed=3 --quit-at=600 --mute  (18:32:34)
+exit= seconds=603
+log: C:\Users\blhsi\AppData\Roaming\AshenAbyss\logs\game_20261122_183923.log  lines=1785  ERR=0  WRN=10
+    1.860 INF [test] golem stance: book=[warriors=sac, mages=sac, golem=sac] forge=- bar=[sb_bolt,sb_spear,sb_veil,sb_curse,sb_blight,sb_explode]
+   25.970 INF [boss] boss_rimelord slain: phase=3 fight=28s enraged=False tier=0
+  602.024 INF [bot] final summary t=1801s game=1800s area=frost_boss doing=side-step kills=45 elites=7 bosses=1 level=27 life=100% items=16 gold=7999 deaths=0 areas=1 casts=104 unstuck=10 monsters=73 errors=0 warnings=10 botErrors=0 focus=p
+=== sacrifice_boss done 18:49:34
+=== bone_frost26: --new=soulbinder --slot=95 --level=26 --gear --bot --focus --area=frost --golem=bone --speed=3 --quit-at=420 --mute  (18:49:35)
+exit= seconds=425
+log: C:\Users\blhsi\AppData\Roaming\AshenAbyss\logs\game_20261122_193607.log  lines=1379  ERR=0  WRN=1
+    3.729 INF [test] golem stance: book=[warriors=w_raider, mages=m_shadow, golem=g_bone] forge=- bar=[sb_bolt,sb_raise,sb_veil,sb_curse,sb_golem_cmd,sb_colossus]
+   40.635 INF [boss] sh_frost slain: phase=3 fight=54s enraged=False tier=0
+  424.018 INF [bot] final summary t=1261s game=1235s area=frost doing=use beacon kills=451 elites=29 bosses=1 level=30 life=100% items=91 gold=20801 deaths=0 areas=1 casts=1381 unstuck=1 monsters=0 errors=0 warnings=1 botErrors=0 focus=even
+=== bone_frost26 done 19:43:23
+=== iron_region: --new=soulbinder --slot=95 --level=9 --gear --bot --focus --area=wastes --golem=iron --forge --speed=3 --quit-at=420 --mute  (19:43:25)
+lock busy (attempt 1)
+exit= seconds=425
+log: C:\Users\blhsi\AppData\Roaming\AshenAbyss\logs\game_20261122_215725.log  lines=1092  ERR=0  WRN=2
+    4.059 INF [test] golem stance: book=[warriors=w_raider, mages=m_shadow, golem=g_iron] forge=殘燈之環・劈柴巨斧 bar=[sb_bolt,sb_raise,sb_veil,sb_curse,sb_golem_cmd,sb_spear]
+   29.488 INF [boss] sh_wastes slain: phase=3 fight=29s enraged=False tier=0
+  424.337 INF [bot] final summary t=1261s game=1242s area=wastes doing=side-step kills=386 elites=30 bosses=1 level=13 life=100% items=82 gold=7031 deaths=0 areas=1 casts=475 unstuck=2 monsters=0 errors=0 warnings=2 botErrors=0 focus=event
+=== iron_region done 22:04:50

@@ -111,13 +111,17 @@ internal sealed class Mog : BossScript
     }
 }
 
-/// <summary>凍骨關守將・瓦雷克: plants the garrison banner (8 % of his life): while it stands Frostbound within 15 m cannot be staggered or slowed and a rank of four rises every 15 s; breaking it stops the musters and leaves him vulnerable 6 s; he plants it again after 25 s.</summary>
+/// <summary>凍骨關守將・瓦雷克: plants the garrison banner (8 % of his life): while it stands Frostbound within 15 m cannot be staggered or slowed and a rank of four rises every 22 s, never more than six banner-mustered soldiers alive (the user's "cap and slow", 2026-11-22); breaking it stops the musters and leaves him vulnerable 6 s; he plants it again after 25 s.</summary>
 internal sealed class Varek : BossScript
 {
+    private const float MusterEvery = 22f;
+    private const int MusterCap = 6;
     private Monster _banner; private float _replant = -1f, _muster;
+    private readonly List<Monster> _ranks = new();
+    private int _rising;
     public override Monster BotTarget => _banner != null && GodotObject.IsInstanceValid(_banner) && !_banner.Dead ? _banner : null;
     public override void Engage() { base.Engage(); Plant(); }
-    public override void Reset() { base.Reset(); _banner = null; _replant = -1f; }
+    public override void Reset() { base.Reset(); _banner = null; _replant = -1f; _ranks.Clear(); _rising = 0; }
     private void Plant()
     {
         Mech(_replant > -0.5f && T > 1f ? "replant" : "banner");
@@ -145,13 +149,23 @@ internal sealed class Varek : BossScript
             if (m.Def.Family != "frost" && m.Def.Id != "frostbound") continue;
             m.StTime[(int)StatusId.Slow] = 0f; m.StTime[(int)StatusId.Chill] = 0f; m.Stagger = 0f;
         }
+        // the user's decision (2026-11-22, "cap and slow"): a rank of four every 22 s, topped up only to six
+        // banner-mustered soldiers alive (the ones still rising count) — no muster at all while six stand
         _muster -= dt;
-        if (_muster <= 0f && E.AliveAdds() < 5)
+        if (_muster <= 0f)
         {
-            _muster = 15f;
+            _muster = MusterEvery;
+            _ranks.RemoveAll(m => m == null || !GodotObject.IsInstanceValid(m) || m.Dead);
+            int room = Math.Min(4, MusterCap - _ranks.Count - _rising);
+            if (room <= 0) return;
             Mech("muster");
             Vector2 side = ToHero.Orthogonal();
-            for (int i = 0; i < 4; i++) E.SummonAfter(0.8f, "frostbound", _banner.Pos2 + side * (-4.5f + 3f * i) + ToHero * 2f, null, null, 0.7f);
+            for (int i = 0; i < room; i++)
+            {
+                _rising++;
+                E.SummonAfter(0.8f, "frostbound", _banner.Pos2 + side * (-4.5f + 3f * i) + ToHero * 2f, null, m => { _rising = Math.Max(0, _rising - 1); _ranks.Add(m); }, 0.7f);
+            }
+            E.After(1.2f, () => _rising = 0);                 // a summon that found no room never reports back
         }
     }
 }

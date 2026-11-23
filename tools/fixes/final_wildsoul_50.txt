@@ -1,0 +1,16 @@
+dps-bases wildsoul lv50: fixed gear (seed 96578): crit chance 9.1% crit dmg 101% life 3068
+dps-bases wildsoul lv50 starter mace2: aps 0.80 (x0.80 of pace 1.00) hit 192-321 | single 1767/s = 0.73x expected, 1.00x starter | cooldown skills 13%, minions 0%
+dps-bases wildsoul lv50 2h staff: aps 1.00 (x1.00 of pace 1.00) hit 174-236 | single 2043/s = 0.85x expected, 1.16x starter | cooldown skills 15%, minions 0%
+dps-bases wildsoul lv50 2h mace2: aps 0.80 (x0.80 of pace 1.00) hit 192-321 | single 1910/s = 0.79x expected, 1.08x starter | cooldown skills 12%, minions 0%
+dps-bases wildsoul lv50 2h axe2: aps 0.90 (x0.90 of pace 1.00) hit 160-296 | single 2041/s = 0.85x expected, 1.16x starter | cooldown skills 14%, minions 0%
+dps-bases wildsoul lv50 off mace1+totem: aps 1.00 (x1.00 of pace 1.00) hit 138-231 | single 1873/s = 0.78x expected, 1.06x starter | cooldown skills 20%, minions 0%
+dps-bases wildsoul lv50 off axe1+totem: aps 1.10 (x1.10 of pace 1.00) hit 118-218 | single 1643/s = 0.68x expected, 0.93x starter | cooldown skills 16%, minions 0%
+dps-bases wildsoul lv50 off dagger+totem: aps 1.40 (x1.40 of pace 1.00) hit 116-158 | single 2011/s = 0.84x expected, 1.14x starter | cooldown skills 18%, minions 0%
+dps-bases wildsoul lv50: fixed gear (seed 96578): crit chance 6.1% crit dmg 101% life 3529
+dps-bases wildsoul lv50 starter mace2: aps 0.80 (x0.80 of pace 1.00) hit 192-321 | single 1945/s = 0.81x expected, 1.00x starter | cooldown skills 18%, minions 0%
+dps-bases wildsoul lv50 2h staff: aps 1.00 (x1.00 of pace 1.00) hit 174-236 | single 1993/s = 0.83x expected, 1.02x starter | cooldown skills 16%, minions 0%
+dps-bases wildsoul lv50 2h mace2: aps 0.80 (x0.80 of pace 1.00) hit 192-321 | single 2125/s = 0.88x expected, 1.09x starter | cooldown skills 11%, minions 0%
+dps-bases wildsoul lv50 2h axe2: aps 0.90 (x0.90 of pace 1.00) hit 160-296 | single 1840/s = 0.76x expected, 0.95x starter | cooldown skills 12%, minions 0%
+dps-bases wildsoul lv50 off mace1+totem: aps 1.00 (x1.00 of pace 1.00) hit 138-231 | single 1756/s = 0.73x expected, 0.90x starter | cooldown skills 15%, minions 0%
+dps-bases wildsoul lv50 off axe1+totem: aps 1.10 (x1.10 of pace 1.00) hit 118-218 | single 1798/s = 0.75x expected, 0.92x starter | cooldown skills 19%, minions 0%
+dps-bases wildsoul lv50 off dagger+totem: aps 1.40 (x1.40 of pace 1.00) hit 116-158 | single 1944/s = 0.81x expected, 1.00x starter | cooldown skills 15%, minions 0%

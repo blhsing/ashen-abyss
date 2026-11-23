@@ -24,6 +24,10 @@ public sealed class SkillExec
 
     private int Rank(SkillDef d) => Math.Max(1, H.Rank(d.Id));
     private float Coef(SkillDef d) => d.Dmg(Rank(d));
+    /// <summary>[golem] A skill's damage coefficient at the hero's rank (MinionSystem).</summary>
+    public float CoefOf(SkillDef d) => Coef(d);
+    /// <summary>[golem] Raises a persistent minion of a skill (MinionSystem: book kinds, corpses, area changes).</summary>
+    public Monster Raise(string id, SkillDef d, Vector2 near, float coef, string tag = null) => SpawnMinion(id, d, near, coef, 0f, tag);
     private Vector3 Pos3 => P.GlobalPosition;
 
     /// <summary>The school a skill's ground marks are drawn in: its element; the lamp knight's ember-light is the holy mark.</summary>
@@ -301,6 +305,9 @@ public sealed class SkillExec
         }
     }
 
+    /// <summary>[golem] Chance that a Soulbinder kill leaves a remnant (殘魂): one resource for 魂爆 and the army (MinionSystem).</summary>
+    public const float RemnantChance = 0.65f;
+
     public void SpawnRemnant(Vector2 p)
     {
         if (World.Remnants.Count >= 24) return;
@@ -450,6 +457,7 @@ public sealed class SkillExec
 
     private void FireSummon(SkillDef d, Vector2 aim, float coef)
     {
+        if (d.Id == "sb_raise" && MinionSystem.I != null && MinionSystem.I.RaiseCast(this, d, aim, coef)) return;     // [golem] 亡者名冊: warriors and mages
         string id = d.Summon == "pact_fiend" ? PactFiendId() : d.Summon;
         int max = d.SummonMax * (id == "pact_imp" ? 3 : 1);
         var mine = World.Minions.Where(m => m.SummonSkill == d.Id && !m.Dead).ToList();
@@ -469,11 +477,12 @@ public sealed class SkillExec
         }
         if (d.Has("imps2")) for (int i = 0; i < 2; i++) if (World.Minions.Count(m => m.SummonSkill == d.Id + "#imp") < 2) SpawnMinion("pact_imp", d, aim, coef * 0.6f, 0, d.Id + "#imp");
         if (d.Has("rally")) foreach (var m in World.Minions) { m.Heal(m.MaxLife); Fx.Heal(m); }
+        if (d.Has("rally")) MinionSystem.I?.ReformNow("re-formed by the colossus's 號令");          // [golem] the colossus's rally also restores the golem
     }
 
     private Monster SpawnMinion(string id, SkillDef d, Vector2 near, float coef, float life, string tag = null)
     {
-        var def = MonsterDb.Get(id);
+        var def = MinionDefs.Resolve(id);          // [golem] the book's kinds, then the bestiary
         if (def == null) { Log.Warn("skill", $"unknown summon '{id}'"); return null; }
         Vector2 pos = World.Grid?.RandomWalkNear(near, 0.5f, 2.5f) ?? near;
         var m = Monster.Spawn(def, H.D.Level, MonTier.Minion, pos, Faction.Player);
@@ -485,6 +494,7 @@ public sealed class SkillExec
         m.Cleave = d.Has("cleave") || def.AI == MonAI.Brute;
         m.Taunter = d.Has("taunt") || id == "pact_brute";
         if (d.EndBurst > 0) m.OnExpire = c => Burst(c, d.EndBurstRadius, d.EndBurst, d.Element, d);
+        Log.Guard("minions", () => MinionSystem.OnSpawned(m, d));          // [golem] book kinds, scaling, the count cap
         Fx.Burst(World.To3(pos, 0.3f), id.StartsWith("pact") ? Element.Fire : Element.Shadow, 1.6f, 0.5f);
         return m;
     }
@@ -505,6 +515,7 @@ public sealed class SkillExec
 
     private void FireCommand(SkillDef d, Vector2 aim, float coef, float mul)
     {
+        if (d.Has("golem_cmd")) { MinionSystem.I?.Command(d, aim, coef, mul); return; }      // [golem] 魔像號令 (Golems.cs)
         var fiend = World.Minions.FirstOrDefault(m => m.Def.Id.StartsWith("pact") && !m.Dead);
         if (fiend == null) { Burst(aim, d.Radius * 0.8f, coef * 0.4f, d.Element, d, 0.15f, mul); return; }
         Fx.Telegraph(aim, d.Radius, 0.35f, Palette.Element(d.Element), true, Mark(d));
@@ -538,7 +549,7 @@ public sealed class SkillExec
             var s = h.Skill;
             Vector2 at = m.Pos2;
             if (s != null && s.ResetOnKill && P.Cds.TryGetValue(s.Id, out var cd)) { cd.Charges = cd.MaxCharges; cd.Left = 0; }
-            if (H.Class == ClassId.Soulbinder && ((s != null && s.RemnantOnKill) || Rng.Chance(0.6f))) SpawnRemnant(at);
+            if (H.Class == ClassId.Soulbinder && ((s != null && s.RemnantOnKill) || Rng.Chance(RemnantChance))) SpawnRemnant(at);
             if (H.HasAsp("ember_burst")) Burst(at, 3.2f, H.Asp("ember_burst") / 100f, Element.Fire, null, 0.1f);
             if (H.HasUnique("u_snuffer") && Rng.Chance(0.15f))
             {

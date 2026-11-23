@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://0fikx64ybs73"
-path="res://.godot/imported/boss_bishop_boss_bishop_bc.jpg-0b5e543bfcee62694ea7e9a82bb7eadf.ctex"
+path.bptc="res://.godot/imported/boss_bishop_boss_bishop_bc.jpg-0b5e543bfcee62694ea7e9a82bb7eadf.bptc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "c7bea0b1006db4dd0557ff7193e941a5"
@@ -14,12 +15,12 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/chars/boss_bishop_boss_bishop_bc.jpg"
-dest_files=["res://.godot/imported/boss_bishop_boss_bishop_bc.jpg-0b5e543bfcee62694ea7e9a82bb7eadf.ctex"]
+dest_files=["res://.godot/imported/boss_bishop_boss_bishop_bc.jpg-0b5e543bfcee62694ea7e9a82bb7eadf.bptc.ctex"]
 
 [params]
 
-compress/mode=0
-compress/high_quality=false
+compress/mode=2
+compress/high_quality=true
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

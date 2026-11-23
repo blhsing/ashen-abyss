@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://6bhy73g3wimo"
-path="res://.godot/imported/mon_char_hangtree_mon_char_hangtree_orm.jpg-14f5e1f557ed5727d865fe6ef2d247ae.ctex"
+path.bptc="res://.godot/imported/mon_char_hangtree_mon_char_hangtree_orm.jpg-14f5e1f557ed5727d865fe6ef2d247ae.bptc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "a29578e5539373e9e61757c1a2f5bd68"
@@ -14,12 +15,12 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/chars/mon_char_hangtree_mon_char_hangtree_orm.jpg"
-dest_files=["res://.godot/imported/mon_char_hangtree_mon_char_hangtree_orm.jpg-14f5e1f557ed5727d865fe6ef2d247ae.ctex"]
+dest_files=["res://.godot/imported/mon_char_hangtree_mon_char_hangtree_orm.jpg-14f5e1f557ed5727d865fe6ef2d247ae.bptc.ctex"]
 
 [params]
 
-compress/mode=0
-compress/high_quality=false
+compress/mode=2
+compress/high_quality=true
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

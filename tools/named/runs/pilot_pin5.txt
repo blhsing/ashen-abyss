@@ -1,0 +1,15 @@
+build ok
+exit= seconds=191
+log: C:\Users\blhsi\AppData\Roaming\AshenAbyss\logs\game_20261122_112315.log  lines=504  ERR=0  WRN=0
+--- last lines ---
+  187.512 INF [bot] summary t=721s game=723s area=rift~pin:5 doing=dodge kills=37 elites=4 bosses=0 level=50 life=100% items=0 gold=50 deaths=0 areas=1 casts=443 unstuck=0 monsters=3 errors=0 warnings=0 botErrors=0
+  187.989 INF [pilot] TEST over: quitting
+  187.992 INF [game] quitting
+  188.003 INF [save] slot 91 saved: ??? lv50 ??? area=rift~pin:5 bytes=11040
+  188.006 INF [save] save reason=quit slot=91 ok=True area=rift~pin:5 playtime=181s capture=0.1ms total=12.9ms
+  188.012 INF [anim] anim-check: hero moved 421.0s - 0.0s without a locomotion clip, 0.0s with frozen legs; hero stood 58.7s - 0.0s in a run clip or none; monsters moved 998.9s - 0.0s without a locomotion clip, 0.0s with frozen legs; models without a skeleton  ƒ?Ý
+  188.014 INF [input] keyboard hook saw 0 key events, 0 of them PrtSc
+  188.017 INF [boot] shutdown errors=0 warnings=0 uptime=188s
+--- engine output: distinct problem lines (1 total) ---
+   1 x [17] Godot.NativeInterop.godot_bool Godot.Bridge.CSharpInstanceBridge.Call(nint, Godot.NativeInterop.godot_string_name*, Godot.NativeInterop.godot_variant**, int, Godot.NativeInterop.godot_variant_call_error*, Godot.NativeInterop.godot_variant*) (/root/ ƒ?Ý
+DONE

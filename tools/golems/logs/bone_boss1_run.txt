@@ -1,0 +1,24 @@
+exit= seconds=490
+log: C:\Users\blhsi\AppData\Roaming\AshenAbyss\logs\game_20261122_133007.log  lines=897  ERR=0  WRN=12
+--- distinct warnings ---
+   1 x [bot] going nowhere near (61.4, 195.5) in wastes for a minute while 'focus event in progress' (event in progress); jumping to the checkpoint (100.7, 84.1)
+   1 x [bot] going nowhere near (60.9, 200.8) in wastes for a minute while 'explore frontier' (event in progress); jumping to the checkpoint (100.7, 84.1)
+   1 x [bot] going nowhere near (60.3, 196.2) in wastes for a minute while 'explore frontier' (event in progress); jumping to the checkpoint (100.7, 84.1)
+   1 x [bot] going nowhere near (62.6, 192.4) in wastes for a minute while 'focus event in progress' (event in progress); jumping to the checkpoint (100.7, 84.1)
+   1 x [bot] going nowhere near (58.9, 195.7) in wastes for a minute while 'focus event in progress' (event in progress); jumping to the checkpoint (100.7, 84.1)
+   1 x [bot] going nowhere near (59.2, 196.6) in wastes for a minute while 'explore frontier' (event in progress); jumping to the checkpoint (100.7, 84.1)
+   1 x [bot] going nowhere near (65.5, 200.7) in wastes for a minute while 'explore frontier' (event in progress); jumping to the checkpoint (100.7, 84.1)
+   1 x [bot] going nowhere near (64.3, 196.4) in wastes for a minute while 'focus event in progress' (event in progress); jumping to the checkpoint (100.7, 84.1)
+   1 x [bot] going nowhere near (65.0, 196.9) in wastes for a minute while 'focus event in progress' (event in progress); jumping to the checkpoint (100.7, 84.1)
+   1 x [bot] going nowhere near (64.7, 197.6) in wastes for a minute while 'focus event in progress' (event in progress); jumping to the checkpoint (100.7, 84.1)
+   1 x [bot] going nowhere near (58.4, 196.1) in wastes for a minute while 'focus event in progress' (event in progress); jumping to the checkpoint (100.7, 84.1)
+   1 x [bot] going nowhere near (58.6, 196.0) in wastes for a minute while 'focus event in progress' (event in progress); jumping to the checkpoint (100.7, 84.1)
+--- last lines ---
+  489.101 INF [save] save reason=quit slot=95 ok=True area=wastes playtime=479s capture=0.4ms total=5.1ms
+  489.104 INF [bot] final summary t=1441s game=1438s area=wastes doing=focus event in progress kills=300 elites=12 bosses=2 level=13 life=100% items=23 gold=4288 deaths=0 areas=2 casts=576 unstuck=12 monsters=198 errors=0 warnings=12 botErrors=0 focus=event in ƒ?Ý
+  489.106 INF [bot] final progress: waypoints=[town,wastes] renown=[wastes:310] quests done=0/3 skillpts bonus=1 potion cap=4 altars=0 codex=0 tier=0/1 riftBest=0 paragon=0 playtime=479s
+  489.110 INF [bot] final skills [soulbinder lv13] cast/hits/damage: (other):c0/h56/d4488 sb_bolt:c342/h310/d9403 sb_curse:c23/h0/d0 sb_golem_cmd:c23/h185/d9605 sb_raise:c12/h623/d13559 sb_spear:c163/h615/d40264 sb_veil:c13/h45/d1030
+  489.112 INF [bot] final balance: ttk normal=1.8s(n=285) champion=4.0s(n=10) elite=6.4s(n=2) boss=41.5s(n=2) | taken 64/min in 149 hits (life 816; 0.08 life bars/min) god-saves=0 | kills/min 12.5 | never cast: [] cast but never hit: []
+  489.114 INF [anim] anim-check: hero moved 1130.5s - 0.0s without a locomotion clip, 0.0s with frozen legs; hero stood 127.0s - 0.0s in a run clip or none; monsters moved 3021.2s - 0.0s without a locomotion clip, 0.0s with frozen legs; models without a skelet ƒ?Ý
+  489.115 INF [input] keyboard hook saw 0 key events, 0 of them PrtSc
+  489.116 INF [boot] shutdown errors=0 warnings=12 uptime=489s

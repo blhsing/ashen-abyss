@@ -120,6 +120,12 @@ public partial class Monster : Actor
     public void Enrage(float dur) => _enrage = Mathf.Max(_enrage, dur);
     public void ForceAggro() => _aggro = true;
 
+    // ── garrison (2026-11-23, "early gentle"): a stronghold's defenders at monster level <= 3 wake only when the hero steps
+    // into their yard (or hurts them) and walk back home when the hero leaves it, instead of pulling in passers-by.
+    private Vector2 _garrisonAt; private float _garrisonR = -1f; private bool _leashing; private double _lastHurt = -100;
+    public void SetGarrison(Vector2 centre, float radius) { _garrisonAt = centre; _garrisonR = radius; }
+    private bool HeroInYard(Player p) => _garrisonR < 0f || p.Pos2.DistanceTo(_garrisonAt) <= _garrisonR + 2f;
+
     // ───────────────────────── frame ─────────────────────────
 
     private static int _tickErrors;
@@ -205,8 +211,14 @@ public partial class Monster : Actor
         Model.Play(Def.Idle, 1f, 0.3f);
         _idleSfx -= dt;
         if (_idleSfx <= 0 && distToPlayer < 22f) { _idleSfx = Rng.Range(6f, 16f); Snd.At(Def.Sfx + "_idle", GlobalPosition, 0.5f); }
-        if (_aggro) { _st = Mode.Chase; return; }
+        if (_aggro) { _st = Mode.Chase; _leashing = false; return; }
         var p = World.P;
+        if (_leashing)
+        {
+            Vector2 home = _home - Pos2;
+            if (home.Length() < 1.2f) _leashing = false; else { MoveDir(home.Normalized(), dt); return; }
+        }
+        if (!HeroInYard(p)) return;
         if (distToPlayer < 13.5f && !p.Dead && !p.Stealthed && (World.Grid == null || World.Grid.LineShot(Pos2, p.Pos2))) WakePack();
         else if (distToPlayer < 6f && !p.Dead && !p.Stealthed) WakePack();
     }
@@ -235,6 +247,9 @@ public partial class Monster : Actor
             }
             return best;
         }
+        // minion: the hero's own target first ("attack my target", MinionSystem), then enemies near the owner
+        var forced = MinionSystem.TargetFor(this);
+        if (forced != null) return forced;
         // minion: enemies near the owner first
         var owner = World.P;
         Actor t = World.Nearest(Faction.Player, Pos2, 13f, a => a.Pos2.DistanceTo(owner.Pos2) < 18f);
@@ -247,6 +262,8 @@ public partial class Monster : Actor
     private void TickChase(float dt)
     {
         _cd -= dt; _special -= dt; _kite -= dt;
+        if (_garrisonR >= 0f && Faction == Faction.Monster && World.P != null && World.P.Pos2.DistanceTo(_garrisonAt) > _garrisonR + 12f && (Game.I?.Time ?? 0) - _lastHurt > 3.0)
+        { _aggro = false; _target = null; _leashing = true; _st = Mode.Idle; return; }
         if (_target == null || _target.Dead || !IsInstanceValid(_target) || (_target is Player pl && pl.Stealthed)) _target = PickTarget();
         else if ((_repath -= dt) <= 0f) { _repath = 0.5f; _target = PickTarget(); _path.Clear(); }
 
@@ -582,6 +599,7 @@ public partial class Monster : Actor
     private void MinionAttack(Vector3 hand)
     {
         var p = World.P;
+        if (Ctl != null && _target != null && Ctl.Attack(this, _target, hand)) return;        // [golem] book kinds and golems (Golems.cs)
         var opt = new HitOpt { Minion = true, MinionActor = this, Dir = (_target.Pos2 - Pos2).Normalized() };
         if (IsRanged)
         {
@@ -611,9 +629,11 @@ public partial class Monster : Actor
     {
         if (Dead) return 0;
         if (Faction == Faction.Monster) { h.Amount *= DrMul * (Staggered ? 1.25f : 1f); if (!AiModifyHit(ref h)) return 0f; }
+        else { h.Amount = MinionIncoming(h); if (h.Amount <= 0f) return 0f; }       // [golem] minion mitigation, golem passives (MinionSystem.Incoming)
         float d = base.TakeHit(h);
         if (Faction == Faction.Monster) AiAfterHit(h, d);
         if (Dead) return d;
+        if (Faction == Faction.Monster) _lastHurt = Game.I?.Time ?? 0;
         if (!_aggro && Faction == Faction.Monster) WakePack();
         if (!h.Dot)
         {
@@ -661,6 +681,7 @@ public partial class Monster : Actor
         _st = Mode.Dead; _deadT = 0;
         CancelTelegraph();
         if (Faction == Faction.Monster) Log.Guard("monster-ai", () => AiOnDeath(h));
+        else Log.Guard("golem", () => MinionSystem.OnMinionDied(this, h));      // [golem] golem re-forming, blood burst
         Untargetable = true;
         (Faction == Faction.Monster ? World.Monsters : World.Minions).Remove(this);
         Model.Pause(false);

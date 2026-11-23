@@ -1,0 +1,5 @@
+10:31:08 campaign hunter
+ 1737.826 INF [pilot] TEST FIGHT boss=boss_grand_hush area=sanctum_boss killed=True secs=111 deaths=0 heroLevel=42 threats=51 dodged=50 taken=1 dmgTelegraphed=60 dmgOther=344 life=3241
+ 1737.826 INF [pilot] TEST FIGHT boss=boss_osaros area=abyss_boss killed=True secs=217 deaths=0 heroLevel=46 threats=138 dodged=136 taken=2 dmgTelegraphed=504 dmgOther=1444 life=3398
+ 1737.826 INF [pilot] TEST FIGHT boss=sh_abyss area=abyss killed=True secs=69 deaths=0 heroLevel=44 threats=27 dodged=27 taken=0 dmgTelegraphed=0 dmgOther=423 life=3346
+11:10:46 campaign lampknight

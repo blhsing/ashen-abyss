@@ -1,0 +1,10 @@
+dps-bases forgebody lv50: fixed gear (seed 96585): crit chance 7.5% crit dmg 85% life 2479
+dps-bases forgebody lv50 starter fist+fist: aps 1.52 (x1.13 of pace 1.35) hit 127-172 | single 3546/s = 1.47x expected, 1.00x starter | cooldown skills 14%, minions 0%
+dps-bases forgebody lv50 2h mace2: aps 0.80 (x0.59 of pace 1.35) hit 174-290 | single 3750/s = 1.56x expected, 1.06x starter | cooldown skills 13%, minions 0%
+dps-bases forgebody lv50 2h axe2: aps 0.90 (x0.67 of pace 1.35) hit 162-301 | single 4040/s = 1.68x expected, 1.14x starter | cooldown skills 13%, minions 0%
+dps-bases forgebody lv50 dual fist: aps 1.52 (x1.13 of pace 1.35) hit 127-172 | single 3567/s = 1.48x expected, 1.01x starter | cooldown skills 14%, minions 0%
+dps-bases forgebody lv50: fixed gear (seed 96585): crit chance 7.5% crit dmg 15% life 2479
+dps-bases forgebody lv50 starter fist+fist: aps 1.52 (x1.13 of pace 1.35) hit 127-172 | single 3478/s = 1.44x expected, 1.00x starter | cooldown skills 14%, minions 0%
+dps-bases forgebody lv50 2h mace2: aps 0.80 (x0.59 of pace 1.35) hit 174-290 | single 3553/s = 1.48x expected, 1.02x starter | cooldown skills 13%, minions 0%
+dps-bases forgebody lv50 2h axe2: aps 0.90 (x0.67 of pace 1.35) hit 162-301 | single 3882/s = 1.61x expected, 1.12x starter | cooldown skills 12%, minions 0%
+dps-bases forgebody lv50 dual fist: aps 1.52 (x1.13 of pace 1.35) hit 127-172 | single 3647/s = 1.51x expected, 1.05x starter | cooldown skills 14%, minions 0%

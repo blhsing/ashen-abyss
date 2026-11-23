@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://du4soygsil7gj"
-path="res://.godot/imported/mon_cf_mite_mon_cf_mite_nrm.jpg-7ee6fc0881c90de3410196a760d0ff25.ctex"
+path.s3tc="res://.godot/imported/mon_cf_mite_mon_cf_mite_nrm.jpg-7ee6fc0881c90de3410196a760d0ff25.s3tc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "a22589b4d84baf5e76ae699e183e9355"
@@ -14,17 +15,17 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/chars/mon_cf_mite_mon_cf_mite_nrm.jpg"
-dest_files=["res://.godot/imported/mon_cf_mite_mon_cf_mite_nrm.jpg-7ee6fc0881c90de3410196a760d0ff25.ctex"]
+dest_files=["res://.godot/imported/mon_cf_mite_mon_cf_mite_nrm.jpg-7ee6fc0881c90de3410196a760d0ff25.s3tc.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1
-compress/normal_map=0
+compress/normal_map=1
 compress/channel_pack=0
 mipmaps/generate=true
 mipmaps/limit=-1

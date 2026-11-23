@@ -135,6 +135,7 @@ public sealed class BagFilter
     public Stat Affix = Stat.Count;     // Stat.Count = any
     public bool NewOnly;
     public string Preset;               // the preset these settings came from (null when hand-made)
+    public bool Forgeable;              // [golem] 可鑄造魔像: metal items the iron golem can be forged from now (GolemForge.Refusal)
 
     public static readonly (string name, ItemKind kind)[] Kinds =
     {
@@ -147,11 +148,11 @@ public sealed class BagFilter
     public static string BelowName(int i) => i == 0 ? "強度：不限" : i == 1 ? "低於目前等級" : $"強度低於 {PowerSteps[i - 2]}";
     public static int BelowCount => 2 + PowerSteps.Length;
 
-    public bool Active => Rarities.Any(x => x) || Kind >= 0 || Usable != 0 || Verdict != 0 || Below != 0 || Affix != Stat.Count || NewOnly;
+    public bool Active => Rarities.Any(x => x) || Kind >= 0 || Usable != 0 || Verdict != 0 || Below != 0 || Affix != Stat.Count || NewOnly || Forgeable;
 
     public void Clear()
     {
-        Array.Clear(Rarities); Kind = -1; Usable = 0; Verdict = 0; Below = 0; Affix = Stat.Count; NewOnly = false; Preset = null;
+        Array.Clear(Rarities); Kind = -1; Usable = 0; Verdict = 0; Below = 0; Affix = Stat.Count; NewOnly = false; Forgeable = false; Preset = null;
     }
 
     public bool Matches(Hero h, Item it, Func<Item, bool> isNew = null)
@@ -173,6 +174,7 @@ public sealed class BagFilter
         if (Below >= 2 && it.Power >= PowerSteps[Below - 2]) return false;
         if (Affix != Stat.Count && it.Affixes.All(a => a.Stat != Affix) && (it.Implicits == null || it.Implicits.All(a => a.Stat != Affix))) return false;
         if (NewOnly && (isNew == null || !isNew(it))) return false;
+        if (Forgeable && GolemForge.Refusal(h, it) != null) return false;
         return true;
     }
 
@@ -185,12 +187,13 @@ public sealed class BagFilter
             case "nonupgrade": Verdict = 2; break;
             case "lowcommon": Rarities[(int)Rarity.Common] = true; Rarities[(int)Rarity.Magic] = true; Below = 1; break;
             case "otherclass": Usable = 2; break;
+            case "forgeable": Forgeable = true; break;          // [golem] Soulbinder only (InventoryUi shows it for that class)
             default: return;
         }
         Preset = id;
     }
 
-    public static readonly (string id, string name)[] Presets = { ("nonupgrade", "全部非升級"), ("lowcommon", "低於目前等級的普通與魔法"), ("otherclass", "非本職業") };
+    public static readonly (string id, string name)[] Presets = { ("nonupgrade", "全部非升級"), ("lowcommon", "低於目前等級的普通與魔法"), ("otherclass", "非本職業"), ("forgeable", "可鑄造魔像") };
 
     /// <summary>The bag items the filter shows (locked ones included; the bulk actions skip them).</summary>
     public List<Item> Pick(Hero h, Func<Item, bool> isNew = null) => h.D.Bag.Where(i => Matches(h, i, isNew)).ToList();

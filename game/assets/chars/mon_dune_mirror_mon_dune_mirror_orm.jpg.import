@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://cnlvw15nmm1nu"
-path="res://.godot/imported/mon_dune_mirror_mon_dune_mirror_orm.jpg-8d2965a119acf2dd421a1e10bffc85b9.ctex"
+path.bptc="res://.godot/imported/mon_dune_mirror_mon_dune_mirror_orm.jpg-8d2965a119acf2dd421a1e10bffc85b9.bptc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "f3acd32af67b9b6c52d9251d9bc9c7d5"
@@ -14,12 +15,12 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/chars/mon_dune_mirror_mon_dune_mirror_orm.jpg"
-dest_files=["res://.godot/imported/mon_dune_mirror_mon_dune_mirror_orm.jpg-8d2965a119acf2dd421a1e10bffc85b9.ctex"]
+dest_files=["res://.godot/imported/mon_dune_mirror_mon_dune_mirror_orm.jpg-8d2965a119acf2dd421a1e10bffc85b9.bptc.ctex"]
 
 [params]
 
-compress/mode=0
-compress/high_quality=false
+compress/mode=2
+compress/high_quality=true
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

@@ -1,0 +1,8 @@
+== bestiary ERR=0
+  151.958 INF [hero] died: killer=boss_gravedigger amount=25 level=5 area=wastes_boss
+  151.959 INF [game] hero died in wastes_boss: deaths=15 hardcore=False level=5
+  151.961 INF [bot] died in wastes_boss (death 15)
+  152.739 INF [roster] running area=wastes_boss hero=lv5 ttk normal=9.4s(n=54) champion=12.2s(n=4) elite=-s(n=0) boss=-s(n=0) | taken 946/min (3.79 life bars/min, 485 hits) kills=60 in 599s | worst [boss_gravedigger:6539,husk:1458,skeleton:539,sexton_digger:422] slowest [skeleton_thrower:13.4s/3,bone_scrap*:12.2s/4,husk:11.1s/28,skeleton:9.8s/10,sexton_digger:9.0s/5]
+  152.753 INF [bot] summary t=601s game=599s area=wastes_boss doing=focus boss kills=60 elites=4 bosses=0 level=5 life=100% items=1 gold=352 deaths=15 areas=1 casts=607 unstuck=0 monsters=39 errors=0 warnings=0 botErrors=0 focus=boss
+  152.932 INF [bot] final summary t=601s game=600s area=wastes_boss doing=focus boss kills=60 elites=4 bosses=0 level=5 life=100% items=1 gold=352 deaths=15 areas=1 casts=607 unstuck=0 monsters=39 errors=0 warnings=0 botErrors=0 focus=boss
+done 11:09:12

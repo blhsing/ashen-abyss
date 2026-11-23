@@ -1,0 +1,18 @@
+exit= seconds=430
+log: C:\Users\blhsi\AppData\Roaming\AshenAbyss\logs\game_20261122_122413.log  lines=1136  ERR=0  WRN=3
+--- distinct warnings ---
+   1 x [bot] going nowhere near (52.5, 76.4) in wastes for a minute while 'idle (nothing left here)' (event in progress); jumping to the checkpoint (55.3, 80.1)
+   1 x [bot] going nowhere near (53.9, 76.7) in wastes for a minute while 'idle (nothing left here)' (event in progress); jumping to the checkpoint (55.3, 80.1)
+   1 x [bot] going nowhere near (154.2, 22.1) in wastes for a minute while 'idle (nothing left here)' (event in progress); jumping to the checkpoint (55.3, 80.1)
+--- last lines ---
+  428.048 INF [save] save reason=quit slot=95 ok=True area=wastes playtime=420s capture=0.3ms total=5.5ms
+  428.052 INF [bot] final summary t=1261s game=1227s area=wastes doing=idle (nothing left here) kills=408 elites=26 bosses=1 level=13 life=100% items=80 gold=6846 deaths=0 areas=1 casts=575 unstuck=3 monsters=0 errors=0 warnings=3 botErrors=0 focus=event in pr ƒ?Ý
+  428.054 INF [bot] final progress: waypoints=[town,wastes] renown=[wastes:220] quests done=0/3 skillpts bonus=0 potion cap=4 altars=3 codex=0 tier=0/1 riftBest=0 paragon=0 playtime=420s
+  428.057 INF [bot] final skills [soulbinder lv13] cast/hits/damage: (minion):c0/h45/d653 (other):c0/h81/d5728 sb_bolt:c295/h240/d7606 sb_curse:c33/h0/d0 sb_golem_cmd:c30/h225/d6953 sb_raise:c6/h569/d13505 sb_spear:c195/h592/d41743 sb_veil:c16/h15/d304
+  428.059 INF [bot] final balance: ttk normal=0.9s(n=379) champion=2.0s(n=18) elite=4.8s(n=8) boss=31.9s(n=1) | taken 35/min in 129 hits (life 848; 0.04 life bars/min) god-saves=0 | kills/min 20.0 | never cast: [] cast but never hit: []
+  428.060 INF [anim] anim-check: hero moved 523.3s - 0.0s without a locomotion clip, 0.0s with frozen legs; hero stood 483.8s - 0.0s in a run clip or none; monsters moved 3573.7s - 0.0s without a locomotion clip, 0.0s with frozen legs; models without a skeleto ƒ?Ý
+  428.061 INF [input] keyboard hook saw 4 key events, 0 of them PrtSc
+  428.062 INF [boot] shutdown errors=0 warnings=3 uptime=428s
+--- engine output: distinct problem lines (2 total) ---
+   1 x ERROR: Parameter "t" is null.
+   1 x ERROR: 1 RID allocations of type 'PN13RendererDummy14TextureStorage12DummyTextureE' were leaked at exit.

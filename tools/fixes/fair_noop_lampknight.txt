@@ -1,0 +1,12 @@
+dps-bases lampknight lv50: fixed gear (seed 96592): crit chance 16.7% crit dmg 127% life 2747
+dps-bases lampknight lv50 2h sword2: aps 0.95 (x0.86 of pace 1.10) hit 174-261 | single 1453/s = 0.60x expected, 1.00x starter | cooldown skills 4%, minions 0%
+dps-bases lampknight lv50 2h mace2: aps 0.80 (x0.73 of pace 1.10) hit 193-322 | single 1245/s = 0.52x expected, 0.86x starter | cooldown skills 5%, minions 0%
+dps-bases lampknight lv50 2h polearm: aps 0.95 (x0.86 of pace 1.10) hit 163-271 | single 1313/s = 0.55x expected, 0.90x starter | cooldown skills 5%, minions 0%
+dps-bases lampknight lv50: fixed gear (seed 96592): crit chance 16.7% crit dmg 93% life 2747
+dps-bases lampknight lv50 2h sword2: aps 0.95 (x0.86 of pace 1.10) hit 174-261 | single 1437/s = 0.60x expected, 1.00x starter | cooldown skills 4%, minions 0%
+dps-bases lampknight lv50 2h mace2: aps 0.80 (x0.73 of pace 1.10) hit 193-322 | single 1277/s = 0.53x expected, 0.89x starter | cooldown skills 5%, minions 0%
+dps-bases lampknight lv50 2h polearm: aps 0.95 (x0.86 of pace 1.10) hit 163-271 | single 1340/s = 0.56x expected, 0.93x starter | cooldown skills 4%, minions 0%
+dps-bases lampknight lv50: fixed gear (seed 96592): crit chance 16.7% crit dmg 81% life 2747
+dps-bases lampknight lv50 2h sword2: aps 0.95 (x0.86 of pace 1.10) hit 174-261 | single 1376/s = 0.57x expected, 1.00x starter | cooldown skills 5%, minions 0%
+dps-bases lampknight lv50 2h mace2: aps 0.80 (x0.73 of pace 1.10) hit 193-322 | single 1177/s = 0.49x expected, 0.86x starter | cooldown skills 5%, minions 0%
+dps-bases lampknight lv50 2h polearm: aps 0.95 (x0.86 of pace 1.10) hit 163-271 | single 1417/s = 0.59x expected, 1.03x starter | cooldown skills 4%, minions 0%

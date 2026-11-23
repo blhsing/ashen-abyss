@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://1rmnft7yfmom"
-path="res://.godot/imported/mon_bone_scrap_mon_bone_scrap_bc.jpg-228270514f4b9336703e5f7e33cacbdb.ctex"
+path.bptc="res://.godot/imported/mon_bone_scrap_mon_bone_scrap_bc.jpg-228270514f4b9336703e5f7e33cacbdb.bptc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "a849c8b51744bac663425627f192bb0f"
@@ -14,12 +15,12 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/chars/mon_bone_scrap_mon_bone_scrap_bc.jpg"
-dest_files=["res://.godot/imported/mon_bone_scrap_mon_bone_scrap_bc.jpg-228270514f4b9336703e5f7e33cacbdb.ctex"]
+dest_files=["res://.godot/imported/mon_bone_scrap_mon_bone_scrap_bc.jpg-228270514f4b9336703e5f7e33cacbdb.bptc.ctex"]
 
 [params]
 
-compress/mode=0
-compress/high_quality=false
+compress/mode=2
+compress/high_quality=true
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

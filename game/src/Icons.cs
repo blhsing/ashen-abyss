@@ -99,7 +99,7 @@ public static class Icons
         ["powder"] = "misc/dust", ["dust"] = "misc/dust", ["fire-gem"] = "misc/core", ["core"] = "misc/core",
         ["knapsack"] = "misc/inventory", ["inventory"] = "misc/inventory", ["cog"] = "misc/settings", ["settings"] = "misc/settings",
         ["padlock"] = "misc/lock", ["lock"] = "misc/lock", ["treasure-map"] = "misc/map", ["map"] = "misc/map",
-        ["paragon"] = "misc/paragon", ["key"] = "misc/key",
+        ["paragon"] = "misc/paragon", ["key"] = "misc/key", ["gems"] = "item/gem_ruby_2", ["gem"] = "item/gem_ruby_2",
         // afflictions and flag buffs (HudBuffs)
         ["knockout"] = "status/stun", ["ice-cube"] = "status/freeze", ["root-tip"] = "status/root", ["terror"] = "status/fear",
         ["flame"] = "status/burn", ["small-fire"] = "stat/burning", ["poison-bottle"] = "status/poison", ["bleeding-wound"] = "status/bleed",
@@ -350,10 +350,50 @@ public static class Icons
     {
         string key = KindKey(k, weaponClass);
         // the ghost of an empty equipment slot: the plain second tier of that kind
+        if (k == ItemKind.OffHand) return OffHandGhost3D() ?? Raster($"item/wpn_{OffHandGhostKey()}_2") ?? Raster("item/wpn_swordshield_2") ?? Get("battle-gear");
         var r = Raster(k == ItemKind.Weapon ? (key == "weapon" ? "item/wpn_greatsword_2" : $"item/wpn_{key}_2") : k == ItemKind.Gem ? "item/gem_ruby_2" : $"item/{key}_2");
         if (r != null) return r;
         if (!ItemIcons.TryGetValue(key, out var names)) return Get(key);
         return Get(names[Math.Min(1, names.Length - 1)]);
+    }
+
+    private static ClassId _ghostCls = (ClassId)(-1);
+    private static Item _ghostItem;
+
+    /// <summary>
+    /// The 3D picture (ItemIcon3D) of a plain piece of the hero's first off-hand base (shield, focus, totem, grimoire,
+    /// lantern): the raster families have no art of their own for most off-hands. Null for classes without off-hand
+    /// bases, when 3D icons are off, or before a hero exists.
+    /// </summary>
+    private static Texture2D OffHandGhost3D()
+    {
+        try
+        {
+            var h = Game.I?.Hero;
+            if (h == null) return null;
+            if (_ghostCls != h.Class)
+            {
+                _ghostCls = h.Class;
+                var bases = ItemDb.OffBasesOf(h.Class);
+                _ghostItem = bases.Length > 0 ? ItemDb.Generate(100, Rarity.Common, h.Class, ItemKind.OffHand, new Random(17), bases[0]) : null;
+            }
+            return _ghostItem == null ? null : ItemIcon3D.Get(_ghostItem, 128);
+        }
+        catch (Exception e) { Log.Debug("icons", "off-hand ghost: " + e.Message); return null; }
+    }
+
+    /// <summary>Raster family of the hero's own first off-hand base (focus → staff, totem → club …); shield art otherwise.</summary>
+    private static string OffHandGhostKey()
+    {
+        try
+        {
+            var h = Game.I?.Hero;
+            var bases = h == null ? null : ItemDb.OffBasesOf(h.Class);
+            string icon = bases is { Length: > 0 } ? ItemDb.BaseOf(bases[0])?.Icon
+                : h != null && ItemDb.Loadout(h.Class).CanDual && (int)h.Class < ItemDb.WeaponIcons.Length ? ItemDb.WeaponIcons[(int)h.Class] : null;   // dual-wield classes: a second weapon
+            return string.IsNullOrEmpty(icon) ? "swordshield" : icon;
+        }
+        catch (Exception) { return "swordshield"; }
     }
 
     private static string KindKey(ItemKind k, int weaponClass) => k switch

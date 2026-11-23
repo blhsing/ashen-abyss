@@ -1,0 +1,36 @@
+# inventory states at 特大 (item 5)
+wait 2
+give legendary
+give rare
+give set
+sets
+scale 2
+wait 0.5
+open inventory
+wait 1.5
+shot inv2_overview
+dump inv2_overview
+click @裝備組#2
+wait 0.8
+shot inv2_setstab
+dump inv2_setstab
+click @攻勢
+wait 0.8
+shot inv2_offence
+dump inv2_offence
+key F
+wait 0.8
+shot inv2_filter
+dump inv2_filter
+key F
+wait 0.5
+scale 1
+wait 0.8
+shot inv2_s1
+dump inv2_s1
+scale 0
+wait 0.8
+shot inv2_s0
+dump inv2_s0
+close
+quit

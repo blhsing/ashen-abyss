@@ -14,7 +14,8 @@ namespace AshenAbyss;
 /// </summary>
 public sealed partial class TestSuite
 {
-    private const int MapQuestSlot = 90;
+    // the suite's private save slot: --slot=N when given (90..99, the caller's own test slot), else 90
+    private static int MapQuestSlot => int.TryParse(Game.I?.ArgValue("slot"), out int s) && s >= 90 && s <= 99 ? s : 90;
 
     private static List<QuestMark> QMarks() => QuestMarks.Of(G.Level).ToList();
 
@@ -179,11 +180,23 @@ public sealed partial class TestSuite
         Check(goals.All(m => m.Known == lv.SeenAt(m.Pos)), "dungeon: only explored objective targets are shown");
         Check(goals.Count == 0 || goals.All(m => m.Main == false), "dungeon: a side-quest dungeon's targets are silver");
         yield return MapShot("dungeon_before_map", true);
-        var tgt = goals.OrderBy(m => m.Pos.DistanceSquaredTo(G.Player.Pos2)).FirstOrDefault();
+        // [fixes] a static target (idol, altar, chest …) when there is one: a marked elite walks, and 1.2 s after the hero
+        // was put beside its old spot it could stand in a cell not yet seen (the check then failed now and then).
+        var tgt = goals.OrderBy(m => m.Ref is Actor ? 1 : 0).ThenBy(m => m.Pos.DistanceSquaredTo(G.Player.Pos2)).FirstOrDefault();
         if (tgt != null)
         {
-            G.Player.Teleport(lv.Grid.NearestWalk(lv.StandNear(tgt.Pos, G.Player.Pos2, 4f)));
+            // where the target is NOW (a monster is followed), not where it was when the marks were read
+            Vector2 TargetNow() => tgt.Ref is Actor a && GodotObject.IsInstanceValid(a) ? a.Pos2 : tgt.Pos;
+            G.Player.Teleport(lv.Grid.NearestWalk(lv.StandNear(TargetNow(), G.Player.Pos2, 4f)));
             yield return 1.2f;
+            // a moving target: stay with it until the cell it stands in has been seen (at most ~6 s, re-placing the hero
+            // beside it when it walked off), so the check below tests the pin, not the elite's wandering
+            for (int k = 0; k < 20 && tgt.Ref is Actor && !lv.SeenAt(TargetNow()); k++)
+            {
+                if (G.Player.Pos2.DistanceTo(TargetNow()) > 5f) G.Player.Teleport(lv.Grid.NearestWalk(lv.StandNear(TargetNow(), G.Player.Pos2, 4f)));
+                yield return 0.3f;
+            }
+            yield return 0.4f;                                   // one quest-layer update after the cell was seen
             Check(QMarks().Any(m => m.Known && m.Kind != QuestMarkKind.Area), "dungeon: an objective target is pinned once its room is explored");
             yield return MapShot("dungeon_after_hud", false);
             yield return MapShot("dungeon_after_map", true, hover: true);

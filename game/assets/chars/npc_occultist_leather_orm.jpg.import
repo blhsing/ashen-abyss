@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://cgol55skn4d0c"
-path="res://.godot/imported/npc_occultist_leather_orm.jpg-b97b35511e5ab75c0fe93cda091f76a2.ctex"
+path.bptc="res://.godot/imported/npc_occultist_leather_orm.jpg-b97b35511e5ab75c0fe93cda091f76a2.bptc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "14c619ecac9a0a6892d99a397c57ac63"
@@ -14,12 +15,12 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/chars/npc_occultist_leather_orm.jpg"
-dest_files=["res://.godot/imported/npc_occultist_leather_orm.jpg-b97b35511e5ab75c0fe93cda091f76a2.ctex"]
+dest_files=["res://.godot/imported/npc_occultist_leather_orm.jpg-b97b35511e5ab75c0fe93cda091f76a2.bptc.ctex"]
 
 [params]
 
-compress/mode=0
-compress/high_quality=false
+compress/mode=2
+compress/high_quality=true
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

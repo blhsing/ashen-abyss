@@ -1,0 +1,18 @@
+dps-bases hunter lv50: fixed gear (seed 96564): crit chance 23.1% crit dmg 85% life 2430
+dps-bases hunter lv50 starter crossbow: aps 1.00 (x0.80 of pace 1.25) hit 153-255 | single 1149/s = 0.48x expected, 1.00x starter | cooldown skills 22%, minions 0%
+dps-bases hunter lv50 2h bow: aps 1.15 (x0.92 of pace 1.25) hit 151-204 | single 1424/s = 0.59x expected, 1.24x starter | cooldown skills 11%, minions 0%
+dps-bases hunter lv50 2h crossbow: aps 1.00 (x0.80 of pace 1.25) hit 153-255 | single 1407/s = 0.58x expected, 1.22x starter | cooldown skills 20%, minions 0%
+dps-bases hunter lv50 dual sword1: aps 1.32 (x1.06 of pace 1.25) hit 127-191 | single 1621/s = 0.67x expected, 1.41x starter | cooldown skills 17%, minions 0%
+dps-bases hunter lv50 dual dagger: aps 1.54 (x1.23 of pace 1.25) hit 116-157 | single 1052/s = 0.44x expected, 0.92x starter | cooldown skills 19%, minions 0%
+dps-bases hunter lv50: fixed gear (seed 96564): crit chance 22.5% crit dmg 89% life 2430
+dps-bases hunter lv50 starter crossbow: aps 1.00 (x0.80 of pace 1.25) hit 153-255 | single 1481/s = 0.62x expected, 1.00x starter | cooldown skills 22%, minions 0%
+dps-bases hunter lv50 2h bow: aps 1.15 (x0.92 of pace 1.25) hit 151-204 | single 1486/s = 0.62x expected, 1.00x starter | cooldown skills 15%, minions 0%
+dps-bases hunter lv50 2h crossbow: aps 1.00 (x0.80 of pace 1.25) hit 153-255 | single 1435/s = 0.60x expected, 0.97x starter | cooldown skills 22%, minions 0%
+dps-bases hunter lv50 dual sword1: aps 1.32 (x1.06 of pace 1.25) hit 127-191 | single 1543/s = 0.64x expected, 1.04x starter | cooldown skills 16%, minions 0%
+dps-bases hunter lv50 dual dagger: aps 1.54 (x1.23 of pace 1.25) hit 116-157 | single 1091/s = 0.45x expected, 0.74x starter | cooldown skills 17%, minions 0%
+dps-bases hunter lv50: fixed gear (seed 96564): crit chance 22.5% crit dmg 46% life 2430
+dps-bases hunter lv50 starter crossbow: aps 1.00 (x0.80 of pace 1.25) hit 153-255 | single 1253/s = 0.52x expected, 1.00x starter | cooldown skills 19%, minions 0%
+dps-bases hunter lv50 2h bow: aps 1.15 (x0.92 of pace 1.25) hit 151-204 | single 1417/s = 0.59x expected, 1.13x starter | cooldown skills 11%, minions 0%
+dps-bases hunter lv50 2h crossbow: aps 1.00 (x0.80 of pace 1.25) hit 153-255 | single 1347/s = 0.56x expected, 1.07x starter | cooldown skills 20%, minions 0%
+dps-bases hunter lv50 dual sword1: aps 1.32 (x1.06 of pace 1.25) hit 127-191 | single 1542/s = 0.64x expected, 1.23x starter | cooldown skills 15%, minions 0%
+dps-bases hunter lv50 dual dagger: aps 1.54 (x1.23 of pace 1.25) hit 116-157 | single 1156/s = 0.48x expected, 0.92x starter | cooldown skills 19%, minions 0%

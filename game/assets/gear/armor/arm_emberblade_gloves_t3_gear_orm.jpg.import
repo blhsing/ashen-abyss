@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://b5na4f0robqmi"
-path="res://.godot/imported/arm_emberblade_gloves_t3_gear_orm.jpg-8ac81e57b559b344605a7f16a5527473.ctex"
+path.bptc="res://.godot/imported/arm_emberblade_gloves_t3_gear_orm.jpg-8ac81e57b559b344605a7f16a5527473.bptc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "1eea9d6efcfb6e86a21f2b14c70f645c"
@@ -14,12 +15,12 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/gear/armor/arm_emberblade_gloves_t3_gear_orm.jpg"
-dest_files=["res://.godot/imported/arm_emberblade_gloves_t3_gear_orm.jpg-8ac81e57b559b344605a7f16a5527473.ctex"]
+dest_files=["res://.godot/imported/arm_emberblade_gloves_t3_gear_orm.jpg-8ac81e57b559b344605a7f16a5527473.bptc.ctex"]
 
 [params]
 
-compress/mode=0
-compress/high_quality=false
+compress/mode=2
+compress/high_quality=true
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

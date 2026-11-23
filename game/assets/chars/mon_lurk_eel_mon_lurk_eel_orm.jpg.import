@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://ohge1jkdj0s8"
-path="res://.godot/imported/mon_lurk_eel_mon_lurk_eel_orm.jpg-d39fb093b7cd4c9433ddcbd69c86df72.ctex"
+path.bptc="res://.godot/imported/mon_lurk_eel_mon_lurk_eel_orm.jpg-d39fb093b7cd4c9433ddcbd69c86df72.bptc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "d21160361ffc3058b1b1dad62381414e"
@@ -14,12 +15,12 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/chars/mon_lurk_eel_mon_lurk_eel_orm.jpg"
-dest_files=["res://.godot/imported/mon_lurk_eel_mon_lurk_eel_orm.jpg-d39fb093b7cd4c9433ddcbd69c86df72.ctex"]
+dest_files=["res://.godot/imported/mon_lurk_eel_mon_lurk_eel_orm.jpg-d39fb093b7cd4c9433ddcbd69c86df72.bptc.ctex"]
 
 [params]
 
-compress/mode=0
-compress/high_quality=false
+compress/mode=2
+compress/high_quality=true
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

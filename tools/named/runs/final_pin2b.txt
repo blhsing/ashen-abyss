@@ -1,0 +1,13 @@
+build ok
+exit= seconds=104
+log: C:\Users\blhsi\AppData\Roaming\AshenAbyss\logs\game_20261122_225213.log  lines=400  ERR=0  WRN=0
+--- last lines ---
+  101.675 INF [pilot] picks up ????ú????? (Rare)
+  101.702 INF [pilot] TEST over: quitting
+  101.703 INF [game] quitting
+  101.706 INF [save] slot 91 saved: ??? lv50 ??? area=rift~pin:2 bytes=28408
+  101.707 INF [save] save reason=quit slot=91 ok=True area=rift~pin:2 playtime=98s capture=0.1ms total=3.7ms
+  101.709 INF [anim] anim-check: hero moved 201.9s - 0.0s without a locomotion clip, 0.0s with frozen legs; hero stood 33.0s - 0.0s in a run clip or none; monsters moved 284.8s - 0.0s without a locomotion clip, 0.0s with frozen legs; models without a skeleton  ƒ?Ý
+  101.710 INF [input] keyboard hook saw 0 key events, 0 of them PrtSc
+  101.711 INF [boot] shutdown errors=0 warnings=0 uptime=102s
+DONE

@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://cw1c7usnpfawk"
-path="res://.godot/imported/mon_reaver_firepot_mon_reaver_firepot_em.jpg-67dd52edfbff9c3b2176c55a371e96de.ctex"
+path.bptc="res://.godot/imported/mon_reaver_firepot_mon_reaver_firepot_em.jpg-67dd52edfbff9c3b2176c55a371e96de.bptc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "23b87eff12d4d5c623a7ea165e08a028"
@@ -14,12 +15,12 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/chars/mon_reaver_firepot_mon_reaver_firepot_em.jpg"
-dest_files=["res://.godot/imported/mon_reaver_firepot_mon_reaver_firepot_em.jpg-67dd52edfbff9c3b2176c55a371e96de.ctex"]
+dest_files=["res://.godot/imported/mon_reaver_firepot_mon_reaver_firepot_em.jpg-67dd52edfbff9c3b2176c55a371e96de.bptc.ctex"]
 
 [params]
 
-compress/mode=0
-compress/high_quality=false
+compress/mode=2
+compress/high_quality=true
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

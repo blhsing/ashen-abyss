@@ -172,6 +172,7 @@ public partial class Ui : Control
         Make("death", () => new DeathUi());
         Make("tier", () => new WorldTierUi());
         Make("rift", () => new RiftUi());
+        Make("guide", () => new WeaponGuideUi());       // SYSTEMS: 武器指南
         Log.Info("ui", $"panels registered: {string.Join(", ", _panels.Keys)}");
     }
 
@@ -511,6 +512,14 @@ public partial class Ui : Control
         if (IsOpen("dialogue") || IsOpen("death")) return false;
         // gear sets (SYSTEMS): F1–F6 load a set, E swaps back (rebindable); live with the inventory open too
         if ((_open.Count == 0 || IsOpen("inventory")) && !g.Player.Dead && GearSets.HandleKey(key)) return true;
+        // 武器指南 (SYSTEMS): G on a hovered weapon / off-hand opens it on that base; with nothing hovered, on the class
+        if (key == Key.G && !g.Player.Dead)
+        {
+            if (IsOpen("guide")) { Close("guide"); return true; }
+            var hov = SlotBoard.HoveredItem;
+            if (hov != null && hov.Kind is ItemKind.Weapon or ItemKind.OffHand) { Open("guide", hov); return true; }
+            if (_open.Count == 0 || IsOpen("inventory")) { Open("guide", g.Hero.Class); return true; }
+        }
 
         string id = key switch
         {
@@ -1000,7 +1009,7 @@ public partial class Ui : Control
 /// Commands: wait s · open id[:arg] · close [id] · click/rclick/mclick/dbl/down/up/move/hover p · unhover ·
 /// wheel x,y,n · key [Shift+]Name · keydown/keyup Name · text s · shot name · dump name · menu page · scale 0|1|2 ·
 /// hud warn|toast|sub|title|flash text · give common|magic|rare|legendary|unique|gem|set [kind] · gold n · mats n ·
-/// xp n · life pct · points n · log s · quit.
+/// xp n · life pct · points n · drop · dropat x,y[,n] · log s · quit.
 /// </summary>
 internal sealed class UiScript
 {
@@ -1225,6 +1234,25 @@ internal sealed class UiScript
                 Loot.DropGold(137, pl.Pos2 + new Vector2(-2.4f, 2.0f));
                 break;
             }
+            case "dropat":
+            {
+                // [fixes] "x,y[,n]": n rare items (default 4) on the ground under that WINDOW pixel (loot labels next to the HUD)
+                var pl = g.Player; var h = g.Hero;
+                var cam = g.GetViewport()?.GetCamera3D();
+                var parts = arg.Split(',');
+                if (pl == null || h == null || cam == null || parts.Length < 2) { Log.Warn("uitest", $"dropat '{arg}': no hero, camera or position"); break; }
+                Vector2 vp = g.GetViewport().GetFinalTransform().AffineInverse() * new Vector2((float)Num(parts[0], 0), (float)Num(parts[1], 0));
+                Vector3 o = cam.ProjectRayOrigin(vp), d = cam.ProjectRayNormal(vp);
+                if (Mathf.Abs(d.Y) < 1e-4f) break;
+                Vector3 hit = o + d * ((pl.GlobalPosition.Y - o.Y) / d.Y);
+                int n = parts.Length > 2 ? Math.Clamp((int)Num(parts[2], 4), 1, 12) : 4;
+                int power = Math.Clamp(h.D.Level * 10 + h.D.Tier * 30, 10, ItemDb.MaxPower);
+                for (int i = 0; i < n; i++)
+                    Loot.DropItem(ItemDb.Generate(power, i % 3 == 0 ? Rarity.Legendary : Rarity.Rare, h.Class, i % 2 == 0 ? ItemKind.Weapon : ItemKind.Ring),
+                        new Vector2(hit.X, hit.Z) + new Vector2((i % 2) * 0.9f - 0.45f, (i / 2) * 0.9f));
+                Log.Info("uitest", $"dropat window {arg} -> ground ({hit.X:0.0},{hit.Z:0.0}), {n} items");
+                break;
+            }
             case "boss":
             {
                 // wakes the level's boss for the boss frame: a scratch of damage, and a stagger value when given (0-100, 100 = reeling)
@@ -1249,7 +1277,7 @@ internal sealed class UiScript
                 bool hc = p.Length > 4 && p[4].StartsWith("h", StringComparison.OrdinalIgnoreCase);
                 ui.CloseAll();
                 g.HarnessNext(area, level, true, -1, false, paragon);
-                g.NewGame(Game.HarnessSlot, "試煉者", (ClassId)idx, hc);
+                g.NewGame(g.TestSlot, "試煉者", (ClassId)idx, hc);      // honours --slot=90..99 (was always slot 0)
                 _waitPlay = true; _sawLoading = false;
                 break;
             }
@@ -1589,6 +1617,14 @@ internal sealed class UiScript
         void Add(Item it) { if (it != null && !h.BagFull) { it.ReqLevel = Math.Min(it.ReqLevel, h.D.Level); h.D.Bag.Add(it); } }
         switch (what)
         {
+            case "base":        // SYSTEMS: "give base axe2 [rarity]" — a weapon / off-hand of that base, whichever class holds it
+            {
+                var gb = p.Length > 1 ? ItemDb.BaseOf(p[1]) : null;
+                if (gb == null) { Log.Warn("uitest", $"give base: unknown '{(p.Length > 1 ? p[1] : "")}'"); break; }
+                var rar = p.Length > 2 && Enum.TryParse(p[2], true, out Rarity r2) ? r2 : Rarity.Legendary;
+                Add(ItemDb.Generate(power, rar, h.Class, gb.Off ? ItemKind.OffHand : ItemKind.Weapon, null, gb.Id));
+                break;
+            }
             case "gem":
                 foreach (var gd in ItemDb.Gems)
                 {

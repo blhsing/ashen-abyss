@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://bdfrv5nm4dxma"
-path="res://.godot/imported/hero_pactbinder_metal_c.jpg-61e5928eff21f63a027a16f78ddafaaf.ctex"
+path.bptc="res://.godot/imported/hero_pactbinder_metal_c.jpg-61e5928eff21f63a027a16f78ddafaaf.bptc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "f8b650f27dc3656cb525ec06ef4b9b09"
@@ -14,12 +15,12 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/chars/hero_pactbinder_metal_c.jpg"
-dest_files=["res://.godot/imported/hero_pactbinder_metal_c.jpg-61e5928eff21f63a027a16f78ddafaaf.ctex"]
+dest_files=["res://.godot/imported/hero_pactbinder_metal_c.jpg-61e5928eff21f63a027a16f78ddafaaf.bptc.ctex"]
 
 [params]
 
-compress/mode=0
-compress/high_quality=false
+compress/mode=2
+compress/high_quality=true
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

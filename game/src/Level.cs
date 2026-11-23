@@ -43,6 +43,8 @@ public partial class Level : Node3D
     public float RiftPoints, RiftNeed = 30f, RiftMul = 1f; public bool RiftFailed;
     public bool Built { get; private set; }
     public bool BossDead => _bossDead;
+    /// <summary>The boss fight is on (from the hero stepping into the arena or hurting the boss until it dies or resets).</summary>
+    public bool BossEngaged => _engaged;
     // ── save resume (LevelState) ──
     /// <summary>The checkpoint the level was populated with (spawns keep clear of it; a resumed save rebuilds with the same one).</summary>
     public Vector2 BuildCheckpoint;

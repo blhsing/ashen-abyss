@@ -67,6 +67,8 @@ public sealed class SlotBoard
     private Panel _glow;
     public Action<SlotView> OnHover;
     public Item Hovered => _cur?.Item;
+    /// <summary>The item under the pointer in any open panel (the last board that saw it), or null.</summary>
+    public static Item HoveredItem;
 
     public SlotView Add(SlotView v) { _views.Add(v); return v; }
 
@@ -75,7 +77,7 @@ public sealed class SlotBoard
     {
         DetachGlow();
         _views.Clear();
-        if (_cur != null) { _cur = null; Game.I?.Ui?.HideTooltip(); }
+        if (_cur != null) { _cur = null; HoveredItem = null; Game.I?.Ui?.HideTooltip(); }
     }
 
     public void Dispose()
@@ -107,6 +109,7 @@ public sealed class SlotBoard
         }
         if (ReferenceEquals(hit, _cur)) return;
         _cur = hit;
+        HoveredItem = hit?.Item;          // SYSTEMS: G opens the 武器指南 on the item under the pointer, whichever panel shows it
         DetachGlow();
         var ui = Game.I?.Ui;
         if (hit == null) { ui?.HideTooltip(); return; }
@@ -1589,6 +1592,7 @@ public partial class InventoryUi : UiPanel
         pre.AddChild(Caption("快速篩選"));
         foreach (var (id, name) in BagFilter.Presets)
         {
+            if (id == "forgeable" && h.Class != ClassId.Soulbinder) continue;      // [golem] 可鑄造魔像: the Soulbinder's iron golem only
             string pid = id;
             var b = ItemUi.Btn(name, () => { _filter.ApplyPreset(pid); _dirty = true; Log.Info("inv", $"bag filter preset {pid}"); }, UiTheme.FsCaption);
             ItemUi.Tone(b, _filter.Preset == id);
@@ -1737,6 +1741,7 @@ public partial class InventoryUi : UiPanel
     private void DecorateBag(Item it, SlotView v)
     {
         if (_filterOn && _filter.Active && !Shown(it)) ItemUi.Dimmed(v.Node, 0.66f);      // the filter dims what it does not show
+        else if (_filterOn && _filter.Forgeable) GolemUi.ForgeBadge(v.Node);            // [golem] 可鑄造魔像: the forge badge on what the filter shows
         if (_gemPick != null)
         {
             if (ReferenceEquals(it, _gemPick)) ItemUi.Outline(v.Node, ItemUi.PickColor, 3);
@@ -1963,7 +1968,7 @@ public partial class InventoryUi : UiPanel
         Row("護甲", N(h.Armor), $"面對同等級的敵人，護甲使你受到的傷害降低 {ItemUi.Pct(Balance.ArmorDr(h.Armor, d.Level) * 100f)}。\n敵人等級越高，同樣的護甲效果越低。");
         Row("每秒傷害（估算）", N(EstimateDps(h)), "以武器傷害、攻擊速度、主屬性、傷害加成與爆擊推算的持續輸出。\n不含技能倍率與條件加成，僅供比較裝備。");
         Row("武器傷害", $"{h.WeaponMin:0}–{h.WeaponMax:0}", h.DualWielding ? "雙持：兩手輪流出擊，各以自己武器的傷害範圍為基礎；這裡是兩手的平均。" : "每一次技能命中，都以這個範圍內的一個數值為基礎。");
-        Row("每秒攻擊", h.SwingsPerSec.ToString("0.00", CultureInfo.InvariantCulture), h.DualWielding ? "兩把武器速度的平均，雙持再快 10%，乘上攻擊速度加成。" : "武器的基礎攻擊頻率，再乘上攻擊速度加成。");
+        Row("每秒攻擊", h.SwingsPerSec.ToString("0.00", CultureInfo.InvariantCulture), h.DualWielding ? $"兩把武器速度的平均，雙持再快 {(ItemDb.DualSpeed - 1f) * 100f:0}%，乘上攻擊速度加成。" : "武器的基礎攻擊頻率，再乘上攻擊速度加成。");
         Row($"{Names.Resource(h.Class)}上限", N(h.MaxResource));
         Row("藥水容量", d.PotionCap.ToString());
 
@@ -1986,6 +1991,8 @@ public partial class InventoryUi : UiPanel
         }
         string held = h.OffHandBlocked ? "雙手持握" : h.DualWielding ? "雙持" : h.OffHand != null ? "單手＋副手" : h.Weapon != null ? "單手" : "徒手";
         Row("目前持握", held, "雙手武器同時佔用兩手；可雙持的職業可在副手再拿一把單手武器。");
+        // SYSTEMS: the weapon guide for this class (also G on any weapon or off-hand)
+        _rows.AddChild(ItemUi.Btn("武器指南（G）", () => Game.I?.Ui?.Open("guide", h.Class), UiTheme.FsRow));
     }
 
     private void Attr(Hero h, Stat s, Stat main, string tip)

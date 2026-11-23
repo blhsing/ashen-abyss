@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://yibd56ava10r"
-path="res://.godot/imported/mon_engine_heliostat_mon_engine_heliostat_bc.jpg-1cd17500113b4be6122a28afe9886be5.ctex"
+path.bptc="res://.godot/imported/mon_engine_heliostat_mon_engine_heliostat_bc.jpg-1cd17500113b4be6122a28afe9886be5.bptc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "c8c2fc25bbd240dda0ba89d7d29b80c1"
@@ -14,12 +15,12 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/chars/mon_engine_heliostat_mon_engine_heliostat_bc.jpg"
-dest_files=["res://.godot/imported/mon_engine_heliostat_mon_engine_heliostat_bc.jpg-1cd17500113b4be6122a28afe9886be5.ctex"]
+dest_files=["res://.godot/imported/mon_engine_heliostat_mon_engine_heliostat_bc.jpg-1cd17500113b4be6122a28afe9886be5.bptc.ctex"]
 
 [params]
 
-compress/mode=0
-compress/high_quality=false
+compress/mode=2
+compress/high_quality=true
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

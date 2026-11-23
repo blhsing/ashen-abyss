@@ -1,0 +1,50 @@
+build ok
+exit= seconds=842
+log: C:\Users\blhsi\AppData\Roaming\AshenAbyss\logs\game_20261122_123959.log  lines=4840  ERR=0  WRN=21
+--- distinct warnings ---
+   1 x [suite] FAIL named sh_frost: kill time within 45-90s - 44.4s
+   1 x [suite] FAIL named sh_sanctum: kill time within 45-90s - 43.3s
+   1 x [suite] FAIL named rare_abyss_firstborn: kill time within 20-45s - 13.4s
+   1 x [suite] FAIL named rare_sanctum_kolen: kill time within 20-45s - 5.7s
+   1 x [suite] FAIL named rare_sanctum_vesna: kill time within 20-45s - 12.7s
+   1 x [suite] FAIL named db_abyss_d2: kill time within 45-90s - 31.6s
+   1 x [suite] FAIL named wb_breathofsilence: kill time within 120-240s - 294.1s
+   1 x [suite] FAIL named db_crypt_d1: kill time within 45-90s - 32.1s
+   1 x [suite] FAIL named sh_abyss: kill time within 45-90s - 36.7s
+   1 x [suite] FAIL named db_wastes_d1: killed - 234s
+   1 x [suite] FAIL named rare_sanctum_everquiet: kill time within 20-45s - 52.1s
+   1 x [suite] FAIL named rare_wastes_gallowsfather: kill time within 20-45s - 14s
+   1 x [suite] FAIL named rare_frost_whiteshadow: kill time within 20-45s - 73.3s
+   1 x [suite] FAIL named rare_wastes_ashbride: kill time within 20-45s - 18.8s
+   1 x [suite] FAIL named rare_wastes_oldhowl: kill time within 20-45s - 19.4s
+   1 x [suite] FAIL named rare_wastes_ashbride: every mechanic fired - missing reform,ashfall
+   1 x [suite] FAIL named rare_mire_dafu: kill time within 20-45s - 46.8s
+   1 x [suite] FAIL named rare_sands_ogan: kill time within 20-45s - 15.6s
+   1 x [suite] FAIL named rare_crypt_hundredtears: kill time within 20-45s - 15.3s
+   1 x [suite] FAIL named rare_frost_thousandyear: killed - 117.1s
+--- last lines ---
+  840.915 INF [game] quitting
+  840.925 INF [save] slot 91 saved: ??? lv50 ??? area=rift~arena:pin_8_osaros bytes=25781
+  840.926 INF [save] save reason=quit slot=91 ok=True area=rift~arena:pin_8_osaros playtime=30s capture=0.1ms total=10.2ms
+  840.930 INF [bot] final summary t=825s game=4596s area=rift~arena:pin_8_osaros doing=fight pin_8_osaros kills=12 elites=96 bosses=32 level=50 life=50% items=0 gold=50 deaths=0 areas=61 casts=6560 unstuck=0 monsters=0 errors=0 warnings=21 botErrors=0
+  840.933 INF [bot] final progress: waypoints=[town] renown=[] quests done=0/1 skillpts bonus=0 potion cap=4 altars=0 codex=0 tier=2/2 riftBest=0 paragon=53 playtime=30s
+  840.933 INF [anim] anim-check: hero moved 719.2s - 0.0s without a locomotion clip, 0.0s with frozen legs; hero stood 541.1s - 0.0s in a run clip or none; monsters moved 801.8s - 0.0s without a locomotion clip, 0.0s with frozen legs; models without a skeleton ƒ?Ý
+  840.934 INF [input] keyboard hook saw 0 key events, 0 of them PrtSc
+  840.936 INF [boot] shutdown errors=0 warnings=21 uptime=841s
+--- engine output: distinct problem lines (16 total) ---
+   2 x ERROR: Parameter "t" is null.
+   1 x at: void Godot.NativeInterop.ExceptionUtils.LogException(System.Exception) (/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Core/NativeInterop/ExceptionUtils.cs:113)
+   1 x ERROR: System.InvalidOperationException: Handle is not initialized.
+   1 x [8] Godot.NativeInterop.godot_bool Godot.Bridge.CSharpInstanceBridge.Call(nint, Godot.NativeInterop.godot_string_name*, Godot.NativeInterop.godot_variant**, int, Godot.NativeInterop.godot_variant_call_error*, Godot.NativeInterop.godot_variant*) (/root/g ƒ?Ý
+   1 x [0] void Godot.GD.PushError(string) (/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Core/GD.cs:366)
+   1 x [31] Godot.NativeInterop.godot_bool Godot.Bridge.CSharpInstanceBridge.Call(nint, Godot.NativeInterop.godot_string_name*, Godot.NativeInterop.godot_variant**, int, Godot.NativeInterop.godot_variant_call_error*, Godot.NativeInterop.godot_variant*) (/root/ ƒ?Ý
+   1 x [19] Godot.NativeInterop.godot_bool Godot.Bridge.CSharpInstanceBridge.Call(nint, Godot.NativeInterop.godot_string_name*, Godot.NativeInterop.godot_variant**, int, Godot.NativeInterop.godot_variant_call_error*, Godot.NativeInterop.godot_variant*) (/root/ ƒ?Ý
+   1 x [1] void Godot.NativeInterop.ExceptionUtils.LogException(System.Exception) (/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Core/NativeInterop/ExceptionUtils.cs:113)
+   1 x [12] float AshenAbyss.Monster.TakeHit(AshenAbyss.Hit) (Y:\game\src\Monster.cs:619)
+   1 x [11] float AshenAbyss.Actor.TakeHit(AshenAbyss.Hit) (Y:\game\src\Actor.cs:290)
+   1 x [17] Godot.NativeInterop.godot_bool Godot.Bridge.CSharpInstanceBridge.Call(nint, Godot.NativeInterop.godot_string_name*, Godot.NativeInterop.godot_variant**, int, Godot.NativeInterop.godot_variant_call_error*, Godot.NativeInterop.godot_variant*) (/root/ ƒ?Ý
+   1 x [20] float AshenAbyss.Actor.TakeHit(AshenAbyss.Hit) (Y:\game\src\Actor.cs:290)
+   1 x [29] Godot.NativeInterop.godot_bool Godot.Bridge.CSharpInstanceBridge.Call(nint, Godot.NativeInterop.godot_string_name*, Godot.NativeInterop.godot_variant**, int, Godot.NativeInterop.godot_variant_call_error*, Godot.NativeInterop.godot_variant*) (/root/ ƒ?Ý
+   1 x [22] float AshenAbyss.Combat.PlayerHit(AshenAbyss.Player, AshenAbyss.Actor, AshenAbyss.SkillDef, float, AshenAbyss.Element, AshenAbyss.HitOpt) (Y:\game\src\Combat.cs:62)
+   1 x [21] float AshenAbyss.Monster.TakeHit(AshenAbyss.Hit) (Y:\game\src\Monster.cs:619)
+DONE

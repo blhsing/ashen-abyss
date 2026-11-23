@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://c0b1r4uf7sbyt"
-path="res://.godot/imported/mon_rime_stalker_mon_rime_stalker_em.jpg-26eeca621b058a7ec4d494ddfe7f4a7e.ctex"
+path.bptc="res://.godot/imported/mon_rime_stalker_mon_rime_stalker_em.jpg-26eeca621b058a7ec4d494ddfe7f4a7e.bptc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "585f384de18668928774026bce79ccb1"
@@ -14,12 +15,12 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/chars/mon_rime_stalker_mon_rime_stalker_em.jpg"
-dest_files=["res://.godot/imported/mon_rime_stalker_mon_rime_stalker_em.jpg-26eeca621b058a7ec4d494ddfe7f4a7e.ctex"]
+dest_files=["res://.godot/imported/mon_rime_stalker_mon_rime_stalker_em.jpg-26eeca621b058a7ec4d494ddfe7f4a7e.bptc.ctex"]
 
 [params]
 
-compress/mode=0
-compress/high_quality=false
+compress/mode=2
+compress/high_quality=true
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

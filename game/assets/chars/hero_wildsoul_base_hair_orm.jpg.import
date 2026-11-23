@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://2f2kjpycyl8d"
-path="res://.godot/imported/hero_wildsoul_base_hair_orm.jpg-20c22e25db08f74cf89eb8f894575402.ctex"
+path.bptc="res://.godot/imported/hero_wildsoul_base_hair_orm.jpg-20c22e25db08f74cf89eb8f894575402.bptc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "c3d91f08876e78a5c48f82152dd6cf21"
@@ -14,12 +15,12 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/chars/hero_wildsoul_base_hair_orm.jpg"
-dest_files=["res://.godot/imported/hero_wildsoul_base_hair_orm.jpg-20c22e25db08f74cf89eb8f894575402.ctex"]
+dest_files=["res://.godot/imported/hero_wildsoul_base_hair_orm.jpg-20c22e25db08f74cf89eb8f894575402.bptc.ctex"]
 
 [params]
 
-compress/mode=0
-compress/high_quality=false
+compress/mode=2
+compress/high_quality=true
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

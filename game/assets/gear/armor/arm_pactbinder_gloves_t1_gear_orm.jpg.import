@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://cf5anm0ui16k3"
-path="res://.godot/imported/arm_pactbinder_gloves_t1_gear_orm.jpg-d84a809253559da181ba9c357885c4ca.ctex"
+path.bptc="res://.godot/imported/arm_pactbinder_gloves_t1_gear_orm.jpg-d84a809253559da181ba9c357885c4ca.bptc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "c8a6a6c24c21f7df120ded36d10f71af"
@@ -14,12 +15,12 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/gear/armor/arm_pactbinder_gloves_t1_gear_orm.jpg"
-dest_files=["res://.godot/imported/arm_pactbinder_gloves_t1_gear_orm.jpg-d84a809253559da181ba9c357885c4ca.ctex"]
+dest_files=["res://.godot/imported/arm_pactbinder_gloves_t1_gear_orm.jpg-d84a809253559da181ba9c357885c4ca.bptc.ctex"]
 
 [params]
 
-compress/mode=0
-compress/high_quality=false
+compress/mode=2
+compress/high_quality=true
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

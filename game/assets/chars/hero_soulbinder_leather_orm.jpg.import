@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://dld5cqvps1v5t"
-path="res://.godot/imported/hero_soulbinder_leather_orm.jpg-ff238eb07e973a89dc96629baa623eeb.ctex"
+path.bptc="res://.godot/imported/hero_soulbinder_leather_orm.jpg-ff238eb07e973a89dc96629baa623eeb.bptc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "7fc26d1481d740dca58e59097054815a"
@@ -14,12 +15,12 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/chars/hero_soulbinder_leather_orm.jpg"
-dest_files=["res://.godot/imported/hero_soulbinder_leather_orm.jpg-ff238eb07e973a89dc96629baa623eeb.ctex"]
+dest_files=["res://.godot/imported/hero_soulbinder_leather_orm.jpg-ff238eb07e973a89dc96629baa623eeb.bptc.ctex"]
 
 [params]
 
-compress/mode=0
-compress/high_quality=false
+compress/mode=2
+compress/high_quality=true
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

@@ -40,7 +40,9 @@ public sealed partial class TestSuite
 
     private readonly TestBot _bot;
     private Monster _focusTarget;
-    private float _focusDmg, _minionDmg, _otherDmg;
+    private bool _ccImmuneDummy, _critLow, _bare;
+    private static readonly StatusId[] CcIds = { StatusId.Stun, StatusId.Freeze, StatusId.Root, StatusId.Fear, StatusId.Slow, StatusId.Chill, StatusId.Knockback, StatusId.Pull, StatusId.Taunt };
+    private float _focusDmg, _minionDmg, _otherDmg, _focusCdDmg;      // _focusCdDmg: of _focusDmg, what skills with a cooldown dealt
 
     public TestSuite(string spec, TestBot bot = null)
     {
@@ -72,7 +74,14 @@ public sealed partial class TestSuite
     {
         if (a is not Monster m || m.Faction != Faction.Monster || amount <= 0f) return;
         _hits++; _dmg += amount;
-        if (a == _focusTarget) _focusDmg += amount;
+        if (a == _focusTarget) { _focusDmg += amount; if (h.Skill != null && h.Skill.Cooldown > 0f && !h.Minion) _focusCdDmg += amount; }
+        // [fixes] CC-immune dummy (--suite=dps:…:bases:secs:only:cci): every crowd control is wiped after each hit, so
+        // "damage vs crowd-controlled" bonuses never apply (a boss-like target)
+        if (_ccImmuneDummy && a == _focusTarget)
+        {
+            foreach (var id in CcIds) { a.StTime[(int)id] = 0f; a.StMag[(int)id] = 0f; }
+            a.Knock = Vector2.Zero;
+        }
         if (h.Dot) _dotHits++;
         if (h.Minion) { _minionHits++; _minionDmg += amount; }
         if (h.Skill == null && !h.Dot && !h.Minion) _otherDmg += amount;
@@ -162,9 +171,12 @@ public sealed partial class TestSuite
             case "save": yield return SaveSuite(); break;
             case "dps": yield return DpsSuite(); break;
             case "gear": yield return GearSuite(); break;        // RENDER: --suite=gear[:part] (TestSuite.Gear.cs)
+            case "guide": yield return GuideSuite(); break;      // SYSTEMS: --suite=guide[:shots] (TestSuite.Guide.cs): 武器指南
             case "items": yield return ItemsSuite(); break;      // SYSTEMS: --suite=items[:fixture dir] (TestSuite.Items.cs): save migration, hands, loot spread
             case "mapquest": yield return MapQuestSuite(); break; // MAP-QUEST: --suite=mapquest (TestSuite.MapQuest.cs): quest pins on the maps
+            case "pilot": yield return PilotSuite(); break;      // AI-PILOT: --suite=pilot[:save json] (TestSuite.Pilot.cs): gear rules on the user's report
             case "named": yield return NamedSuite(); break;      // NAMED-HOOK: --suite=named[:filter[:class]] (TestSuite.Named.cs)
+            case "golem": yield return GolemSuite(); break;      // GOLEM: --suite=golem[:part] (TestSuite.Golem.cs): book, golems, forging, persistence, migration, perf
             case "census": case "bestiary": case "ai": case "rosterperf": yield return RosterSuite(); break;      // TestSuite.Roster.cs
             case "anims":
                 if (_arg.StartsWith("shots")) yield return AnimShots(); else yield return AnimsSuite();
@@ -181,11 +193,13 @@ public sealed partial class TestSuite
 
     // ───────────────────────── shared helpers ─────────────────────────
 
-    private IEnumerator StartHero(ClassId cls, int level, string area, bool gear = true, bool god = true, int tier = 0, int paragon = -1, int slot = Game.HarnessSlot, bool hardcore = false)
+    private IEnumerator StartHero(ClassId cls, int level, string area, bool gear = true, bool god = true, int tier = 0, int paragon = -1, int slot = -1, bool hardcore = false)
     {
         yield return Until(() => G.State != Game.GameState.Loading, 90, "the previous load");
+        // a suite's own test slot when it names one; else --slot=0/90..99 (the caller's test slot); else slot 0. Never a menu slot 1-8.
+        int use = slot >= 0 && !(slot >= 1 && slot <= SaveSystem.SlotCount) ? slot : G.TestSlot;
         G.HarnessNext(area, level, gear, tier, god, paragon);
-        G.NewGame(slot, "試煉者", cls, hardcore);
+        G.NewGame(use, "試煉者", cls, hardcore);
         yield return Until(() => G.State == Game.GameState.Play && G.Hero != null && G.Hero.Class == cls && G.Player != null && GodotObject.IsInstanceValid(G.Player)
             && G.Player.IsInsideTree() && G.Level != null && G.Level.Built, 120, $"{Names.ClassKey(cls)} lv{level} in {area}");
         yield return 0.25f;
@@ -289,7 +303,7 @@ public sealed partial class TestSuite
         int fails0 = _fail, tests = 0;
         var all = SkillDb.Of(cls).OrderBy(s => s.UnlockLevel).ToList();
         var unlocked = all.Where(s => s.UnlockLevel <= level).ToList();
-        if (level >= Balance.LevelCap) Check(unlocked.Count == all.Count && all.Count == 8, $"skills {tag}: all {all.Count} skills unlocked at the level cap (expected 8)");
+        if (level >= Balance.LevelCap) Check(unlocked.Count == all.Count && all.Count == (cls == ClassId.Soulbinder ? 9 : 8), $"skills {tag}: all {all.Count} skills unlocked at the level cap (expected {(cls == ClassId.Soulbinder ? 9 : 8)}; the Soulbinder has 魔像號令)");
         var specs = SkillDb.SpecsOf(cls).Select(s => s.Id).ToList();
         string defaultSpec = level >= SkillDb.SpecLevel ? h.D.Spec : null;
         bool full = level >= Balance.LevelCap;
@@ -525,6 +539,7 @@ public sealed partial class TestSuite
                 if (int.TryParse(l, out int lv)) levels.Add(Math.Clamp(lv, 1, Balance.LevelCap));
         }
         if (_bot == null) { Fail("dps: no bot to drive the rotation"); yield break; }
+        if (parts.Length > 2 && parts[2] == "bases") { _ccImmuneDummy = parts.Length > 5 && parts[5] == "cci"; _critLow = parts.Length > 6 && parts[6] == "critlow"; _bare = parts.Length > 6 && parts[6] == "bare"; yield return DpsBases(classes, levels, parts.Length > 3 && double.TryParse(parts[3], out double win) ? Math.Clamp(win, 5.0, 120.0) : 25.0, parts.Length > 4 && parts[4].Length > 0 && parts[4] != "all" ? parts[4] : null); yield break; }
 
         foreach (int level in levels)
         {
@@ -584,6 +599,121 @@ public sealed partial class TestSuite
                 Log.Info("suite", $"dps lv{level}: single-target damage vs Balance.ExpectedDps — min {ratios[0]:0.00}× median {ratios[ratios.Count / 2]:0.00}× max {ratios[^1]:0.00}× over {ratios.Count} classes");
             }
         }
+    }
+
+    /// <summary>
+    /// [fixes] --suite=dps:classes:levels:bases — the same rotation on one dummy (25 s) with every hand loadout the class
+    /// can hold: each two-hand base, each dual-wield base, each one-hand base with the first off-hand and the first one-hand
+    /// base with each further off-hand. The weapons are plain (common, implicit only) at the level's power and the rest of
+    /// the gear stays the same, so the lines compare the bases themselves. Each line: damage per second, the share dealt
+    /// by skills with a cooldown, and the ratio to the class's starter loadout.
+    /// </summary>
+    private IEnumerator DpsBases(List<ClassId> classes, List<int> levels, double window = 25.0, string only = null)
+    {
+        foreach (int level in levels)
+            foreach (var cls in classes)
+            {
+                _section = $"dps-bases {Names.ClassKey(cls)} lv{level}";
+                yield return StartHero(cls, level, "town");
+                var h = G.Hero; var p = G.Player;
+                if (h == null || h.Class != cls) { Fail($"{_section}: hero not created"); continue; }
+                var g = ItemDb.Loadout(cls);
+                int power = Math.Clamp(level * 10, 10, ItemDb.MaxPower);
+                // identical non-weapon gear for every loadout AND every sample of this class and level: rolled from a
+                // fixed seed (the --gear set of StartHero is random per hero). critlow: crit chance affixes removed.
+                // bare: nothing but the hands (a fresh hero at levels 1-5 wears only its starter weapon)
+                if (_bare)
+                {
+                    for (int i = 0; i < h.D.Equip.Length; i++) if (i != (int)EquipSlot.MainHand && i != (int)EquipSlot.OffHand) h.D.Equip[i] = null;
+                    h.Recalc();
+                    Log.Info("suite", $"dps-bases {Names.ClassKey(cls)} lv{level}: bare (hands only): crit chance {h.S[Stat.CritChance]:0.#}% life {h.MaxLife:0}");
+                }
+                else
+                {
+                    // --samegear: one seed for every class (toughness comparisons), else a seed per class
+                    int gseed = 90000 + level * 131 + (G.Arg("samegear") ? 0 : (int)cls * 7);
+                    var grng = new Random(gseed);
+                    ItemKind[] kinds = { ItemKind.Helm, ItemKind.Chest, ItemKind.Gloves, ItemKind.Pants, ItemKind.Boots, ItemKind.Amulet, ItemKind.Ring, ItemKind.Ring };
+                    EquipSlot[] slots = { EquipSlot.Helm, EquipSlot.Chest, EquipSlot.Gloves, EquipSlot.Pants, EquipSlot.Boots, EquipSlot.Amulet, EquipSlot.Ring1, EquipSlot.Ring2 };
+                    for (int i = 0; i < kinds.Length; i++)
+                    {
+                        var it = ItemDb.Generate(power, Rarity.Rare, cls, kinds[i], grng);
+                        it.ReqLevel = Math.Min(it.ReqLevel, level);
+                        if (_critLow) it.Affixes.RemoveAll(a => a.Stat == Stat.CritChance);
+                        h.D.Equip[(int)slots[i]] = it;
+                    }
+                    h.Recalc();
+                    Log.Info("suite", $"dps-bases {Names.ClassKey(cls)} lv{level}: fixed gear (seed {gseed}){(_critLow ? ", crit affixes removed" : "")}: crit chance {h.S[Stat.CritChance]:0.#}% crit dmg {h.S[Stat.CritDmg]:0}% life {h.MaxLife:0}");
+                }
+                {
+                    // effective life against a physical hit of a monster of this level: life ÷ the share that gets through
+                    float thru = (1f - Balance.ArmorDr(h.Armor, level)) * (1f - h.Res(Element.Physical) / 100f) * (1f - h.S[Stat.DmgReduction] / 100f);
+                    Log.Info("suite", $"ehp {Names.ClassKey(cls)} lv{level}{(_bare ? " bare" : "")}: life {h.MaxLife:0} armor {h.Armor:0} (dr {Balance.ArmorDr(h.Armor, level):P0}) dmgred {h.S[Stat.DmgReduction]:0.#}% res {h.Res(Element.Physical):0} -> ehp {h.MaxLife / Math.Max(0.05f, thru):0}");
+                }
+                var sets = new List<(string name, string main, string off)>();
+                sets.Add(("starter " + g.Starter + (g.StarterOff != null ? "+" + g.StarterOff : ""), g.Starter, g.StarterOff));
+                foreach (var b in g.TwoHand) sets.Add(("2h " + b, b, null));
+                foreach (var b in g.Dual) sets.Add(("dual " + b, b, b));
+                if (g.OffHand.Length > 0)
+                {
+                    foreach (var b in g.MainHand) sets.Add(($"off {b}+{g.OffHand[0]}", b, g.OffHand[0]));
+                    for (int i = 1; i < g.OffHand.Length; i++) foreach (var b in g.MainHand) sets.Add(($"off {b}+{g.OffHand[i]}", b, g.OffHand[i]));     // every one-hand base with every further off-hand
+                }
+                else if (!g.CanDual) foreach (var b in g.MainHand) sets.Add(("1h " + b, b, null));
+                Vector2 arena = FindArena(World.Grid, G.Level.Checkpoint);
+                float starter = 0f;
+                foreach (var set in sets.Where(x => only == null || x.name.StartsWith(only + " ", StringComparison.Ordinal)).ToList())
+                {
+                    ClearField();
+                    var rng = new Random(level * 7919 + (int)cls);
+                    Item Make(string b)
+                    {
+                        var gb = ItemDb.BaseOf(b);
+                        var it = ItemDb.Generate(power, Rarity.Common, cls, gb.Off ? ItemKind.OffHand : ItemKind.Weapon, rng, b);
+                        it.ReqLevel = Math.Min(it.ReqLevel, level);
+                        // the base's own stats at mid-range (95 % of the range at this power), not a random roll
+                        it.Implicits.Clear();
+                        foreach (var (s, lo, hi) in gb.Implicit)
+                        {
+                            float v = (lo + (hi - lo) * (power / (float)ItemDb.MaxPower)) * 0.95f;
+                            it.Implicits.Add(new Affix { Stat = s, Value = StatInfo.IsPct(s) ? MathF.Round(v * 10f) / 10f : MathF.Max(1, MathF.Round(v)) });
+                        }
+                        return it;
+                    }
+                    h.D.Equip[(int)EquipSlot.MainHand] = Make(set.main);
+                    h.D.Equip[(int)EquipSlot.OffHand] = set.off != null ? Make(set.off) : null;
+                    p.CancelAction(); p.SetForm(0); p.Teleport(arena); p.Cds.Clear();
+                    h.Buffs.RemoveAll(b => b.Def.Id != "test_god"); h.Recalc();
+                    // the model must hold the new hands too (stance, reach, clips): written straight into D.Equip it
+                    // kept the previous loadout's stance, and the same fists measured 3264/s first and 2304/s after a 2H
+                    h.Notify();
+                    yield return 0.5f;
+                    p.Resource = Names.IsBuilder(cls) ? 0f : h.MaxResource; p.Pips = 0; p.Cds.Clear();
+                    yield return null;
+                    var target = Dummy("cultist", level, arena + new Vector2(2.4f, 0f), 5e8f);
+                    _focusTarget = target; _focusDmg = 0f; _focusCdDmg = 0f; _dmg = 0f; _hits = 0; _minionDmg = 0f; _otherDmg = 0f;
+                    _bot.ResetStats();
+                    double t0 = G.Time;
+                    // the dummy is pinned to its spot: a knockback otherwise sent it out of reach and the bot's palms
+                    // whiffed (forgebody fists measured 2300 or 3260/s depending on where it landed)
+                    Vector2 spot = target.Pos2;
+                    while (G.Time - t0 < window && target != null && GodotObject.IsInstanceValid(target) && !target.Dead)
+                    {
+                        if (target.Pos2.DistanceSquaredTo(spot) > 0.04f) { target.Knock = Vector2.Zero; target.Pos2 = spot; }
+                        _bot.FightStep(target);
+                        yield return 0.12f;
+                    }
+                    _bot.FightStop();
+                    float secs = (float)Math.Max(1.0, G.Time - t0), dps = _focusDmg / secs;
+                    if (starter <= 0f) starter = dps;
+                    _bot.Stats($"dps-bases {Names.ClassKey(cls)} lv{level} {set.name}");
+                    Log.Info("suite", $"dps-bases {Names.ClassKey(cls)} lv{level} {set.name}: aps {h.Aps:0.00} (x{h.Aps / g.RefAps:0.00} of pace {g.RefAps:0.00}) " +
+                        $"hit {h.WeaponMin:0}-{h.WeaponMax:0} | single {dps:0}/s = {dps / Balance.ExpectedDps(level):0.00}x expected, {dps / Math.Max(1f, starter):0.00}x starter | " +
+                        $"cooldown skills {(_focusDmg > 0 ? _focusCdDmg / _focusDmg : 0):P0}, minions {(_dmg > 0 ? _minionDmg / _dmg : 0):P0}");
+                    _focusTarget = null;
+                }
+                ClearField();
+            }
     }
 
     // ═════════════════════════ systems ═════════════════════════

@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://dj6uxkhi38hej"
-path="res://.godot/imported/mon_husk_mon_husk_orm.jpg-f5a752cf41f55dd5f2082d9da089ba07.ctex"
+path.bptc="res://.godot/imported/mon_husk_mon_husk_orm.jpg-f5a752cf41f55dd5f2082d9da089ba07.bptc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "2e555c59e0ee18e46719e495f2967461"
@@ -14,12 +15,12 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/chars/mon_husk_mon_husk_orm.jpg"
-dest_files=["res://.godot/imported/mon_husk_mon_husk_orm.jpg-f5a752cf41f55dd5f2082d9da089ba07.ctex"]
+dest_files=["res://.godot/imported/mon_husk_mon_husk_orm.jpg-f5a752cf41f55dd5f2082d9da089ba07.bptc.ctex"]
 
 [params]
 
-compress/mode=0
-compress/high_quality=false
+compress/mode=2
+compress/high_quality=true
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

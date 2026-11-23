@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://b38i2u6ou35ur"
-path="res://.godot/imported/npc_elder_leather_orm.jpg-0ad81ef4b6bd38d1e156c871b79f1ac2.ctex"
+path.bptc="res://.godot/imported/npc_elder_leather_orm.jpg-0ad81ef4b6bd38d1e156c871b79f1ac2.bptc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "52bfaad9ff348a12cf85d343c6aee3f5"
@@ -14,12 +15,12 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/chars/npc_elder_leather_orm.jpg"
-dest_files=["res://.godot/imported/npc_elder_leather_orm.jpg-0ad81ef4b6bd38d1e156c871b79f1ac2.ctex"]
+dest_files=["res://.godot/imported/npc_elder_leather_orm.jpg-0ad81ef4b6bd38d1e156c871b79f1ac2.bptc.ctex"]
 
 [params]
 
-compress/mode=0
-compress/high_quality=false
+compress/mode=2
+compress/high_quality=true
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

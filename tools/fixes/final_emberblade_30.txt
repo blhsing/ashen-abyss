@@ -1,0 +1,18 @@
+dps-bases emberblade lv30: fixed gear (seed 93930): crit chance 5.4% crit dmg 0% life 1239
+dps-bases emberblade lv30 starter sword2: aps 0.95 (x1.00 of pace 0.95) hit 108-162 | single 1081/s = 1.50x expected, 1.00x starter | cooldown skills 16%, minions 0%
+dps-bases emberblade lv30 2h sword2: aps 0.95 (x1.00 of pace 0.95) hit 108-162 | single 1154/s = 1.60x expected, 1.07x starter | cooldown skills 11%, minions 0%
+dps-bases emberblade lv30 2h axe2: aps 0.90 (x0.95 of pace 0.95) hit 100-185 | single 1152/s = 1.60x expected, 1.07x starter | cooldown skills 12%, minions 0%
+dps-bases emberblade lv30 2h mace2: aps 0.80 (x0.84 of pace 0.95) hit 120-200 | single 1124/s = 1.56x expected, 1.04x starter | cooldown skills 9%, minions 0%
+dps-bases emberblade lv30 2h polearm: aps 0.95 (x1.00 of pace 0.95) hit 101-168 | single 1141/s = 1.58x expected, 1.06x starter | cooldown skills 13%, minions 0%
+dps-bases emberblade lv30 dual sword1: aps 1.32 (x1.39 of pace 0.95) hit 79-118 | single 1294/s = 1.80x expected, 1.20x starter | cooldown skills 9%, minions 0%
+dps-bases emberblade lv30 dual axe1: aps 1.21 (x1.27 of pace 0.95) hit 73-135 | single 1336/s = 1.85x expected, 1.24x starter | cooldown skills 12%, minions 0%
+dps-bases emberblade lv30 dual mace1: aps 1.10 (x1.16 of pace 0.95) hit 86-143 | single 1042/s = 1.45x expected, 0.96x starter | cooldown skills 12%, minions 0%
+dps-bases emberblade lv30: fixed gear (seed 93930): crit chance 5.4% crit dmg 21% life 1239
+dps-bases emberblade lv30 starter sword2: aps 0.95 (x1.00 of pace 0.95) hit 108-162 | single 1218/s = 1.69x expected, 1.00x starter | cooldown skills 14%, minions 0%
+dps-bases emberblade lv30 2h sword2: aps 0.95 (x1.00 of pace 0.95) hit 108-162 | single 1236/s = 1.72x expected, 1.02x starter | cooldown skills 10%, minions 0%
+dps-bases emberblade lv30 2h axe2: aps 0.90 (x0.95 of pace 0.95) hit 100-185 | single 1161/s = 1.61x expected, 0.95x starter | cooldown skills 13%, minions 0%
+dps-bases emberblade lv30 2h mace2: aps 0.80 (x0.84 of pace 0.95) hit 120-200 | single 1144/s = 1.59x expected, 0.94x starter | cooldown skills 13%, minions 0%
+dps-bases emberblade lv30 2h polearm: aps 0.95 (x1.00 of pace 0.95) hit 101-168 | single 1049/s = 1.46x expected, 0.86x starter | cooldown skills 12%, minions 0%
+dps-bases emberblade lv30 dual sword1: aps 1.32 (x1.39 of pace 0.95) hit 79-118 | single 1274/s = 1.77x expected, 1.05x starter | cooldown skills 10%, minions 0%
+dps-bases emberblade lv30 dual axe1: aps 1.21 (x1.27 of pace 0.95) hit 73-135 | single 1336/s = 1.85x expected, 1.10x starter | cooldown skills 10%, minions 0%
+dps-bases emberblade lv30 dual mace1: aps 1.10 (x1.16 of pace 0.95) hit 86-143 | single 1055/s = 1.46x expected, 0.87x starter | cooldown skills 11%, minions 0%

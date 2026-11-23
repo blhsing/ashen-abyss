@@ -1,0 +1,22 @@
+12:32:54 tex_before_forgebody_bare ERR=0 draws=469 vram=1805MB 
+13:10:43 tex_before_forgebody_armoured ERR=0 draws=466 vram=1880MB 
+13:12:32 tex_before_title ERR=0 
+heroes tex_compress: 214 texture imports set to VRAM compression (0 skipped, not textures)
+13:39:26 import: import exit=0 seconds=67 
+13:42:09 tex_after_forgebody_bare ERR=0 draws=466 vram=1749MB 
+13:51:14 tex_after_forgebody_armoured ERR=0 draws=477 vram=1825MB 
+13:51:26 hero_tex done: compress after
+14:00:20 tex2_before_armoured ERR=0 draws=500 vram=1828MB 
+npc tex_compress: 86 texture imports set to VRAM compression (0 skipped, not textures)
+boss tex_compress: 40 texture imports set to VRAM compression (0 skipped, not textures)
+gear tex_compress: 381 texture imports set to VRAM compression (0 skipped, not textures)
+14:08:42 import: import exit=0 seconds=174 
+14:11:06 tex2_after_armoured ERR=0 draws=485 vram=1244MB 
+14:22:57 tex_after_title ERR=0 
+14:23:23 set2_tex done: before compress after
+14:23:43 tex_before_title ERR=0 
+14:34:26 import(lossless-boss): import exit=0 seconds=21 
+15:21:34 tex_before_title_true ERR=0
+boss tex_compress: 40 texture imports set to VRAM compression (0 skipped, not textures)
+15:34:02 import(boss-compressed): import exit=0 seconds=53 
+15:34:16 title_redo done

@@ -216,13 +216,25 @@ public static class Populate
     {
         var m = Monster.Spawn(def, L.MonsterLevel, tier, L.Grid.NearestWalk(pos), Faction.Monster, affixes, mini);
         m.Pack = pack;
+        if (Bestiary.Live && def.AI != MonAI.Boss) m.BaseDamage *= RegionDmg(L);
         return m;
+    }
+
+    /// <summary>
+    /// Balance pass 2026-11-22: with the designed roster the crypt and the frost hit the hero 38 % and 45 % harder than the
+    /// old roster (A/B, same seed and gear), and the frost stronghold stopped the AI-pilot campaign (8 deaths). Their
+    /// placed monsters deal less; the other regions measured within 10 %.
+    /// </summary>
+    private static float RegionDmg(Level L)
+    {
+        string r = L?.Region?.Id ?? (L != null ? ZoneDb.RegionOf(L.AreaId)?.Id : null);
+        return r is "frost" or "crypt" ? 0.75f : 1f;
     }
 
     private static Vector2 Scatter(Level L, Vector2 centre, float rMin, float rMax) => L.Grid.RandomWalkNear(centre, rMin, rMax, L.Rand);
 
     /// <summary>The pack-size caps of the first levels: a fresh hero with a starter weapon cannot hold eight husks at once.</summary>
-    private static int PackCap(Level L) => L.MonsterLevel <= 2 ? 4 : L.MonsterLevel <= 4 ? 6 : L.MonsterLevel <= 8 ? 9 : 14;
+    private static int PackCap(Level L) => L.MonsterLevel <= 2 ? 4 : L.MonsterLevel <= 4 ? 6 : L.MonsterLevel <= 8 ? (Bestiary.Live ? 7 : 9) : 14;   // act 1 with the designed roster: the first lair's hordes (2026-11-23)
 
     /// <summary>
     /// A pack: mostly one or two kinds of swarmer or melee, zero to two ranged or casters behind them and sometimes a
@@ -296,7 +308,7 @@ public static class Populate
         // one guest giant at most: the pack family's own colossus, or a Fuel-bearer / an engine of the region walking with
         // someone else's pack (those families never make packs of their own); not before level 4
         bool giantsUnseen = fams.Any(p => p.Giant.Count > 0 && ro.Unseen(p.Giant));
-        if (L.MonsterLevel >= 4 && left >= 3 && rng.NextDouble() < (f.Giant.Count > 0 ? (ro.Unseen(f.Giant) ? 0.6 : 0.25) : giantsUnseen ? 0.2 : 0.12))
+        if (L.MonsterLevel >= 4 && left >= 3 && rng.NextDouble() < (f.Giant.Count > 0 ? (ro.Unseen(f.Giant) ? 0.35 : 0.25) : giantsUnseen ? 0.15 : 0.12))
         {
             MonsterDef giant = null;
             if (f.Giant.Count > 0 && rng.NextDouble() < 0.75) giant = ro.PickFresh(f.Giant, rng);
@@ -313,20 +325,26 @@ public static class Populate
         // or ambushes at level 1
         int lv = L.MonsterLevel;
         // a swarm cloud drifts with the pack
-        if (lv >= 2 && f.Cloud.Count > 0 && left >= 2 && rng.NextDouble() < (ro.Unseen(f.Cloud) ? 0.9 : 0.55)) { Put(ro.PickFresh(f.Cloud, rng), 0.5f, 2f); left--; }
+        if (lv >= 4 && f.Cloud.Count > 0 && left >= 2 && rng.NextDouble() < (ro.Unseen(f.Cloud) ? 0.65 : 0.55)) { Put(ro.PickFresh(f.Cloud, rng), 0.5f, 2f); left--; }
         // one special (healer, reviver, mother, caller, aura or shield support)
-        if (lv >= 3 && specialFrom != null && left >= 3 && rng.NextDouble() < (ro.Unseen(specialFrom.Special) ? 0.75 : specialFrom == f ? 0.4 : 0.3)) { Put(ro.PickFresh(specialFrom.Special, rng), 2.5f, 4.5f); left--; }
+        if (lv >= 4 && specialFrom != null && left >= 3 && rng.NextDouble() < (ro.Unseen(specialFrom.Special) ? 0.5 : specialFrom == f ? 0.4 : 0.3))
+        {
+            // callers and mothers multiply a horde: not before level 8 (a level-6 hero in the first lair met wailers calling husks)
+            var sp = lv >= 8 ? specialFrom.Special : specialFrom.Special.Where(e => e.d.AI is not (MonAI.Caller or MonAI.Spawner)).ToList();
+            if (sp.Count > 0) { Put(ro.PickFresh(sp, rng), 2.5f, 4.5f); left--; }
+        }
         // the back line
         int back = 0;
         if (backFrom != null && left >= 3)
         {
             double x = rng.NextDouble();
             back = left >= 5 ? (x < 0.3 ? 0 : x < 0.75 ? 1 : 2) : (x < 0.55 ? 0 : 1);
+            if (lv <= 3) back = Math.Min(back, 1);                     // early gentle: one ranged at most
             if (!f.HasLine && backFrom == f) back = Math.Max(back, 1);
         }
         for (int i = 0; i < back && left > 0; i++, left--) Put(ro.PickFresh(backFrom.Back, rng), 2.5f, 4.5f);
         // a heavy (always one from a line-less family that has no back line of its own to show)
-        if (f.Heavy.Count > 0 && left >= 3 && rng.NextDouble() < (!f.HasLine && f.Back.Count == 0 ? 1.0 : ro.Unseen(f.Heavy) ? 0.6 : f.HasLine ? 0.28 : 0.5)) { Put(ro.PickFresh(f.Heavy, rng), 0.5f, 2.2f); left--; }
+        if (lv >= 4 && f.Heavy.Count > 0 && left >= 3 && rng.NextDouble() < (!f.HasLine && f.Back.Count == 0 ? 1.0 : ro.Unseen(f.Heavy) ? 0.4 : f.HasLine ? 0.28 : 0.5)) { Put(ro.PickFresh(f.Heavy, rng), 0.5f, 2.2f); left--; }
         // ambushers and emplacements are placed round the pack by the layout, in their own group (they wake on their own
         // trigger); they take places of the pack, so the level's density stays what it was
         var placedFrom = f.Placed.Count > 0 ? f : partner?.Placed.Count > 0 ? partner : null;
@@ -334,7 +352,7 @@ public static class Populate
         if (placedFrom == null && rng.NextDouble() < 0.3)
             placedFrom = PickFam(fams, rng, p => p.Placed.Count > 0 && !p.HasLine && p.Back.Count == 0 && p.Heavy.Count == 0 && p.Special.Count == 0);
         int k = 0; MonsterDef placedDef = null;
-        if (lv >= 2 && placedFrom != null && left >= 2 && rng.NextDouble() < (ro.Unseen(placedFrom.Placed) ? 0.9 : 0.6))
+        if (lv >= 4 && placedFrom != null && left >= 2 && rng.NextDouble() < (ro.Unseen(placedFrom.Placed) ? 0.7 : 0.6))
         {
             k = Math.Min(left - 1, 1 + (n >= 5 && rng.NextDouble() < 0.5 ? 1 : 0) + (n >= 8 && rng.NextDouble() < 0.4 ? 1 : 0));
             placedDef = ro.PickFresh(placedFrom.Placed, rng);
@@ -345,6 +363,7 @@ public static class Populate
         if (left > 0 && core.Count > 0)
         {
             var a = ro.PickFresh(core, rng);
+            if (lv <= 3 && a.Family == "dusk") left = Math.Min(left, Math.Max(1, 4 - (n - left)));     // early gentle: dusk-hound packs of about four
             var b = rng.NextDouble() < 0.35 ? ro.PickFresh(core, rng) : a;
             for (int i = 0; i < left; i++) Put(i % 3 == 2 ? b : a, 0.4f, 1.6f + n * 0.3f);
             left = 0;
@@ -379,8 +398,13 @@ public static class Populate
         fam = null;
         if (ro.Fams != null)
         {
-            fam = PickFam(ro.Fams, L.Rand, p => p.Leaders.Count > 0);
-            if (fam != null) return Pick(fam.Leaders, L.Rand);
+            fam = PickFam(ro.Fams, L.Rand, p => p.Leaders.Count > 0 && (L.MonsterLevel > 3 || p.Leaders.Any(e => e.d.Family != "dusk")));
+            if (fam != null) 
+            {
+                // the first levels: no elite or champion that drags the hero into the horde (hooks) or kites away (ranged)
+                var easy = L.MonsterLevel <= 7 ? fam.Leaders.Where(e => !e.d.Is(MonTrait.Hook) && e.d.AI is not (MonAI.Ranged or MonAI.Caster or MonAI.Bomber) && (L.MonsterLevel > 3 || e.d.Family != "dusk")).ToList() : fam.Leaders;
+                return Pick(easy.Count > 0 ? easy : fam.Leaders, L.Rand);
+            }
         }
         return Sturdy(Pick(ro.Leaders, L.Rand));
     }
@@ -414,6 +438,7 @@ public static class Populate
         leader.Objective = objective;
         into?.Add(leader);
         var follower = fam != null && fam.Core.Count > 0 ? Pick(fam.Core, rng) : Pick(ro.Core, rng);
+        if (L.MonsterLevel <= 3 && follower?.Family == "dusk") { var calm = ro.Core.Where(e => e.d.Family != "dusk").ToList(); if (calm.Count > 0) follower = Pick(calm, rng); }   // early gentle: no elite hound packs
         int minions = Math.Clamp(count - 1, 2, 4);
         for (int i = 0; i < minions; i++)
         {
@@ -428,9 +453,9 @@ public static class Populate
     {
         var list = into ?? new List<Monster>();
         int before = list.Count;
-        Pack(L, pos, count + 2, false, list);
+        Pack(L, pos, L.MonsterLevel <= 3 ? count : count + 2, false, list);      // early gentle: a smaller first yard
         int pack = list.Count > before ? list[before].Pack : -1;
-        list.Add(Champion(L, pos, pack));
+        if (L.MonsterLevel > 2) list.Add(Champion(L, pos, pack));          // early gentle: no blue leaders in the first yard
         return list;
     }
 
@@ -456,6 +481,14 @@ public static class Populate
         return MonsterDb.Get("cult_caster") ?? Pick(ro.Leaders, L.Rand);
     }
 
+    /// <summary>
+    /// Whether a type may be called in as a boss add: walking bombs, burrowers, turrets, clouds, sleepers, giants, ambushers
+    /// and summoners (callers / spawners / revivers would snowball the add count) are left out.
+    /// </summary>
+    public static bool FitsAsAdd(MonsterDef d) =>
+        d != null && d.AI is not (MonAI.Exploder or MonAI.Burrower or MonAI.Turret or MonAI.Swarm or MonAI.Boss or MonAI.Caller or MonAI.Spawner or MonAI.Reviver)
+        && !d.Is(MonTrait.Dormant) && d.Slot is not (PackSlot.Giant or PackSlot.Placed or PackSlot.Cloud);
+
     /// <summary>A walking ordinary monster of the level, for anybody who needs adds (boss fights, named encounters): no bombs, clouds, turrets or giants.</summary>
     public static MonsterDef AddDef(Level L, Random rng = null)
     {
@@ -467,11 +500,11 @@ public static class Populate
             var f = PickFam(ro.Fams, rng, p => p.Core.Count > 0);
             if (f != null)
             {
-                var ok = f.Core.Where(e => e.d.AI is not (MonAI.Exploder or MonAI.Burrower) && !e.d.Is(MonTrait.Dormant)).ToList();
+                var ok = f.Core.Where(e => FitsAsAdd(e.d)).ToList();
                 if (ok.Count > 0) return Pick(ok, rng);
             }
         }
-        var flat = ro.Core.Where(e => e.d.AI != MonAI.Exploder).ToList();
+        var flat = ro.Core.Where(e => FitsAsAdd(e.d)).ToList();
         return flat.Count > 0 ? Pick(flat, rng) : MonsterDb.Get("skeleton");
     }
 
@@ -479,8 +512,9 @@ public static class Populate
     {
         switch (g.Kind)
         {
-            case "champions": Champions(L, g.Pos, g.Count); break;
-            case "elite": Elite(L, g.Pos, g.Count, false); break;
+            // early gentle (2026-11-23): no elite or champion packs at monster level 1-2, both rosters
+            case "champions": if (L.MonsterLevel <= 2) Pack(L, g.Pos, g.Count); else Champions(L, g.Pos, g.Count); break;
+            case "elite": if (L.MonsterLevel <= 2) Pack(L, g.Pos, g.Count); else Elite(L, g.Pos, g.Count, false); break;
             case "stronghold": StrongholdPack(L, g.Pos, g.Count); break;
             default: Pack(L, g.Pos, g.Count); break;
         }
@@ -493,6 +527,7 @@ public static class Populate
         if (L?.Data == null || L.Grid == null) return;
         _roster = null; _rosterOf = null;
         Census.Begin(L);
+        Log.Guard("roster", () => RosterStats.OnLevel(L));
         L.Data.Pois ??= new List<Poi>(); L.Data.Spawns ??= new List<SpawnGroup>(); L.Data.Props ??= new List<PropSlot>();
         if (L.IsTown) Town(L);
         else if (L.IsRift) Rift(L);
@@ -662,7 +697,7 @@ public static class Populate
             if (at == start) at = L.StandNear(start, start + Vector2.Down, 3f);
             var portal = WorldObjects.Portal(at, $"返回{ZoneDb.AreaName(back)}", "回到你離開的地方", new Color(0.45f, 0.75f, 1f), _ =>
             {
-                string area = ReturnArea(true) ?? back;
+                string area = ReturnArea() ?? back;      // SAVE-HOOK: not cleared here, so Game.Travel sees "returning" and rebuilds the place as left (LevelState)
                 Log.Info("populate", $"return portal → {area}");
                 Game.I.EnterArea(area, "return");
             });
@@ -719,6 +754,7 @@ public static class Populate
             if (inCamp)
             {
                 if (!lib) StrongholdPack(L, g.Pos, g.Count, L.StrongholdMobs);    // a liberated camp stays peaceful
+                if (!lib && L.MonsterLevel <= 3) foreach (var m in L.StrongholdMobs) m.SetGarrison(L.StrongholdPos, L.StrongholdRadius);   // early gentle: the yard keeps to itself
                 continue;
             }
             if (NearEvent(L, g.Pos, 9f)) continue;

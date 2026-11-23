@@ -37,10 +37,10 @@
       "model": "ACE-Step 1.5 XL turbo (acestep-v15-xl-turbo-diffusers)"
     },
     "wastes_base": {
-      "seconds": 135.5,
+      "seconds": 139.5,
       "bpm": 56,
       "loop": true,
-      "seed": 7154,
+      "seed": 7155,
       "model": "ACE-Step 1.5 XL turbo (acestep-v15-xl-turbo-diffusers)"
     },
     "wastes_combat": {
@@ -72,10 +72,10 @@
       "model": "ACE-Step 1.5 XL turbo (acestep-v15-xl-turbo-diffusers)"
     },
     "crypt_combat": {
-      "seconds": 128.0,
-      "bpm": 104.7,
+      "seconds": 115.383,
+      "bpm": 103.9,
       "loop": true,
-      "seed": 7201,
+      "seed": 7607,
       "model": "ACE-Step 1.5 XL turbo (acestep-v15-xl-turbo-diffusers)"
     },
     "mire_base": {

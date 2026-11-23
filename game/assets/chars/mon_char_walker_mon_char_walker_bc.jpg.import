@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://cueh865a7xp8f"
-path="res://.godot/imported/mon_char_walker_mon_char_walker_bc.jpg-05b4d5c2035dacb2fc9a6f1f91e1ce28.ctex"
+path.bptc="res://.godot/imported/mon_char_walker_mon_char_walker_bc.jpg-05b4d5c2035dacb2fc9a6f1f91e1ce28.bptc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "79fc5fac4ba89d8384a2910187b47d1a"
@@ -14,12 +15,12 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/chars/mon_char_walker_mon_char_walker_bc.jpg"
-dest_files=["res://.godot/imported/mon_char_walker_mon_char_walker_bc.jpg-05b4d5c2035dacb2fc9a6f1f91e1ce28.ctex"]
+dest_files=["res://.godot/imported/mon_char_walker_mon_char_walker_bc.jpg-05b4d5c2035dacb2fc9a6f1f91e1ce28.bptc.ctex"]
 
 [params]
 
-compress/mode=0
-compress/high_quality=false
+compress/mode=2
+compress/high_quality=true
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

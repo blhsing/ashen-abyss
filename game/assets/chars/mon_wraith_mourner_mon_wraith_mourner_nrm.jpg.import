@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://dg575jyiqhyl8"
-path="res://.godot/imported/mon_wraith_mourner_mon_wraith_mourner_nrm.jpg-4f224ca6b7b347c7de27ae4f86058906.ctex"
+path.s3tc="res://.godot/imported/mon_wraith_mourner_mon_wraith_mourner_nrm.jpg-4f224ca6b7b347c7de27ae4f86058906.s3tc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "bdeaf2775f8fcb8a7f2c589afef2344c"
@@ -14,17 +15,17 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/chars/mon_wraith_mourner_mon_wraith_mourner_nrm.jpg"
-dest_files=["res://.godot/imported/mon_wraith_mourner_mon_wraith_mourner_nrm.jpg-4f224ca6b7b347c7de27ae4f86058906.ctex"]
+dest_files=["res://.godot/imported/mon_wraith_mourner_mon_wraith_mourner_nrm.jpg-4f224ca6b7b347c7de27ae4f86058906.s3tc.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1
-compress/normal_map=0
+compress/normal_map=1
 compress/channel_pack=0
 mipmaps/generate=true
 mipmaps/limit=-1

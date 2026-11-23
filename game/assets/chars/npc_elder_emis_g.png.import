@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://5oimftxdft70"
-path="res://.godot/imported/npc_elder_emis_g.png-536898a0c154dbb965807bda492a82cf.ctex"
+path.bptc="res://.godot/imported/npc_elder_emis_g.png-536898a0c154dbb965807bda492a82cf.bptc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "6af0c93b5cb2702f04c49c5f9e9376a9"
@@ -14,12 +15,12 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/chars/npc_elder_emis_g.png"
-dest_files=["res://.godot/imported/npc_elder_emis_g.png-536898a0c154dbb965807bda492a82cf.ctex"]
+dest_files=["res://.godot/imported/npc_elder_emis_g.png-536898a0c154dbb965807bda492a82cf.bptc.ctex"]
 
 [params]
 
-compress/mode=0
-compress/high_quality=false
+compress/mode=2
+compress/high_quality=true
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

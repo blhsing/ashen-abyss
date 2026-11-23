@@ -1,0 +1,6 @@
+exit= seconds=118
+log: C:\Users\blhsi\AppData\Roaming\AshenAbyss\logs\game_20261122_085543.log  lines=372  ERR=0  WRN=0
+--- last lines ---
+  117.076 INF [pilot] picks up ?????? (Magic)
+  117.235 INF [pilot] TEST over: quitting
+done

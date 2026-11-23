@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://cn4x3icqg60wa"
-path="res://.godot/imported/mon_bell_hanging_mon_bell_hanging_orm.jpg-653ab4c74c80bc5a63cd315d248014c8.ctex"
+path.bptc="res://.godot/imported/mon_bell_hanging_mon_bell_hanging_orm.jpg-653ab4c74c80bc5a63cd315d248014c8.bptc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "2a639a0325aa2a43dd1f183a994ba1c6"
@@ -14,12 +15,12 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/chars/mon_bell_hanging_mon_bell_hanging_orm.jpg"
-dest_files=["res://.godot/imported/mon_bell_hanging_mon_bell_hanging_orm.jpg-653ab4c74c80bc5a63cd315d248014c8.ctex"]
+dest_files=["res://.godot/imported/mon_bell_hanging_mon_bell_hanging_orm.jpg-653ab4c74c80bc5a63cd315d248014c8.bptc.ctex"]
 
 [params]
 
-compress/mode=0
-compress/high_quality=false
+compress/mode=2
+compress/high_quality=true
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

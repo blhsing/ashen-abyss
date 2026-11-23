@@ -1,0 +1,8 @@
+== bestiary ERR=0
+  147.559 INF [bot] summary t=571s game=560s area=frost doing=explore frontier kills=333 elites=17 bosses=1 level=29 life=100% items=65 gold=14407 deaths=1 areas=1 casts=490 unstuck=0 monsters=81 errors=0 warnings=0 botErrors=0 focus=event
+  150.063 INF [bot] summary t=581s game=570s area=frost doing=fight reaver_cutter kills=338 elites=17 bosses=1 level=29 life=100% items=66 gold=14407 deaths=1 areas=1 casts=496 unstuck=0 monsters=76 errors=0 warnings=0 botErrors=0 focus=event
+  152.568 INF [bot] summary t=591s game=580s area=frost doing=explore frontier kills=347 elites=21 bosses=1 level=29 life=100% items=71 gold=14823 deaths=1 areas=1 casts=500 unstuck=0 monsters=67 errors=0 warnings=0 botErrors=0 focus=event
+  155.059 INF [roster] running area=frost hero=lv29 ttk normal=1.6s(n=324) champion=6.1s(n=17) elite=7.9s(n=4) boss=73.5s(n=1) | taken 779/min (0.33 life bars/min, 371 hits) kills=347 in 590s | worst [sh_frost:1341,frostbound:1026,rime_stalker:647,wraith_gasp:426] slowest [cf_mite*:37.9s/2,rime_sentry:7.5s/12,frost_skeleton:5.8s/11,wraith_gasp:4.2s/13,dusk_bat:4.2s/10]
+  155.065 INF [bot] summary t=601s game=590s area=frost doing=explore frontier kills=347 elites=21 bosses=1 level=29 life=100% items=71 gold=14823 deaths=1 areas=1 casts=500 unstuck=0 monsters=67 errors=0 warnings=0 botErrors=0 focus=event
+  155.333 INF [bot] final summary t=602s game=591s area=frost doing=explore frontier kills=347 elites=21 bosses=1 level=29 life=100% items=71 gold=14823 deaths=1 areas=1 casts=500 unstuck=0 monsters=67 errors=0 warnings=0 botErrors=0 focus=event
+done 00:45:06

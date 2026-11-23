@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://duyh4pu0btqjq"
-path="res://.godot/imported/npc_elder_cloth_orm.jpg-862f1a6130646c80d62742b49e8cc643.ctex"
+path.bptc="res://.godot/imported/npc_elder_cloth_orm.jpg-862f1a6130646c80d62742b49e8cc643.bptc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "e057def78685cb3696308f4080557d1a"
@@ -14,12 +15,12 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/chars/npc_elder_cloth_orm.jpg"
-dest_files=["res://.godot/imported/npc_elder_cloth_orm.jpg-862f1a6130646c80d62742b49e8cc643.ctex"]
+dest_files=["res://.godot/imported/npc_elder_cloth_orm.jpg-862f1a6130646c80d62742b49e8cc643.bptc.ctex"]
 
 [params]
 
-compress/mode=0
-compress/high_quality=false
+compress/mode=2
+compress/high_quality=true
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

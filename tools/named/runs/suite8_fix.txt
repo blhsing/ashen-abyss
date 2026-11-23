@@ -1,0 +1,22 @@
+build ok
+exit= seconds=89
+log: C:\Users\blhsi\AppData\Roaming\AshenAbyss\logs\game_20261122_230444.log  lines=450  ERR=0  WRN=2
+--- distinct warnings ---
+   1 x [suite] FAIL named db_wastes_d2: killed - 234s
+   1 x [suite] FAIL named sh_abyss: kill time within 45-90s - 102.1s
+--- last lines ---
+   88.424 INF [game] quitting
+   88.427 INF [save] slot 91 saved: ??? lv45 ??? area=rift~arena:db_abyss_d1 bytes=17536
+   88.427 INF [save] save reason=quit slot=91 ok=True area=rift~arena:db_abyss_d1 playtime=12s capture=0.0ms total=2.9ms
+   88.430 INF [bot] final summary t=85s game=487s area=rift~arena:db_abyss_d1 doing=fight db_abyss_d1 kills=1 elites=2 bosses=2 level=45 life=33% items=0 gold=50 deaths=0 areas=5 casts=631 unstuck=0 monsters=0 errors=0 warnings=2 botErrors=0
+   88.431 INF [bot] final progress: waypoints=[town] renown=[] quests done=0/1 skillpts bonus=0 potion cap=4 altars=0 codex=0 tier=0/1 riftBest=0 paragon=0 playtime=12s
+   88.432 INF [anim] anim-check: hero moved 69.3s - 0.0s without a locomotion clip, 0.0s with frozen legs; hero stood 91.2s - 0.0s in a run clip or none; monsters moved 21.3s - 0.0s without a locomotion clip, 0.0s with frozen legs; models without a skeleton or ƒ?Ý
+   88.433 INF [input] keyboard hook saw 0 key events, 0 of them PrtSc
+   88.433 INF [boot] shutdown errors=0 warnings=2 uptime=88s
+--- engine output: distinct problem lines (5 total) ---
+   1 x [13] float AshenAbyss.Combat.PlayerHit(AshenAbyss.Player, AshenAbyss.Actor, AshenAbyss.SkillDef, float, AshenAbyss.Element, AshenAbyss.HitOpt) (Y:\game\src\Combat.cs:66)
+   1 x [20] Godot.NativeInterop.godot_bool Godot.Bridge.CSharpInstanceBridge.Call(nint, Godot.NativeInterop.godot_string_name*, Godot.NativeInterop.godot_variant**, int, Godot.NativeInterop.godot_variant_call_error*, Godot.NativeInterop.godot_variant*) (/root/ ƒ?Ý
+   1 x [12] float AshenAbyss.Monster.TakeHit(AshenAbyss.Hit) (Y:\game\src\Monster.cs:619)
+   1 x ERROR: Parameter "t" is null.
+   1 x [11] float AshenAbyss.Actor.TakeHit(AshenAbyss.Hit) (Y:\game\src\Actor.cs:290)
+DONE

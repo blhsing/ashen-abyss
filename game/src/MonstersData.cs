@@ -120,7 +120,9 @@ public sealed class MonsterDef
     /// on top of a champion's life made champions half again slower to kill than QA's targets (12 s vs 8 s).</summary>
     public bool CanLead => AI is not (MonAI.Exploder or MonAI.Swarm or MonAI.Turret or MonAI.Spawner or MonAI.Healer or MonAI.Reviver or MonAI.Caller or MonAI.Boss or MonAI.Shieldbearer)
         && !Is(MonTrait.FrontArmour) && !Is(MonTrait.Shell) && !Is(MonTrait.Dormant)
-        && Role != "support" && Family != "hauler";
+        && Role != "support" && Family != "hauler"
+        // designed roster: a champion that blinks, burrows or vanishes outlives the fight (wraith champions 93 s in the abyss A/B)
+        && (!Bestiary.Live || (AI is not (MonAI.Teleporter or MonAI.Burrower or MonAI.Stalker or MonAI.Bomber) && !Is(MonTrait.Drain) && !Is(MonTrait.Trail) && !Is(MonTrait.Phasing)));
     public bool Giant => Scale >= 1.75f;
 
     public MonsterDef Variant(string id, string name, Color tint, System.Action<MonsterDef> f = null)

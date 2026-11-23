@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://bsnjpq1hfho80"
-path="res://.godot/imported/npc_occultist_cloth_c.jpg-e877cf93b0a2ae7444768ce353fae8b2.ctex"
+path.bptc="res://.godot/imported/npc_occultist_cloth_c.jpg-e877cf93b0a2ae7444768ce353fae8b2.bptc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "01600a60203f901441f4974f0709729e"
@@ -14,12 +15,12 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/chars/npc_occultist_cloth_c.jpg"
-dest_files=["res://.godot/imported/npc_occultist_cloth_c.jpg-e877cf93b0a2ae7444768ce353fae8b2.ctex"]
+dest_files=["res://.godot/imported/npc_occultist_cloth_c.jpg-e877cf93b0a2ae7444768ce353fae8b2.bptc.ctex"]
 
 [params]
 
-compress/mode=0
-compress/high_quality=false
+compress/mode=2
+compress/high_quality=true
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

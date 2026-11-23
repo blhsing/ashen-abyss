@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://cksigtvtsdjw6"
-path="res://.godot/imported/mon_lamp_bomber_mon_lamp_bomber_orm.jpg-17d93ee4b907113c3cf19ae6944c2c5f.ctex"
+path.bptc="res://.godot/imported/mon_lamp_bomber_mon_lamp_bomber_orm.jpg-17d93ee4b907113c3cf19ae6944c2c5f.bptc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "a1a876a7462b1ac9a8f9f108dd24ab32"
@@ -14,12 +15,12 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/chars/mon_lamp_bomber_mon_lamp_bomber_orm.jpg"
-dest_files=["res://.godot/imported/mon_lamp_bomber_mon_lamp_bomber_orm.jpg-17d93ee4b907113c3cf19ae6944c2c5f.ctex"]
+dest_files=["res://.godot/imported/mon_lamp_bomber_mon_lamp_bomber_orm.jpg-17d93ee4b907113c3cf19ae6944c2c5f.bptc.ctex"]
 
 [params]
 
-compress/mode=0
-compress/high_quality=false
+compress/mode=2
+compress/high_quality=true
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

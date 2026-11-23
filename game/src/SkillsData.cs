@@ -216,10 +216,10 @@ public static class SkillDb
         _c = ClassId.Soulbinder;
         N("sb_bolt", SkillCat.Basic, 1, "蝕魂彈", "bolt-spell-cast", "射出蝕魂之彈，造成 {0}% 武器傷害的暗影傷害。產生 9 點魂能。")
             .Proj(0.44f, 18f).El(Element.Shadow).Res(-9).Cast("Spell_Simple_Shoot", 1.6f, 0.18f, 0.38f, "shadow_cast", "shadow_impact").With(s => s.Lucky = 0.5f)
-            .Ups_(U("剝魂", "命中有 25% 機率從敵人身上剝離一縷殘魂。", s => s.RemnantChance = 0.25f),
+            .Ups_(U("剝魂", "命中有 25% 機率從敵人身上剝離一縷殘魂（殘魂可供魂爆引爆，也能讓骸骨僕從補員）。", s => s.RemnantChance = 0.25f),
                   U("透體", "蝕魂彈可穿透一名敵人。", s => s.Pierce = 1),
                   U("標記", "命中的敵人受到僕從的傷害提高 25%，持續 4 秒。", s => s.OnHit.Add(St.Mark(4))));
-        N("sb_raise", SkillCat.Core, 2, "喚起骸骨", "raise-skeleton", "喚起一名骸骨戰士為你作戰（上限 4 名），其攻擊造成 {0}% 武器傷害。若已達上限，則治癒所有僕從並使其傷害提高 30%，持續 6 秒。")
+        N("sb_raise", SkillCat.Core, 2, "喚起骸骨", "raise-skeleton", "喚起一名骸骨戰士為你作戰（上限 4 名），其攻擊造成 {0}% 武器傷害。若目標附近有殘魂，則消耗它並在該處喚起。若已達上限，則治癒所有僕從並使其傷害提高 30%，持續 6 秒。等級 5 起，骸骨戰士與術士會自動吸收身邊存在超過 3 秒、且不在你瞄準處的殘魂來補足上限。")
             .Sum("minion_skeleton", 4, 0, 0.3f, 10f).Res(25).Cast("Spell_Simple_Enter", 1.6f, 0.25f, 0.45f, "summon_raise")
             .Ups_(U("擴編", "骸骨僕從上限 +1。", s => s.SummonMax += 1),
                   U("擲矛手", "每第二名喚起的骸骨為遠程擲矛手。", s => s.Flag("thrower_alt")),
@@ -228,13 +228,19 @@ public static class SkillDb
             .Proj(1.55f, 21f, 1, -1, 40f).Res(28).Cast("OverhandThrow", 1.6f, 0.22f, 0.45f, "knife_throw", "hit_bone").With(s => s.Lucky = 0.4f)
             .Ups_(U("碎骨", "命中首個目標後碎裂成 3 枚骨片飛散，各造成 40% 傷害。", s => { s.SplitCount = 3; s.SplitMul = 0.4f; }),
                   U("弒強", "對菁英與首領的傷害提高 40%。", s => s.EliteDmg = 0.4f),
-                  U("收割", "以骨矛擊殺的敵人必定留下殘魂。", s => s.RemnantOnKill = true));
+                  U("收割", "以骨矛擊殺的敵人必定留下殘魂（供魂爆與骸骨僕從使用）。", s => s.RemnantOnKill = true));
+        // [golem] the golem command (tools/golems/PLAN.md §3); its effect is the golem kind's (Golems.cs). A dead golem re-forms at once.
+        N("sb_golem_cmd", SkillCat.Mastery, 7, "魔像號令", "golem-head", "命令你的魔像施展其號令（依魔像種類而異），造成 {0}% 武器傷害。骨魔像「骨牢令」嘲諷 8 公尺內的敵人；血魔像「血潮令」吸取 6 公尺內敵人的生命；鐵魔像「鐵擊令」躍向目標位置重擊並使敵人暈眩。魔像已死亡時，立即使其重新塑成。")
+            .Cmd(1.0f, 16f, 8f).El(Element.Physical).Res(0, 14).Cast("Interact", 2f, 0.15f, 0.35f, "summon_raise", "earth_impact").Flag("golem_cmd").With(s => s.Lucky = 0.3f)
+            .Ups_(U("號令擴散", "號令的作用範圍擴大 40%。", s => s.Radius *= 1.4f),
+                  U("急令", "冷卻時間縮短 4 秒。", s => s.Cooldown -= 4),
+                  U("共鳴", "你的骸骨戰士與術士也會施展較弱的號令（30% 效果）。", s => s.Flag("cmd_echo")));
         N("sb_blight", SkillCat.Mastery, 10, "凋零", "poison-gas", "擲出腐蝕之球，在目標位置化為凋零之池 5 秒，每秒造成 {0}% 武器傷害的暗影傷害並緩速 30%。")
             .Zone(0.55f, 16f, 4.2f, 5f, 0.5f).El(Element.Shadow).Res(26).Cast("Spell_Simple_Shoot", 1.3f, 0.24f, 0.46f, "shadow_cast", "poison_splash").Hit(St.Slow(0.3f, 1)).With(s => { s.Lucky = 0.12f; s.Flag("per_second"); })
             .Ups_(U("衰朽", "凋零之池中的敵人陷入易傷。", s => s.OnHit.Add(St.Vuln(1))),
                   U("蔓延", "持續時間延長 3 秒。", s => s.Duration += 3),
                   U("亡者之地", "你的僕從在凋零之池中攻擊速度提高 30%。", s => s.Flag("minion_haste")));
-        N("sb_explode", SkillCat.Mastery, 14, "魂爆", "explosion-rays", "引爆目標位置附近所有的殘魂，每縷殘魂對周圍造成 {0}% 武器傷害的暗影傷害。沒有殘魂時，在目標位置引發一次較弱的爆炸。")
+        N("sb_explode", SkillCat.Mastery, 14, "魂爆", "explosion-rays", "引爆目標位置附近所有的殘魂（擊殺敵人時有 65% 機率留下殘魂；骸骨僕從也以殘魂補員），每縷殘魂對周圍造成 {0}% 武器傷害的暗影傷害。沒有殘魂時，在目標位置引發一次較弱的爆炸。")
             .Ground(1.9f, 16f, 3.6f, 0f).El(Element.Shadow).Res(15, 1).Cast("Spell_Simple_Shoot", 1.8f, 0.15f, 0.34f, "shadow_cast", "shadow_impact").Flag("remnants")
             .Ups_(U("擴爆", "爆炸半徑擴大 30%。", s => s.Radius *= 1.3f),
                   U("攝魂", "每次爆炸恢復 3% 生命上限。", s => s.HealPct = 3),
@@ -244,14 +250,14 @@ public static class SkillDb
             .With(s => { s.Coef = 0.3f; s.PulseCoef = 1f; s.PulseRadius = 2.2f; Flagged(s, "i", b => b.Immune = true); })
             .Ups_(U("歸魂", "結束時恢復 20% 生命上限。", s => s.EndHeal = 20),
                   U("薄幕", "冷卻時間縮短 4 秒。", s => s.Cooldown -= 4),
-                  U("牽魂", "啟動時在周圍產生 4 縷殘魂。", s => s.SpawnRemnants = 4));
+                  U("牽魂", "啟動時在周圍產生 4 縷殘魂（可以魂爆引爆，或讓骸骨僕從吸收補員）。", s => s.SpawnRemnants = 4));
         N("sb_curse", SkillCat.Mobility, 7, "衰弱詛咒", "cursed-star", "詛咒目標區域的敵人 8 秒：其造成的傷害降低 25%、緩速 30%，並陷入易傷。")
             .Ground(0f, 16f, 6f, 0.1f).El(Element.Shadow).Res(15, 12).Cast("Spell_Simple_Shoot", 1.6f, 0.18f, 0.38f, "shadow_cast").Hit(St.Weaken(0.25f, 8), St.Slow(0.3f, 8), St.Vuln(8))
             .Ups_(U("咒爆", "被詛咒的敵人死亡時爆炸，對周圍造成 90% 武器傷害。", s => s.OnHit.Add(St.Hex(8, 0.9f))),
                   U("廣咒", "作用範圍擴大 40%。", s => s.Radius *= 1.4f),
                   U("輕咒", "冷卻時間縮短 4 秒，且不再消耗魂能。", s => { s.Cooldown -= 4; s.Cost = 0; }));
         N("sb_colossus", SkillCat.Ultimate, 20, "骸骨巨像", "giant", "喚起一尊骸骨巨像為你作戰 20 秒，其重擊對範圍內敵人造成 {0}% 武器傷害。")
-            .Sum("minion_colossus", 1, 20, 1.6f, 8f).Res(0, 75).Cast("Spell_Simple_Enter", 1.1f, 0.45f, 0.75f, "summon_raise")
+            .Sum("minion_colossus", 1, 20, 0.5f, 8f).Res(0, 75).Cast("Spell_Simple_Enter", 1.1f, 0.45f, 0.75f, "summon_raise")
             .Ups_(U("號令", "召喚時治癒所有僕從，並使其傷害提高 50%，持續 10 秒。", s => { s.Flag("rally"); s.B_(Stat.MinionDmg, 50, 10); }),
                   U("長存", "巨像的持續時間延長 10 秒。", s => s.SummonDur += 10),
                   U("崩塌", "巨像消逝時崩塌，對周圍造成 500% 武器傷害。", s => { s.EndBurst = 5f; s.EndBurstRadius = 6; }));
@@ -259,9 +265,10 @@ public static class SkillDb
         P("sb_p3", 10, "蝕魂", (Stat.DmgShadow, 5), (Stat.DmgDot, 5)); P("sb_p4", 14, "聚魂", (Stat.MaxResource, 4), (Stat.LifeOnKill, 5));
         K("kp_sb_chorus", "群魂共振", "每名存活的僕從使你造成的傷害提高 4%。");
         K("kp_sb_alone", "孤魂", "沒有任何僕從時，你造成的傷害提高 30%。");
-        Sp("sb_legion", "骸軍", "僕從傷害 +30%，骸骨僕從上限 +1。", s => { if (s.Id == "sb_raise") s.SummonMax += 1; }, (Stat.MinionDmg, 30));
-        Sp("sb_offering", "獻祭", "暗影傷害 +25%，爆擊機率 +5%。", null, (Stat.DmgShadow, 25), (Stat.CritChance, 5));
-        Sp("sb_blood", "血魂", "生命上限 +12%，擊殺恢復生命 +30，受到治療效果 +15%。", null, (Stat.LifePct, 12), (Stat.LifeOnKill, 30), (Stat.Healing, 15));
+        K("kp_sb_golemheart", "魔像之心", "魔像存活時，你受到的傷害有 20% 改由魔像承受；魔像每次命中為你恢復 2 點魂能。");      // [golem]
+        Sp("sb_legion", "骸軍", "僕從傷害 +30%，骸骨戰士上限 +1，魔像傷害 +25%。", s => { if (s.Id == "sb_raise") s.SummonMax += 1; }, (Stat.MinionDmg, 30));
+        Sp("sb_offering", "獻祭", "亡者名冊的獻祭獎勵提高 50%。暗影傷害 +10%。", null, (Stat.DmgShadow, 10));
+        Sp("sb_blood", "血魂", "生命上限 +12%，擊殺恢復生命 +30，受到治療效果 +15%。血魔像代你承受的傷害提高至 25%，自我治療加倍。", null, (Stat.LifePct, 12), (Stat.LifeOnKill, 30), (Stat.Healing, 15));
 
         // ══════════════════ 荒靈行者 Wildsoul ══════════════════  Form: 1 bear, 2 wolf, 3 human
         _c = ClassId.Wildsoul;

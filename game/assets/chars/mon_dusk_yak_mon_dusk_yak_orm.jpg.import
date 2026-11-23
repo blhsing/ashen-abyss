@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://1rys1yb7m6td"
-path="res://.godot/imported/mon_dusk_yak_mon_dusk_yak_orm.jpg-07575577ba7b27742611614f7430dc1a.ctex"
+path.bptc="res://.godot/imported/mon_dusk_yak_mon_dusk_yak_orm.jpg-07575577ba7b27742611614f7430dc1a.bptc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "2a82851a1e9c29074ce03f2078ae69b7"
@@ -14,12 +15,12 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/chars/mon_dusk_yak_mon_dusk_yak_orm.jpg"
-dest_files=["res://.godot/imported/mon_dusk_yak_mon_dusk_yak_orm.jpg-07575577ba7b27742611614f7430dc1a.ctex"]
+dest_files=["res://.godot/imported/mon_dusk_yak_mon_dusk_yak_orm.jpg-07575577ba7b27742611614f7430dc1a.bptc.ctex"]
 
 [params]
 
-compress/mode=0
-compress/high_quality=false
+compress/mode=2
+compress/high_quality=true
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

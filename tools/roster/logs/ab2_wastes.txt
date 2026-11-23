@@ -1,0 +1,8 @@
+== bestiary ERR=0
+  147.290 INF [bot] summary t=571s game=563s area=wastes doing=explore frontier kills=452 elites=21 bosses=1 level=9 life=100% items=69 gold=4246 deaths=0 areas=1 casts=487 unstuck=0 monsters=57 errors=0 warnings=0 botErrors=0 focus=event
+  149.795 INF [bot] summary t=581s game=573s area=wastes doing=fight sexton_matron kills=452 elites=21 bosses=1 level=9 life=100% items=69 gold=4246 deaths=0 areas=1 casts=488 unstuck=0 monsters=57 errors=0 warnings=0 botErrors=0 focus=event
+  152.299 INF [bot] summary t=591s game=583s area=wastes doing=explore frontier kills=464 elites=21 bosses=1 level=9 life=100% items=70 gold=4246 deaths=0 areas=1 casts=490 unstuck=0 monsters=50 errors=0 warnings=0 botErrors=0 focus=event
+  154.784 INF [roster] running area=wastes hero=lv9 ttk normal=1.1s(n=442) champion=1.6s(n=15) elite=3.5s(n=6) boss=54.4s(n=1) | taken 382/min (0.58 life bars/min, 951 hits) kills=464 in 593s | worst [sh_wastes:695,husk:662,sexton_beetle:357,char_walker:229] slowest [reaver_hook*:6.7s/1,bone_pallbearer:6.0s/4,hauler_yoke:5.9s/4,char_walker*:4.1s/1,sexton_beetle:3.0s/24]
+  154.797 INF [bot] summary t=601s game=593s area=wastes doing=use globe kills=464 elites=21 bosses=1 level=9 life=100% items=70 gold=4246 deaths=0 areas=1 casts=490 unstuck=0 monsters=50 errors=0 warnings=0 botErrors=0 focus=event
+  155.025 INF [bot] final summary t=602s game=594s area=wastes doing=explore frontier kills=464 elites=21 bosses=1 level=9 life=100% items=70 gold=4246 deaths=0 areas=1 casts=490 unstuck=0 monsters=50 errors=0 warnings=0 botErrors=0 focus=event
+done 18:39:33

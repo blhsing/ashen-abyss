@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://c7op3xq6jl66i"
-path="res://.godot/imported/mon_skeleton_thrower_mon_skeleton_thrower_bc.jpg-d95e8f1c11cd1d897c3e87ddb3cf8341.ctex"
+path.bptc="res://.godot/imported/mon_skeleton_thrower_mon_skeleton_thrower_bc.jpg-d95e8f1c11cd1d897c3e87ddb3cf8341.bptc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "fa812b4ff03fb8d6658ae37a45472665"
@@ -14,12 +15,12 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/chars/mon_skeleton_thrower_mon_skeleton_thrower_bc.jpg"
-dest_files=["res://.godot/imported/mon_skeleton_thrower_mon_skeleton_thrower_bc.jpg-d95e8f1c11cd1d897c3e87ddb3cf8341.ctex"]
+dest_files=["res://.godot/imported/mon_skeleton_thrower_mon_skeleton_thrower_bc.jpg-d95e8f1c11cd1d897c3e87ddb3cf8341.bptc.ctex"]
 
 [params]
 
-compress/mode=0
-compress/high_quality=false
+compress/mode=2
+compress/high_quality=true
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

@@ -1,6 +1,6 @@
-exit= seconds=1723
-log: C:\Users\blhsi\AppData\Roaming\AshenAbyss\logs\game_20261122_035510.log  lines=11207  ERR=0  WRN=0
---- last lines ---
- 1719.170 INF [pilot] dodge: rolls clear (risk 1.2, lands in 0.20s, life 100%)
- 1719.176 INF [bot] summary t=6683s game=6457s area=sands_boss doing=roll kills=2730 elites=178 bosses=9 level=36 life=100% items=375 gold=5759 deaths=8 areas=53 casts=4735 unstuck=0 monsters=64 errors=0 warnings=0 botErrors=0 focus=ember carrier
+build ok
+exit= seconds=2771
+log: C:\Users\blhsi\AppData\Roaming\AshenAbyss\logs\game_20261123_142755.log  lines=17553  ERR=0  WRN=5
+--- distinct warnings ---
+   1 x [bot] pilot: going nowhere near (35.9, 47.8) in sands_boss for a minute while 'use emberaltar' (ember altar)
 done

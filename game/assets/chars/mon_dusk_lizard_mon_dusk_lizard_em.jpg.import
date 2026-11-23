@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://wkh47rm37ox5"
-path="res://.godot/imported/mon_dusk_lizard_mon_dusk_lizard_em.jpg-3adda294c55e63b88a4874f20c4e5f38.ctex"
+path.bptc="res://.godot/imported/mon_dusk_lizard_mon_dusk_lizard_em.jpg-3adda294c55e63b88a4874f20c4e5f38.bptc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "0941bde9d3d86e5df315137ebc1338ae"
@@ -14,12 +15,12 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/chars/mon_dusk_lizard_mon_dusk_lizard_em.jpg"
-dest_files=["res://.godot/imported/mon_dusk_lizard_mon_dusk_lizard_em.jpg-3adda294c55e63b88a4874f20c4e5f38.ctex"]
+dest_files=["res://.godot/imported/mon_dusk_lizard_mon_dusk_lizard_em.jpg-3adda294c55e63b88a4874f20c4e5f38.bptc.ctex"]
 
 [params]
 
-compress/mode=0
-compress/high_quality=false
+compress/mode=2
+compress/high_quality=true
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

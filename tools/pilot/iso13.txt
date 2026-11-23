@@ -1,0 +1,9 @@
+09:04:40 hunter frost lv22
+  352.645 INF [pilot] TEST RESULT mode=boss class=hunter end=boss killed t=665s level=23 deaths=5 area=frost campaignDone=False bossesKilled=1 telegraphed threats=186 dodged=164 taken=22 (boss 163/141/22) dmgTelegraphed=3126 otherHits=178 d
+09:12:39 hunter frost lv22
+  217.998 INF [pilot] TEST RESULT mode=boss class=hunter end=boss killed t=421s level=23 deaths=1 area=frost campaignDone=False bossesKilled=1 telegraphed threats=111 dodged=110 taken=1 (boss 99/98/1) dmgTelegraphed=132 otherHits=74 dmgOthe
+09:17:57 lampknight frost lv22
+  264.896 INF [pilot] TEST RESULT mode=boss class=lampknight end=boss killed t=506s level=23 deaths=7 area=frost campaignDone=False bossesKilled=1 telegraphed threats=167 dodged=130 taken=37 (boss 161/124/37) dmgTelegraphed=2598 otherHits=5
+09:24:10 forgebody frost lv22
+  348.547 INF [pilot] TEST RESULT mode=boss class=forgebody end=boss killed t=673s level=23 deaths=12 area=frost campaignDone=False bossesKilled=1 telegraphed threats=185 dodged=154 taken=31 (boss 173/143/30) dmgTelegraphed=3667 otherHits=7
+iso done

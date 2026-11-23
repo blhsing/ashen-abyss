@@ -1111,6 +1111,10 @@ public partial class MainMenu : Control
         _ciWeapons.SizeFlagsHorizontal = SizeFlags.ExpandFill;
         wpnRow.AddChild(_ciWeapons);
         col.AddChild(wpnRow);
+        // SYSTEMS: the weapon guide of the chosen class (武器指南: play style, strengths and alternatives of every base)
+        var guideBtn = MenuKit.Btn("武器指南", () => Game.I?.Ui?.Open("guide", (ClassId)Math.Max(0, _heroClass)), MenuTone.Normal, UiTheme.Fs(20), UiTheme.Px(160f));
+        guideBtn.SizeFlagsHorizontal = SizeFlags.ShrinkBegin;
+        col.AddChild(guideBtn);
 
         // key / value / note rows: the key and value columns grow with the text, the note wraps in what they leave
         var resRow = MenuKit.HBox(12);

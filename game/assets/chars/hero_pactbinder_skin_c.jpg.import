@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://birxvqp2pwbyw"
-path="res://.godot/imported/hero_pactbinder_skin_c.jpg-48617fbb6314705fbd1656d380951131.ctex"
+path.bptc="res://.godot/imported/hero_pactbinder_skin_c.jpg-48617fbb6314705fbd1656d380951131.bptc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "9db9c8044518b0094e449df0f02168d4"
@@ -14,12 +15,12 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/chars/hero_pactbinder_skin_c.jpg"
-dest_files=["res://.godot/imported/hero_pactbinder_skin_c.jpg-48617fbb6314705fbd1656d380951131.ctex"]
+dest_files=["res://.godot/imported/hero_pactbinder_skin_c.jpg-48617fbb6314705fbd1656d380951131.bptc.ctex"]
 
 [params]
 
-compress/mode=0
-compress/high_quality=false
+compress/mode=2
+compress/high_quality=true
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

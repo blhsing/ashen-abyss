@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://dhnqd4o56y3iw"
-path="res://.godot/imported/mon_engine_carrier_mon_engine_carrier_orm.jpg-1a82c0a48afac409bae0ed0b76f88358.ctex"
+path.bptc="res://.godot/imported/mon_engine_carrier_mon_engine_carrier_orm.jpg-1a82c0a48afac409bae0ed0b76f88358.bptc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "a6aa6b806a8e4a24ed74cd244b3a5a73"
@@ -14,12 +15,12 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/chars/mon_engine_carrier_mon_engine_carrier_orm.jpg"
-dest_files=["res://.godot/imported/mon_engine_carrier_mon_engine_carrier_orm.jpg-1a82c0a48afac409bae0ed0b76f88358.ctex"]
+dest_files=["res://.godot/imported/mon_engine_carrier_mon_engine_carrier_orm.jpg-1a82c0a48afac409bae0ed0b76f88358.bptc.ctex"]
 
 [params]
 
-compress/mode=0
-compress/high_quality=false
+compress/mode=2
+compress/high_quality=true
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

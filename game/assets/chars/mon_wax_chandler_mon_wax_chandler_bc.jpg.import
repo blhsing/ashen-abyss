@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://bx7yyw1rcnq0u"
-path="res://.godot/imported/mon_wax_chandler_mon_wax_chandler_bc.jpg-adc4a8bb6e30841a9b83c0a3081a6d45.ctex"
+path.bptc="res://.godot/imported/mon_wax_chandler_mon_wax_chandler_bc.jpg-adc4a8bb6e30841a9b83c0a3081a6d45.bptc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "98be1d126ff8d63bf6348838b7f181e1"
@@ -14,12 +15,12 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/chars/mon_wax_chandler_mon_wax_chandler_bc.jpg"
-dest_files=["res://.godot/imported/mon_wax_chandler_mon_wax_chandler_bc.jpg-adc4a8bb6e30841a9b83c0a3081a6d45.ctex"]
+dest_files=["res://.godot/imported/mon_wax_chandler_mon_wax_chandler_bc.jpg-adc4a8bb6e30841a9b83c0a3081a6d45.bptc.ctex"]
 
 [params]
 
-compress/mode=0
-compress/high_quality=false
+compress/mode=2
+compress/high_quality=true
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

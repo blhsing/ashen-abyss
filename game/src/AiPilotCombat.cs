@@ -25,6 +25,7 @@ public partial class TestBot
 
     private const float Horizon = 1.7f;
     private static bool _packMode;          // three or more enemies close: plain monsters' swings are not dodged (DangerMap.Danger.Minor)
+    private int _castsSeen, _swampCasts = -1; private double _castSeenAt, _swampAt = -100;
     private const float RollLen = 5.5f, RollTime = 0.32f, RollGuard = 0.36f;
 
     /// <summary>Statistics for the pilot harness.</summary>
@@ -141,6 +142,11 @@ public partial class TestBot
         Vector2 me = p.Pos2;
         DangerMap.Tick(me, p.Radius + 0.1f);
         _packMode = !PilotRanged(p.Hero) && CloseMonsters(me, 5f) >= 3 && p.LifeFrac > 0.4f;      // a ranged hero should not be in the pack at all: it keeps dodging
+        // dodge-starved (astromancer campaign 2026-11-23: in a 30-monster lair horde it dodge-walked for 5+ s at a time with
+        // 1–2 casts, the horde grew and it died 3 times): no cast for 1.5 s with 3+ close and over half life → the plain
+        // swings are traded for ranged heroes too until it casts again (boss fights keep their own cast gate)
+        if (Casts != _castsSeen) { _castsSeen = Casts; _castSeenAt = _clock; }
+        if (!_packMode && _clock - _castSeenAt > 1.5 && p.LifeFrac > 0.5f && !DangerMap.BossFight() && CloseMonsters(me, 8f) >= 3) _packMode = true;
         PilotPotion(p);
         if (PilotCcShield(p, me)) return true;
         if (PilotShedChill(p, me)) return true;
@@ -314,6 +320,21 @@ public partial class TestBot
         Log.Info("pilot", $"dodge: rolls {(clean ? "clear" : "through")} (risk {risk:0.#}, lands in {first:0.00}s, life {p.LifeFrac * 100f:0}%)");
     }
 
+
+    /// <summary>Weighted count of monsters on the hero near a spot (elite / champion 2, boss 3): how hard a crowd hits.</summary>
+    private static int Pressure(Vector2 c, float r)
+    {
+        int n = 0;
+        var list = World.Monsters;
+        for (int i = 0; i < list.Count; i++)
+        {
+            var m = list[i];
+            if (m == null || m.Dead || !m.Aggro || !IsInstanceValid(m)) continue;
+            if (m.Pos2.DistanceSquaredTo(c) >= (r + m.Radius) * (r + m.Radius)) continue;
+            n += m.IsBoss ? 3 : m.IsElite ? 2 : 1;
+        }
+        return n;
+    }
     private static int CloseMonsters(Vector2 c, float r)
     {
         int n = 0;
@@ -438,7 +459,7 @@ public partial class TestBot
             float d = me.DistanceTo(s);
             if (grid != null && d < 12f && !grid.LineWalkWide(me, s, p.Radius * 0.8f)) continue;
             float risk = Risk(p, me, s, v, false, Horizon, out _);
-            float sc = risk * 50f + d + CloseMonsters(s, 3f) * 3f + Crowding(s, p.Radius) * 2f + ArenaCost(me, s);
+            float sc = risk * 50f + d + CloseMonsters(s, 3f) * 3f + Crowding(s, p.Radius) * 2f + ArenaCost(me, s) + SleepersNear(s, 14f) * 6f;      // not kiting into the next pack's notice (13.5 m)
             if (sc < bs) { bs = sc; best = s; }
         }
         return best;
@@ -450,6 +471,7 @@ public partial class TestBot
     /// </summary>
     private bool PilotRetreat(Player p, Vector2 me)
     {
+        SafeTrail(me);
         if (_clock < _retreatUntil) { _doing = "retreat"; return true; }
         if (_clock - _retreatAt < 3.0) return false;          // a breather between retreats: fight back in between
         float in2 = DangerMap.Intake(2.0) / Mathf.Max(1f, p.MaxLife);
@@ -457,7 +479,16 @@ public partial class TestBot
         int packed = CloseMonsters(me, 3.5f);
         bool bad = life < 0.4f && (p.Potions == 0 || in2 >= 0.2f) || life < 0.6f && in2 >= 0.3f
             || packed >= 4 && in2 >= 0.2f && life < 0.6f;             // surrounded and bleeding: string the pack out
-        if (!bad) return false;
+        // swamped before the life bar shows it (sh_frost with the bestiary roster, lv24 hunter: 15+ attackers took the
+        // full bar in ~2 s, too fast for the reactive rule): a big crowd on the hero that already bites → back off early
+        var hero0 = Game.I?.Hero;
+        bool ranged0 = hero0 != null && PilotRanged(hero0);
+        int press = Pressure(me, 7f);
+        bool swamped = DangerMap.BossFight() && press >= (ranged0 ? 6 : 10) && (in2 >= 0.12f || life < 0.8f);      // boss fights only: in the open world running pulls the next packs (lv1 pactbinder, wastes)
+        // ...but not as a habit: an early back-off is followed by fighting (a cast since the last one, 6 s apart) — a lv1
+        // pactbinder (final round) backed off every 3 s, killed nothing for 50 s and dragged a 6-monster crowd up to 45
+        if (swamped && !bad && (_clock - _swampAt < 6.0 || Casts == _swampCasts)) swamped = false;
+        if (!bad && !swamped) return false;
         bool boss = DangerMap.BossFight();
         Vector2 sum = Vector2.Zero; int n = 0;
         var list = World.Monsters;
@@ -471,13 +502,15 @@ public partial class TestBot
         Vector2 away = (me - sum / n);
         away = away.LengthSquared() < 0.01f ? -p.Forward : away.Normalized();
         var grid = World.Grid;
+        Vector2? safe = SafeSpot(me);
         Vector2 best = me; float bs = float.MinValue;
         for (int k = 0; k < 12; k++)
         {
             Vector2 dir = away.Rotated((k - 6) * Mathf.Pi / 8f);
             float reach = boss ? 7f : 12f;
             Vector2 end = grid != null ? grid.ClampLine(me, me + dir * reach, false) : me + dir * reach;
-            float sc = end.DistanceTo(me) + dir.Dot(away) * 6f - CloseMonsters(end, 4f) * 5f - ArenaCost(me, end) - SleepersNear(end, 9f) * 4f;      // not into the next pack
+            float sc = end.DistanceTo(me) + dir.Dot(away) * 6f - CloseMonsters(end, 4f) * 5f - ArenaCost(me, end) - SleepersNear(end, 9f) * 4f
+                + (safe != null ? dir.Dot((safe.Value - me).Normalized()) * 8f : 0f);      // not into the next pack; back the way it came (cleared ground)
             if (sc > bs) { bs = sc; best = end; }
         }
         if (best.DistanceTo(me) < 3f) return false;
@@ -486,7 +519,8 @@ public partial class TestBot
         if (p.EvadeCd <= 0f && (n >= 4 || in2 > 0.3f)) EvadeFrom(p, grid, me, away);
         _retreatUntil = _clock + (boss ? 1.0 : 1.6); _retreatAt = _clock;
         _doing = "retreat";
-        Log.Info("pilot", $"swarmed by {n} at {p.LifeFrac * 100f:0}% life (potions {p.Potions}, lost {in2 * 100f:0}% in 2 s): backs off");
+        if (!bad) { _swampAt = _clock; _swampCasts = Casts; }
+        Log.Info("pilot", $"swarmed by {n} at {p.LifeFrac * 100f:0}% life (potions {p.Potions}, lost {in2 * 100f:0}% in 2 s): backs off{(bad ? "" : $" early (pressure {press})")}");
         return true;
     }
 }
@@ -499,10 +533,28 @@ public partial class TestBot
     /// </summary>
     private static bool PilotLeaveAlone(Monster m, Level level)
     {
-        if (m.Brain == null || m.Aggro || level == null) return false;
+        if (m.Aggro || level == null) return false;
+        // a hero of level 1–4 does not wake an elite pack (lv1 pactbinder, final round: an elite dusk-hound pack in the
+        // wastes killed it in each of three runs); it comes back for them a few levels later
+        var h = Game.I?.Hero;
+        bool hold = false; foreach (var s in level.StrongholdMobs) if (s == m) { hold = true; break; }
+        if (h != null && h.D.Level < 5 && m != level.BossMon && !hold && ElitePack(m)) return true;
+        // one pack at a time below lv5: no sleeping monster is picked while an awake one is within 20 m (pactbinder lv1,
+        // EARLY GENTLE build: hounds, husks, cutters and grubs of several packs at once → death at 106 s)
+        if (h != null && h.D.Level < 5 && m != level.BossMon && !hold && World.P != null && CloseMonsters(World.P.Pos2, 20f) > 0) return true;
+        if (m.Brain == null) return false;
         if (m == level.BossMon) return false;
         foreach (var s in level.StrongholdMobs) if (s == m) return false;
         return true;
+    }
+
+    private static bool ElitePack(Monster m)
+    {
+        if (m.IsElite) return true;
+        if (m.Pack < 0) return false;
+        var list = World.Monsters;
+        for (int i = 0; i < list.Count; i++) { var o = list[i]; if (o != null && !o.Dead && o.Pack == m.Pack && o.IsElite) return true; }
+        return false;
     }
 }
 
@@ -556,7 +608,10 @@ public partial class TestBot
     {
         if (p.Stunned || p.Rooted || p.EvadeCd > 0f || _clock - _pRoll < 0.5) return false;
         float chill = p.Has(StatusId.Chill) ? p.StMag[(int)StatusId.Chill] : 0f;
-        if (chill < (CloseMonsters(me, 3.5f) >= 3 ? 0.45f : 0.6f)) return false;
+        int near = CloseMonsters(me, 3.5f);
+        // in a frost crowd a few blows fill the bar at once (wildsoul sh_frost lv28: 10 freezes, all "chill full", 7 by
+        // frostbound, mostly from under 50 %): shed it early when more are on the hero
+        if (chill < (near >= 5 ? 0.25f : near >= 3 ? 0.35f : 0.6f)) return false;
         var grid = World.Grid;
         Vector2 end = me; float bs = float.MaxValue;
         for (int k = 0; k < 8; k++)
@@ -858,6 +913,15 @@ public partial class TestBot
             {
                 // an add on the hero still comes first (a frost blow freezes whatever the plan was)
                 if (t != null && t != hint && t != boss && t.Pos2.DistanceTo(me) < 3f) return t;
+                // the hint stands in a crowd (or one already bites): thin what is near first, then go for it — walking
+                // into 15 attackers for the banner killed a lv24 hunter in ~2 s (bestiary roster, 2026-11-23)
+                var hh = Game.I?.Hero;
+                int lim = hh != null && PilotRanged(hh) ? 5 : 8;
+                if (t != null && t != hint && hint.Pos2.DistanceTo(me) > 6f && (Pressure(hint.Pos2, 6f) >= lim + 2 || Pressure(me, 7f) >= lim))
+                {
+                    if (_clock - _hintLog > 8.0) { _hintLog = _clock; Log.Info("pilot", $"{boss.Def?.Id}: crowd at {hint.DisplayName ?? hint.Def?.Id}, thins it first"); }
+                    return t;
+                }
                 if (_clock - _hintLog > 8.0) { _hintLog = _clock; Log.Info("pilot", $"{boss.Def?.Id}: goes for {hint.DisplayName ?? hint.Def?.Id} first (the encounter's mechanic)"); }
                 return hint;
             }
@@ -882,5 +946,96 @@ public partial class TestBot
             if (m.Pos2.DistanceSquaredTo(c) < r * r) n++;
         }
         return n;
+    }
+}
+
+public partial class TestBot
+{
+    private Level _yardLevel;
+    private double _yardSince = -1, _yardLog = -10;
+
+    /// <summary>
+    /// Before a stronghold's commander is woken: clear the garrison round it pack by pack from outside its notice
+    /// (monsters notice the hero at 13.5 m with a line of sight and wake their whole pack). The wildsoul's final-round
+    /// campaign woke sh_frost with 20+ monsters of the yard on top (frostbound, reavers, yaks) and was stun-/freeze-locked
+    /// to death 8 times between lv22 and lv32. Only monsters 15–30 m from the commander, at most 150 s per visit.
+    /// </summary>
+    private bool PilotClearYard(Player p, Vector2 me, Level level)
+    {
+        Monster boss = null;
+        foreach (var m in level.StrongholdMobs)
+            if (m != null && IsInstanceValid(m) && !m.Dead && (m.IsBoss || NamedHub.Of(m) != null)) { boss = m; break; }
+        if (boss == null || boss.Aggro) return false;
+        if (_yardLevel != level) { _yardLevel = level; _yardSince = _clock; }
+        if (_clock - _yardSince > 150.0) return false;
+        Monster pick = null; float bd = float.MaxValue; int left = 0;
+        var list = World.Monsters;
+        for (int i = 0; i < list.Count; i++)
+        {
+            var m = list[i];
+            if (m == null || m.Dead || !IsInstanceValid(m) || m == boss || m.Faction != Faction.Monster) continue;
+            float db = m.Pos2.DistanceTo(boss.Pos2);
+            if (db < 15f || db > 30f) continue;
+            bool mob = false;
+            foreach (var s in level.StrongholdMobs) if (s == m) { mob = true; break; }
+            if (mob && m.Pack >= 0 && m.Pack == boss.Pack) continue;       // the commander's own pack wakes with it
+            left++;
+            float d = m.Pos2.DistanceTo(me);
+            if (d < bd) { bd = d; pick = m; }
+        }
+        if (pick == null) return false;
+        if (_clock - _yardLog > 10.0) { _yardLog = _clock; Log.Info("pilot", $"stronghold: clears the yard first ({left} round {boss.Def?.Id}, {boss.Pos2.DistanceTo(me):0} m away)"); }
+        // stop short of the commander's notice: walk to the monster, but not within 14.5 m of the commander
+        Vector2 goal = pick.Pos2;
+        if (goal.DistanceTo(boss.Pos2) < 14.5f) goal = boss.Pos2 + (goal - boss.Pos2).Normalized() * 14.5f;
+        return Approach(p, me, goal, "stronghold yard", 4f);
+    }
+}
+
+public partial class TestBot
+{
+    private double _unsafeLog = -10;
+
+    /// <summary>
+    /// A named encounter's "stand here" waits while the hero is swarmed or nearly out (low life and no potion): survival
+    /// first, the hint again once it has backed off (astromancer, release re-run: 「貝拉克」's stand-behind-the-wall spot
+    /// held at 30 % life, no potions, 20 attackers → death; the rare was still at full life).
+    /// </summary>
+    private bool PilotHintUnsafe(Player p, Vector2 me)
+    {
+        bool bad = Pressure(me, 7f) >= 6 || p.LifeFrac < 0.5f && p.Potions == 0;
+        if (bad && _clock - _unsafeLog > 8.0) { _unsafeLog = _clock; Log.Info("pilot", $"named: holds off the stand spot (life {p.LifeFrac * 100f:0}%, potions {p.Potions}, pressure {Pressure(me, 7f)})"); }
+        return bad;
+    }
+}
+
+public partial class TestBot
+{
+    private readonly List<Vector2> _trail = new();
+    private double _trailAt = -10;
+    private Node _trailRoot;
+
+    /// <summary>Every 2 s a spot where no monster is awake within 15 m and none sleeps within 12 m (the ground it cleared).</summary>
+    private void SafeTrail(Vector2 me)
+    {
+        if (_trailRoot != World.Root) { _trailRoot = World.Root; _trail.Clear(); }
+        if (_clock - _trailAt < 2.0) return;
+        _trailAt = _clock;
+        if (CloseMonsters(me, 15f) > 0 || SleepersNear(me, 12f) > 0) return;
+        if (_trail.Count > 0 && _trail[^1].DistanceTo(me) < 4f) return;
+        _trail.Add(me);
+        if (_trail.Count > 24) _trail.RemoveAt(0);
+    }
+
+    /// <summary>The newest cleared spot 8–40 m away (a back-off leans that way: a lv1 astromancer backing off into
+    /// unexplored ground grew a 20-monster crowd to 28, release re-run).</summary>
+    private Vector2? SafeSpot(Vector2 me)
+    {
+        for (int i = _trail.Count - 1; i >= 0; i--)
+        {
+            float d = _trail[i].DistanceTo(me);
+            if (d >= 8f && d <= 40f) return _trail[i];
+        }
+        return null;
     }
 }

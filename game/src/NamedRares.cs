@@ -120,7 +120,7 @@ internal sealed class NightWatch : RareScript
     private void Wail()
     {
         _inhaling = false;
-        if (M.Stunned || _hurt >= M.MaxLife * 0.08f) { Mech("interrupted"); E.Toast("呼喊被打斷了"); Fx.Burst(M.Chest, Element.Lightning, 2f, 0.6f); return; }
+        if (M.Stunned || _hurt >= M.MaxLife * 0.12f) { Mech("interrupted"); E.Toast("呼喊被打斷了"); Fx.Burst(M.Chest, Element.Lightning, 2f, 0.6f); return; }
         Mech("wail");
         Snd.At("bell_toll", M.GlobalPosition, 0.9f);
         Fx.Ring(M.GlobalPosition + Vector3.Up * 0.2f, 12f, new Color(0.8f, 0.85f, 1f), 0.6f, Sigil.Arcane);
@@ -149,7 +149,7 @@ internal sealed class AshBride : RareScript
         E.Hide(M, true);
         M.Busy(3.2f, null);
         Vector2 at = M.Pos2;
-        _pile = E.Prop("灰堆", at, M.MaxLife * 0.07f, NamedProps.Heap(new Color(0.55f, 0.53f, 0.5f), 1.1f), () =>
+        _pile = E.Prop("灰堆", at, M.MaxLife * 0.12f, NamedProps.Heap(new Color(0.55f, 0.53f, 0.5f), 1.1f), () =>
         {
             _pile = null;
             E.Toast("灰堆被打散——新娘不再歸來");
@@ -231,8 +231,7 @@ internal sealed class GallowsFather : RareScript
 /// <summary>無主號角・哈莫: a 14 m blast cone that freezes in two ticks; every blast musters four Frostbound in a line across the far end that advance in step.</summary>
 internal sealed class Hamo : RareScript
 {
-    public override void Build() => E.Every(10f, Blast, 3f, () => !Busy && E.HeroDist < 15f);
-    private int _blasts;
+    public override void Build() => E.Every(9f, Blast, 3f, () => !Busy && E.HeroDist < 15f);
     private void Blast()
     {
         Mech("blast");
@@ -250,10 +249,10 @@ internal sealed class Hamo : RareScript
         }
         E.Then(1.2f, () =>
         {
-            if (++_blasts % 2 == 0) return;
+            // every blast musters a rank (the design), but not while half of the last rank still stands (six at most)
+            if (E.AliveAdds() > 2) return;
             Mech("muster");
             Vector2 far = origin + dir * 13f, side = new(-dir.Y, dir.X);
-            if (E.AliveAdds() > 4) return;
             for (int i = 0; i < 4; i++) E.SummonAfter(0.7f, "frostbound", far + side * (-4.5f + 3f * i), null, m => m.FaceDir(-dir), 0.6f);
         });
     }
@@ -262,7 +261,7 @@ internal sealed class Hamo : RareScript
 /// <summary>白影: never fully visible — re-stealths 1.5 s after every pounce, leaving three decoy ripples; the pounce marks (bleed, vulnerable). Area damage or burning ground reveals it for 3 s.</summary>
 internal sealed class WhiteShadow : RareScript
 {
-    private bool _hidden; private float _reveal, _pounce = 2.5f, _angle;
+    private bool _hidden; private float _reveal, _pounce = 2.5f, _angle, _hiddenFor;
     private readonly List<Node3D> _decoys = new();
     public override void Setup() { _hidden = false; }
     public override void Reset() { E.Hide(M, false); _hidden = false; }
@@ -270,7 +269,7 @@ internal sealed class WhiteShadow : RareScript
     private void Stealth()
     {
         Mech("stealth");
-        _hidden = true;
+        _hidden = true; _hiddenFor = 0f;
         E.Hide(M, true);
         Mech("decoys");
         for (int i = 0; i < 3; i++)
@@ -290,7 +289,10 @@ internal sealed class WhiteShadow : RareScript
         _angle += dt * 0.7f;
         Vector2 goal = E.Walk(E.HeroPos + Vector2.Right.Rotated(_angle) * 7f);
         E.Drive(M, goal, dt, 1.2f, 0.5f);
-        // anything burning or any of the hero's ground effects on top of it reveals it
+        // anything burning or any of the hero's ground effects on top of it reveals it — once it has been gone 1 s (a
+        // hero who keeps the floor burning would otherwise never see it vanish: the stealth is the fight)
+        _hiddenFor += dt;
+        if (_hiddenFor >= 1f)
         foreach (var z in NamedHub.AllZones())
         {
             var s = NamedHub.ZoneSpecOf(z);
@@ -399,11 +401,14 @@ internal sealed class ThousandYear : RareScript
     }
     public override void Damaged(Hit h, float amount)
     {
+        if (h.Dot) return;                                         // a burn tick is not a blow: it would eat a flicker a second
         for (int i = 0; i < 6; i++)
         {
             if (_down[i] > 0f) continue;
             _down[i] = 10f;
-            M.Life = Mathf.Min(M.MaxLife, M.Life + amount);       // the flicker took it
+            // the flicker takes 60 % of the blow (all of it made her untouchable to a hero landing under 0.6 hits
+            // a second — her chill drains the resource that pays for faster ones)
+            M.Life = Mathf.Min(M.MaxLife, M.Life + amount * 0.6f);
             Mech("shield");
             Fx.Hit(M.Chest, Element.Frost, false);
             return;
@@ -785,7 +790,8 @@ internal sealed class Dafu : RareScript
             E.Own(NamedProps.Place(NamedProps.Patch(2.2f, new Color(0.22f, 0.2f, 0.12f)), at));
         }
     }
-    public override void Build() => E.Every(7f, Nets, 2.5f, () => !Busy && E.HeroDist is > 3.2f and < 14f);
+    // at any range: a hero in her face is netted too (she hauls from where she stands); the re-net still needs distance
+    public override void Build() => E.Every(7f, Nets, 2.5f, () => !Busy && E.HeroDist < 14f);
     private void Nets()
     {
         Mech("nets");
@@ -1060,6 +1066,8 @@ internal sealed class FirstCantor : RareScript
 internal sealed class Everquiet : RareScript
 {
     private float _legs;
+    /// <summary>Hint: the legs hang under the lip — fight it from close (a ranged hero walks in).</summary>
+    public override Vector2? BotStand => E.Alive && E.HeroOk && E.HeroDist > 3f ? E.Walk(M.Pos2 + E.DirToHero(M.Pos2) * 2f) : null;
     public override void Build() => E.Every(9f, Toll, 3f, () => E.HeroOk && E.HeroDist < 20f);
     private void Toll()
     {
@@ -1221,6 +1229,8 @@ internal sealed class FirstBorn : RareScript
 {
     private bool _home; private int _rings; private float _homeT;
     public override void Setup() { _home = false; _homeT = 0f; _rings = 0; }
+    /// <summary>Hint: while it calls them home, cut the cinderlings off before they reach it.</summary>
+    public override Monster BotTarget => _home && _homeT > 0f && E.HeroOk ? E.NearestAdd(E.HeroPos, a => !a.Untargetable && a.Pos2.DistanceTo(E.HeroPos) < 10f) : null;
     public override void Build()
     {
         E.Every(8f, () => { if (E.AliveAdds() >= 9) return; Mech("summon"); for (int i = 0; i < 3; i++) E.SummonAfter(0.7f, "cinderling", E.Near(M.Pos2, 2f, 5f), "imp", null, 0.5f); }, 1.5f);

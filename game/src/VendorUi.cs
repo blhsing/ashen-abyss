@@ -807,12 +807,14 @@ public partial class VendorUi : UiPanel
         var left = Column(PickW);
         left.AddChild(Section("賭運"));
         left.AddChild(Note("莉雅的貨箱底下壓著幾件來路不明的東西。先付錢，再看貨——多半平庸，偶爾驚人。", PickW));
-        // eight offers in a well, each on its plate and as tall as its button: with the note above they fill the
-        // column at the largest text size, so the rows sit close together (what was just won lies under the bag,
-        // where there is room). The name and price columns grow with the text.
+        // eight offers (nine with the class's off-hands: shield, focus, totem, grimoire or lantern) in a well, each on
+        // its plate and as tall as its button. The well takes the column's height and scrolls when the rows need more
+        // (the ninth row at the largest text sizes). What was just won lies under the bag, where there is room.
         var list = new VBoxContainer();
         list.AddThemeConstantOverride("separation", 2);
-        foreach (var kind in GambleKinds)
+        var kinds = new List<ItemKind>(GambleKinds);
+        if (ItemDb.OffBasesOf(h.Class).Length > 0) kinds.Insert(1, ItemKind.OffHand);   // classes without off-hand bases hold a second weapon instead
+        foreach (var kind in kinds)
         {
             var k = kind;
             var offer = Offer(k, h);
@@ -839,7 +841,7 @@ public partial class VendorUi : UiPanel
             line.AddChild(roll);
             list.AddChild(RowPlate(line, offer.item == null));
         }
-        left.AddChild(ItemUi.Well(list));
+        left.AddChild(FlexWell("gamble", list, PickW, 160, out _));
         row.AddChild(left);
         row.AddChild(ItemUi.VRule());
         var right = SellColumn(h);
@@ -909,16 +911,22 @@ public partial class VendorUi : UiPanel
         left.AddChild(Section($"行囊（{h.D.Bag.Count} / {Hero.BagSize}）"));
         left.AddChild(ItemUi.Well(ItemUi.BagGrid(_board, h, Cell, Deposit, Deposit, x => ItemUi.Dim("點擊：存入儲藏箱"))));
         left.AddChild(ToolRow(ItemUi.Btn("整理行囊", SortBag, UiTheme.FsRow)));
-        left.AddChild(Note("點擊行囊中的物品存入，點擊儲藏箱中的物品取回。\n儲藏箱留在殘燈鎮的火邊；放進去的東西，不會跟著你走進灰暮。", PickW));
+        left.AddChild(Note("點擊行囊中的物品存入，點擊儲藏箱中的物品取回。\n儲藏箱留在殘燈鎮的火邊，由你所有的角色共用（專家模式的角色另有一個）。", PickW));
         row.AddChild(left);
         row.AddChild(ItemUi.VRule());
 
         var right = Column(PickW);
-        right.AddChild(Section($"儲藏箱（{h.D.Stash.Count} / {Hero.StashSize}）"));
+        // SAVE-RESTORE (shared stash): one stash for every hero of the account, in tabs of 80 (SharedStash.cs)
+        right.AddChild(Section($"共用儲藏箱（{h.D.Stash.Count} / {Hero.StashSize}）"));
+        int page = SharedStash.Page = Math.Clamp(SharedStash.Page, 0, SharedStash.Tabs - 1);
+        string[] digits = { "一", "二", "三", "四", "五", "六", "七", "八", "九", "十", "十一", "十二" };
+        var pages = Enumerable.Range(0, SharedStash.Tabs).Select(t => $"{(t < digits.Length ? digits[t] : (t + 1).ToString())}（{SharedStash.CountIn(h.D.Stash, t)}）").ToArray();
+        right.AddChild(ItemUi.Tabs(pages, page, t => { SharedStash.Page = t; _dirty = true; }, UiTheme.FsBody, 90));
         var grid = ItemUi.Grid(10);
-        for (int i = 0; i < Hero.StashSize; i++)
+        var onPage = SharedStash.TabItems(h.D.Stash, page).ToList();
+        for (int i = 0; i < SharedStash.TabSize; i++)
         {
-            if (i < h.D.Stash.Count) grid.AddChild(ItemUi.Slot(_board, h.D.Stash[i], Cell, Withdraw, Withdraw, x => OthersHint(x) + ItemUi.Dim("點擊：取回行囊")).Node);
+            if (i < onPage.Count) grid.AddChild(ItemUi.Slot(_board, onPage[i], Cell, Withdraw, Withdraw, x => OthersHint(x) + ItemUi.Dim("點擊：取回行囊")).Node);
             else grid.AddChild(ItemUi.Empty(Cell));
         }
         right.AddChild(ItemUi.Well(grid));

@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://bvbb653os03f5"
-path="res://.godot/imported/npc_villager_f_skin_n.jpg-d54e6ca14833bef9245f79e8c9a682db.ctex"
+path.s3tc="res://.godot/imported/npc_villager_f_skin_n.jpg-d54e6ca14833bef9245f79e8c9a682db.s3tc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "b9e8cd7a86f1dd0644d86f7d59827e64"
@@ -14,17 +15,17 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/chars/npc_villager_f_skin_n.jpg"
-dest_files=["res://.godot/imported/npc_villager_f_skin_n.jpg-d54e6ca14833bef9245f79e8c9a682db.ctex"]
+dest_files=["res://.godot/imported/npc_villager_f_skin_n.jpg-d54e6ca14833bef9245f79e8c9a682db.s3tc.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1
-compress/normal_map=0
+compress/normal_map=1
 compress/channel_pack=0
 mipmaps/generate=true
 mipmaps/limit=-1

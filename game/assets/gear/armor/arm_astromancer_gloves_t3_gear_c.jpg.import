@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://c20hb5tfe7lfj"
-path="res://.godot/imported/arm_astromancer_gloves_t3_gear_c.jpg-f6a44b34931b60f0ecca4cdad85691cf.ctex"
+path.bptc="res://.godot/imported/arm_astromancer_gloves_t3_gear_c.jpg-f6a44b34931b60f0ecca4cdad85691cf.bptc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "1a7b9a493831f1e52733bd21cc32cc39"
@@ -14,12 +15,12 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/gear/armor/arm_astromancer_gloves_t3_gear_c.jpg"
-dest_files=["res://.godot/imported/arm_astromancer_gloves_t3_gear_c.jpg-f6a44b34931b60f0ecca4cdad85691cf.ctex"]
+dest_files=["res://.godot/imported/arm_astromancer_gloves_t3_gear_c.jpg-f6a44b34931b60f0ecca4cdad85691cf.bptc.ctex"]
 
 [params]
 
-compress/mode=0
-compress/high_quality=false
+compress/mode=2
+compress/high_quality=true
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://cepentop0rij5"
-path="res://.godot/imported/mon_lamp_lure_mon_lamp_lure_orm.jpg-701f7844e768d36bddd0e9bcc66c5dbe.ctex"
+path.bptc="res://.godot/imported/mon_lamp_lure_mon_lamp_lure_orm.jpg-701f7844e768d36bddd0e9bcc66c5dbe.bptc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "7e849672fb19ec938174ff7357fb311f"
@@ -14,12 +15,12 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/chars/mon_lamp_lure_mon_lamp_lure_orm.jpg"
-dest_files=["res://.godot/imported/mon_lamp_lure_mon_lamp_lure_orm.jpg-701f7844e768d36bddd0e9bcc66c5dbe.ctex"]
+dest_files=["res://.godot/imported/mon_lamp_lure_mon_lamp_lure_orm.jpg-701f7844e768d36bddd0e9bcc66c5dbe.bptc.ctex"]
 
 [params]
 
-compress/mode=0
-compress/high_quality=false
+compress/mode=2
+compress/high_quality=true
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

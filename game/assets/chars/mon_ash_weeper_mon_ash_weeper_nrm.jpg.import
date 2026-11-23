@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://dcl0bbc1k7tgq"
-path="res://.godot/imported/mon_ash_weeper_mon_ash_weeper_nrm.jpg-a11fac9fc2d9a3b9d2f16a8848913103.ctex"
+path.s3tc="res://.godot/imported/mon_ash_weeper_mon_ash_weeper_nrm.jpg-a11fac9fc2d9a3b9d2f16a8848913103.s3tc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "fed07c6c99556628304aa89782d6b804"
@@ -14,17 +15,17 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/chars/mon_ash_weeper_mon_ash_weeper_nrm.jpg"
-dest_files=["res://.godot/imported/mon_ash_weeper_mon_ash_weeper_nrm.jpg-a11fac9fc2d9a3b9d2f16a8848913103.ctex"]
+dest_files=["res://.godot/imported/mon_ash_weeper_mon_ash_weeper_nrm.jpg-a11fac9fc2d9a3b9d2f16a8848913103.s3tc.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1
-compress/normal_map=0
+compress/normal_map=1
 compress/channel_pack=0
 mipmaps/generate=true
 mipmaps/limit=-1

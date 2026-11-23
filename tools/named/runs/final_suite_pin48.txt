@@ -1,0 +1,20 @@
+build ok
+exit= seconds=173
+log: C:\Users\blhsi\AppData\Roaming\AshenAbyss\logs\game_20261122_191636.log  lines=756  ERR=0  WRN=6
+--- distinct warnings ---
+   1 x [suite] FAIL named pin_7_firstkeeper: kill time within 120-300s - 117.3s
+   1 x [suite] FAIL named pin_8_osaros: no god mode, no death - deaths 1, potions 11
+   1 x [suite] FAIL named pin_8_osaros: kill time within 120-300s - 92.1s
+   1 x [suite] FAIL named pin_4_mire_mother: no god mode, no death - deaths 3, potions 33
+   1 x [suite] FAIL named pin_4_mire_mother: kill time within 120-300s - 118.9s
+   1 x [suite] FAIL named pin_5_sand_tyrant: kill time within 120-300s - 82.7s
+--- last lines ---
+  172.624 INF [game] quitting
+  172.627 INF [save] slot 91 saved: ??? lv50 ??? area=rift~arena:pin_8_osaros bytes=25286
+  172.628 INF [save] save reason=quit slot=91 ok=True area=rift~arena:pin_8_osaros playtime=31s capture=0.1ms total=3.0ms
+  172.630 INF [bot] final summary t=169s game=993s area=rift~arena:pin_8_osaros doing=fight pin_8_osaros kills=21 elites=4 bosses=5 level=50 life=68% items=0 gold=50 deaths=0 areas=5 casts=1222 unstuck=0 monsters=0 errors=0 warnings=6 botErrors=0
+  172.631 INF [bot] final progress: waypoints=[town] renown=[] quests done=0/1 skillpts bonus=0 potion cap=4 altars=0 codex=0 tier=2/2 riftBest=0 paragon=53 playtime=31s
+  172.632 INF [anim] anim-check: hero moved 265.2s - 0.0s without a locomotion clip, 0.0s with frozen legs; hero stood 108.4s - 0.0s in a run clip or none; monsters moved 161.1s - 0.0s without a locomotion clip, 0.0s with frozen legs; models without a skeleton ƒ?Ý
+  172.632 INF [input] keyboard hook saw 0 key events, 0 of them PrtSc
+  172.633 INF [boot] shutdown errors=0 warnings=6 uptime=173s
+DONE

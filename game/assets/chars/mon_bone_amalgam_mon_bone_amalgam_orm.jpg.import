@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://b4weo4qdeqgww"
-path="res://.godot/imported/mon_bone_amalgam_mon_bone_amalgam_orm.jpg-ba5b65a91e62fd534c11451ecd8ebc83.ctex"
+path.bptc="res://.godot/imported/mon_bone_amalgam_mon_bone_amalgam_orm.jpg-ba5b65a91e62fd534c11451ecd8ebc83.bptc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "7b66cc2f637ca279de97fbd018d80b44"
@@ -14,12 +15,12 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/chars/mon_bone_amalgam_mon_bone_amalgam_orm.jpg"
-dest_files=["res://.godot/imported/mon_bone_amalgam_mon_bone_amalgam_orm.jpg-ba5b65a91e62fd534c11451ecd8ebc83.ctex"]
+dest_files=["res://.godot/imported/mon_bone_amalgam_mon_bone_amalgam_orm.jpg-ba5b65a91e62fd534c11451ecd8ebc83.bptc.ctex"]
 
 [params]
 
-compress/mode=0
-compress/high_quality=false
+compress/mode=2
+compress/high_quality=true
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

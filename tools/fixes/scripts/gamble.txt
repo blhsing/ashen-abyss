@@ -1,0 +1,37 @@
+# gamble tab with the off-hand row (item 6) at the three text sizes
+wait 2
+gold 500000
+scale 0
+wait 0.5
+open vendor:merchant
+wait 1
+click @賭運
+wait 1
+shot gamble_s0
+dump gamble_s0
+close
+scale 1
+wait 0.5
+open vendor:merchant
+wait 1
+click @賭運
+wait 1
+shot gamble_s1
+dump gamble_s1
+close
+scale 2
+wait 0.5
+open vendor:merchant
+wait 1
+click @賭運
+wait 1
+shot gamble_s2
+dump gamble_s2
+wheel 560,600,6
+wait 0.5
+shot gamble_s2_scrolled
+click @一擲#2
+wait 1
+shot gamble_s2_rolled
+close
+quit

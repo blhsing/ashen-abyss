@@ -4,7 +4,7 @@
 # Pass ALL game switches as ONE space-separated string. Switches are listed in ARCHITECTURE.md (section 3.1).
 # -Headless runs without a window (logic only, no screenshots). -Tag names the stdout capture file.
 # -EngineArgs passes engine options (before the "--"), e.g. -EngineArgs "--rendering-driver d3d12".
-param([string[]]$GameArgs = @(), [int]$Timeout = 120, [switch]$NoBuild, [switch]$Headless, [int]$MaxLines = 40, [string]$Tag = 'run', [string]$EngineArgs = '')
+param([string[]]$GameArgs = @(), [int]$Timeout = 120, [switch]$NoBuild, [switch]$Headless, [int]$MaxLines = 40, [string]$Tag = 'run', [string]$EngineArgs = '', [switch]$Priority)
 if (-not (Test-Path Y:\)) { cmd /c subst Y: "$(Split-Path $PSScriptRoot -Parent)" | Out-Null }
 if ($GameArgs.Count -eq 1 -and $GameArgs[0].Contains(' ')) { $GameArgs = $GameArgs[0].Trim() -split '\s+' }
 $G = "$env:LOCALAPPDATA\Programs\Godot_4.7.2_mono\Godot_v4.7.2-stable_mono_win64\Godot_v4.7.2-stable_mono_win64_console.exe"
@@ -12,8 +12,22 @@ function Trim-Line($s) { if ($s.Length -gt 260) { $s.Substring(0, 260) + ' …' 
 $mx = New-Object System.Threading.Mutex($false, 'Local\AshenAbyssRun')
 $held = $false
 try {
-    try { $held = $mx.WaitOne([TimeSpan]::FromMinutes(25)) } catch [System.Threading.AbandonedMutexException] { $held = $true }
-    if (-not $held) { "run.ps1: another test run held the lock for 25 minutes; giving up"; exit 3 }
+    # Lock with a priority lane: -Priority runs (or ASHEN_RUN_PRIORITY=1) leave a flag; normal waiters yield while a live priority flag exists.
+    $prio = $Priority -or ($env:ASHEN_RUN_PRIORITY -eq '1')
+    $flagDir = 'Y:\tools\run_prio'; $myFlag = $null
+    if ($prio) { New-Item -ItemType Directory -Force -Path $flagDir | Out-Null; $myFlag = Join-Path $flagDir "$PID.flag"; Set-Content -LiteralPath $myFlag -Value $Tag }
+    $deadline = (Get-Date).AddMinutes(120)
+    while (-not $held -and (Get-Date) -lt $deadline) {
+        if (-not $prio -and (Test-Path $flagDir)) {
+            $live = @(Get-ChildItem -LiteralPath $flagDir -Filter *.flag -ErrorAction SilentlyContinue | Where-Object {
+                $p = 0; [int]::TryParse($_.BaseName, [ref]$p) | Out-Null
+                if (Get-Process -Id $p -ErrorAction SilentlyContinue) { $true } else { Remove-Item -LiteralPath $_.FullName -Force -ErrorAction SilentlyContinue; $false } })
+            if ($live.Count -gt 0) { Start-Sleep -Seconds 3; continue }
+        }
+        try { $held = $mx.WaitOne(3000) } catch [System.Threading.AbandonedMutexException] { $held = $true }
+    }
+    if ($myFlag) { Remove-Item -LiteralPath $myFlag -Force -ErrorAction SilentlyContinue }
+    if (-not $held) { "run.ps1: could not get the run lock within 120 minutes; giving up"; exit 3 }
     if (-not $NoBuild) {
         Push-Location Y:\game
         $b = dotnet build AshenAbyss.csproj -c Debug -nologo -v q 2>&1 | ForEach-Object { "$_" }

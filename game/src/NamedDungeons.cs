@@ -108,7 +108,10 @@ internal sealed class Household : BossScript
         bool mDown = M.Life <= M.MaxLife * 0.011f;
         int alive = _parts.Count(p => p != null && GodotObject.IsInstanceValid(p) && !p.Dead);
         int down = (mDown ? 1 : 0) + (2 - alive);
-        if (down > 0 && _window < 0f) { _window = 6f; E.Toast("三個都得在六秒內倒下！"); }
+        // the six seconds start when the mass is down or nearly so: a bloated part that bursts by itself while the mass is
+        // still standing is simply gone (with the roster live they burst on the hero, and the window re-huddled them forever)
+        bool early = !mDown && M.Life > M.MaxLife * 0.06f;
+        if (down > 0 && _window < 0f && !early) { _window = 6f; E.Toast("三個都得在六秒內倒下！"); }
         if (mDown) { E.Hide(M, alive > 0); Take(0.3f); }
         if (down >= 3) { E.Floor = 0f; E.KillNamed(); return; }
         if (_window < 0f) return;
@@ -151,6 +154,14 @@ internal sealed class DeadRoots : BossScript
         get
         {
             if (_burn.Any(b => b > 0f)) return null;
+            // a stumpling dying beside a surfaced root lights it (any hero, fire or not): kill the one closest to a root
+            for (int i = 0; i < 4; i++)
+            {
+                var r = _roots[i];
+                if (r == null || !GodotObject.IsInstanceValid(r) || r.Dead || _up[i] <= 0f) continue;
+                var s = E.NearestAdd(r.Pos2, a => a.Pos2.DistanceTo(r.Pos2) < 3.2f);      // its only adds are stumplings (a reskin id with the roster live)
+                if (s != null) return s;
+            }
             for (int i = 0; i < 4; i++) if (_roots[i] != null && GodotObject.IsInstanceValid(_roots[i]) && !_roots[i].Dead && _up[i] > 0f) return _roots[i];
             return null;
         }
@@ -175,7 +186,7 @@ internal sealed class DeadRoots : BossScript
             {
                 _up[i] -= dt;
                 var r = _roots[i];
-                bool lured = E.Adds.Any(a => a != null && GodotObject.IsInstanceValid(a) && !a.Dead && (a.Def.Id == "char_stumpling" || a.Def.Id == "imp") && r != null && GodotObject.IsInstanceValid(r) && a.Pos2.DistanceTo(r.Pos2) < 2.2f);
+                bool lured = E.Adds.Any(a => a != null && GodotObject.IsInstanceValid(a) && !a.Dead && r != null && GodotObject.IsInstanceValid(r) && a.Pos2.DistanceTo(r.Pos2) < 2.2f);
                 if (r != null && GodotObject.IsInstanceValid(r) && (lured || r.Has(StatusId.Burn) || NamedHub.FireNear(r.Pos2, 0.6f))) Ignite(i);
                 else if (_up[i] <= 0f) Sink(i);
             }
@@ -196,7 +207,7 @@ internal sealed class DeadRoots : BossScript
         {
             if (!E.Alive) return;
             _at[idx] = E.Walk(M.Pos2 + dir * 6f);
-            _roots[idx] = E.Prop("燼根", _at[idx], M.MaxLife * 0.05f, NamedProps.Column(new Color(0.35f, 0.22f, 0.15f), 0.45f, 2.6f), () => { _roots[idx] = null; _up[idx] = 0f; _burn[idx] = 0f; }, 0.7f, 2.6f);
+            _roots[idx] = E.Prop("燼根", _at[idx], M.MaxLife * 0.15f, NamedProps.Column(new Color(0.35f, 0.22f, 0.15f), 0.45f, 2.6f), () => { _roots[idx] = null; _up[idx] = 0f; _burn[idx] = 0f; }, 0.7f, 2.6f);
             _up[idx] = 6f;
         });
     }
@@ -207,7 +218,7 @@ internal sealed class DeadRoots : BossScript
     }
     public override void Killed(Monster m)
     {
-        if (m.Def.Id != "char_stumpling" && m.Def.Id != "imp") return;
+        if (!E.Adds.Contains(m) && m.Def.Id != "char_stumpling" && m.Def.Id != "imp") return;      // its adds are the stumplings, whatever id the roster gives them
         for (int i = 0; i < 4; i++) if (_roots[i] != null && GodotObject.IsInstanceValid(_roots[i]) && _up[i] > 0f && _roots[i].Pos2.DistanceTo(m.Pos2) < 3.5f) Ignite(i);
     }
     private void Ignite(int i)
@@ -325,6 +336,8 @@ internal sealed class Matriarch : BossScript
 internal sealed class Sarcophagus : BossScript
 {
     private float _lid = 10f, _open; private readonly List<Monster> _wraiths = new();
+    /// <summary>Hint: while the lid is shut (it takes a tenth), kill the wraiths it let out — the last one forces the lid.</summary>
+    public override Monster BotTarget => _open <= 0f ? _wraiths.FirstOrDefault(w => w != null && GodotObject.IsInstanceValid(w) && !w.Dead && !w.Untargetable) : null;
     public override void Tick(float dt)
     {
         base.Tick(dt);
@@ -648,6 +661,16 @@ internal sealed class KeeperOfTongues : BossScript
         E.Every(5.5f, Plant, 2f, () => Free && E.AliveProps() < 5);
         E.Every(11f, Slam, 8f, () => Free);
     }
+    /// <summary>Hint: knock down a clapper whose ring would reach the hero (within 3.6 m) before his slam makes it ring (two or more planted).</summary>
+    public override Monster BotTarget
+    {
+        get
+        {
+            if (!E.HeroOk || E.AliveProps() < 2) return null;
+            var c = E.NearestProp(E.HeroPos);
+            return c != null && c.Pos2.DistanceTo(E.HeroPos) < 3.6f ? c : null;      // only one whose ring would reach the hero
+        }
+    }
     private void Plant()
     {
         Mech("plant");
@@ -656,7 +679,7 @@ internal sealed class KeeperOfTongues : BossScript
         Anim("OverhandThrow", 1f);
         Vector2 at = E.Near(E.HeroPos, 2f, 5f);
         E.Blast(at, 1f, 0.8f, 0.6f, Element.Physical, null, () =>
-            E.Prop("鐘舌", at, M.MaxLife * 0.025f, NamedProps.Stake(new Color(0.75f, 0.65f, 0.4f), 1.8f, new Color(1f, 0.85f, 0.5f)), null, 0.45f, 1.8f));
+            E.Prop("鐘舌", at, M.MaxLife * 0.012f, NamedProps.Stake(new Color(0.75f, 0.65f, 0.4f), 1.8f, new Color(1f, 0.85f, 0.5f)), null, 0.45f, 1.8f));
     }
     private void Slam()
     {
@@ -729,6 +752,25 @@ internal sealed class HalfBurnt : BossScript
     private bool _hush; private float _stance = 15f, _trail;
     private readonly List<GroundZone> _flames = new();
     public override void Setup() { _hush = false; _stance = 15f; M.Model?.SetRim(Palette.Ember * 1.3f); }
+    /// <summary>Hint: in HUSH, fight from the edge of one of his leftover flames (lit, not standing in the fire).</summary>
+    public override Vector2? BotStand
+    {
+        get
+        {
+            if (!_hush || !E.Alive || !E.HeroOk || E.InFirelight(E.HeroPos)) return null;
+            GroundZone best = null; float bd = 12f;
+            foreach (var z in _flames)
+            {
+                if (z == null || !GodotObject.IsInstanceValid(z) || z.Done) continue;
+                float d = NamedHub.ZonePos(z).DistanceTo(E.HeroPos);
+                if (d < bd) { bd = d; best = z; }
+            }
+            if (best == null) return null;
+            Vector2 c = NamedHub.ZonePos(best);
+            if (c.DistanceTo(E.HeroPos) < 2.9f) return null;                 // lit already
+            return E.Walk(c + (M.Pos2 - c).Normalized() * 2.6f);
+        }
+    }
     public override void Engage() { base.Engage(); Mech("fire"); }
     public override void Tick(float dt)
     {

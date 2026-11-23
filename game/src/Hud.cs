@@ -378,9 +378,8 @@ public partial class Hud : Control
         {
             bool interactive = !panelOpen && !p.Dead && !g.Paused && GetViewport().GuiGetHoveredControl() == null;
             bool allLoot = ui != null ? ui.ShowAllLoot : Input.IsKeyPressed(Key.Alt);
-            // [ui, 0.3.0 pause] loot labels yielding to the HUD regions (QA item) is written but was only checked by
-            // reading, never seen in a run with a label next to the tracker: switched off for the release. Without this
-            // call the world layer has no keep-out rectangles and behaves exactly as before. Re-enable after a test run.
+            // loot labels and prompts yield to the HUD regions (minimap / tracker column, bottom cluster, boss frame).
+            // Without this call the world layer has no keep-out rectangles and draws labels anywhere.
             if (LabelsYieldToHud) KeepOutHud();
             _world.Tick(p, dt, interactive, allLoot, _boss.Shown);
         }
@@ -421,20 +420,24 @@ public partial class Hud : Control
     /// The HUD regions loot labels and prompts yield to, handed to the world layer every frame: the minimap / area /
     /// tracker / objective column, the bottom cluster (globes, action bar, buffs, reminders) and the boss or target frame.
     /// </summary>
-    /// <summary>Off until the keep-out behaviour has been seen working in a run (see the call in _Process).</summary>
-    private static readonly bool LabelsYieldToHud = false;
+    /// <summary>[fixes 0.4.0] On: seen working in a staged run (Y:\shots\fixes\labels_*.png).</summary>
+    private static readonly bool LabelsYieldToHud = true;
 
     private void KeepOutHud()
     {
         _world.ClearKeepOut();
+        if (!_chrome.Visible) return;           // HUD hidden: nothing to yield to
         Vector2 o = _world.GetGlobalPosition();
         // the minimap itself (the column is wider than the map), then the column's text block under it: area name and
-        // info, quest tracker, objective and its bar
-        _world.KeepOut(Shifted(_map.GetGlobalRect(), o));
-        Rect2 col = _corner.GetGlobalRect();
-        float textTop = _areaName.GetGlobalRect().Position.Y;
-        _world.KeepOut(Shifted(new Rect2(col.Position.X, textTop, col.Size.X, col.End.Y - textTop), o));
-        _world.KeepOut(Shifted(_bar.GetGlobalRect(), o));
+        // info, quest tracker, objective and its bar. Lean mode hides the column and the bottom cluster.
+        if (_corner.Visible)
+        {
+            if (_map.Visible) _world.KeepOut(Shifted(_map.GetGlobalRect(), o));
+            Rect2 col = _corner.GetGlobalRect();
+            float textTop = _areaName.GetGlobalRect().Position.Y;
+            _world.KeepOut(Shifted(new Rect2(col.Position.X, textTop, col.Size.X, col.End.Y - textTop), o));
+        }
+        if (_bar.Visible) _world.KeepOut(Shifted(_bar.GetGlobalRect(), o));
         if (_buffs.Visible) _world.KeepOut(Shifted(_buffs.GetGlobalRect(), o));
         if (_skillBtn.IsVisibleInTree()) _world.KeepOut(Shifted(_skillBtn.GetGlobalRect(), o));
         if (_paragonBtn.IsVisibleInTree()) _world.KeepOut(Shifted(_paragonBtn.GetGlobalRect(), o));

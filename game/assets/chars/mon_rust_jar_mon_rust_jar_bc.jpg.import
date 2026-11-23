@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://bwa5ykromowd7"
-path="res://.godot/imported/mon_rust_jar_mon_rust_jar_bc.jpg-fe398fd337f367eba6016fe00c42e021.ctex"
+path.bptc="res://.godot/imported/mon_rust_jar_mon_rust_jar_bc.jpg-fe398fd337f367eba6016fe00c42e021.bptc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "ca2cfd60325c9ab658588e0620422f53"
@@ -14,12 +15,12 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/chars/mon_rust_jar_mon_rust_jar_bc.jpg"
-dest_files=["res://.godot/imported/mon_rust_jar_mon_rust_jar_bc.jpg-fe398fd337f367eba6016fe00c42e021.ctex"]
+dest_files=["res://.godot/imported/mon_rust_jar_mon_rust_jar_bc.jpg-fe398fd337f367eba6016fe00c42e021.bptc.ctex"]
 
 [params]
 
-compress/mode=0
-compress/high_quality=false
+compress/mode=2
+compress/high_quality=true
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

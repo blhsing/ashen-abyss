@@ -1,0 +1,16 @@
+build ok
+exit= seconds=243
+log: C:\Users\blhsi\AppData\Roaming\AshenAbyss\logs\game_20261122_165713.log  lines=786  ERR=0  WRN=2
+--- distinct warnings ---
+   1 x [bot] pilot: going nowhere near (63.9, 94.4) in rift~pin:2 for a minute while 'idle (nothing left here)' ()
+   1 x [bot] pilot: going nowhere near (60.7, 98.5) in rift~pin:2 for a minute while 'idle (nothing left here)' ()
+--- last lines ---
+  239.980 INF [pilot] TEST FIGHT boss=pin_2_rimelord area=town killed=False secs=474 deaths=6 heroLevel=50 threats=162 dodged=99 taken=63 dmgTelegraphed=19575 dmgOther=13024 life=3651
+  240.731 INF [pilot] TEST over: quitting
+  240.734 INF [game] quitting
+  240.737 INF [save] slot 91 saved: ??? lv50 ??? area=town bytes=11792
+  240.738 INF [save] save reason=quit slot=91 ok=True area=town playtime=234s capture=0.1ms total=4.1ms
+  240.745 INF [anim] anim-check: hero moved 283.5s - 0.0s without a locomotion clip, 0.0s with frozen legs; hero stood 415.3s - 0.0s in a run clip or none; monsters moved 99.2s - 0.0s without a locomotion clip, 0.0s with frozen legs; models without a skeleton  ƒ?Ý
+  240.747 INF [input] keyboard hook saw 735 key events, 0 of them PrtSc
+  240.748 INF [boot] shutdown errors=0 warnings=2 uptime=241s
+DONE

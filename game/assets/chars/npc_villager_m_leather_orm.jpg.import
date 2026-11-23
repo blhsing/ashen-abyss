@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://bi58nf4cdlaxx"
-path="res://.godot/imported/npc_villager_m_leather_orm.jpg-b9646b52cc49ceb85fcf8af727058b2c.ctex"
+path.bptc="res://.godot/imported/npc_villager_m_leather_orm.jpg-b9646b52cc49ceb85fcf8af727058b2c.bptc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "a6dc193584aa852c837329dfdba64873"
@@ -14,12 +15,12 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/chars/npc_villager_m_leather_orm.jpg"
-dest_files=["res://.godot/imported/npc_villager_m_leather_orm.jpg-b9646b52cc49ceb85fcf8af727058b2c.ctex"]
+dest_files=["res://.godot/imported/npc_villager_m_leather_orm.jpg-b9646b52cc49ceb85fcf8af727058b2c.bptc.ctex"]
 
 [params]
 
-compress/mode=0
-compress/high_quality=false
+compress/mode=2
+compress/high_quality=true
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

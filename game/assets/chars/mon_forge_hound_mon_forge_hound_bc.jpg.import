@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://7vo0nco2b4aw"
-path="res://.godot/imported/mon_forge_hound_mon_forge_hound_bc.jpg-11ec8922f93e5e62874f067a47335da6.ctex"
+path.bptc="res://.godot/imported/mon_forge_hound_mon_forge_hound_bc.jpg-11ec8922f93e5e62874f067a47335da6.bptc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "2e96450e79f50958126c966628c4f4ef"
@@ -14,12 +15,12 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/chars/mon_forge_hound_mon_forge_hound_bc.jpg"
-dest_files=["res://.godot/imported/mon_forge_hound_mon_forge_hound_bc.jpg-11ec8922f93e5e62874f067a47335da6.ctex"]
+dest_files=["res://.godot/imported/mon_forge_hound_mon_forge_hound_bc.jpg-11ec8922f93e5e62874f067a47335da6.bptc.ctex"]
 
 [params]
 
-compress/mode=0
-compress/high_quality=false
+compress/mode=2
+compress/high_quality=true
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

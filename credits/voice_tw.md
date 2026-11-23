@@ -2,7 +2,7 @@
 
 Every spoken line in `game/assets/audio/vo/<id>.ogg` is synthetic speech generated offline on the developer's
 machine with one openly licensed model. **No recording of any person is used anywhere**: no voice actor, no
-reference clip, no voice cloning. All 23 voices are *designed* — invented by the model from a short written
+reference clip, no voice cloning. All 32 voices are *designed* — invented by the model from a short written
 description of each character (listed in `tools/voice_tw/voices.py`).
 
 ## Speech model — VoxCPM2
@@ -22,14 +22,17 @@ disinformation, and recommends marking AI-generated content clearly; this file i
 
 ## How the lines were made
 
-- Script: `game/data/vo_lines.json` (188 lines, 23 voices), Traditional Chinese, original writing for this game.
+- Script: `game/data/vo_lines.json` (207 lines, 32 voices: narrator, 7 town characters, 8 heroes, 16 bosses and named foes), Traditional Chinese, original writing for this game.
 - Pronunciation: Taiwan readings (教育部《重編國語辭典修訂本》) are given to the model as hints in the text it reads
   (e.g. 寂 ㄐㄧˊ, 血 ㄒㄧㄝˇ, 熄 ㄒㄧˊ, 誰 ㄕㄟˊ, 薇 ㄨㄟˊ, full tones in 故事 / 地方 / 知道). The stored script is not changed.
   Table: `tools/voice_tw/tw_text.py`.
 - Post-processing is the project's own code (`tools/voice_tw/fx.py`, `profiles.py`; numpy / scipy): light EQ,
-  gentle compression and a little room for human characters; for the seven bosses a clarity-first chain (small
+  gentle compression and a little room for human characters; for the bosses and named foes a clarity-first chain (small
   formant-preserving pitch-down, quiet octave-down layer, reverb behind the voice). Loudness about -17 LUFS,
   true peak under -1 dBFS, mono 44.1 kHz OGG Vorbis.
+- Every designed voice is measured before its lines are used (median pitch in the character's range, a male / female
+  speaker classifier, harmonics-to-noise ratio above a floor, distinct from the other voices); voices that failed were
+  designed again from a new description. Results: the "Voice audit" table in `tools/voice_tw/DECISION.md`.
 - Generator, measurements and how to regenerate: `tools/voice_tw/README.md`, `tools/voice_tw/report.json`.
 
 ## Tools used for checking only (nothing of them is in the shipped audio)

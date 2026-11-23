@@ -1,0 +1,26 @@
+build ok
+exit= seconds=813
+log: C:\Users\blhsi\AppData\Roaming\AshenAbyss\logs\game_20261122_192201.log  lines=4860  ERR=0  WRN=12
+--- distinct warnings ---
+   1 x [suite] FAIL named rare_abyss_foreman: kill time within 20-45s - 16.2s
+   1 x [suite] FAIL named rare_sands_tesa: kill time within 20-45s - 90s
+   1 x [suite] FAIL named rare_sands_ogan: kill time within 20-45s - 19.6s
+   1 x [suite] FAIL named db_abyss_d1: kill time within 45-90s - 43.6s
+   1 x [suite] FAIL named db_wastes_d2: kill time within 45-90s - 14.6s
+   1 x [suite] FAIL named sh_abyss: kill time within 45-90s - 122.9s
+   1 x [suite] FAIL named rare_frost_thousandyear: kill time within 20-45s - 14.2s
+   1 x [suite] FAIL named rare_wastes_gallowsfather: kill time within 20-45s - 18.3s
+   1 x [suite] FAIL named rare_wastes_ashbride: kill time within 20-45s - 50.7s
+   1 x [suite] FAIL named rare_mire_olddrum: kill time within 20-45s - 48.9s
+   1 x [suite] FAIL named rare_crypt_hundredtears: kill time within 20-45s - 52.5s
+   1 x [suite] FAIL named rare_crypt_veilwife: kill time within 20-45s - 48.1s
+--- last lines ---
+  812.333 INF [game] quitting
+  812.336 INF [save] slot 91 saved: ??? lv50 ??? area=rift~arena:pin_8_osaros bytes=24581
+  812.337 INF [save] save reason=quit slot=91 ok=True area=rift~arena:pin_8_osaros playtime=26s capture=0.1ms total=3.6ms
+  812.339 INF [bot] final summary t=796s game=4447s area=rift~arena:pin_8_osaros doing=fight pin_8_osaros kills=14 elites=37 bosses=33 level=50 life=46% items=0 gold=50 deaths=0 areas=61 casts=6608 unstuck=0 monsters=0 errors=0 warnings=12 botErrors=0
+  812.341 INF [bot] final progress: waypoints=[town] renown=[] quests done=0/1 skillpts bonus=0 potion cap=4 altars=0 codex=0 tier=2/2 riftBest=0 paragon=53 playtime=26s
+  812.341 INF [anim] anim-check: hero moved 633.1s - 0.0s without a locomotion clip, 0.0s with frozen legs; hero stood 552.5s - 0.0s in a run clip or none; monsters moved 767.5s - 0.0s without a locomotion clip, 0.0s with frozen legs; models without a skeleton ƒ?Ý
+  812.342 INF [input] keyboard hook saw 606 key events, 0 of them PrtSc
+  812.342 INF [boot] shutdown errors=0 warnings=12 uptime=812s
+DONE

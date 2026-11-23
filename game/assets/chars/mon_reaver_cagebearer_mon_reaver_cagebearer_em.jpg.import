@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://c0g7j5bn1nxcx"
-path="res://.godot/imported/mon_reaver_cagebearer_mon_reaver_cagebearer_em.jpg-2c983bc3ece88174d90e9c8ff83013c0.ctex"
+path.bptc="res://.godot/imported/mon_reaver_cagebearer_mon_reaver_cagebearer_em.jpg-2c983bc3ece88174d90e9c8ff83013c0.bptc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "e56d72225f3d5245898a0f17a810378b"
@@ -14,12 +15,12 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/chars/mon_reaver_cagebearer_mon_reaver_cagebearer_em.jpg"
-dest_files=["res://.godot/imported/mon_reaver_cagebearer_mon_reaver_cagebearer_em.jpg-2c983bc3ece88174d90e9c8ff83013c0.ctex"]
+dest_files=["res://.godot/imported/mon_reaver_cagebearer_mon_reaver_cagebearer_em.jpg-2c983bc3ece88174d90e9c8ff83013c0.bptc.ctex"]
 
 [params]
 
-compress/mode=0
-compress/high_quality=false
+compress/mode=2
+compress/high_quality=true
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

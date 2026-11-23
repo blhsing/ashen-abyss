@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://bw81bsa38a3ov"
-path="res://.godot/imported/mon_ash_weeper_mon_ash_weeper_bc.jpg-53325c262d4dfebf68766a0690731faa.ctex"
+path.bptc="res://.godot/imported/mon_ash_weeper_mon_ash_weeper_bc.jpg-53325c262d4dfebf68766a0690731faa.bptc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "494a089e38fc670c679cecf457097e74"
@@ -14,12 +15,12 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/chars/mon_ash_weeper_mon_ash_weeper_bc.jpg"
-dest_files=["res://.godot/imported/mon_ash_weeper_mon_ash_weeper_bc.jpg-53325c262d4dfebf68766a0690731faa.ctex"]
+dest_files=["res://.godot/imported/mon_ash_weeper_mon_ash_weeper_bc.jpg-53325c262d4dfebf68766a0690731faa.bptc.ctex"]
 
 [params]
 
-compress/mode=0
-compress/high_quality=false
+compress/mode=2
+compress/high_quality=true
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

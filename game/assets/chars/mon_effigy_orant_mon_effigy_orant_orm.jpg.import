@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://dkyuqycahf55r"
-path="res://.godot/imported/mon_effigy_orant_mon_effigy_orant_orm.jpg-2f9dc9a0f0d3aa8df9cdbed599e0da31.ctex"
+path.bptc="res://.godot/imported/mon_effigy_orant_mon_effigy_orant_orm.jpg-2f9dc9a0f0d3aa8df9cdbed599e0da31.bptc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "3c3fe0d0703b68dab9e9d1cc55a702af"
@@ -14,12 +15,12 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/chars/mon_effigy_orant_mon_effigy_orant_orm.jpg"
-dest_files=["res://.godot/imported/mon_effigy_orant_mon_effigy_orant_orm.jpg-2f9dc9a0f0d3aa8df9cdbed599e0da31.ctex"]
+dest_files=["res://.godot/imported/mon_effigy_orant_mon_effigy_orant_orm.jpg-2f9dc9a0f0d3aa8df9cdbed599e0da31.bptc.ctex"]
 
 [params]
 
-compress/mode=0
-compress/high_quality=false
+compress/mode=2
+compress/high_quality=true
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

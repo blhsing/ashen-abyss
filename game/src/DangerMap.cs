@@ -255,7 +255,7 @@ internal static class DangerMap
             {
                 var d = Live[i];
                 if (now < d.Land - 0.08 || now > d.Until + 0.12 || !d.Contains(at, p.Radius + 0.35f)) continue;
-                if (!d.Hit && LogHits && _hitLogs++ < 400) Log.Info("danger", $"marked hit {amount:0} ({amount / Mathf.Max(1f, p.MaxLife) * 100f:0}% life) by {d.Describe()}{(d.Boss ? " [boss]" : "")}: warned {d.Land - d.Born:0.00}s ahead, hero {d.EscapeDist(at):0.0} m inside, roll cd {p.EvadeCd:0.0}s, busy={p.Busy}{(p.Stunned ? " FROZEN/STUNNED" : p.Rooted ? " ROOTED" : "")}");
+                if (!d.Hit && LogHits && _hitLogs++ < 400) Log.Info("danger", $"marked hit {amount:0} ({amount / Mathf.Max(1f, p.MaxLife) * 100f:0}% life) by {d.Describe()}{(d.Boss ? " [boss]" : "")}: warned {d.Land - d.Born:0.00}s ahead, hero {d.EscapeDist(at):0.0} m inside, roll cd {p.EvadeCd:0.0}s, busy={p.Busy}{(p.Has(StatusId.Freeze) ? " FROZEN" : p.Stunned ? " STUNNED" : p.Rooted ? " ROOTED" : "")}");
                 d.Hit = true; d.Threat = true; tele = true;
             }
             if (tele) TakenDmg += amount;

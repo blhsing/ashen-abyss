@@ -1,0 +1,8 @@
+== bestiary ERR=0
+  146.766 INF [bot] summary t=571s game=563s area=frost doing=fight cf_hulk kills=270 elites=14 bosses=1 level=28 life=100% items=32 gold=9497 deaths=5 areas=1 casts=377 unstuck=0 monsters=159 errors=0 warnings=0 botErrors=0 focus=event in progress
+  149.271 INF [bot] summary t=581s game=573s area=frost doing=fight cf_flicker kills=272 elites=14 bosses=1 level=28 life=100% items=36 gold=9913 deaths=5 areas=1 casts=383 unstuck=0 monsters=157 errors=0 warnings=0 botErrors=0 focus=event in progress
+  151.775 INF [bot] summary t=591s game=583s area=frost doing=use altar kills=285 elites=14 bosses=1 level=28 life=100% items=41 gold=10378 deaths=5 areas=1 casts=390 unstuck=0 monsters=144 errors=0 warnings=0 botErrors=0 focus=event in progress
+  154.280 INF [bot] summary t=601s game=593s area=frost doing=explore marker:chest kills=289 elites=14 bosses=1 level=28 life=100% items=41 gold=10378 deaths=5 areas=1 casts=394 unstuck=0 monsters=140 errors=0 warnings=0 botErrors=0 focus=event in progress
+  154.283 INF [roster] running area=frost hero=lv28 ttk normal=3.0s(n=260) champion=7.1s(n=13) elite=148.1s(n=1) boss=116.8s(n=1) | taken 2216/min (0.93 life bars/min, 1161 hits) kills=289 in 593s | worst [cf_spirit:6194,frostbound:3361,sh_frost:2536,wraith_gasp:1859] slowest [frost_skeleton:43.3s/4,frost_scrap*:23.7s/1,cf_hulk:20.5s/3,frost_snuffer:11.8s/9,dusk_yak*:7.5s/3]
+  154.534 INF [bot] final summary t=602s game=594s area=frost doing=use gold kills=289 elites=14 bosses=1 level=28 life=100% items=41 gold=10378 deaths=5 areas=1 casts=394 unstuck=0 monsters=140 errors=0 warnings=0 botErrors=0 focus=event in progress
+done 18:25:25

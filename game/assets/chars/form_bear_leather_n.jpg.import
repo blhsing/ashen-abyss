@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://bvfhfpveitlgd"
-path="res://.godot/imported/form_bear_leather_n.jpg-a3621a9666732384c64efe7be9a3a9bc.ctex"
+path.s3tc="res://.godot/imported/form_bear_leather_n.jpg-a3621a9666732384c64efe7be9a3a9bc.s3tc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "345d428c5942dc6ea43c35ca70b778d9"
@@ -14,17 +15,17 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/chars/form_bear_leather_n.jpg"
-dest_files=["res://.godot/imported/form_bear_leather_n.jpg-a3621a9666732384c64efe7be9a3a9bc.ctex"]
+dest_files=["res://.godot/imported/form_bear_leather_n.jpg-a3621a9666732384c64efe7be9a3a9bc.s3tc.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1
-compress/normal_map=0
+compress/normal_map=1
 compress/channel_pack=0
 mipmaps/generate=true
 mipmaps/limit=-1

@@ -22,7 +22,7 @@ public partial class AiPilot
     // ───────────────────────── strategy ─────────────────────────
 
     /// <summary>Level a hero should have before walking into a region's story lair (monsters there are max(region, hero) + 1).</summary>
-    internal static int WantedLevel(RegionDef r) => r == null ? 1 : r.Act == 1 ? 6 : r.Level + 2;      // act 1: level 4 was enough for a melee hero, not for a hunter (out of potions in the graveyard crowd)
+    internal static int WantedLevel(RegionDef r) => r == null ? 1 : r.Act == 1 ? 7 : r.Level + 2;      // act 1 = 7 (final round with the bestiary: hunter and emberblade each died once to the lv6 graveyard horde, potions drained in ~3 s); before: level 4 was enough for a melee hero, not for a hunter (out of potions in the graveyard crowd)
 
     private string _restockFor;
     private double _restAt = -1;
@@ -133,7 +133,7 @@ public partial class AiPilot
         for (int i = hero.D.Bag.Count - 1; i >= 0; i--)
         {
             var it = hero.D.Bag[i];
-            if (it == null || !it.IsEquip || hero.IsProtected(it) || it.Rarity > Rarity.Magic || GearEval.IsUpgrade(hero, it)) continue;
+            if (it == null || !it.IsEquip || hero.IsProtected(it) || PlayerValues(hero, it) || it.Rarity > Rarity.Magic || GearEval.IsUpgrade(hero, it)) continue;
             hero.Sell(it); sold++;
         }
         if (sold > 0) Log.Info("pilot", $"merchant: sold {sold} pieces for {hero.D.Gold - before} gold");
@@ -146,9 +146,10 @@ public partial class AiPilot
             {
                 var it = hero.D.Bag[i];
                 if (it == null || hero.IsProtected(it) || it.IsEquip && GearEval.IsUpgrade(hero, it)) continue;
+                if (PlayerValues(hero, it) && hero.D.Stash.Count < Hero.StashSize) { if (hero.ToStash(it)) stashed++; continue; }      // locked, set, legendary, unique: to the stash
                 bool keep = !it.IsEquip || it.Rarity >= Rarity.Legendary;
                 if (keep && hero.D.Stash.Count < Hero.StashSize && hero.ToStash(it)) { stashed++; continue; }
-                if (it.IsEquip && it.Rarity >= Rarity.Legendary) { hero.Salvage(it); sold2++; continue; }
+                if (PlayerValues(hero, it)) continue;      // stash full: it stays in the bag rather than being sold or salvaged
                 hero.Sell(it); sold2++;
             }
             Log.Info("pilot", $"merchant: bag {hero.D.Bag.Count}/{Hero.BagSize} after {stashed} to the stash and {sold2} sold/salvaged");
@@ -428,7 +429,7 @@ public partial class AiPilot
     /// frostbound every 15 s and their blows chill to a freeze; heroes arriving at level 17–19 died there 4–11 times,
     /// heroes at 22+ cleared it with 0–1 deaths.
     /// </summary>
-    private static readonly Dictionary<string, int> StrongholdLevel = new() { ["frost"] = 22 };
+    private static readonly Dictionary<string, int> StrongholdLevel = new() { ["frost"] = 22, ["wastes"] = 5 };      // wastes 5: the bestiary garrison killed a lv3 pactbinder (final round)
 
     /// <summary>False (and a grind elsewhere is set up) while the hero is below the stronghold's measured level.</summary>
     internal bool StrongholdReady(Level lv)
@@ -471,5 +472,139 @@ public partial class AiPilot
         if (n < 8) return false;
         Stop("wall: " + region, $"在「{ZoneDb.AreaName(region)}」接連倒下八次，AI 代打找不到對策，請親自挑戰。");
         return true;
+    }
+}
+
+public partial class AiPilot
+{
+    // (user, 2026-11-22: "don't try to preserve items i own before the bot takes over unless they're locked") — only locked
+    // items and gear-set pieces (Hero.IsProtected) are the player's; ownership before the pilot took over counts for nothing.
+
+    /// <summary>Not junk: locked or in a gear set, or legendary / unique (those go to the stash, and only a full stash lets them go).</summary>
+    internal bool PlayerValues(Hero hero, Item it) => it != null && (hero.IsProtected(it) || it.Rarity >= Rarity.Legendary);
+
+    /// <summary>
+    /// The smallest weighted gain (GearEval Judge.Total) that justifies taking <paramref name="worn"/> off for
+    /// <paramref name="it"/>: legendary, unique, locked or set pieces 15 %; a rare (or better) for a lower rarity 10 %;
+    /// otherwise the evaluator's own upgrade rule.
+    /// </summary>
+    private float RequiredGain(Hero hero, Item worn, Item it)
+    {
+        if (worn == null) return 0f;
+        float need = 0f;
+        if (hero.IsProtected(worn) || worn.Rarity >= Rarity.Legendary) need = Math.Max(need, 0.15f);
+        if (worn.Rarity >= Rarity.Rare && it.Rarity < worn.Rarity) need = Math.Max(need, 0.10f);
+        return need;
+    }
+
+    /// <summary>
+    /// Wears upgrades the careful way: per slot only the best candidate in the bag (no common-then-magic churn), and only
+    /// when the gain clears RequiredGain for everything it would take off (both hands for a two-hand weapon).
+    /// </summary>
+    internal void PickEquips(Hero hero)
+    {
+        var bestBy = new Dictionary<EquipSlot, (Item it, float total)>();
+        foreach (var it in hero.D.Bag)
+        {
+            if (it == null || !it.IsEquip || hero.WhyCantEquip(it) != null || !GearEval.IsUpgrade(hero, it)) continue;
+            float total = GearEval.Judge(hero, it).Total;
+            var cur = hero.Compared(it); var extra = hero.ComparedExtra(it);
+            float need = Math.Max(RequiredGain(hero, cur, it), RequiredGain(hero, extra, it));
+            if (total < need)
+            {
+                if (need > 0f && _keepLogged.Add((cur?.Uid ?? extra?.Uid) + ">" + it.Uid))
+                {
+
+                    Log.Info("pilot", $"keeps {cur?.Name ?? extra?.Name} (a prized piece): {it.Name} gains only {total * 100f:0.#} % (needs {need * 100f:0} %)");
+                }
+                continue;
+            }
+            var slot = hero.TargetSlot(it);
+            if (!bestBy.TryGetValue(slot, out var b) || total > b.total) bestBy[slot] = (it, total);
+        }
+        foreach (var kv in bestBy)
+        {
+            var it = kv.Value.it;
+            if (!hero.D.Bag.Contains(it) || !GearEval.IsUpgrade(hero, it)) continue;      // an earlier swap changed the picture
+            var cur = hero.Compared(it);
+            Equipped(it, cur);
+            hero.Equip(it);
+        }
+    }
+
+    private readonly HashSet<string> _keepLogged = new();      // "keeps X over Y" once per pair
+}
+
+public enum OverflowResult { Fine, Cleared, StorageFull }
+
+public partial class AiPilot
+{
+    /// <summary>The player's own pieces: owned before the pilot took over (worn, carried or stored), locked or in a gear set.</summary>
+    internal bool PlayerOwned(Hero hero, Item it) => it != null && hero.IsProtected(it);
+
+    /// <summary>
+    /// In town with a crowded bag, in this order:
+    /// 1. what must be kept goes to the stash — the player's own pieces, legendaries and uniques (not upgrades the bot
+    ///    will wear);
+    /// 2. junk (below legendary, not the player's, no upgrade) is salvaged — magic and plain pieces sold;
+    /// 3. still crowded and the stash full: legendaries and uniques the pilot found itself (no upgrade) are salvaged,
+    ///    lowest power first — salvage records a legendary power in the codex (Hero.Salvage), so the power is kept;
+    /// 4. nothing left that may go: control goes back to the player with the reason.
+    /// The player's own pieces are never sold or salvaged.
+    /// </summary>
+    internal OverflowResult OverflowStep(Hero hero)
+    {
+        var bag = hero.D.Bag;
+        int start = bag.Count;
+        if (start < Hero.BagSize * 3 / 5) return OverflowResult.Fine;
+        // 1. keep
+        for (int i = bag.Count - 1; i >= 0; i--)
+        {
+            var it = bag[i];
+            if (it == null || !it.IsEquip) continue;
+            bool keep = PlayerOwned(hero, it) || it.Rarity >= Rarity.Legendary;
+            if (!keep || GearEval.IsUpgrade(hero, it) || hero.D.Stash.Count >= Hero.StashSize) continue;
+            if (hero.ToStash(it)) Log.Info("pilot", $"stash {it.Name} ({it.Rarity}{(PlayerOwned(hero, it) ? ", the player's" : "")})");
+        }
+        // 2. junk
+        int junk = 0;
+        for (int i = bag.Count - 1; i >= 0; i--)
+        {
+            var it = bag[i];
+            if (it == null || !it.IsEquip || PlayerOwned(hero, it) || it.Rarity >= Rarity.Legendary || GearEval.IsUpgrade(hero, it)) continue;
+            if (it.Rarity <= Rarity.Magic) hero.Sell(it); else hero.Salvage(it);
+            junk++;
+        }
+        if (junk > 0) Log.Info("pilot", $"town: {junk} pieces of junk sold or salvaged");
+        // 3. the stash full and the bag still crowded: the lowest-value pieces that are no upgrade go, legendaries
+        //    included — Hero.Salvage records a legendary power in the codex first, so the power itself is kept
+        if (bag.Count >= Hero.BagSize * 4 / 5 && hero.D.Stash.Count >= Hero.StashSize)
+        {
+            var spare = bag.Where(it => it != null && it.IsEquip && !PlayerOwned(hero, it) && !GearEval.IsUpgrade(hero, it))
+                           .OrderBy(Worth).ToList();
+            foreach (var it in spare)
+            {
+                if (bag.Count < Hero.BagSize * 7 / 10) break;
+                bool leg = it.Rarity >= Rarity.Legendary;
+                hero.Salvage(it);
+                if (leg) Log.Info("pilot", $"salvage found-legendary {it.Name} ({it.Rarity}, power {it.Power}){(it.Aspect != null ? "; its power is recorded in the codex" : "")}");
+                else Log.Info("pilot", $"salvage {it.Name} ({it.Rarity}, power {it.Power}): the stash is full");
+            }
+        }
+        // 4. nothing more may go
+        if (bag.Count >= Hero.BagSize - 2)
+        {
+            Log.Info("pilot", $"storage full: bag {bag.Count}/{Hero.BagSize}, stash {hero.D.Stash.Count}/{Hero.StashSize}, only locked or set pieces (and upgrades) left");
+            return OverflowResult.StorageFull;
+        }
+        return bag.Count < start ? OverflowResult.Cleared : OverflowResult.Fine;
+    }
+
+    /// <summary>TidyInTown's first step; false = control was handed back (storage full).</summary>
+    private bool Overflow(Hero hero)
+    {
+        if (OverflowStep(hero) != OverflowResult.StorageFull) return true;
+        Stop("storage full", "行囊與儲藏箱已滿，AI 代打交還控制，請整理物品");
+        return false;
     }
 }

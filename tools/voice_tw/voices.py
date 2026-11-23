@@ -30,8 +30,8 @@ VOICES = {
     "elder": dict(sex="m", who="old man", f0=(95, 140), hnr_min=3.5, designs=6, explore=True,
         desc=f"年迈的老先生，男低音，{TW}，嗓音低沉沙哑但温和，语速缓慢，吐字清楚",
         anchor="坐下來吧，孩子。火還很暖，我慢慢說給你聽，這座鎮子從前是什麼樣子。"),
-    "smith": dict(sex="m", who="man, middle-aged, burly", f0=(85, 140), hnr_min=3.5,
-        desc=f"中年壮汉，{TW}，男低音，嗓音低沉厚实，说话直接干脆，语气粗率",
+    "smith": dict(sex="m", who="man, middle-aged, burly", f0=(85, 140), hnr_min=3.5, designs=8,
+        desc=f"中年男性铁匠，{TW}，男低音，音调很低，声音低沉浑厚，胸腔共鸣很重，说话直接干脆，语速平稳",          # round 4 (2026-11-22): "中年壮汉 ... 语气粗率" failed 3 rounds (142-169 Hz; at 102 Hz the lines scored p(male) 0.56)
         anchor="鐵要趁熱打，話要趁早說。這把刀我磨了三天，拿去，別弄丟了。"),
     "merchant": dict(sex="f", who="young woman", f0=(200, 330),
         desc=f"年轻女性，{TW}，声音明亮清脆，语气爽朗干练",
@@ -62,11 +62,11 @@ VOICES = {
     "hero_soulbinder": dict(sex="m", who="young man", f0=(90, 150),
         desc=f"青年男性，{TW}，男中音，声音空灵低缓，气息平稳，语气幽远淡漠",
         anchor="亡者並沒有走遠，他們只是換了一種方式，安靜地留在我們身邊。"),
-    "hero_wildsoul": dict(sex="m", who="man in his prime", f0=(90, 150), hnr_min=3.5,
-        desc=f"壮年男性，{TW}，男中音，嗓音粗犷豪爽，中气十足，语速稍快",
-        anchor="山林就是我的家！風往哪邊吹，我就往哪邊跑，沒有人追得上我！"),
-    "hero_forgebody": dict(sex="m", who="young man", f0=(95, 150),
-        desc=f"青年男性武者，{TW}，男中音，声音坚实有力，语气干脆利落",
+    "hero_wildsoul": dict(sex="m", who="man in his prime", f0=(90, 150), hnr_min=3.5, designs=8,
+        desc=f"壮年男性，{TW}，男低音，音调很低，嗓音低沉粗犷，豪爽沉稳，语速平稳",          # round 4 (2026-11-22): "男中音 中气十足 语速稍快" + an exclaimed anchor came out at 203-327 Hz
+        anchor="山林就是我的家。風往哪邊吹，我就往哪邊走，這片林子沒有人比我更熟。"),
+    "hero_forgebody": dict(sex="m", who="young man", f0=(95, 150), designs=8,
+        desc=f"青年男性武者，{TW}，男低音，音调偏低，声音坚实厚重，语气沉稳干脆",          # round 4 (2026-11-22): "男中音 坚实有力 干脆利落" came out at 182-198 Hz or rough at 89 Hz
         anchor="出拳要快，站樁要穩。每天練一千遍，身體自然會記住該怎麼做。"),
     "hero_lampknight": dict(sex="f", who="woman, adult", f0=(170, 250),
         desc=f"成年女性骑士，{TW}，声音沉稳坚定，庄重而温和",
@@ -100,11 +100,11 @@ VOICES = {
 
     # ------------------------------------------------------------------ named encounters (BESTIARY.md section 4; added 2026-11-20)
     # stronghold bosses (4.2), world boss (4.5), pinnacle rung 7 (4.6). Clear first, like the other bosses.
-    "boss_sh_wastes": dict(sex="m", who="man, middle-aged (swollen outpost captain who swallowed the beacon's ember)", f0=(75, 135), hnr_min=5.5, designs=5,
-        desc=f"中年男性，{TW}，男低音，声音低沉厚实，语速缓慢，吐字清晰，固执，压抑着痛苦",          # round 2: "murky, halting" gave a rough voice (HNR 4.0 dB)
+    "boss_sh_wastes": dict(sex="m", who="man, middle-aged (swollen outpost captain who swallowed the beacon's ember)", f0=(75, 135), hnr_min=5.5, designs=8,
+        desc=f"中年男性军官，{TW}，男中音，声音低而厚重，干净不沙哑，固执而疲惫，语速缓慢，吐字清晰",          # round 4 (2026-11-22, modelled on the sh_crypt / sh_sanctum descriptions that pass): round 3 "男低音 干净圆润" failed 6 design rounds (lines p(male) 0.55-0.59 or HNR 4.2-5.3); round 2 "压抑着痛苦" HNR 4.1; round 1 "murky, halting" 4.0
         anchor="這座塔的鑰匙，還掛在我的腰上。我是哨長，我說不准走，就沒有人可以走。"),
-    "boss_sh_frost": dict(sex="m", who="man, middle-aged castellan (fallen knight)", f0=(80, 135), hnr_min=5.5, designs=5,
-        desc=f"中年男性守将，{TW}，男低音，声音低沉坚定，语速平稳，吐字清晰干净，像在城墙上下令，军人的严肃",          # round 2: first design rough (HNR 4.1 dB)
+    "boss_sh_frost": dict(sex="m", who="man, middle-aged castellan (fallen knight)", f0=(80, 135), hnr_min=5.5, designs=8,
+        desc=f"中年男性守将，{TW}，男中音，声音低而沉稳，干净不沙哑，冷静坚定，语速缓慢，吐字清晰",          # round 4 (2026-11-22): round 3 "男低音 干净圆润" failed 3 rounds (clean designs scored p(male) 0.55-0.60 on the line, or HNR 4.6); round 2 "像在城墙上下令" HNR 4.6; round 1 4.1
         anchor="弓手上牆，盾手守門。只要我還站在這裡，這座關口就一步也不會讓出去。"),
     "boss_sh_crypt": dict(sex="m", who="man, adult (oath-broken barrow warden)", f0=(85, 140), hnr_min=5.5, designs=5,
         desc=f"成年男性，{TW}，男中音，声音低而沉重，带着愧疚和固执，语速缓慢，吐字清晰",
@@ -113,7 +113,7 @@ VOICES = {
         desc=f"老年男性，{TW}，男低音，声音非常低沉厚重，慢吞吞的，像从泥里冒出来，但每个字都说得清楚，贪婪而固执",
         anchor="這片泥地上的每一根木頭，都是我一根一根拖回來的。誰也別想拿走一塊。"),
     "boss_sh_sands": dict(sex="m", who="brass custodian (construct; male register)", f0=(85, 140), hnr_min=5.5, designs=5,
-        desc=f"男性，{TW}，男中音，声音平板冷淡，像在宣读告示，语速均匀，每个字一样轻重，吐字非常清楚，没有感情",
+        desc=f"中年男性，{TW}，男低音，音调很低，声音低沉厚实，平板冷淡，语速缓慢均匀，每个字一样轻重，吐字非常清楚，没有感情",          # round 4 (2026-11-22): "男中音 ... like reading a notice" came out at 139-178 Hz
         anchor="本站營業時間已經結束。請各位旅客帶好隨身物品，依照指示，從東門離開。"),
     "boss_sh_sanctum": dict(sex="m", who="man, adult knight-commander", f0=(85, 140), hnr_min=5.5, designs=5,
         desc=f"成年男性骑士，{TW}，男中音，声音冷静克制，傲慢而有礼，语速缓慢，吐字清晰",
@@ -121,8 +121,8 @@ VOICES = {
     "boss_sh_abyss": dict(sex="m", who="man, huge brute (ember-eater)", f0=(70, 125), hnr_min=5.0, designs=5,
         desc=f"男性巨人，{TW}，男低音，声音极低沉，粗大而缓慢，饥饿又贪婪，吐字依然清楚，不嘶哑",
         anchor="好暖，好香。我已經很久沒有吃飽了。這一點火，只夠我塞塞牙縫而已。"),
-    "boss_wb_firstbearer": dict(sex="m", who="old man, giant (the oldest fuel-bearer)", f0=(65, 120), hnr_min=5.0, designs=5,
-        desc=f"非常年迈的男性巨人，{TW}，男低音，声音极其低沉浑厚，说话很慢很少，像搬了一辈子重物，疲惫但坚定，吐字清楚",
+    "boss_wb_firstbearer": dict(sex="m", who="old man, giant (the oldest fuel-bearer)", f0=(65, 120), hnr_min=5.0, designs=8,
+        desc=f"非常年迈的男性巨人，{TW}，男低音，声音极其低沉浑厚，干净圆润，说话很慢，平静坚定，吐字清楚",          # round 3 (2026-11-22): "像搬了一辈子重物，疲惫" rough in both earlier rounds (HNR 3.6 / 4.0 dB, floor 5.0)
         anchor="這條路，我走了一千年。山上砍下來的柴，一捆一捆，全都是我背下來的。"),
     "boss_firstkeeper": dict(sex="f", who="woman, adult (the first lamp-keeper; warm)", f0=(170, 260), hnr_min=5.5, designs=5,
         desc=f"成年女性，{TW}，声音温暖清亮，沉稳坚定，像一位老练的守灯人，语速从容，吐字清晰",

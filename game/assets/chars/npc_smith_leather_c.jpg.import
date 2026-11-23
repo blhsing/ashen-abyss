@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://da44dv7knlsjm"
-path="res://.godot/imported/npc_smith_leather_c.jpg-e6ebd1686299e26c6dc0566ce893ce48.ctex"
+path.bptc="res://.godot/imported/npc_smith_leather_c.jpg-e6ebd1686299e26c6dc0566ce893ce48.bptc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "5b3847eda74c94e8195b19d2e35f12ab"
@@ -14,12 +15,12 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/chars/npc_smith_leather_c.jpg"
-dest_files=["res://.godot/imported/npc_smith_leather_c.jpg-e6ebd1686299e26c6dc0566ce893ce48.ctex"]
+dest_files=["res://.godot/imported/npc_smith_leather_c.jpg-e6ebd1686299e26c6dc0566ce893ce48.bptc.ctex"]
 
 [params]
 
-compress/mode=0
-compress/high_quality=false
+compress/mode=2
+compress/high_quality=true
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

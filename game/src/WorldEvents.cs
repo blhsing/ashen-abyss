@@ -62,6 +62,15 @@ public abstract class WorldEvent
         World.Emit("event", L.Region?.Id ?? "");
     }
 
+    /// <summary>Save restore: the event was finished before the save. It stays over: no object to use, no marker, no reward again.</summary>
+    public void RestoreDone()
+    {
+        Active = false; Done = true;
+        if (Obj != null && GodotObject.IsInstanceValid(Obj)) { Obj.CanUse = false; L.RemoveMarker(Obj); }
+        L.RemoveMarker(this);
+        L.MarkDirty();
+    }
+
     protected void Fail(string toast)
     {
         Active = false; Done = true;

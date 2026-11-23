@@ -881,6 +881,11 @@ public partial class CharModel
     private readonly List<MeshInstance3D> _gearMeshes = new(), _gearWeapons = new(), _body = new();
     private readonly Dictionary<MeshInstance3D, int> _hiddenBy = new();
     private GearGripIK _ik;
+    /// <summary>The left-hand grip IK of the current loadout (null without a two-hand melee weapon); diagnostics for the tests.</summary>
+    private static bool _ikArgRead;
+    /// <summary>Names of the body meshes the worn armour hides (diagnostics).</summary>
+    public string HiddenBody => string.Join(",", _hiddenBy.Keys.Where(IsInstanceValid).Select(m => m.Name.ToString()));
+    public GearGripIK GripIK => _ik != null && IsInstanceValid(_ik) ? _ik : null;
     private Color _glowColor = Colors.Black;
 
     /// <summary>Material conversion for gear shown outside a character (ground loot).</summary>
@@ -1277,6 +1282,7 @@ public partial class CharModel
 
     private void SetupIK(WeaponPick w, string id, string mount, GearSet g, Transform3D? grip = null, Node model = null)
     {
+        if (!_ikArgRead) { _ikArgRead = true; if (int.TryParse(Game.I?.ArgValue("gear-ik") ?? "", out int m)) GearGripIK.Mode = Math.Clamp(m, 0, 2); }
         if (!Stances.UsesSecondHand(Stance, w.Base) || mount != "hand_r" || Skeleton == null) return;
         int up = Skeleton.FindBone("upperarm_l"), lo = Skeleton.FindBone("lowerarm_l"), hl = Skeleton.FindBone("hand_l"), hr = Skeleton.FindBone("hand_r");
         if (up < 0 || lo < 0 || hl < 0 || hr < 0) return;
@@ -1286,6 +1292,7 @@ public partial class CharModel
             WeaponInHand = grip ?? GearGrips.For(w.Base, mount, Skeleton),
             Grip2 = GearCatalog.Grip2For(id, w.Base, model),
             GripL = GearGrips.Hand(false),
+            Pelvis = Skeleton.FindBone("pelvis"), Neck = Skeleton.FindBone("neck_01"),
         };
         Skeleton.AddChild(_ik);
         _gearNodes.Add(_ik);

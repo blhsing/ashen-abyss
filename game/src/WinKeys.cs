@@ -12,6 +12,12 @@ namespace AshenAbyss;
 /// loop, so a stalled game frame can never delay system keyboard input) watches for PrtSc while our window is in the
 /// foreground, swallows it and raises a flag the game polls. When the game is not focused the key is left alone.
 /// A GetAsyncKeyState poll is kept as a fallback in case the hook cannot be installed.
+/// [fixes 0.4.0] Findings: the hook IS called for real keys (701 key events in a played session of the installed build),
+/// and a standalone program's identical hook sees and swallows an injected PrtSc. Inside the game process, injected keys
+/// never reach the hook (--hook-selftest), so test runs cannot press PrtSc through it, and whether a real PrtSc is
+/// swallowed depends on Windows (with "use the PrtSc key to open screen capture" on, the Snipping Tool may still open).
+/// For that case Game.TakeScreenshot grabs the frame at once and writes the clipboard 350 ms later, after Windows' own
+/// desktop copy, so the game's picture is the one that stays on the clipboard.
 /// </summary>
 public static class WinKeys
 {
@@ -67,6 +73,7 @@ public static class WinKeys
                 _hook = SetWindowsHookEx(WH_KEYBOARD_LL, _proc, GetModuleHandle(null), 0);
                 if (_hook == IntPtr.Zero) { Log.Warn("input", $"PrtSc hook not installed (error {Marshal.GetLastWin32Error()}); using polling fallback"); return; }
                 Log.Info("input", "PrtSc keyboard hook installed");
+                _selfTest = new Timer(_ => SelfTest(), null, 4000, Timeout.Infinite);
                 // Windows silently removes a low-level hook whose callback answered late a few times (a long pause
                 // of this process while a level loads is enough), and nothing tells the application. A timer on
                 // this thread therefore installs a fresh hook every few seconds and retires the previous one.
@@ -97,6 +104,7 @@ public static class WinKeys
             var k = Marshal.PtrToStructure<KBDLLHOOKSTRUCT>(lParam);
             _seenKeys++;
             if (k.vkCode == VK_SNAPSHOT) _seenPrtSc++;
+            else if (k.vkCode == 0x87) _seenF24++;
             if (k.vkCode == VK_SNAPSHOT && IsOurWindowFocused())
             {
                 int msg = wParam.ToInt32();
@@ -136,22 +144,35 @@ public static class WinKeys
     /// </summary>
     public static string SimulatePrtSc()
     {
-        if (OperatingSystem.IsWindows() && HookInstalled && IsOurWindowFocused())
-        {
-            // SendInput with the key's hardware scan code (E0 37), as a keyboard would produce it. The older
-            // keybd_event(VK_SNAPSHOT) is a special "take a snapshot" request that the hook never saw in the
-            // installed build.
-            var inputs = new INPUT[2];
-            inputs[0].type = 1; inputs[0].wVk = VK_SNAPSHOT; inputs[0].wScan = 0x37; inputs[0].dwFlags = 1;        // extended key, down
-            inputs[1].type = 1; inputs[1].wVk = VK_SNAPSHOT; inputs[1].wScan = 0x37; inputs[1].dwFlags = 1 | 2;    // extended key, up
-            uint sent = SendInput(2, inputs, Marshal.SizeOf<INPUT>());
-            return $"a synthetic key event (SendInput sent {sent} of 2; hook has seen {_seenKeys} key events so far)";
-        }
+        // [fixes 0.4.0] Only the request flag. A synthetic PrtSc (SendInput, even with the hardware scan code) never
+        // reaches this process's own low-level hook (--hook-selftest: 0 of 2 injected keys seen, while a standalone
+        // program's hook sees them and real keys reach ours), so it went on to Windows and opened the Snipping Tool.
         _pending = true;
-        return "the request flag only (window not focused or hook missing)";
+        return "the request flag (a synthetic key would reach Windows, not our hook)";
     }
 
-    private static volatile int _seenKeys, _seenPrtSc;
+    private static volatile int _seenKeys, _seenPrtSc, _seenF24;
+    private static Timer _selfTest;
+
+    /// <summary>
+    /// --hook-selftest: 4 s after start, injects F24 (a key with no system action, whatever window has the focus) and
+    /// logs whether this process's own hook saw it. Tells "the hook is not called" apart from "PrtSc never reached it".
+    /// </summary>
+    private static void SelfTest()
+    {
+        try
+        {
+            if (!(Godot.OS.GetCmdlineUserArgs() is { } a && Array.IndexOf(a, "--hook-selftest") >= 0)) return;
+            int before = _seenF24;
+            var inputs = new INPUT[2];
+            inputs[0].type = 1; inputs[0].wVk = 0x87;
+            inputs[1].type = 1; inputs[1].wVk = 0x87; inputs[1].dwFlags = 2;
+            uint sent = SendInput(2, inputs, Marshal.SizeOf<INPUT>());
+            Thread.Sleep(800);
+            Log.Info("input", $"hook self-test: SendInput F24 sent {sent} of 2, hook saw {_seenF24 - before} F24 events (installed={HookInstalled}, focused={IsOurWindowFocused()})");
+        }
+        catch (Exception e) { Log.Warn("input", "hook self-test failed: " + e.Message); }
+    }
 
     [StructLayout(LayoutKind.Explicit, Size = 40)]
     private struct INPUT

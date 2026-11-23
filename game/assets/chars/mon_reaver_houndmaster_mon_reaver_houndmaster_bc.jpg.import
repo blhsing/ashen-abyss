@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://ckjgh8km40vc"
-path="res://.godot/imported/mon_reaver_houndmaster_mon_reaver_houndmaster_bc.jpg-1d0115fa0cd3d6787d517a990b20319a.ctex"
+path.bptc="res://.godot/imported/mon_reaver_houndmaster_mon_reaver_houndmaster_bc.jpg-1d0115fa0cd3d6787d517a990b20319a.bptc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "0cb8618de2f6c2657eb28ca1f5164b1e"
@@ -14,12 +15,12 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/chars/mon_reaver_houndmaster_mon_reaver_houndmaster_bc.jpg"
-dest_files=["res://.godot/imported/mon_reaver_houndmaster_mon_reaver_houndmaster_bc.jpg-1d0115fa0cd3d6787d517a990b20319a.ctex"]
+dest_files=["res://.godot/imported/mon_reaver_houndmaster_mon_reaver_houndmaster_bc.jpg-1d0115fa0cd3d6787d517a990b20319a.bptc.ctex"]
 
 [params]
 
-compress/mode=0
-compress/high_quality=false
+compress/mode=2
+compress/high_quality=true
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

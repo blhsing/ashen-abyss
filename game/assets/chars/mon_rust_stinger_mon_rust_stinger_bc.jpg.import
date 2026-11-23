@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://5y45oenxv5gg"
-path="res://.godot/imported/mon_rust_stinger_mon_rust_stinger_bc.jpg-49ee83120ad77270bedd53dc5d5142b7.ctex"
+path.bptc="res://.godot/imported/mon_rust_stinger_mon_rust_stinger_bc.jpg-49ee83120ad77270bedd53dc5d5142b7.bptc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "111d13260f330cc211df2e8146b608e1"
@@ -14,12 +15,12 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/chars/mon_rust_stinger_mon_rust_stinger_bc.jpg"
-dest_files=["res://.godot/imported/mon_rust_stinger_mon_rust_stinger_bc.jpg-49ee83120ad77270bedd53dc5d5142b7.ctex"]
+dest_files=["res://.godot/imported/mon_rust_stinger_mon_rust_stinger_bc.jpg-49ee83120ad77270bedd53dc5d5142b7.bptc.ctex"]
 
 [params]
 
-compress/mode=0
-compress/high_quality=false
+compress/mode=2
+compress/high_quality=true
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

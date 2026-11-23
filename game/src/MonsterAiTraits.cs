@@ -228,7 +228,7 @@ public partial class Monster
                     StatusApply? st = A.BreathMode switch
                     {
                         "knock" => St.Knock(3f),
-                        "chill" => n >= 4 ? St.Freeze(1f) : A.BreathStatus ?? St.Chill(0.3f),
+                        "chill" => n >= 4 ? St.Freeze(1f) : A.BreathStatus ?? St.Chill(0.3f * Bestiary.ChillScale),
                         _ => A.BreathStatus,
                     };
                     Strike(a, 0.35f, st, false, el);
@@ -368,7 +368,7 @@ public partial class Monster
                     if (A.AuraEffect == "chill")
                     {
                         float cur = a.Has(StatusId.Chill) ? a.StMag[(int)StatusId.Chill] : 0f;
-                        if (cur < 0.3f) a.ApplyStatus(St.Chill(0.3f - cur, 1.2f), this);
+                        if (cur < 0.3f * Bestiary.ChillScale) a.ApplyStatus(St.Chill(0.3f * Bestiary.ChillScale - cur, 1.2f), this);
                     }
                     else ApplyHostile(a, St.Weaken(0.25f, 1.2f), Def.Element);
                 }
@@ -540,8 +540,13 @@ public partial class Monster
 
     // ═════════════════════════ Drain 汲取 ═════════════════════════
 
+    private static double _lastDrain = -10;
     private void DrainHero(Player p)
     {
+        // one drain per 0.8 s whoever bites: a swarm of drainers emptied the bar in a second and the hero fought on with no skills
+        double now = Game.I?.Time ?? 0;
+        if (now - _lastDrain < 0.8 && now >= _lastDrain) return;
+        _lastDrain = now;
         float before = p.Resource;
         p.Resource = MathF.Max(0f, p.Resource - p.Hero.MaxResource * A.DrainPct);
         if (A.DrainHeal) Heal(MaxLife * 0.05f);

@@ -435,6 +435,17 @@ public partial class SkillTreeUi : UiPanel
     private StyleBox _sbPanel, _sbBand, _sbBandLocked, _sbCard, _sbCardSel, _sbCardLocked, _sbSlot, _sbBadge;
     private string _ptsText = "0", _spentText = "", _classText = "", _specHint = "", _assignText = "";
     private Color _specHintCol;
+    private float _traitY = -1f;                                                  // [fixes] 職業特性 block (LayoutLeft)
+    private static string TraitLine(string text, bool on) => (on ? "◆ " : "◇ ") + text + (on ? "" : "（未生效）");
+    /// <summary>「拳刃精通　雙持拳刃：武器傷害 +8%」→「拳刃精通 +8%」: the name and the last figure only.</summary>
+    private static string Compact(string text)
+    {
+        int gap = text.IndexOf('　');
+        string name = gap > 0 ? text[..gap] : text;
+        var m = System.Text.RegularExpressions.Regex.Match(text, @"[+＋][0-9.]+%");
+        return m.Success ? $"{name} {m.Value}" : name;
+    }
+    private readonly List<(string text, bool on)> _traits = new();
     private static Texture2D _glowTex;
 
     // ── raster chrome (res://assets/ui, see UiArt): looked up once. A piece is null when the art is not installed or
@@ -521,6 +532,7 @@ public partial class SkillTreeUi : UiPanel
             _assign = -1;
             _pops.Clear();
             _hover = null;
+            ShowBook(arg as string == "book");            // [golem] --ui=skills:book opens the 亡者名冊 tab
             _tipShown = false;          // the manager hides any tooltip when a panel opens
             if (NormalizeBar()) _hero?.Notify();
             _dirty = true;
@@ -600,6 +612,7 @@ public partial class SkillTreeUi : UiPanel
         _closeBtn.FocusMode = FocusModeEnum.None;
         AddChild(_resetBtn);
         AddChild(_closeBtn);
+        Log.Guard("ui", BuildBookTab);                     // [golem] 亡者名冊 tab (SkillTreeUi.Book.cs)
 
         try
         {
@@ -1202,6 +1215,7 @@ public partial class SkillTreeUi : UiPanel
         if (_resetBtn != null) btnH = Mathf.Max(btnH, _resetBtn.GetCombinedMinimumSize().Y);
         if (_closeBtn != null) btnH = Mathf.Max(btnH, _closeBtn.GetCombinedMinimumSize().Y);
         float btnY = _leftR.End.Y - 16f * k - btnH, limit = btnY - 8f * k;
+        limit -= LayoutBookTab(cls, x, w, btnY, btnH, k);     // [golem] the book button above reset / close
 
         // specialisation cards: icon and name on one row, the description wrapped below it across the whole card.
         // Each card is as tall as its own text; only if the three do not fit are the descriptions cut to fewer lines.
@@ -1233,6 +1247,60 @@ public partial class SkillTreeUi : UiPanel
                 Icon = IconNamed(SpecIcons.TryGetValue(sp.Id, out var ic) ? ic : "star-formation"),
             });
             cy += ch + 10f * k;
+        }
+
+        // [fixes] 職業特性: the class's weapon bonuses (read-only, not bought with points), when the column has room
+        _traitY = -1f;
+        _traits.Clear();
+        var th = Game.I?.Hero;
+        if (th != null && th.Class == cls)
+        {
+            if (cls == ClassId.Forgebody)
+            {
+                _traits.Add(($"鍛體　天生：傷害減免 +{Hero.ForgedBodyDrPct:0}%", true));
+                _traits.Add(($"拳刃精通　雙持拳刃：武器傷害 +{Hero.FistMasteryPct(th.D.Level):0}%", th.FistMastery));
+            }
+            else if (cls == ClassId.Pactbinder)
+            {
+                float pf = Hero.PactEarlyFrac(th.D.Level);
+                // gone from level 8 on (the class intro still names it)
+                if (pf > 0f) _traits.Add(($"契約初成　等級 {Hero.PactEarlyEndLevel} 前：傷害 +{Hero.PactEarlyDmgPct * pf:0}%、生命 +{Hero.PactEarlyLifePct * pf:0}%", true));
+            }
+            else if (cls == ClassId.Lampknight)
+            {
+                bool shield = th.OffHand?.Base == "shield", lantern = th.OffHand?.Base == "lantern";
+                string sv = shield ? $"+{Hero.ShieldOathFor(th.OffHand, th.MainHand):0.#}%" : "依盾的格擋率提高";
+                _traits.Add(($"盾誓　單手持盾：武器傷害 {sv}", shield && th.OathPct > 0f));
+                if (Hero.LanternOathPct() > 0f) _traits.Add(($"燈誓　單手提燈：武器傷害 +{Hero.LanternOathPct():0}%（火焰）", lantern && th.OathPct > 0f));
+            }
+        }
+        if (_traits.Count > 0)
+        {
+            // each line wraps to at most two rows in the narrow left column (特大); when that does not fit, the compact
+            // form (name and value on one row, 「拳刃精通 +8%」) is tried before the block is left out
+            float TraitsH()
+            {
+                float h = LineH(_fTitle, ZRow) + 2f * k;
+                foreach (var (text, on) in _traits) h += Math.Clamp(LinesOf(_fUi, TraitLine(text, on), w, ZCap), 1, 2) * LineH(_fUi, ZCap);
+                return h;
+            }
+            float tH = TraitsH();
+            if (cy + 6f * k + tH > limit)
+            {
+                for (int i = 0; i < _traits.Count; i++) _traits[i] = (Compact(_traits[i].text), _traits[i].on);
+                tH = TraitsH();
+            }
+            if (cy + 6f * k + tH > limit && _traits.Count > 1)
+            {
+                // last resort: every trait on one row,「◆ 鍛體 +8%　◇ 拳刃精通 +12%」(the first marker comes from TraitLine)
+                var sb = new System.Text.StringBuilder(_traits[0].text);
+                for (int i = 1; i < _traits.Count; i++) sb.Append(_traits[i].on ? "　◆ " : "　◇ ").Append(_traits[i].text);
+                bool on0 = _traits[0].on;
+                _traits.Clear();
+                _traits.Add((sb.ToString(), on0));
+                tH = TraitsH();
+            }
+            if (cy + 6f * k + tH <= limit) { _traitY = cy + 6f * k; cy = _traitY + tH + 4f * k; }
         }
 
         // the key legend is a nicety: it shows as many of its rows as the column still has room for (a row wraps
@@ -2085,6 +2153,19 @@ public partial class SkillTreeUi : UiPanel
         Txt(c, _fTitle, x, _specHeadY, "職業專精", ZHead, UiTheme.Gold, w);
         Txt(c, _fUi, x, _specHintY, _specHint, ZCap, _specHintCol, w);
         foreach (var n in _nodes) if (n.Kind == NK.Spec) DrawSpec(c, n);
+
+        if (_traitY > 0f)
+        {
+            // [fixes] 職業特性: gold heading; each bonus bright while the worn gear makes it count, dim otherwise
+            Txt(c, _fTitle, x, _traitY + Asc(_fTitle, ZRow), "職業特性", ZRow, Fade(UiTheme.Gold, 0.85f));
+            float ty = _traitY + LineH(_fTitle, ZRow) + 2f * k;
+            foreach (var (text, on) in _traits)
+            {
+                string line = TraitLine(text, on);
+                Para(c, _fUi, x, ty + Asc(_fUi, ZCap), line, ZCap, on ? UiTheme.Text : UiTheme.Dim, w, 2);
+                ty += Math.Clamp(LinesOf(_fUi, line, w, ZCap), 1, 2) * LineH(_fUi, ZCap);
+            }
+        }
 
         if (_helpY > 0f && _helpRows > 0)
         {

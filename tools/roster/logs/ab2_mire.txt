@@ -1,0 +1,8 @@
+== bestiary ERR=0
+  146.443 INF [bot] summary t=571s game=562s area=mire doing=use gold kills=314 elites=19 bosses=1 level=15 life=100% items=50 gold=5913 deaths=1 areas=1 casts=551 unstuck=0 monsters=128 errors=0 warnings=0 botErrors=0 focus=event
+  148.946 INF [bot] summary t=581s game=572s area=mire doing=fight bog_toad kills=319 elites=20 bosses=1 level=15 life=100% items=50 gold=6081 deaths=1 areas=1 casts=563 unstuck=0 monsters=123 errors=0 warnings=0 botErrors=0 focus=event
+  151.461 INF [bot] summary t=591s game=582s area=mire doing=fight lamp_lure kills=325 elites=20 bosses=1 level=15 life=99% items=54 gold=6267 deaths=1 areas=1 casts=571 unstuck=0 monsters=117 errors=0 warnings=0 botErrors=0 focus=event
+  153.931 INF [roster] running area=mire hero=lv15 ttk normal=2.7s(n=313) champion=15.5s(n=19) elite=4.1s(n=1) boss=74.1s(n=1) | taken 1258/min (1.07 life bars/min, 2675 hits) kills=334 in 592s | worst [sh_mire:2181,lurk_leech:1462,mire_hag:893,mire_chained:817] slowest [lurk_leech*:39.6s/5,dusk_gadfly*:20.7s/1,mire_thrower*:16.9s/1,rotspawn:11.1s/6,mire_mourner*:6.0s/3]
+  153.959 INF [bot] summary t=601s game=592s area=mire doing=fight bog_fisher kills=334 elites=20 bosses=1 level=15 life=93% items=55 gold=6369 deaths=1 areas=1 casts=578 unstuck=0 monsters=108 errors=0 warnings=0 botErrors=0 focus=event
+  154.163 INF [bot] final summary t=602s game=593s area=mire doing=fight bog_fisher kills=334 elites=20 bosses=1 level=15 life=93% items=55 gold=6369 deaths=1 areas=1 casts=579 unstuck=0 monsters=108 errors=0 warnings=0 botErrors=0 focus=event
+done 18:13:04

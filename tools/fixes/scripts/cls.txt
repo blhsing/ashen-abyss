@@ -1,0 +1,15 @@
+# class screen (item 10): loadout lines and role at the three text sizes
+wait 2
+scale 0
+wait 1
+shot cls_s0
+dump cls_s0
+scale 1
+wait 1
+shot cls_s1
+dump cls_s1
+scale 2
+wait 1
+shot cls_s2
+dump cls_s2
+quit

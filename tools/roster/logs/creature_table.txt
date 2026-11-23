@@ -1,0 +1,46 @@
+mon_ash_worm|D, buried|1.20|1.85/1.87 (×0.99)|-0.54|mon_ash_worm0|mon_ash_worm1 mon_ash_worm2|mon_ash_worm3|mon_ash_worm4|mon_ash_worm5|mon_ash_worm7
+mon_bell_hanging|F, hover|1.20|2.51/2.52 (×1.00)|0.16|mon_bell_hanging0|mon_bell_hanging1 mon_bell_hanging2|mon_bell_hanging3|mon_bell_hanging4|mon_bell_hanging5|mon_bell_hanging7
+mon_bog_toad|B|1.20|0.86/0.85 (×1.02)|-0.01|mon_bog_toad0|mon_bog_toad1 mon_bog_toad2|mon_bog_toad3|mon_bog_toad4|mon_bog_toad5|mon_bog_toad7
+mon_cf_flicker|F, hover|1.00|0.86/0.82 (×1.05)|0.13|mon_cf_flicker0|mon_cf_flicker1 mon_cf_flicker2|mon_cf_flicker3|mon_cf_flicker4|mon_cf_flicker5|mon_cf_flicker7
+mon_cf_mite|C|0.90|0.61/0.61 (×1.00)|0.00|mon_cf_mite0|mon_cf_mite1 mon_cf_mite2|mon_cf_mite3|mon_cf_mite4|mon_cf_mite5|mon_cf_mite7
+mon_char_root|D, buried|1.00|1.78/1.78 (×1.00)|-0.46|mon_char_root0|mon_char_root1 mon_char_root2|mon_char_root3|mon_char_root4|mon_char_root5|mon_char_root7
+mon_dusk_bat|E, hover|1.00|2.41/2.47 (×0.97)|1.32|mon_dusk_bat0|mon_dusk_bat1 mon_dusk_bat2|mon_dusk_bat3|mon_dusk_bat4|mon_dusk_bat5|mon_dusk_bat7
+mon_dusk_boar|B|1.20|1.16/1.24 (×0.94)|-0.00|mon_dusk_boar0|mon_dusk_boar1 mon_dusk_boar2|mon_dusk_boar3|mon_dusk_boar4|mon_dusk_boar5|mon_dusk_boar7
+mon_dusk_crow|E, hover|1.00|2.13/1.84 (×1.16)|1.36|mon_dusk_crow0|mon_dusk_crow1 mon_dusk_crow2|mon_dusk_crow3|mon_dusk_crow4|mon_dusk_crow5|mon_dusk_crow7
+mon_dusk_gadfly|E, hover|1.10|2.01/1.97 (×1.02)|1.29|mon_dusk_gadfly0|mon_dusk_gadfly1 mon_dusk_gadfly2|mon_dusk_gadfly3|mon_dusk_gadfly4|mon_dusk_gadfly5|mon_dusk_gadfly7
+mon_dusk_hound|B|1.00|1.05/1.05 (×1.00)|-0.00|mon_dusk_hound0|mon_dusk_hound1 mon_dusk_hound2|mon_dusk_hound3|mon_dusk_hound4|mon_dusk_hound5|mon_dusk_hound7
+mon_dusk_lizard|B|1.00|0.53/0.53 (×1.01)|-0.00|mon_dusk_lizard0|mon_dusk_lizard1 mon_dusk_lizard2|mon_dusk_lizard3|mon_dusk_lizard4|mon_dusk_lizard5|mon_dusk_lizard7
+mon_dusk_lynx|B|1.00|1.20/1.19 (×1.01)|-0.00|mon_dusk_lynx0|mon_dusk_lynx1 mon_dusk_lynx2|mon_dusk_lynx3|mon_dusk_lynx4|mon_dusk_lynx5|mon_dusk_lynx7
+mon_dusk_moths|F, hover|1.00|2.44/2.22 (×1.10)|0.36|mon_dusk_moths0|mon_dusk_moths1 mon_dusk_moths2|mon_dusk_moths3|mon_dusk_moths4|mon_dusk_moths5|mon_dusk_moths7
+mon_dusk_yak|B|1.50|1.67/1.66 (×1.01)|-0.00|mon_dusk_yak0|mon_dusk_yak1 mon_dusk_yak2|mon_dusk_yak3|mon_dusk_yak4|mon_dusk_yak5|mon_dusk_yak7
+mon_effigy_hound|B|1.00|0.63/0.62 (×1.01)|-0.00|mon_effigy_hound0|mon_effigy_hound1 mon_effigy_hound2|mon_effigy_hound3|mon_effigy_hound4|mon_effigy_hound5|mon_effigy_hound7
+mon_engine_heliostat|F|1.00|3.45/3.32 (×1.04)|0.00|mon_engine_heliostat0|mon_engine_heliostat1 mon_engine_heliostat2|mon_engine_heliostat3|mon_engine_heliostat4|mon_engine_heliostat5|mon_engine_heliostat7
+mon_fiend_maw|B|1.30|1.61/1.61 (×1.00)|0.00|mon_fiend_maw0|mon_fiend_maw1 mon_fiend_maw2|mon_fiend_maw3|mon_fiend_maw4|mon_fiend_maw5|mon_fiend_maw7
+mon_fiend_wing|E, hover|1.20|2.39/2.47 (×0.97)|1.48|mon_fiend_wing0|mon_fiend_wing1 mon_fiend_wing2|mon_fiend_wing3|mon_fiend_wing4|mon_fiend_wing5|mon_fiend_wing7
+mon_forge_eye|F|1.00|2.39/2.39 (×1.00)|0.00|mon_forge_eye0|mon_forge_eye1 mon_forge_eye2|mon_forge_eye3|mon_forge_eye4|mon_forge_eye5|mon_forge_eye7
+mon_forge_hound|B|1.00|0.77/0.78 (×0.99)|-0.00|mon_forge_hound0|mon_forge_hound1 mon_forge_hound2|mon_forge_hound3|mon_forge_hound4|mon_forge_hound5|mon_forge_hound7
+mon_hush_beast|B|1.10|1.13/1.13 (×1.00)|-0.00|mon_hush_beast0|mon_hush_beast1 mon_hush_beast2|mon_hush_beast3|mon_hush_beast4|mon_hush_beast5|mon_hush_beast7
+mon_hush_ribwalker|C|0.80|0.54/0.54 (×1.02)|-0.00|mon_hush_ribwalker0|mon_hush_ribwalker1 mon_hush_ribwalker2|mon_hush_ribwalker3|mon_hush_ribwalker4|mon_hush_ribwalker5|mon_hush_ribwalker7
+mon_hush_serpent|D, buried|1.20|2.10/2.09 (×1.00)|-0.49|mon_hush_serpent0|mon_hush_serpent1 mon_hush_serpent2|mon_hush_serpent3|mon_hush_serpent4|mon_hush_serpent5|mon_hush_serpent7
+mon_hush_wing|E, hover|1.20|2.46/2.02 (×1.22)|1.62|mon_hush_wing0|mon_hush_wing1 mon_hush_wing2|mon_hush_wing3|mon_hush_wing4|mon_hush_wing5|mon_hush_wing7
+mon_lamp_crawler|C|0.80|0.28/0.28 (×0.99)|0.00|mon_lamp_crawler0|mon_lamp_crawler1 mon_lamp_crawler2|mon_lamp_crawler3|mon_lamp_crawler4|mon_lamp_crawler5|mon_lamp_crawler7
+mon_lamp_lure|F|1.00|2.40/2.40 (×1.00)|0.00|mon_lamp_lure0|mon_lamp_lure1 mon_lamp_lure2|mon_lamp_lure3|mon_lamp_lure4|mon_lamp_lure5|mon_lamp_lure7
+mon_lurk_eel|D, buried|1.00|1.52/1.78 (×0.86)|-0.54|mon_lurk_eel0|mon_lurk_eel1 mon_lurk_eel2|mon_lurk_eel3|mon_lurk_eel4|mon_lurk_eel5|mon_lurk_eel7
+mon_lurk_elder|D|1.80|3.61/3.50 (×1.03)|0.00|mon_lurk_elder0|mon_lurk_elder1 mon_lurk_elder2|mon_lurk_elder3|mon_lurk_elder4|mon_lurk_elder5|mon_lurk_elder7
+mon_lurk_leech|D|0.60|0.29/0.29 (×0.98)|0.00|mon_lurk_leech0|mon_lurk_leech1 mon_lurk_leech2|mon_lurk_leech3|mon_lurk_leech4|mon_lurk_leech5|mon_lurk_leech7
+mon_lurk_spitter|D|1.05|1.42/1.40 (×1.02)|-0.02|mon_lurk_spitter0|mon_lurk_spitter1 mon_lurk_spitter2|mon_lurk_spitter3|mon_lurk_spitter4|mon_lurk_spitter5|mon_lurk_spitter7
+mon_rime_packbeast|B|1.15|2.30/2.29 (×1.00)|-0.00|mon_rime_packbeast0|mon_rime_packbeast1 mon_rime_packbeast2|mon_rime_packbeast3|mon_rime_packbeast4|mon_rime_packbeast5|mon_rime_packbeast7
+mon_rust_gear|C|1.00|0.77/0.76 (×1.02)|0.00|mon_rust_gear0|mon_rust_gear1 mon_rust_gear2|mon_rust_gear3|mon_rust_gear4|mon_rust_gear5|mon_rust_gear7
+mon_rust_helm|C|0.70|0.63/0.64 (×0.99)|0.00|mon_rust_helm0|mon_rust_helm1 mon_rust_helm2|mon_rust_helm3|mon_rust_helm4|mon_rust_helm5|mon_rust_helm7
+mon_rust_jar|C|1.00|0.97/0.91 (×1.07)|0.00|mon_rust_jar0|mon_rust_jar1 mon_rust_jar2|mon_rust_jar3|mon_rust_jar4|mon_rust_jar5|mon_rust_jar7
+mon_rust_locust|E, hover|0.90|1.53/1.54 (×1.00)|1.05|mon_rust_locust0|mon_rust_locust1 mon_rust_locust2|mon_rust_locust3|mon_rust_locust4|mon_rust_locust5|mon_rust_locust7
+mon_rust_stinger|C|1.40|1.89/1.90 (×0.99)|0.00|mon_rust_stinger0|mon_rust_stinger1 mon_rust_stinger2|mon_rust_stinger3|mon_rust_stinger4|mon_rust_stinger5|mon_rust_stinger7
+mon_sexton_beetle|C|1.00|0.57/0.56 (×1.01)|0.00|mon_sexton_beetle0|mon_sexton_beetle1 mon_sexton_beetle2|mon_sexton_beetle3|mon_sexton_beetle4|mon_sexton_beetle5|mon_sexton_beetle7
+mon_sexton_digger|C|1.05|0.42/0.39 (×1.07)|0.00|mon_sexton_digger0|mon_sexton_digger1 mon_sexton_digger2|mon_sexton_digger3|mon_sexton_digger4|mon_sexton_digger5|mon_sexton_digger7
+mon_sexton_grub|C|0.80|0.31/0.31 (×1.00)|0.01|mon_sexton_grub0|mon_sexton_grub1 mon_sexton_grub2|mon_sexton_grub3|mon_sexton_grub4|mon_sexton_grub5|mon_sexton_grub7
+mon_sexton_matron|C|1.70|1.32/1.33 (×0.99)|0.00|mon_sexton_matron0|mon_sexton_matron1 mon_sexton_matron2|mon_sexton_matron3|mon_sexton_matron4|mon_sexton_matron5|mon_sexton_matron7
+mon_shroud_dropper|C|1.00|1.38/1.38 (×1.00)|0.00|mon_shroud_dropper0|mon_shroud_dropper1 mon_shroud_dropper2|mon_shroud_dropper3|mon_shroud_dropper4|mon_shroud_dropper5|mon_shroud_dropper7
+mon_shroud_ling|C|0.60|0.32/0.33 (×0.96)|0.00|mon_shroud_ling0|mon_shroud_ling1 mon_shroud_ling2|mon_shroud_ling3|mon_shroud_ling4|mon_shroud_ling5|mon_shroud_ling7
+mon_shroud_matron|C|1.70|2.07/2.11 (×0.98)|0.00|mon_shroud_matron0|mon_shroud_matron1 mon_shroud_matron2|mon_shroud_matron3|mon_shroud_matron4|mon_shroud_matron5|mon_shroud_matron7
+mon_shroud_weaver|C|1.00|1.33/1.32 (×1.00)|0.00|mon_shroud_weaver0|mon_shroud_weaver1 mon_shroud_weaver2|mon_shroud_weaver3|mon_shroud_weaver4|mon_shroud_weaver5|mon_shroud_weaver7
+mon_wraith_gasp|F, hover|1.00|2.06/2.02 (×1.02)|0.43|mon_wraith_gasp0|mon_wraith_gasp1 mon_wraith_gasp2|mon_wraith_gasp3|mon_wraith_gasp4|mon_wraith_gasp5|mon_wraith_gasp7

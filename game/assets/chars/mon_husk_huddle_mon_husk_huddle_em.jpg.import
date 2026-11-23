@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://c0w6sogn0qyii"
-path="res://.godot/imported/mon_husk_huddle_mon_husk_huddle_em.jpg-28a797335d945ae27d41236305b632af.ctex"
+path.bptc="res://.godot/imported/mon_husk_huddle_mon_husk_huddle_em.jpg-28a797335d945ae27d41236305b632af.bptc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "f73a716ca8e02e514a15680a6e65ebbd"
@@ -14,12 +15,12 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/chars/mon_husk_huddle_mon_husk_huddle_em.jpg"
-dest_files=["res://.godot/imported/mon_husk_huddle_mon_husk_huddle_em.jpg-28a797335d945ae27d41236305b632af.ctex"]
+dest_files=["res://.godot/imported/mon_husk_huddle_mon_husk_huddle_em.jpg-28a797335d945ae27d41236305b632af.bptc.ctex"]
 
 [params]
 
-compress/mode=0
-compress/high_quality=false
+compress/mode=2
+compress/high_quality=true
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

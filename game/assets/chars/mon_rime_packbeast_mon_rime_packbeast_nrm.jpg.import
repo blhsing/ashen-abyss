@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://csce2u8xs6yuk"
-path="res://.godot/imported/mon_rime_packbeast_mon_rime_packbeast_nrm.jpg-a503d3302264d7d2d0787e6da9c6974f.ctex"
+path.s3tc="res://.godot/imported/mon_rime_packbeast_mon_rime_packbeast_nrm.jpg-a503d3302264d7d2d0787e6da9c6974f.s3tc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "d87851c4cdd9dea7e7a18bf19b0159b8"
@@ -14,17 +15,17 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/chars/mon_rime_packbeast_mon_rime_packbeast_nrm.jpg"
-dest_files=["res://.godot/imported/mon_rime_packbeast_mon_rime_packbeast_nrm.jpg-a503d3302264d7d2d0787e6da9c6974f.ctex"]
+dest_files=["res://.godot/imported/mon_rime_packbeast_mon_rime_packbeast_nrm.jpg-a503d3302264d7d2d0787e6da9c6974f.s3tc.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1
-compress/normal_map=0
+compress/normal_map=1
 compress/channel_pack=0
 mipmaps/generate=true
 mipmaps/limit=-1

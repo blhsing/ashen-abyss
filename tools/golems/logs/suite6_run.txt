@@ -1,0 +1,14 @@
+build ok
+exit= seconds=151
+log: C:\Users\blhsi\AppData\Roaming\AshenAbyss\logs\game_20261123_060412.log  lines=1476  ERR=0  WRN=1
+--- distinct warnings ---
+   1 x [suite] FAIL remnants: those within 4 m of the aim are kept for ?? - 1 left, aim moved 0.00 m
+--- last lines ---
+  150.041 INF [game] quitting
+  150.043 INF [save] slot 95 saved: ??? lv12 ???? area=wastes bytes=11895
+  150.044 INF [save] save reason=quit slot=95 ok=True area=wastes playtime=3s capture=0.1ms total=2.5ms
+  150.046 INF [bot] final summary t=142s game=127s area=wastes doing=idle kills=12 elites=0 bosses=0 level=12 life=100% items=0 gold=50 deaths=0 areas=15 casts=0 unstuck=0 monsters=323 errors=0 warnings=1 botErrors=0
+  150.048 INF [bot] final progress: waypoints=[town] renown=[] quests done=0/3 skillpts bonus=0 potion cap=4 altars=0 codex=0 tier=0/1 riftBest=0 paragon=0 playtime=3s
+  150.048 INF [anim] anim-check: hero moved 0.0s - 0.0s without a locomotion clip, 0.0s with frozen legs; hero stood 126.5s - 0.0s in a run clip or none; monsters moved 6.9s - 0.0s without a locomotion clip, 0.0s with frozen legs; models without a skeleton or  ƒ?Ý
+  150.049 INF [input] keyboard hook saw 0 key events, 0 of them PrtSc
+  150.049 INF [boot] shutdown errors=0 warnings=1 uptime=150s

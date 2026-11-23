@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://h0c5nniq25vl"
-path="res://.godot/imported/boss_sand_tyrant_boss_sand_tyrant_em.jpg-5cd1ab14bd1a8b8d60fd4469039f0dba.ctex"
+path.bptc="res://.godot/imported/boss_sand_tyrant_boss_sand_tyrant_em.jpg-5cd1ab14bd1a8b8d60fd4469039f0dba.bptc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "7b01647e52e73bdfbf8aa52a0602c235"
@@ -14,12 +15,12 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/chars/boss_sand_tyrant_boss_sand_tyrant_em.jpg"
-dest_files=["res://.godot/imported/boss_sand_tyrant_boss_sand_tyrant_em.jpg-5cd1ab14bd1a8b8d60fd4469039f0dba.ctex"]
+dest_files=["res://.godot/imported/boss_sand_tyrant_boss_sand_tyrant_em.jpg-5cd1ab14bd1a8b8d60fd4469039f0dba.bptc.ctex"]
 
 [params]
 
-compress/mode=0
-compress/high_quality=false
+compress/mode=2
+compress/high_quality=true
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

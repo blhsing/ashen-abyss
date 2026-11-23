@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://bxo61j53gfgfo"
-path="res://.godot/imported/hero_emberblade_cloth_c.jpg-2e5893d84f8afabcdb704bea1a324299.ctex"
+path.bptc="res://.godot/imported/hero_emberblade_cloth_c.jpg-2e5893d84f8afabcdb704bea1a324299.bptc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "7d6554cbcd6a9fc6b5dda313096e2c25"
@@ -14,12 +15,12 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/chars/hero_emberblade_cloth_c.jpg"
-dest_files=["res://.godot/imported/hero_emberblade_cloth_c.jpg-2e5893d84f8afabcdb704bea1a324299.ctex"]
+dest_files=["res://.godot/imported/hero_emberblade_cloth_c.jpg-2e5893d84f8afabcdb704bea1a324299.bptc.ctex"]
 
 [params]
 
-compress/mode=0
-compress/high_quality=false
+compress/mode=2
+compress/high_quality=true
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

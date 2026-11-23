@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://bvef3hvcfk3x"
-path="res://.godot/imported/mon_shroud_weaver_mon_shroud_weaver_em.jpg-b58d2c7d684bbff98530914413e004ca.ctex"
+path.bptc="res://.godot/imported/mon_shroud_weaver_mon_shroud_weaver_em.jpg-b58d2c7d684bbff98530914413e004ca.bptc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "a6ec6aa770fd33b8900b62759a8e4319"
@@ -14,12 +15,12 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/chars/mon_shroud_weaver_mon_shroud_weaver_em.jpg"
-dest_files=["res://.godot/imported/mon_shroud_weaver_mon_shroud_weaver_em.jpg-b58d2c7d684bbff98530914413e004ca.ctex"]
+dest_files=["res://.godot/imported/mon_shroud_weaver_mon_shroud_weaver_em.jpg-b58d2c7d684bbff98530914413e004ca.bptc.ctex"]
 
 [params]
 
-compress/mode=0
-compress/high_quality=false
+compress/mode=2
+compress/high_quality=true
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

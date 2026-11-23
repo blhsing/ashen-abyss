@@ -1,4 +1,4 @@
-# Golems: plan (not implemented)
+# Golems: plan (built for 0.4.0 with placeholder art — see "Built" and "ART HANDOFF" at the end)
 
 The user (2026-11-21): "golems are featured in the original game. bring this game to parity on this front. modify existing classes and skill system where appropriate. plan this but not implement it yet"
 
@@ -146,3 +146,107 @@ The generic `ClassBook` and the minion-system upgrades also benefit the Pactbind
 4. Release as part of the next version.
 
 **Estimate:** 2 agents, roughly the size of the 0.4.0 gear work for systems, smaller for art.
+
+---
+
+## Built (GOLEM agent, 2026-11-22, for 0.4.0 — placeholder art)
+Everything in §1–§5 and §7 except the art (§6) and the inventory-panel mark (see "Not done"). Code (game/src):
+- `ClassBook.cs` generic book data (`ClassBookDef` → lines → kinds → 2 upgrade picks, sacrifice stats); `SaveData.Book`,
+  `SaveData.GolemForge` (full item copy), `SaveData.Minions` (persistent minions + golem life / re-form timer).
+- `Hero.Book.cs` rules: unlock lv5, free in town, `ClassBook.Fee(level)` = 50 + 25·level gold elsewhere, sacrifice bonuses
+  (×1.5 with 獻祭, + 獻祭聖約), old-save migration (a save with no book → default 掠襲者 / 影術士 / 骨魔像 + one free change).
+- `MinionSystem.cs` (all summoners): persistence across areas, town and save/load; leash (25 m or 3 s out of sight →
+  teleport to the hero); "attack my target" (the hero's last struck enemy within 16 m); corpse refill of warriors and mages
+  (book upgrade 1); count cap 14 (oldest skeleton crumbles); no shadows for skeletons past the nearest six or 14 m; resistances
+  follow the hero's; minion attack-speed affix; the golem (one, permanent, re-forms in 20 s / 8 s with 重鑄); hero-damage
+  sharing (血魔像 15 % / 25 % with 血魂, 魔像之心 20 %, 骨甲共享 −10 %).
+- `Golems.cs`: kinds (warriors, mages, golems) — behaviour (`SkeletonCtl`, `GolemCtl`), passives, the command, the
+  iron golem's weapon styles; **the ART HANDOFF table** (`MinionArt.Table`).
+- `GolemForge.cs`: forgeable items (metal weapons, shields from tier 2, plate armour; refuses locked / worn / gear-set /
+  jewellery / non-metal), inheritance at minion scale, preview, `Verdict()` line, forging (consumes the item, keeps a copy),
+  weapon styles (2H slams, 1H double swings, polearm sweeps, shield block + bash on the 4th hit), the look (item model fused
+  on `hand_r` / `lowerarm_l` / `spine_03` / `Head` with a slag weld seam; rarity glow kept).
+- `GolemItems.cs`: 5 Soulbinder off-hand affixes (魔像生命, 魔像傷害, 骸骨術士傷害, 僕從攻擊速度, 魔像號令冷卻縮減 — on the
+  Soulbinder's shield and focus only), 6 legendary powers (碎骨之刺, 鐵裂, 血穫, 亡者號角, 不朽泥身, 獻祭聖約), 2 uniques
+  (萬骸碑盾 shield, 熔魂坩堝 focus). `GearEval.MinionTerms` scores them.
+- `sb_golem_cmd` 魔像號令 (Mastery, lv7, 14 s; ups 號令擴散 / 急令 / 共鳴), key passive `kp_sb_golemheart` 魔像之心,
+  specs: 骸軍 (+1 warrior, golem +25 % damage), 獻祭 (sacrifice bonuses +50 %, shadow +10 %), 血魂 (blood-golem synergy).
+- UI: `BookUi.cs` (亡者名冊 page: three columns, kinds, upgrade picks, sacrifice, forge picker + confirmation) opened by the
+  「亡者名冊」 button in the skill screen (`SkillTreeUi.Book.cs`, `--ui=skills:book`); `HudMinions.cs` minion frame by the life
+  globe (golem portrait, life, re-form timer, forge mark with the inherited affixes as tooltip, warrior / mage counts, the
+  Pactbinder's fiend).
+- Demo mode (`DemoMode.Golem.cs`): Soulbinder scenes cycle the three golems; the iron one forged from a legendary.
+- Test switches (golem stance): `--golem=bone|blood|iron|none`, `--book=w_guard,m_frost,…`, `--sacrifice=all|warriors,…`, `--forge`.
+- Test suite: `--suite=golem[:book,kinds,golems,boss,forge,persist,migrate,perf,shots]` (`TestSuite.Golem.cs`).
+- AI pilot: API and rules handed to AI-PILOT in `Y:\STATUS.md` (I did not edit `AiPilot*`).
+
+## ART HANDOFF
+All minion models are chosen in ONE table: `MinionArt.Table` in `game/src/Golems.cs`. To drop the real art in, change
+`Model` (and set `Tint` to white, `Rim` to the summon teal or black, `Scale` to the model's own) — nothing else names a model.
+Fuse bones of the iron golem are the `ArmR` / `ArmL` / `Torso` / `Head` fields of its row (the real rig: `fuse_arm_r`,
+`fuse_arm_l`, `fuse_torso`, `fuse_head`).
+
+| Def id | Kind | Placeholder model (existing) | Tint / rim / scale | Real art wanted |
+|---|---|---|---|---|
+| `sb_w_raider` | 掠襲者 warrior | `mon_bone_scrap` | warm bone, ember rim, ×1.05 | skeleton variant: light, fast, two blades |
+| `sb_w_guard` | 持盾者 warrior | `mon_bone_pallbearer` | cold bone, blue rim, ×1.05 | skeleton variant with a coffin-lid shield |
+| `sb_w_reaper` | 收割者 warrior | `mon_skeleton` | soot-dark, violet rim, ×1.2 | big skeleton with a reaping blade |
+| `sb_m_shadow` | 影術士 mage | `mon_bone_urnbearer` | violet, violet rim | skeleton mage (shadow) |
+| `sb_m_frost` | 霜術士 mage | `mon_skeleton` (casting) | ice blue, blue rim | skeleton mage (frost) |
+| `sb_m_bone` | 骨術士 mage | `mon_skeleton_thrower` | bone white, gold rim | skeleton mage (bone spears) |
+| `sb_golem_bone` | 骨魔像 | `mon_bone_amalgam` | bone white, pale green rim, ×1.55 | 2.4–3 m bone golem, bone cleaver on the forearm |
+| `sb_golem_blood` | 血魔像 | `mon_ash_colossus` | dark red, wet red rim, ×1.3 | 2.4–3 m blood golem, clotted claws |
+| `sb_golem_iron` | 鐵魔像 | `mon_brass_sentinel` | rusty slag, forge-orange rim, ×1.5 | 2.4–3 m slag golem with `fuse_*` points + weld seam material |
+Placeholder icons (copies, replace with real rasters): `assets/icons/r/skill/sb_golem_cmd.png` (from `fb_break`),
+`assets/icons/r/keypassive/kp_sb_golemheart.png` (from `kp_pb_blood`). Book/HUD icons reuse existing skill rasters
+(`BookKindDef.Icon` in `ClassBook.cs`). Clips used: the shared library's (`Sword_Attack`, `Sword_Heavy_Combo`,
+`Spell_Simple_Shoot`, `OverhandThrow`, `Shield_OneShot`, `LayToIdle` for re-forming, `Spell_Simple_Enter` for 骨牢令).
+VFX: commands use the ground-sigil telegraphs (`Fx.Telegraph(…, friendly: true, Sigil.Arcane / Shadow / Blade)`), re-forming
+uses `Fx.Burst` + `Fx.Ring`; SFX reuse `summon_raise`, `earth_impact`, `boss_roar`, `shield_bash`, `barrier_up`, `hit_flesh`.
+
+### Changes after the first test round (2026-11-22)
+- **Remnants 殘魂 are the single kill leftover** (lead / user decision): a Soulbinder kill leaves a remnant at 75 % (was 60 %);
+  魂爆 detonates them; warriors and mages refill by consuming remnants older than 3.5 s, at least 4 m from the hero's aim and
+  within 18 m (`MinionSystem.FreeRemnant`); `sb_raise` raises at the nearest remnant within its reach; a full or sacrificed
+  army and the golem's re-forming consume none. Cap 24, lifetime 12 s, as before.
+- **Sacrifice bonuses raised** after bot fights (full sacrifice died 5–8 times where golem builds died 0): warriors +15 % damage,
+  mages +15 % resource regen and +3 % crit, golem +15 % life, +15 % armour and +6 % damage reduction; all three lines (三線盡獻)
+  +20 % damage and +10 % damage reduction. The `--sacrifice=all` stance bars 骨矛 / 凋零 / 魂爆 instead of the summons.
+
+### Test results (no god mode; bot, --speed=3, headless)
+| Run | Level / place | Kills | Deaths | Boss |
+|---|---|---|---|---|
+| bone golem | 9, wastes | 451 (post-merge 420) | 0 | stronghold 31 s (40 s) |
+| blood golem | 9, wastes | 408 | 0 | stronghold 34 s |
+| iron golem (fists: --forge rolled wood; re-run forged from a 巨斧) | 9, wastes | 451 (forged: 386) | 0 (0) | stronghold 34 s (29 s) |
+| bone / blood / iron (forged 巨斧) | 10, 掘墓者 | 300 / 335 / 267 | 0 / 0 / 0 | 40 s / 49 s / 33 s |
+| bone / blood / iron (forged) | 18, 霜骸領主 | 66 / 53 / 57 | 0 / 0 / 0 | 34 s / 46 s / 26 s |
+| bone golem (reference) | 26, frost | 451 | 0 | stronghold 54 s |
+| full sacrifice (first, old bonuses, summons on the bar) | 26, frost / 霜骸領主 | 369 / 185 | 8 / 5 | 147 s / 194 s |
+| full sacrifice (new bonuses, proper bar, remnant merge) | 26, frost / 霜骸領主 | 491 / 58 | 1 / 0 | — / 41 s |
+`--suite=golem`: 116/116 before the remnant merge, `golem:remnants` 10/10 after; `golem:perf` 4 warriors + 4 mages + golem + colossus
+against 40 monsters: 58 fps average (never fewer than 10 minions), 0 errors. Pictures: `Y:\shots\golems\`.
+
+### Not done / open
+- (done 22:58) bag filter 「可鑄造魔像」 with 「鑄」 badges, and the tooltip line 「鑄造後：魔像攻擊 +x%　護甲 +y%」.
+  (`GolemForge.IsMetal`, `GolemForge.Verdict(h, item)`, `GolemForge.Refusal`).
+- AI pilot integration is with AI-PILOT (notes in `Y:\STATUS.md`).
+- Real art (models, clips, VFX sigils, icons) and optional voice lines: see ART HANDOFF.
+
+### Balance pass (2026-11-23, after the AI-PILOT campaign: 14/14 bosses in 20–99 s, the hero untouched)
+Cause, from a per-source damage log (`[balance]` line at each boss kill, MinionSystem): bosses held by the bone golem's taunt
+(it taunted on every hit), so the hero never dodged and never stopped attacking; the army added 50–73 % on top.
+- Taunt: bosses and named leaders ignore passive taunts (golem hits, 持盾者, 共鳴); 骨牢令 holds a boss 3 s, then 15 s immunity
+  (`MinionSystem.Taunt`). Ordinary monsters and elites keep the full taunt.
+- Soulbinder minion damage ×0.35 (`MinionSystem.SoulMinionMul`: golem and skeletons); army-size scaling per skeleton
+  1 / (1 + 0.067·(n−1)) (`ArmyFactor`); colossus coefficient 1.6 → 0.5; 魔像號令 1.4 → 1.0.
+- Sacrifice kept close: 三線盡獻 now +10 % damage reduction only; warriors' sacrifice back to +10 % damage; remnant chance 65 %.
+
+Pilot harness (`run_one.sh boss soulbinder …`, --gear), seconds to kill the boss; median = other classes in `tools/pilot/results/boss.txt`:
+| Boss | before | after | median | ratio | full sacrifice after |
+|---|---|---|---|---|---|
+| 掘墓者 lv5 | 57 | 127 | 111 | 1.14× | — |
+| 霜骸領主 lv10 | 44 | 108 | 146 | 0.74× | — |
+| sh_frost lv22 | 51 | 231 | 334 | 0.69× | 214 |
+| Osaros lv42 | 96 | 397 | 347 | 1.14× | 461 |
+Hero damage taken in those fights went from 0–237 to 36–4696 (Osaros: 298 threats, 11 telegraphed hits taken).

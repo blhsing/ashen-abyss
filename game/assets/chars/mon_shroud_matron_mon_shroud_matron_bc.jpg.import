@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://skwhs1g2842s"
-path="res://.godot/imported/mon_shroud_matron_mon_shroud_matron_bc.jpg-6e99cee466d5bc18883750be9e9a4dbc.ctex"
+path.bptc="res://.godot/imported/mon_shroud_matron_mon_shroud_matron_bc.jpg-6e99cee466d5bc18883750be9e9a4dbc.bptc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "51354839cdfe0922429db8ee10e1507e"
@@ -14,12 +15,12 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/chars/mon_shroud_matron_mon_shroud_matron_bc.jpg"
-dest_files=["res://.godot/imported/mon_shroud_matron_mon_shroud_matron_bc.jpg-6e99cee466d5bc18883750be9e9a4dbc.ctex"]
+dest_files=["res://.godot/imported/mon_shroud_matron_mon_shroud_matron_bc.jpg-6e99cee466d5bc18883750be9e9a4dbc.bptc.ctex"]
 
 [params]
 
-compress/mode=0
-compress/high_quality=false
+compress/mode=2
+compress/high_quality=true
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

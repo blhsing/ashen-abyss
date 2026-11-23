@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://eul6nfjat5k0"
-path="res://.godot/imported/mon_rust_helm_mon_rust_helm_orm.jpg-8d5457eac8772c501813a02ca2dbadae.ctex"
+path.bptc="res://.godot/imported/mon_rust_helm_mon_rust_helm_orm.jpg-8d5457eac8772c501813a02ca2dbadae.bptc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "42a86a78912a39e6c9b43ceb1c2bb34c"
@@ -14,12 +15,12 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/chars/mon_rust_helm_mon_rust_helm_orm.jpg"
-dest_files=["res://.godot/imported/mon_rust_helm_mon_rust_helm_orm.jpg-8d5457eac8772c501813a02ca2dbadae.ctex"]
+dest_files=["res://.godot/imported/mon_rust_helm_mon_rust_helm_orm.jpg-8d5457eac8772c501813a02ca2dbadae.bptc.ctex"]
 
 [params]
 
-compress/mode=0
-compress/high_quality=false
+compress/mode=2
+compress/high_quality=true
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

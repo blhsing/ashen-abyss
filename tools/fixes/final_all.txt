@@ -1,0 +1,156 @@
+dps-bases emberblade lv30: fixed gear (seed 93930): crit chance 5.4% crit dmg 0% life 1239
+dps-bases emberblade lv30 starter sword2: aps 0.95 (x1.00 of pace 0.95) hit 108-162 | single 1081/s = 1.50x expected, 1.00x starter | cooldown skills 16%, minions 0%
+dps-bases emberblade lv30 2h sword2: aps 0.95 (x1.00 of pace 0.95) hit 108-162 | single 1154/s = 1.60x expected, 1.07x starter | cooldown skills 11%, minions 0%
+dps-bases emberblade lv30 2h axe2: aps 0.90 (x0.95 of pace 0.95) hit 100-185 | single 1152/s = 1.60x expected, 1.07x starter | cooldown skills 12%, minions 0%
+dps-bases emberblade lv30 2h mace2: aps 0.80 (x0.84 of pace 0.95) hit 120-200 | single 1124/s = 1.56x expected, 1.04x starter | cooldown skills 9%, minions 0%
+dps-bases emberblade lv30 2h polearm: aps 0.95 (x1.00 of pace 0.95) hit 101-168 | single 1141/s = 1.58x expected, 1.06x starter | cooldown skills 13%, minions 0%
+dps-bases emberblade lv30 dual sword1: aps 1.32 (x1.39 of pace 0.95) hit 79-118 | single 1294/s = 1.80x expected, 1.20x starter | cooldown skills 9%, minions 0%
+dps-bases emberblade lv30 dual axe1: aps 1.21 (x1.27 of pace 0.95) hit 73-135 | single 1336/s = 1.85x expected, 1.24x starter | cooldown skills 12%, minions 0%
+dps-bases emberblade lv30 dual mace1: aps 1.10 (x1.16 of pace 0.95) hit 86-143 | single 1042/s = 1.45x expected, 0.96x starter | cooldown skills 12%, minions 0%
+dps-bases emberblade lv30: fixed gear (seed 93930): crit chance 5.4% crit dmg 21% life 1239
+dps-bases emberblade lv30 starter sword2: aps 0.95 (x1.00 of pace 0.95) hit 108-162 | single 1218/s = 1.69x expected, 1.00x starter | cooldown skills 14%, minions 0%
+dps-bases emberblade lv30 2h sword2: aps 0.95 (x1.00 of pace 0.95) hit 108-162 | single 1236/s = 1.72x expected, 1.02x starter | cooldown skills 10%, minions 0%
+dps-bases emberblade lv30 2h axe2: aps 0.90 (x0.95 of pace 0.95) hit 100-185 | single 1161/s = 1.61x expected, 0.95x starter | cooldown skills 13%, minions 0%
+dps-bases emberblade lv30 2h mace2: aps 0.80 (x0.84 of pace 0.95) hit 120-200 | single 1144/s = 1.59x expected, 0.94x starter | cooldown skills 13%, minions 0%
+dps-bases emberblade lv30 2h polearm: aps 0.95 (x1.00 of pace 0.95) hit 101-168 | single 1049/s = 1.46x expected, 0.86x starter | cooldown skills 12%, minions 0%
+dps-bases emberblade lv30 dual sword1: aps 1.32 (x1.39 of pace 0.95) hit 79-118 | single 1274/s = 1.77x expected, 1.05x starter | cooldown skills 10%, minions 0%
+dps-bases emberblade lv30 dual axe1: aps 1.21 (x1.27 of pace 0.95) hit 73-135 | single 1336/s = 1.85x expected, 1.10x starter | cooldown skills 10%, minions 0%
+dps-bases emberblade lv30 dual mace1: aps 1.10 (x1.16 of pace 0.95) hit 86-143 | single 1055/s = 1.46x expected, 0.87x starter | cooldown skills 11%, minions 0%
+dps-bases emberblade lv50: fixed gear (seed 96550): crit chance 10.7% crit dmg 59% life 2183
+dps-bases emberblade lv50 starter sword2: aps 0.95 (x1.00 of pace 0.95) hit 171-256 | single 2061/s = 0.86x expected, 1.00x starter | cooldown skills 21%, minions 0%
+dps-bases emberblade lv50 2h sword2: aps 0.95 (x1.00 of pace 0.95) hit 171-256 | single 2100/s = 0.87x expected, 1.02x starter | cooldown skills 23%, minions 0%
+dps-bases emberblade lv50 2h axe2: aps 0.90 (x0.95 of pace 0.95) hit 158-293 | single 2411/s = 1.00x expected, 1.17x starter | cooldown skills 15%, minions 0%
+dps-bases emberblade lv50 2h mace2: aps 0.80 (x0.84 of pace 0.95) hit 190-317 | single 1995/s = 0.83x expected, 0.97x starter | cooldown skills 9%, minions 0%
+dps-bases emberblade lv50 2h polearm: aps 0.95 (x1.00 of pace 0.95) hit 160-267 | single 2022/s = 0.84x expected, 0.98x starter | cooldown skills 17%, minions 0%
+dps-bases emberblade lv50 dual sword1: aps 1.32 (x1.39 of pace 0.95) hit 128-191 | single 2098/s = 0.87x expected, 1.02x starter | cooldown skills 11%, minions 0%
+dps-bases emberblade lv50 dual axe1: aps 1.21 (x1.27 of pace 0.95) hit 118-220 | single 2566/s = 1.07x expected, 1.25x starter | cooldown skills 14%, minions 0%
+dps-bases emberblade lv50 dual mace1: aps 1.10 (x1.16 of pace 0.95) hit 139-232 | single 1921/s = 0.80x expected, 0.93x starter | cooldown skills 11%, minions 0%
+dps-bases emberblade lv50: fixed gear (seed 96550): crit chance 11.1% crit dmg 81% life 2183
+dps-bases emberblade lv50 starter sword2: aps 0.95 (x1.00 of pace 0.95) hit 171-256 | single 1894/s = 0.79x expected, 1.00x starter | cooldown skills 12%, minions 0%
+dps-bases emberblade lv50 2h sword2: aps 0.95 (x1.00 of pace 0.95) hit 171-256 | single 1970/s = 0.82x expected, 1.04x starter | cooldown skills 16%, minions 0%
+dps-bases emberblade lv50 2h axe2: aps 0.90 (x0.95 of pace 0.95) hit 158-293 | single 2283/s = 0.95x expected, 1.21x starter | cooldown skills 10%, minions 0%
+dps-bases emberblade lv50 2h mace2: aps 0.80 (x0.84 of pace 0.95) hit 190-317 | single 2315/s = 0.96x expected, 1.22x starter | cooldown skills 23%, minions 0%
+dps-bases emberblade lv50 2h polearm: aps 0.95 (x1.00 of pace 0.95) hit 160-267 | single 1750/s = 0.73x expected, 0.92x starter | cooldown skills 12%, minions 0%
+dps-bases emberblade lv50 dual sword1: aps 1.32 (x1.39 of pace 0.95) hit 128-191 | single 1989/s = 0.83x expected, 1.05x starter | cooldown skills 12%, minions 0%
+dps-bases emberblade lv50 dual axe1: aps 1.21 (x1.27 of pace 0.95) hit 118-220 | single 2429/s = 1.01x expected, 1.28x starter | cooldown skills 10%, minions 0%
+dps-bases emberblade lv50 dual mace1: aps 1.10 (x1.16 of pace 0.95) hit 139-232 | single 1945/s = 0.81x expected, 1.03x starter | cooldown skills 13%, minions 0%
+dps-bases forgebody lv30: fixed gear (seed 93965): crit chance 6.3% crit dmg 5% life 1384
+dps-bases forgebody lv30 starter fist+fist: aps 1.60 (x1.18 of pace 1.35) hit 76-102 | single 854/s = 1.19x expected, 1.00x starter | cooldown skills 18%, minions 0%
+dps-bases forgebody lv30 2h mace2: aps 0.80 (x0.59 of pace 1.35) hit 109-182 | single 889/s = 1.23x expected, 1.04x starter | cooldown skills 12%, minions 0%
+dps-bases forgebody lv30 2h axe2: aps 0.90 (x0.67 of pace 1.35) hit 102-190 | single 1002/s = 1.39x expected, 1.17x starter | cooldown skills 13%, minions 0%
+dps-bases forgebody lv30 dual fist: aps 1.60 (x1.18 of pace 1.35) hit 76-102 | single 794/s = 1.10x expected, 0.93x starter | cooldown skills 18%, minions 0%
+dps-bases forgebody lv30: fixed gear (seed 93965): crit chance 6.3% crit dmg 5% life 1384
+dps-bases forgebody lv30 starter fist+fist: aps 1.60 (x1.18 of pace 1.35) hit 76-102 | single 837/s = 1.16x expected, 1.00x starter | cooldown skills 17%, minions 0%
+dps-bases forgebody lv30 2h mace2: aps 0.80 (x0.59 of pace 1.35) hit 109-182 | single 857/s = 1.19x expected, 1.02x starter | cooldown skills 12%, minions 0%
+dps-bases forgebody lv30 2h axe2: aps 0.90 (x0.67 of pace 1.35) hit 102-190 | single 946/s = 1.31x expected, 1.13x starter | cooldown skills 13%, minions 0%
+dps-bases forgebody lv30 dual fist: aps 1.60 (x1.18 of pace 1.35) hit 76-102 | single 798/s = 1.11x expected, 0.95x starter | cooldown skills 18%, minions 0%
+dps-bases forgebody lv50: fixed gear (seed 96585): crit chance 7.4% crit dmg 15% life 2479
+dps-bases forgebody lv50 starter fist+fist: aps 1.60 (x1.18 of pace 1.35) hit 122-166 | single 3338/s = 1.39x expected, 1.00x starter | cooldown skills 15%, minions 0%
+dps-bases forgebody lv50 2h mace2: aps 0.80 (x0.59 of pace 1.35) hit 174-290 | single 3365/s = 1.40x expected, 1.01x starter | cooldown skills 14%, minions 0%
+dps-bases forgebody lv50 2h axe2: aps 0.90 (x0.67 of pace 1.35) hit 162-301 | single 3902/s = 1.62x expected, 1.17x starter | cooldown skills 13%, minions 0%
+dps-bases forgebody lv50 dual fist: aps 1.60 (x1.18 of pace 1.35) hit 122-166 | single 3483/s = 1.45x expected, 1.04x starter | cooldown skills 14%, minions 0%
+dps-bases forgebody lv50: fixed gear (seed 96585): crit chance 6.9% crit dmg 15% life 2479
+dps-bases forgebody lv50 starter fist+fist: aps 1.60 (x1.18 of pace 1.35) hit 122-166 | single 3521/s = 1.46x expected, 1.00x starter | cooldown skills 14%, minions 0%
+dps-bases forgebody lv50 2h mace2: aps 0.80 (x0.59 of pace 1.35) hit 174-290 | single 3559/s = 1.48x expected, 1.01x starter | cooldown skills 17%, minions 0%
+dps-bases forgebody lv50 2h axe2: aps 0.90 (x0.67 of pace 1.35) hit 162-301 | single 4013/s = 1.67x expected, 1.14x starter | cooldown skills 16%, minions 0%
+dps-bases forgebody lv50 dual fist: aps 1.60 (x1.18 of pace 1.35) hit 122-166 | single 3585/s = 1.49x expected, 1.02x starter | cooldown skills 14%, minions 0%
+dps-bases hunter lv30: fixed gear (seed 93944): crit chance 8% crit dmg 69% life 1671
+dps-bases hunter lv30 starter crossbow: aps 1.00 (x0.80 of pace 1.25) hit 97-161 | single 541/s = 0.75x expected, 1.00x starter | cooldown skills 14%, minions 0%
+dps-bases hunter lv30 2h bow: aps 1.15 (x0.92 of pace 1.25) hit 95-129 | single 622/s = 0.86x expected, 1.15x starter | cooldown skills 11%, minions 0%
+dps-bases hunter lv30 2h crossbow: aps 1.00 (x0.80 of pace 1.25) hit 97-161 | single 466/s = 0.65x expected, 0.86x starter | cooldown skills 12%, minions 0%
+dps-bases hunter lv30 dual sword1: aps 1.32 (x1.06 of pace 1.25) hit 79-118 | single 606/s = 0.84x expected, 1.12x starter | cooldown skills 16%, minions 0%
+dps-bases hunter lv30 dual dagger: aps 1.54 (x1.23 of pace 1.25) hit 72-97 | single 494/s = 0.69x expected, 0.91x starter | cooldown skills 13%, minions 0%
+dps-bases hunter lv30: fixed gear (seed 93944): crit chance 8.1% crit dmg 27% life 1671
+dps-bases hunter lv30 starter crossbow: aps 1.00 (x0.80 of pace 1.25) hit 97-161 | single 542/s = 0.75x expected, 1.00x starter | cooldown skills 14%, minions 0%
+dps-bases hunter lv30 2h bow: aps 1.15 (x0.92 of pace 1.25) hit 95-129 | single 612/s = 0.85x expected, 1.13x starter | cooldown skills 12%, minions 0%
+dps-bases hunter lv30 2h crossbow: aps 1.00 (x0.80 of pace 1.25) hit 97-161 | single 504/s = 0.70x expected, 0.93x starter | cooldown skills 16%, minions 0%
+dps-bases hunter lv30 dual sword1: aps 1.32 (x1.06 of pace 1.25) hit 79-118 | single 616/s = 0.85x expected, 1.14x starter | cooldown skills 12%, minions 0%
+dps-bases hunter lv30 dual dagger: aps 1.54 (x1.23 of pace 1.25) hit 72-97 | single 485/s = 0.67x expected, 0.89x starter | cooldown skills 13%, minions 0%
+dps-bases hunter lv50: fixed gear (seed 96564): crit chance 23.5% crit dmg 104% life 2430
+dps-bases hunter lv50 starter crossbow: aps 1.00 (x0.80 of pace 1.25) hit 153-255 | single 1249/s = 0.52x expected, 1.00x starter | cooldown skills 21%, minions 0%
+dps-bases hunter lv50 2h bow: aps 1.15 (x0.92 of pace 1.25) hit 151-204 | single 1345/s = 0.56x expected, 1.08x starter | cooldown skills 11%, minions 0%
+dps-bases hunter lv50 2h crossbow: aps 1.00 (x0.80 of pace 1.25) hit 153-255 | single 1348/s = 0.56x expected, 1.08x starter | cooldown skills 21%, minions 0%
+dps-bases hunter lv50 dual sword1: aps 1.32 (x1.06 of pace 1.25) hit 127-191 | single 1514/s = 0.63x expected, 1.21x starter | cooldown skills 17%, minions 0%
+dps-bases hunter lv50 dual dagger: aps 1.54 (x1.23 of pace 1.25) hit 116-157 | single 1029/s = 0.43x expected, 0.82x starter | cooldown skills 14%, minions 0%
+dps-bases hunter lv50: fixed gear (seed 96564): crit chance 22.5% crit dmg 103% life 2430
+dps-bases hunter lv50 starter crossbow: aps 1.00 (x0.80 of pace 1.25) hit 153-255 | single 1406/s = 0.58x expected, 1.00x starter | cooldown skills 24%, minions 0%
+dps-bases hunter lv50 2h bow: aps 1.15 (x0.92 of pace 1.25) hit 151-204 | single 1440/s = 0.60x expected, 1.02x starter | cooldown skills 12%, minions 0%
+dps-bases hunter lv50 2h crossbow: aps 1.00 (x0.80 of pace 1.25) hit 153-255 | single 1376/s = 0.57x expected, 0.98x starter | cooldown skills 23%, minions 0%
+dps-bases hunter lv50 dual sword1: aps 1.32 (x1.06 of pace 1.25) hit 127-191 | single 1425/s = 0.59x expected, 1.01x starter | cooldown skills 12%, minions 0%
+dps-bases hunter lv50 dual dagger: aps 1.54 (x1.23 of pace 1.25) hit 116-157 | single 1088/s = 0.45x expected, 0.77x starter | cooldown skills 20%, minions 0%
+dps-bases lampknight lv30: fixed gear (seed 93972): crit chance 5.4% crit dmg 0% life 1643
+dps-bases lampknight lv30 starter sword1: aps 1.20 (x1.09 of pace 1.10) hit 78-117 | single 459/s = 0.64x expected, 1.00x starter | cooldown skills 6%, minions 0%
+dps-bases lampknight lv30 2h sword2: aps 0.95 (x0.86 of pace 1.10) hit 110-164 | single 594/s = 0.83x expected, 1.30x starter | cooldown skills 5%, minions 0%
+dps-bases lampknight lv30 2h mace2: aps 0.80 (x0.73 of pace 1.10) hit 122-203 | single 503/s = 0.70x expected, 1.10x starter | cooldown skills 6%, minions 0%
+dps-bases lampknight lv30 2h polearm: aps 0.95 (x0.86 of pace 1.10) hit 103-171 | single 584/s = 0.81x expected, 1.27x starter | cooldown skills 5%, minions 0%
+dps-bases lampknight lv30 off sword1+shield: aps 1.20 (x1.09 of pace 1.10) hit 79-119 | single 495/s = 0.69x expected, 1.08x starter | cooldown skills 6%, minions 0%
+dps-bases lampknight lv30 off mace1+shield: aps 1.00 (x0.91 of pace 1.10) hit 90-149 | single 488/s = 0.68x expected, 1.06x starter | cooldown skills 5%, minions 0%
+dps-bases lampknight lv30 off flail+shield: aps 1.05 (x0.95 of pace 1.10) hit 68-159 | single 481/s = 0.67x expected, 1.05x starter | cooldown skills 6%, minions 0%
+dps-bases lampknight lv30 off sword1+lantern: aps 1.20 (x1.09 of pace 1.10) hit 83-124 | single 499/s = 0.69x expected, 1.09x starter | cooldown skills 6%, minions 0%
+dps-bases lampknight lv30 off mace1+lantern: aps 1.00 (x0.91 of pace 1.10) hit 93-155 | single 525/s = 0.73x expected, 1.15x starter | cooldown skills 6%, minions 0%
+dps-bases lampknight lv30 off flail+lantern: aps 1.05 (x0.95 of pace 1.10) hit 71-165 | single 485/s = 0.67x expected, 1.06x starter | cooldown skills 6%, minions 0%
+dps-bases lampknight lv30: fixed gear (seed 93972): crit chance 5.4% crit dmg 0% life 2033
+dps-bases lampknight lv30 starter sword1: aps 1.20 (x1.09 of pace 1.10) hit 78-117 | single 455/s = 0.63x expected, 1.00x starter | cooldown skills 6%, minions 0%
+dps-bases lampknight lv30 2h sword2: aps 0.95 (x0.86 of pace 1.10) hit 110-164 | single 559/s = 0.78x expected, 1.23x starter | cooldown skills 5%, minions 0%
+dps-bases lampknight lv30 2h mace2: aps 0.80 (x0.73 of pace 1.10) hit 122-203 | single 500/s = 0.69x expected, 1.10x starter | cooldown skills 5%, minions 0%
+dps-bases lampknight lv30 2h polearm: aps 0.95 (x0.86 of pace 1.10) hit 103-171 | single 589/s = 0.82x expected, 1.29x starter | cooldown skills 5%, minions 0%
+dps-bases lampknight lv30 off sword1+shield: aps 1.20 (x1.09 of pace 1.10) hit 79-119 | single 479/s = 0.66x expected, 1.05x starter | cooldown skills 6%, minions 0%
+dps-bases lampknight lv30 off mace1+shield: aps 1.00 (x0.91 of pace 1.10) hit 90-149 | single 481/s = 0.67x expected, 1.06x starter | cooldown skills 6%, minions 0%
+dps-bases lampknight lv30 off flail+shield: aps 1.05 (x0.95 of pace 1.10) hit 68-159 | single 457/s = 0.63x expected, 1.00x starter | cooldown skills 6%, minions 0%
+dps-bases lampknight lv30 off sword1+lantern: aps 1.20 (x1.09 of pace 1.10) hit 83-124 | single 504/s = 0.70x expected, 1.11x starter | cooldown skills 6%, minions 0%
+dps-bases lampknight lv30 off mace1+lantern: aps 1.00 (x0.91 of pace 1.10) hit 93-155 | single 536/s = 0.74x expected, 1.18x starter | cooldown skills 5%, minions 0%
+dps-bases lampknight lv30 off flail+lantern: aps 1.05 (x0.95 of pace 1.10) hit 71-165 | single 449/s = 0.62x expected, 0.99x starter | cooldown skills 7%, minions 0%
+dps-bases lampknight lv50: fixed gear (seed 96592): crit chance 16.7% crit dmg 94% life 2954
+dps-bases lampknight lv50 starter sword1: aps 1.20 (x1.09 of pace 1.10) hit 124-186 | single 1076/s = 0.45x expected, 1.00x starter | cooldown skills 9%, minions 0%
+dps-bases lampknight lv50 2h sword2: aps 0.95 (x0.86 of pace 1.10) hit 174-261 | single 1962/s = 0.81x expected, 1.82x starter | cooldown skills 5%, minions 0%
+dps-bases lampknight lv50 2h mace2: aps 0.80 (x0.73 of pace 1.10) hit 193-322 | single 1208/s = 0.50x expected, 1.12x starter | cooldown skills 7%, minions 0%
+dps-bases lampknight lv50 2h polearm: aps 0.95 (x0.86 of pace 1.10) hit 163-271 | single 1358/s = 0.56x expected, 1.26x starter | cooldown skills 6%, minions 0%
+dps-bases lampknight lv50 off sword1+shield: aps 1.20 (x1.09 of pace 1.10) hit 127-190 | single 930/s = 0.39x expected, 0.86x starter | cooldown skills 7%, minions 0%
+dps-bases lampknight lv50 off mace1+shield: aps 1.00 (x0.91 of pace 1.10) hit 142-237 | single 1273/s = 0.53x expected, 1.18x starter | cooldown skills 6%, minions 0%
+dps-bases lampknight lv50 off flail+shield: aps 1.05 (x0.95 of pace 1.10) hit 108-253 | single 1128/s = 0.47x expected, 1.05x starter | cooldown skills 7%, minions 0%
+dps-bases lampknight lv50 off sword1+lantern: aps 1.20 (x1.09 of pace 1.10) hit 131-197 | single 1030/s = 0.43x expected, 0.96x starter | cooldown skills 9%, minions 0%
+dps-bases lampknight lv50 off mace1+lantern: aps 1.00 (x0.91 of pace 1.10) hit 147-246 | single 1351/s = 0.56x expected, 1.26x starter | cooldown skills 6%, minions 0%
+dps-bases lampknight lv50 off flail+lantern: aps 1.05 (x0.95 of pace 1.10) hit 112-263 | single 1301/s = 0.54x expected, 1.21x starter | cooldown skills 7%, minions 0%
+dps-bases lampknight lv50: fixed gear (seed 96592): crit chance 16.7% crit dmg 79% life 3270
+dps-bases lampknight lv50 starter sword1: aps 1.20 (x1.09 of pace 1.10) hit 124-186 | single 973/s = 0.40x expected, 1.00x starter | cooldown skills 8%, minions 0%
+dps-bases lampknight lv50 2h sword2: aps 0.95 (x0.86 of pace 1.10) hit 174-261 | single 1640/s = 0.68x expected, 1.68x starter | cooldown skills 6%, minions 0%
+dps-bases lampknight lv50 2h mace2: aps 0.80 (x0.73 of pace 1.10) hit 193-322 | single 1353/s = 0.56x expected, 1.39x starter | cooldown skills 7%, minions 0%
+dps-bases lampknight lv50 2h polearm: aps 0.95 (x0.86 of pace 1.10) hit 163-271 | single 1440/s = 0.60x expected, 1.48x starter | cooldown skills 5%, minions 0%
+dps-bases lampknight lv50 off sword1+shield: aps 1.20 (x1.09 of pace 1.10) hit 127-190 | single 1036/s = 0.43x expected, 1.06x starter | cooldown skills 7%, minions 0%
+dps-bases lampknight lv50 off mace1+shield: aps 1.00 (x0.91 of pace 1.10) hit 142-237 | single 1212/s = 0.50x expected, 1.25x starter | cooldown skills 5%, minions 0%
+dps-bases lampknight lv50 off flail+shield: aps 1.05 (x0.95 of pace 1.10) hit 108-253 | single 1232/s = 0.51x expected, 1.27x starter | cooldown skills 6%, minions 0%
+dps-bases lampknight lv50 off sword1+lantern: aps 1.20 (x1.09 of pace 1.10) hit 131-197 | single 1157/s = 0.48x expected, 1.19x starter | cooldown skills 8%, minions 0%
+dps-bases lampknight lv50 off mace1+lantern: aps 1.00 (x0.91 of pace 1.10) hit 147-246 | single 1380/s = 0.57x expected, 1.42x starter | cooldown skills 7%, minions 0%
+dps-bases lampknight lv50 off flail+lantern: aps 1.05 (x0.95 of pace 1.10) hit 112-263 | single 1215/s = 0.50x expected, 1.25x starter | cooldown skills 7%, minions 0%
+dps-bases wildsoul lv30: fixed gear (seed 93958): crit chance 8.8% crit dmg 0% life 2054
+dps-bases wildsoul lv30 starter mace2: aps 0.80 (x0.80 of pace 1.00) hit 121-202 | single 536/s = 0.74x expected, 1.00x starter | cooldown skills 11%, minions 0%
+dps-bases wildsoul lv30 2h staff: aps 1.00 (x1.00 of pace 1.00) hit 110-149 | single 637/s = 0.88x expected, 1.19x starter | cooldown skills 12%, minions 0%
+dps-bases wildsoul lv30 2h mace2: aps 0.80 (x0.80 of pace 1.00) hit 121-202 | single 521/s = 0.72x expected, 0.97x starter | cooldown skills 12%, minions 0%
+dps-bases wildsoul lv30 2h axe2: aps 0.90 (x0.90 of pace 1.00) hit 101-187 | single 659/s = 0.91x expected, 1.23x starter | cooldown skills 10%, minions 0%
+dps-bases wildsoul lv30 off mace1+totem: aps 1.00 (x1.00 of pace 1.00) hit 87-146 | single 610/s = 0.85x expected, 1.14x starter | cooldown skills 22%, minions 0%
+dps-bases wildsoul lv30 off axe1+totem: aps 1.10 (x1.10 of pace 1.00) hit 74-138 | single 537/s = 0.74x expected, 1.00x starter | cooldown skills 14%, minions 0%
+dps-bases wildsoul lv30 off dagger+totem: aps 1.40 (x1.40 of pace 1.00) hit 74-100 | single 701/s = 0.97x expected, 1.31x starter | cooldown skills 15%, minions 0%
+dps-bases wildsoul lv30: fixed gear (seed 93958): crit chance 8.8% crit dmg 41% life 1765
+dps-bases wildsoul lv30 starter mace2: aps 0.80 (x0.80 of pace 1.00) hit 121-202 | single 578/s = 0.80x expected, 1.00x starter | cooldown skills 17%, minions 0%
+dps-bases wildsoul lv30 2h staff: aps 1.00 (x1.00 of pace 1.00) hit 110-149 | single 670/s = 0.93x expected, 1.16x starter | cooldown skills 11%, minions 0%
+dps-bases wildsoul lv30 2h mace2: aps 0.80 (x0.80 of pace 1.00) hit 121-202 | single 660/s = 0.92x expected, 1.14x starter | cooldown skills 14%, minions 0%
+dps-bases wildsoul lv30 2h axe2: aps 0.90 (x0.90 of pace 1.00) hit 101-187 | single 662/s = 0.92x expected, 1.14x starter | cooldown skills 12%, minions 0%
+dps-bases wildsoul lv30 off mace1+totem: aps 1.00 (x1.00 of pace 1.00) hit 87-146 | single 568/s = 0.79x expected, 0.98x starter | cooldown skills 12%, minions 0%
+dps-bases wildsoul lv30 off axe1+totem: aps 1.10 (x1.10 of pace 1.00) hit 74-138 | single 538/s = 0.75x expected, 0.93x starter | cooldown skills 13%, minions 0%
+dps-bases wildsoul lv30 off dagger+totem: aps 1.40 (x1.40 of pace 1.00) hit 74-100 | single 648/s = 0.90x expected, 1.12x starter | cooldown skills 14%, minions 0%
+dps-bases wildsoul lv50: fixed gear (seed 96578): crit chance 9.1% crit dmg 101% life 3068
+dps-bases wildsoul lv50 starter mace2: aps 0.80 (x0.80 of pace 1.00) hit 192-321 | single 1767/s = 0.73x expected, 1.00x starter | cooldown skills 13%, minions 0%
+dps-bases wildsoul lv50 2h staff: aps 1.00 (x1.00 of pace 1.00) hit 174-236 | single 2043/s = 0.85x expected, 1.16x starter | cooldown skills 15%, minions 0%
+dps-bases wildsoul lv50 2h mace2: aps 0.80 (x0.80 of pace 1.00) hit 192-321 | single 1910/s = 0.79x expected, 1.08x starter | cooldown skills 12%, minions 0%
+dps-bases wildsoul lv50 2h axe2: aps 0.90 (x0.90 of pace 1.00) hit 160-296 | single 2041/s = 0.85x expected, 1.16x starter | cooldown skills 14%, minions 0%
+dps-bases wildsoul lv50 off mace1+totem: aps 1.00 (x1.00 of pace 1.00) hit 138-231 | single 1873/s = 0.78x expected, 1.06x starter | cooldown skills 20%, minions 0%
+dps-bases wildsoul lv50 off axe1+totem: aps 1.10 (x1.10 of pace 1.00) hit 118-218 | single 1643/s = 0.68x expected, 0.93x starter | cooldown skills 16%, minions 0%
+dps-bases wildsoul lv50 off dagger+totem: aps 1.40 (x1.40 of pace 1.00) hit 116-158 | single 2011/s = 0.84x expected, 1.14x starter | cooldown skills 18%, minions 0%
+dps-bases wildsoul lv50: fixed gear (seed 96578): crit chance 6.1% crit dmg 101% life 3529
+dps-bases wildsoul lv50 starter mace2: aps 0.80 (x0.80 of pace 1.00) hit 192-321 | single 1945/s = 0.81x expected, 1.00x starter | cooldown skills 18%, minions 0%
+dps-bases wildsoul lv50 2h staff: aps 1.00 (x1.00 of pace 1.00) hit 174-236 | single 1993/s = 0.83x expected, 1.02x starter | cooldown skills 16%, minions 0%
+dps-bases wildsoul lv50 2h mace2: aps 0.80 (x0.80 of pace 1.00) hit 192-321 | single 2125/s = 0.88x expected, 1.09x starter | cooldown skills 11%, minions 0%
+dps-bases wildsoul lv50 2h axe2: aps 0.90 (x0.90 of pace 1.00) hit 160-296 | single 1840/s = 0.76x expected, 0.95x starter | cooldown skills 12%, minions 0%
+dps-bases wildsoul lv50 off mace1+totem: aps 1.00 (x1.00 of pace 1.00) hit 138-231 | single 1756/s = 0.73x expected, 0.90x starter | cooldown skills 15%, minions 0%
+dps-bases wildsoul lv50 off axe1+totem: aps 1.10 (x1.10 of pace 1.00) hit 118-218 | single 1798/s = 0.75x expected, 0.92x starter | cooldown skills 19%, minions 0%
+dps-bases wildsoul lv50 off dagger+totem: aps 1.40 (x1.40 of pace 1.00) hit 116-158 | single 1944/s = 0.81x expected, 1.00x starter | cooldown skills 15%, minions 0%

@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://dc3lk54bd2lrf"
-path="res://.godot/imported/mon_forge_bellows_mon_forge_bellows_em.jpg-234b379ad570b5b978a78c42a3d3b138.ctex"
+path.bptc="res://.godot/imported/mon_forge_bellows_mon_forge_bellows_em.jpg-234b379ad570b5b978a78c42a3d3b138.bptc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "7b7b96cfd1056c13557993d328682ae1"
@@ -14,12 +15,12 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/chars/mon_forge_bellows_mon_forge_bellows_em.jpg"
-dest_files=["res://.godot/imported/mon_forge_bellows_mon_forge_bellows_em.jpg-234b379ad570b5b978a78c42a3d3b138.ctex"]
+dest_files=["res://.godot/imported/mon_forge_bellows_mon_forge_bellows_em.jpg-234b379ad570b5b978a78c42a3d3b138.bptc.ctex"]
 
 [params]
 
-compress/mode=0
-compress/high_quality=false
+compress/mode=2
+compress/high_quality=true
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

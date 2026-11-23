@@ -1,0 +1,36 @@
+build ok
+exit= seconds=783
+log: C:\Users\blhsi\AppData\Roaming\AshenAbyss\logs\game_20261122_094244.log  lines=4530  ERR=0  WRN=25
+--- distinct warnings ---
+   1 x [suite] FAIL named db_frost_d2: kill time within 45-90s - 43s
+   1 x [suite] FAIL named db_crypt_d1: kill time within 45-90s - 36.5s
+   1 x [suite] FAIL named db_crypt_d2: kill time within 45-90s - 42.4s
+   1 x [suite] FAIL named rare_abyss_slagferry: kill time within 20-45s - 18.6s
+   1 x [suite] FAIL named sh_crypt: kill time within 45-90s - 32.9s
+   1 x [suite] FAIL named db_wastes_d1: kill time within 45-90s - 23s
+   1 x [suite] FAIL named wb_firstbearer: kill time within 120-240s - 104.5s
+   1 x [suite] FAIL named wb_breathofsilence: kill time within 120-240s - 74.3s
+   1 x [suite] FAIL named pin_7_firstkeeper: kill time within 120-300s - 117.9s
+   1 x [suite] FAIL named db_mire_d2: kill time within 45-90s - 39.6s
+   1 x [suite] FAIL named db_sands_d1: kill time within 45-90s - 44.1s
+   1 x [suite] FAIL named db_sanctum_d2: kill time within 45-90s - 41.3s
+   1 x [suite] FAIL named rare_abyss_whitetide: kill time within 20-45s - 14.4s
+   1 x [suite] FAIL named rare_frost_whiteshadow: killed - 117.1s
+   1 x [suite] FAIL named rare_frost_lastrun: kill time within 20-45s - 16.3s
+   1 x [suite] FAIL named rare_crypt_veilwife: kill time within 20-45s - 66.5s
+   1 x [suite] FAIL named rare_wastes_nightwatch: every mechanic fired - missing wail,rise
+   1 x [suite] FAIL named rare_wastes_nightwatch: kill time within 20-45s - 14.1s
+   1 x [suite] FAIL named rare_wastes_gallowsfather: kill time within 20-45s - 74.2s
+   1 x [suite] FAIL named rare_sanctum_kolen: kill time within 20-45s - 17s
+--- last lines ---
+  774.919 INF [game] quitting
+  774.922 INF [save] slot 91 saved: ??? lv50 ??? area=rift~arena:pin_8_osaros bytes=24052
+  774.922 INF [save] save reason=quit slot=91 ok=True area=rift~arena:pin_8_osaros playtime=38s capture=0.1ms total=3.3ms
+  774.926 INF [bot] final summary t=732s game=4102s area=rift~arena:pin_8_osaros doing=fight pin_8_osaros kills=17 elites=36 bosses=33 level=50 life=21% items=0 gold=50 deaths=0 areas=61 casts=5724 unstuck=0 monsters=0 errors=0 warnings=25 botErrors=0
+  774.928 INF [bot] final progress: waypoints=[town] renown=[] quests done=0/1 skillpts bonus=0 potion cap=4 altars=0 codex=0 tier=2/2 riftBest=0 paragon=53 playtime=38s
+  774.929 INF [anim] anim-check: hero moved 678.9s - 0.0s without a locomotion clip, 0.0s with frozen legs; hero stood 501.9s - 0.0s in a run clip or none; monsters moved 849.0s - 0.0s without a locomotion clip, 0.0s with frozen legs; models without a skeleton ƒ?Ý
+  774.929 INF [input] keyboard hook saw 412 key events, 0 of them PrtSc
+  774.930 INF [boot] shutdown errors=0 warnings=25 uptime=775s
+--- engine output: distinct problem lines (1 total) ---
+   1 x [17] Godot.NativeInterop.godot_bool Godot.Bridge.CSharpInstanceBridge.Call(nint, Godot.NativeInterop.godot_string_name*, Godot.NativeInterop.godot_variant**, int, Godot.NativeInterop.godot_variant_call_error*, Godot.NativeInterop.godot_variant*) (/root/ ƒ?Ý
+DONE

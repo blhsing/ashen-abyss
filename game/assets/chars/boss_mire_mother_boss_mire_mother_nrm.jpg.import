@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://ck05howmwf1jn"
-path="res://.godot/imported/boss_mire_mother_boss_mire_mother_nrm.jpg-c7deefeccef182d05f2a707c64b9c570.ctex"
+path.s3tc="res://.godot/imported/boss_mire_mother_boss_mire_mother_nrm.jpg-c7deefeccef182d05f2a707c64b9c570.s3tc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "5e0316fd1bb0bc0638db9dde84a5a525"
@@ -14,17 +15,17 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/chars/boss_mire_mother_boss_mire_mother_nrm.jpg"
-dest_files=["res://.godot/imported/boss_mire_mother_boss_mire_mother_nrm.jpg-c7deefeccef182d05f2a707c64b9c570.ctex"]
+dest_files=["res://.godot/imported/boss_mire_mother_boss_mire_mother_nrm.jpg-c7deefeccef182d05f2a707c64b9c570.s3tc.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1
-compress/normal_map=0
+compress/normal_map=1
 compress/channel_pack=0
 mipmaps/generate=true
 mipmaps/limit=-1

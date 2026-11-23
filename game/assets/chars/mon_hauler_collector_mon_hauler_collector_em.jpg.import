@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://bwmqvwt0u6a7d"
-path="res://.godot/imported/mon_hauler_collector_mon_hauler_collector_em.jpg-22589452d8aadc4e178df180779206f8.ctex"
+path.bptc="res://.godot/imported/mon_hauler_collector_mon_hauler_collector_em.jpg-22589452d8aadc4e178df180779206f8.bptc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "8e6fada1c72f47dee002a6d6fb82d113"
@@ -14,12 +15,12 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/chars/mon_hauler_collector_mon_hauler_collector_em.jpg"
-dest_files=["res://.godot/imported/mon_hauler_collector_mon_hauler_collector_em.jpg-22589452d8aadc4e178df180779206f8.ctex"]
+dest_files=["res://.godot/imported/mon_hauler_collector_mon_hauler_collector_em.jpg-22589452d8aadc4e178df180779206f8.bptc.ctex"]
 
 [params]
 
-compress/mode=0
-compress/high_quality=false
+compress/mode=2
+compress/high_quality=true
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

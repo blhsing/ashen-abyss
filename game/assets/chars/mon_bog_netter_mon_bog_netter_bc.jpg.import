@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://c47yd0mvxybsf"
-path="res://.godot/imported/mon_bog_netter_mon_bog_netter_bc.jpg-2b9d682b672810fa5e95a266ef7ffee4.ctex"
+path.bptc="res://.godot/imported/mon_bog_netter_mon_bog_netter_bc.jpg-2b9d682b672810fa5e95a266ef7ffee4.bptc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "76619e83a64f2bde014c32d685c05533"
@@ -14,12 +15,12 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/chars/mon_bog_netter_mon_bog_netter_bc.jpg"
-dest_files=["res://.godot/imported/mon_bog_netter_mon_bog_netter_bc.jpg-2b9d682b672810fa5e95a266ef7ffee4.ctex"]
+dest_files=["res://.godot/imported/mon_bog_netter_mon_bog_netter_bc.jpg-2b9d682b672810fa5e95a266ef7ffee4.bptc.ctex"]
 
 [params]
 
-compress/mode=0
-compress/high_quality=false
+compress/mode=2
+compress/high_quality=true
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

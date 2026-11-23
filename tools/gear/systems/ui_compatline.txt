@@ -1,0 +1,33 @@
+# SYSTEMS: 可用職業 line — unusable axe2 and usable sword1 tooltips for a Soulbinder at three text sizes
+wait 3
+give base axe2 legendary
+give base sword1 rare
+open inventory
+wait 2
+hover 1004,533
+wait 1.2
+shot compat_axe2_unusable_scale0
+hover 1060,533
+wait 1.2
+shot compat_sword1_usable_scale0
+unhover
+scale 1
+wait 1.2
+hover 1004,522
+wait 1.2
+shot compat_axe2_unusable_scale1
+hover 1060,522
+wait 1.2
+shot compat_sword1_usable_scale1
+unhover
+scale 2
+wait 1.2
+hover 1004,510
+wait 1.2
+shot compat_axe2_unusable_scale2
+hover 1060,510
+wait 1.2
+shot compat_sword1_usable_scale2
+unhover
+scale 0
+quit

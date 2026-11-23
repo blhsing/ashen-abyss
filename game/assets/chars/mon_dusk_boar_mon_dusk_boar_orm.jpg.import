@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://dm3uv1w5edxvy"
-path="res://.godot/imported/mon_dusk_boar_mon_dusk_boar_orm.jpg-0602c253b18441d2a300bce7b3e4e595.ctex"
+path.bptc="res://.godot/imported/mon_dusk_boar_mon_dusk_boar_orm.jpg-0602c253b18441d2a300bce7b3e4e595.bptc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "9bff7e97e10ece67970cfdd8d9fe4e2a"
@@ -14,12 +15,12 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/chars/mon_dusk_boar_mon_dusk_boar_orm.jpg"
-dest_files=["res://.godot/imported/mon_dusk_boar_mon_dusk_boar_orm.jpg-0602c253b18441d2a300bce7b3e4e595.ctex"]
+dest_files=["res://.godot/imported/mon_dusk_boar_mon_dusk_boar_orm.jpg-0602c253b18441d2a300bce7b3e4e595.bptc.ctex"]
 
 [params]
 
-compress/mode=0
-compress/high_quality=false
+compress/mode=2
+compress/high_quality=true
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

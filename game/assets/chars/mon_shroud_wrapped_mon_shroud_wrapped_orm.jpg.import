@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://b2y0cfjgbnwvr"
-path="res://.godot/imported/mon_shroud_wrapped_mon_shroud_wrapped_orm.jpg-692dc8b95a878e62a747dfe9d2452635.ctex"
+path.bptc="res://.godot/imported/mon_shroud_wrapped_mon_shroud_wrapped_orm.jpg-692dc8b95a878e62a747dfe9d2452635.bptc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "84834da803db99694e2fc16b910db367"
@@ -14,12 +15,12 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/chars/mon_shroud_wrapped_mon_shroud_wrapped_orm.jpg"
-dest_files=["res://.godot/imported/mon_shroud_wrapped_mon_shroud_wrapped_orm.jpg-692dc8b95a878e62a747dfe9d2452635.ctex"]
+dest_files=["res://.godot/imported/mon_shroud_wrapped_mon_shroud_wrapped_orm.jpg-692dc8b95a878e62a747dfe9d2452635.bptc.ctex"]
 
 [params]
 
-compress/mode=0
-compress/high_quality=false
+compress/mode=2
+compress/high_quality=true
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

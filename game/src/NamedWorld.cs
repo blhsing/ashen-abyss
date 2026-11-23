@@ -46,6 +46,16 @@ internal sealed class BarrowBearer : BossScript
         E.Every(40f, Procession, 26f, () => Free);
     }
     public override void Setup() { _pits = 0; }
+    /// <summary>Hint: break the coffins near the hero before they open (each holds two or three of the dead).</summary>
+    public override Monster BotTarget
+    {
+        get
+        {
+            if (!E.HeroOk) return null;
+            var c = E.NearestProp(E.HeroPos, p => p.DisplayName == "棺木");
+            return c != null && c.Pos2.DistanceTo(E.HeroPos) < 7f ? c : null;
+        }
+    }
     private void Interment()
     {
         Mech("interment");

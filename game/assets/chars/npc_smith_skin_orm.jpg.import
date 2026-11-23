@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://cy1c0avxvwdhh"
-path="res://.godot/imported/npc_smith_skin_orm.jpg-5aece1f1be4c9d18c229343da5520a20.ctex"
+path.bptc="res://.godot/imported/npc_smith_skin_orm.jpg-5aece1f1be4c9d18c229343da5520a20.bptc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "7f1992ddace24afa289317ae73f20786"
@@ -14,12 +15,12 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/chars/npc_smith_skin_orm.jpg"
-dest_files=["res://.godot/imported/npc_smith_skin_orm.jpg-5aece1f1be4c9d18c229343da5520a20.ctex"]
+dest_files=["res://.godot/imported/npc_smith_skin_orm.jpg-5aece1f1be4c9d18c229343da5520a20.bptc.ctex"]
 
 [params]
 
-compress/mode=0
-compress/high_quality=false
+compress/mode=2
+compress/high_quality=true
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

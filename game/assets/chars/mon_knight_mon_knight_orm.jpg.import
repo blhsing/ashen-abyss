@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://tu23pr6wsx0s"
-path="res://.godot/imported/mon_knight_mon_knight_orm.jpg-eadb786208670d25a1bd5ddb384c596d.ctex"
+path.bptc="res://.godot/imported/mon_knight_mon_knight_orm.jpg-eadb786208670d25a1bd5ddb384c596d.bptc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "cac5c55b00243e9154306c411f6560e9"
@@ -14,12 +15,12 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/chars/mon_knight_mon_knight_orm.jpg"
-dest_files=["res://.godot/imported/mon_knight_mon_knight_orm.jpg-eadb786208670d25a1bd5ddb384c596d.ctex"]
+dest_files=["res://.godot/imported/mon_knight_mon_knight_orm.jpg-eadb786208670d25a1bd5ddb384c596d.bptc.ctex"]
 
 [params]
 
-compress/mode=0
-compress/high_quality=false
+compress/mode=2
+compress/high_quality=true
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

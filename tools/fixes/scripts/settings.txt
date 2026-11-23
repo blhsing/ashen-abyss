@@ -1,0 +1,13 @@
+# settings 遊戲 tab with 截圖方式 at 標準 and 特大 (item 8)
+wait 2
+click @遊戲
+wait 1
+shot settings_game_s0
+dump settings_game_s0
+scale 2
+wait 1
+shot settings_game_s2
+dump settings_game_s2
+scale 0
+wait 0.5
+quit

@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://c6p7vnog4tkm7"
-path="res://.godot/imported/mon_hush_wing_mon_hush_wing_bc.jpg-25a096ea0d6c397c8dbf5c032eebc1ee.ctex"
+path.bptc="res://.godot/imported/mon_hush_wing_mon_hush_wing_bc.jpg-25a096ea0d6c397c8dbf5c032eebc1ee.bptc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "d58e882c18dc4a945c2f29a7b9c5ee45"
@@ -14,12 +15,12 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/chars/mon_hush_wing_mon_hush_wing_bc.jpg"
-dest_files=["res://.godot/imported/mon_hush_wing_mon_hush_wing_bc.jpg-25a096ea0d6c397c8dbf5c032eebc1ee.ctex"]
+dest_files=["res://.godot/imported/mon_hush_wing_mon_hush_wing_bc.jpg-25a096ea0d6c397c8dbf5c032eebc1ee.bptc.ctex"]
 
 [params]
 
-compress/mode=0
-compress/high_quality=false
+compress/mode=2
+compress/high_quality=true
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

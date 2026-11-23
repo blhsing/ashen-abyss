@@ -1,0 +1,29 @@
+# follow-up: empty off hand (3D ghost, item 2), gamble scroll + off-hand roll (item 6)
+wait 2
+gold 500000
+scale 2
+wait 0.5
+open inventory
+wait 2.5
+shot ghost_inv_s2
+close
+open vendor:merchant
+wait 1
+click @賭運
+wait 1.5
+shot ghost_gamble_s2
+wheel 400,600,-8
+wait 0.6
+shot gamble_s2_scrolled
+click @一擲#2
+wait 1.2
+shot gamble_s2_rolled_off
+close
+scale 0
+wait 0.5
+open vendor:merchant
+wait 1
+click @賭運
+wait 1.5
+shot gamble_s0_after
+quit

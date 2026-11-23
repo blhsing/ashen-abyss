@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://b5ooyixrl82aw"
-path="res://.godot/imported/mon_wax_sealed_mon_wax_sealed_bc.jpg-a300d4a3384ca5b3ba3ad554b9814b74.ctex"
+path.bptc="res://.godot/imported/mon_wax_sealed_mon_wax_sealed_bc.jpg-a300d4a3384ca5b3ba3ad554b9814b74.bptc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "635dfeff269f28d6d2d03944c742dd84"
@@ -14,12 +15,12 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/chars/mon_wax_sealed_mon_wax_sealed_bc.jpg"
-dest_files=["res://.godot/imported/mon_wax_sealed_mon_wax_sealed_bc.jpg-a300d4a3384ca5b3ba3ad554b9814b74.ctex"]
+dest_files=["res://.godot/imported/mon_wax_sealed_mon_wax_sealed_bc.jpg-a300d4a3384ca5b3ba3ad554b9814b74.bptc.ctex"]
 
 [params]
 
-compress/mode=0
-compress/high_quality=false
+compress/mode=2
+compress/high_quality=true
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

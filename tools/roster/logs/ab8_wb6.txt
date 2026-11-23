@@ -1,0 +1,15 @@
+== bestiary ERR=0
+  146.947 INF [bot] died in wastes_boss (death 16)
+  148.365 INF [bot] summary t=581s game=579s area=wastes_boss doing=focus boss kills=57 elites=4 bosses=0 level=6 life=100% items=1 gold=228 deaths=16 areas=1 casts=544 unstuck=0 monsters=39 errors=0 warnings=0 botErrors=0 focus=boss
+  150.870 INF [bot] summary t=591s game=589s area=wastes_boss doing=fight boss_gravedigger kills=57 elites=4 bosses=0 level=6 life=84% items=1 gold=228 deaths=16 areas=1 casts=547 unstuck=0 monsters=39 errors=0 warnings=0 botErrors=0 focus=boss
+  153.362 INF [roster] running area=wastes_boss hero=lv6 ttk normal=11.2s(n=53) champion=17.7s(n=4) elite=-s(n=0) boss=-s(n=0) | taken 1170/min (4.27 life bars/min, 496 hits) kills=57 in 599s | worst [boss_gravedigger:8093,husk:1437,sexton_digger:743,bone_scrap:611] slowest [bone_scrap*:17.7s/4,sexton_digger:15.7s/5,skeleton_thrower:13.0s/3,husk:12.8s/28,skeleton:6.6s/9]
+  153.375 INF [bot] summary t=601s game=599s area=wastes_boss doing=fight boss_gravedigger kills=57 elites=4 bosses=0 level=6 life=66% items=1 gold=228 deaths=16 areas=1 casts=562 unstuck=0 monsters=39 errors=0 warnings=0 botErrors=0 focus=boss
+  153.547 INF [bot] final summary t=601s game=600s area=wastes_boss doing=fight boss_gravedigger kills=57 elites=4 bosses=0 level=6 life=54% items=1 gold=228 deaths=16 areas=1 casts=563 unstuck=0 monsters=39 errors=0 warnings=0 botErrors=0 focus=boss
+== no-bestiary ERR=0
+  148.063 INF [game] hero died in wastes_boss: deaths=18 hardcore=False level=6
+  148.066 INF [bot] died in wastes_boss (death 18)
+  150.105 INF [bot] summary t=591s game=589s area=wastes_boss doing=focus boss kills=63 elites=7 bosses=0 level=6 life=100% items=1 gold=413 deaths=18 areas=1 casts=552 unstuck=0 monsters=36 errors=0 warnings=0 botErrors=0 focus=boss
+  152.583 INF [roster] running area=wastes_boss hero=lv6 ttk normal=9.0s(n=55) champion=46.0s(n=7) elite=-s(n=0) boss=-s(n=0) | taken 1234/min (4.50 life bars/min, 650 hits) kills=63 in 599s | worst [boss_gravedigger:6376,husk:3161,skeleton:2338,skeleton_thrower:448] slowest [skeleton*:50.9s/4,husk*:39.6s/3,skeleton_thrower:10.8s/4,husk:9.4s/41,skeleton:7.0s/10]
+  152.610 INF [bot] summary t=601s game=599s area=wastes_boss doing=fight boss_gravedigger kills=63 elites=7 bosses=0 level=6 life=77% items=1 gold=413 deaths=18 areas=1 casts=558 unstuck=0 monsters=36 errors=0 warnings=0 botErrors=0 focus=boss
+  152.775 INF [bot] final summary t=601s game=600s area=wastes_boss doing=fight boss_gravedigger kills=63 elites=7 bosses=0 level=6 life=77% items=1 gold=413 deaths=18 areas=1 casts=559 unstuck=0 monsters=36 errors=0 warnings=0 botErrors=0 focus=boss
+done 11:05:33

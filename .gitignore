@@ -102,3 +102,4 @@ tools/release/*.txt
 tools/repo/
 tools/roster/orig/
 *.TMP
+tools/pilot/fixtures/

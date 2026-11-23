@@ -39,7 +39,7 @@ public partial class GameplayTest : Node
         if (_run == null)
         {
             if (G.State != Game.GameState.Play || P == null || !IsInstanceValid(P) || G.Level == null) return;
-            _run = _mode switch { "cancel" => Cancel(), "save" => SaveRun(), "verify" => Verify(), "portal" => PortalRun(), "portalback" => PortalBack(), "idle" => IdleCheck(), "chaseall" => ChaseAll(), "saveall" => SaveAll(), "verifyall" => VerifyAll(), _ => Chase() };
+            _run = _mode switch { "cancel" => Cancel(), "save" => SaveRun(), "verify" => Verify(), "portal" => PortalRun(), "portalback" => PortalBack(), "idle" => IdleCheck(), "chaseall" => ChaseAll(), "saveall" => SaveAll(), "verifyall" => VerifyAll(), "stash" => StashTest(), _ => Chase() };
             return;
         }
         if (G.State != Game.GameState.Play) return;          // a loading screen in between: wait
@@ -392,6 +392,15 @@ public partial class GameplayTest : Node
         public List<float[]> DeadPos = new(), ToppledPos = new(), ChestPos = new(), PropPos = new();
         public string LootName, Mode;
         public float TownX, TownZ, TownFacing;
+        // save-restore agent additions (GameplayTest.Save.cs)
+        public List<float[]> HurtPos = new();          // x, z, life fraction
+        public List<string> HurtDef = new();
+        public string GearSig, SetUids; public List<string> EquipUids = new();
+        public float LifeFrac = -1f, RiftPoints = -1f, RiftTime = -1f;
+        public bool NoFacing, NoFog, Hardcore;
+        public float PosTol = 0.1f;
+        public int EventDone = -1, EventMid = -1;
+        public string Named; public float NamedX, NamedZ, NamedR;
     }
 
     private string _expect;
@@ -438,6 +447,13 @@ public partial class GameplayTest : Node
             Check(!chest.CanUse, $"save: chest at ({chest.Pos2.X:0.0},{chest.Pos2.Y:0.0}) opened");
             ex.ChestPos.Add(new[] { chest.Pos2.X, chest.Pos2.Y });
         }
+        // 3b. wound three monsters far from the hero (they keep their wounds; bosses and named monsters are not chosen)
+        var wounded = Living.Where(m => !m.IsBoss && m != lv.BossMon && NamedHub.Of(m) == null && !victims.Contains(m) && m.Life >= m.MaxLife - 0.5f
+                && !lv.Events.Any(e => e.Pos.DistanceTo(m.Pos2) < 9f) && m.Pos2.DistanceTo(p.Pos2) > 25f && m.Pos2.DistanceTo(p.Pos2) < 70f)
+            .OrderBy(m => m.Pos2.DistanceTo(p.Pos2)).Take(3).ToList();
+        foreach (var m in wounded) m.Life = m.MaxLife * 0.4f;
+        // 3c. a gear set saved from what is worn (sets reference item uids; they must survive the reload)
+        if (!lv.IsTown) Log.Guard(Cat, () => h.SaveSet(0));
         // 4. drop an item from the bag (what Ctrl+click in the bag does)
         var item = h.D.Bag.FirstOrDefault();
         if (item == null) { item = Loot.Roll(h.D.Level, 1, h.Class); }
@@ -452,6 +468,13 @@ public partial class GameplayTest : Node
         p.FaceDir(new Vector2(0.6f, -0.8f));
         yield return 0.3f;
         ex.X = p.Pos2.X; ex.Z = p.Pos2.Y; ex.Facing = p.Facing;
+        foreach (var m in wounded.Where(m => IsInstanceValid(m) && !m.Dead)) { ex.HurtPos.Add(new[] { m.Pos2.X, m.Pos2.Y, m.Life / m.MaxLife }); ex.HurtDef.Add(m.Def.Id); }
+        ex.GearSig = GearSet.FromHero(h).Signature;
+        ex.EquipUids = h.D.Equip.Select(i => i?.Uid ?? "-").ToList();
+        ex.SetUids = string.Join("|", (h.D.GearSets ?? new()).Select(s => s?.Uids == null ? "" : string.Join(",", s.Uids.Select(u => u ?? "-"))));
+        ex.Hardcore = h.D.Hardcore;
+        if (lv.IsRift) { ex.RiftPoints = lv.RiftPoints; ex.RiftTime = lv.RiftTimeLeft; }
+        if (!lv.IsTown) { p.Life = p.MaxLife * 0.6f; ex.LifeFrac = p.LifeFrac; }
         ex.Fog = FogCount(lv);
         ex.Alive = Living.Count();
         ex.Loot = Interactable.All.Count(i => IsInstanceValid(i) && i.Kind == "loot" && !i.IsQueuedForDeletion());
@@ -470,12 +493,13 @@ public partial class GameplayTest : Node
         try { ex = JsonSerializer.Deserialize<Expect>(File.ReadAllText(ExpectPath), new JsonSerializerOptions { IncludeFields = true }); }
         catch (Exception e) { Log.Error(Cat, $"cannot read {ExpectPath}", e); }
         if (ex == null) { Check(false, "verify: no expectations"); yield break; }
+        ex = _exOverride ?? ex;                      // a case with its own expectations (GameplayTest.Save.cs)
         Check(lv.AreaId == ex.Area && lv.Seed == ex.Seed, $"verify: area {lv.AreaId} (saved {ex.Area}), seed {lv.Seed} (saved {ex.Seed})");
         var props = (lv.Data?.Props ?? new List<PropSlot>()).Take(5).Select(ps => new[] { ps.Pos.X, ps.Pos.Y }).ToList();
         bool sameProps = props.Count == ex.PropPos.Count && props.Zip(ex.PropPos).All(z => Mathf.Abs(z.First[0] - z.Second[0]) < 0.01f && Mathf.Abs(z.First[1] - z.Second[1]) < 0.01f);
         Check(sameProps, $"verify: first {props.Count} prop positions identical: {string.Join(" ", props.Select(q => $"({q[0]:0.00},{q[1]:0.00})"))}");
         float dp = p.Pos2.DistanceTo(new Vector2(ex.X, ex.Z));
-        Check(dp <= 0.1f && Mathf.Abs(Mathf.AngleDifference(p.Facing, ex.Facing)) < 0.05f, $"verify: hero at ({p.Pos2.X:0.000},{p.Pos2.Y:0.000}) off by {dp:0.000} m, facing {p.Facing:0.000} (saved {ex.Facing:0.000})");
+        Check(dp <= ex.PosTol && (ex.NoFacing || Mathf.Abs(Mathf.AngleDifference(p.Facing, ex.Facing)) < 0.05f), $"verify: hero at ({p.Pos2.X:0.000},{p.Pos2.Y:0.000}) off by {dp:0.000} m (allowed {ex.PosTol:0.0}), facing {p.Facing:0.000} (saved {ex.Facing:0.000}{(ex.NoFacing ? ", not checked" : "")})");
         int stillDown = 0;
         foreach (var q in ex.ToppledPos)
         {
@@ -500,10 +524,11 @@ public partial class GameplayTest : Node
             Check(c != null && !c.CanUse, $"verify: chest at ({at.X:0.0},{at.Y:0.0}) {(c == null ? "missing" : c.CanUse ? "closed again" : "still open")}");
         }
         int fog = FogCount(lv);
-        Check(fog >= ex.Fog, $"verify: explored cells {fog} (saved {ex.Fog})");
+        if (!ex.NoFog) Check(fog >= ex.Fog, $"verify: explored cells {fog} (saved {ex.Fog})");
         int loot = Interactable.All.Count(i => IsInstanceValid(i) && i.Kind == "loot" && !i.IsQueuedForDeletion());
         bool hasDrop = ex.LootName == null || Interactable.All.Any(i => IsInstanceValid(i) && i.Kind == "loot" && i.Item?.Name == ex.LootName);
         Check(hasDrop && loot >= ex.Loot, $"verify: ground loot {loot} items (saved {ex.Loot}), dropped item '{ex.LootName}' {(hasDrop ? "lies there" : "MISSING")}");
+        { var more = VerifyMore(ex); while (more.MoveNext()) yield return more.Current; }
         Log.Info(Cat, $"verify state: door={(lv.DoorSealed ? "sealed" : "open")} boss={(lv.BossMon != null ? "alive" : lv.BossDead ? "dead" : "-")} monsters={World.Monsters.Count}");
         if ((G.ArgValue("gpthen") ?? "") == "portal")
         {
@@ -554,40 +579,6 @@ public partial class GameplayTest : Node
             var n = NewHero(92, key, where); while (n.MoveNext()) yield return n.Current;
             Log.Info(Cat, $"cancel cases class={key} area={G.Level.AreaId}");
             var c = Cancel(); while (c.MoveNext()) yield return c.Current;
-        }
-    }
-
-    /// <summary>--gptest=saveall: progress in a dungeon (slot 93), the overworld (94), town (96), and a town portal opened from a dungeon (97); each saved.</summary>
-    private IEnumerator<float> SaveAll()
-    {
-        // --gpcases=slot:class:area[:portal],… (gameplay slots are 92 and 93)
-        var cases = (G.ArgValue("gpcases") ?? "92:emberblade:wastes_d2,93:hunter:wastes").Split(',', StringSplitOptions.RemoveEmptyEntries)
-            .Select(c => c.Split(':')).Select(a => (slot: int.Parse(a[0]), cls: a[1], area: a[2], portal: a.Length > 3 && a[3] == "portal")).ToList();
-        foreach (var (slot, cls, area, portal) in cases)
-        {
-            if (!(G.Slot == slot && G.Level?.AreaId == area && Names.ClassKey(G.Hero.Class) == cls)) { var n = NewHero(slot, cls, area); while (n.MoveNext()) yield return n.Current; }
-            _expect = $"{OutDir}/exp_{slot}.json";
-            var s = portal ? PortalRun() : SaveRun(); while (s.MoveNext()) yield return s.Current;
-            G.SaveNow("test");
-            Log.Info(Cat, $"slot {slot} saved in {G.Level.AreaId}");
-        }
-    }
-
-    /// <summary>--gptest=verifyall (a new process): loads slots 93, 94, 96 and checks them, 97 takes its portal back, 98 is an old-format save.</summary>
-    private IEnumerator<float> VerifyAll()
-    {
-        var slots = (G.ArgValue("gpslots") ?? "92,93").Split(',', StringSplitOptions.RemoveEmptyEntries).Select(int.Parse).ToList();
-        int old = int.TryParse(G.ArgValue("gpold"), out int o) ? o : -1;
-        foreach (int slot in slots)
-        {
-            if (!File.Exists(ProjectSettings.GlobalizePath($"user://saves/slot{slot}.json"))) { Check(false, $"verifyall: slot {slot} missing"); continue; }
-            if (G.Slot != slot) { G.LoadGame(slot); var w = WaitPlay(); while (w.MoveNext()) yield return w.Current; }
-            Log.Info(Cat, $"loaded slot {slot}: {G.Level.AreaId}");
-            _expect = $"{OutDir}/exp_{slot}.json";
-            string mode = "";
-            try { mode = JsonSerializer.Deserialize<Expect>(File.ReadAllText(ExpectPath), new JsonSerializerOptions { IncludeFields = true })?.Mode ?? ""; } catch { }
-            var v = slot == old ? IdleCheck() : mode == "portal" ? PortalBack() : Verify();
-            while (v.MoveNext()) yield return v.Current;
         }
     }
 

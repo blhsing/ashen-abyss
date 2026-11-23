@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://pf2a7n8xyu6p"
-path="res://.godot/imported/npc_elder_metal_c.jpg-4535efec106627aec8ed82868bb8ea35.ctex"
+path.bptc="res://.godot/imported/npc_elder_metal_c.jpg-4535efec106627aec8ed82868bb8ea35.bptc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "e35c566f8ec637ccee18f64315ac9396"
@@ -14,12 +15,12 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/chars/npc_elder_metal_c.jpg"
-dest_files=["res://.godot/imported/npc_elder_metal_c.jpg-4535efec106627aec8ed82868bb8ea35.ctex"]
+dest_files=["res://.godot/imported/npc_elder_metal_c.jpg-4535efec106627aec8ed82868bb8ea35.bptc.ctex"]
 
 [params]
 
-compress/mode=0
-compress/high_quality=false
+compress/mode=2
+compress/high_quality=true
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

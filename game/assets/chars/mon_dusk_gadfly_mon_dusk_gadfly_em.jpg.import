@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://0h7fmk13ivfr"
-path="res://.godot/imported/mon_dusk_gadfly_mon_dusk_gadfly_em.jpg-f31dc16a6933bb8feb771e3971cab965.ctex"
+path.bptc="res://.godot/imported/mon_dusk_gadfly_mon_dusk_gadfly_em.jpg-f31dc16a6933bb8feb771e3971cab965.bptc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "bb38228ad7356e170b6cbe1b928b9dde"
@@ -14,12 +15,12 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/chars/mon_dusk_gadfly_mon_dusk_gadfly_em.jpg"
-dest_files=["res://.godot/imported/mon_dusk_gadfly_mon_dusk_gadfly_em.jpg-f31dc16a6933bb8feb771e3971cab965.ctex"]
+dest_files=["res://.godot/imported/mon_dusk_gadfly_mon_dusk_gadfly_em.jpg-f31dc16a6933bb8feb771e3971cab965.bptc.ctex"]
 
 [params]
 
-compress/mode=0
-compress/high_quality=false
+compress/mode=2
+compress/high_quality=true
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

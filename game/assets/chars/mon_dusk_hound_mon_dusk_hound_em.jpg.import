@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://d1mwq3tcbujct"
-path="res://.godot/imported/mon_dusk_hound_mon_dusk_hound_em.jpg-1afa6e9b5f5d4bdf2631f93aa2c96651.ctex"
+path.bptc="res://.godot/imported/mon_dusk_hound_mon_dusk_hound_em.jpg-1afa6e9b5f5d4bdf2631f93aa2c96651.bptc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "b806039b813f5088facc552d6d473c6e"
@@ -14,12 +15,12 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/chars/mon_dusk_hound_mon_dusk_hound_em.jpg"
-dest_files=["res://.godot/imported/mon_dusk_hound_mon_dusk_hound_em.jpg-1afa6e9b5f5d4bdf2631f93aa2c96651.ctex"]
+dest_files=["res://.godot/imported/mon_dusk_hound_mon_dusk_hound_em.jpg-1afa6e9b5f5d4bdf2631f93aa2c96651.bptc.ctex"]
 
 [params]
 
-compress/mode=0
-compress/high_quality=false
+compress/mode=2
+compress/high_quality=true
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://d20qmlujv8jan"
-path="res://.godot/imported/hero_emberblade_base_hair_c.jpg-f60bab89f56be8549619b6759507fa50.ctex"
+path.bptc="res://.godot/imported/hero_emberblade_base_hair_c.jpg-f60bab89f56be8549619b6759507fa50.bptc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "e157549edca1ab774ba1d1905b997560"
@@ -14,12 +15,12 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/chars/hero_emberblade_base_hair_c.jpg"
-dest_files=["res://.godot/imported/hero_emberblade_base_hair_c.jpg-f60bab89f56be8549619b6759507fa50.ctex"]
+dest_files=["res://.godot/imported/hero_emberblade_base_hair_c.jpg-f60bab89f56be8549619b6759507fa50.bptc.ctex"]
 
 [params]
 
-compress/mode=0
-compress/high_quality=false
+compress/mode=2
+compress/high_quality=true
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

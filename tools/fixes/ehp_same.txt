@@ -1,0 +1,12 @@
+ehp emberblade lv10: life 727 armor 419 (dr 46%) dmgred 0% res 0 -> ehp 1336
+ehp emberblade lv23: life 682 armor 950 (dr 48%) dmgred 0% res 0 -> ehp 1317
+ehp emberblade lv40: life 1566 armor 1692 (dr 50%) dmgred 5.4% res 0 -> ehp 3303
+ehp forgebody lv10: life 727 armor 326 (dr 39%) dmgred 0% res 0 -> ehp 1201
+ehp forgebody lv23: life 934 armor 853 (dr 46%) dmgred 0% res 0 -> ehp 1715
+ehp forgebody lv40: life 1510 armor 1502 (dr 47%) dmgred 8.4% res 0 -> ehp 3105
+ehp lampknight lv10: life 839 armor 461 (dr 48%) dmgred 0% res 0 -> ehp 1613
+ehp lampknight lv23: life 764 armor 1090 (dr 52%) dmgred 8% res 0 -> ehp 1718
+ehp lampknight lv40: life 1734 armor 1712 (dr 50%) dmgred 13.4% res 0 -> ehp 4019
+ehp wildsoul lv10: life 605 armor 326 (dr 39%) dmgred 0% res 0 -> ehp 999
+ehp wildsoul lv23: life 1027 armor 853 (dr 46%) dmgred 0% res 0 -> ehp 1886
+ehp wildsoul lv40: life 1706 armor 1595 (dr 48%) dmgred 5.4% res 0 -> ehp 3495

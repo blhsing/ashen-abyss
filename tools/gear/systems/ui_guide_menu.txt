@@ -1,0 +1,14 @@
+# SYSTEMS: 武器指南 from the class introduction (hero creation)
+wait 4
+scale 0
+menu class:lampknight
+wait 2.5
+shot guide_classintro_button
+click @武器指南
+wait 1.5
+shot guide_classintro_open_scale0
+scale 2
+wait 1.2
+shot guide_classintro_open_scale2
+scale 0
+quit

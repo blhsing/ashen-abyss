@@ -1,0 +1,19 @@
+build ok
+exit= seconds=94
+log: C:\Users\blhsi\AppData\Roaming\AshenAbyss\logs\game_20261122_230930.log  lines=484  ERR=0  WRN=5
+--- distinct warnings ---
+   1 x [suite] FAIL named sh_abyss: kill time within 45-90s - 95.6s
+   1 x [suite] FAIL named db_wastes_d2: kill time within 45-90s - 161.1s
+   1 x [suite] FAIL named rare_sands_ogan: kill time within 20-45s - 48.2s
+   1 x [suite] FAIL named rare_frost_thousandyear: killed - 117s
+   1 x [suite] FAIL named rare_frost_thousandyear: every mechanic fired - missing shatter
+--- last lines ---
+   92.368 INF [game] quitting
+   92.370 INF [save] slot 91 saved: ??? lv45 ??? area=rift~arena:db_abyss_d1 bytes=16764
+   92.370 INF [save] save reason=quit slot=91 ok=True area=rift~arena:db_abyss_d1 playtime=14s capture=0.0ms total=2.3ms
+   92.372 INF [bot] final summary t=89s game=511s area=rift~arena:db_abyss_d1 doing=fight db_abyss_d1 kills=1 elites=1 bosses=3 level=45 life=53% items=0 gold=50 deaths=0 areas=5 casts=619 unstuck=0 monsters=0 errors=0 warnings=5 botErrors=0
+   92.373 INF [bot] final progress: waypoints=[town] renown=[] quests done=0/1 skillpts bonus=0 potion cap=4 altars=0 codex=0 tier=0/1 riftBest=0 paragon=0 playtime=14s
+   92.374 INF [anim] anim-check: hero moved 57.4s - 0.0s without a locomotion clip, 0.0s with frozen legs; hero stood 69.1s - 0.0s in a run clip or none; monsters moved 19.1s - 0.0s without a locomotion clip, 0.0s with frozen legs; models without a skeleton or ƒ?Ý
+   92.374 INF [input] keyboard hook saw 48 key events, 0 of them PrtSc
+   92.375 INF [boot] shutdown errors=0 warnings=5 uptime=92s
+DONE

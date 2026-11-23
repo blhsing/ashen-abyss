@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://dw0tcfi5w0q05"
-path="res://.godot/imported/mon_reaver_brute_mon_reaver_brute_bc.jpg-3aa34d9eb3f090913a691ce25d8514e4.ctex"
+path.bptc="res://.godot/imported/mon_reaver_brute_mon_reaver_brute_bc.jpg-3aa34d9eb3f090913a691ce25d8514e4.bptc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "a1279f7642cc709551bbc1fac41325c3"
@@ -14,12 +15,12 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/chars/mon_reaver_brute_mon_reaver_brute_bc.jpg"
-dest_files=["res://.godot/imported/mon_reaver_brute_mon_reaver_brute_bc.jpg-3aa34d9eb3f090913a691ce25d8514e4.ctex"]
+dest_files=["res://.godot/imported/mon_reaver_brute_mon_reaver_brute_bc.jpg-3aa34d9eb3f090913a691ce25d8514e4.bptc.ctex"]
 
 [params]
 
-compress/mode=0
-compress/high_quality=false
+compress/mode=2
+compress/high_quality=true
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

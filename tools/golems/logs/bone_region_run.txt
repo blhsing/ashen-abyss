@@ -1,0 +1,13 @@
+exit= seconds=425
+log: C:\Users\blhsi\AppData\Roaming\AshenAbyss\logs\game_20261122_202833.log  lines=1176  ERR=0  WRN=1
+--- distinct warnings ---
+   1 x [bot] going nowhere near (35.9, 85.4) in wastes for a minute while 'idle (nothing left here)' (event); jumping to the checkpoint (115.9, 87.3)
+--- last lines ---
+  424.286 INF [save] save reason=quit slot=95 ok=True area=wastes playtime=420s capture=0.1ms total=3.3ms
+  424.288 INF [bot] final summary t=1261s game=1239s area=wastes doing=idle (nothing left here) kills=420 elites=32 bosses=1 level=13 life=100% items=79 gold=8328 deaths=0 areas=1 casts=563 unstuck=1 monsters=0 errors=0 warnings=1 botErrors=0 focus=event
+  424.289 INF [bot] final progress: waypoints=[town,wastes] renown=[wastes:220] quests done=0/3 skillpts bonus=0 potion cap=4 altars=3 codex=0 tier=0/1 riftBest=0 paragon=0 playtime=420s
+  424.291 INF [bot] final skills [soulbinder lv13] cast/hits/damage: (other):c0/h14/d1259 sb_bolt:c261/h206/d7008 sb_curse:c30/h0/d0 sb_golem_cmd:c29/h124/d6269 sb_raise:c7/h565/d14235 sb_spear:c221/h562/d59850 sb_veil:c15/h24/d387
+  424.292 INF [bot] final balance: ttk normal=0.7s(n=384) champion=1.5s(n=22) elite=5.1s(n=10) boss=39.6s(n=1) | taken 31/min in 101 hits (life 836; 0.04 life bars/min) god-saves=0 | kills/min 20.3 | never cast: [] cast but never hit: []
+  424.292 INF [anim] anim-check: hero moved 547.5s - 0.0s without a locomotion clip, 0.0s with frozen legs; hero stood 455.6s - 0.0s in a run clip or none; monsters moved 3927.8s - 0.0s without a locomotion clip, 2.1s with frozen legs; models without a skeleto ƒ?Ý
+  424.293 INF [input] keyboard hook saw 0 key events, 0 of them PrtSc
+  424.293 INF [boot] shutdown errors=0 warnings=1 uptime=424s

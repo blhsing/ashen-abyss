@@ -1,0 +1,15 @@
+build ok
+exit= seconds=44
+log: C:\Users\blhsi\AppData\Roaming\AshenAbyss\logs\game_20261122_231521.log  lines=425  ERR=0  WRN=1
+--- distinct warnings ---
+   1 x [suite] FAIL named db_wastes_d2: kill time within 45-90s - 39.9s
+--- last lines ---
+   42.247 INF [game] quitting
+   42.250 INF [save] slot 91 saved: ??? lv45 ??? area=rift~arena:db_abyss_d1 bytes=18721
+   42.250 INF [save] save reason=quit slot=91 ok=True area=rift~arena:db_abyss_d1 playtime=8s capture=0.0ms total=2.6ms
+   42.252 INF [bot] final summary t=40s game=213s area=rift~arena:db_abyss_d1 doing=fight db_abyss_d1 kills=1 elites=2 bosses=3 level=45 life=100% items=0 gold=50 deaths=0 areas=5 casts=331 unstuck=0 monsters=0 errors=0 warnings=1 botErrors=0
+   42.253 INF [bot] final progress: waypoints=[town] renown=[] quests done=0/1 skillpts bonus=0 potion cap=4 altars=0 codex=0 tier=0/1 riftBest=0 paragon=0 playtime=8s
+   42.254 INF [anim] anim-check: hero moved 34.5s - 0.0s without a locomotion clip, 0.0s with frozen legs; hero stood 29.0s - 0.0s in a run clip or none; monsters moved 11.9s - 0.0s without a locomotion clip, 0.0s with frozen legs; models without a skeleton or ƒ?Ý
+   42.254 INF [input] keyboard hook saw 0 key events, 0 of them PrtSc
+   42.255 INF [boot] shutdown errors=0 warnings=1 uptime=42s
+DONE

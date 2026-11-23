@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://dl1gani34arph"
-path="res://.godot/imported/mon_cf_flicker_mon_cf_flicker_em.jpg-4e3c2e79b6d003ab41dc21c0689da7a2.ctex"
+path.bptc="res://.godot/imported/mon_cf_flicker_mon_cf_flicker_em.jpg-4e3c2e79b6d003ab41dc21c0689da7a2.bptc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "c0535bd2960fdb363a261587eeb87ee8"
@@ -14,12 +15,12 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/chars/mon_cf_flicker_mon_cf_flicker_em.jpg"
-dest_files=["res://.godot/imported/mon_cf_flicker_mon_cf_flicker_em.jpg-4e3c2e79b6d003ab41dc21c0689da7a2.ctex"]
+dest_files=["res://.godot/imported/mon_cf_flicker_mon_cf_flicker_em.jpg-4e3c2e79b6d003ab41dc21c0689da7a2.bptc.ctex"]
 
 [params]
 
-compress/mode=0
-compress/high_quality=false
+compress/mode=2
+compress/high_quality=true
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

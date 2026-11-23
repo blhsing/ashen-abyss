@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://b1vorle8t406m"
-path="res://.godot/imported/mon_hush_serpent_mon_hush_serpent_orm.jpg-1f552285af5a0c5af3a90a547f155f3a.ctex"
+path.bptc="res://.godot/imported/mon_hush_serpent_mon_hush_serpent_orm.jpg-1f552285af5a0c5af3a90a547f155f3a.bptc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "f3f0e0fec0eed655442e9fa1b7909bbc"
@@ -14,12 +15,12 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/chars/mon_hush_serpent_mon_hush_serpent_orm.jpg"
-dest_files=["res://.godot/imported/mon_hush_serpent_mon_hush_serpent_orm.jpg-1f552285af5a0c5af3a90a547f155f3a.ctex"]
+dest_files=["res://.godot/imported/mon_hush_serpent_mon_hush_serpent_orm.jpg-1f552285af5a0c5af3a90a547f155f3a.bptc.ctex"]
 
 [params]
 
-compress/mode=0
-compress/high_quality=false
+compress/mode=2
+compress/high_quality=true
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

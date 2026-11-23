@@ -1,6 +1,6 @@
 {
- "time": "2026-11-21 00:53",
- "with_audio": 130,
+ "time": "2026-11-22 17:28",
+ "with_audio": 207,
  "total": 207,
  "removed_stale": [],
  "removed_invalid": [],
@@ -14,11 +14,11 @@
    66
   ],
   "occultist": [
-   0,
+   11,
    11
   ],
   "smith": [
-   0,
+   9,
    9
   ],
   "merchant": [
@@ -26,15 +26,15 @@
    8
   ],
   "jeweler": [
-   0,
+   7,
    7
   ],
   "villager_m": [
-   0,
+   5,
    5
   ],
   "villager_f": [
-   0,
+   5,
    5
   ],
   "boss_gravedigger": [
@@ -66,35 +66,35 @@
    4
   ],
   "hero_emberblade": [
-   0,
+   5,
    5
   ],
   "hero_astromancer": [
-   0,
+   5,
    5
   ],
   "hero_hunter": [
-   0,
+   5,
    5
   ],
   "hero_soulbinder": [
-   0,
+   5,
    5
   ],
   "hero_wildsoul": [
-   0,
+   5,
    5
   ],
   "hero_forgebody": [
-   0,
+   5,
    5
   ],
   "hero_lampknight": [
-   0,
+   5,
    5
   ],
   "hero_pactbinder": [
-   0,
+   5,
    5
   ],
   "boss_sh_wastes": [
@@ -134,83 +134,6 @@
    1
   ]
  },
- "left": [
-  "elder_act5_return_01",
-  "elder_act5_return_02",
-  "elder_act5_return_03",
-  "smith_greet_1",
-  "smith_greet_2",
-  "smith_greet_3",
-  "smith_idle_1",
-  "smith_idle_2",
-  "occultist_greet_1",
-  "occultist_greet_2",
-  "occultist_greet_3",
-  "occultist_idle_1",
-  "occultist_idle_2",
-  "jeweler_greet_1",
-  "jeweler_greet_2",
-  "jeweler_greet_3",
-  "jeweler_idle_1",
-  "jeweler_idle_2",
-  "villager_m_1",
-  "villager_m_2",
-  "villager_m_3",
-  "villager_m_4",
-  "villager_f_1",
-  "villager_f_2",
-  "villager_f_3",
-  "villager_f_4",
-  "dawn_villager_m",
-  "dawn_villager_f",
-  "side_wastes_elites_done",
-  "side_frost_altars_done",
-  "side_crypt_tomb_done",
-  "side_crypt_elites_done",
-  "side_mire_lair_done",
-  "side_sands_workshop_done",
-  "side_sands_altars_done",
-  "side_sanctum_elites_done",
-  "side_abyss_forge_done",
-  "hero_emberblade_levelup",
-  "hero_emberblade_lowlife",
-  "hero_emberblade_noresource",
-  "hero_emberblade_bagfull",
-  "hero_emberblade_legendary",
-  "hero_astromancer_levelup",
-  "hero_astromancer_lowlife",
-  "hero_astromancer_noresource",
-  "hero_astromancer_bagfull",
-  "hero_astromancer_legendary",
-  "hero_hunter_levelup",
-  "hero_hunter_lowlife",
-  "hero_hunter_noresource",
-  "hero_hunter_bagfull",
-  "hero_hunter_legendary",
-  "hero_soulbinder_levelup",
-  "hero_soulbinder_lowlife",
-  "hero_soulbinder_noresource",
-  "hero_soulbinder_bagfull",
-  "hero_soulbinder_legendary",
-  "hero_wildsoul_levelup",
-  "hero_wildsoul_lowlife",
-  "hero_wildsoul_noresource",
-  "hero_wildsoul_bagfull",
-  "hero_wildsoul_legendary",
-  "hero_forgebody_levelup",
-  "hero_forgebody_lowlife",
-  "hero_forgebody_noresource",
-  "hero_forgebody_bagfull",
-  "hero_forgebody_legendary",
-  "hero_lampknight_levelup",
-  "hero_lampknight_lowlife",
-  "hero_lampknight_noresource",
-  "hero_lampknight_bagfull",
-  "hero_lampknight_legendary",
-  "hero_pactbinder_levelup",
-  "hero_pactbinder_lowlife",
-  "hero_pactbinder_noresource",
-  "hero_pactbinder_bagfull",
-  "hero_pactbinder_legendary"
- ]
+ "left": [],
+ "note": "0.4.0 run complete (AUDIO agent); see RUNNING.txt"
 }

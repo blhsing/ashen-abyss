@@ -75,6 +75,21 @@ public partial class CharModel : Node3D
             if (kv.Value == null || !GodotObject.IsInstanceValid(kv.Value) || kv.Value.GetReferenceCount() <= 1) dead.Add(kv.Key);
         foreach (var k in dead) Converted.Remove(k);
         Log.Debug("model", $"cache trim: {old.Count} models and {dead.Count} materials released, {Scenes.Count} models and {Converted.Count} materials kept");
+        // Dropping a C# reference does not free the scene / material / its textures: the managed wrapper keeps the native
+        // object alive until the garbage collector finalizes it, and with a small managed heap that can take many levels
+        // (the demo climbed 1.5 → 7.6 GB of video memory in 20 scenes). Collect once the old level's nodes are gone.
+        if (Engine.GetMainLoop() is SceneTree tree)
+            tree.CreateTimer(1.5, true, false, true).Timeout += () => Log.Guard("model", CollectReleased);
+    }
+
+    private static void CollectReleased()
+    {
+        double before = Performance.GetMonitor(Performance.Monitor.RenderVideoMemUsed) / 1048576.0;
+        var sw = System.Diagnostics.Stopwatch.StartNew();
+        GC.Collect();
+        GC.WaitForPendingFinalizers();
+        GC.Collect();
+        Log.Info("model", $"released resources collected in {sw.ElapsedMilliseconds} ms (video memory {before:0} MB before; the drop shows in the next [perf] line)");
     }
 
     private static PackedScene LoadScene(string id)
@@ -312,8 +327,10 @@ public partial class CharModel : Node3D
         if (Skeleton == null) return 0f;
         if (_clips != null)
         {
-            // no thighs to find on a beetle, a serpent or a hanging bell: any bone that turns or travels counts
-            float sum = 0f;
+            // no thighs to find on a beetle, a serpent or a hanging bell: any bone that turns or travels counts. A running player
+            // (wall clock while playing) is part of the signature: a 0.2 s run cycle (lings, crawlers, effigy hounds) shows the very same pose at
+            // every 0.2 s sample of the anim-check and read as "frozen legs" while it ran; a paused clip still reads frozen.
+            float sum = !_paused && Anim != null && Anim.IsPlaying() && Anim.SpeedScale != 0f ? (float)(Time.GetTicksMsec() % 100000) * 0.01f : 0f;
             int n = Skeleton.GetBoneCount();
             for (int i = 0; i < n; i++)
             {

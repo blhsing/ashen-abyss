@@ -1,0 +1,8 @@
+== bestiary ERR=0
+  147.203 INF [bot] summary t=571s game=562s area=frost doing=explore marker:chest kills=275 elites=18 bosses=1 level=28 life=100% items=54 gold=13420 deaths=4 areas=1 casts=489 unstuck=0 monsters=157 errors=0 warnings=0 botErrors=0 focus=event in progress
+  149.708 INF [bot] summary t=581s game=572s area=frost doing=explore marker:chest kills=276 elites=18 bosses=1 level=28 life=100% items=54 gold=13510 deaths=4 areas=1 casts=491 unstuck=0 monsters=156 errors=0 warnings=0 botErrors=0 focus=event in progress
+  152.213 INF [bot] summary t=591s game=582s area=frost doing=fight rime_stalker kills=280 elites=18 bosses=1 level=28 life=100% items=54 gold=13571 deaths=4 areas=1 casts=500 unstuck=0 monsters=152 errors=0 warnings=0 botErrors=0 focus=event in progress
+  154.664 INF [roster] running area=frost hero=lv29 ttk normal=2.8s(n=250) champion=11.1s(n=15) elite=10.8s(n=3) boss=100.3s(n=1) | taken 1469/min (0.65 life bars/min, 677 hits) kills=283 in 592s | worst [frostbound:2918,sh_frost:2350,cf_spirit:1256,wraith_gasp:1080] slowest [cf_flicker*:27.3s/1,frost_scrap*:26.3s/1,frost_skeleton:20.4s/4,hauler_yoke:19.1s/3,wraith_gasp:18.2s/10]
+  154.717 INF [bot] summary t=601s game=592s area=frost doing=fight hauler_hod kills=283 elites=18 bosses=1 level=29 life=100% items=56 gold=13841 deaths=4 areas=1 casts=512 unstuck=0 monsters=149 errors=0 warnings=0 botErrors=0 focus=event in progress
+  154.909 INF [bot] final summary t=602s game=593s area=frost doing=fight hauler_hod kills=283 elites=18 bosses=1 level=29 life=97% items=56 gold=13841 deaths=4 areas=1 casts=512 unstuck=0 monsters=149 errors=0 warnings=0 botErrors=0 focus=event in progress
+done 00:15:46

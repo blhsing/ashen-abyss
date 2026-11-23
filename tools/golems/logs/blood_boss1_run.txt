@@ -1,0 +1,25 @@
+exit= seconds=490
+log: C:\Users\blhsi\AppData\Roaming\AshenAbyss\logs\game_20261122_134137.log  lines=967  ERR=0  WRN=11
+--- distinct warnings ---
+   1 x [bot] going nowhere near (201.3, 200.5) in wastes for a minute while 'focus event in progress' (event in progress); jumping to the checkpoint (124.1, 74.7)
+   1 x [bot] going nowhere near (201.5, 202.5) in wastes for a minute while 'explore marker:chest' (event in progress); jumping to the checkpoint (124.1, 74.7)
+   1 x [bot] going nowhere near (201.3, 202.1) in wastes for a minute while 'explore frontier' (event in progress); jumping to the checkpoint (124.1, 74.7)
+   1 x [bot] going nowhere near (199.9, 201.0) in wastes for a minute while 'focus event in progress' (event in progress); jumping to the checkpoint (124.1, 74.7)
+   1 x [bot] going nowhere near (200.1, 200.1) in wastes for a minute while 'focus event in progress' (event in progress); jumping to the checkpoint (124.1, 74.7)
+   1 x [bot] going nowhere near (201.4, 198.5) in wastes for a minute while 'focus event in progress' (event in progress); jumping to the checkpoint (124.1, 74.7)
+   1 x [bot] going nowhere near (203.8, 203.9) in wastes for a minute while 'use loot' (event in progress); jumping to the checkpoint (124.1, 74.7)
+   1 x [bot] going nowhere near (198.7, 199.0) in wastes for a minute while 'focus event in progress' (event in progress); jumping to the checkpoint (124.1, 74.7)
+   1 x [bot] going nowhere near (203.7, 200.5) in wastes for a minute while 'explore marker:chest' (event in progress); jumping to the checkpoint (124.1, 74.7)
+   1 x [bot] going nowhere near (200.5, 201.6) in wastes for a minute while 'focus event in progress' (event in progress); jumping to the checkpoint (124.1, 74.7)
+   1 x [bot] going nowhere near (201.9, 201.9) in wastes for a minute while 'explore marker:altar' (event in progress); jumping to the checkpoint (124.1, 74.7)
+--- last lines ---
+  488.678 INF [save] save reason=quit slot=95 ok=True area=wastes playtime=479s capture=0.2ms total=5.3ms
+  488.680 INF [bot] final summary t=1441s game=1438s area=wastes doing=focus event in progress kills=335 elites=19 bosses=2 level=14 life=100% items=44 gold=7741 deaths=0 areas=2 casts=632 unstuck=11 monsters=179 errors=0 warnings=11 botErrors=0 focus=event in ƒ?Ý
+  488.682 INF [bot] final progress: waypoints=[town,wastes] renown=[wastes:340] quests done=0/3 skillpts bonus=1 potion cap=4 altars=0 codex=0 tier=0/1 riftBest=0 paragon=0 playtime=479s
+  488.684 INF [bot] final skills [soulbinder lv14] cast/hits/damage: (other):c0/h11/d1334 sb_bolt:c345/h285/d11801 sb_curse:c23/h0/d0 sb_golem_cmd:c22/h220/d8654 sb_raise:c10/h678/d16345 sb_spear:c219/h572/d56174 sb_veil:c13/h21/d563
+  488.685 INF [bot] final balance: ttk normal=1.2s(n=314) champion=3.6s(n=13) elite=5.5s(n=6) boss=38.2s(n=2) | taken 69/min in 133 hits (life 808; 0.09 life bars/min) god-saves=0 | kills/min 14.0 | never cast: [] cast but never hit: []
+  488.685 INF [anim] anim-check: hero moved 1203.7s - 0.0s without a locomotion clip, 0.0s with frozen legs; hero stood 53.6s - 0.0s in a run clip or none; monsters moved 3394.5s - 0.0s without a locomotion clip, 0.0s with frozen legs; models without a skeleto ƒ?Ý
+  488.686 INF [input] keyboard hook saw 0 key events, 0 of them PrtSc
+  488.686 INF [boot] shutdown errors=0 warnings=11 uptime=489s
+--- engine output: distinct problem lines (1 total) ---
+   1 x ERROR: Parameter "t" is null.

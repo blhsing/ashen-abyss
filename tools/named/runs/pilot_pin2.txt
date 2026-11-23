@@ -1,0 +1,18 @@
+build ok
+exit= seconds=207
+log: C:\Users\blhsi\AppData\Roaming\AshenAbyss\logs\game_20261122_102651.log  lines=676  ERR=0  WRN=2
+--- distinct warnings ---
+   1 x [bot] pilot: going nowhere near (63.1, 89.9) in rift~pin:2 for a minute while 'idle (nothing left here)' ()
+   1 x [bot] pilot: going nowhere near (58.6, 98.8) in rift~pin:2 for a minute while 'idle (nothing left here)' ()
+--- last lines ---
+  202.179 INF [pilot] TEST FIGHT boss=pin_2_rimelord area=town killed=False secs=490 deaths=5 heroLevel=50 threats=133 dodged=77 taken=56 dmgTelegraphed=14025 dmgOther=8069 life=3067
+  202.927 INF [pilot] TEST over: quitting
+  202.930 INF [game] quitting
+  202.935 INF [save] slot 91 saved: ??? lv50 ??? area=town bytes=11749
+  202.936 INF [save] save reason=quit slot=91 ok=True area=town playtime=187s capture=0.1ms total=5.2ms
+  202.940 INF [anim] anim-check: hero moved 237.1s - 0.0s without a locomotion clip, 0.0s with frozen legs; hero stood 311.1s - 0.0s in a run clip or none; monsters moved 60.2s - 0.0s without a locomotion clip, 0.0s with frozen legs; models without a skeleton  ƒ?Ý
+  202.941 INF [input] keyboard hook saw 0 key events, 0 of them PrtSc
+  202.942 INF [boot] shutdown errors=0 warnings=2 uptime=203s
+--- engine output: distinct problem lines (1 total) ---
+   1 x [17] Godot.NativeInterop.godot_bool Godot.Bridge.CSharpInstanceBridge.Call(nint, Godot.NativeInterop.godot_string_name*, Godot.NativeInterop.godot_variant**, int, Godot.NativeInterop.godot_variant_call_error*, Godot.NativeInterop.godot_variant*) (/root/ ƒ?Ý
+DONE

@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://b2n0ai5n4iecg"
-path="res://.godot/imported/mon_sand_revenant_mon_sand_revenant_orm.jpg-c7f576692072984890f6173368e09860.ctex"
+path.bptc="res://.godot/imported/mon_sand_revenant_mon_sand_revenant_orm.jpg-c7f576692072984890f6173368e09860.bptc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "95641445aead8ef7ec0305de4039014d"
@@ -14,12 +15,12 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/chars/mon_sand_revenant_mon_sand_revenant_orm.jpg"
-dest_files=["res://.godot/imported/mon_sand_revenant_mon_sand_revenant_orm.jpg-c7f576692072984890f6173368e09860.ctex"]
+dest_files=["res://.godot/imported/mon_sand_revenant_mon_sand_revenant_orm.jpg-c7f576692072984890f6173368e09860.bptc.ctex"]
 
 [params]
 
-compress/mode=0
-compress/high_quality=false
+compress/mode=2
+compress/high_quality=true
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

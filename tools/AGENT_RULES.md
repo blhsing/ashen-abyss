@@ -66,3 +66,12 @@ The project is a public GitHub repository (`blhsing/ashen-abyss`); only the lead
 | 99 | lead |
 Before a run, if your slot already holds a save that is not yours, stop and tell the lead. The UI test layer's
 `newgame` writes slot 0 — move `slot0*` to `saves_test_backup` after such runs.
+
+## Never stop processes you didn't start (added 2026-11-22 after an incident)
+Never kill, close or stop any process that you did not start yourself in this task. This includes Windows tools (Snipping Tool, Explorer…), the user's apps and the user's game (`AshenAbyss.exe`). Kill only by the PID your own command launched, never by name. If something you didn't start is in the way, wait for it or ask the lead.
+
+## Keep the shared build green (added 2026-11-22)
+Several agents build and test the same tree. After every edit, `Y:\tools\check.ps1` must still pass. Write new types completely before referencing them from shared files, and keep large unfinished work behind `#if <AGENT>_WIP` until it compiles. If the build breaks because of your files, fixing it comes before anything else.
+
+## Priority lane for short test runs (added 2026-11-22)
+`run.ps1 -Priority` (or env `ASHEN_RUN_PRIORITY=1`) puts a run in a priority lane: it takes the run lock next, and normal waiters hold back while a priority run is waiting. Use it ONLY for short runs (5 minutes or less: screenshots, a quick check), never for campaigns or long suites. The lock wait limit is now 120 minutes.

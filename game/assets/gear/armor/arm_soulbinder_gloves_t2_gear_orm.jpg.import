@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://cosy7t2pjhw38"
-path="res://.godot/imported/arm_soulbinder_gloves_t2_gear_orm.jpg-4d26534afda8f8f2c9765f4166e93fed.ctex"
+path.bptc="res://.godot/imported/arm_soulbinder_gloves_t2_gear_orm.jpg-4d26534afda8f8f2c9765f4166e93fed.bptc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "96494d5c815ccc04e4d05e636ba06ce9"
@@ -14,12 +15,12 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/gear/armor/arm_soulbinder_gloves_t2_gear_orm.jpg"
-dest_files=["res://.godot/imported/arm_soulbinder_gloves_t2_gear_orm.jpg-4d26534afda8f8f2c9765f4166e93fed.ctex"]
+dest_files=["res://.godot/imported/arm_soulbinder_gloves_t2_gear_orm.jpg-4d26534afda8f8f2c9765f4166e93fed.bptc.ctex"]
 
 [params]
 
-compress/mode=0
-compress/high_quality=false
+compress/mode=2
+compress/high_quality=true
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

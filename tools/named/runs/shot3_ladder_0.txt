@@ -1,0 +1,13 @@
+build ok
+exit= seconds=18
+log: C:\Users\blhsi\AppData\Roaming\AshenAbyss\logs\game_20261122_224348.log  lines=104  ERR=0  WRN=0
+--- last lines ---
+   12.239 INF [test] harness screenshot 1/1 at 5.00 s  Y:\shots\named\ladder3_ts0.png
+   12.667 INF [shot] screenshot saved: Y:\shots\named\ladder3_ts0.png
+   15.252 INF [test] harness quit at 8.02 s
+   15.255 INF [game] quitting
+   15.259 INF [save] slot 91 saved: ??? lv50 ??? area=town bytes=4249
+   15.260 INF [save] save reason=quit slot=91 ok=True area=town playtime=8s capture=0.2ms total=4.6ms
+   15.262 INF [input] keyboard hook saw 0 key events, 0 of them PrtSc
+   15.262 INF [boot] shutdown errors=0 warnings=0 uptime=15s
+DONE

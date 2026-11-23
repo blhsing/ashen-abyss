@@ -264,3 +264,175 @@ Champion ttk in the passing campaign 12.0 s vs QA 8.3 s → leaders restricted s
 Next: (1) controlled ttk A/B runs above; (2) a full campaign with the final code (needs the gravedigger deadlock fixed, or
 start at lv 10); (3) AI suite once more on the final code; then LiveByDefault = true.
 Edits in others' files this session: Actor.cs (+1 line, DoT loop guard after a god-save clears Dots).
+
+### 2026-11-22 ~09:30 — RESUMED for 0.4.0: goal Bestiary.LiveByDefault = true
+Work items: (1) first-boss stall re-test with the current AI pilot; (2) VRAM; (3) creature in-engine check; (4) demo +
+named with the bestiary on. Test slot 90. Logs of my runs are copied to `Y:\tools\roster\logs\<tag>.log` (the game keeps
+only 30 logs). Background chain: `bash Y:/tools/roster/chain.sh <steps>` (summary in `logs/chain.txt`; stop: TaskStop /
+kill the bash running chain.sh — a game it started quits by its own timeout).
+- New (mine): `RosterStats.cs` — with --bot / --pilot-test / --tour, one `[roster] stats area=… ttk normal/champion/elite/boss
+  | taken …/min (life bars/min) | worst [type:dmg]` line per area (at the next level build) + a running `[roster] totals`
+  line. Hooked from Populate.Run. For the per-area A/B of the two rosters.
+- New (mine): `TestSuite.Creatures.cs` — `--suite=bestiary:creatures[:ids][:shots]`: every rig B–F model (46, keyed by
+  rigs_bf_meta.json) alone in front of a god hero: own clips, posed height vs meta height × model scale, ground contact
+  (lowest skinned vertex, CPU-skinned from the skeleton pose) in Idle / walking / after Death, Hit clip on a flinching blow,
+  Death clip, body removal. One `creature …` line + PASS/FAIL per model.
+- VRAM cause found: every `assets/chars/mon_*.jpg` was imported **lossless** (compress/mode=0 → uncompressed RGBA8 in
+  video memory, ~21 MB per 2K map, ~85 MB per type with 4 maps). `Y:\tools\roster\tex_vram.sh` switches the 485 monster
+  textures to VRAM compression (BC7 high quality for colour / ORM / emission, BC5 for normal maps; ~5.3 MB per 2K map);
+  backup of the original .import files in `Y:\tools\roster\tex_backup\` (restore = copy back + import.ps1). Heroes, bosses,
+  NPCs and gear are NOT touched (not mine; they are lossless too — for the lead).
+- VRAM before (rosterperf wastes 40, seed 4242, windowed): old roster today 2001 MB (game_20261122_092249.log, 37 alive,
+  draws ~1100); bestiary 3552 MB (2026-11-20 run, same suite/seed — today's "before" bestiary run was lost to a build
+  that broke while I was mid-edit, and the texture change was already applied by then).
+- Deleted `Y:\tools\blender\beasts\scratch\PAUSED` (brief). The creature check runs as my suite (slot 90) instead of
+  engine_check.sh (hard-wired to slot 96).
+- 10:06 monster textures re-imported (485 → .bptc/.s3tc ctex). **VRAM rosterperf wastes 40 (seed 4242, windowed):
+  bestiary 3552 → 2044 MB (game_20261122_103758.log, 41-45 alive, fps 58-60); old roster 2001 → 1558 MB
+  (game_20261122_111943.log).** Logs in `Y:\tools\roster\logs\vram_*.log`.
+- BossBrain.cs (not mine, smallest additive change, approved by the lead): AddWeight skips types that
+  `Populate.FitsAsAdd` rejects while the bestiary is live (turrets, clouds, giants, burrowers, sleepers, callers /
+  spawners / revivers as boss adds).
+- 12:40 AI suite (logs/ai.log): 49/49 PASS, 0 ERR. 13:09 named:rare --bestiary (logs/named_rare.log): every rare on its
+  real base (stand-in=no), 0 ERR; 11 FAIL of 100 = kill-time windows / mechanics (for NAMED).
+- 11:50 creature check run 1 (logs/creatures_run1.log, shots Y:\shots\roster\cr_cr_*.png): all 46 load their own 8 clips,
+  scale matches meta (×0.94-1.16) except dusk_crow ×1.39 (idle hover higher than meta), sexton_grub ×0.72, dusk_lynx idle
+  feet +0.17 m and ×1.23 (rears up in Idle?); test faults fixed afterwards (buried height, hover threshold, hit timing,
+  corpse measured on a separate AI-less copy, per-creature frozen-legs seconds). 1 ERR = end-of-run anim-check (monsters
+  3.4 s "frozen legs" > 1.7 s budget) → per-creature counter added to find the culprit. Run 2 queued.
+- Lead's request (13:00): VRAM compression for heroes first, then NPC / boss / gear. `tex_compress.sh <set> <imports…>`
+  (perl, one pass; backups flat by file name in `tex_backup/<set>/`). Heroes done 13:39 (214 files): forgebody bare lv1
+  town 1805 → 1749 MB; armoured 1880 → 1825 MB (gear roll differed); portraits before/after
+  `Y:\shots\roster\tex\sbs_*.png` — no visible difference. NPC/boss/gear: `set2_tex.sh before compress after` running.
+- Runs use the lead's priority lane (`run.ps1 -Priority`) only for the ≤ 5 min texture shots.
+- 14:11 NPC (86) / boss (40) / gear (381) textures compressed too (lead's request): town armoured 1828 → 1244 MB.
+  Title "before" shot was overwritten by a stale script of mine → `title_redo.sh` restores the boss .imports to lossless,
+  imports, shoots `tex_before_title_true`, re-compresses, imports (in progress; if interrupted: copy
+  `tex_backup/boss` back only if you WANT lossless — otherwise run `bash tex_compress.sh boss boss_*` in assets/chars + import).
+- 14:06 demo --bestiary (logs/demo.log): 20 scenes, 0 ERR/WRN, but VRAM 1.5 → 7.6 GB climbing every scene → CharModel.TrimCache
+  now runs GC.Collect 1.5 s after a theme trim (managed wrappers kept released scenes/materials alive). Re-run queued.
+- 14:22 creature check run 2 (logs/creatures.log): all 46 own clips, Death clip for all, corpses on the ground (buried
+  columns sink into their hole by design), bodies removed 1.4 s; hover / scale rows that failed were AI-state noise
+  (swoop or leap during the idle sample) → idle now = median of 10 samples, spawn 5 m away. The 1 ERR (anim-check
+  "frozen legs") was aliasing: 5 creatures have a 0.2 s Run clip = the check's 0.2 s sampling → CharModel.LegSignature
+  adds the clip time played. Turrets / moths / digger / rust_helm never flinch in play (AI re-asserts its clip) → hit
+  clip now verified on an AI-less copy. Run 3 queued (`chain.sh creatures demo`, pid of bash in ps).
+- 14:40 the user started playing: all runs wait.
+- 15:33 creature check run 3 (logs/creatures_run3.log): 41/46 PASS; the 5 left = the frozen-legs aliasing (CharModel._Process
+  is off most of the time, so the first fix never counted) → LegSignature adds the wall clock while the player runs.
+  15:47 re-check of the 5 (logs/creatures_frozenfix.log): 5/5 PASS, 0 s frozen, anim-check INF, 0 ERR. → **46/46.**
+- 15:34 title boss before/after: Y:\shots\roster\tex\sbs_title.png (no visible difference); boss textures compressed again.
+- 15:46-16:31 CAMPAIGN emberblade --bestiary (logs/camp_ember_best_run1.log, pilot, ×4, no god): sh_wastes ok, **boss_gravedigger
+  killed in 106 s at lv7, 0 deaths (the old first-boss stall is gone with the current pilot)**, mire + mire_mother ok;
+  crypt: 6 deaths (sh_crypt failed twice, then killed at lv18; 2 more deaths in crypt overworld), crypt ttk normal 11-13 s,
+  champions 44 s, 2.0-2.4 life bars/min (mire 0.4-1.5). Then **deadlock in crypt_boss** (SlayElites 0/4): from game t≈4500 s
+  no kill, no hit taken for 20+ real minutes, bot alternating "focus marked elite" / "fight skeleton_thrower". Run stopped by me
+  (my process). Main chain stopped; campaigns to be re-run after the crypt work. Crypt A/B (`area_ab.sh crypt 16 emberblade`) queued.
+- 17:04 demo --bestiary re-run with the deferred GC + all texture sets compressed (logs/demo.log): 20 scenes, 0 ERR/0 WRN,
+  **VRAM 1080-3561 MB, sawtooth, no climb** (was 1533 → 7616 MB climbing). GC pass after each theme change 13-123 ms (in the
+  load). Earlier demo soak (old roster, 11-21): 2.0-6.48 GB.
+- Per-region A/B (`area_ab.sh <area> <lv> emberblade`, same seed 777, --gear, bot --focus, 600 s game; logs/ab_<area>_*.log,
+  table: `uv run python -I Y:/tools/roster/py/ab_table.py wastes crypt mire …`): wastes ≈ (normal 1.3 vs 0.9 s, champ 5.9 vs 2.2,
+  0.76 vs 0.68 bars/min); crypt overtuned (1.7 vs 1.0 s, 3.4 vs 2.7, stronghold 149 vs 56 s, 0.90 vs 0.60, 1 vs 0 deaths);
+  mire strongly overtuned (3.2 vs 1.5 s, **champions 80 vs 5 s**, 1.23 vs 0.92, 3 vs 0 deaths, 274 vs 397 kills).
+- Populate.AddDef now uses FitsAsAdd too (no spawners / callers / revivers / turrets / clouds / giants as named-boss adds).
+- RosterStats: `[roster] running` every 120 s, per-type slowest kill times (champions marked *), and a `stall:` line when no
+  kill happened for 120 s (nearest monsters with state, marked objective elites with walkability) for the crypt_boss deadlock.
+- Per-region A/B before tuning (emberblade --gear, 600 s, seed 777; normal / champion ttk s, life bars/min, deaths, bestiary vs old):
+  wastes 1.3/5.9 0.76 0 vs 0.9/2.2 0.68 0 · mire 3.2/80 1.23 3 vs 1.5/4.9 0.92 0 · crypt 1.7/3.4 0.90 1 vs 1.0/2.7 0.60 0 ·
+  frost 8.2/33 0.86 5 vs 2.9/8.1 0.64 3 · sands 1.6/3.7 0.81 0 vs 1.0/2.9 0.75 0 · sanctum 1.9/3.2 0.58 0 vs 0.8/2.9 0.45 0.
+- 17:50 balance pass in Bestiary.cs (new types only; 18 hand-written keep theirs): life `TunedHp` = 0.8 × (hp, the part above
+  2.0 counted 60 %), damage × 0.9, chill per hit from the status text × 0.6. Validation: `ab_tuned.sh` (bestiary only, tag ab2_*).
+- 18:13 ab2 mire (tuned hp/dmg/chill): normal 2.7 s (was 3.2, old 1.5), champions 15.5 s (was 80, old 4.9), 1.07 bars/min
+  (was 1.23, old 0.92). Cause of the rest: lurk_leech swarms (weight 5) drain 10 % resource per bite → hero without skills;
+  leech champions heal 5 % per bite (39.6 s). → leech DrainPct 0.03, one drain per 0.8 s whoever bites (MonsterAiTraits),
+  Drain types and teleporters / burrowers / stalkers no longer lead packs with the bestiary (MonsterDef.CanLead; abyss wraith
+  champion 93 s), hard-coded chills in MonsterAiData × ChillScale too.
+- abyss A/B: bestiary (already with the 17:50 pass) normal 2.5 / champ 11.7 / 0.80 bars/min / 0 deaths; old-roster run lost
+  (the user started the game at that moment → the launch exited) — to re-run.
+- After tuning (bestiary vs old, normal / champion ttk s, life bars/min, deaths): wastes 1.1/1.6 0.58 0 vs 0.9/2.2 0.68 0 ·
+  mire (ab3, all fixes) 2.0/8.2 0.93 0 vs 1.5/4.9 0.92 0 · crypt (ab2) 1.3/3.9 0.83 1 vs 1.0/2.7 0.60 0 · frost (ab2) 3.0/7.1
+  0.93 5 vs 2.9/8.1 0.64 3 (both rosters die at the frost stronghold rush in the first 3 min) · abyss (ab3) 2.5/1.9 0.74 0 vs
+  2.3/6.1 0.68 0. Sands / sanctum not re-run (before tuning 1.6/3.7 0.81 and 1.9/3.2 0.58 vs 1.0/2.9 0.75 and 0.8/2.9 0.45).
+- 19:14 proof campaigns queued (`chain.sh camp_ember camp_hunter`, --bestiary, pilot, ×4, no god).
+- 19:43-20:08 CAMPAIGN emberblade --bestiary run 2 (tuned; logs/camp_ember_best_run2.log, 0 ERR 0 WRN): sh_wastes 74 s, gravedigger
+  113 s lv7 0 deaths, sh_mire (1 death), sh_crypt 186 s 0 deaths, **boss_bishop 154 s 0 deaths (no crypt_boss deadlock)**,
+  mire_mother, then frost: 8 deaths (7 at sh_frost, killed on the 3rd try lv31) → the pilot's "wall: frost" rule (8 deaths in a
+  region) handed back in frost_boss at t=5626 s, lv32, 7 bosses. Old-roster pilot campaigns also lost most lives at sh_frost
+  (forgebody 3, lampknight 6), but the A/B shows the bestiary's frost / crypt hit 45 % / 38 % harder →
+  Populate.SpawnOne: placed monsters in frost and crypt deal × 0.75 with the bestiary (RegionDmg).
+- ab4 (with RegionDmg): crypt 1.2 / champ 0.7 / stronghold 43 s / 0.48 bars/min / 0 deaths / 426 kills (old 1.0 / 2.7 / 56 /
+  0.60 / 0 / 392); frost 3.4 / 23 / 0.79 bars/min / 5 deaths (old 2.9 / 8.1 / 0.64 / 3; the deaths are the opening
+  stronghold rush). cf_spirit champions 139-154 s (kiting trail caster) → Trail types no longer lead packs.
+- Queued: hunter campaign (--bestiary), then emberblade run 3.
+- 20:41-21:10 CAMPAIGN hunter --bestiary (logs/camp_hunter_best_run1.log, 0 ERR, 2 WRN): 6 bosses with 0 deaths (sh_wastes,
+  gravedigger 127 s lv7, sh_mire, sh_crypt, bishop 81 s, mire_mother), then 8 deaths all at the frost stronghold sh_frost
+  (lv23-33, dodged only 46-60 % of telegraphs there vs 95 % elsewhere; last hits dusk_yak elites, cf_hulk pull, frostbound,
+  frost_pallbearer, cf_flicker) → pilot "wall: frost". Old roster: hunter campaigns of AI-PILOT today 1 death (complete) and
+  11 deaths (stopped in frost); lampknight 6 frost deaths.
+- 21:15 pack composition: the census-era "unseen type" bonuses made each level's first packs very likely carry a giant (0.6),
+  cloud (0.9), special (0.75), heavy (0.6), ambushers (0.9) → 0.35 / 0.65 / 0.5 / 0.4 / 0.7. Frost stronghold boss test both
+  rosters queued (`shfrost.sh`), emberblade campaign run 3 queued.
+- Frost stronghold boss test (pilot --pilot-test=boss, hunter lv24 --gear, 600 s; logs/shfrost*.log): **old roster also fails**
+  (not killed, 4 deaths); bestiary 5 deaths, boss telegraphs taken 28 (old 3) → the adds' crowd control (chill stacking to a
+  2 s freeze, packbeast freeze burst, chill aura, hook chill) kept the hero from dodging. All chill sources in MonsterAiData /
+  MonsterAiTraits now × ChillScale, packbeast burst freeze → chill. Re-test: 3 deaths (old 4), still not killed (both rosters).
+  The frost stronghold at lv24-25 is a wall for the pilot in both rosters (named boss sh_frost; old-roster campaigns passed it
+  at lv27-30 after grinding).
+- 22:04-22:41 **CAMPAIGN emberblade --bestiary run 3 — COMPLETE** (logs/camp_ember_best_run3.log, final code, pilot ×4, no god):
+  14/14 bosses, campaignDone=True, 3 deaths (2 frost overworld/stronghold, 1 frost_boss lair), lv47, t=8044 s game,
+  ERR=0, WRN=3 (2 pilot "going nowhere" while grinding, 1 levelstate "placement differs from the save … roster hash" on a
+  sands revisit — SAVE-RESTORE's matcher handled it). sh_frost killed at lv23 on the first try (1 death).
+  Bosses: sh_wastes 85 s · gravedigger 80 s lv7 · sh_mire 98 · sh_crypt 217 · bishop 163 · mire_mother 94 · sh_frost 155 ·
+  rimelord 62 · sh_sands 146 · sand_tyrant 87 · sh_sanctum 228 · grand_hush 113 · sh_abyss 113 · osaros 174.
+  Whole-campaign ttk (RosterStats): normal 2.1 s, champion 7.4 s (QA targets 2.7 / 8.3 s), 0.30 life bars/min.
+  Old roster, same pilot (AI-PILOT today): emberblade 0-1 deaths, 5767-6727 s.
+- 23:22-00:01 **CAMPAIGN hunter --bestiary run 2 — COMPLETE** (logs/camp_hunter_best_run2.log, final code): 14/14 bosses, 2 deaths,
+  lv47, t=8416 s game, ERR=0, WRN=2 (pilot "going nowhere" while grinding). sh_frost 119 s 0 deaths at lv23.
+- **00:05 `Bestiary.LiveByDefault = true`** (Bestiary.cs). `--no-bestiary` still plays the old roster for comparisons.
+
+## SUMMARY 2026-11-23 (bestiary ready for 0.4.0)
+| check | result |
+|---|---|
+| first-boss stall | gone (current pilot): gravedigger 80-127 s at lv6-7, 0 deaths, in all 4 bestiary campaigns |
+| campaigns, bestiary, pilot ×4, no god | emberblade 14/14 bosses, 3 deaths, 8044 s, 0 ERR · hunter 14/14, 2 deaths, 8416 s, 0 ERR |
+| old roster, same pilot (AI-PILOT 11-21/22) | emberblade 0-1 deaths 5767-6727 s · hunter 1 death 9914 s (another hunter run: 11 deaths, stopped in frost) |
+| whole-campaign ttk (emberblade) | normal 2.1 s, champion 7.4 s (QA 2.7 / 8.3) |
+| VRAM rosterperf wastes 40 | bestiary 3552 → 2044 MB, old 2001 → 1558 MB (monster textures BC7/BC5) |
+| VRAM town, forgebody | bare 1805 → 1749 (heroes); armoured 1828 → 1244 (+NPC/boss/gear) |
+| demo with bestiary | 20 scenes 0 ERR/WRN; VRAM 1.1-3.6 GB bounded (was climbing to 7.6 GB) |
+| creature in-engine check | 46/46 PASS (logs/creature_table.md) |
+| AI suite | 49/49 PASS, 0 ERR (final code) |
+| named rares, bestiary | 28/28 on their real bases (no stand-ins), 0 ERR; 11/100 kill-time/mechanic checks for NAMED |
+| check.ps1 | 0 errors |
+Balance changes (all `Bestiary.Live` only): TunedHp (×0.8, above 2.0 counted 60 %), damage ×0.9, ChillScale 0.6 on every
+chill source, packbeast burst freeze → chill, leech drain 3 % + one drain per 0.8 s, CanLead excludes teleporters, burrowers,
+stalkers, bombers, drainers, trail types; FitsAsAdd for boss / named adds; frost + crypt placed monsters ×0.75 damage; softer
+"unseen type" pack bonuses. Code: Bestiary.cs, MonstersData.cs, MonsterAiData.cs, MonsterAiTraits.cs, Populate.cs, CharModel.cs
+(deferred GC after cache trim; leg signature), RosterStats.cs (new), TestSuite.Creatures.cs (new), TestSuite.Roster.cs;
+BossBrain.cs +1 condition (approved). Textures: 1 206 .import files → VRAM compressed (backups Y:\tools\roster\tex_backup\).
+No process of mine left running.
+- 2026-11-23 00:10-00:46 lead's pass (frost champions, sands/sanctum re-measure; logs ab5_* / ab6_frost_*):
+  frost champions 23 s in ab4 = two cf_spirit champions at 139 s (kiting trail casters; the other 15 averaged 7.6 s) → already
+  fixed by "Trail types don't lead"; ab5 frost then 11.1 s with cf_flicker* 27 s (Phasing swarmer) → Phasing types don't lead
+  either (00:17, noted in STATUS.md). ab6 frost: normal 1.6 / champion 6.1 s (n=17) / 0.33 bars/min / 1 death (old 2.9 / 8.1 / 0.64 / 3).
+  Sands: 0.9 / 1.5 / 0.55 / 0 deaths vs old 1.0 / 5.4 / 0.70 / 1. Sanctum: 1.0 / 2.2 / 0.35 / 0 vs old 1.4 / 4.7 / 0.42 / 0.
+  No numbers changed for sands / sanctum. Remaining outlier: cf_mite champions (ranged crawler) 38 s, n=2.
+- 2026-11-23 ~11:10 first-lair check (wastes_boss, lead's request; logs ab7_*, ab8_*): the AI-PILOT deaths were at mlvl 7 in
+  the horde: an elite husk_chained (hook) pack pulling the hero into husks + pallbearers. A/B with the plain bot, emberblade, seed 777:
+  with --gear both rosters walk to the boss (no deaths); WITHOUT gear the lair kills a level 5-6 bot in BOTH rosters
+  (lv5 bestiary 16 deaths 3.58 bars/min champions 114 s vs old 17 / 4.33 / 43 s; lv6 bestiary 16 / 4.27 / 18 s vs old 18 / 4.50 / 46 s).
+  Same layout, 69 monsters, 7 champions, 2 elites in both. → not harsher than the old roster overall, but the bestiary's worst
+  case is hook elites + callers + kiting javelin champions. 10:20 change (STATUS.md): packs at monster level 5-8 capped at 7,
+  no callers / mothers as specials below level 8, no hook or ranged elite / champion leaders at monster level <= 7.
+  After (lv5, bestiary): 15 deaths, 3.79 bars/min, champions 12.2 s (was 114), no wailers in the lair census.
+- 2026-11-23 16:30-17:05 EARLY GENTLE (user via lead; STATUS.md lines 16:30 / 16:38 / 16:50). Monster level 1-2: no elite or
+  champion packs, no stronghold-garrison champion (both rosters). Level <= 3: no dusk-hound elite leaders / followers, dusk-hound
+  packs about 4, stronghold defenders wake only inside their yard (or when hit) and walk home when the hero is 12 m past it
+  (Monster.SetGarrison), garrison packs without the +2 (both rosters); bestiary packs without specials, ambushers, clouds,
+  heavies, at most one ranged. Level 4+ unchanged.
+  A/B wastes without gear (emberblade, seed 777, bot --focus, 600 s; logs ab9_*, first try in early_v1/):
+  lv1 bestiary 0 deaths 0.40 bars/min champions 1 (was 6) vs old 2 deaths 0.71; lv3 bestiary **0 deaths 0.51** (before the
+  pack rules: 9 deaths 2.49, 4 of them in the sh_wastes fight among yard defenders) vs old 2 deaths 0.83 (0 / 0.53 on the first try).
+  Pilot Pactbinder first 600 s (slot 90, logs/pact600.log): sh_wastes killed at lv3, 0 deaths, not pulled in; 1 death at lv1
+  (t=106 s) when the pilot had several small packs on it at once (hounds, husks, cutters, grubs); lv4 at 600 s.

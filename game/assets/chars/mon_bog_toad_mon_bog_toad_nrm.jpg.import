@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://dtya87fqrjo68"
-path="res://.godot/imported/mon_bog_toad_mon_bog_toad_nrm.jpg-02abfce857e685e5ce2b41be890fb934.ctex"
+path.s3tc="res://.godot/imported/mon_bog_toad_mon_bog_toad_nrm.jpg-02abfce857e685e5ce2b41be890fb934.s3tc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "aad55ce4b3e0c0ef5cce6da6f89b8fd1"
@@ -14,17 +15,17 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/chars/mon_bog_toad_mon_bog_toad_nrm.jpg"
-dest_files=["res://.godot/imported/mon_bog_toad_mon_bog_toad_nrm.jpg-02abfce857e685e5ce2b41be890fb934.ctex"]
+dest_files=["res://.godot/imported/mon_bog_toad_mon_bog_toad_nrm.jpg-02abfce857e685e5ce2b41be890fb934.s3tc.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1
-compress/normal_map=0
+compress/normal_map=1
 compress/channel_pack=0
 mipmaps/generate=true
 mipmaps/limit=-1

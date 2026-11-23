@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://dbvmubtwin5np"
-path="res://.godot/imported/arm_pactbinder_boots_t1_gear_c.jpg-fc1a4ccd376cdeda09ded4619bd2ba9b.ctex"
+path.bptc="res://.godot/imported/arm_pactbinder_boots_t1_gear_c.jpg-fc1a4ccd376cdeda09ded4619bd2ba9b.bptc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "15400d1e1f809b83346b440e846682d2"
@@ -14,12 +15,12 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/gear/armor/arm_pactbinder_boots_t1_gear_c.jpg"
-dest_files=["res://.godot/imported/arm_pactbinder_boots_t1_gear_c.jpg-fc1a4ccd376cdeda09ded4619bd2ba9b.ctex"]
+dest_files=["res://.godot/imported/arm_pactbinder_boots_t1_gear_c.jpg-fc1a4ccd376cdeda09ded4619bd2ba9b.bptc.ctex"]
 
 [params]
 
-compress/mode=0
-compress/high_quality=false
+compress/mode=2
+compress/high_quality=true
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

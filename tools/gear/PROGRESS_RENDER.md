@@ -87,3 +87,9 @@ draw/release (Pistol_Shoot), no off-hand / dual-wield left-hand swing (Sword_Reg
 - 23:07 pooled pieces live: CharModel keeps built pieces (≤40) hidden under the skeleton; Player.PrebuildSets builds every saved
   set's pieces one per frame; swap = toggle. Real sets: worst 18.8 ms / mean 16.6 ms, one rebuild per loadout change, 0 waits,
   0 ERR (game_20261121_230625.log); swap+diag 60 pass (diag all pass). Model-cache cap 56 (+16). No background jobs left.
+- 2026-11-22 user bug "no left arm" (lampknight polearm): CODE bug in GearGripIK. In the one-hand clips (Sword_Idle, Jog, cuts)
+  grip2 and the whole shaft are 1.0-1.5 m from the left shoulder (arm reach ~0.55 m); the IK still pulled at full weight and
+  stretched the left arm across into the torso, under the chest piece. Not a hide rule (gloves t3 piece shown), not art
+  occlusion. Fix: grip point = first point from grip2 toward the right fist that is outside a torso capsule (pelvis-neck,
+  r 0.24 m) and within 97 % reach; none → IK eases out (8/s) and the clip's left arm shows. --gear-ik=0/1/2 switch.
+  --suite=gear:leftarm; Y:\shots\gear\leftarm\BEFORE_AFTER_polearm.jpg, AFTER_other_bases.jpg (game_20261122_122324.log, 0 ERR).

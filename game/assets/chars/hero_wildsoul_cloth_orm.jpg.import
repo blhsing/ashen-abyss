@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://tq2ym24wom7k"
-path="res://.godot/imported/hero_wildsoul_cloth_orm.jpg-332bd3281f985e9b493a2351d35fa1a4.ctex"
+path.bptc="res://.godot/imported/hero_wildsoul_cloth_orm.jpg-332bd3281f985e9b493a2351d35fa1a4.bptc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "44cd6c60753a564fd19b0fcf64db0cc5"
@@ -14,12 +15,12 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/chars/hero_wildsoul_cloth_orm.jpg"
-dest_files=["res://.godot/imported/hero_wildsoul_cloth_orm.jpg-332bd3281f985e9b493a2351d35fa1a4.ctex"]
+dest_files=["res://.godot/imported/hero_wildsoul_cloth_orm.jpg-332bd3281f985e9b493a2351d35fa1a4.bptc.ctex"]
 
 [params]
 
-compress/mode=0
-compress/high_quality=false
+compress/mode=2
+compress/high_quality=true
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

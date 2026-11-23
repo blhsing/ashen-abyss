@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://x8a1wwv4f0s3"
-path="res://.godot/imported/mon_dusk_moths_mon_dusk_moths_orm.jpg-9bd82d275f25458d18c5b1ba86e2335a.ctex"
+path.bptc="res://.godot/imported/mon_dusk_moths_mon_dusk_moths_orm.jpg-9bd82d275f25458d18c5b1ba86e2335a.bptc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "af1c3ff59a22e462ed6c55b68f68355e"
@@ -14,12 +15,12 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/chars/mon_dusk_moths_mon_dusk_moths_orm.jpg"
-dest_files=["res://.godot/imported/mon_dusk_moths_mon_dusk_moths_orm.jpg-9bd82d275f25458d18c5b1ba86e2335a.ctex"]
+dest_files=["res://.godot/imported/mon_dusk_moths_mon_dusk_moths_orm.jpg-9bd82d275f25458d18c5b1ba86e2335a.bptc.ctex"]
 
 [params]
 
-compress/mode=0
-compress/high_quality=false
+compress/mode=2
+compress/high_quality=true
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

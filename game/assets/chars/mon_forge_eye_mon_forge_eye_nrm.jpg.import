@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://4gvgm7i7od0i"
-path="res://.godot/imported/mon_forge_eye_mon_forge_eye_nrm.jpg-809b3d7bf5822a00656244f206b28e99.ctex"
+path.s3tc="res://.godot/imported/mon_forge_eye_mon_forge_eye_nrm.jpg-809b3d7bf5822a00656244f206b28e99.s3tc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "78c45f91df4e5e2352ba5f1f8e8978b5"
@@ -14,17 +15,17 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/chars/mon_forge_eye_mon_forge_eye_nrm.jpg"
-dest_files=["res://.godot/imported/mon_forge_eye_mon_forge_eye_nrm.jpg-809b3d7bf5822a00656244f206b28e99.ctex"]
+dest_files=["res://.godot/imported/mon_forge_eye_mon_forge_eye_nrm.jpg-809b3d7bf5822a00656244f206b28e99.s3tc.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1
-compress/normal_map=0
+compress/normal_map=1
 compress/channel_pack=0
 mipmaps/generate=true
 mipmaps/limit=-1

@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://610p8t13mqk5"
-path="res://.godot/imported/form_bear_cloth_n.jpg-2dd2dc363a2b20db52f37490fe27199a.ctex"
+path.s3tc="res://.godot/imported/form_bear_cloth_n.jpg-2dd2dc363a2b20db52f37490fe27199a.s3tc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "925c055738b6d7e7498d27b181da379f"
@@ -14,17 +15,17 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/chars/form_bear_cloth_n.jpg"
-dest_files=["res://.godot/imported/form_bear_cloth_n.jpg-2dd2dc363a2b20db52f37490fe27199a.ctex"]
+dest_files=["res://.godot/imported/form_bear_cloth_n.jpg-2dd2dc363a2b20db52f37490fe27199a.s3tc.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1
-compress/normal_map=0
+compress/normal_map=1
 compress/channel_pack=0
 mipmaps/generate=true
 mipmaps/limit=-1

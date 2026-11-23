@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://bw2gwmysry3nl"
-path="res://.godot/imported/arm_wildsoul_helm_t2_gear_orm.jpg-583f46693ec786a89d89eba1188efa0e.ctex"
+path.bptc="res://.godot/imported/arm_wildsoul_helm_t2_gear_orm.jpg-583f46693ec786a89d89eba1188efa0e.bptc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "9e0d659a11194b1f106544dfd1141b09"
@@ -14,12 +15,12 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/gear/armor/arm_wildsoul_helm_t2_gear_orm.jpg"
-dest_files=["res://.godot/imported/arm_wildsoul_helm_t2_gear_orm.jpg-583f46693ec786a89d89eba1188efa0e.ctex"]
+dest_files=["res://.godot/imported/arm_wildsoul_helm_t2_gear_orm.jpg-583f46693ec786a89d89eba1188efa0e.bptc.ctex"]
 
 [params]
 
-compress/mode=0
-compress/high_quality=false
+compress/mode=2
+compress/high_quality=true
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

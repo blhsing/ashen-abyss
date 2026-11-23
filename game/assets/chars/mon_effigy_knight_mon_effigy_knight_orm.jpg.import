@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://83l33e4cqx7i"
-path="res://.godot/imported/mon_effigy_knight_mon_effigy_knight_orm.jpg-6227e4676700b6478505ea26ca1f141c.ctex"
+path.bptc="res://.godot/imported/mon_effigy_knight_mon_effigy_knight_orm.jpg-6227e4676700b6478505ea26ca1f141c.bptc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "3ef9206c14a6f1bd7eb34f58ea0c855f"
@@ -14,12 +15,12 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/chars/mon_effigy_knight_mon_effigy_knight_orm.jpg"
-dest_files=["res://.godot/imported/mon_effigy_knight_mon_effigy_knight_orm.jpg-6227e4676700b6478505ea26ca1f141c.ctex"]
+dest_files=["res://.godot/imported/mon_effigy_knight_mon_effigy_knight_orm.jpg-6227e4676700b6478505ea26ca1f141c.bptc.ctex"]
 
 [params]
 
-compress/mode=0
-compress/high_quality=false
+compress/mode=2
+compress/high_quality=true
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

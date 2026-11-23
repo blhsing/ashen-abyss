@@ -1,0 +1,5 @@
+== bestiary ERR=0
+  206.083 INF [pilot] TEST fight ends: boss=sh_frost area=frost killed=False secs=525 deaths=3 heroLevel=25 threats=353 dodged=316 taken=37 dmgTelegraphed=3251 dmgOther=2759 life=1629
+  206.086 INF [pilot] TEST RESULT mode=boss class=hunter end=time limit t=600s level=25 deaths=3 area=frost campaignDone=False bossesKilled=0 telegraphed threats=383 dodged=345 taken=38 (boss 317/280/37) dmgTelegraphed=3284 otherHits=137 dmgOther=3002 dodgeWalks=462 rolls=31 defensives=5
+  206.086 INF [pilot] TEST FIGHT boss=sh_frost area=frost killed=False secs=525 deaths=3 heroLevel=25 threats=353 dodged=316 taken=37 dmgTelegraphed=3251 dmgOther=2759 life=1629
+done 21:41:03

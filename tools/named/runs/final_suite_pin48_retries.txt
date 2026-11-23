@@ -1,0 +1,2 @@
+retry 1 (another game instance running)
+retry 2 (build broken)

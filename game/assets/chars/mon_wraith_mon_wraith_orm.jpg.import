@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://cjb7ogcu2eliv"
-path="res://.godot/imported/mon_wraith_mon_wraith_orm.jpg-d0c90d70773c22023a3212370bf393fe.ctex"
+path.bptc="res://.godot/imported/mon_wraith_mon_wraith_orm.jpg-d0c90d70773c22023a3212370bf393fe.bptc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "46a540be8ae4ae1fd0170d0db9bd8049"
@@ -14,12 +15,12 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/chars/mon_wraith_mon_wraith_orm.jpg"
-dest_files=["res://.godot/imported/mon_wraith_mon_wraith_orm.jpg-d0c90d70773c22023a3212370bf393fe.ctex"]
+dest_files=["res://.godot/imported/mon_wraith_mon_wraith_orm.jpg-d0c90d70773c22023a3212370bf393fe.bptc.ctex"]
 
 [params]
 
-compress/mode=0
-compress/high_quality=false
+compress/mode=2
+compress/high_quality=true
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://by570lwg1hhos"
-path="res://.godot/imported/arm_forgebody_gloves_t3_gear_c.jpg-0da31d9ba88414a444a2778971af51c0.ctex"
+path.bptc="res://.godot/imported/arm_forgebody_gloves_t3_gear_c.jpg-0da31d9ba88414a444a2778971af51c0.bptc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "f83f95858158e7380a10652b53b305e9"
@@ -14,12 +15,12 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/gear/armor/arm_forgebody_gloves_t3_gear_c.jpg"
-dest_files=["res://.godot/imported/arm_forgebody_gloves_t3_gear_c.jpg-0da31d9ba88414a444a2778971af51c0.ctex"]
+dest_files=["res://.godot/imported/arm_forgebody_gloves_t3_gear_c.jpg-0da31d9ba88414a444a2778971af51c0.bptc.ctex"]
 
 [params]
 
-compress/mode=0
-compress/high_quality=false
+compress/mode=2
+compress/high_quality=true
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

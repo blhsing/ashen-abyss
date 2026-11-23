@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://d2af31jpnijoe"
-path="res://.godot/imported/mon_husk_wailer_mon_husk_wailer_em.jpg-a49d6f9c3104129171eefcc664c6ff2a.ctex"
+path.bptc="res://.godot/imported/mon_husk_wailer_mon_husk_wailer_em.jpg-a49d6f9c3104129171eefcc664c6ff2a.bptc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "f41bf085c2769d33a965e99fb9155eb5"
@@ -14,12 +15,12 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/chars/mon_husk_wailer_mon_husk_wailer_em.jpg"
-dest_files=["res://.godot/imported/mon_husk_wailer_mon_husk_wailer_em.jpg-a49d6f9c3104129171eefcc664c6ff2a.ctex"]
+dest_files=["res://.godot/imported/mon_husk_wailer_mon_husk_wailer_em.jpg-a49d6f9c3104129171eefcc664c6ff2a.bptc.ctex"]
 
 [params]
 
-compress/mode=0
-compress/high_quality=false
+compress/mode=2
+compress/high_quality=true
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

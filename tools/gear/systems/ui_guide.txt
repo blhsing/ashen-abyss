@@ -1,0 +1,29 @@
+# SYSTEMS: 武器指南 at the three text sizes (in play: rules, a focused base with the worn card, an off-hand)
+wait 3
+scale 0
+open guide
+wait 1.5
+shot guide_rules_scale0
+open guide:lampknight:polearm
+wait 1.5
+shot guide_polearm_scale0
+open guide:lampknight:shield
+wait 1.2
+shot guide_shield_scale0
+scale 1
+wait 1.2
+shot guide_shield_scale1
+open guide:lampknight:polearm
+wait 1.2
+shot guide_polearm_scale1
+scale 2
+wait 1.2
+shot guide_polearm_scale2
+open guide
+wait 1.2
+shot guide_rules_scale2
+open guide:forgebody:fist
+wait 1.2
+shot guide_fist_scale2
+scale 0
+quit

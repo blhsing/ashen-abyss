@@ -31,7 +31,7 @@ public sealed partial class SaveData
     public Dictionary<string, string> Sockets = new(); // board socket → glyph id
     public Item[] Equip = new Item[SaveSystem.EquipSlots];      // by EquipSlot; 0 = MainHand (the old Weapon), 9 = OffHand
     public List<Item> Bag = new();
-    public List<Item> Stash = new();
+    // Stash (the shared stash view) and OwnStash (a 0.1–0.3 save's own stash): SharedStash.cs
     public Dictionary<string, float> Codex = new();    // aspect id → best roll found
     public Dictionary<string, int> Enchants = new();   // item uid → times enchanted
     public Dictionary<string, int> Quests = new();     // quest id → stage
@@ -72,6 +72,9 @@ public static class SaveSystem
     private static string Dir => ProjectSettings.GlobalizePath("user://saves");
     private static string PathOf(int slot, string ext = "json") => System.IO.Path.Combine(Dir, $"slot{slot}.{ext}");
 
+    /// <summary>Slots whose main file was unreadable at the last load (the backup was used): the next save keeps that backup.</summary>
+    private static readonly HashSet<int> BadMain = new();
+
     public static bool Save(int slot, SaveData d)
     {
         try
@@ -79,12 +82,19 @@ public static class SaveSystem
             Directory.CreateDirectory(Dir);
             d.SavedAt = DateTime.Now.ToString("yyyy-MM-dd HH:mm");
             d.Version = FormatVersion;
+            // the stash: a character attached to the shared stash writes none of its own (SharedStash.cs); the shared file
+            // is written on the side that gains items first, so a crash in between can duplicate an item but never lose one
+            bool shared = SharedStash.IsShared(d);
+            d.OwnStash = shared ? null : d.Stash;
+            bool gained = shared && SharedStash.Gained();
+            if (gained && !SharedStash.Write()) { Log.Error("save", $"slot {slot} not saved: the shared stash could not be written first"); return false; }
             string json = JsonSerializer.Serialize(d, Opt);
             string tmp = PathOf(slot, "tmp"), main = PathOf(slot), bak = PathOf(slot, "bak");
             File.WriteAllText(tmp, json);
-            if (File.Exists(main)) File.Copy(main, bak, true);
+            if (File.Exists(main) && !BadMain.Remove(slot)) File.Copy(main, bak, true);      // a damaged main file never replaces a good backup
             File.Move(tmp, main, true);
             Log.Info("save", $"slot {slot} saved: {d.Name} lv{d.Level} {Names.Class(d.Class)} area={d.Area} bytes={json.Length}");
+            if (shared && !gained) SharedStash.Write();
             return true;
         }
         catch (Exception e)
@@ -102,30 +112,53 @@ public static class SaveSystem
             if (!File.Exists(p)) continue;
             try
             {
-                var d = JsonSerializer.Deserialize<SaveData>(File.ReadAllText(p), Opt);
+                string text = File.ReadAllText(p);
+                SaveData d;
+                try { d = JsonSerializer.Deserialize<SaveData>(text, Opt); }
+                catch (JsonException) when (WithoutResume(text) is { } bare)
+                {
+                    // the character is fine but its resume state is damaged: keep the character, wake it the old way
+                    d = JsonSerializer.Deserialize<SaveData>(bare, Opt);
+                    Log.Warn("save", $"slot {slot} .{ext}: the resume state could not be read and was dropped; the hero wakes at a portal as before");
+                }
                 if (d == null) throw new InvalidDataException("empty save");
                 Repair(d);
+                if (ext == "json") BadMain.Remove(slot);
                 Log.Info("save", $"slot {slot} loaded from .{ext}: {d.Name} lv{d.Level} {Names.Class(d.Class)}");
                 return d;
             }
             catch (Exception e)
             {
-                Log.Error("save", $"slot {slot} .{ext} unreadable", e);
+                // the main file damaged with a backup still to try: a warning (the backup is the save then); else an error
+                if (ext == "json" && File.Exists(PathOf(slot, "bak"))) { BadMain.Add(slot); Log.Warn("save", $"slot {slot} .json unreadable ({e.GetType().Name}: {e.Message}); trying the backup .bak"); }
+                else Log.Error("save", $"slot {slot} .{ext} unreadable", e);
             }
         }
         return null;
     }
 
+    /// <summary>The save text with the exact-resume parts (Resume, Portal) removed; null when the text is not a JSON object at all.</summary>
+    private static string WithoutResume(string text)
+    {
+        try
+        {
+            if (System.Text.Json.Nodes.JsonNode.Parse(text) is not System.Text.Json.Nodes.JsonObject o) return null;
+            if (!o.Remove("Resume") & !o.Remove("Portal")) return null;         // nothing to drop: the damage is elsewhere
+            return o.ToJsonString();
+        }
+        catch (Exception) { return null; }
+    }
+
     /// <summary>Fills in anything missing so older or hand-edited saves keep loading.</summary>
     private static void Repair(SaveData d)
     {
-        d.Skills ??= new(); d.Ups ??= new(); d.Talents ??= new(); d.Bag ??= new(); d.Stash ??= new(); d.Codex ??= new();
+        d.Skills ??= new(); d.Ups ??= new(); d.Talents ??= new(); d.Bag ??= new(); if (d.OwnStash != null) d.Stash = d.OwnStash; d.Stash ??= new(); d.Codex ??= new();      // the stash: SharedStash.Attach takes over
         d.Quests ??= new(); d.Waypoints ??= new() { "town" }; d.Flags ??= new(); d.Glyphs ??= new(); d.Sockets ??= new();
         d.Enchants ??= new(); d.Renown ??= new();
         d.GearSets ??= new(); d.Discards ??= new(); d.Junk ??= new();      // modular gear: gear sets and bag marks (absent before 0.4)
         d.Fog ??= new();
         if (d.Resume != null && (string.IsNullOrEmpty(d.Resume.Area) || d.Resume.Area != d.Area)) d.Resume = null;   // not where the save says the hero is: wake as before
-        if (d.Resume != null) { d.Resume.Cds ??= new(); d.Resume.DeadMons ??= new(); d.Resume.Spent ??= new(); d.Resume.Loot ??= new(); d.Resume.Gold ??= new(); d.Resume.Shards ??= new(); d.Resume.Chests ??= new(); d.Resume.Loot.RemoveAll(l => l == null || l.It == null); }
+        if (d.Resume != null) { d.Resume.Cds ??= new(); d.Resume.DeadMons ??= new(); d.Resume.Spent ??= new(); d.Resume.Loot ??= new(); d.Resume.Gold ??= new(); d.Resume.Shards ??= new(); d.Resume.Chests ??= new(); d.Resume.Hurt ??= new(); d.Resume.EventsDone ??= new(); d.Resume.Loot.RemoveAll(l => l == null || l.It == null); }
         if (d.Bar == null || d.Bar.Length != 6) d.Bar = new string[6];
         if (d.Equip == null || d.Equip.Length != EquipSlots) { var e = new Item[EquipSlots]; if (d.Equip != null) Array.Copy(d.Equip, e, Math.Min(EquipSlots, d.Equip.Length)); d.Equip = e; }
         d.Level = Math.Clamp(d.Level, 1, Balance.LevelCap);
@@ -150,6 +183,7 @@ public static class SaveSystem
         bool mainWasOld = main != null && main.Kind == ItemKind.Weapon && ItemDb.BaseOf(main.Base) == null;
         foreach (var it in d.Bag.Concat(d.Stash).Concat(d.Equip.Where(i => i != null))) if (ItemDb.Migrate(it, d.Class)) n++;
         if (d.Resume?.Loot != null) foreach (var l in d.Resume.Loot) if (ItemDb.Migrate(l.It, d.Class)) n++;
+        if (d.Portal?.State?.Loot != null) foreach (var l in d.Portal.State.Loot) if (l?.It != null && ItemDb.Migrate(l.It, d.Class)) n++;
         // a main-hand item that cannot be there any more (an off-hand piece) moves to the off hand
         if (main != null && main.Kind == ItemKind.OffHand && d.Equip[(int)EquipSlot.OffHand] == null) { d.Equip[(int)EquipSlot.OffHand] = main; d.Equip[(int)EquipSlot.MainHand] = null; }
         if (mainWasOld && d.Equip[(int)EquipSlot.OffHand] == null && main.WeaponClass < 0)
@@ -171,7 +205,7 @@ public static class SaveSystem
     }
 
     /// <summary>JSON text of a save as a slot would hold it (no file written).</summary>
-    public static string ToJson(SaveData d) => JsonSerializer.Serialize(d, Opt);
+    public static string ToJson(SaveData d) { d.OwnStash = SharedStash.IsShared(d) ? null : d.Stash; return JsonSerializer.Serialize(d, Opt); }
 
     public static List<SlotInfo> List()
     {
@@ -235,6 +269,7 @@ public sealed class Settings
     public bool SystemCursor = false;   // 滑鼠游標：false 遊戲 (the forged cursors, Cursors.cs), true 系統 (the operating system's own pointer)
     public int GearWeight = 0;          // 裝備比較：0 平衡 (50/50), 1 偏重攻擊 (75/25), 2 偏重防禦 (25/75) — GearEval
     public string[] SetKeys = { "F1", "F2", "F3", "F4", "F5", "F6", "E" };   // 裝備組 1–6 and 快速切換 (GearSets; Godot Key names)
+    public int ScreenshotMode = 0;      // 截圖方式 (PrtSc / F12): 0 剪貼簿（預設）, 1 存成檔案, 2 剪貼簿與檔案 — Game.TakeScreenshot (FIXES)
 
     private static readonly JsonSerializerOptions Opt = new() { IncludeFields = true, WriteIndented = true };
     private static string FilePath => ProjectSettings.GlobalizePath("user://settings.json");

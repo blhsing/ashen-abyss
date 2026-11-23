@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://cmf8qb2uighap"
-path="res://.godot/imported/mon_rime_packbeast_mon_rime_packbeast_em.jpg-9d4bce625ba7486809c23c8534a35fcd.ctex"
+path.bptc="res://.godot/imported/mon_rime_packbeast_mon_rime_packbeast_em.jpg-9d4bce625ba7486809c23c8534a35fcd.bptc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "28579c63414dcf84c5636f172dc5f068"
@@ -14,12 +15,12 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/chars/mon_rime_packbeast_mon_rime_packbeast_em.jpg"
-dest_files=["res://.godot/imported/mon_rime_packbeast_mon_rime_packbeast_em.jpg-9d4bce625ba7486809c23c8534a35fcd.ctex"]
+dest_files=["res://.godot/imported/mon_rime_packbeast_mon_rime_packbeast_em.jpg-9d4bce625ba7486809c23c8534a35fcd.bptc.ctex"]
 
 [params]
 
-compress/mode=0
-compress/high_quality=false
+compress/mode=2
+compress/high_quality=true
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

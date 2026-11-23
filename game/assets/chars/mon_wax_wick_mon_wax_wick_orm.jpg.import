@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://dfg7351rnnrjg"
-path="res://.godot/imported/mon_wax_wick_mon_wax_wick_orm.jpg-ed75788210137a294f78cd2dfa955839.ctex"
+path.bptc="res://.godot/imported/mon_wax_wick_mon_wax_wick_orm.jpg-ed75788210137a294f78cd2dfa955839.bptc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "389922c7774af8ddda2eceb66cd05779"
@@ -14,12 +15,12 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/chars/mon_wax_wick_mon_wax_wick_orm.jpg"
-dest_files=["res://.godot/imported/mon_wax_wick_mon_wax_wick_orm.jpg-ed75788210137a294f78cd2dfa955839.ctex"]
+dest_files=["res://.godot/imported/mon_wax_wick_mon_wax_wick_orm.jpg-ed75788210137a294f78cd2dfa955839.bptc.ctex"]
 
 [params]
 
-compress/mode=0
-compress/high_quality=false
+compress/mode=2
+compress/high_quality=true
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

@@ -1,0 +1,8 @@
+== bestiary ERR=0
+  146.145 INF [bot] summary t=571s game=569s area=crypt doing=fight shroud_matron kills=464 elites=18 bosses=1 level=19 life=92% items=44 gold=9196 deaths=1 areas=1 casts=432 unstuck=0 monsters=148 errors=0 warnings=0 botErrors=0 focus=event
+  148.638 INF [bot] summary t=581s game=579s area=crypt doing=fight cult_censer kills=472 elites=18 bosses=1 level=19 life=87% items=45 gold=9237 deaths=1 areas=1 casts=437 unstuck=0 monsters=143 errors=0 warnings=0 botErrors=0 focus=event
+  151.142 INF [bot] summary t=591s game=589s area=crypt doing=fight sexton_grub kills=479 elites=18 bosses=1 level=19 life=90% items=46 gold=9313 deaths=1 areas=1 casts=443 unstuck=0 monsters=136 errors=0 warnings=0 botErrors=0 focus=event
+  153.627 INF [roster] running area=crypt hero=lv19 ttk normal=1.3s(n=452) champion=3.9s(n=16) elite=2.6s(n=2) boss=137.3s(n=1) | taken 1168/min (0.83 life bars/min, 944 hits) kills=491 in 599s | worst [sh_crypt:2737,effigy_caryatid:1987,skeleton:1296,cult_caster:781] slowest [effigy_caryatid*:55.4s/1,shroud_matron:46.1s/3,wraith_mourner:4.0s/10,sexton_digger:3.0s/4,bone_amalgam:2.5s/4]
+  153.647 INF [bot] summary t=601s game=599s area=crypt doing=fight cult_censer kills=491 elites=18 bosses=1 level=19 life=97% items=46 gold=9361 deaths=1 areas=1 casts=451 unstuck=0 monsters=124 errors=0 warnings=0 botErrors=0 focus=event
+  153.888 INF [bot] final summary t=602s game=600s area=crypt doing=fight effigy_knight kills=492 elites=18 bosses=1 level=19 life=98% items=46 gold=9361 deaths=1 areas=1 casts=453 unstuck=0 monsters=124 errors=0 warnings=0 botErrors=0 focus=event
+done 18:35:13

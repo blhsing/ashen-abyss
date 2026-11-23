@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://cya0eryfrcto6"
-path="res://.godot/imported/npc_merchant_cloth_orm.jpg-d7fa1c0d2364d063407d7e47bb50937f.ctex"
+path.bptc="res://.godot/imported/npc_merchant_cloth_orm.jpg-d7fa1c0d2364d063407d7e47bb50937f.bptc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "aa0cbaa331aa7956bdf7fcd464f9814f"
@@ -14,12 +15,12 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/chars/npc_merchant_cloth_orm.jpg"
-dest_files=["res://.godot/imported/npc_merchant_cloth_orm.jpg-d7fa1c0d2364d063407d7e47bb50937f.ctex"]
+dest_files=["res://.godot/imported/npc_merchant_cloth_orm.jpg-d7fa1c0d2364d063407d7e47bb50937f.bptc.ctex"]
 
 [params]
 
-compress/mode=0
-compress/high_quality=false
+compress/mode=2
+compress/high_quality=true
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

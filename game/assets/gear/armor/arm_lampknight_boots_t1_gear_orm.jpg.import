@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://dg6l5sxvudyqc"
-path="res://.godot/imported/arm_lampknight_boots_t1_gear_orm.jpg-069f57fe5a01200de2ee847d108ae5d2.ctex"
+path.bptc="res://.godot/imported/arm_lampknight_boots_t1_gear_orm.jpg-069f57fe5a01200de2ee847d108ae5d2.bptc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "cea54cb7cb188a3964f43de917a7a33b"
@@ -14,12 +15,12 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/gear/armor/arm_lampknight_boots_t1_gear_orm.jpg"
-dest_files=["res://.godot/imported/arm_lampknight_boots_t1_gear_orm.jpg-069f57fe5a01200de2ee847d108ae5d2.ctex"]
+dest_files=["res://.godot/imported/arm_lampknight_boots_t1_gear_orm.jpg-069f57fe5a01200de2ee847d108ae5d2.bptc.ctex"]
 
 [params]
 
-compress/mode=0
-compress/high_quality=false
+compress/mode=2
+compress/high_quality=true
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

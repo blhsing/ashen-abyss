@@ -1,0 +1,8 @@
+== bestiary ERR=0
+  146.170 INF [bot] summary t=571s game=562s area=crypt doing=explore marker:chest kills=409 elites=23 bosses=1 level=19 life=100% items=60 gold=8404 deaths=0 areas=1 casts=403 unstuck=0 monsters=136 errors=0 warnings=0 botErrors=0 focus=event in progress
+  148.674 INF [bot] summary t=581s game=572s area=crypt doing=use globe kills=417 elites=27 bosses=1 level=19 life=100% items=61 gold=8662 deaths=0 areas=1 casts=408 unstuck=0 monsters=128 errors=0 warnings=0 botErrors=0 focus=event in progress
+  151.179 INF [bot] summary t=591s game=582s area=crypt doing=fight bone_pallbearer kills=420 elites=27 bosses=1 level=19 life=99% items=63 gold=8760 deaths=0 areas=1 casts=413 unstuck=0 monsters=125 errors=0 warnings=0 botErrors=0 focus=event in progress
+  153.677 INF [roster] running area=crypt hero=lv19 ttk normal=1.2s(n=390) champion=0.7s(n=25) elite=4.0s(n=2) boss=43.0s(n=1) | taken 726/min (0.48 life bars/min, 636 hits) kills=426 in 592s | worst [sh_crypt:1108,skeleton:945,cult_caster:709,wraith:530] slowest [shroud_matron:7.5s/3,knight:2.6s/4,cult_caster:2.6s/8,bone_amalgam:2.5s/5,skeleton:2.4s/47]
+  153.683 INF [bot] summary t=601s game=592s area=crypt doing=fight shroud_wrapped kills=426 elites=27 bosses=1 level=19 life=96% items=64 gold=8804 deaths=0 areas=1 casts=430 unstuck=0 monsters=119 errors=0 warnings=0 botErrors=0 focus=event in progress
+  153.932 INF [bot] final summary t=602s game=593s area=crypt doing=fight shroud_wrapped kills=426 elites=27 bosses=1 level=19 life=93% items=64 gold=8804 deaths=0 areas=1 casts=433 unstuck=0 monsters=119 errors=0 warnings=0 botErrors=0 focus=event in progress
+done 20:42:02

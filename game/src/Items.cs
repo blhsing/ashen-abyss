@@ -40,6 +40,8 @@ public sealed class Item
     public List<Affix> Implicits = new();
     /// <summary>Locked (鎖定) by the player: never marked, recycled, sold or discarded by any bulk action (bag filters, smith, AI pilot).</summary>
     public bool Locked;
+    public int Tab;                           // shared stash: the tab it lies in (SharedStash; meaningless elsewhere)
+    public string StashBy;                    // shared stash: the character (SaveData.Cid) that put it there
     public int Upgrade;                       // masterworking rank 0..12; ranks 4, 8 and 12 boost one affix by 25%
     public int TemperLeft = 5;                // remaining tempering attempts
     public int Sockets;
@@ -129,14 +131,14 @@ public static class ItemDb
     // Speed and spread give each base its feel; damage per second is the same for every base of one hand count
     // (a slow base hits harder per swing). Two-hand: full damage, affixes ×1.5. One-hand: 90% damage; it pairs with an
     // off-hand (which adds its own stats) or, for dual-wield classes, a second one-hand weapon (+10% speed, hands alternate).
-    public const float OneHandDps = 0.9f, TwoHandAffixMul = 1.5f, DualSpeed = 1.1f;
+    public const float OneHandDps = 0.9f, TwoHandAffixMul = 1.5f, DualSpeed = 1.05f, OffHandImplicitMul = 0.5f;   // dual trim (user 2026-11-23): +5 % swing speed, off-hand weapon implicit at half strength
     private static readonly Stat[] Attrs = { Stat.Str, Stat.Int, Stat.Dex, Stat.Wil };
     private static Stat[] OffStats(params Stat[] s) => Attrs.Concat(s).ToArray();
 
     public static readonly List<GearBase> GearBases = new()
     {
         // one-hand
-        new() { Id = "sword1", Name = "劍", Aps = 1.2f, Spread = 0.2f, Icon = "greatsword", Names = new[] { "鐵劍", "鋼紋長劍", "守衛佩劍", "灰鑄戰劍", "燼紋誓劍" }, Implicit = new[] { (Stat.CritDmg, 5f, 25f) } },
+        new() { Id = "sword1", Name = "劍", Aps = 1.2f, Spread = 0.2f, Icon = "greatsword", Names = new[] { "鐵劍", "鋼紋長劍", "守衛佩劍", "灰鑄戰劍", "燼紋誓劍" }, Implicit = new[] { (Stat.CritDmg, 10f, 35f) } },
         new() { Id = "axe1", Name = "斧", Aps = 1.1f, Spread = 0.3f, Icon = "greatsword", Names = new[] { "伐木手斧", "鐵戰斧", "掠奪者之斧", "灰鑄戰斧", "燼牙斧" }, Implicit = new[] { (Stat.DmgVuln, 5f, 25f) } },
         new() { Id = "mace1", Name = "錘", Aps = 1.0f, Spread = 0.25f, Icon = "club", Names = new[] { "包鐵棍", "鐵釘錘", "凸緣戰錘", "灰鑄釘錘", "燼心錘" }, Implicit = new[] { (Stat.DmgOverpower, 8f, 40f) } },
         new() { Id = "dagger", Name = "匕首", Aps = 1.4f, Spread = 0.15f, Icon = "greatsword", Names = new[] { "剝皮小刀", "鋼匕首", "夜行短刃", "灰鑄刺刃", "影牙匕首" }, Implicit = new[] { (Stat.CritChance, 1f, 4f) } },
@@ -187,7 +189,7 @@ public static class ItemDb
         new() { TwoHand = new[] { "sword2", "mace2", "polearm" }, MainHand = new[] { "sword1", "mace1", "flail" }, OffHand = new[] { "shield", "lantern" }, Dual = Array.Empty<string>(),
             Starter = "sword1", Legacy = "sword1", LegacyOff = "shield", RefAps = 1.1f },
         new() { TwoHand = new[] { "staff", "scythe2" }, MainHand = new[] { "wand", "dagger", "sceptre" }, OffHand = new[] { "grimoire", "focus" }, Dual = Array.Empty<string>(),
-            Starter = "wand", Legacy = "wand", LegacyOff = "grimoire", RefAps = 1.05f },
+            Starter = "wand", StarterOff = "grimoire", Legacy = "wand", LegacyOff = "grimoire", RefAps = 1.05f },   // starter grimoire (FIXES 2026-11-23): level 1-5 kill speed in line with the other classes
     };
     public static ClassGear Loadout(ClassId c) => Loadouts[Math.Clamp((int)c, 0, Loadouts.Length - 1)];
 
@@ -532,6 +534,7 @@ public static class ItemDb
         if (p.S == main) w *= 4f;                                    // the class's own attribute shows up far more often
         else if (p.S is Stat.Str or Stat.Int or Stat.Dex or Stat.Wil) w *= 0.35f;
         if (p.S == Stat.MinionDmg && cls != ClassId.Soulbinder && cls != ClassId.Pactbinder && cls != ClassId.Wildsoul) w = 0f;
+        if (p.S is Stat.GolemLife or Stat.GolemDmg or Stat.MageDmg or Stat.MinionAtkSpeed or Stat.CmdCdr && cls != ClassId.Soulbinder) w = 0f;     // [golem] the Soulbinder's off-hand affixes (GolemItems.cs)
         if (p.S == Stat.DmgOverpower && cls != ClassId.Emberblade && cls != ClassId.Forgebody && cls != ClassId.Wildsoul && cls != ClassId.Lampknight) w *= 0.3f;
         return w;
     }
@@ -842,6 +845,19 @@ public static class ItemDb
 /// </summary>
 public static class ItemText
 {
+    /// <summary>[fixes] The class bonus a weapon or off-hand takes part in for this hero, or null (Hero.RecalcWeapons applies them).</summary>
+    public static string ClassBonusLine(Item it, Hero h)
+    {
+        if (it == null || h == null) return null;
+        if (h.Class == ClassId.Forgebody && it.Base == "fist")
+            return $"拳刃精通：雙手皆持拳刃時，武器傷害 +{Hero.FistMasteryPct(h.D.Level):0}%";
+        if (h.Class == ClassId.Lampknight && it.Base == "shield")
+            return $"盾誓：與單手武器同持時，武器傷害 +{Hero.ShieldOathFor(it, h.MainHand):0.#}%（依盾的格擋率）";
+        if (h.Class == ClassId.Lampknight && it.Base == "lantern" && Hero.LanternOathPct() > 0f)
+            return $"燈誓：燈火附於單手武器，武器傷害 +{Hero.LanternOathPct():0}%（火焰）";
+        return null;
+    }
+
     /// <summary>Design sizes (px at 1080p): the item's name, and the big damage / armour figure.</summary>
     private const int NameSize = 28, FigureSize = 34;
 
@@ -881,19 +897,32 @@ public static class ItemText
             sb.Append($"[color=#{Hex(Palette.TextDim)}]僅限{Names.Class((ClassId)it.WeaponClass)}[/color]\n");
         if (hand)
         {
-            // 可用職業: the classes that can hold it bright (the hero's own in gold), the others dim and struck through
-            var names = new List<string>(Names.ClassCount);
+            // 可用職業: only the classes that can hold it, joined with 、 (the hero's own in gold). The line is broken by hand
+            // at a separator, never inside a name: a tooltip card holds about 19 glyphs a line at every text size
+            // (the card grows with the text), so a line takes at most 14 glyphs of names after the 5-glyph caption.
+            const int LineGlyphs = 14;
+            var sbl = new StringBuilder();
+            int run = 0;
+            bool first = true;
             for (int c = 0; c < Names.ClassCount; c++)
             {
                 var cls = (ClassId)c;
-                bool ok = ItemDb.UsableBy(it, cls);
+                if (!ItemDb.UsableBy(it, cls)) continue;
+                string n = Names.Class(cls);
                 bool mine = me != null && me.Class == cls;
-                names.Add(ok ? (mine ? $"[b][color=#{Hex(Palette.Gold)}]{Names.Class(cls)}[/color][/b]" : $"[color=#{Hex(Palette.Text)}]{Names.Class(cls)}[/color]")
-                    : $"[s][color=#{Hex(Palette.TextDim)}]{Names.Class(cls)}[/color][/s]");
+                if (!first)
+                {
+                    if (run + 1 + n.Length > LineGlyphs) { sbl.Append("、\n　　　　　"); run = 0; }
+                    else { sbl.Append('、'); run += 1; }
+                }
+                sbl.Append(mine ? $"[b][color=#{Hex(Palette.Gold)}]{n}[/color][/b]" : $"[color=#{Hex(Palette.Text)}]{n}[/color]");
+                run += n.Length;
+                first = false;
             }
-            sb.Append($"[color=#{Hex(Palette.TextDim)}]可用職業：[/color]{string.Join("　", names)}\n");
+            sb.Append($"[color=#{Hex(Palette.TextDim)}]可用職業：[/color]{(first ? "—" : sbl.ToString())}\n");
             string how = me != null ? ItemDb.HowHeld(it, me.Class) : null;
             if (how != null) sb.Append($"[color=#{Hex(Palette.TextDim)}]{Names.Class(me.Class)}：{how}[/color]\n");
+            sb.Append($"[color=#{Hex(Palette.TextDim)}]G：武器指南（玩法、優劣與替代選擇）[/color]\n");
         }
         if (judge != null && it.IsEquip && !judge.IsEquipped(it))
         {
@@ -901,6 +930,7 @@ public static class ItemText
             string line = jj.Verdict == GearVerdict.Unusable && hand ? "" : GearEval.Line(jj);      // the red banner above already says it
             if (line.Length > 0) sb.Append(line).Append('\n');
         }
+        { string forge = me != null ? GolemForge.TooltipLine(me, it) : null; if (forge != null) sb.Append(forge).Append('\n'); }     // [golem] the iron golem's forge verdict (Soulbinder)
         if (it.Locked) sb.Append($"[color=#{Hex(Palette.Gold)}]已鎖定：不會被批次標記、回收或丟棄[/color]\n");
         if (me != null)
         {
@@ -976,8 +1006,16 @@ public static class ItemText
         if (it.Implicits != null && it.Implicits.Count > 0)
         {
             sb.Append('\n');
-            foreach (var a in it.Implicits) sb.Append($"[color=#{Hex(Palette.TextDim)}]◇[/color] {StatInfo.Format(a.Stat, it.Eff(a))}\n");
+            // a weapon worn in the off hand: its base stat counts at half strength (dual trim); shown halved and marked
+            bool inOff = it.Kind == ItemKind.Weapon && me != null && ReferenceEquals(it, me.D.Equip[(int)EquipSlot.OffHand]);
+            float implMul = inOff ? ItemDb.OffHandImplicitMul : 1f;
+            foreach (var a in it.Implicits)
+                sb.Append($"[color=#{Hex(Palette.TextDim)}]◇[/color] {StatInfo.Format(a.Stat, it.Eff(a) * implMul)}{(inOff ? $"　[color=#{Hex(Palette.TextDim)}]（副手：效果減半）[/color]" : "")}\n");
+            if (!inOff && dualOk) sb.Append($"[color=#{Hex(Palette.TextDim)}]雙持於副手時，基礎屬性效果減半[/color]\n");
         }
+        // [fixes] class bonuses this piece takes part in (拳刃精通, 盾誓, 燈誓): shown to the class that has them
+        string classLine = me == null ? null : ClassBonusLine(it, me);
+        if (classLine != null) sb.Append($"[color=#{Hex(Palette.Gold)}]◆ {classLine}[/color]\n");
 
         // what the worn piece(s) give, summed per stat, for the deltas and the "lost" lines
         var worn = new Dictionary<Stat, float>();

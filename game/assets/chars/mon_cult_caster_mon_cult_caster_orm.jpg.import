@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://ec0wpqlwpc84"
-path="res://.godot/imported/mon_cult_caster_mon_cult_caster_orm.jpg-89a1f96d42efea6e61fd5cbe7f81e9eb.ctex"
+path.bptc="res://.godot/imported/mon_cult_caster_mon_cult_caster_orm.jpg-89a1f96d42efea6e61fd5cbe7f81e9eb.bptc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "39d13062f51c3a5375677ab0e8954880"
@@ -14,12 +15,12 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/chars/mon_cult_caster_mon_cult_caster_orm.jpg"
-dest_files=["res://.godot/imported/mon_cult_caster_mon_cult_caster_orm.jpg-89a1f96d42efea6e61fd5cbe7f81e9eb.ctex"]
+dest_files=["res://.godot/imported/mon_cult_caster_mon_cult_caster_orm.jpg-89a1f96d42efea6e61fd5cbe7f81e9eb.bptc.ctex"]
 
 [params]
 
-compress/mode=0
-compress/high_quality=false
+compress/mode=2
+compress/high_quality=true
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

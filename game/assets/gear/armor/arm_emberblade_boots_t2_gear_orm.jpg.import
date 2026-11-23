@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://ur17fviq4p4m"
-path="res://.godot/imported/arm_emberblade_boots_t2_gear_orm.jpg-b2fdd69b9dcdf8653f0d7b41ebead1c8.ctex"
+path.bptc="res://.godot/imported/arm_emberblade_boots_t2_gear_orm.jpg-b2fdd69b9dcdf8653f0d7b41ebead1c8.bptc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "6eef8c79e46b0028f4903dfcfe523932"
@@ -14,12 +15,12 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/gear/armor/arm_emberblade_boots_t2_gear_orm.jpg"
-dest_files=["res://.godot/imported/arm_emberblade_boots_t2_gear_orm.jpg-b2fdd69b9dcdf8653f0d7b41ebead1c8.ctex"]
+dest_files=["res://.godot/imported/arm_emberblade_boots_t2_gear_orm.jpg-b2fdd69b9dcdf8653f0d7b41ebead1c8.bptc.ctex"]
 
 [params]
 
-compress/mode=0
-compress/high_quality=false
+compress/mode=2
+compress/high_quality=true
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

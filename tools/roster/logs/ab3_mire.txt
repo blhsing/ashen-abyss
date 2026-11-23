@@ -1,0 +1,8 @@
+== bestiary ERR=0
+  146.425 INF [bot] summary t=571s game=563s area=mire doing=use beacon kills=343 elites=21 bosses=1 level=15 life=100% items=49 gold=6633 deaths=0 areas=1 casts=616 unstuck=0 monsters=102 errors=0 warnings=0 botErrors=0 focus=event
+  148.916 INF [bot] summary t=581s game=566s area=mire doing=use globe kills=343 elites=21 bosses=1 level=15 life=100% items=49 gold=6633 deaths=0 areas=1 casts=616 unstuck=0 monsters=102 errors=0 warnings=0 botErrors=0 focus=event
+  151.421 INF [bot] summary t=591s game=576s area=mire doing=fight lurk_leech kills=345 elites=21 bosses=1 level=15 life=100% items=49 gold=6703 deaths=0 areas=1 casts=619 unstuck=0 monsters=100 errors=0 warnings=0 botErrors=0 focus=event
+  153.829 INF [roster] running area=mire hero=lv16 ttk normal=2.0s(n=334) champion=8.2s(n=19) elite=5.3s(n=2) boss=77.8s(n=1) | taken 1127/min (0.93 life bars/min, 2572 hits) kills=356 in 586s | worst [sh_mire:2092,lamp_bomber:805,lurk_spitter:726,dusk_boar:719] slowest [lamp_bomber*:28.7s/1,mire_thrower*:21.0s/1,rotspawn:9.3s/6,lurk_spitter*:8.4s/5,dusk_boar*:8.2s/1]
+  153.928 INF [bot] summary t=601s game=586s area=mire doing=fight mire_stump kills=361 elites=21 bosses=1 level=16 life=94% items=50 gold=6734 deaths=0 areas=1 casts=626 unstuck=0 monsters=88 errors=0 warnings=0 botErrors=0 focus=event
+  154.076 INF [bot] final summary t=602s game=587s area=mire doing=use chest kills=363 elites=21 bosses=1 level=16 life=95% items=50 gold=6775 deaths=0 areas=1 casts=627 unstuck=0 monsters=86 errors=0 warnings=0 botErrors=0 focus=event
+done 18:52:12

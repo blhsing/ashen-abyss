@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://cm7x7fqnjjemx"
-path="res://.godot/imported/npc_elder_hair_c.jpg-dda52ea10a42a9c4e0a3aa08aa449f73.ctex"
+path.bptc="res://.godot/imported/npc_elder_hair_c.jpg-dda52ea10a42a9c4e0a3aa08aa449f73.bptc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "005f57fd5989c5561a37c8eff19aa642"
@@ -14,12 +15,12 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/chars/npc_elder_hair_c.jpg"
-dest_files=["res://.godot/imported/npc_elder_hair_c.jpg-dda52ea10a42a9c4e0a3aa08aa449f73.ctex"]
+dest_files=["res://.godot/imported/npc_elder_hair_c.jpg-dda52ea10a42a9c4e0a3aa08aa449f73.bptc.ctex"]
 
 [params]
 
-compress/mode=0
-compress/high_quality=false
+compress/mode=2
+compress/high_quality=true
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

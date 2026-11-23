@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://bjjjhjm6slu6u"
-path="res://.godot/imported/hero_lampknight_hair_c.jpg-4238fe5d446a8196cd158c1c51333aea.ctex"
+path.bptc="res://.godot/imported/hero_lampknight_hair_c.jpg-4238fe5d446a8196cd158c1c51333aea.bptc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "8aaafc7bac3aaa02412dfd7bc1ab5ae0"
@@ -14,12 +15,12 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/chars/hero_lampknight_hair_c.jpg"
-dest_files=["res://.godot/imported/hero_lampknight_hair_c.jpg-4238fe5d446a8196cd158c1c51333aea.ctex"]
+dest_files=["res://.godot/imported/hero_lampknight_hair_c.jpg-4238fe5d446a8196cd158c1c51333aea.bptc.ctex"]
 
 [params]
 
-compress/mode=0
-compress/high_quality=false
+compress/mode=2
+compress/high_quality=true
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

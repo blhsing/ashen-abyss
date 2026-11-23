@@ -327,6 +327,7 @@ public partial class DemoMode : Node
         if (h == null || h.D != d) { Log.Error("demo", "the demo character did not take over"); Stop("error"); return; }
         Log.Guard("demo", () => Game.AutoBuild(h));
         Log.Guard("demo", () => Gear(h));
+        Log.Guard("demo", () => DemoGolem(h));               // [golem] Soulbinder scenes show each golem kind (DemoMode.Golem.cs)
         Game.EnsureGod(h);
         _seenClasses.Add(Names.ClassKey(_cls));
         _seenAreas.Add(s.Area);

@@ -1,0 +1,18 @@
+# loot labels yield to the HUD (item 1): loot under the minimap, the tracker column and the action bar
+wait 3
+dropat 1460,120,4
+dropat 1450,300,4
+dropat 800,830,4
+dropat 1100,450,3
+wait 1.5
+keydown Alt
+wait 0.6
+shot labels_alt
+keyup Alt
+wait 0.5
+shot labels_plain
+open map
+wait 1
+shot labels_map
+close
+quit

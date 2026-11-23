@@ -1,0 +1,28 @@
+# inventory at the three text sizes (item 5) + gems/off-hand ghost icon (item 2)
+wait 2
+give legendary
+give rare
+give gem
+close
+scale 0
+wait 0.5
+open inventory
+wait 1.2
+shot inv_s0
+dump inv_s0
+close
+scale 1
+wait 0.5
+open inventory
+wait 1.2
+shot inv_s1
+dump inv_s1
+close
+scale 2
+wait 0.5
+open inventory
+wait 1.2
+shot inv_s2
+dump inv_s2
+close
+quit

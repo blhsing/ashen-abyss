@@ -1,0 +1,13 @@
+build ok
+exit= seconds=3
+log: C:\Users\blhsi\AppData\Roaming\AshenAbyss\logs\game_20261122_143500.log  lines=8  ERR=0  WRN=0
+--- last lines ---
+    0.026 INF [boot] ==== ?? Ashen Abyss 0.4.0 ====
+    0.036 INF [boot] time=2026-11-22 14:35:00 +08:00 os=Windows 10.0.26300 locale=en_US
+    0.042 INF [boot] cpu=AMD RYZEN AI MAX+ 395 w/ Radeon 8060S threads=32 ram=64663MB
+    0.085 INF [boot] gpu=AMD Radeon(TM) 8060S Graphics vendor=AMD api=1.4.329 method=forward_plus
+    0.089 INF [boot] engine=4.7.2-stable (official) dotnet=10.0.14 debug=True
+    0.091 INF [boot] exe=%USERPROFILE%/AppData/Local/Programs/Godot_4.7.2_mono/Godot_v4.7.2-stable_mono_win64/Godot_v4.7.2-stable_mono_win64.exe userdir=%USERPROFILE%/AppData/Roaming/AshenAbyss
+    0.095 INF [boot] args=[] userargs=[--win --mute --new=emberblade --slot=91 --level=50 --tier=2 --named=pin_1_gravedigger@route --named-live=ladder --ui=named_ladder --textscale=1 --shot=Y:\shots\named\ladder_ts1.png --shot-at=5 --quit-at=8]
+    0.130 INF [boot] the player's game (or another test) is running; this test launch exits without touching it
+DONE

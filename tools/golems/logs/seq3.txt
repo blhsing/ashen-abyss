@@ -1,0 +1,27 @@
+exit= seconds=149
+log: C:\Users\blhsi\AppData\Roaming\AshenAbyss\logs\game_20261122_191930.log  lines=1418  ERR=0  WRN=1
+=== bone_region: --new=soulbinder --slot=95 --level=9 --gear --bot --focus --area=wastes --golem=bone --speed=3 --quit-at=420 --mute  (19:22:05)
+exit= seconds=425
+log: C:\Users\blhsi\AppData\Roaming\AshenAbyss\logs\game_20261122_202833.log  lines=1176  ERR=0  WRN=1
+    3.951 INF [test] golem stance: book=[warriors=w_raider, mages=m_shadow, golem=g_bone] forge=- bar=[sb_bolt,sb_raise,sb_veil,sb_curse,sb_golem_cmd,sb_spear]
+   31.084 INF [golem] 骨魔像 fell (killer sh_wastes); re-forms in 20 s
+   31.755 INF [boss] sh_wastes slain: phase=3 fight=40s enraged=False tier=0
+   37.689 INF [golem] re-formed by 魔像號令: 骨魔像 (g_bone) life=819/819 level=10 model=mon_bone_amalgam radius=0.42 height=2.8
+  424.288 INF [bot] final summary t=1261s game=1239s area=wastes doing=idle (nothing left here) kills=420 elites=32 bosses=1 level=13 life=100% items=79 gold=8328 deaths=0 areas=1 casts=563 unstuck=1 monsters=0 errors=0 warnings=1 botErrors
+=== bone_region done 20:35:53
+=== sacrifice_region: --new=soulbinder --slot=95 --level=26 --gear --bot --focus --area=frost --sacrifice=all --speed=3 --quit-at=420 --mute  (20:35:54)
+exit= seconds=425
+log: C:\Users\blhsi\AppData\Roaming\AshenAbyss\logs\game_20261122_212955.log  lines=1211  ERR=0  WRN=1
+    3.749 INF [test] golem stance: book=[warriors=sac, mages=sac, golem=sac] forge=- bar=[sb_bolt,sb_spear,sb_veil,sb_curse,sb_blight,sb_explode]
+   28.969 INF [hero] died: killer=frost_knight amount=41 level=26 area=frost
+   29.799 INF [boss] sh_frost disengaged (the hero fell) after 12s: back to full life, phase 1
+   65.684 INF [boss] sh_frost slain: phase=3 fight=62s enraged=False tier=0
+  424.136 INF [bot] final summary t=1261s game=1224s area=frost doing=side-step kills=491 elites=27 bosses=1 level=30 life=100% items=95 gold=22002 deaths=1 areas=1 casts=639 unstuck=1 monsters=0 errors=0 warnings=1 botErrors=0 focus=event 
+=== sacrifice_region done 21:37:18
+=== sacrifice_boss: --new=soulbinder --slot=95 --level=26 --gear --bot --focus --bossrush --area=frost_boss --sacrifice=all --speed=3 --quit-at=600 --mute  (21:37:19)
+exit= seconds=603
+log: C:\Users\blhsi\AppData\Roaming\AshenAbyss\logs\game_20261122_214353.log  lines=1756  ERR=0  WRN=7
+    2.093 INF [test] golem stance: book=[warriors=sac, mages=sac, golem=sac] forge=- bar=[sb_bolt,sb_spear,sb_veil,sb_curse,sb_blight,sb_explode]
+   37.423 INF [boss] boss_rimelord slain: phase=3 fight=41s enraged=False tier=0
+  602.673 INF [bot] final summary t=1801s game=1800s area=frost_boss doing=focus leave kills=58 elites=1 bosses=1 level=27 life=100% items=16 gold=7720 deaths=0 areas=1 casts=143 unstuck=7 monsters=82 errors=0 warnings=7 botErrors=0 focus=p
+=== sacrifice_boss done 21:54:09

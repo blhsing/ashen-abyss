@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://dclqgsbfuehl"
-path="res://.godot/imported/hero_astromancer_metal_orm.jpg-c2b0c72a2f7f0d2339547bda756f2e6d.ctex"
+path.bptc="res://.godot/imported/hero_astromancer_metal_orm.jpg-c2b0c72a2f7f0d2339547bda756f2e6d.bptc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "a0044ff0dc81b8ed1468347d5693fde1"
@@ -14,12 +15,12 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/chars/hero_astromancer_metal_orm.jpg"
-dest_files=["res://.godot/imported/hero_astromancer_metal_orm.jpg-c2b0c72a2f7f0d2339547bda756f2e6d.ctex"]
+dest_files=["res://.godot/imported/hero_astromancer_metal_orm.jpg-c2b0c72a2f7f0d2339547bda756f2e6d.bptc.ctex"]
 
 [params]
 
-compress/mode=0
-compress/high_quality=false
+compress/mode=2
+compress/high_quality=true
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

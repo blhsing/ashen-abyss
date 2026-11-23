@@ -72,6 +72,8 @@ public partial class Game : Node
     public string CardTitle, CardSub, CardTip;
 
     public const int HarnessSlot = 0;      // --new characters live in slot0.json, which the menu (slots 1..8) never lists
+    /// <summary>The slot of a test hero (--new, the UI test layer "newgame", TestSuite.StartHero): --slot when it is 0 or 90..99, else slot 0; never a menu slot 1-8.</summary>
+    public int TestSlot => int.TryParse(ArgValue("slot"), NumberStyles.Integer, CultureInfo.InvariantCulture, out int s) && (s == 0 || s >= 90 && s <= 99) ? s : HarnessSlot;
     private static readonly StringName HeroPosGlobal = "hero_pos";      // [shader_globals] in project.godot
 
     // ── boot / window ──
@@ -85,9 +87,9 @@ public partial class Game : Node
         "textscale", "menu", "uido", "uiclick", "uikeys", "hover", "uidir", "gfx-tour",
         "portrait-stats", "portrait-off", "portrait-scale", "portrait-model",       // inventory hero portrait (HeroPortrait3D)
         "bestiary", "no-bestiary", "spawn", "spawn-aggro",                             // monster roster (Bestiary.cs, Populate.HarnessSpawns)
-        "gptest", "gpexpect", "gpthen", "gpclasses", "gpcancel", "gpout", "gpcases", "gpslots", "gpold", "gpresume",                                             // gameplay harness (GameplayTest.cs): click-to-attack, save resume
+        "gptest", "gpexpect", "gpthen", "gpclasses", "gpcancel", "gpout", "gpcases", "gpslots", "gpold", "gpresume", "stash-keep",                                           // gameplay harness (GameplayTest.cs): click-to-attack, save resume
         "demo", "demo-idle", "demo-secs", "demo-log", "pilot-at", "pilot-test",                      // demo mode (DemoMode.cs) and the AI pilot (AiPilot.cs)
-        "gear-off", "gear-baked", "gear-ph", "gear-dir", "icon3d-off",                 // modular gear and 3D item icons (GearVisual.cs, ItemIcon3D.cs)
+        "gear-off", "gear-baked", "gear-ph", "gear-dir", "icon3d-off", "gear-ik",                // modular gear and 3D item icons (GearVisual.cs, ItemIcon3D.cs)
     };
     private bool _forceWindow, _windowPlaced, _quitting;
     private bool? _cfgFullscreen;
@@ -167,7 +169,7 @@ public partial class Game : Node
         "十五級時可以選擇職業專精，它會改變你所有技能的運作方式。",
         "世界階級越高，怪物越兇猛，掉落的寶物也越好。",
         "滾動滑鼠滾輪可以拉近或拉遠視角。",
-        "按 PrtSc 或 F12 可以留下此刻的畫面，存放在「圖片」資料夾的 AshenAbyss 之中。",
+        "按 PrtSc 或 F12 擷取畫面：預設複製到剪貼簿，可直接貼上；在設定中可改為存成檔案（圖片\\AshenAbyss）。",
     };
 
     public Game() { I = this; }
@@ -231,6 +233,7 @@ public partial class Game : Node
         Log.Guard("boot", BuildOverlay);
         Log.Guard("boot", () => AddChild(new Cursors { Name = "Cursors" }));        // contextual mouse cursor (ticks itself)
         Log.Guard("boot", () => AddChild(new AiPilot { Name = "AiPilot" }));        // AI 代打: F8 / pause menu (AiPilot.cs)
+        Log.Guard("boot", () => MinionSystem.Install(this));                         // [golem] minion persistence, golems, the book (MinionSystem.cs)
 
         ApplySettings();
         if (Arg("mute")) Log.Guard("boot", () => Audio?.Mute(true));
@@ -318,9 +321,10 @@ public partial class Game : Node
                 if (key.Length > 0) Log.Warn("test", $"--new: unknown class '{key}', using {Names.ClassKeys[0]} (valid: {string.Join(", ", Names.ClassKeys)})");
                 idx = 0;
             }
-            int slot = HarnessSlot;
-            // 0 is the shared harness slot; 90-99 are private harness slots (never listed by the menu) for runs that are continued with --load
-            if (int.TryParse(ArgValue("slot"), NumberStyles.Integer, CultureInfo.InvariantCulture, out int s) && (s >= 0 && s <= SaveSystem.SlotCount || s >= 90 && s <= 99)) slot = s;
+            // 0 is the shared harness slot; 90-99 are private harness slots (never listed by the menu) for runs that are continued
+            // with --load. A menu slot (1-8: the player's characters) is never written by a test hero.
+            int slot = TestSlot;
+            if (Arg("slot") && ArgValue("slot") != slot.ToString(CultureInfo.InvariantCulture)) Log.Warn("test", $"--slot={ArgValue("slot")} is not a test slot (0, 90-99): the test hero uses slot {slot}");
             NewGame(slot, "試煉者", (ClassId)idx, Arg("hardcore"));
         }
         if (Hero == null) ShowMenu();
@@ -473,10 +477,11 @@ public partial class Game : Node
         // a level that finishes loading while the player is in another window starts paused
         if (!_appFocused) PauseForFocusLoss();
 
-        if (WinKeys.ConsumeScreenshotRequest() || _shotRequested)
+        bool prtsc = WinKeys.ConsumeScreenshotRequest();
+        if (prtsc || _shotRequested)
         {
             _shotRequested = false;
-            TakeScreenshot();
+            TakeScreenshot(prtsc);
         }
         DrainShots();
 
@@ -638,6 +643,7 @@ public partial class Game : Node
         _autosaveT = 0;
 
         ApplyHarnessToSave(d);
+        Log.Guard("stash", () => SharedStash.Attach(d, slot, isNew));      // the account's shared stash, read fresh (SharedStash.cs)
         try { Hero = new Hero(d); Hero.PreloadSetModels(); }      // RENDER: every saved set's models loaded and pinned (instant swaps)
         catch (Exception e)
         {
@@ -792,6 +798,7 @@ public partial class Game : Node
         Log.Guard("quest", () => Quests.Detach());
         if (Hero != null) Hero.ParagonUp -= OnParagonUp;
         Hero = null;
+        SharedStash.Detach();
         ClearReturn();
         _seen.Clear();
         _deathPending = false;
@@ -1346,9 +1353,11 @@ public partial class Game : Node
         if (Hero == null || NoSave) return;          // demo mode writes nothing
         _saveReq = null;
         _autosaveT = 0;
+        var sw = Stopwatch.StartNew();
         Log.Guard("save", CaptureResume);
+        double capMs = sw.Elapsed.TotalMilliseconds;
         bool ok = SaveSystem.Save(Slot, Hero.D);
-        Log.Info("save", $"save reason={reason} slot={Slot} ok={ok} area={Hero.D.Area} playtime={Hero.D.PlayTime:0}s");
+        Log.Info("save", $"save reason={reason} slot={Slot} ok={ok} area={Hero.D.Area} playtime={Hero.D.PlayTime:0}s capture={capMs:0.0}ms total={sw.Elapsed.TotalMilliseconds:0.0}ms");
         if (!ok) Log.Guard("hud", () => Hud?.Warn("存檔失敗。詳情請見日誌。"));
     }
 
@@ -1371,15 +1380,9 @@ public partial class Game : Node
         d.Portal = ReturnArea != null && _returnSeed != 0
             ? new PortalSnapshot { Area = ReturnArea, X = ReturnPos.X, Z = ReturnPos.Y, Seed = _returnSeed, State = _returnState }
             : null;
-        RememberSeen();
-        d.Fog ??= new();
-        d.Fog.Clear();
-        foreach (var kv in _seen)
-        {
-            bool stable = kv.Key == ZoneDb.Town || ZoneDb.Region(kv.Key) != null;
-            if ((!stable && kv.Key != ReturnArea) || kv.Value.seen == null) continue;
-            d.Fog[kv.Key] = new FogRec { Seed = kv.Value.seed, Len = kv.Value.seen.Length, Bits = LevelState.PackBits(kv.Value.seen) };
-        }
+        // explored maps: the town and the regions in d.Fog (MAP-QUEST, as with the resume off); a dungeon or rift keeps
+        // its own in its snapshot (d.Resume, d.Portal.State), so no map is written twice
+        KeepStableFog(d);
     }
 
     /// <summary>The explored maps of the town and the overworld regions into the save (seed-checked when read back).</summary>
@@ -1411,16 +1414,23 @@ public partial class Game : Node
         var s = d.Resume;
         if (s == null || string.IsNullOrEmpty(s.Area) || s.Seed == 0) { Log.Info("save", $"no resume state (format {d.Version}): waking in {d.Area} the old way"); return false; }
         if (s.Area.StartsWith("rift~") || !IsKnownArea(s.Area)) { Log.Info("save", $"resume state for {s.Area} cannot be rebuilt: waking the old way"); return false; }
+        if (!LevelState.Sanitize(s, out string why)) { Log.Warn("save", $"resume state unusable ({why}): waking in {d.Area} the old way"); return false; }
+        if (why != null) Log.Warn("save", $"resume state of {s.Area}: {why}");
         _resume = s;
         var pt = d.Portal;
-        if (s.Area == ZoneDb.Town && pt != null && !string.IsNullOrEmpty(pt.Area) && pt.Seed != 0 && IsKnownArea(pt.Area) && !pt.Area.StartsWith("rift~"))
+        if (s.Area == ZoneDb.Town && pt != null && !string.IsNullOrEmpty(pt.Area) && pt.Seed != 0 && IsKnownArea(pt.Area) && !pt.Area.StartsWith("rift~")
+            && float.IsFinite(pt.X) && float.IsFinite(pt.Z))
         {
             ReturnArea = pt.Area; ReturnPos = new Vector2(pt.X, pt.Z); _returnSeed = pt.Seed;
             _returnState = pt.State != null && pt.State.Area == pt.Area && pt.State.Seed == pt.Seed ? pt.State : null;
+            if (_returnState != null && !LevelState.Sanitize(_returnState, out string pwhy)) { Log.Warn("save", $"town portal state unusable ({pwhy}): the place behind it is rebuilt afresh"); _returnState = null; }
         }
         Log.Info("save", $"resume: {s.Area} seed={s.Seed} at ({s.X:0.00}, {s.Z:0.00}) dead={s.DeadMons?.Count ?? 0} spent={s.Spent?.Count ?? 0} loot={s.Loot?.Count ?? 0} portal={ReturnArea ?? "-"}");
         return true;
     }
+
+    /// <summary>The shared stash changed (Hero.ToStash / FromStash): character and stash are written within half a second.</summary>
+    public void SaveSoon(string reason) { if (Hero != null) RequestSave(reason, 400); }
 
     /// <summary>Asks for an autosave a little later, so bursts of progress (quest counters, several level-ups) become one write.</summary>
     private void RequestSave(string reason, int delayMs)
@@ -1547,9 +1557,35 @@ public partial class Game : Node
 
     // ═════════════════════════ screenshots ═════════════════════════
 
-    /// <summary>Saves the current frame as PNG to Pictures\AshenAbyss, with a toast, a shutter sound and a log line.</summary>
-    public void TakeScreenshot()
+    public void TakeScreenshot() => TakeScreenshot(false);
+
+    /// <summary>
+    /// PrtSc / F12, as Settings.ScreenshotMode asks: 0 the frame to the clipboard (default), 1 a PNG file in
+    /// Pictures\AshenAbyss, 2 both; with a toast, a shutter sound and a log line. <paramref name="prtsc"/>: the PrtSc key,
+    /// which Windows may also have handled (a desktop copy to the clipboard, the Snipping Tool): the frame is taken now
+    /// and put on the clipboard a moment later, so the game's picture is the one that stays there.
+    /// </summary>
+    public void TakeScreenshot(bool prtsc)
     {
+        int mode = Math.Clamp(Cfg?.ScreenshotMode ?? 0, 0, 2);
+        if (int.TryParse(ArgValue("shotmode"), out int forced)) mode = Math.Clamp(forced, 0, 2);   // test switch: never written to the settings
+        bool toFile = mode != 0 || !ScreenClipboard.Supported;
+        if (mode != 1 && ScreenClipboard.Supported)
+        {
+            try
+            {
+                var img = GetViewport().GetTexture()?.GetImage();
+                IntPtr owner = (IntPtr)DisplayServer.WindowGetNativeHandle(DisplayServer.HandleType.WindowHandle);
+                if (img != null && !img.IsEmpty() && ScreenClipboard.CopyLater(img, owner, prtsc ? 350 : 0))
+                {
+                    if (!toFile) Log.Guard("audio", () => Snd.Ui("screenshot"));
+                    Log.Info("shot", $"screenshot to the clipboard ({(prtsc ? "PrtSc" : "F12")}, mode {mode})");
+                }
+                else { Log.Warn("shot", "no frame for the clipboard; saving a file instead"); toFile = true; }
+            }
+            catch (Exception e) { Log.Error("shot", "clipboard screenshot failed", e); toFile = true; }
+        }
+        if (!toFile) return;
         try
         {
             string dir = ScreenshotDir();
@@ -1604,12 +1640,17 @@ public partial class Game : Node
 
     private void DrainShots()
     {
+        while (ScreenClipboard.Done.TryDequeue(out var c))
+        {
+            if (c.ok) { Log.Info("shot", $"screenshot copied to the clipboard ({c.w}x{c.h})"); Log.Guard("hud", () => Hud?.Toast("已複製畫面到剪貼簿", Palette.Gold)); }
+            else { Log.Warn("shot", $"screenshot not copied to the clipboard: {c.err}"); Log.Guard("hud", () => Hud?.Warn("無法複製畫面到剪貼簿。")); }
+        }
         while (_shotDone.TryDequeue(out var r))
         {
             if (r.ok)
             {
                 Log.Info("shot", $"screenshot saved: {r.path}");
-                if (r.announce) { string text = $"畫面已保存：{r.path}"; Log.Guard("hud", () => Hud?.Toast(text, Palette.Gold)); }
+                if (r.announce) { string text = $"畫面已保存：{System.IO.Path.GetFileName(r.path)}（圖片\\AshenAbyss）"; Log.Guard("hud", () => Hud?.Toast(text, Palette.Gold)); }
             }
             else
             {

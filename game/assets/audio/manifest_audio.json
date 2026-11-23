@@ -1495,7 +1495,7 @@
     "crypt_combat": {
       "path": "assets/audio/music/crypt_combat.ogg",
       "loop": true,
-      "duration": 128,
+      "duration": 115.383,
       "lufs": -19.03,
       "peak_db": -3.28,
       "pair": "crypt_base"
@@ -1591,7 +1591,7 @@
     "wastes_base": {
       "path": "assets/audio/music/wastes_base.ogg",
       "loop": true,
-      "duration": 135.5,
+      "duration": 139.5,
       "lufs": -18.02,
       "peak_db": -3,
       "pair": "wastes_combat"
@@ -8917,7 +8917,7 @@
       "category": "music",
       "group": "crypt",
       "variation": 0,
-      "duration": 128,
+      "duration": 115.383,
       "channels": 2,
       "sample_rate": 44100,
       "loop": true,
@@ -9228,7 +9228,7 @@
       "category": "music",
       "group": "wastes",
       "variation": 0,
-      "duration": 135.5,
+      "duration": 139.5,
       "channels": 2,
       "sample_rate": 44100,
       "loop": true,

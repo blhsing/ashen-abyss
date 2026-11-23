@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://d023x8xmrmgwh"
-path="res://.godot/imported/mon_bell_hood_mon_bell_hood_em.jpg-555d09cb7719c733dd36cf0472c9efa1.ctex"
+path.bptc="res://.godot/imported/mon_bell_hood_mon_bell_hood_em.jpg-555d09cb7719c733dd36cf0472c9efa1.bptc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "e739dfa9d34fb6d9bb86492aec894a75"
@@ -14,12 +15,12 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/chars/mon_bell_hood_mon_bell_hood_em.jpg"
-dest_files=["res://.godot/imported/mon_bell_hood_mon_bell_hood_em.jpg-555d09cb7719c733dd36cf0472c9efa1.ctex"]
+dest_files=["res://.godot/imported/mon_bell_hood_mon_bell_hood_em.jpg-555d09cb7719c733dd36cf0472c9efa1.bptc.ctex"]
 
 [params]
 
-compress/mode=0
-compress/high_quality=false
+compress/mode=2
+compress/high_quality=true
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

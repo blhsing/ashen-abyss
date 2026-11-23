@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://dqarkx8nc7dse"
-path="res://.godot/imported/mon_dune_masker_mon_dune_masker_em.jpg-f1502993514c1f52f94796eda0b97ffd.ctex"
+path.bptc="res://.godot/imported/mon_dune_masker_mon_dune_masker_em.jpg-f1502993514c1f52f94796eda0b97ffd.bptc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "400a466ee6639bbfaf5bf0177bf4c054"
@@ -14,12 +15,12 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/chars/mon_dune_masker_mon_dune_masker_em.jpg"
-dest_files=["res://.godot/imported/mon_dune_masker_mon_dune_masker_em.jpg-f1502993514c1f52f94796eda0b97ffd.ctex"]
+dest_files=["res://.godot/imported/mon_dune_masker_mon_dune_masker_em.jpg-f1502993514c1f52f94796eda0b97ffd.bptc.ctex"]
 
 [params]
 
-compress/mode=0
-compress/high_quality=false
+compress/mode=2
+compress/high_quality=true
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

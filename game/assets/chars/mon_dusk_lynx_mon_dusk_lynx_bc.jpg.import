@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://c64pvua78538l"
-path="res://.godot/imported/mon_dusk_lynx_mon_dusk_lynx_bc.jpg-61be1598130222f9fae5c01034d2698b.ctex"
+path.bptc="res://.godot/imported/mon_dusk_lynx_mon_dusk_lynx_bc.jpg-61be1598130222f9fae5c01034d2698b.bptc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "47adc8f2d63c5201ef82685e0ae216b8"
@@ -14,12 +15,12 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/chars/mon_dusk_lynx_mon_dusk_lynx_bc.jpg"
-dest_files=["res://.godot/imported/mon_dusk_lynx_mon_dusk_lynx_bc.jpg-61be1598130222f9fae5c01034d2698b.ctex"]
+dest_files=["res://.godot/imported/mon_dusk_lynx_mon_dusk_lynx_bc.jpg-61be1598130222f9fae5c01034d2698b.bptc.ctex"]
 
 [params]
 
-compress/mode=0
-compress/high_quality=false
+compress/mode=2
+compress/high_quality=true
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

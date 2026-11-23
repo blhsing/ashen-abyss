@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://maveofnhnpod"
-path="res://.godot/imported/npc_merchant_metal_orm.jpg-0b9246b7e9ab1a3266e0fef36d78529f.ctex"
+path.bptc="res://.godot/imported/npc_merchant_metal_orm.jpg-0b9246b7e9ab1a3266e0fef36d78529f.bptc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "5e6087a5665428c1e2fff7a79b77eae4"
@@ -14,12 +15,12 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/chars/npc_merchant_metal_orm.jpg"
-dest_files=["res://.godot/imported/npc_merchant_metal_orm.jpg-0b9246b7e9ab1a3266e0fef36d78529f.ctex"]
+dest_files=["res://.godot/imported/npc_merchant_metal_orm.jpg-0b9246b7e9ab1a3266e0fef36d78529f.bptc.ctex"]
 
 [params]
 
-compress/mode=0
-compress/high_quality=false
+compress/mode=2
+compress/high_quality=true
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://c6jcep7kbvkiq"
-path="res://.godot/imported/mon_forge_hammer_mon_forge_hammer_orm.jpg-5bdd90d88c72d18b6ee15ce883ae4b3d.ctex"
+path.bptc="res://.godot/imported/mon_forge_hammer_mon_forge_hammer_orm.jpg-5bdd90d88c72d18b6ee15ce883ae4b3d.bptc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "e7fc8e1e844180c11bc70aecc0cbb009"
@@ -14,12 +15,12 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/chars/mon_forge_hammer_mon_forge_hammer_orm.jpg"
-dest_files=["res://.godot/imported/mon_forge_hammer_mon_forge_hammer_orm.jpg-5bdd90d88c72d18b6ee15ce883ae4b3d.ctex"]
+dest_files=["res://.godot/imported/mon_forge_hammer_mon_forge_hammer_orm.jpg-5bdd90d88c72d18b6ee15ce883ae4b3d.bptc.ctex"]
 
 [params]
 
-compress/mode=0
-compress/high_quality=false
+compress/mode=2
+compress/high_quality=true
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

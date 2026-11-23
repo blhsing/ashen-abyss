@@ -1,0 +1,12 @@
+build ok
+exit= seconds=66
+log: C:\Users\blhsi\AppData\Roaming\AshenAbyss\logs\game_20261122_133937.log  lines=284  ERR=0  WRN=0
+--- last lines ---
+   61.243 INF [save] slot 95 saved: ??? lv30 ??? area=wastes bytes=14519
+   61.244 INF [save] save reason=quit slot=95 ok=True area=wastes playtime=40s capture=0.2ms total=5.5ms
+   61.344 INF [shot] screenshot saved: Y:\shots\golems\ui_forge_confirm.png
+   61.346 INF [bot] final summary t=41s game=38s area=wastes doing=idle kills=1 elites=0 bosses=0 level=30 life=100% items=0 gold=50 deaths=0 areas=2 casts=0 unstuck=0 monsters=417 errors=0 warnings=0 botErrors=0
+   61.348 INF [bot] final progress: waypoints=[town] renown=[] quests done=0/3 skillpts bonus=0 potion cap=4 altars=0 codex=0 tier=0/1 riftBest=0 paragon=0 playtime=40s
+   61.350 INF [anim] anim-check: hero moved 0.0s - 0.0s without a locomotion clip, 0.0s with frozen legs; hero stood 37.6s - 0.0s in a run clip or none; monsters moved 8.4s - 0.0s without a locomotion clip, 0.0s with frozen legs; models without a skeleton or a ƒ?Ý
+   61.355 INF [input] keyboard hook saw 0 key events, 0 of them PrtSc
+   61.356 INF [boot] shutdown errors=0 warnings=0 uptime=61s

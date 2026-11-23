@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://4bv7chudi6d2"
-path="res://.godot/imported/mon_ash_colossus_mon_ash_colossus_em.jpg-cbd9b0b3c10cf98bcec647536231989b.ctex"
+path.bptc="res://.godot/imported/mon_ash_colossus_mon_ash_colossus_em.jpg-cbd9b0b3c10cf98bcec647536231989b.bptc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "2ab288ed3bcd38db7abc6884f00eb6c8"
@@ -14,12 +15,12 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/chars/mon_ash_colossus_mon_ash_colossus_em.jpg"
-dest_files=["res://.godot/imported/mon_ash_colossus_mon_ash_colossus_em.jpg-cbd9b0b3c10cf98bcec647536231989b.ctex"]
+dest_files=["res://.godot/imported/mon_ash_colossus_mon_ash_colossus_em.jpg-cbd9b0b3c10cf98bcec647536231989b.bptc.ctex"]
 
 [params]
 
-compress/mode=0
-compress/high_quality=false
+compress/mode=2
+compress/high_quality=true
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

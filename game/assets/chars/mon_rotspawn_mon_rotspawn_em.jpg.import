@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://dt55um4qa6ycb"
-path="res://.godot/imported/mon_rotspawn_mon_rotspawn_em.jpg-e53e3fa425f34b39dc65b426826421c8.ctex"
+path.bptc="res://.godot/imported/mon_rotspawn_mon_rotspawn_em.jpg-e53e3fa425f34b39dc65b426826421c8.bptc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "d3a4c005c17b81ae4e422d8649958d5a"
@@ -14,12 +15,12 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/chars/mon_rotspawn_mon_rotspawn_em.jpg"
-dest_files=["res://.godot/imported/mon_rotspawn_mon_rotspawn_em.jpg-e53e3fa425f34b39dc65b426826421c8.ctex"]
+dest_files=["res://.godot/imported/mon_rotspawn_mon_rotspawn_em.jpg-e53e3fa425f34b39dc65b426826421c8.bptc.ctex"]
 
 [params]
 
-compress/mode=0
-compress/high_quality=false
+compress/mode=2
+compress/high_quality=true
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

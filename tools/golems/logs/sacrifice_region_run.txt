@@ -1,0 +1,17 @@
+exit= seconds=425
+log: C:\Users\blhsi\AppData\Roaming\AshenAbyss\logs\game_20261122_212955.log  lines=1211  ERR=0  WRN=1
+--- distinct warnings ---
+   1 x [bot] going nowhere near (129.9, 180.4) in frost for a minute while 'idle (nothing left here)' (event in progress); jumping to the checkpoint (149.3, 75.9)
+--- last lines ---
+  424.134 INF [save] save reason=quit slot=95 ok=True area=frost playtime=420s capture=0.2ms total=3.0ms
+  424.136 INF [bot] final summary t=1261s game=1224s area=frost doing=side-step kills=491 elites=27 bosses=1 level=30 life=100% items=95 gold=22002 deaths=1 areas=1 casts=639 unstuck=1 monsters=0 errors=0 warnings=1 botErrors=0 focus=event in progress
+  424.137 INF [bot] final progress: waypoints=[town,frost] renown=[frost:250] quests done=0/3 skillpts bonus=1 potion cap=4 altars=3 codex=0 tier=0/1 riftBest=0 paragon=0 playtime=420s
+  424.139 INF [bot] final skills [soulbinder lv30] cast/hits/damage: (other):c0/h100/d53084 sb_blight:c78/h654/d93552 sb_bolt:c240/h304/d75659 sb_curse:c35/h0/d0 sb_explode:c196/h587/d443192 sb_spear:c63/h236/d143385 sb_veil:c27/h81/d12346
+  424.139 INF [bot] final balance: ttk normal=2.1s(n=459) champion=6.4s(n=19) elite=4.6s(n=8) boss=119.9s(n=1) | taken 291/min in 232 hits (life 2264; 0.13 life bars/min) god-saves=0 | kills/min 24.1 | never cast: [] cast but never hit: []
+  424.140 INF [anim] anim-check: hero moved 589.2s - 0.0s without a locomotion clip, 0.0s with frozen legs; hero stood 365.7s - 0.0s in a run clip or none; monsters moved 757.0s - 0.0s without a locomotion clip, 0.0s with frozen legs; models without a skeleton ƒ?Ý
+  424.140 INF [input] keyboard hook saw 0 key events, 0 of them PrtSc
+  424.141 INF [boot] shutdown errors=0 warnings=1 uptime=424s
+--- engine output: distinct problem lines (3 total) ---
+   1 x [7] Godot.NativeInterop.godot_bool Godot.Bridge.CSharpInstanceBridge.Call(nint, Godot.NativeInterop.godot_string_name*, Godot.NativeInterop.godot_variant**, int, Godot.NativeInterop.godot_variant_call_error*, Godot.NativeInterop.godot_variant*) (/root/g ƒ?Ý
+   1 x [1] void Godot.RenderingServer.GlobalShaderParameterSet(Godot.StringName, Godot.Variant) (/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Generated/GodotObjects/RenderingServer.cs:8436)
+   1 x ERROR: Parameter "t" is null.

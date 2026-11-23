@@ -1148,6 +1148,7 @@ public partial class Player : Actor
     public override float TakeHit(Hit h)
     {
         if (Invulnerable && h.Source != this) return 0;
+        if (h.Source != this) { h.Amount = MinionSystem.RedirectHero(this, h); if (h.Amount <= 0f) return 0; }     // [golem] blood golem, 魔像之心, 骨甲共享
         float d = base.TakeHit(h);
         if (d > 0)
         {

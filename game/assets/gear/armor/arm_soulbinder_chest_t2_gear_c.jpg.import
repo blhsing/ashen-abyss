@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://b62xpu0vcsphh"
-path="res://.godot/imported/arm_soulbinder_chest_t2_gear_c.jpg-73a2127c8eaf318fc0cf0ff87304a873.ctex"
+path.bptc="res://.godot/imported/arm_soulbinder_chest_t2_gear_c.jpg-73a2127c8eaf318fc0cf0ff87304a873.bptc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "dc23d531cb7158e80c785d769952fde4"
@@ -14,12 +15,12 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/gear/armor/arm_soulbinder_chest_t2_gear_c.jpg"
-dest_files=["res://.godot/imported/arm_soulbinder_chest_t2_gear_c.jpg-73a2127c8eaf318fc0cf0ff87304a873.ctex"]
+dest_files=["res://.godot/imported/arm_soulbinder_chest_t2_gear_c.jpg-73a2127c8eaf318fc0cf0ff87304a873.bptc.ctex"]
 
 [params]
 
-compress/mode=0
-compress/high_quality=false
+compress/mode=2
+compress/high_quality=true
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

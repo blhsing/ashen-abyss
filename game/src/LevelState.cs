@@ -37,8 +37,11 @@ public sealed class LevelSnapshot
     public bool LibAtBuild;                      // the overworld stronghold was already free when the level was built (Populate differs)
     public float BossX, BossZ;
     public float RiftTimeLeft, RiftPoints; public bool RiftFailed;
-    public string Fog;                           // explored cells, one bit each, base64
+    public string Fog;                           // explored cells, one bit each, base64 (dungeons and rifts; town and regions: SaveData.Fog)
     public int FogLen;
+    public List<HurtRec> Hurt = new();           // living monsters Populate placed that are wounded (not bosses, not named)
+    public List<int> EventsDone = new();         // world events (Level.Events order) already finished
+    public bool MidBoss;                         // saved during a boss fight: the hero was put back at the checkpoint, the boss is whole again
 
     public sealed class CdRec { public string Id; public float Left, Max; public int C, MC; }
     /// <summary>A monster Populate placed: I = order of placement, D = type id, X/Z = where it was placed.</summary>
@@ -47,6 +50,8 @@ public sealed class LevelSnapshot
     public sealed class ObjRec { public int I = -1; public string K; public float X, Z; }
     public sealed class LootRec { public Item It; public float X, Z; }
     public sealed class GoldRec { public int A; public float X, Z; }
+    /// <summary>A wounded monster: I/D/X/Z as in MonRec, F = life fraction.</summary>
+    public sealed class HurtRec { public int I; public string D; public float X, Z, F; }
 }
 
 /// <summary>An open town portal (saved while the hero stands in town) and the state of the place it leads back to.</summary>
@@ -76,13 +81,15 @@ public static class LevelState
 {
     private const string Cat = "levelstate";
     /// <summary>
-    /// Feature switch for the exact save resume. OFF until the save → load tests have passed: while off, saves keep format
-    /// 1 (no Resume / Portal / Fog written), loading wakes at the portal as before and the town portal back rebuilds the
-    /// place afresh (the old behaviour). The placement is still recorded on every level (cheap, harmless).
+    /// Feature switch for the exact save resume (ON since 0.4.0; the save tests are Y:/tools/gameplay/run_save.sh). Off:
+    /// saves keep format 1 (no Resume / Portal written), loading wakes at the portal as before and the town portal back
+    /// rebuilds the place afresh (the old behaviour). The placement is recorded on every level either way (cheap).
     /// </summary>
-    public static bool Enabled = false;
+    public static bool Enabled = true;
     /// <summary>Set by Game before Level.Build: applied once to the level with the same area id and seed.</summary>
     public static LevelSnapshot Pending;
+    /// <summary>The hero's life fraction right after the last resume (tests: monsters may hit the hero on the next frames).</summary>
+    public static float ResumedLife = -1f;
 
     private static Level _lv;
     private static Monster[] _mons = Array.Empty<Monster>();
@@ -171,11 +178,15 @@ public static class LevelState
         if (s == null) return;
         var h0 = Game.I?.Hero;
         bool relib = !s.LibAtBuild && L.Region != null && L.Dungeon == null && !L.IsRift && h0 != null && h0.D.Has("sh_" + L.Region.Id);
-        try { Apply(L, s); if (relib) L.RestoreLiberated(); }
+        var sw = System.Diagnostics.Stopwatch.StartNew();
+        try { Apply(L, s); if (relib) L.RestoreLiberated(); Log.Info(Cat, $"restore took {sw.Elapsed.TotalMilliseconds:0.0} ms"); }
         catch (Exception e) { Log.Error(Cat, $"restoring {L.AreaId} failed part-way; the level stays as built", e); }
     }
 
     private static bool Ours(Level L) => L != null && ReferenceEquals(_lv, L) && GodotObject.IsInstanceValid(L);
+
+    /// <summary>Areas whose layout never changes for a character (town, overworld regions): their explored map lives in SaveData.Fog.</summary>
+    public static bool StableFog(string area) => area == ZoneDb.Town || ZoneDb.Region(area) != null;
 
     // ───────────────────────── capture ─────────────────────────
 
@@ -203,15 +214,38 @@ public static class LevelState
             s.EvadeCd = p.EvadeCd; s.SecondWindCd = p.SecondWindCd;
             foreach (var kv in p.Cds) s.Cds.Add(new LevelSnapshot.CdRec { Id = kv.Key, Left = kv.Value.Left, Max = kv.Value.Max, C = kv.Value.Charges, MC = kv.Value.MaxCharges });
         }
+        // Saved mid-fight with the level's boss: the boss comes back whole (as after a death, Level.ResetBossFight) and the
+        // hero wakes at the checkpoint (outside the opened boss door) rather than inside the arena with the fight on.
+        // A named encounter that is not the level's boss: the hero is put just outside its arena (the encounter restarts).
+        if (!L.BossDead && L.BossEngaged && L.BossMon != null && GodotObject.IsInstanceValid(L.BossMon) && !L.BossMon.Dead)
+        {
+            s.MidBoss = true; at = L.Checkpoint;
+        }
+        else
+        {
+            foreach (var e in NamedHub.Live)
+            {
+                if (e == null || !GodotObject.IsInstanceValid(e) || !e.Engaged || !e.Alive || e.LevelManaged || e.L != L) continue;
+                if (at.DistanceTo(e.Center) > e.ArenaR + 3f) continue;
+                Vector2 dir = at - e.Center; if (dir.LengthSquared() < 0.01f) dir = L.Checkpoint - e.Center;
+                if (dir.LengthSquared() < 0.01f) dir = Vector2.Right;
+                at = L.Grid.NearestWalk(e.Center + dir.Normalized() * (e.ArenaR + 8f));
+                s.MidBoss = true;
+                break;
+            }
+        }
         s.X = at.X; s.Z = at.Y;
-        // monsters Populate placed that are gone
+        // monsters Populate placed that are gone, and the wounded ones (not bosses or named monsters: those come back whole)
         for (int i = 0; i < _mons.Length; i++)
         {
             if (_monEvent[i]) continue;
             var m = _mons[i];
             bool dead = _deadRestored.Contains(i) || !GodotObject.IsInstanceValid(m) || m.Dead || !m.IsInsideTree();
-            if (dead) s.DeadMons.Add(new LevelSnapshot.MonRec { I = i, D = _monDef[i], X = _monPos[i].X, Z = _monPos[i].Y });
+            if (dead) { s.DeadMons.Add(new LevelSnapshot.MonRec { I = i, D = _monDef[i], X = _monPos[i].X, Z = _monPos[i].Y }); continue; }
+            if (m.IsBoss || ReferenceEquals(m, L.BossMon) || NamedHub.Of(m) != null || m.MaxLife <= 0f || m.Life >= m.MaxLife - 0.5f) continue;
+            s.Hurt.Add(new LevelSnapshot.HurtRec { I = i, D = _monDef[i], X = _monPos[i].X, Z = _monPos[i].Y, F = Mathf.Clamp(m.Life / m.MaxLife, 0.01f, 1f) });
         }
+        for (int i = 0; i < L.Events.Count; i++) if (L.Events[i] is { Done: true }) s.EventsDone.Add(i);
         // objects used up
         for (int i = 0; i < _objs.Length; i++)
         {
@@ -235,7 +269,8 @@ public static class LevelState
         foreach (var (chest, quality) in L.RewardChests)
             if (chest != null && GodotObject.IsInstanceValid(chest) && chest.CanUse && !chest.IsQueuedForDeletion())
                 s.Chests.Add(new LevelSnapshot.ObjRec { K = quality.ToString(), X = chest.Pos2.X, Z = chest.Pos2.Y });
-        if (L.Seen != null) { s.Fog = PackBits(L.Seen); s.FogLen = L.Seen.Length; }
+        // the explored map: dungeons and rifts here; the town and the regions keep theirs in SaveData.Fog (Game.KeepStableFog)
+        if (L.Seen != null && !StableFog(L.AreaId)) { s.Fog = PackBits(L.Seen); s.FogLen = L.Seen.Length; }
         return s;
     }
 
@@ -305,6 +340,23 @@ public static class LevelState
             Remove(L, boss);
             L.RestoreBossDefeated(new Vector2(s.BossX, s.BossZ));
         }
+        // wounded monsters keep their wounds (bosses and named monsters were never recorded: they come back whole)
+        int hurt = 0;
+        foreach (var r in s.Hurt)
+        {
+            if (r == null) continue;
+            int i = FindMon(new LevelSnapshot.MonRec { I = r.I, D = r.D, X = r.X, Z = r.Z }, used);
+            if (i < 0) { missed++; continue; }
+            used.Add(i);
+            var m = _mons[i];
+            if (m == null || !GodotObject.IsInstanceValid(m) || m.Dead || m.IsBoss || ReferenceEquals(m, L.BossMon) || NamedHub.Of(m) != null) continue;
+            m.Life = Mathf.Clamp(m.MaxLife * r.F, 1f, m.MaxLife);
+            hurt++;
+        }
+        // world events already finished stay finished (one in progress starts afresh: its waves are not kept)
+        int evDone = 0;
+        foreach (int i in s.EventsDone)
+            if (i >= 0 && i < L.Events.Count && L.Events[i] is { } ev && !ev.Done) { ev.RestoreDone(); evDone++; }
         // objects
         var usedObj = new HashSet<int>();
         int spent = 0;
@@ -337,9 +389,58 @@ public static class LevelState
         if (L.Seen != null && s.Fog != null && s.FogLen == L.Seen.Length) fog = UnpackBitsInto(s.Fog, L.Seen);
         L.UpdateObjective();
         L.MarkDirty();
-        Log.Info(Cat, $"restored area={L.AreaId} seed={L.Seed} roster={(sameRoster ? "same" : "differs")} dead={removed}{(s.BossDead ? "+boss" : "")} spent={spent} missed={missed} " +
+        Log.Info(Cat, $"restored area={L.AreaId} seed={L.Seed} roster={(sameRoster ? "same" : "differs")} dead={removed}{(s.BossDead ? "+boss" : "")} hurt={hurt} eventsDone={evDone}{(s.MidBoss ? " midBoss" : "")} spent={spent} missed={missed} " +
             $"objective={L.ObjCount}/{L.ObjTotal} embers={L.Embers}/{L.EmbersNeeded}{(L.EmbersOffered ? " offered" : "")} door={(L.DoorSealed ? "sealed" : "open")} " +
             $"loot={s.Loot.Count} gold={s.Gold.Count} shards={s.Shards.Count} chests={s.Chests.Count} fogCells={fog}");
+    }
+
+    // ───────────────────────── checking a loaded snapshot ─────────────────────────
+
+    private static bool Fin(float v) => float.IsFinite(v);
+    private static bool Fin(float a, float b) => float.IsFinite(a) && float.IsFinite(b) && Mathf.Abs(a) < 1e5f && Mathf.Abs(b) < 1e5f;
+
+    /// <summary>
+    /// A snapshot read from a save (possibly damaged or hand-edited): drops records that cannot be used and puts odd values
+    /// back in range. False when the place itself cannot be rebuilt (no area, no seed, no usable spot): the caller then
+    /// wakes the hero the old way. Never throws.
+    /// </summary>
+    public static bool Sanitize(LevelSnapshot s, out string why)
+    {
+        why = null;
+        try
+        {
+            if (s == null) { why = "no state"; return false; }
+            if (string.IsNullOrEmpty(s.Area) || s.Seed == 0) { why = "no area or seed"; return false; }
+            if (!Fin(s.X, s.Z) || !Fin(s.BuildX, s.BuildZ) || !Fin(s.CheckX, s.CheckZ)) { why = "position unreadable"; return false; }
+            int dropped = 0;
+            int Drop<T>(List<T> list, Predicate<T> bad) { if (list == null) return 0; int n = list.RemoveAll(bad); dropped += n; return n; }
+            s.Cds ??= new(); s.DeadMons ??= new(); s.Spent ??= new(); s.Loot ??= new(); s.Gold ??= new(); s.Shards ??= new(); s.Chests ??= new(); s.Hurt ??= new(); s.EventsDone ??= new();
+            Drop(s.Cds, c => c == null || string.IsNullOrEmpty(c.Id) || !Fin(c.Left) || !Fin(c.Max));
+            Drop(s.DeadMons, r => r == null || r.D == null || !Fin(r.X, r.Z));
+            Drop(s.Hurt, r => r == null || r.D == null || !Fin(r.X, r.Z) || !Fin(r.F));
+            Drop(s.Spent, r => r == null || r.K == null || !Fin(r.X, r.Z));
+            Drop(s.Shards, r => r == null || !Fin(r.X, r.Z));
+            Drop(s.Chests, r => r == null || !Fin(r.X, r.Z));
+            Drop(s.Loot, r => r == null || r.It == null || !Fin(r.X, r.Z));
+            Drop(s.Gold, r => r == null || r.A <= 0 || !Fin(r.X, r.Z));
+            foreach (var r in s.Hurt) r.F = Mathf.Clamp(r.F, 0.01f, 1f);
+            if (!Fin(s.Facing)) s.Facing = 0f;
+            s.LifeFrac = Fin(s.LifeFrac) && s.LifeFrac > 0f && s.LifeFrac <= 1.001f ? Mathf.Clamp(s.LifeFrac, 0.05f, 1f) : 1f;
+            if (!Fin(s.Resource)) s.Resource = 0f;
+            if (!Fin(s.EvadeCd) || s.EvadeCd < 0f) s.EvadeCd = 0f;
+            if (!Fin(s.SecondWindCd) || s.SecondWindCd < 0f) s.SecondWindCd = 0f;
+            if (!Fin(s.BossX, s.BossZ)) { s.BossX = 0f; s.BossZ = 0f; }
+            if (!Fin(s.RiftTimeLeft) || s.RiftTimeLeft < 0f) s.RiftTimeLeft = 0f;
+            s.RiftTimeLeft = Mathf.Min(s.RiftTimeLeft, AshenAbyss.Level.RiftTime);
+            if (!Fin(s.RiftPoints) || s.RiftPoints < 0f) s.RiftPoints = 0f;
+            s.ObjCount = Math.Max(0, s.ObjCount); s.Embers = Math.Max(0, s.Embers);
+            if (s.MonsterLevel < 0 || s.MonsterLevel > Balance.LevelCap + 20) s.MonsterLevel = 0;      // 0 = the level's own
+            if (s.FogLen <= 0 || s.FogLen > 4_000_000) { s.Fog = null; s.FogLen = 0; }
+            foreach (var l in s.Loot) { l.It.Affixes ??= new(); l.It.Gems ??= new(); l.It.Implicits ??= new(); }
+            if (dropped > 0) why = $"{dropped} unreadable record(s) dropped";
+            return true;
+        }
+        catch (Exception e) { why = "unreadable: " + e.Message; return false; }
     }
 
     /// <summary>Puts the saved hero state on a freshly made Player (position, facing, life, resource, cooldowns).</summary>
@@ -360,6 +461,7 @@ public static class LevelState
             p.Life = Mathf.Max(1f, p.MaxLife * Mathf.Clamp(s.LifeFrac, 0.05f, 1f));
             if (s.Potions >= 0) p.Potions = Math.Clamp(s.Potions, 0, p.Hero.D.PotionCap);
         }
+        ResumedLife = p.LifeFrac;
         Log.Info(Cat, $"hero resumed at ({at.X:0.00}, {at.Y:0.00}) facing={s.Facing:0.00} life={p.LifeFrac:P0} resource={p.Resource:0}");
     }
 

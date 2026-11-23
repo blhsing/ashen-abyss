@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://dojuroj0v3wsk"
-path="res://.godot/imported/npc_occultist_metal_c.jpg-7428bde6be2d84dcf82bf4faa443ce02.ctex"
+path.bptc="res://.godot/imported/npc_occultist_metal_c.jpg-7428bde6be2d84dcf82bf4faa443ce02.bptc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "119cf5914c45acc0c83dc54512b43c07"
@@ -14,12 +15,12 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/chars/npc_occultist_metal_c.jpg"
-dest_files=["res://.godot/imported/npc_occultist_metal_c.jpg-7428bde6be2d84dcf82bf4faa443ce02.ctex"]
+dest_files=["res://.godot/imported/npc_occultist_metal_c.jpg-7428bde6be2d84dcf82bf4faa443ce02.bptc.ctex"]
 
 [params]
 
-compress/mode=0
-compress/high_quality=false
+compress/mode=2
+compress/high_quality=true
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

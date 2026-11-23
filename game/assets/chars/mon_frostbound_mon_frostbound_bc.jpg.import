@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://dajbp7jqg63k8"
-path="res://.godot/imported/mon_frostbound_mon_frostbound_bc.jpg-ea11279dd3718fd1a84698dea48ca0ab.ctex"
+path.bptc="res://.godot/imported/mon_frostbound_mon_frostbound_bc.jpg-ea11279dd3718fd1a84698dea48ca0ab.bptc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "5ab5263b9e1cb1dcaa870b5b14178da6"
@@ -14,12 +15,12 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/chars/mon_frostbound_mon_frostbound_bc.jpg"
-dest_files=["res://.godot/imported/mon_frostbound_mon_frostbound_bc.jpg-ea11279dd3718fd1a84698dea48ca0ab.ctex"]
+dest_files=["res://.godot/imported/mon_frostbound_mon_frostbound_bc.jpg-ea11279dd3718fd1a84698dea48ca0ab.bptc.ctex"]
 
 [params]
 
-compress/mode=0
-compress/high_quality=false
+compress/mode=2
+compress/high_quality=true
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

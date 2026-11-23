@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://d0s1qab6f2ub7"
-path="res://.godot/imported/mon_engine_winder_mon_engine_winder_em.jpg-775844641c3d1d832cfbbcac0048e416.ctex"
+path.bptc="res://.godot/imported/mon_engine_winder_mon_engine_winder_em.jpg-775844641c3d1d832cfbbcac0048e416.bptc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "583cc1ea69c34e2ca1363e613f7c423b"
@@ -14,12 +15,12 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/chars/mon_engine_winder_mon_engine_winder_em.jpg"
-dest_files=["res://.godot/imported/mon_engine_winder_mon_engine_winder_em.jpg-775844641c3d1d832cfbbcac0048e416.ctex"]
+dest_files=["res://.godot/imported/mon_engine_winder_mon_engine_winder_em.jpg-775844641c3d1d832cfbbcac0048e416.bptc.ctex"]
 
 [params]
 
-compress/mode=0
-compress/high_quality=false
+compress/mode=2
+compress/high_quality=true
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

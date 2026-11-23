@@ -1,0 +1,27 @@
+=== sys_guide_play --resolution 1600x900 : log: C:\Users\blhsi\AppData\Roaming\AshenAbyss\logs\game_20261122_173014.log  lines=153  ERR=0  WRN=0
+=== sys_guide_menu --resolution build ok
+exit= seconds=24
+log: C:\Users\blhsi\AppData\Roaming\AshenAbyss\logs\game_20261122_173014.log  lines=153  ERR=0  WRN=0
+--- last lines ---
+   21.479 INF [cursor] size 40 px (text scale: window 1600x900 display x1.25 text x1.00 -> wants 40 px)
+   21.570 INF [uitest] quit
+   21.571 INF [game] quitting
+   21.575 INF [save] slot 96 saved: ??? lv20 ???? area=town bytes=10213
+   21.575 INF [save] save reason=quit slot=96 ok=True area=town playtime=15s capture=0.1ms total=4.1ms
+   21.583 INF [shot] screenshot saved: Y:\shots\guide\1600x900\guide_fist_scale2.png
+   21.584 INF [input] keyboard hook saw 0 key events, 0 of them PrtSc
+   21.585 INF [boot] shutdown errors=0 warnings=0 uptime=22s : 
+=== sys_guide_play --resolution 1920x1080 : log: C:\Users\blhsi\AppData\Roaming\AshenAbyss\logs\game_20261122_173837.log  lines=153  ERR=0  WRN=0
+=== sys_guide_menu --resolution build ok
+exit= seconds=23
+log: C:\Users\blhsi\AppData\Roaming\AshenAbyss\logs\game_20261122_173837.log  lines=153  ERR=0  WRN=0
+--- last lines ---
+   21.260 INF [cursor] size 40 px (text scale: window 1600x900 display x1.25 text x1.00 -> wants 40 px)
+   21.346 INF [uitest] quit
+   21.347 INF [game] quitting
+   21.351 INF [save] slot 96 saved: ??? lv20 ???? area=town bytes=10232
+   21.351 INF [save] save reason=quit slot=96 ok=True area=town playtime=15s capture=0.1ms total=3.8ms
+   21.387 INF [shot] screenshot saved: Y:\shots\guide\1920x1080\guide_fist_scale2.png
+   21.389 INF [input] keyboard hook saw 0 key events, 0 of them PrtSc
+   21.390 INF [boot] shutdown errors=0 warnings=0 uptime=21s : 
+DONE

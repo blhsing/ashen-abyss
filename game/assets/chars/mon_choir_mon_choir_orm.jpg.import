@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://mv3hvt1whp1t"
-path="res://.godot/imported/mon_choir_mon_choir_orm.jpg-6c9194f0a77f11a9f7d3da6ef5f07ff4.ctex"
+path.bptc="res://.godot/imported/mon_choir_mon_choir_orm.jpg-6c9194f0a77f11a9f7d3da6ef5f07ff4.bptc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "c2fc07e3cec7f8a0e2c1e379fb86870f"
@@ -14,12 +15,12 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/chars/mon_choir_mon_choir_orm.jpg"
-dest_files=["res://.godot/imported/mon_choir_mon_choir_orm.jpg-6c9194f0a77f11a9f7d3da6ef5f07ff4.ctex"]
+dest_files=["res://.godot/imported/mon_choir_mon_choir_orm.jpg-6c9194f0a77f11a9f7d3da6ef5f07ff4.bptc.ctex"]
 
 [params]
 
-compress/mode=0
-compress/high_quality=false
+compress/mode=2
+compress/high_quality=true
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

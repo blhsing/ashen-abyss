@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://c7ktn36d3vuvu"
-path="res://.godot/imported/hero_lampknight_cloth_c.jpg-b1458183e43432b3b04af58277298d7e.ctex"
+path.bptc="res://.godot/imported/hero_lampknight_cloth_c.jpg-b1458183e43432b3b04af58277298d7e.bptc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "8f14b0c6e6ff6bdd36dcc4f637a22577"
@@ -14,12 +15,12 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/chars/hero_lampknight_cloth_c.jpg"
-dest_files=["res://.godot/imported/hero_lampknight_cloth_c.jpg-b1458183e43432b3b04af58277298d7e.ctex"]
+dest_files=["res://.godot/imported/hero_lampknight_cloth_c.jpg-b1458183e43432b3b04af58277298d7e.bptc.ctex"]
 
 [params]
 
-compress/mode=0
-compress/high_quality=false
+compress/mode=2
+compress/high_quality=true
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

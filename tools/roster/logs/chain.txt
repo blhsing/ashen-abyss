@@ -1,0 +1,29 @@
+10:06:02 import: import exit=-1073741819 seconds=492 import retry exit=0 seconds=607 
+10:07:05 vram_after_best build failed, retry
+10:09:41 vram_after_best build failed, retry
+10:12:01 vram_after_best build failed, retry
+10:14:22 vram_after_best build failed, retry
+10:16:25 vram_after_best build failed, retry
+10:18:40 vram_after_best build failed, retry
+10:20:56 vram_after_best build failed, retry
+10:23:15 vram_after_best build failed, retry
+10:25:26 vram_after_best build failed, retry
+2026-11-22 10:39:08 vram_after_best: exit= seconds=43 log: C:\Users\blhsi\AppData\Roaming\AshenAbyss\logs\game_20261122_103758.log  lines=240  ERR=0  WRN=0 
+2026-11-22 11:21:19 vram_after_old: exit= seconds=61 log: C:\Users\blhsi\AppData\Roaming\AshenAbyss\logs\game_20261122_111943.log  lines=209  ERR=0  WRN=0 
+2026-11-22 11:50:58 creatures: exit= seconds=607 log: C:\Users\blhsi\AppData\Roaming\AshenAbyss\logs\game_20261122_114012.log  lines=1528  ERR=1  WRN=16 
+2026-11-22 12:40:27 ai: exit= seconds=203 log: C:\Users\blhsi\AppData\Roaming\AshenAbyss\logs\game_20261122_123636.log  lines=1145  ERR=0  WRN=0 
+2026-11-22 13:09:33 named_rare: exit= seconds=223 log: C:\Users\blhsi\AppData\Roaming\AshenAbyss\logs\game_20261122_130524.log  lines=1914  ERR=0  WRN=11 
+2026-11-22 14:06:25 demo: exit= seconds=349 log: C:\Users\blhsi\AppData\Roaming\AshenAbyss\logs\game_20261122_140000.log  lines=2033  ERR=0  WRN=0 
+2026-11-22 14:22:34 creatures: exit= seconds=690 log: C:\Users\blhsi\AppData\Roaming\AshenAbyss\logs\game_20261122_141044.log  lines=1622  ERR=1  WRN=13 
+14:22:54 chain done: creatures
+2026-11-22 15:33:41 creatures: exit= seconds=697 log: C:\Users\blhsi\AppData\Roaming\AshenAbyss\logs\game_20261122_152132.log  lines=1644  ERR=1  WRN=5 
+2026-11-22 16:31:41 camp_ember_best: exit= seconds=2671 log: C:\Users\blhsi\AppData\Roaming\AshenAbyss\logs\game_20261122_154634.log  lines=9972  ERR=0  WRN=2 
+2026-11-22 17:09:59 demo: exit= seconds=338 log: C:\Users\blhsi\AppData\Roaming\AshenAbyss\logs\game_20261122_170407.log  lines=1909  ERR=0  WRN=0 
+17:10:07 chain done: creatures demo
+2026-11-22 20:08:40 camp_ember_best: exit= seconds=1492 log: C:\Users\blhsi\AppData\Roaming\AshenAbyss\logs\game_20261122_194327.log  lines=11852  ERR=0  WRN=0 
+2026-11-22 21:10:02 camp_hunter_best: exit= seconds=1682 log: C:\Users\blhsi\AppData\Roaming\AshenAbyss\logs\game_20261122_204138.log  lines=11798  ERR=0  WRN=2 
+21:10:13 chain done: camp_ember camp_hunter
+2026-11-22 22:41:24 camp_ember_best: exit= seconds=2170 log: C:\Users\blhsi\AppData\Roaming\AshenAbyss\logs\game_20261122_220451.log  lines=17729  ERR=0  WRN=3 
+22:41:36 chain done: camp_ember
+2026-11-23 00:01:20 camp_hunter_best: exit= seconds=2275 log: C:\Users\blhsi\AppData\Roaming\AshenAbyss\logs\game_20261122_232302.log  lines=17508  ERR=0  WRN=2 
+00:01:32 chain done: camp_hunter

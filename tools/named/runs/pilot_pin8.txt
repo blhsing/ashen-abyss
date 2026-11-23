@@ -1,0 +1,10 @@
+BUILD FAILED: 8 errors
+src\Golems.cs(155,24): error CS1061: 'Projectile' does not contain a definition for 'OnMinionHit' and no accessible extension method 'OnMinionHit' accepting a first argument of type 'Projectile' could be found (are you missing a using directive or an assembly reference?)
+src\Golems.cs(303,13): error CS0103: The name 'MinionSystem' does not exist in the current context
+src\Golems.cs(411,9): error CS0103: The name 'MinionSystem' does not exist in the current context
+src\Golems.cs(421,9): error CS0103: The name 'MinionSystem' does not exist in the current context
+src\Golems.cs(445,111): error CS0103: The name 'MinionSystem' does not exist in the current context
+src\Golems.cs(458,17): error CS0103: The name 'MinionSystem' does not exist in the current context
+src\Golems.cs(548,9): error CS0103: The name 'MinionSystem' does not exist in the current context
+src\Golems.cs(576,45): error CS0103: The name 'MinionSystem' does not exist in the current context
+DONE

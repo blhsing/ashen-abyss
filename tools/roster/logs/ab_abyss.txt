@@ -1,0 +1,9 @@
+== bestiary ERR=0
+  145.681 INF [bot] summary t=571s game=563s area=abyss doing=use loot kills=320 elites=21 bosses=1 level=46 life=100% items=56 gold=24924 deaths=0 areas=1 casts=826 unstuck=0 monsters=118 errors=0 warnings=0 botErrors=0 focus=event in progress
+  148.193 INF [bot] summary t=581s game=573s area=abyss doing=explore marker:chest kills=320 elites=21 bosses=1 level=46 life=100% items=60 gold=25731 deaths=0 areas=1 casts=826 unstuck=0 monsters=118 errors=0 warnings=0 botErrors=0 focus=event in progress
+  150.697 INF [bot] summary t=591s game=583s area=abyss doing=explore marker:chest kills=320 elites=21 bosses=1 level=46 life=100% items=60 gold=25731 deaths=0 areas=1 casts=826 unstuck=0 monsters=118 errors=0 warnings=0 botErrors=0 focus=event in progress
+  153.183 INF [roster] running area=abyss hero=lv46 ttk normal=2.5s(n=300) champion=11.7s(n=17) elite=8.4s(n=4) boss=88.8s(n=1) | taken 2879/min (0.80 life bars/min, 1409 hits) kills=323 in 593s | worst [sh_abyss:4518,hauler_stoker:3372,wraith:3357,forge_eye:3304] slowest [wraith*:93.5s/1,ash_weeper*:63.4s/1,hauler_stoker:11.3s/8,fiend_maw*:10.5s/1,forge_eye:10.3s/18]
+  153.203 INF [bot] summary t=601s game=593s area=abyss doing=fight forge_eye kills=323 elites=21 bosses=1 level=46 life=97% items=60 gold=25731 deaths=0 areas=1 casts=836 unstuck=0 monsters=115 errors=0 warnings=0 botErrors=0 focus=event in progress
+  153.421 INF [bot] final summary t=602s game=594s area=abyss doing=fight forge_tongs kills=324 elites=21 bosses=1 level=46 life=98% items=60 gold=25731 deaths=0 areas=1 casts=838 unstuck=0 monsters=114 errors=0 warnings=0 botErrors=0 focus=event in progress
+== no-bestiary ERR=0
+done 18:07:17

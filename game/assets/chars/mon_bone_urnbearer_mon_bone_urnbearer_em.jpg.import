@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://df78l3f66oy0l"
-path="res://.godot/imported/mon_bone_urnbearer_mon_bone_urnbearer_em.jpg-4fe4be3f206d4fdd24ee7468771c7d76.ctex"
+path.bptc="res://.godot/imported/mon_bone_urnbearer_mon_bone_urnbearer_em.jpg-4fe4be3f206d4fdd24ee7468771c7d76.bptc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "6a609dbcd9fff10a9bdb67756e0e9dd9"
@@ -14,12 +15,12 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/chars/mon_bone_urnbearer_mon_bone_urnbearer_em.jpg"
-dest_files=["res://.godot/imported/mon_bone_urnbearer_mon_bone_urnbearer_em.jpg-4fe4be3f206d4fdd24ee7468771c7d76.ctex"]
+dest_files=["res://.godot/imported/mon_bone_urnbearer_mon_bone_urnbearer_em.jpg-4fe4be3f206d4fdd24ee7468771c7d76.bptc.ctex"]
 
 [params]
 
-compress/mode=0
-compress/high_quality=false
+compress/mode=2
+compress/high_quality=true
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

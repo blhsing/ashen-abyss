@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://chijca6yj4et8"
-path="res://.godot/imported/mon_cf_spirit_mon_cf_spirit_orm.jpg-83b3985172dd3e8a01bf630774fb76ad.ctex"
+path.bptc="res://.godot/imported/mon_cf_spirit_mon_cf_spirit_orm.jpg-83b3985172dd3e8a01bf630774fb76ad.bptc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "757b21f1e49c71ff8067ed7eda32354d"
@@ -14,12 +15,12 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/chars/mon_cf_spirit_mon_cf_spirit_orm.jpg"
-dest_files=["res://.godot/imported/mon_cf_spirit_mon_cf_spirit_orm.jpg-83b3985172dd3e8a01bf630774fb76ad.ctex"]
+dest_files=["res://.godot/imported/mon_cf_spirit_mon_cf_spirit_orm.jpg-83b3985172dd3e8a01bf630774fb76ad.bptc.ctex"]
 
 [params]
 
-compress/mode=0
-compress/high_quality=false
+compress/mode=2
+compress/high_quality=true
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

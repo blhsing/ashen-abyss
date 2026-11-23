@@ -28,3 +28,8 @@ How to rebuild one class: `./rb.sh build_base.py <class>` → `./rb.sh split_t4.
 - MISSING (25): hunter t1/t2/t3 (15), pactbinder t2/t3 (10). RENDER falls back to the nearest look.
 - Lead re-ran make_manifest.py: the manifest had only lampknight t4; it now has 135 pieces + 8 bodies. No Blender left running. Last pieces written: wildsoul t3 (all 5 present, sizes sane).
 - Deferred: skin restyle (orange/plastic) and the soulbinder leg seam (status unknown); the contact sheets for later classes were not reviewed by the lead.
+
+## DEFERRED (Fable) — user report 2026-11-22 11:49: thighs clip through belt drape / tabard
+- Screenshot: Y:\shots\deferred\lampknight_thigh_through_tabard.png (lampknight, armoured, mid-stride in frost). The forward thigh renders in front of the tabard and belt cloth that should cover it.
+- Cause: the drape/tabard panels (chest and pants pieces) are weighted only to the pelvis/spine, so leg swing pushes the thigh through them.
+- Fix (art): weight the drape's lower rows partly to thigh_l/thigh_r (front and back panels split per leg) or add per-leg flaps. Check all classes' skirted, robed and tabard looks (lampknight, astromancer robe, soulbinder coat, pactbinder) in run, attack and evade clips.

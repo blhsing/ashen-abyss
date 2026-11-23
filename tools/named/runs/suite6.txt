@@ -1,0 +1,34 @@
+build ok
+exit= seconds=919
+log: C:\Users\blhsi\AppData\Roaming\AshenAbyss\logs\game_20261122_131216.log  lines=4746  ERR=0  WRN=22
+--- distinct warnings ---
+   1 x [suite] FAIL named db_frost_d1: kill time within 45-90s - 39.1s
+   1 x [suite] FAIL named db_crypt_d1: kill time within 45-90s - 42.3s
+   1 x [suite] FAIL named db_wastes_d2: kill time within 45-90s - 138.5s
+   1 x [suite] FAIL named sh_abyss: kill time within 45-90s - 40.1s
+   1 x [suite] FAIL named db_wastes_d1: kill time within 45-90s - 38.2s
+   1 x [suite] FAIL named db_mire_d2: kill time within 45-90s - 28s
+   1 x [suite] FAIL named wb_breathofsilence: kill time within 120-240s - 422.3s
+   1 x [suite] FAIL named pin_2_rimelord: kill time within 120-300s - 334.4s
+   1 x [suite] FAIL named wb_barrowbearer: kill time within 120-240s - 246.5s
+   1 x [suite] FAIL named db_sanctum_d2: kill time within 45-90s - 157.8s
+   1 x [suite] FAIL named db_abyss_d2: kill time within 45-90s - 43.1s
+   1 x [suite] FAIL named rare_crypt_hundredtears: kill time within 20-45s - 16.7s
+   1 x [suite] FAIL named rare_mire_olddrum: kill time within 20-45s - 51.2s
+   1 x [suite] FAIL named rare_frost_thousandyear: kill time within 20-45s - 54.3s
+   1 x [suite] FAIL named rare_frost_whiteshadow: kill time within 20-45s - 68.5s
+   1 x [suite] FAIL named rare_frost_lastrun: kill time within 20-45s - 45.5s
+   1 x [suite] FAIL named rare_mire_guidelight: killed - 117.2s
+   1 x [suite] FAIL named rare_sanctum_vesna: kill time within 20-45s - 12.9s
+   1 x [suite] FAIL named sh_sanctum: kill time within 45-90s - 44.6s
+   1 x [suite] FAIL named rare_sanctum_kolen: kill time within 20-45s - 61.3s
+--- last lines ---
+  916.433 INF [game] quitting
+  916.437 INF [save] slot 91 saved: ??? lv50 ??? area=rift~arena:pin_8_osaros bytes=25578
+  916.438 INF [save] save reason=quit slot=91 ok=True area=rift~arena:pin_8_osaros playtime=29s capture=0.1ms total=4.2ms
+  916.444 INF [bot] final summary t=902s game=5050s area=rift~arena:pin_8_osaros doing=fight pin_8_osaros kills=13 elites=35 bosses=33 level=50 life=6% items=0 gold=50 deaths=0 areas=61 casts=7055 unstuck=0 monsters=0 errors=0 warnings=22 botErrors=0
+  916.446 INF [bot] final progress: waypoints=[town] renown=[] quests done=0/1 skillpts bonus=0 potion cap=4 altars=0 codex=0 tier=2/2 riftBest=0 paragon=53 playtime=29s
+  916.447 INF [anim] anim-check: hero moved 833.6s - 0.0s without a locomotion clip, 0.0s with frozen legs; hero stood 594.3s - 0.0s in a run clip or none; monsters moved 1013.0s - 0.0s without a locomotion clip, 0.0s with frozen legs; models without a skeleto ƒ?Ý
+  916.448 INF [input] keyboard hook saw 0 key events, 0 of them PrtSc
+  916.450 INF [boot] shutdown errors=0 warnings=22 uptime=916s
+DONE

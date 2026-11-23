@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://duw28bd8ryvtn"
-path="res://.godot/imported/mon_dusk_crow_mon_dusk_crow_bc.jpg-02421dde4feab6b5f40f260d28b88d95.ctex"
+path.bptc="res://.godot/imported/mon_dusk_crow_mon_dusk_crow_bc.jpg-02421dde4feab6b5f40f260d28b88d95.bptc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "18e8c3747d265c1eaf98103dd1030f4a"
@@ -14,12 +15,12 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/chars/mon_dusk_crow_mon_dusk_crow_bc.jpg"
-dest_files=["res://.godot/imported/mon_dusk_crow_mon_dusk_crow_bc.jpg-02421dde4feab6b5f40f260d28b88d95.ctex"]
+dest_files=["res://.godot/imported/mon_dusk_crow_mon_dusk_crow_bc.jpg-02421dde4feab6b5f40f260d28b88d95.bptc.ctex"]
 
 [params]
 
-compress/mode=0
-compress/high_quality=false
+compress/mode=2
+compress/high_quality=true
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

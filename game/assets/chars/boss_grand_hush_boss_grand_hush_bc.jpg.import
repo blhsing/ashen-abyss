@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://csmgg0uylheby"
-path="res://.godot/imported/boss_grand_hush_boss_grand_hush_bc.jpg-60a17c4ce19a6ad7b10d625b0d23d169.ctex"
+path.bptc="res://.godot/imported/boss_grand_hush_boss_grand_hush_bc.jpg-60a17c4ce19a6ad7b10d625b0d23d169.bptc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "bad0a2e31fe6e2d24336ac0a0d1662d7"
@@ -14,12 +15,12 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/chars/boss_grand_hush_boss_grand_hush_bc.jpg"
-dest_files=["res://.godot/imported/boss_grand_hush_boss_grand_hush_bc.jpg-60a17c4ce19a6ad7b10d625b0d23d169.ctex"]
+dest_files=["res://.godot/imported/boss_grand_hush_boss_grand_hush_bc.jpg-60a17c4ce19a6ad7b10d625b0d23d169.bptc.ctex"]
 
 [params]
 
-compress/mode=0
-compress/high_quality=false
+compress/mode=2
+compress/high_quality=true
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

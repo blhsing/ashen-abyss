@@ -1,0 +1,19 @@
+exit= seconds=603
+log: C:\Users\blhsi\AppData\Roaming\AshenAbyss\logs\game_20261122_214353.log  lines=1756  ERR=0  WRN=7
+--- distinct warnings ---
+   1 x [bot] going nowhere near (72.1, 24.9) in frost_boss for a minute while 'focus leave' (portal out); jumping to the checkpoint (69.0, 45.0)
+   1 x [bot] going nowhere near (68.0, 21.8) in frost_boss for a minute while 'focus leave' (portal out); jumping to the checkpoint (69.0, 45.0)
+   1 x [bot] going nowhere near (73.6, 21.1) in frost_boss for a minute while 'focus leave' (portal out); jumping to the checkpoint (69.0, 45.0)
+   1 x [bot] going nowhere near (73.8, 22.3) in frost_boss for a minute while 'focus leave' (portal out); jumping to the checkpoint (69.0, 45.0)
+   1 x [bot] going nowhere near (69.1, 20.5) in frost_boss for a minute while 'focus leave' (portal out); jumping to the checkpoint (69.0, 45.0)
+   1 x [bot] going nowhere near (75.9, 20.8) in frost_boss for a minute while 'focus leave' (portal out); jumping to the checkpoint (69.0, 45.0)
+   1 x [bot] going nowhere near (71.3, 25.2) in frost_boss for a minute while 'focus leave' (portal out); jumping to the checkpoint (69.0, 45.0)
+--- last lines ---
+  602.671 INF [save] save reason=quit slot=95 ok=True area=frost_boss playtime=600s capture=0.1ms total=2.4ms
+  602.673 INF [bot] final summary t=1801s game=1800s area=frost_boss doing=focus leave kills=58 elites=1 bosses=1 level=27 life=100% items=16 gold=7720 deaths=0 areas=1 casts=143 unstuck=7 monsters=82 errors=0 warnings=7 botErrors=0 focus=portal out
+  602.674 INF [bot] final progress: waypoints=[town] renown=[frost:150] quests done=0/3 skillpts bonus=0 potion cap=4 altars=0 codex=0 tier=0/1 riftBest=0 paragon=0 playtime=600s
+  602.676 INF [bot] final skills [soulbinder lv27] cast/hits/damage: (other):c0/h21/d10889 sb_blight:c18/h202/d30333 sb_bolt:c61/h74/d20285 sb_curse:c7/h0/d0 sb_explode:c44/h91/d72619 sb_spear:c9/h12/d10418 sb_veil:c4/h31/d4668
+  602.677 INF [bot] final balance: ttk normal=1.9s(n=56) champion=-s(n=0) elite=8.1s(n=1) boss=44.9s(n=1) | taken 78/min in 64 hits (life 1991; 0.04 life bars/min) god-saves=0 | kills/min 1.9 | never cast: [] cast but never hit: []
+  602.677 INF [anim] anim-check: hero moved 352.8s - 0.0s without a locomotion clip, 0.0s with frozen legs; hero stood 1370.5s - 0.0s in a run clip or none; monsters moved 80.5s - 0.0s without a locomotion clip, 0.0s with frozen legs; models without a skeleton ƒ?Ý
+  602.678 INF [input] keyboard hook saw 0 key events, 0 of them PrtSc
+  602.678 INF [boot] shutdown errors=0 warnings=7 uptime=603s

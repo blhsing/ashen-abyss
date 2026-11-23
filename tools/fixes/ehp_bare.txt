@@ -1,0 +1,12 @@
+ehp emberblade lv10 bare: life 370 armor 27 (dr 5%) dmgred 0% res 0 -> ehp 390
+ehp emberblade lv23 bare: life 682 armor 53 (dr 5%) dmgred 0% res 0 -> ehp 717
+ehp emberblade lv40 bare: life 1134 armor 222 (dr 12%) dmgred 0% res 0 -> ehp 1282
+ehp forgebody lv10 bare: life 370 armor 17 (dr 3%) dmgred 0% res 0 -> ehp 383
+ehp forgebody lv23 bare: life 682 armor 30 (dr 3%) dmgred 0% res 0 -> ehp 702
+ehp forgebody lv40 bare: life 1090 armor 47 (dr 3%) dmgred 3% res 0 -> ehp 1155
+ehp lampknight lv10 bare: life 370 armor 27 (dr 5%) dmgred 0% res 0 -> ehp 390
+ehp lampknight lv23 bare: life 764 armor 95 (dr 9%) dmgred 8% res 0 -> ehp 908
+ehp lampknight lv40 bare: life 1264 armor 223 (dr 12%) dmgred 8% res 0 -> ehp 1554
+ehp wildsoul lv10 bare: life 370 armor 17 (dr 3%) dmgred 0% res 0 -> ehp 383
+ehp wildsoul lv23 bare: life 750 armor 30 (dr 3%) dmgred 0% res 0 -> ehp 772
+ehp wildsoul lv40 bare: life 1243 armor 107 (dr 6%) dmgred 0% res 0 -> ehp 1321

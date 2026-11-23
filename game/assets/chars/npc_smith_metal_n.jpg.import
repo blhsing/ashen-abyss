@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://btwnynvf3tiko"
-path="res://.godot/imported/npc_smith_metal_n.jpg-14b56f2da5a4f3ab1f4ebcb5899632ae.ctex"
+path.s3tc="res://.godot/imported/npc_smith_metal_n.jpg-14b56f2da5a4f3ab1f4ebcb5899632ae.s3tc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "361b6383d881eb452eeb54d1fee9de36"
@@ -14,17 +15,17 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/chars/npc_smith_metal_n.jpg"
-dest_files=["res://.godot/imported/npc_smith_metal_n.jpg-14b56f2da5a4f3ab1f4ebcb5899632ae.ctex"]
+dest_files=["res://.godot/imported/npc_smith_metal_n.jpg-14b56f2da5a4f3ab1f4ebcb5899632ae.s3tc.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1
-compress/normal_map=0
+compress/normal_map=1
 compress/channel_pack=0
 mipmaps/generate=true
 mipmaps/limit=-1

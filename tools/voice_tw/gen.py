@@ -47,6 +47,12 @@ DRIFT_ABS, DRIFT_REL = 0.55, 0.20                        # a line drifts if its 
 TOO_SIMILAR = 0.75                                       # two anchors closer than this are not distinct voices
 LOCKED = {"boss_osaros"}                                 # effect strength fixed by the user: a failing line is re-taken, never weakened
 USER_APPROVED = {"boss_osaros"}                          # voice chosen by the user by ear: audited, but never redesigned automatically
+# Lead's decision 2026-11-22: one-line bosses whose single short line keeps missing the classifier by a little. Exception
+# only when ALL hold: one line, its dry take under 4 s; the anchor passes every gate (reads back exactly, pitch in range,
+# HNR >= floor, classifier); the line's median pitch <= the profile's ceiling and <= 160 Hz; the line's HNR >= floor;
+# the line's p(male) >= 0.50 (instead of 0.60). Logged in audit.json and report.json -> audit_exceptions.
+SHORT_LINE_EXCEPTION = {"boss_sh_wastes", "boss_sh_frost", "boss_wb_firstbearer"}
+SHORT_LINE_P_MALE = 0.50
 AUDIT = os.path.join(E.PROD, "audit.json")
 DECISION = os.path.join(E.HERE, "DECISION.md")
 
@@ -216,8 +222,27 @@ def audit_voice(v: str, vlines: list[dict]) -> dict:
     lines_f0 = round(float(np.median(f0s))) if f0s else None
     pitch_ok = bool(anchor_f0 and lo <= anchor_f0 <= hi and (lines_f0 is None or (lines_f0 <= hi * 1.1 if sex == "m" else lines_f0 >= lo * 0.9)))
     sex_ok = bool(E.sex_fits(pm_a, sex) and E.sex_fits(pm_l, sex))
+    # gate 4 of README.md (added to the audit 2026-11-22): the anchor must be clean enough (harmonics-to-noise ratio
+    # at least the character's floor); an anchor without a measurement (made before it was recorded) is not failed
+    hnr_min = spec.get("hnr_min", 4.0)
+    hnr_ok = bool(a.get("hnr") is None or a["hnr"] >= hnr_min)
+    passed = bool(pitch_ok and sex_ok and hnr_ok)
+    exception = None
+    if not passed and v in SHORT_LINE_EXCEPTION and sex == "m" and len(paths) == 1 and len(vlines) == 1:
+        x, sr = vt.read_wav(paths[0])
+        st = vt.voice_stats(x, sr)
+        dur = len(x) / sr
+        anchor_all = bool(a.get("sane") and (a.get("cer") if a.get("cer") is not None else 1) <= 0.04 and anchor_f0 and lo <= anchor_f0 <= hi
+                          and a.get("hnr") is not None and a["hnr"] >= hnr_min and E.sex_fits(pm_a, sex))
+        line_ok = bool(dur < 4.0 and lines_f0 and lines_f0 <= min(hi, 160) and st["hnr"] is not None and st["hnr"] >= hnr_min
+                       and pm_l is not None and pm_l >= SHORT_LINE_P_MALE)
+        exception = dict(rule="short-line exception (lead 2026-11-22): one line < 4 s, anchor passes every gate, line pitch <= min(ceiling, 160 Hz), "
+                              "line HNR >= floor, line p(male) >= 0.50", applied=bool(anchor_all and line_ok), line=paths[0], line_seconds=round(dur, 2),
+                         line_f0=lines_f0, line_hnr=st["hnr"], line_p_male=pm_l, anchor_f0=anchor_f0, anchor_hnr=a.get("hnr"), anchor_p_male=pm_a,
+                         anchor_cer=a.get("cer"), f0_ceiling=min(hi, 160), hnr_min=hnr_min)
+        passed = exception["applied"]
     return dict(voice=v, who=spec.get("who", ""), sex=sex, f0_wanted=[lo, hi], anchor_f0=anchor_f0, anchor_p_male=pm_a, lines_checked=len(paths),
-                lines_f0=lines_f0, lines_p_male=pm_l, pitch_ok=pitch_ok, sex_ok=sex_ok, passed=bool(pitch_ok and sex_ok),
+                lines_f0=lines_f0, lines_p_male=pm_l, pitch_ok=pitch_ok, sex_ok=sex_ok, hnr_ok=hnr_ok, hnr_min=hnr_min, passed=passed, exception=exception,
                 designs_tried=a.get("designs_tried"), design_kept=a.get("design_kept"), hnr=a.get("hnr"))
 
 
@@ -247,8 +272,8 @@ def write_audit_table() -> None:
         r = au[v]
         for h in r.get("history", []):
             rows.append(f"| {v} (rejected) | {r['who']} | {r['f0_wanted'][0]}-{r['f0_wanted'][1]} | {h.get('anchor_f0')} | {h.get('lines_f0')} ({h.get('lines_checked')}) | "
-                        f"{h.get('anchor_p_male')} / {h.get('lines_p_male')} | **failed** ({'pitch' if not h.get('pitch_ok') else ''}{' ' if not h.get('pitch_ok') and not h.get('sex_ok') else ''}{'classifier' if not h.get('sex_ok') else ''}) | {h.get('action', 'rejected, designed again')} |")
-        gate = "pass" if r["passed"] else "**failed** (" + " ".join(x for x, ok in (("pitch", r["pitch_ok"]), ("classifier", r["sex_ok"])) if not ok) + ")"
+                        f"{h.get('anchor_p_male')} / {h.get('lines_p_male')} | **failed** ({' '.join(x for x, ok in (('pitch', h.get('pitch_ok')), ('classifier', h.get('sex_ok')), ('HNR', h.get('hnr_ok', True))) if not ok)}) | {h.get('action', 'rejected, designed again')} |")
+        gate = "pass" if r["passed"] else "**failed** (" + " ".join(x for x, ok in (("pitch", r["pitch_ok"]), ("classifier", r["sex_ok"]), ("HNR", r.get("hnr_ok", True))) if not ok) + ")"
         rows.append(f"| {v} | {r['who']} | {r['f0_wanted'][0]}-{r['f0_wanted'][1]} | {r['anchor_f0']} | {r['lines_f0']} ({r['lines_checked']}) | "
                     f"{r['anchor_p_male']} / {r['lines_p_male']} | {gate} | {r['action']} |")
     rows.append("<!-- voice-audit-end -->")
@@ -289,7 +314,22 @@ def designed_voice(eng: E.Engine, v: str, vl: list[dict], force: bool = False) -
         do_lines(eng, vl[:3], force=force)
         res = audit_voice(v, vl[:3])
         E.log(f"audit {v}: anchor {res['anchor_f0']} Hz, lines {res['lines_f0']} Hz (wanted {res['f0_wanted']}), p(male) {res['anchor_p_male']} / "
-              f"{res['lines_p_male']} ({res['sex']}) -> {'pass' if res['passed'] else 'FAIL'}", LOG)
+              f"{res['lines_p_male']} ({res['sex']}), harmonics-to-noise {res['hnr']} dB (at least {res['hnr_min']}) -> {'pass' if res['passed'] else 'FAIL'}"
+              f"{' (SHORT-LINE EXCEPTION: ' + json.dumps({k: res['exception'][k] for k in ('line_seconds', 'line_f0', 'line_hnr', 'line_p_male')}) + ')' if res.get('exception') and res['exception']['applied'] else ''}", LOG)
+        # (2026-11-22) The ANCHOR passes every gate and only its first lines miss (pitch of the lines or the male /
+        # female classifier on them - with one short line the embedding is noisy): new takes of those lines from the
+        # same anchor (other seeds, still ASR-checked) before the whole design is thrown away. The gates are unchanged.
+        lo, hi = res["f0_wanted"]
+        anchor_good = bool(res["anchor_f0"] and lo <= res["anchor_f0"] <= hi and res["hnr_ok"] and E.sex_fits(res["anchor_p_male"], res["sex"]))
+        for seeds in ((11, 12, 13), (21, 22, 23)):
+            if res["passed"] or v in USER_APPROVED or not anchor_good:
+                break
+            E.log(f"audit {v}: the anchor passes, its first lines do not - new takes of them (seeds {seeds})", LOG)
+            a = eng.anchor(vk)
+            for l in vl[:3]:
+                eng.line(l["id"], l["voice"], l["text"], a, force=True, seeds=seeds)
+            res = audit_voice(v, vl[:3])
+            E.log(f"audit {v} (line retake): lines {res['lines_f0']} Hz, p(male) {res['lines_p_male']} -> {'pass' if res['passed'] else 'FAIL'}", LOG)
         if res["passed"]:
             save_audit(v, res, "kept" if not history else f"kept (design round {len(history) + 1})", history)
             return
@@ -469,7 +509,9 @@ def do_report(lines: list[dict], s: dict | None = None) -> dict:
                lines_failed=failed, lines_missing=missing, retried=sum(1 for r in rows if r["tries"] > 1),
                regenerated_for_drift=load_json(os.path.join(E.PROD, "regenerated.json"), {}),
                consistency=dict(per_voice=s.get("per_voice"), different_voices_mean=s.get("cross_mean"), different_voices_max=s.get("cross_max")),
-               boss_strength=load_json(BOSS_FX, {}) or {}, voices=anchors, lines=rows)
+               boss_strength=load_json(BOSS_FX, {}) or {}, voices=anchors,
+               audit_exceptions={v: r["exception"] for v, r in (load_json(AUDIT, {}) or {}).items() if (r.get("exception") or {}).get("applied")},
+               lines=rows)
     json.dump(rep, open(REPORT, "w", encoding="utf-8"), ensure_ascii=False, indent=1)
     E.log(f"report: {rep['lines_ok']} ok, {len(failed)} failed, {len(missing)} missing -> {REPORT}", LOG)
     return rep

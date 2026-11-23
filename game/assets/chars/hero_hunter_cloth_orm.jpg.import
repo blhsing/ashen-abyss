@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://bb6e180wff8yf"
-path="res://.godot/imported/hero_hunter_cloth_orm.jpg-370723fcbf67d46fbe2d954498c481e1.ctex"
+path.bptc="res://.godot/imported/hero_hunter_cloth_orm.jpg-370723fcbf67d46fbe2d954498c481e1.bptc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "3990ab20ae7eea2882fc77ed9bd9753b"
@@ -14,12 +15,12 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/chars/hero_hunter_cloth_orm.jpg"
-dest_files=["res://.godot/imported/hero_hunter_cloth_orm.jpg-370723fcbf67d46fbe2d954498c481e1.ctex"]
+dest_files=["res://.godot/imported/hero_hunter_cloth_orm.jpg-370723fcbf67d46fbe2d954498c481e1.bptc.ctex"]
 
 [params]
 
-compress/mode=0
-compress/high_quality=false
+compress/mode=2
+compress/high_quality=true
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

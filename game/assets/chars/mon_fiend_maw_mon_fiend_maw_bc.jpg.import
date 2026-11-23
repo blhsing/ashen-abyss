@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://brawedfw45dgg"
-path="res://.godot/imported/mon_fiend_maw_mon_fiend_maw_bc.jpg-2eeebbd151f4655f97e3c55270b2b8e9.ctex"
+path.bptc="res://.godot/imported/mon_fiend_maw_mon_fiend_maw_bc.jpg-2eeebbd151f4655f97e3c55270b2b8e9.bptc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "cfab0d373558292eada2c29747db385d"
@@ -14,12 +15,12 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/chars/mon_fiend_maw_mon_fiend_maw_bc.jpg"
-dest_files=["res://.godot/imported/mon_fiend_maw_mon_fiend_maw_bc.jpg-2eeebbd151f4655f97e3c55270b2b8e9.ctex"]
+dest_files=["res://.godot/imported/mon_fiend_maw_mon_fiend_maw_bc.jpg-2eeebbd151f4655f97e3c55270b2b8e9.bptc.ctex"]
 
 [params]
 
-compress/mode=0
-compress/high_quality=false
+compress/mode=2
+compress/high_quality=true
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
