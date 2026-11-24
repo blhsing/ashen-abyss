@@ -128,8 +128,15 @@ public sealed partial class TestSuite
         }
         else Fail("live: no elite in the wastes to follow");
 
-        // the stronghold falls: its target goes
-        foreach (var m in lv.StrongholdMobs.ToList()) if (GodotObject.IsInstanceValid(m) && !m.Dead) m.TakeHit(new Hit { Source = G.Player, Amount = m.MaxLife * 100f, El = Element.Physical });
+        // the stronghold falls: its target goes. [lead] low-level defenders may ignore damage while walking home after a leash
+        // reset, so keep striking whatever is still standing until the beacon lights (and log any survivor)
+        for (int k = 0; k < 30 && !lv.Liberated; k++)
+        {
+            foreach (var m in lv.StrongholdMobs.ToList()) if (GodotObject.IsInstanceValid(m) && !m.Dead) m.TakeHit(new Hit { Source = G.Player, Amount = m.MaxLife * 100f, El = Element.Physical });
+            yield return 0.5f;
+        }
+        if (!lv.Liberated)
+            foreach (var m in lv.StrongholdMobs) if (GodotObject.IsInstanceValid(m) && !m.Dead) Log.Warn("suite", $"mapquest: stronghold survivor {m.Def?.Id} life={m.Life:0}/{m.MaxLife:0} at {m.Pos2}");
         yield return Until(() => lv.Liberated, 10, "the stronghold liberated");
         yield return 0.6f;
         Check(!QMarks().Any(m => m.Kind == QuestMarkKind.Kill && m.Main && m.Name == lv.Region.Stronghold), "live: the stronghold pin is gone once it is liberated", QuestMarks.Describe(lv));
@@ -198,7 +205,7 @@ public sealed partial class TestSuite
             }
             yield return 0.4f;                                   // one quest-layer update after the cell was seen
             bool alive = !(tgt.Ref is Actor ta) || (GodotObject.IsInstanceValid(ta) && !ta.Dead);
-            Log.Info("suite", $"mapquest pin check: target alive={alive} seen={lv.SeenAt(TargetNow())} at {TargetNow()} — " + QuestMarks.Describe(lv));
+            Log.Info("suite", $"mapquest pin check: target alive={alive} seen={lv.SeenAt(TargetNow())} at {TargetNow()} hero={G.Player.Pos2} dist={G.Player.Pos2.DistanceTo(TargetNow()):0.0} heroSeen={lv.SeenAt(G.Player.Pos2)} — " + QuestMarks.Describe(lv));
             if (!alive)
             {
                 // [lead] the elite died fighting the hero while we waited: its pin is gone by design, so test another target
