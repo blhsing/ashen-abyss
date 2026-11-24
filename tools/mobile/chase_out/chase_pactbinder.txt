@@ -1,0 +1,27 @@
+exit= seconds=17
+log: C:\Users\blhsi\AppData\Roaming\AshenAbyss\logs\game_20261124_125534.log  lines=238  ERR=0  WRN=0
+--- last lines ---
+   16.798 INF [gptest] PASS los class=pactbinder target=husk start=8.8m blockedAtClick=True ranUp=True walked=2.5m struck=True sightAtStrike=True
+   16.800 INF [gptest] done mode=chase pass=3 fail=0
+   16.801 INF [game] quitting
+   16.804 INF [save] slot 92 saved: ??? lv8 ???? area=wastes_d2 bytes=12198
+   16.805 INF [save] save reason=quit slot=92 ok=True area=wastes_d2 playtime=11s capture=0.2ms total=3.2ms
+   16.807 INF [anim] anim-check: hero moved 5.3s - 0.0s without a locomotion clip, 0.0s with frozen legs; hero stood 5.0s - 0.0s in a run clip or none; monsters moved 14.9s - 0.0s without a locomotion clip, 0.0s with frozen legs; models without a skeleton or a ƒ?Ý
+   16.807 INF [input] keyboard hook saw 0 key events, 0 of them PrtSc
+   16.808 INF [boot] shutdown errors=0 warnings=0 uptime=17s
+    0.031 INF [boot] args=[] userargs=[--mute --new=pactbinder --slot=92 --area=wastes --level=8 --gear --god --gptest=chase]
+    0.036 INF [boot] switches: --mute --new=pactbinder --slot=92 --area=wastes --level=8 --gear --god --gptest=chase
+    0.657 INF [gptest] mode=chase
+    4.436 INF [levelstate] placed area=wastes seed=1999271852 mlvl=8 monsters=361 objects=17 roster=b25a600a props=(87.00,89.00) (77.00,71.00) (80.39,95.73)
+    7.149 INF [gptest] class=pactbinder basic=pb_hexbolt kind=Proj reach=15.3 sight=True area=wastes
+    7.662 INF [gptest]   run-up: hero=(84.8,198.3) target=(96.5,181.2) dist=20.7 sight=True hover=ash_weeper target=ash_weeper tried=0 limit=12 keep=- act=Free move=True path=0/1 stuck=0.0 t=0.5 best=20.8 unreach=-
+    8.165 INF [gptest]   run-up: hero=(86.7,195.7) target=(96.5,181.2) dist=17.5 sight=True hover=ash_weeper target=ash_weeper tried=0 limit=12 keep=- act=Free move=True path=0/1 stuck=0.0 t=1.0 best=17.5 unreach=-
+    9.266 INF [gptest] PASS run-up class=pactbinder target=ash_weeper hover=Attack start=24.0m reach=15.3 ran=8.2m struckAt=15.8m after=1.49s chaseStarted=True strikeOnArrival=True targetHit=True last='struck'
+   10.258 INF [levelstate] placed area=wastes_d2 seed=369728843 mlvl=9 monsters=171 objects=47 roster=8efecefa props=(115.29,75.41) (79.34,80.79) (113.54,106.66)
+   12.402 INF [gptest]   detour: dist=15.9 sight=False target=husk tried=0 limit=13 keep=- act=Free move=True path=0/5 stuck=0.0 t=0.5 best=16.0 unreach=-
+   13.409 INF [gptest]   detour: dist=14.7 sight=False target=husk tried=0 limit=13 keep=- act=Free move=True path=0/5 stuck=0.0 t=1.5 best=14.7 unreach=-
+   14.416 INF [gptest]   detour: dist=15.0 sight=False target=husk tried=0 limit=13 keep=- act=Free move=True path=1/5 stuck=0.1 t=2.5 best=14.6 unreach=-
+   15.425 INF [gptest]   detour: dist=12.6 sight=True target=- tried=0 limit=13 keep=husk act=Cast move=False path=2/5 stuck=0.1 t=3.4 best=13.4 unreach=-
+   16.183 INF [gptest] PASS detour class=pactbinder target=husk straight=17.6m route=36.6m walked=20.2m struckAt=12.3m after=3.6s (limit 17) hit=False last='struck'
+   16.798 INF [gptest] PASS los class=pactbinder target=husk start=8.8m blockedAtClick=True ranUp=True walked=2.5m struck=True sightAtStrike=True
+   16.800 INF [gptest] done mode=chase pass=3 fail=0

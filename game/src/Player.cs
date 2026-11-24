@@ -314,7 +314,8 @@ public partial class Player : Actor
             case Act.Cast: TickCast(dt); break;
             case Act.Channel: TickChannel(dt); break;
         }
-        if (_act == Act.Free || _act == Act.Channel) HandleOrders(dt);
+        if (_act == Act.Free || _act == Act.Channel || MobileCasting) HandleOrders(dt);      // MOBILE: a Mobile cast walks on (Player.Mobile.cs)
+        MobileTickEnd(dt);
         ClearPress();
     }
 
@@ -367,7 +368,7 @@ public partial class Player : Actor
 
     // ───────────────────────── movement / orders ─────────────────────────
 
-    private float MoveSpeed => BaseSpeed * Hero.MoveMul * SlowMul * (Form == 2 ? 1.15f : 1f) * (_act == Act.Channel ? 0.8f : 1f);
+    private float MoveSpeed => BaseSpeed * Hero.MoveMul * SlowMul * (Form == 2 ? 1.15f : 1f) * (_act == Act.Channel ? 0.8f : 1f) * (MobileCasting ? MobileSpeedMul : 1f);
 
     private void HandleOrders(float dt)
     {
@@ -390,18 +391,20 @@ public partial class Player : Actor
                 // held over the enemy this button is already running at: let the run-up go on
                 if (held && slot == _chSlot && ReferenceEquals(target, _chTarget)) break;
                 int r = Order(slot, Aim, target, press, shift);
+                if (r == 1 && MobileCasting && !shift && (KeyWish() != Vector2.Zero || !(slot == 0 && press))) break;      // MOBILE: the walk goes on through the cast
                 if (r == 1) { _hasMove = false; _goUse = null; return; }
                 if (r == 2) break;
             }
         }
         // movement
-        Vector2 wish = Vector2.Zero;
-        if (InputEnabled)
+        Vector2 wish = KeyWish();
+        if (wish != Vector2.Zero)
         {
-            if (Input.IsKeyPressed(Key.W)) wish.Y -= 1; if (Input.IsKeyPressed(Key.S)) wish.Y += 1;
-            if (Input.IsKeyPressed(Key.A)) wish.X -= 1; if (Input.IsKeyPressed(Key.D)) wish.X += 1;
+            _hasMove = false; _goUse = null; EndChase("wasd");
+            // MOBILE: holding the attack on an enemy while steering is a kite — the held button keeps shooting that enemy
+            bool kite = MobileCastOn && _keepSlot >= 0 && Held(_keepSlot) && ValidTarget(_keepTarget) && (Hero.Eff(Hero.D.Bar[_keepSlot])?.Mobile ?? false);
+            if (!kite) _keepTarget = null;
         }
-        if (wish != Vector2.Zero) { _hasMove = false; _goUse = null; EndChase("wasd"); _keepTarget = null; }
         else if ((_press[0] || Held(0)) && Hover == null && HoverObj == null && !shift && !Game.I.UiBlocksMouse)
         {
             // a fresh click on the ground cancels the attack order; dragging the held button keeps attacking the same enemy
@@ -423,6 +426,7 @@ public partial class Player : Actor
 
         Vector2 vel = Vector2.Zero;
         if (Rooted && !Unstoppable) { _hasMove = false; }
+        else if (shift && MobileCasting) { }        // MOBILE: Shift roots a Mobile cast too (stand and shoot)
         else if (wish != Vector2.Zero) vel = wish.Normalized() * MoveSpeed;
         else if (_hasMove)
         {
@@ -435,14 +439,16 @@ public partial class Player : Actor
         if (vel != Vector2.Zero)
         {
             var moved = Move(vel * dt);
-            if (_act != Act.Channel) FaceDir(vel, 1f - Mathf.Exp(-18f * dt));
+            bool mobileMove = MobileMoveNow;        // MOBILE: walking through a Mobile cast faces the aim (Player.Mobile.cs)
+            if (mobileMove) MobileStep(vel, moved, dt);
+            else if (_act != Act.Channel) FaceDir(vel, 1f - Mathf.Exp(-18f * dt));
             if (moved.Length() < MoveSpeed * dt * 0.15f && _hasMove)
             {
                 // pushed back by a prop standing on the waypoint itself: take the next one
                 if (_pathI < _path.Count - 1 && Pos2.DistanceTo(_path[_pathI]) < 1.6f) _pathI++;
                 else { _repath -= dt; if (_repath <= -0.3f) _hasMove = false; }
             }
-            if (_act == Act.Free)
+            if (_act == Act.Free && !mobileMove)
             {
                 // the clip whose stride fits the speed (walk when slowed, jog, sprint when hasted or in wolf form), feet matched to the ground
                 if (moved.Length() > MoveSpeed * dt * 0.3f)
@@ -462,6 +468,7 @@ public partial class Player : Actor
             ActiveModel.Play(IdleAnim, 1f, 0.2f);
             AnimCheck.HeroStanding(ActiveModel, dt);
         }
+        else if (MobileCasting) MobileStand();
     }
 
     private readonly AnimCheck.Probe _animProbe = new();
@@ -575,7 +582,7 @@ public partial class Player : Actor
         string why = WhyCant(d);
         if (why != null) { if (fresh) WarnOnce(why); return 0; }
         if (!ValidTarget(target)) target = null;
-        if (target != null && !shift && ReachOf(d, out _) > 0f && !InReach(d, target))
+        if (target != null && !shift && !SteeringMobile(d) && ReachOf(d, out _) > 0f && !InReach(d, target))      // MOBILE: steering with W/A/S/D, a Mobile skill shoots without a run-up
         {
             if (!fresh && ReferenceEquals(target, _unreachable)) return 0;   // given up on a moment ago: no retry every frame while held
             StartChase(slot, target);
@@ -816,7 +823,7 @@ public partial class Player : Actor
         if (d.AnimAlt != null) { int i = _nth.GetValueOrDefault(d.Id + "#a"); anim = d.AnimAlt[i % d.AnimAlt.Length]; _nth[d.Id + "#a"] = i + 1; }
         if (Form == 1 && d.Form == 0) anim = "Melee_Hook"; else if (Form == 2 && d.Form == 0) anim = "Zombie_Scratch";
         if (Form == 0 && Model?.Gear != null) anim = Stances.Remap(Model.Stance, anim, Model.Gear);      // no shield bash without a shield, fists when unarmed
-        ActiveModel.PlayAttack(anim, d.AnimSpeed * asp, _contactT, 0.06f);        // the swing is lined up with the contact frame
+        PlayCastAnim(d, anim, d.AnimSpeed * asp, _contactT);        // the swing is lined up with the contact frame (MOBILE: upper body when walking)
         if (d.Sfx != null && d.Kind != SkillKind.Leap) Snd.At(d.Sfx, GlobalPosition, 0.8f);
         InCombat = Mathf.Max(InCombat, 4f);
     }
@@ -840,6 +847,8 @@ public partial class Player : Actor
             bool forceCrit = d.Has("force_crit") || (spent >= 3 && Hero.HasKey("kp_hu_finisher"));
             NoteElement(d.Element);
             Fired++; LastFired = d.Id;
+            LastFireFrom = Pos2; LastFireAim = _castTarget != null && IsInstanceValid(_castTarget) ? _castTarget.Pos2 : _castPoint;
+            pipMul *= MobileFireMul();      // MOBILE: a shot fired on the move deals 90 % (Player.Mobile.cs)
             Log.Guard("skill", () => Exec.Fire(d, _castPoint, _castTarget, pipMul, forceCrit));
         }
         if (_actT >= _lockT && _act == Act.Cast) { _act = Act.Free; _castDef = null; }

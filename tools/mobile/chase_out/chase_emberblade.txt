@@ -1,0 +1,29 @@
+build ok
+exit= seconds=26
+log: C:\Users\blhsi\AppData\Roaming\AshenAbyss\logs\game_20261124_125140.log  lines=249  ERR=0  WRN=0
+--- last lines ---
+   24.048 INF [gptest] PASS detour class=emberblade target=husk_chained straight=22.8m route=49.1m walked=24.2m struckAt=2.8m after=8.6s (limit 20) hit=True last='struck'
+   24.049 INF [gptest] done mode=chase pass=2 fail=0
+   24.050 INF [game] quitting
+   24.053 INF [save] slot 92 saved: ??? lv8 ??? area=wastes_d2 bytes=12891
+   24.054 INF [save] save reason=quit slot=92 ok=True area=wastes_d2 playtime=14s capture=0.2ms total=3.4ms
+   24.055 INF [anim] anim-check: hero moved 8.0s - 0.0s without a locomotion clip, 0.0s with frozen legs; hero stood 4.8s - 0.0s in a run clip or none; monsters moved 59.6s - 0.0s without a locomotion clip, 0.0s with frozen legs; models without a skeleton or a ƒ?Ý
+   24.056 INF [input] keyboard hook saw 0 key events, 0 of them PrtSc
+   24.057 INF [boot] shutdown errors=0 warnings=0 uptime=24s
+    0.037 INF [boot] args=[] userargs=[--mute --new=emberblade --slot=92 --area=wastes --level=8 --gear --god --gptest=chase]
+    0.041 INF [boot] switches: --mute --new=emberblade --slot=92 --area=wastes --level=8 --gear --god --gptest=chase
+    0.671 INF [gptest] mode=chase
+    8.236 INF [levelstate] placed area=wastes seed=1977730588 mlvl=8 monsters=357 objects=17 roster=eaa39b4a props=(173.00,89.00) (159.00,87.00) (179.54,86.87)
+   10.997 INF [gptest] class=emberblade basic=eb_slash kind=Melee reach=2.4 sight=False area=wastes
+   11.677 INF [gptest] PASS run-up class=emberblade target=husk_chained hover=Attack start=6.2m reach=2.4 ran=2.0m struckAt=2.7m after=0.46s chaseStarted=True strikeOnArrival=True targetHit=True last='struck'
+   13.155 INF [levelstate] placed area=wastes_d2 seed=1850770604 mlvl=9 monsters=142 objects=38 roster=6644790b props=(98.35,100.98) (30.49,87.33) (78.55,95.35)
+   15.307 INF [gptest]   detour: dist=25.3 sight=False target=husk_chained tried=0 limit=16 keep=- act=Free move=True path=0/8 stuck=0.0 t=0.5 best=22.8 unreach=-
+   16.314 INF [gptest]   detour: dist=29.3 sight=False target=husk_chained tried=0 limit=16 keep=- act=Free move=True path=2/8 stuck=0.0 t=1.6 best=22.8 unreach=-
+   17.322 INF [gptest]   detour: dist=25.2 sight=False target=husk_chained tried=0 limit=16 keep=- act=Free move=True path=0/4 stuck=0.0 t=2.6 best=22.8 unreach=-
+   18.329 INF [gptest]   detour: dist=20.2 sight=False target=husk_chained tried=0 limit=16 keep=- act=Free move=True path=0/4 stuck=0.0 t=3.6 best=20.3 unreach=-
+   19.336 INF [gptest]   detour: dist=15.9 sight=False target=husk_chained tried=0 limit=16 keep=- act=Free move=True path=0/4 stuck=0.0 t=4.6 best=15.9 unreach=-
+   20.343 INF [gptest]   detour: dist=14.8 sight=False target=husk_chained tried=0 limit=16 keep=- act=Free move=True path=0/4 stuck=0.2 t=5.6 best=14.3 unreach=-
+   21.350 INF [gptest]   detour: dist=14.4 sight=False target=husk_chained tried=2 limit=16 keep=- act=Free move=True path=0/4 stuck=0.8 t=6.6 best=14.0 unreach=-
+   22.357 INF [gptest]   detour: dist=10.2 sight=False target=husk_chained tried=0 limit=16 keep=- act=Free move=True path=2/4 stuck=0.0 t=7.6 best=10.2 unreach=-
+   24.048 INF [gptest] PASS detour class=emberblade target=husk_chained straight=22.8m route=49.1m walked=24.2m struckAt=2.8m after=8.6s (limit 20) hit=True last='struck'
+   24.049 INF [gptest] done mode=chase pass=2 fail=0

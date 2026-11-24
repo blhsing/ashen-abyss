@@ -96,3 +96,12 @@ draw/release (Pistol_Shoot), no off-hand / dual-wield left-hand swing (Sword_Reg
 - 2026-11-23 class select shows signature looks: GearSet.Showcase(class) = t4 in 5 slots + legacy (baked) weapon(s) at v3, display only (MainMenu.SetHero, HeroPortrait3D without a hero). GearCatalog.PreloadShowcase at dais creation (8 loadouts pinned + 8 base bodies held), ReleaseShowcase when a hero is built. Switch 2.5–7 ms (first 16 ms). Y:\shots\gear\classselect\*.png + SHEET_signature_looks.jpg (game_20261123_212410.log, 0 ERR).
 - 2026-11-23 class select stage: each class starts at the front three-quarter view (HeroFrontYaw 0.45 rad ≈ 26°), holds 3 s, then sways ±35° (no full spin); a drag eases back onto the sway. Sheet re-shot 1.5 s after each switch, all facing front (game_20261123_212808.log, 0 ERR).
 - 2026-11-23 selector relit: neutral warm key (45° front-left, 4.4) + cool fill (front-right, 1.5) + two near-white rims (one 20 % class tint), rims no longer light the fog; brazier light -70 % and its fog -85 %, ambient -45 %, DoF far blur tighter (amount 0.12, transition 3.5) while the stage is up; class colour only on ring/sparks; hero edge rim neutral. Figure/background luminance 2.8–12× on all 8 (Y:\tools\gear\render\lum.ps1). Sheet re-shot (game_20261123_215326.log, 0 ERR).
+- 2026-11-24 0.4.1:
+  1. Hide headwear: SaveData.HideHelm (+ GearAdapter.SetHideHelm), FromHero skips the helm piece; inventory toggle button; no chest
+     look hides head/hair (hoods are helm pieces) so only the helm slot is affected. --suite=gear:hidehelm 12/12, 0 ERR;
+     Y:\shots\gear\hidehelm\SHEET_hidehelm_inv.jpg.
+  2. Upper-body layer: CharUpperLayer (SkeletonModifier3D, first under the skeleton) + CharModel.PlayUpperAttack / SetLocomotion /
+     EndUpper. --suite=gear:mobileanim: 5 ranged loadouts × forward/sideways/backwards, 0 ERR; Y:\shots\mobile\anim\SHEET_moving_cast.jpg.
+     FABLE-DEFERRED (pose quality, not blocking): back-pedal clip (now reversed jog), strafe-left/right clips (now hips ≤90° + spine
+     twist, extreme at exact sideways), a slow jog for 2.5–3.5 m/s (jog at rate floor 0.5 slides a little), bow draw/release
+     (Pistol_Shoot with the bow in the left hand), 2H staff cast while moving (Spell_Simple_Shoot is one-handed).

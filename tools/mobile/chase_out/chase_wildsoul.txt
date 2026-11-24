@@ -1,0 +1,36 @@
+exit= seconds=26
+log: C:\Users\blhsi\AppData\Roaming\AshenAbyss\logs\game_20261124_125327.log  lines=304  ERR=0  WRN=0
+--- last lines ---
+   24.737 INF [gptest] PASS detour class=wildsoul target=char_walker straight=17.9m route=79.4m walked=18.7m struckAt=3.0m after=10.9s (limit 28) hit=True last='struck'
+   24.740 INF [gptest] done mode=chase pass=4 fail=0
+   24.741 INF [game] quitting
+   24.744 INF [save] slot 92 saved: ??? lv8 ???? area=wastes_d2 bytes=12514
+   24.745 INF [save] save reason=quit slot=92 ok=True area=wastes_d2 playtime=19s capture=0.2ms total=3.5ms
+   24.746 INF [anim] anim-check: hero moved 11.7s - 0.0s without a locomotion clip, 0.0s with frozen legs; hero stood 5.0s - 0.0s in a run clip or none; monsters moved 229.3s - 0.0s without a locomotion clip, 0.0s with frozen legs; models without a skeleton or ƒ?Ý
+   24.747 INF [input] keyboard hook saw 0 key events, 0 of them PrtSc
+   24.747 INF [boot] shutdown errors=0 warnings=0 uptime=25s
+    0.035 INF [boot] args=[] userargs=[--mute --new=wildsoul --slot=92 --area=wastes --level=8 --gear --god --gptest=chase]
+    0.041 INF [boot] switches: --mute --new=wildsoul --slot=92 --area=wastes --level=8 --gear --god --gptest=chase
+    0.823 INF [gptest] mode=chase
+    4.689 INF [levelstate] placed area=wastes seed=1444377208 mlvl=8 monsters=348 objects=18 roster=0efdb406 props=(99.00,71.00) (117.00,81.00) (109.00,89.00)
+    7.402 INF [gptest] class=wildsoul basic=ws_strike kind=Melee reach=2.4 sight=False area=wastes
+    8.079 INF [gptest] PASS run-up class=wildsoul target=reaver_hook hover=Attack start=5.0m reach=2.4 ran=1.3m struckAt=2.7m after=0.45s chaseStarted=True strikeOnArrival=True targetHit=True last='struck'
+    8.566 INF [gptest]   run-up: hero=(101.0,83.6) target=(104.0,79.3) dist=5.2 sight=True hover=ash_cast target=ash_cast tried=0 limit=12 keep=reaver_hook act=Free move=True path=0/1 stuck=0.1 t=0.1 best=5.2 unreach=-
+    9.010 INF [gptest] PASS run-up class=wildsoul form=bear target=ash_cast hover=Attack start=5.8m reach=2.4 ran=5.4m struckAt=3.3m after=0.50s chaseStarted=True strikeOnArrival=True targetHit=True last='struck'
+    9.518 INF [gptest]   run-up: hero=(100.8,82.1) target=(104.4,77.8) dist=5.6 sight=True hover=hauler_collector target=hauler_collector tried=0 limit=12 keep=ash_cast act=Free move=True path=0/1 stuck=0.0 t=0.1 best=5.4 unreach=-
+   10.019 INF [gptest]   run-up: hero=(102.3,82.1) target=(104.3,78.4) dist=4.2 sight=True hover=hauler_collector target=hauler_collector tried=0 limit=12 keep=ash_cast act=Free move=True path=0/1 stuck=0.1 t=0.6 best=4.2 unreach=-
+   10.473 INF [gptest] PASS run-up class=wildsoul form=wolf target=hauler_collector hover=Attack start=5.3m reach=2.4 ran=2.1m struckAt=3.4m after=1.01s chaseStarted=True strikeOnArrival=True targetHit=True last='struck'
+   11.480 INF [levelstate] placed area=wastes_d2 seed=625400049 mlvl=9 monsters=194 objects=57 roster=31d88f10 props=(107.30,129.45) (75.47,117.27) (94.99,60.77)
+   13.658 INF [gptest]   detour: dist=19.8 sight=False target=char_walker tried=0 limit=23 keep=- act=Free move=True path=0/8 stuck=0.0 t=0.6 best=17.9 unreach=-
+   14.666 INF [gptest]   detour: dist=24.4 sight=False target=char_walker tried=0 limit=23 keep=- act=Free move=True path=0/8 stuck=0.0 t=1.6 best=17.9 unreach=-
+   15.673 INF [gptest]   detour: dist=28.4 sight=False target=char_walker tried=0 limit=23 keep=- act=Free move=True path=1/8 stuck=0.1 t=2.6 best=17.9 unreach=-
+   16.681 INF [gptest]   detour: dist=33.2 sight=False target=char_walker tried=0 limit=23 keep=- act=Free move=True path=1/8 stuck=0.0 t=3.6 best=17.9 unreach=-
+   17.689 INF [gptest]   detour: dist=37.2 sight=False target=char_walker tried=0 limit=23 keep=- act=Free move=True path=2/8 stuck=0.0 t=4.6 best=17.9 unreach=-
+   18.696 INF [gptest]   detour: dist=37.5 sight=False target=char_walker tried=0 limit=23 keep=- act=Free move=True path=3/8 stuck=0.0 t=5.6 best=17.9 unreach=-
+   19.694 INF [gptest]   detour: dist=32.5 sight=False target=char_walker tried=0 limit=23 keep=- act=Free move=True path=5/8 stuck=0.0 t=6.6 best=17.9 unreach=-
+   20.700 INF [gptest]   detour: dist=26.1 sight=False target=char_walker tried=0 limit=23 keep=- act=Free move=True path=6/8 stuck=0.0 t=7.6 best=17.9 unreach=-
+   21.708 INF [gptest]   detour: dist=19.4 sight=False target=char_walker tried=0 limit=23 keep=- act=Free move=True path=6/8 stuck=0.1 t=8.6 best=17.9 unreach=-
+   22.715 INF [gptest]   detour: dist=12.9 sight=True target=char_walker tried=0 limit=23 keep=- act=Free move=True path=6/8 stuck=0.0 t=9.6 best=12.9 unreach=-
+   23.723 INF [gptest]   detour: dist=3.1 sight=True target=char_walker tried=0 limit=23 keep=- act=Free move=True path=0/1 stuck=0.0 t=10.6 best=3.1 unreach=-
+   24.737 INF [gptest] PASS detour class=wildsoul target=char_walker straight=17.9m route=79.4m walked=18.7m struckAt=3.0m after=10.9s (limit 28) hit=True last='struck'
+   24.740 INF [gptest] done mode=chase pass=4 fail=0

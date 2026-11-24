@@ -1,0 +1,36 @@
+exit= seconds=22
+log: C:\Users\blhsi\AppData\Roaming\AshenAbyss\logs\game_20261124_125559.log  lines=175  ERR=0  WRN=0
+--- last lines ---
+   20.936 INF [gptest] PASS hold: blows on target in 4 s=5, after the cursor slipped off in 2 s=4, moved toward cursor=0.0m
+   20.939 INF [gptest] done mode=cancel pass=6 fail=1
+   20.940 INF [game] quitting
+   20.944 INF [save] slot 92 saved: ??? lv8 ??? area=wastes_d2 bytes=11672
+   20.945 INF [save] save reason=quit slot=92 ok=True area=wastes_d2 playtime=18s capture=0.2ms total=4.3ms
+   20.946 INF [anim] anim-check: hero moved 3.3s - 0.0s without a locomotion clip, 0.0s with frozen legs; hero stood 8.4s - 0.0s in a run clip or none; monsters moved 147.3s - 0.0s without a locomotion clip, 0.0s with frozen legs; models without a skeleton or  ƒ?Ý
+   20.947 INF [input] keyboard hook saw 0 key events, 0 of them PrtSc
+   20.948 INF [boot] shutdown errors=0 warnings=0 uptime=21s
+    0.034 INF [boot] args=[] userargs=[--mute --new=emberblade --slot=92 --area=wastes_d2 --level=8 --gear --god --gptest=cancel]
+    0.038 INF [boot] switches: --mute --new=emberblade --slot=92 --area=wastes_d2 --level=8 --gear --god --gptest=cancel
+    0.649 INF [gptest] mode=cancel
+    5.967 INF [gptest] FAIL cancel ground: wasChasing=True ended='' fired=0
+    7.852 INF [gptest] PASS cancel evade: wasChasing=True ended='evade' fired=0
+    9.718 INF [gptest] PASS cancel died: wasChasing=True ended='target died' fired=0
+   11.573 INF [gptest] PASS cancel stun: wasChasing=True ended='interrupted' fired=0
+   12.886 INF [hero] run-up to db_wastes_d2 given up: no path
+   12.941 INF [gptest] PASS cancel unreachable: boss behind the sealed door ended='no path' after=0.0s hoverNow=Unreachable
+   13.569 INF [gptest] PASS shift-click: fired=1 chaseStarts=0 moved=0.00m
+   14.474 INF [gptest]   hold: dist=9.5 fired=0 hover=husk_wailer held=True target=husk_wailer tried=0 limit=12 keep=husk act=Free move=True path=0/2 stuck=0.1 t=0.1 best=9.5 unreach=db_wastes_d2 last=no path
+   14.895 INF [gptest]   hold: dist=7.5 fired=0 hover=husk_wailer held=True target=husk_wailer tried=0 limit=12 keep=husk act=Free move=True path=0/2 stuck=0.0 t=0.5 best=7.5 unreach=db_wastes_d2 last=no path
+   14.999 INF [gptest]   hold: dist=7.1 fired=0 hover=husk_wailer held=True target=husk_wailer tried=0 limit=12 keep=husk act=Free move=True path=0/2 stuck=0.1 t=0.6 best=7.2 unreach=db_wastes_d2 last=no path
+   15.412 INF [gptest]   hold: dist=5.8 fired=0 hover=husk_wailer held=True target=husk_wailer tried=0 limit=12 keep=husk act=Free move=True path=0/1 stuck=0.0 t=1.0 best=5.9 unreach=db_wastes_d2 last=no path
+   15.516 INF [gptest]   hold: dist=5.5 fired=0 hover=husk_wailer held=True target=husk_wailer tried=0 limit=12 keep=husk act=Free move=True path=0/1 stuck=0.1 t=1.1 best=5.5 unreach=- last=no path
+   15.931 INF [gptest]   hold: dist=4.2 fired=0 hover=husk_wailer held=True target=husk_wailer tried=0 limit=12 keep=husk act=Free move=True path=0/1 stuck=0.0 t=1.6 best=4.3 unreach=- last=no path
+   16.034 INF [gptest]   hold: dist=3.9 fired=0 hover=husk_wailer held=True target=husk_wailer tried=0 limit=12 keep=husk act=Free move=True path=0/1 stuck=0.0 t=1.7 best=3.9 unreach=- last=no path
+   16.449 INF [gptest]   hold: dist=2.6 fired=0 hover=husk_wailer held=True target=- tried=0 limit=12 keep=husk_wailer act=Cast move=False path=0/1 stuck=0.0 t=2.0 best=2.9 unreach=- last=struck
+   16.551 INF [gptest]   hold: dist=2.6 fired=0 hover=husk_wailer held=True target=- tried=0 limit=12 keep=husk_wailer act=Cast move=False path=0/1 stuck=0.0 t=2.0 best=2.9 unreach=- last=struck
+   17.124 INF [gptest]   hold: dist=2.6 fired=2 hover=husk_wailer held=True target=- tried=0 limit=12 keep=husk_wailer act=Cast move=False path=0/1 stuck=0.0 t=2.0 best=2.9 unreach=- last=struck
+   17.669 INF [gptest]   hold: dist=2.6 fired=3 hover=husk_wailer held=True target=- tried=0 limit=12 keep=husk_wailer act=Cast move=False path=0/1 stuck=0.0 t=2.0 best=2.9 unreach=- last=struck
+   18.215 INF [gptest]   hold: dist=2.6 fired=4 hover=husk_wailer held=True target=- tried=0 limit=12 keep=husk_wailer act=Cast move=False path=0/1 stuck=0.0 t=2.0 best=2.9 unreach=- last=struck
+   18.759 INF [gptest]   hold: dist=2.6 fired=5 hover=husk_wailer held=True target=- tried=0 limit=12 keep=husk_wailer act=Cast move=False path=0/1 stuck=0.0 t=2.0 best=2.9 unreach=- last=struck
+   20.936 INF [gptest] PASS hold: blows on target in 4 s=5, after the cursor slipped off in 2 s=4, moved toward cursor=0.0m
+   20.939 INF [gptest] done mode=cancel pass=6 fail=1

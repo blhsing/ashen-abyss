@@ -23,12 +23,21 @@ namespace AshenAbyss;
 //  (extra folder of .glb files loaded at run time, searched before res://assets/gear).
 // ═════════════════════════════════════════════════════════════════════════════════════════════════════════════════════
 
+/// <summary>RENDER: per-hero display options saved with the character.</summary>
+public sealed partial class SaveData
+{
+    /// <summary>The equipped helm is not drawn (stats unchanged): the face and hair show. Old saves lack it: false, the helm is shown.</summary>
+    public bool HideHelm;
+}
+
 /// <summary>The single place that reads SYSTEMS' item fields (Item.Base, Item.Look, EquipSlot names).</summary>
 public static class GearAdapter
 {
     public static Item MainHand(Hero h) => h?.D?.Equip == null ? null : h.D.Equip[(int)EquipSlot.MainHand];
     public static Item OffHand(Hero h) => h?.D?.Equip == null ? null : h.D.Equip[(int)EquipSlot.OffHand];
     public static Item Slot(Hero h, EquipSlot s) => h?.D?.Equip == null || (int)s >= h.D.Equip.Length ? null : h.D.Equip[(int)s];
+    /// <summary>Shows or hides the equipped helm on this hero (display only; saved with the character).</summary>
+    public static void SetHideHelm(Hero h, bool hide) { if (h?.D == null || h.D.HideHelm == hide) return; h.D.HideHelm = hide; h.Notify(); }
     public static string BaseOf(Item it) => it?.Base;
     /// <summary>The model id of an item as worn by (or shown to) a hero of class <paramref name="cls"/>.</summary>
     public static string LookOf(Item it, ClassId cls) => it == null ? null : ItemDb.LookFor(it, cls);
@@ -85,6 +94,7 @@ public sealed class GearSet
         if (h == null) return null;
         var g = new GearSet { Class = h.Class };
         for (int i = 0; i < 5; i++) g.Armor[i] = ArmorOf(GearAdapter.Slot(h, ArmorEquip[i]), h.Class, ArmorSlots[i]);
+        if (h.D.HideHelm) g.Armor[0] = null;           // "hide headwear": the helm stays worn but is not drawn; the head and hair show
         g.SetHands(GearAdapter.MainHand(h), GearAdapter.OffHand(h));
         return g;
     }

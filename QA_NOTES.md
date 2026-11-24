@@ -25,6 +25,9 @@
 | `--suite=dps[:classes[:levels]]` | 機器人的技能循環打一個木樁（30 s）與六個木樁（20 s）：每秒傷害對比 `Balance.ExpectedDps`，以及各技能占比 |
 | `--suite=anims` / `anims:static` / `anims:shots-town\|shots-heroes\|shots-monsters` | 動畫稽核（見下文）、其 10 秒的靜態部分、特寫畫面 |
 | `--suite=anims:monsters` | 只跑稽核中的即時怪物部分（全部 36 種怪物與召喚物類型） |
+| `--suite=mobile` / `mobile:noshots` / `mobile:shots` | 施法時可移動（MOBILE 0.4.1）：哪些技能可邊走邊放、施放時移動速度約 65%、非 Mobile 技能仍會站定、邊後退邊射時箭矢飛向瞄準點、Shift 站定、設定關閉＝舊行為、按住攻擊＋W/A/S/D 風箏、點擊遠處敵人仍會跑過去再射、每個遠程職業都能邊退邊打；`shots` 拍 `Y:\shots\mobile\` |
+| `--suite=mobile:dps[:classes[:levels[:secs]]]` | 固定裝備下的每秒傷害：站定、被追擊時「停下射擊」（設定關）與「邊走邊射」（設定開）；追擊者速度為英雄的 55%，英雄保持 6–9 m |
+| `--mobile-cast=0\|1`, `--mobile-speed=0.65`, `--upper-off` | 覆寫「施法時可移動」設定（不存檔）、施放時的移動速度比例、停用上半身動畫層（比較用） |
 | `--slot=90..99`, `--load=90..99` | 測試框架專用的私人存檔欄位，選單永遠不會列出：用來把一次主線流程串接成數次短執行 |
 機器人摘要現在的最後會列出各技能的施放 / 命中 / 傷害次數、各怪物階級的擊殺時間、每分鐘承受傷害，以及各次升級的時間。
 `--quit-at` 與 `--shot-at` 從第一個區域出現在畫面上的那一刻起算（不含載入時間——無視窗模式約 6 s，視窗模式約 18 s）。

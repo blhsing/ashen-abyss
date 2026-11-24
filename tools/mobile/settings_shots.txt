@@ -1,0 +1,15 @@
+# MOBILE: settings 遊戲 tab (施法時可移動) and the controls list
+wait 4
+open settings
+wait 1.2
+click @遊戲#1
+wait 0.8
+shot Y:/shots/mobile/settings_game_tab_a
+click @遊戲#2
+wait 0.8
+shot Y:/shots/mobile/settings_game_tab_b
+click @操作說明
+wait 0.8
+shot Y:/shots/mobile/settings_controls
+dump settings
+quit

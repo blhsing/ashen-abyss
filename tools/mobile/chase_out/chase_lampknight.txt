@@ -1,0 +1,35 @@
+exit= seconds=27
+log: C:\Users\blhsi\AppData\Roaming\AshenAbyss\logs\game_20261124_125457.log  lines=286  ERR=0  WRN=0
+--- last lines ---
+   26.703 INF [gptest] PASS detour class=lampknight target=husk straight=21.0m route=91.7m walked=20.5m struckAt=2.3m after=15.6s (limit 31) hit=True last='struck'
+   26.704 INF [gptest] done mode=chase pass=2 fail=0
+   26.705 INF [game] quitting
+   26.709 INF [save] slot 92 saved: ??? lv8 ???? area=wastes_d2 bytes=13465
+   26.709 INF [save] save reason=quit slot=92 ok=True area=wastes_d2 playtime=21s capture=0.2ms total=3.5ms
+   26.710 INF [anim] anim-check: hero moved 15.3s - 0.0s without a locomotion clip, 0.0s with frozen legs; hero stood 4.8s - 0.0s in a run clip or none; monsters moved 266.5s - 0.0s without a locomotion clip, 0.0s with frozen legs; models without a skeleton or ƒ?Ý
+   26.711 INF [input] keyboard hook saw 0 key events, 0 of them PrtSc
+   26.712 INF [boot] shutdown errors=0 warnings=0 uptime=27s
+    0.031 INF [boot] args=[] userargs=[--mute --new=lampknight --slot=92 --area=wastes --level=8 --gear --god --gptest=chase]
+    0.036 INF [boot] switches: --mute --new=lampknight --slot=92 --area=wastes --level=8 --gear --god --gptest=chase
+    0.643 INF [gptest] mode=chase
+    4.511 INF [levelstate] placed area=wastes seed=1565956033 mlvl=8 monsters=373 objects=16 roster=147593f9 props=(99.00,87.00) (85.00,83.00) (99.00,67.00)
+    7.218 INF [gptest] class=lampknight basic=lk_strike kind=Melee reach=2.4 sight=False area=wastes
+    7.792 INF [gptest] PASS run-up class=lampknight target=husk hover=Attack start=5.0m reach=2.4 ran=1.1m struckAt=2.3m after=0.37s chaseStarted=True strikeOnArrival=True targetHit=True last='struck'
+    8.757 INF [levelstate] placed area=wastes_d2 seed=298570192 mlvl=9 monsters=137 objects=35 roster=86fcfa68 props=(55.14,60.65) (22.54,83.49) (34.66,73.45)
+   11.045 INF [gptest]   detour: dist=24.9 sight=False target=husk tried=0 limit=26 keep=- act=Free move=True path=0/8 stuck=0.0 t=0.6 best=21.0 unreach=-
+   12.058 INF [gptest]   detour: dist=31.2 sight=False target=husk tried=0 limit=26 keep=- act=Free move=True path=0/8 stuck=0.0 t=1.7 best=21.0 unreach=-
+   13.065 INF [gptest]   detour: dist=35.2 sight=False target=husk tried=0 limit=26 keep=- act=Free move=True path=1/8 stuck=0.0 t=2.7 best=21.0 unreach=-
+   14.069 INF [gptest]   detour: dist=38.5 sight=False target=husk tried=0 limit=26 keep=- act=Free move=True path=1/8 stuck=0.0 t=3.7 best=21.0 unreach=-
+   15.060 INF [gptest]   detour: dist=42.6 sight=False target=husk tried=0 limit=26 keep=- act=Free move=True path=1/8 stuck=0.0 t=4.7 best=21.0 unreach=-
+   16.075 INF [gptest]   detour: dist=46.9 sight=False target=husk tried=0 limit=26 keep=- act=Free move=True path=2/8 stuck=0.1 t=5.7 best=21.0 unreach=-
+   17.081 INF [gptest]   detour: dist=44.9 sight=False target=husk tried=0 limit=26 keep=- act=Free move=True path=3/8 stuck=0.1 t=6.7 best=21.0 unreach=-
+   18.089 INF [gptest]   detour: dist=46.3 sight=False target=husk tried=0 limit=26 keep=- act=Free move=True path=4/8 stuck=0.0 t=7.7 best=21.0 unreach=-
+   19.096 INF [gptest]   detour: dist=46.5 sight=False target=husk tried=0 limit=26 keep=- act=Free move=True path=0/6 stuck=0.0 t=8.7 best=21.0 unreach=-
+   20.104 INF [gptest]   detour: dist=43.9 sight=False target=husk tried=0 limit=26 keep=- act=Free move=True path=2/6 stuck=0.1 t=9.7 best=21.0 unreach=-
+   21.111 INF [gptest]   detour: dist=37.3 sight=False target=husk tried=0 limit=26 keep=- act=Free move=True path=2/6 stuck=0.0 t=10.7 best=21.0 unreach=-
+   22.119 INF [gptest]   detour: dist=30.6 sight=False target=husk tried=0 limit=26 keep=- act=Free move=True path=2/6 stuck=0.0 t=11.7 best=21.0 unreach=-
+   23.119 INF [gptest]   detour: dist=24.8 sight=False target=husk tried=0 limit=26 keep=- act=Free move=True path=3/6 stuck=0.0 t=12.7 best=21.0 unreach=-
+   24.122 INF [gptest]   detour: dist=19.1 sight=False target=husk tried=0 limit=26 keep=- act=Free move=True path=4/6 stuck=0.0 t=13.7 best=19.1 unreach=-
+   25.129 INF [gptest]   detour: dist=10.5 sight=True target=husk tried=0 limit=26 keep=- act=Free move=True path=0/1 stuck=0.0 t=14.7 best=10.5 unreach=-
+   26.703 INF [gptest] PASS detour class=lampknight target=husk straight=21.0m route=91.7m walked=20.5m struckAt=2.3m after=15.6s (limit 31) hit=True last='struck'
+   26.704 INF [gptest] done mode=chase pass=2 fail=0

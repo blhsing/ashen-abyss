@@ -1,0 +1,2 @@
+=== 2026-11-24 12:59:00 suite log=C:\Users\blhsi\AppData\Roaming\AshenAbyss\logs\game_20261124_125801.log
+   46.303 INF [suite] DONE suite=mobile pass=32 fail=0 errors=0 warnings=0

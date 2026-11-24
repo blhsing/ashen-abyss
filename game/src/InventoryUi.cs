@@ -1263,6 +1263,12 @@ public partial class InventoryUi : UiPanel
             tag.VerticalAlignment = VerticalAlignment.Center;
             Pin(tag, ax, rightSide ? x - 8 - DollTagW : x + DollCell + 8, y, DollTagW, DollCell);
         }
+        // RENDER: show or hide the worn helm on the hero (display only, saved with the character), top-left of the portrait
+        var helmBtn = UiTheme.Button(h.D.HideHelm ? "頭盔：隱藏" : "頭盔：顯示", null, UiTheme.FsCaption);
+        helmBtn.TooltipText = "顯示頭盔：關閉後頭盔仍然裝備、屬性不變，只是不顯示，讓英雄的面容露出來。";
+        helmBtn.Pressed += () => { GearAdapter.SetHideHelm(h, !h.D.HideHelm); helmBtn.Text = h.D.HideHelm ? "頭盔：隱藏" : "頭盔：顯示"; };
+        _cells.AddChild(helmBtn);
+        Pin(helmBtn, 0.5f, -NicheW * 0.5f + 8f, NicheTop + 8f, 128f, 38f);
         _doll.QueueRedraw();
         _nicheRim.QueueRedraw();
     }

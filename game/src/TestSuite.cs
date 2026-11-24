@@ -170,6 +170,7 @@ public sealed partial class TestSuite
             case "objects": yield return ObjectsSuite(); break;
             case "save": yield return SaveSuite(); break;
             case "dps": yield return DpsSuite(); break;
+            case "mobile": yield return MobileSuite(); break;    // MOBILE: --suite=mobile[:dps|shots|noshots] (TestSuite.Mobile.cs): moving while attacking
             case "gear": yield return GearSuite(); break;        // RENDER: --suite=gear[:part] (TestSuite.Gear.cs)
             case "guide": yield return GuideSuite(); break;      // SYSTEMS: --suite=guide[:shots] (TestSuite.Guide.cs): 武器指南
             case "items": yield return ItemsSuite(); break;      // SYSTEMS: --suite=items[:fixture dir] (TestSuite.Items.cs): save migration, hands, loot spread

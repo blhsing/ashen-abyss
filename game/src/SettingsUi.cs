@@ -24,6 +24,7 @@ public sealed class SettingsView
     private MenuSeg _display, _vsync, _quality, _scaleMode, _dmgNum, _shake, _subs, _loot, _textScale, _cursor;
     private MenuSeg _gearWeight;        // SYSTEMS: 裝備比較 weighting for GearEval
     private MenuSeg _shotMode;          // FIXES: 截圖方式 (Settings.ScreenshotMode)
+    private MenuSeg _mobileCast;        // MOBILE: 施法時可移動 (Settings.MoveWhileCasting, Player.Mobile.cs)
     private HSlider _scale, _bright;
     private Label _brightGlyph;
     private Label _scaleValue;
@@ -283,6 +284,9 @@ public sealed class SettingsView
         col.AddChild(Row("字幕", "顯示對白與旁白的文字", _subs.Root));
         _loot = new MenuSeg(OnOff, i => { Cfg.ShowAllLoot = i == 0; Commit("showAllLoot=" + Cfg.ShowAllLoot); }, UiTheme.Fs(FsOption), UiTheme.Px(150f));
         col.AddChild(Row("總是顯示掉落物標籤", "關閉時，按住 Alt 才會顯示地上物品的名稱", _loot.Root));
+        // 施法時可移動 (MOBILE): walk at reduced speed through ranged attacks and spells (Player.Mobile.cs)
+        _mobileCast = new MenuSeg(OnOff, i => { Cfg.MoveWhileCasting = i == 0; Commit("moveWhileCasting=" + Cfg.MoveWhileCasting); }, UiTheme.Fs(FsOption), UiTheme.Px(150f));
+        col.AddChild(Row("施法時可移動", "遠程攻擊與法術出手時仍可移動（移動速度 65%，移動中出手傷害 −10%）；按住 Shift 站定。關閉時出手會停下腳步", _mobileCast.Root));
         // 滑鼠游標: the forged cursors that follow what is under the pointer, or the operating system's own (Cursors.cs applies it at once)
         _cursor = new MenuSeg(new[] { "遊戲", "系統" }, i => { Cfg.SystemCursor = i == 1; Commit("systemCursor=" + Cfg.SystemCursor); }, UiTheme.Fs(FsOption), UiTheme.Px(150f));
         col.AddChild(Row("滑鼠游標", "遊戲：游標會隨指向的敵人、人物、物品而變化；系統：使用作業系統的游標", _cursor.Root));
@@ -337,7 +341,7 @@ public sealed class SettingsView
             (K("滑鼠左鍵"), "移動、攻擊、互動（技能欄 1）"),
             (K("滑鼠右鍵"), "技能欄 2"),
             (K("1", "2", "3", "4"), "技能欄 3 至 6"),
-            (K("W", "A", "S", "D"), "直接移動"),
+            (K("W", "A", "S", "D"), "直接移動；遠程攻擊與施法時可邊走邊出手"),
             (K("Shift"), "按住：原地出手，不追向目標"),
             (K("空白鍵"), "閃避"),
             (K("Q"), "飲用藥水"),
@@ -558,6 +562,7 @@ public sealed class SettingsView
             _cursor.Select(c.SystemCursor ? 1 : 0);
             _gearWeight?.Select(Math.Clamp(c.GearWeight, 0, 2));
             _shotMode?.Select(Math.Clamp(c.ScreenshotMode, 0, 2));
+            _mobileCast?.Select(c.MoveWhileCasting ? 0 : 1);
         }
         finally { _refreshing = false; }
     }
@@ -618,6 +623,7 @@ public sealed class SettingsView
         c.Subtitles = d.Subtitles; c.ShowAllLoot = d.ShowAllLoot; c.Quality = d.Quality; c.RenderScale = d.RenderScale;
         c.UiTextScale = d.UiTextScale; c.Brightness = d.Brightness; c.SystemCursor = d.SystemCursor; c.GearWeight = d.GearWeight;
         c.ScreenshotMode = d.ScreenshotMode;
+        c.MoveWhileCasting = d.MoveWhileCasting;      // MOBILE
         // LastSlot is not a preference and stays as it is
         try { UiTheme.ApplyTextScale(c.UiTextScale); }
         catch (Exception e) { Log.Error("cfg", "resetting the text size failed", e); }

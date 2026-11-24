@@ -269,6 +269,7 @@ public sealed class Settings
     public bool SystemCursor = false;   // 滑鼠游標：false 遊戲 (the forged cursors, Cursors.cs), true 系統 (the operating system's own pointer)
     public int GearWeight = 0;          // 裝備比較：0 平衡 (50/50), 1 偏重攻擊 (75/25), 2 偏重防禦 (25/75) — GearEval
     public string[] SetKeys = { "F1", "F2", "F3", "F4", "F5", "F6", "E" };   // 裝備組 1–6 and 快速切換 (GearSets; Godot Key names)
+    public bool MoveWhileCasting = true; // 施法時可移動 (MOBILE 0.4.1, Player.Mobile.cs): walk at reduced speed through ranged attacks and casts; off = stop and shoot
     public int ScreenshotMode = 0;      // 截圖方式 (PrtSc / F12): 0 剪貼簿（預設）, 1 存成檔案, 2 剪貼簿與檔案 — Game.TakeScreenshot (FIXES)
 
     private static readonly JsonSerializerOptions Opt = new() { IncludeFields = true, WriteIndented = true };

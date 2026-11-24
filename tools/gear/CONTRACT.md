@@ -154,3 +154,22 @@ SYSTEMS API (2026-11-21, gear sets 裝備組): `hero.D.GearSets` (6 × `GearSetD
   hidden on the hero model (one piece per frame), so a swap only shows and hides nodes. Measured with the real sets
   (`--suite=gear:swap`, F1/F2/F3/E in combat, 2H ↔ dual-wield ↔ 1H+shield): one rebuild per loadout change, 0 frames waiting,
   worst frame after a swap 18.8 ms (mean 16.6 ms; was 34.2 ms before pooling).
+
+## RENDER API (2026-11-24, 0.4.1) — for MOBILE-CAST
+- Upper-body layer (`game/src/CharUpperLayer.cs`, partial `CharModel`):
+  - `CharModel.PlayUpperAttack(string clip, float speed, float contactIn, Vector3 aimDir)` — the clip plays on spine/neck/head/arms/hands
+    only, timed like `PlayAttack` (strikes `contactIn` s from now). `aimDir` is world XZ: `new Vector3(dir2.X, 0, dir2.Y)` from a
+    `Vector2` of `Pos2` space. Beasts/forms fall back to the full-body `PlayAttack`.
+  - `CharModel.SetLocomotion(Vector3 moveDir, float speed, Vector3? aimDir = null)` — call EVERY frame while layered (instead of
+    `Locomote` / `Play(IdleAnim)`): legs walk/jog toward `moveDir` (idle below 0.2 m/s); hips face the movement and the chest
+    twists ≤ 90° to the aim; when the aim is > 100° from the movement the hips face the aim and the legs back-pedal (the walk/jog
+    played backwards). It rotates the MODEL under its actor: keep `FaceDir` on the actor as you like.
+  - `CharModel.EndUpper()` — ends the layered mode (the arm clip fades out over 0.15 s, the model faces its actor again).
+    `CharModel.Layered` (between the two calls), `CharModel.UpperBusy` (the arm clip still playing).
+  - Full-body casts (`PlayAttack`) work exactly as before when the layer is not used. The left-hand grip IK runs after the layer.
+  - Clip gaps (closest used): no back-pedal, no strafe, no slow jog (2.6 m/s is a jog at its 0.5 floor rate → a little foot slide),
+    no bow draw (Pistol_Shoot). Fable-deferred list in PROGRESS_RENDER.md.
+- Hide headwear: `SaveData.HideHelm` (per hero, saved; old saves → false = helm shown), `GearAdapter.SetHideHelm(hero, bool)`;
+  inventory button 「頭盔：顯示 / 隱藏」 top-left of the portrait. GearSet.FromHero drops the helm piece when set (stats untouched);
+  class select (GearSet.Showcase) always shows the helm.
+- REQUEST MOBILE→RENDER (2026-11-24, moving while attacking, 0.4.1): Player calls your upper-body layer through `UpperBody` (game/src/Player.Mobile.cs), found by REFLECTION, so nothing breaks before or after it lands. Expected: `bool|void PlayUpperAttack(string clip, float speed, float contactIn, Vector2 aimDir)` (contact aligned like `PlayAttack`; aimDir = world ground direction x,z from the hero to the aim, Vector3 with y=0 also accepted), `void SetLocomotion(Vector2 moveDir, float speedMps)` (world ground direction, zero = legs stand; the model root faces the AIM, so pick fwd/back/strafe legs from moveDir relative to facing), `void EndUpper()` (blend back to the full body). Optional `bool HasUpperLayer { get; }` per model (false for beast forms etc.). Call order per Mobile cast while walking: PlayUpperAttack once (or mid-cast when the hero starts walking, with the contact time left), SetLocomotion every frame (zero when standing), EndUpper 0.3 s after the cast ends unless another Mobile cast started. Standing casts keep `PlayAttack` (full body). Until it lands the fallback keeps the legs walking (backward steps = `Walk_Loop`/`Jog_Fwd_Loop` at negative rate via `Play`) and skips the attack clip while moving. Please list in your report which clips look wrong on the upper layer (the Fable-deferred pose list).

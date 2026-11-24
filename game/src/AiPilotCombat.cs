@@ -29,12 +29,13 @@ public partial class TestBot
     private const float RollLen = 5.5f, RollTime = 0.32f, RollGuard = 0.36f;
 
     /// <summary>Statistics for the pilot harness.</summary>
-    internal string ReflexStats() => $"dodgeWalks={_dgWalks} rolls={_dgRolls} defensives={_dgDefs}";
+    internal string ReflexStats() => $"dodgeWalks={_dgWalks} rolls={_dgRolls} defensives={_dgDefs} kiteShots={KiteShots} dodgeShots={DodgeShots} mobileCast={Player.MobileCastOn}";      // MOBILE: shots on the move (AiPilotMobile.cs)
 
     private static float HeroSpeed(Player p)
     {
         if (p.Rooted) return 0f;
         float v = Player.BaseSpeed * p.Hero.MoveMul * p.SlowMul;
+        if (p.MobileCasting) v *= Player.MobileSpeedMul;      // MOBILE: walking through a cast is slower
         return Mathf.Max(1.5f, v);
     }
 
@@ -236,12 +237,12 @@ public partial class TestBot
         bool bossFight = DangerMap.BossFight();
         bool rollReady = p.EvadeCd <= 0f && !p.Rooted;
         var bw = best >= 0 ? _cand[best] : (me, stay, firstStay, float.MaxValue, 0f);
-        if (bw.Item2 <= 0.01f && !(p.Busy && firstStay < 0.6f))
+        if (bw.Item2 <= 0.01f && !(p.Busy && !p.MobileCasting && firstStay < 0.6f))      // MOBILE: a Mobile cast can walk
         {
             if (bw.Item5 > 0f)
             {
                 // hold still: the way opens when the nearer marks have landed
-                if (!p.Busy && _moving) { p.Stop(); _moving = false; }
+                if ((!p.Busy || p.MobileCasting) && _moving) { p.Stop(); _moving = false; }
                 _dgActive = false;
                 _doing = "dodge (wait)";
                 return true;
@@ -279,7 +280,7 @@ public partial class TestBot
         // a defensive skill when the hit cannot be avoided
         if (firstStay < 0.9f && (stay >= 3f || p.LifeFrac < 0.6f)) PilotDefensive(p, "unavoidable");
         // the least bad ground, unless the hero is better off holding still for the roll
-        if (best >= 0 && bw.Item2 < stay && !p.Busy) { WalkTo(p, bw.Item1, stay, firstStay); return true; }
+        if (best >= 0 && bw.Item2 < stay && (!p.Busy || p.MobileCasting)) { WalkTo(p, bw.Item1, stay, firstStay); return true; }
         return p.Busy || _dgActive;
     }
 
@@ -427,10 +428,14 @@ public partial class TestBot
             bool boss = t.Brain != null;
             float in2 = DangerMap.Intake(2.0) / Mathf.Max(1f, p.MaxLife);
             bool kite = close > 0 && (boss || t.IsElite || p.LifeFrac < 0.75f || close >= 3 || in2 > 0.12f) || boss && dist < ideal - 2.5f;
+            // MOBILE (AiPilotMobile.cs): backing away costs no shots any more, so a hero that shoots on the move keeps its
+            // distance from anything that has noticed it and closes inside the ideal range less 2 m, and kites more often
+            bool mobile = PilotMobile(hero);
+            if (mobile && !kite) kite = t.Aggro && dist < ideal - 2f || close > 0;
             if (!kite) return false;
-            Vector2? spot = RingSpot(p, me, tp, ideal, v, true);
+            Vector2? spot = RingSpot(p, me, tp, ideal, mobile ? v * Player.MobileSpeedMul : v, true);
             if (spot == null) return false;
-            _kiteUntil = _clock + 0.75; _kiteNext = _clock + (in2 > 0.12f ? 1.2 : 1.9);
+            _kiteUntil = _clock + 0.75; _kiteNext = _clock + (mobile ? 0.5 : in2 > 0.12f ? 1.2 : 1.9);
             MoveTo(p, spot.Value, 0.0);
             _doing = "kite";
             return true;
@@ -574,6 +579,7 @@ public partial class TestBot
         if (boss == null) { _lastCastOk = _clock; return true; }
         var b = boss.Brain;
         float lockT = d.Kind == SkillKind.Channel ? 0.3f : d.Lock / Mathf.Max(0.3f, hero.AttackSpeedMul);
+        if (d.Mobile && Player.MobileCastOn) lockT *= 0.35f;      // MOBILE: the hero can still walk out of it, if slower
         float dist = boss.Pos2.DistanceTo(p.Pos2);
         float next = b.SpecialIn;
         if (dist <= b.BasicReach + 1.5f) next = Mathf.Min(next, b.BasicIn);

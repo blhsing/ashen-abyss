@@ -1,0 +1,79 @@
+=== 2026-11-24 11:54:51 dps log=C:\Users\blhsi\AppData\Roaming\AshenAbyss\logs\game_20261124_114938.log
+[suite] mobile-dps hunter lv30: bar=[hu_shot,hu_pierce,hu_smoke,-,hu_trap,hu_mark] weapon crossbow
+[bot] mobile:dps hunter lv30 stand skills [hunter lv30] cast/hits/damage: hu_pierce:c18/h18/d10390 hu_shot:c65/h65/d10195 hu_trap:c6/h6/d3032
+[suite] mobile-dps lane 18 m, 8 treadmill steps
+[bot] mobile:dps hunter lv30 kite-off skills [hunter lv30] cast/hits/damage: hu_pierce:c17/h17/d6543 hu_shot:c18/h18/d2839 hu_trap:c6/h0/d0
+[suite] mobile-dps lane 18 m, 8 treadmill steps
+[bot] mobile:dps hunter lv30 kite-on skills [hunter lv30] cast/hits/damage: hu_pierce:c18/h18/d13014 hu_shot:c65/h65/d10417 hu_trap:c6/h0/d0
+[suite] mobile-dps hunter lv30 speed 0.65: stand 590/s caught 0.0s moved 0m | kite-off 234/s caught 0.0s moved 144m | kite-on 585/s caught 0.0s moved 144m | kite-off 0.40x stand, kite-on 0.99x stand, on/off 2.50x | expected 720
+[suite] mobile-dps astromancer lv30: bar=[as_spark,as_fireball,as_frostnova,-,as_chain,as_cataclysm] weapon staff
+[bot] mobile:dps astromancer lv30 stand skills [astromancer lv30] cast/hits/damage: (dot):c0/h42/d642 as_chain:c12/h12/d2262 as_fireball:c6/h6/d2564 as_spark:c73/h72/d9200
+[suite] mobile-dps lane 18 m, 8 treadmill steps
+[bot] mobile:dps astromancer lv30 kite-off skills [astromancer lv30] cast/hits/damage: (dot):c0/h23/d352 as_chain:c14/h14/d2720 as_fireball:c3/h3/d2122 as_spark:c29/h29/d3710
+[suite] mobile-dps lane 18 m, 8 treadmill steps
+[bot] mobile:dps astromancer lv30 kite-on skills [astromancer lv30] cast/hits/damage: (dot):c0/h34/d520 as_chain:c13/h13/d2533 as_fireball:c5/h5/d2149 as_spark:c73/h72/d9273
+[suite] mobile-dps astromancer lv30 speed 0.65: stand 366/s caught 0.0s moved 0m | kite-off 222/s caught 0.0s moved 154m | kite-on 362/s caught 0.0s moved 154m | kite-off 0.61x stand, kite-on 0.99x stand, on/off 1.63x | expected 720
+[suite] mobile-dps soulbinder lv30: bar=[sb_bolt,sb_raise,sb_veil,sb_curse,sb_golem_cmd,sb_colossus] weapon scythe2
+[bot] mobile:dps soulbinder lv30 stand skills [soulbinder lv30] cast/hits/damage: sb_bolt:c73/h73/d11719 sb_colossus:c1/h9/d2296 sb_curse:c4/h0/d0 sb_golem_cmd:c5/h18/d3175 sb_raise:c10/h165/d6045
+[suite] mobile-dps lane 18 m, 8 treadmill steps
+[bot] mobile:dps soulbinder lv30 kite-off skills [soulbinder lv30] cast/hits/damage: sb_bolt:c25/h25/d4270 sb_colossus:c1/h7/d1860 sb_curse:c4/h0/d0 sb_golem_cmd:c4/h19/d2598 sb_raise:c10/h110/d3962
+[suite] mobile-dps lane 18 m, 8 treadmill steps
+[bot] mobile:dps soulbinder lv30 kite-on skills [soulbinder lv30] cast/hits/damage: sb_bolt:c74/h73/d12121 sb_colossus:c1/h7/d2074 sb_curse:c4/h0/d0 sb_golem_cmd:c4/h16/d2157 sb_raise:c10/h132/d4806
+[suite] mobile-dps soulbinder lv30 speed 0.65: stand 581/s caught 0.0s moved 0m | kite-off 317/s caught 0.0s moved 151m | kite-on 529/s caught 10.8s moved 145m | kite-off 0.55x stand, kite-on 0.91x stand, on/off 1.67x | expected 720
+[suite] mobile-dps pactbinder lv30: bar=[pb_hexbolt,pb_bind,pb_ward,-,pb_chains,pb_gate] weapon wand+grimoire
+[bot] mobile:dps pactbinder lv30 stand skills [pactbinder lv30] cast/hits/damage: pb_chains:c18/h18/d4135 pb_gate:c1/h8/d6875 pb_hexbolt:c77/h77/d11195
+[suite] mobile-dps lane 18 m, 8 treadmill steps
+[bot] mobile:dps pactbinder lv30 kite-off skills [pactbinder lv30] cast/hits/damage: pb_chains:c17/h17/d4196 pb_gate:c1/h6/d5223 pb_hexbolt:c40/h39/d5814
+[suite] mobile-dps lane 18 m, 8 treadmill steps
+[bot] mobile:dps pactbinder lv30 kite-on skills [pactbinder lv30] cast/hits/damage: pb_chains:c18/h18/d4514 pb_gate:c1/h5/d4567 pb_hexbolt:c77/h77/d11600
+[suite] mobile-dps pactbinder lv30 speed 0.65: stand 555/s caught 0.0s moved 0m | kite-off 381/s caught 0.0s moved 151m | kite-on 517/s caught 0.0s moved 153m | kite-off 0.69x stand, kite-on 0.93x stand, on/off 1.36x | expected 720
+[suite] mobile-dps emberblade lv30: bar=[eb_slash,eb_cleave,eb_roar,-,eb_rupture,eb_wrath] weapon sword2
+[bot] mobile:dps emberblade lv30 stand skills [emberblade lv30] cast/hits/damage: (dot):c0/h75/d4226 eb_cleave:c22/h22/d23396 eb_rupture:c4/h4/d4800 eb_slash:c51/h51/d14221
+[suite] mobile-dps emberblade lv30 speed 0.65: stand 1165/s caught 40.0s moved 0m | expected 720
+[suite] mobile-dps lampknight lv30: bar=[lk_strike,lk_bash,lk_aegis,-,lk_aura,lk_dawn] weapon sword1
+[bot] mobile:dps lampknight lv30 stand skills [lampknight lv30] cast/hits/damage: (other):c0/h2/d98 lk_aura:c3/h25/d831 lk_bash:c25/h25/d9787 lk_strike:c61/h60/d9920
+[suite] mobile-dps lampknight lv30 speed 0.65: stand 516/s caught 40.0s moved 0m | expected 720
+[suite] mobile-dps hunter lv50: bar=[hu_shot,hu_pierce,hu_smoke,-,hu_trap,hu_mark] weapon crossbow
+[bot] mobile:dps hunter lv50 stand skills [hunter lv50] cast/hits/damage: hu_pierce:c20/h20/d38497 hu_shot:c62/h62/d14851 hu_trap:c6/h6/d5679
+[suite] mobile-dps lane 18 m, 9 treadmill steps
+[bot] mobile:dps hunter lv50 kite-off skills [hunter lv50] cast/hits/damage: hu_pierce:c20/h20/d14354 hu_shot:c14/h14/d2846 hu_trap:c6/h0/d0
+[suite] mobile-dps lane 18 m, 9 treadmill steps
+[bot] mobile:dps hunter lv50 kite-on skills [hunter lv50] cast/hits/damage: hu_pierce:c20/h20/d38376 hu_shot:c62/h62/d17657 hu_trap:c6/h1/d2431
+[suite] mobile-dps hunter lv50 speed 0.65: stand 1476/s caught 0.0s moved 0m | kite-off 430/s caught 0.0s moved 167m | kite-on 1461/s caught 0.0s moved 171m | kite-off 0.29x stand, kite-on 0.99x stand, on/off 3.40x | expected 2408
+[suite] mobile-dps astromancer lv50: bar=[as_spark,as_fireball,as_frostnova,-,as_chain,as_cataclysm] weapon staff
+[bot] mobile:dps astromancer lv50 stand skills [astromancer lv50] cast/hits/damage: (dot):c0/h22/d587 as_chain:c20/h20/d8240 as_fireball:c5/h4/d5662 as_spark:c64/h64/d13424
+[suite] mobile-dps lane 18 m, 8 treadmill steps
+[bot] mobile:dps astromancer lv50 kite-off skills [astromancer lv50] cast/hits/damage: (dot):c0/h26/d694 as_chain:c18/h18/d6749 as_fireball:c4/h4/d5110 as_spark:c29/h28/d5942
+[suite] mobile-dps lane 18 m, 8 treadmill steps
+[bot] mobile:dps astromancer lv50 kite-on skills [astromancer lv50] cast/hits/damage: (dot):c0/h49/d1308 as_chain:c17/h17/d6537 as_fireball:c9/h9/d10690 as_spark:c63/h62/d12991
+[suite] mobile-dps astromancer lv50 speed 0.65: stand 698/s caught 0.0s moved 0m | kite-off 462/s caught 0.0s moved 140m | kite-on 788/s caught 0.0s moved 142m | kite-off 0.66x stand, kite-on 1.13x stand, on/off 1.70x | expected 2408
+[suite] mobile-dps soulbinder lv50: bar=[sb_bolt,sb_raise,sb_veil,sb_curse,sb_golem_cmd,sb_colossus] weapon scythe2
+[bot] mobile:dps soulbinder lv50 stand skills [soulbinder lv50] cast/hits/damage: sb_bolt:c74/h73/d43559 sb_colossus:c1/h9/d8518 sb_curse:c4/h0/d0 sb_golem_cmd:c4/h18/d8120 sb_raise:c10/h164/d23545
+[suite] mobile-dps lane 18 m, 9 treadmill steps
+[bot] mobile:dps soulbinder lv50 kite-off skills [soulbinder lv50] cast/hits/damage: sb_bolt:c25/h25/d15186 sb_colossus:c1/h7/d5298 sb_curse:c3/h0/d0 sb_golem_cmd:c4/h15/d4381 sb_raise:c10/h107/d15583
+[suite] mobile-dps lane 18 m, 8 treadmill steps
+[bot] mobile:dps soulbinder lv50 kite-on skills [soulbinder lv50] cast/hits/damage: sb_bolt:c74/h73/d45232 sb_colossus:c1/h8/d6722 sb_curse:c4/h0/d0 sb_golem_cmd:c4/h22/d7459 sb_raise:c10/h124/d18194
+[suite] mobile-dps soulbinder lv50 speed 0.65: stand 2093/s caught 0.0s moved 0m | kite-off 1011/s caught 0.0s moved 161m | kite-on 1939/s caught 10.8s moved 153m | kite-off 0.48x stand, kite-on 0.93x stand, on/off 1.92x | expected 2408
+[suite] mobile-dps pactbinder lv50: bar=[pb_hexbolt,pb_bind,pb_ward,-,pb_chains,pb_gate] weapon wand+grimoire
+[bot] mobile:dps pactbinder lv50 stand skills [pactbinder lv50] cast/hits/damage: pb_chains:c20/h20/d9924 pb_gate:c1/h8/d19567 pb_hexbolt:c75/h75/d26108
+[suite] mobile-dps lane 18 m, 8 treadmill steps
+[bot] mobile:dps pactbinder lv50 kite-off skills [pactbinder lv50] cast/hits/damage: pb_chains:c20/h20/d11200 pb_gate:c1/h5/d11223 pb_hexbolt:c37/h36/d12424
+[suite] mobile-dps lane 18 m, 8 treadmill steps
+[bot] mobile:dps pactbinder lv50 kite-on skills [pactbinder lv50] cast/hits/damage: pb_chains:c20/h20/d10036 pb_gate:c1/h5/d10073 pb_hexbolt:c75/h75/d27059
+[suite] mobile-dps pactbinder lv50 speed 0.65: stand 1390/s caught 0.0s moved 0m | kite-off 871/s caught 0.0s moved 141m | kite-on 1178/s caught 0.0s moved 142m | kite-off 0.63x stand, kite-on 0.85x stand, on/off 1.35x | expected 2408
+[suite] mobile-dps emberblade lv50: bar=[eb_slash,eb_cleave,eb_roar,-,eb_rupture,eb_wrath] weapon sword2
+[bot] mobile:dps emberblade lv50 stand skills [emberblade lv50] cast/hits/damage: (dot):c0/h75/d7611 eb_cleave:c19/h19/d40105 eb_rupture:c4/h4/d15718 eb_slash:c38/h37/d17042
+[suite] mobile-dps emberblade lv50 speed 0.65: stand 2011/s caught 40.0s moved 0m | expected 2408
+[suite] mobile-dps lampknight lv50: bar=[lk_strike,lk_bash,lk_aegis,-,lk_aura,lk_dawn] weapon sword1
+[bot] mobile:dps lampknight lv50 stand skills [lampknight lv50] cast/hits/damage: (other):c0/h1/d179 lk_aura:c2/h24/d2768 lk_bash:c30/h30/d36424 lk_strike:c55/h55/d19775
+[suite] mobile-dps lampknight lv50 speed 0.65: stand 1478/s caught 40.0s moved 0m | expected 2408
+=== 2026-11-24 12:51:23 dps speed 0.55 log=C:\Users\blhsi\AppData\Roaming\AshenAbyss\logs\game_20261124_124851.log
+[suite] mobile-dps hunter lv50 speed 0.55: stand 1578/s caught 0.0s moved 0m | kite-off 448/s caught 0.0s moved 167m | kite-on 1309/s caught 0.0s moved 168m | kite-off 0.28x stand, kite-on 0.83x stand, on/off 2.92x | expected 2408
+[suite] mobile-dps astromancer lv50 speed 0.55: stand 717/s caught 0.0s moved 0m | kite-off 486/s caught 0.0s moved 141m | kite-on 731/s caught 0.0s moved 143m | kite-off 0.68x stand, kite-on 1.02x stand, on/off 1.50x | expected 2408
+[suite] mobile-dps soulbinder lv50 speed 0.55: stand 2025/s caught 0.0s moved 0m | kite-off 1003/s caught 0.0s moved 161m | kite-on 1823/s caught 14.8s moved 148m | kite-off 0.50x stand, kite-on 0.90x stand, on/off 1.82x | expected 2408
+[suite] mobile-dps pactbinder lv50 speed 0.55: stand 1399/s caught 0.0s moved 0m | kite-off 779/s caught 0.0s moved 140m | kite-on 1124/s caught 0.0s moved 141m | kite-off 0.56x stand, kite-on 0.80x stand, on/off 1.44x | expected 2408
+=== 2026-11-24 13:01:35 dps speed 0.65 dmg 0.90 log=C:\Users\blhsi\AppData\Roaming\AshenAbyss\logs\game_20261124_125909.log
+[suite] mobile-dps hunter lv50 speed 0.65: stand 1561/s caught 0.0s moved 0m | kite-off 461/s caught 0.0s moved 167m | kite-on 1297/s caught 0.0s moved 170m | kite-off 0.30x stand, kite-on 0.83x stand, on/off 2.81x | expected 2408
+[suite] mobile-dps astromancer lv50 speed 0.65: stand 679/s caught 0.0s moved 0m | kite-off 482/s caught 0.0s moved 142m | kite-on 762/s caught 0.0s moved 142m | kite-off 0.71x stand, kite-on 1.12x stand, on/off 1.58x | expected 2408
+[suite] mobile-dps soulbinder lv50 speed 0.65: stand 2107/s caught 0.0s moved 0m | kite-off 977/s caught 0.0s moved 161m | kite-on 1766/s caught 10.8s moved 153m | kite-off 0.46x stand, kite-on 0.84x stand, on/off 1.81x | expected 2408
+[suite] mobile-dps pactbinder lv50 speed 0.65: stand 1414/s caught 0.0s moved 0m | kite-off 788/s caught 0.0s moved 140m | kite-on 1093/s caught 0.0s moved 142m | kite-off 0.56x stand, kite-on 0.77x stand, on/off 1.39x | expected 2408

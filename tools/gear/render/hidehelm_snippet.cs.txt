@@ -1,0 +1,34 @@
+
+    /// <summary>--suite=gear:hidehelm — the "hide headwear" option: full t4 on several classes, helm shown then hidden (world and inventory portrait).</summary>
+    private IEnumerator GearHideHelm()
+    {
+        foreach (var cls in new[] { ClassId.Lampknight, ClassId.Hunter, ClassId.Emberblade, ClassId.Astromancer })
+        {
+            _section = $"gear: hide helm {cls}";
+            yield return StartHero(cls, 30, "town", gear: false, god: true, slot: 94);
+            var p = G.Player; var h = G.Hero;
+            ClearField(false);
+            p.Teleport(FindArena(World.Grid, G.Level.Checkpoint));
+            var (lm, lo) = GearAdapter.Legacy(cls);
+            Dress(h, 4, 0b11111, lm, lo, Rarity.Legendary, 3);
+            yield return 2.5f;
+            string key = Names.ClassKey(cls);
+            foreach (bool hide in new[] { false, true })
+            {
+                GearAdapter.SetHideHelm(h, hide);
+                p.FaceDir(new Vector2(0.35f, 1f));
+                yield return Until(() => !p.Model.GearPending, 5, "gear");
+                yield return 0.5f;
+                bool helmShown = p.Model.GearReport.Contains("_helm_");
+                Check(helmShown != hide, $"gear: {key} helm {(hide ? "hidden" : "shown")}", p.Model.GearReport);
+                yield return Snap($"{key}_{(hide ? "nohelm" : "helm")}_world", 9f);
+                G.Ui.Open("inventory");
+                yield return 1.2f;
+                yield return Snap($"{key}_{(hide ? "nohelm" : "helm")}_inv", 0f);
+                G.Ui.CloseAll();
+                yield return 0.2f;
+            }
+            Check(h.D.HideHelm && h.D.Equip[(int)EquipSlot.Helm] != null, $"gear: {key} helm still worn while hidden");
+            GearAdapter.SetHideHelm(h, false);
+        }
+    }

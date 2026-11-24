@@ -88,6 +88,8 @@ public sealed class SkillDef
     public string[] AnimAlt;           // cycled instead of Anim when set
     public float AnimSpeed = 1f, Contact = 0.28f, Lock = 0.45f;
     public string Sfx = "swing_light", HitSfx;
+    /// <summary>[MOBILE 0.4.1] A ranged attack or cast the hero may walk through (施法時可移動, Player.Mobile.cs): set by SkillDb.MarkMobile.</summary>
+    public bool Mobile;
 
     // behaviour
     public SkillKind Kind;

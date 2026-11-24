@@ -1,0 +1,58 @@
+exit= seconds=50
+log: C:\Users\blhsi\AppData\Roaming\AshenAbyss\logs\game_20261124_125359.log  lines=318  ERR=0  WRN=0
+--- last lines ---
+   49.344 INF [gptest] FAIL detour class=forgebody target=dusk_hound straight=21.4m route=114.7m walked=30.7m struckAt=-1.0m after=36.7s (limit 37) hit=False last='stuck'
+   49.345 INF [gptest] done mode=chase pass=1 fail=1
+   49.346 INF [game] quitting
+   49.350 INF [save] slot 92 saved: ??? lv8 ??? area=wastes_d2 bytes=12954
+   49.350 INF [save] save reason=quit slot=92 ok=True area=wastes_d2 playtime=44s capture=0.1ms total=3.5ms
+   49.352 INF [anim] anim-check: hero moved 6.9s - 0.0s without a locomotion clip, 0.0s with frozen legs; hero stood 35.1s - 0.0s in a run clip or none; monsters moved 428.3s - 0.0s without a locomotion clip, 0.0s with frozen legs; models without a skeleton or ƒ?Ý
+   49.353 INF [input] keyboard hook saw 0 key events, 0 of them PrtSc
+   49.354 INF [boot] shutdown errors=0 warnings=0 uptime=49s
+    0.033 INF [boot] args=[] userargs=[--mute --new=forgebody --slot=92 --area=wastes --level=8 --gear --god --gptest=chase]
+    0.038 INF [boot] switches: --mute --new=forgebody --slot=92 --area=wastes --level=8 --gear --god --gptest=chase
+    0.632 INF [gptest] mode=chase
+    4.483 INF [levelstate] placed area=wastes seed=1954079814 mlvl=8 monsters=387 objects=18 roster=ecde9722 props=(121.00,71.00) (120.48,91.10) (116.90,70.48)
+    7.203 INF [gptest] class=forgebody basic=fb_jab kind=Melee reach=2.1 sight=False area=wastes
+    7.912 INF [gptest] PASS run-up class=forgebody target=husk hover=Attack start=6.8m reach=2.1 ran=2.3m struckAt=2.3m after=0.49s chaseStarted=True strikeOnArrival=True targetHit=True last='struck'
+    8.932 INF [levelstate] placed area=wastes_d2 seed=786411179 mlvl=9 monsters=224 objects=55 roster=8a1ce326 props=(55.29,132.87) (108.47,63.09) (58.77,68.41)
+   12.484 INF [gptest]   detour: dist=22.1 sight=False target=dusk_hound tried=0 limit=32 keep=- act=Free move=True path=0/10 stuck=0.0 t=0.5 best=21.4 unreach=-
+   13.489 INF [gptest]   detour: dist=22.7 sight=False target=dusk_hound tried=0 limit=32 keep=- act=Free move=True path=1/10 stuck=0.0 t=1.5 best=21.4 unreach=-
+   14.498 INF [gptest]   detour: dist=17.7 sight=False target=dusk_hound tried=0 limit=32 keep=- act=Free move=True path=1/10 stuck=0.0 t=2.5 best=17.7 unreach=-
+   15.503 INF [gptest]   detour: dist=14.8 sight=False target=dusk_hound tried=0 limit=32 keep=- act=Free move=True path=1/10 stuck=0.0 t=3.5 best=14.8 unreach=-
+   16.510 INF [gptest]   detour: dist=13.4 sight=False target=dusk_hound tried=0 limit=32 keep=- act=Free move=True path=1/10 stuck=0.0 t=4.6 best=13.4 unreach=-
+   17.518 INF [gptest]   detour: dist=13.6 sight=False target=dusk_hound tried=0 limit=32 keep=- act=Free move=True path=1/10 stuck=0.0 t=5.6 best=13.3 unreach=-
+   18.531 INF [gptest]   detour: dist=18.1 sight=False target=dusk_hound tried=0 limit=32 keep=- act=Free move=True path=3/10 stuck=0.1 t=6.6 best=13.3 unreach=-
+   19.533 INF [gptest]   detour: dist=18.1 sight=False target=dusk_hound tried=2 limit=32 keep=- act=Free move=True path=1/8 stuck=1.1 t=7.6 best=13.3 unreach=-
+   19.959 INF [hero] run-up to dusk_hound given up: stuck at (42.42,96.68) cell=(21, 48) next=(43.0, 105.0) path=1/8 cells[000/1o0o0/000/]
+   20.546 INF [gptest]   detour: dist=18.1 sight=False target=- tried=3 limit=32 keep=- act=Free move=False path=1/8 stuck=1.5 t=8.0 best=13.3 unreach=dusk_hound
+   21.546 INF [gptest]   detour: dist=18.1 sight=False target=- tried=3 limit=32 keep=- act=Free move=False path=1/8 stuck=1.5 t=8.0 best=13.3 unreach=dusk_hound
+   22.548 INF [gptest]   detour: dist=18.1 sight=False target=- tried=3 limit=32 keep=- act=Free move=False path=1/8 stuck=1.5 t=8.0 best=13.3 unreach=-
+   23.548 INF [gptest]   detour: dist=18.1 sight=False target=- tried=3 limit=32 keep=- act=Free move=False path=1/8 stuck=1.5 t=8.0 best=13.3 unreach=-
+   24.535 INF [gptest]   detour: dist=18.1 sight=False target=- tried=3 limit=32 keep=- act=Free move=False path=1/8 stuck=1.5 t=8.0 best=13.3 unreach=-
+   25.547 INF [gptest]   detour: dist=18.1 sight=False target=- tried=3 limit=32 keep=- act=Free move=False path=1/8 stuck=1.5 t=8.0 best=13.3 unreach=-
+   26.563 INF [gptest]   detour: dist=18.1 sight=False target=- tried=3 limit=32 keep=- act=Free move=False path=1/8 stuck=1.5 t=8.0 best=13.3 unreach=-
+   27.549 INF [gptest]   detour: dist=18.1 sight=False target=- tried=3 limit=32 keep=- act=Free move=False path=1/8 stuck=1.5 t=8.0 best=13.3 unreach=-
+   28.560 INF [gptest]   detour: dist=18.1 sight=False target=- tried=3 limit=32 keep=- act=Free move=False path=1/8 stuck=1.5 t=8.0 best=13.3 unreach=-
+   29.560 INF [gptest]   detour: dist=18.1 sight=False target=- tried=3 limit=32 keep=- act=Free move=False path=1/8 stuck=1.5 t=8.0 best=13.3 unreach=-
+   30.552 INF [gptest]   detour: dist=18.1 sight=False target=- tried=3 limit=32 keep=- act=Free move=False path=1/8 stuck=1.5 t=8.0 best=13.3 unreach=-
+   31.559 INF [gptest]   detour: dist=18.1 sight=False target=- tried=3 limit=32 keep=- act=Free move=False path=1/8 stuck=1.5 t=8.0 best=13.3 unreach=-
+   32.582 INF [gptest]   detour: dist=18.1 sight=False target=- tried=3 limit=32 keep=- act=Free move=False path=1/8 stuck=1.5 t=8.0 best=13.3 unreach=-
+   33.579 INF [gptest]   detour: dist=18.1 sight=False target=- tried=3 limit=32 keep=- act=Free move=False path=1/8 stuck=1.5 t=8.0 best=13.3 unreach=-
+   34.578 INF [gptest]   detour: dist=18.1 sight=False target=- tried=3 limit=32 keep=- act=Free move=False path=1/8 stuck=1.5 t=8.0 best=13.3 unreach=-
+   35.588 INF [gptest]   detour: dist=18.1 sight=False target=- tried=3 limit=32 keep=- act=Free move=False path=1/8 stuck=1.5 t=8.0 best=13.3 unreach=-
+   36.586 INF [gptest]   detour: dist=18.1 sight=False target=- tried=3 limit=32 keep=- act=Free move=False path=1/8 stuck=1.5 t=8.0 best=13.3 unreach=-
+   37.586 INF [gptest]   detour: dist=18.1 sight=False target=- tried=3 limit=32 keep=- act=Free move=False path=1/8 stuck=1.5 t=8.0 best=13.3 unreach=-
+   38.597 INF [gptest]   detour: dist=18.1 sight=False target=- tried=3 limit=32 keep=- act=Free move=False path=1/8 stuck=1.5 t=8.0 best=13.3 unreach=-
+   39.606 INF [gptest]   detour: dist=18.1 sight=False target=- tried=3 limit=32 keep=- act=Free move=False path=1/8 stuck=1.5 t=8.0 best=13.3 unreach=-
+   40.605 INF [gptest]   detour: dist=18.1 sight=False target=- tried=3 limit=32 keep=- act=Free move=False path=1/8 stuck=1.5 t=8.0 best=13.3 unreach=-
+   41.605 INF [gptest]   detour: dist=18.1 sight=False target=- tried=3 limit=32 keep=- act=Free move=False path=1/8 stuck=1.5 t=8.0 best=13.3 unreach=-
+   42.608 INF [gptest]   detour: dist=18.1 sight=False target=- tried=3 limit=32 keep=- act=Free move=False path=1/8 stuck=1.5 t=8.0 best=13.3 unreach=-
+   43.610 INF [gptest]   detour: dist=18.1 sight=False target=- tried=3 limit=32 keep=- act=Free move=False path=1/8 stuck=1.5 t=8.0 best=13.3 unreach=-
+   44.620 INF [gptest]   detour: dist=18.1 sight=False target=- tried=3 limit=32 keep=- act=Free move=False path=1/8 stuck=1.5 t=8.0 best=13.3 unreach=-
+   45.631 INF [gptest]   detour: dist=18.1 sight=False target=- tried=3 limit=32 keep=- act=Free move=False path=1/8 stuck=1.5 t=8.0 best=13.3 unreach=-
+   46.643 INF [gptest]   detour: dist=18.1 sight=False target=- tried=3 limit=32 keep=- act=Free move=False path=1/8 stuck=1.5 t=8.0 best=13.3 unreach=-
+   47.633 INF [gptest]   detour: dist=18.1 sight=False target=- tried=3 limit=32 keep=- act=Free move=False path=1/8 stuck=1.5 t=8.0 best=13.3 unreach=-
+   48.642 INF [gptest]   detour: dist=18.1 sight=False target=- tried=3 limit=32 keep=- act=Free move=False path=1/8 stuck=1.5 t=8.0 best=13.3 unreach=-
+   49.344 INF [gptest] FAIL detour class=forgebody target=dusk_hound straight=21.4m route=114.7m walked=30.7m struckAt=-1.0m after=36.7s (limit 37) hit=False last='stuck'
+   49.345 INF [gptest] done mode=chase pass=1 fail=1

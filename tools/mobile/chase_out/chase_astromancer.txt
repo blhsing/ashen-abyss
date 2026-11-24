@@ -1,0 +1,26 @@
+exit= seconds=18
+log: C:\Users\blhsi\AppData\Roaming\AshenAbyss\logs\game_20261124_125209.log  lines=276  ERR=0  WRN=0
+--- last lines ---
+   17.753 INF [gptest] PASS los class=astromancer target=char_walker start=4.3m blockedAtClick=True ranUp=True walked=0.1m struck=True sightAtStrike=True
+   17.753 INF [gptest] done mode=chase pass=3 fail=0
+   17.754 INF [game] quitting
+   17.758 INF [save] slot 92 saved: ??? lv8 ??? area=wastes_d2 bytes=13626
+   17.758 INF [save] save reason=quit slot=92 ok=True area=wastes_d2 playtime=12s capture=0.2ms total=3.2ms
+   17.760 INF [anim] anim-check: hero moved 4.4s - 0.0s without a locomotion clip, 0.0s with frozen legs; hero stood 6.5s - 0.0s in a run clip or none; monsters moved 70.1s - 0.0s without a locomotion clip, 0.0s with frozen legs; models without a skeleton or a ƒ?Ý
+   17.760 INF [input] keyboard hook saw 0 key events, 0 of them PrtSc
+   17.761 INF [boot] shutdown errors=0 warnings=0 uptime=18s
+    0.037 INF [boot] args=[] userargs=[--mute --new=astromancer --slot=92 --area=wastes --level=8 --gear --god --gptest=chase]
+    0.042 INF [boot] switches: --mute --new=astromancer --slot=92 --area=wastes --level=8 --gear --god --gptest=chase
+    0.657 INF [gptest] mode=chase
+    4.647 INF [levelstate] placed area=wastes seed=32151048 mlvl=8 monsters=381 objects=18 roster=d142aec9 props=(169.00,67.00) (183.00,83.00) (171.00,87.00)
+    7.364 INF [gptest] class=astromancer basic=as_spark kind=Proj reach=15.3 sight=True area=wastes
+    8.085 INF [gptest]   run-up: hero=(159.1,80.2) target=(174.3,83.4) dist=15.6 sight=True hover=char_stump target=- tried=0 limit=12 keep=char_stump act=Cast move=False path=0/1 stuck=0.1 t=0.4 best=15.6 unreach=-
+    9.686 INF [gptest] PASS run-up class=astromancer target=char_stump hover=Attack start=18.1m reach=15.3 ran=5.9m struckAt=15.6m after=0.54s chaseStarted=True strikeOnArrival=True targetHit=False last='struck'
+   10.718 INF [levelstate] placed area=wastes_d2 seed=518402158 mlvl=9 monsters=213 objects=59 roster=129351a1 props=(49.33,117.65) (96.82,59.14) (60.39,51.67)
+   13.508 INF [gptest]   detour: dist=15.3 sight=False target=char_walker tried=0 limit=12 keep=- act=Free move=True path=0/4 stuck=0.1 t=1.0 best=15.3 unreach=-
+   14.510 INF [gptest]   detour: dist=13.4 sight=False target=char_walker tried=0 limit=12 keep=- act=Free move=True path=0/4 stuck=0.1 t=2.0 best=13.4 unreach=-
+   15.510 INF [gptest]   detour: dist=14.1 sight=False target=char_walker tried=0 limit=12 keep=- act=Free move=True path=1/5 stuck=0.0 t=3.0 best=13.4 unreach=-
+   16.510 INF [gptest]   detour: dist=12.1 sight=False target=char_walker tried=0 limit=12 keep=- act=Free move=True path=2/5 stuck=0.0 t=4.0 best=12.1 unreach=-
+   17.716 INF [gptest] PASS detour class=astromancer target=char_walker straight=18.4m route=66.7m walked=16.5m struckAt=9.0m after=4.5s (limit 25) hit=False last='struck'
+   17.753 INF [gptest] PASS los class=astromancer target=char_walker start=4.3m blockedAtClick=True ranUp=True walked=0.1m struck=True sightAtStrike=True
+   17.753 INF [gptest] done mode=chase pass=3 fail=0

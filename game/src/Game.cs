@@ -90,6 +90,7 @@ public partial class Game : Node
         "gptest", "gpexpect", "gpthen", "gpclasses", "gpcancel", "gpout", "gpcases", "gpslots", "gpold", "gpresume", "stash-keep",                                           // gameplay harness (GameplayTest.cs): click-to-attack, save resume
         "demo", "demo-idle", "demo-secs", "demo-log", "pilot-at", "pilot-test",                      // demo mode (DemoMode.cs) and the AI pilot (AiPilot.cs)
         "gear-off", "gear-baked", "gear-ph", "gear-dir", "icon3d-off", "gear-ik",                // modular gear and 3D item icons (GearVisual.cs, ItemIcon3D.cs)
+        "mobile-cast", "mobile-speed", "mobile-dmg", "upper-off",                                             // moving while attacking (Player.Mobile.cs)
     };
     private bool _forceWindow, _windowPlaced, _quitting;
     private bool? _cfgFullscreen;
@@ -155,6 +156,7 @@ public partial class Game : Node
     private static readonly string[] Tips =
     {
         "按住 Shift 再施放技能，就能站在原地出手，不會朝游標走過去。",
+        "遠程攻擊與法術可以邊走邊放：出手時按住 W/A/S/D 拉開距離，箭矢與法術仍會飛向目標。",
         "以空白鍵閃避的那一瞬間，任何攻擊都傷不到你。",
         "地上亮起的紅色區域，是即將落下的攻擊。離開它。",
         "點亮一個區域的燼塔之後，就能從地圖隨時往返該地。",

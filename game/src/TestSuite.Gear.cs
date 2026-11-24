@@ -33,6 +33,8 @@ public sealed partial class TestSuite
         if (Has("perf")) yield return GearPerf();
         if (Has("swap")) yield return GearSwapTest();
         if (Has("leftarm")) yield return GearLeftArm();
+        if (Has("hidehelm")) yield return GearHideHelm();
+        if (Has("mobileanim")) yield return GearMobileAnim();
         G.HarnessFov(0f);
         Log.Info("suite", $"gear icons: requested={ItemIcon3D.Requested} rendered={ItemIcon3D.Rendered} fromDisk={ItemIcon3D.ReadFromDisk} failed={ItemIcon3D.Failed} " +
             $"worstFrame={ItemIcon3D.WorstFrameMs:0.00}ms totalCpu={ItemIcon3D.RenderMsTotal:0}ms");
@@ -462,6 +464,96 @@ public sealed partial class TestSuite
         }
         GearGripIK.Mode = 2;
         Pass("gear: left arm measured");
+    }
+
+    /// <summary>--suite=gear:hidehelm — the "hide headwear" option: full t4 on several classes, helm shown then hidden (world and inventory portrait).</summary>
+    private IEnumerator GearHideHelm()
+    {
+        foreach (var cls in new[] { ClassId.Lampknight, ClassId.Hunter, ClassId.Emberblade, ClassId.Astromancer })
+        {
+            _section = $"gear: hide helm {cls}";
+            yield return StartHero(cls, 30, "town", gear: false, god: true, slot: 94);
+            var p = G.Player; var h = G.Hero;
+            ClearField(false);
+            p.Teleport(FindArena(World.Grid, G.Level.Checkpoint));
+            var (lm, lo) = GearAdapter.Legacy(cls);
+            Dress(h, 4, 0b11111, lm, lo, Rarity.Legendary, 3);
+            yield return 2.5f;
+            string key = Names.ClassKey(cls);
+            foreach (bool hide in new[] { false, true })
+            {
+                GearAdapter.SetHideHelm(h, hide);
+                p.FaceDir(new Vector2(0.35f, 1f));
+                yield return Until(() => !p.Model.GearPending, 5, "gear");
+                yield return 0.5f;
+                bool helmShown = p.Model.GearReport.Contains("_helm_");
+                Check(helmShown != hide, $"gear: {key} helm {(hide ? "hidden" : "shown")}", p.Model.GearReport);
+                yield return Snap($"{key}_{(hide ? "nohelm" : "helm")}_world", 9f);
+                G.Ui.Open("inventory");
+                yield return 1.2f;
+                yield return Snap($"{key}_{(hide ? "nohelm" : "helm")}_inv", 0f);
+                G.Ui.CloseAll();
+                yield return 0.2f;
+            }
+            Check(h.D.HideHelm && h.D.Equip[(int)EquipSlot.Helm] != null, $"gear: {key} helm still worn while hidden");
+            GearAdapter.SetHideHelm(h, false);
+        }
+    }
+
+    /// <summary>
+    /// --suite=gear:mobileanim — the upper-body layer: every ranged loadout shooting while it walks toward the aim, across
+    /// it and away from it (back-pedal). The player's own update is paused; the test drives CharModel.PlayUpperAttack /
+    /// SetLocomotion / EndUpper as the moving-cast code will.
+    /// </summary>
+    private IEnumerator GearMobileAnim()
+    {
+        var plan = new (ClassId c, string name, string main, string off)[]
+        {
+            (ClassId.Hunter, "hunter_crossbow", "crossbow", null), (ClassId.Hunter, "hunter_bow", "bow", null),
+            (ClassId.Astromancer, "astromancer_staff", "staff", null), (ClassId.Pactbinder, "pactbinder_wand", "wand", "grimoire"),
+            (ClassId.Soulbinder, "soulbinder_scythe", "scythe2", null),
+        };
+        ClassId? current = null;
+        foreach (var s in plan)
+        {
+            _section = $"gear: mobile anim {s.name}";
+            if (current != s.c) { yield return StartHero(s.c, 30, "wastes", gear: false, god: true, slot: 94); current = s.c; yield return 2f; }
+            var p = G.Player; var h = G.Hero; var m = p.Model;
+            ClearField();
+            Dress(h, 4, 0b11111, s.main, s.off, Rarity.Legendary, 3);
+            yield return Until(() => !m.GearPending, 5, "gear");
+            Vector2 home = FindArena(World.Grid, G.Level.Checkpoint, 8);
+            var basic = h.Eff(h.D.Bar[0]);
+            string clip = Stances.Remap(m.Stance, basic?.Anim ?? "Spell_Simple_Shoot", m.Gear);
+            Vector2 aim2 = new Vector2(0.45f, 1f).Normalized();          // toward the lens, a little to the right
+            var dirs = new (string tag, Vector2 move)[] { ("forward", aim2), ("sideways", new Vector2(aim2.Y, -aim2.X)), ("backwards", -aim2) };
+            foreach (var (tag, move) in dirs)
+            {
+                p.Teleport(home - move * 3f);
+                p.FaceDir(aim2);
+                p.SetProcess(false); p.SetPhysicsProcess(false);
+                yield return null;
+                Vector3 aim3 = new(aim2.X, 0, aim2.Y), move3 = new(move.X, 0, move.Y);
+                float t = 0f, nextShot = 0f; bool shot = false;
+                ulong last = Time.GetTicksMsec();
+                while (t < 2.6f)
+                {
+                    float dt = (Time.GetTicksMsec() - last) / 1000f; last = Time.GetTicksMsec();
+                    t += dt;
+                    if (t >= nextShot) { m.PlayUpperAttack(clip, 1f, 0.3f, aim3); nextShot = t + 0.95f; }
+                    p.Teleport(p.Pos2 + move * 2.6f * dt);
+                    p.FaceDir(aim2);
+                    m.SetLocomotion(move3, 2.6f, aim3);
+                    if (!shot && t > 1.6f + 0.28f) { shot = true; yield return Snap($"{s.name}_{tag}", 11f); last = Time.GetTicksMsec(); continue; }
+                    yield return null;
+                }
+                Log.Info("suite", $"mobile anim {s.name} {tag}: upper clip {clip}, legs {m.Current} rate {m.Anim?.SpeedScale:0.00}, layered={m.Layered} upperBusy={m.UpperBusy}");
+                m.EndUpper();
+                p.SetProcess(true); p.SetPhysicsProcess(true);
+                yield return 0.4f;
+            }
+        }
+        Pass("gear: moving-cast poses photographed");
     }
 
     private IEnumerator GearLootShots()

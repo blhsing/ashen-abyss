@@ -480,5 +480,37 @@ public static class SkillDb
         Sp("pb_brute", "巨魔契", "契約魔為熔岩巨魔：皮厚力沉，善於承受傷害。生命上限 +8%。", null, (Stat.LifePct, 8));
         Sp("pb_imps", "群魔契", "契約魔為三隻小燼魔：從遠處投擲火焰。僕從傷害 +15%。", null, (Stat.MinionDmg, 15));
         Sp("pb_wraith", "縛魂契", "契約魔為縛魂：以寒霜彈冰緩敵人。暗影傷害 +15%，冷卻時間縮減 +5%。", null, (Stat.DmgShadow, 15), (Stat.Cdr, 5));
+        MarkMobile();
+    }
+
+    /// <summary>
+    /// [MOBILE 0.4.1] The skills the hero may walk through (施法時可移動, Player.Mobile.cs): every projectile and basic shot,
+    /// ground-targeted spells and pools, ranged curses, chains, thrown traps and commands to a minion at range — for every
+    /// class, the ranged skills of the melee classes included. Melee strikes, the waves swung at the feet (裂地斬, 地裂,
+    /// 崩山掌), novas round the hero, dashes, leaps, blinks, buffs, summoning rituals and the one channel (旋風斬, which
+    /// already walks at 80 %) keep the old stop-and-act behaviour. The list is explicit so a new skill is a decision, not an
+    /// accident: --suite=mobile checks that every Proj / Chain / Ground / Zone / Trap / Command skill is here or in NotMobileIds.
+    /// </summary>
+    public static readonly string[] MobileIds =
+    {
+        "as_spark", "as_fireball", "as_frostlance", "as_chain", "as_meteor",                 // 星術師
+        "hu_shot", "hu_pierce", "hu_trap", "hu_rain",                                         // 獵手
+        "sb_bolt", "sb_spear", "sb_blight", "sb_explode", "sb_curse", "sb_golem_cmd",         // 縛魂者
+        "ws_storm",                                                                           // 野魂
+        "fb_wave",                                                                            // 鍛軀
+        "lk_smite", "lk_lance",                                                               // 燈騎士
+        "pb_hexbolt", "pb_chains", "pb_rain", "pb_lash",                                      // 契約者
+    };
+    /// <summary>Ranged-kind skills deliberately left stop-and-act (none today: every ranged kind is mobile).</summary>
+    public static readonly string[] NotMobileIds = { };
+
+    private static void MarkMobile()
+    {
+        foreach (var id in MobileIds)
+        {
+            var s = Get(id);
+            if (s != null) s.Mobile = true;
+            else Log.Warn("skills", $"MarkMobile: unknown skill '{id}'");
+        }
     }
 }

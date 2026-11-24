@@ -1,0 +1,26 @@
+exit= seconds=17
+log: C:\Users\blhsi\AppData\Roaming\AshenAbyss\logs\game_20261124_125303.log  lines=240  ERR=0  WRN=0
+--- last lines ---
+   16.436 INF [gptest] PASS los class=soulbinder target=husk_huddle start=9.8m blockedAtClick=True ranUp=True walked=2.0m struck=True sightAtStrike=True
+   16.437 INF [gptest] done mode=chase pass=3 fail=0
+   16.438 INF [game] quitting
+   16.443 INF [save] slot 92 saved: ??? lv8 ??? area=wastes_d2 bytes=12335
+   16.444 INF [save] save reason=quit slot=92 ok=True area=wastes_d2 playtime=11s capture=0.2ms total=5.8ms
+   16.446 INF [anim] anim-check: hero moved 4.8s - 0.0s without a locomotion clip, 0.0s with frozen legs; hero stood 5.0s - 0.0s in a run clip or none; monsters moved 23.3s - 0.0s without a locomotion clip, 0.0s with frozen legs; models without a skeleton or a ƒ?Ý
+   16.447 INF [input] keyboard hook saw 0 key events, 0 of them PrtSc
+   16.448 INF [boot] shutdown errors=0 warnings=0 uptime=16s
+    0.031 INF [boot] args=[] userargs=[--mute --new=soulbinder --slot=92 --area=wastes --level=8 --gear --god --gptest=chase]
+    0.036 INF [boot] switches: --mute --new=soulbinder --slot=92 --area=wastes --level=8 --gear --god --gptest=chase
+    0.649 INF [gptest] mode=chase
+    4.616 INF [levelstate] placed area=wastes seed=1211306241 mlvl=8 monsters=335 objects=19 roster=02a94fb3 props=(95.00,93.00) (81.00,95.00) (86.69,99.80)
+    7.317 INF [gptest] class=soulbinder basic=sb_bolt kind=Proj reach=15.3 sight=True area=wastes
+    7.821 INF [gptest]   run-up: hero=(91.8,197.9) target=(85.9,181.8) dist=17.1 sight=True hover=reaver_hook target=reaver_hook tried=0 limit=12 keep=- act=Free move=True path=0/1 stuck=0.0 t=0.5 best=17.2 unreach=-
+    8.833 INF [gptest] PASS run-up class=soulbinder target=reaver_hook hover=Attack start=20.5m reach=15.3 ran=4.7m struckAt=15.8m after=0.89s chaseStarted=True strikeOnArrival=True targetHit=True last='struck'
+    9.801 INF [levelstate] placed area=wastes_d2 seed=1611445777 mlvl=9 monsters=127 objects=34 roster=c175d91e props=(69.34,56.93) (69.31,104.48) (16.90,82.73)
+   12.069 INF [gptest]   detour: dist=23.1 sight=False target=husk_chained tried=0 limit=14 keep=- act=Free move=True path=0/7 stuck=0.0 t=0.6 best=23.1 unreach=-
+   13.078 INF [gptest]   detour: dist=22.2 sight=False target=husk_chained tried=0 limit=14 keep=- act=Free move=True path=0/7 stuck=0.0 t=1.6 best=22.2 unreach=-
+   14.085 INF [gptest]   detour: dist=21.4 sight=False target=husk_chained tried=0 limit=14 keep=- act=Free move=True path=1/7 stuck=0.0 t=2.6 best=21.4 unreach=-
+   15.092 INF [gptest]   detour: dist=16.6 sight=True target=husk_chained tried=0 limit=14 keep=- act=Free move=True path=3/7 stuck=0.0 t=3.6 best=16.7 unreach=-
+   16.132 INF [gptest] PASS detour class=soulbinder target=husk_chained straight=24.5m route=56.7m walked=20.8m struckAt=15.8m after=4.0s (limit 22) hit=False last='struck'
+   16.436 INF [gptest] PASS los class=soulbinder target=husk_huddle start=9.8m blockedAtClick=True ranUp=True walked=2.0m struck=True sightAtStrike=True
+   16.437 INF [gptest] done mode=chase pass=3 fail=0

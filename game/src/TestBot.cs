@@ -338,7 +338,7 @@ public partial class TestBot : Node
         _uiT = 0;
         if (g.Paused) return;
 
-        if (Pilot != null && PilotReflex(g, p, real)) return;      // AI pilot: dodging, potions (AiPilotCombat.cs)
+        if (Pilot != null && PilotReflex(g, p, real)) { PilotShootWhileDodging(p, real); return; }      // AI pilot: dodging, potions (AiPilotCombat.cs); MOBILE: shooting on the move (AiPilotMobile.cs)
         _thinkT -= real;
         if (_thinkT > 0) return;
         _thinkT = 0.12f;
@@ -605,7 +605,7 @@ public partial class TestBot : Node
 
         var basic = hero.Eff(hero.D.Bar[0]) ?? hero.Eff(hero.D.Bar[1]);
         float want = basic == null ? 2.5f : Reach(basic, t);
-        if (Pilot != null && PilotPosition(p, hero, t, me, dist, los, want, true)) return;     // AI pilot: kiting (AiPilotCombat.cs)
+        if (Pilot != null && PilotPosition(p, hero, t, me, dist, los, want, true)) { PilotShootOnTheMove(p, hero, t, me, dist, los); return; }     // AI pilot: kiting (AiPilotCombat.cs); MOBILE: shooting while it kites (AiPilotMobile.cs)
 
         for (int k = 0; k < SlotOrder.Length; k++)
             if (TryUse(p, hero, SlotOrder[k], t, me, dist, los)) return;
@@ -632,6 +632,7 @@ public partial class TestBot : Node
         var d = hero.Eff(id);
         if (d == null || hero.Rank(id) <= 0 || p.WhyCant(d) != null) return false;
         if (Pilot != null && !PilotMayCast(p, hero, d)) return false;      // AI pilot: no long swing just before the boss strikes (AiPilotCombat.cs)
+        if (_mobileOnly && !(d.Mobile && Player.MobileCastOn)) return false;      // MOBILE: on the move only what can be cast walking (AiPilotMobile.cs)
         Vector2 tp = t.Pos2;
         switch (d.Kind)
         {
@@ -693,7 +694,7 @@ public partial class TestBot : Node
         Casts++;
         string id = p.Hero.D.Bar[slot];
         if (id != null) _castBy[id] = _castBy.GetValueOrDefault(id) + 1;
-        _moving = false;
+        if (!(p.Hero.Eff(id)?.Mobile == true && Player.MobileCastOn)) _moving = false;      // MOBILE: a Mobile cast does not stop the walk
         return true;
     }
 
